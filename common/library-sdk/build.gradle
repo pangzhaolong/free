@@ -2,7 +2,7 @@ apply from: rootProject.file('gradle/module.build.gradle')
 
 android {
     defaultConfig {
-        if (isBuildModule.toBoolean()){
+        if (isBuildModule.toBoolean()) {
             applicationId "gov.pianzong.androidnga"
             versionCode 1000000
         }
@@ -57,12 +57,13 @@ repositories {
         dirs 'libs'
     }
 }
+
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar','*.aar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 
     api project(':common:library-common')
 
-
+    api project(':common:libs')
 
 
 }

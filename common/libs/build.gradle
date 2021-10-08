@@ -1,0 +1,10 @@
+configurations.maybeCreate("default")
+artifacts.add("default", file('utils-libs\\DonewsBISdk.aar'))
+artifacts.add("default", file('utils-libs\\smantifraud.aar'))
+
+artifacts.add("default", file('sdk-libs\\dn_csj_res.aar'))
+artifacts.add("default", file('sdk-libs\\dn_donewsx_res.aar'))
+artifacts.add("default", file('sdk-libs\\dn_gdt_res.aar'))
+artifacts.add("default", file('sdk-libs\\donewsSDK6.2.aar'))
+artifacts.add("default", file('sdk-libs\\GDTSDK.unionNormal.4.373.1243.aar'))
+artifacts.add("default", file('sdk-libs\\open_ad_sdk3800.aar'))

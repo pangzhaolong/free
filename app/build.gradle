@@ -39,10 +39,10 @@ android {
     signingConfigs {
 
         release {
-            keyAlias 'key0'
-            keyPassword '123456'
-            storeFile rootProject.file('keystore/jkzaaaa.jks')
-            storePassword '123456'
+            keyAlias 'cdyfjdd'
+            keyPassword 'cdyfjdd1008'
+            storeFile rootProject.file('keystore/cdyfjdd.jks')
+            storePassword 'cdyfjdd1008'
 //            v2SigningEnabled true
 //            v1SigningEnabled true
         }
