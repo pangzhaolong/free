@@ -1,0 +1,100 @@
+ext {
+    // true 表示测试环境，false表示正式环境
+    DEBUG = true
+
+    //版本号，版本名称 版本号对应于版本名称，
+    // 例如：1.2.1->12010;1.3.2->13020
+    //对应版本名称向右补0
+    VERSION_CODE = 10000
+    VERSION_NAME = "1.0.0"
+    // app标识identification
+    APP_IDENTIFICATION = "cdbx"
+
+    //包名
+    APPLICATION_ID = "com.battery.cdbx"
+
+    // 正式环境base Url
+    API_URL = "https://xtasks.xg.tagtic.cn/"
+    // 测试环境的base url
+    API_TEST_URL = "http://120.31.70.243:8989/"
+
+    // 正式环境base Url
+    API2_URL = "https://www.qusobook.com/"
+    // 测试环境的base2 url
+    API_TEST2_URL = "http://120.31.70.243:8181/"
+
+    // 开屏广告id
+    SPLASH_ID = "42314";
+    // 插屏广告id
+    INTERSTITIAL_ID = "44511";
+    // Banner广告id
+    BANNER_ID = "44507";
+    // 激励视频广告Id
+    REWARD_VIDEO_ID = "43359";
+    // 全屏视频广告id
+    FULL_SCREEN_VIDEO_ID = "5354";
+    // 信息流自渲染广告id
+    NEWS_FEED_CUSTOM_RENDER_ID = "43366";
+    // 信息流模广告id
+    NEWS_FEED_TEMPLATE_ID = "43362";
+    // Draw流广告id
+    DRAW_FEED_ID = "";
+
+    // 登录的地址
+    LOGIN_TEST_URL = "https://monetization.dev.tagtic.cn/"
+    LOGIN_ON_LINE_URL = "https://monetization.tagtic.cn/"
+    LOGIN_URL = ext.DEBUG ? ext.LOGIN_TEST_URL : ext.LOGIN_ON_LINE_URL
+
+    // 积分服务
+    TASK_OFF_LINE_URL = "https://xtasks.dev.tagtic.cn/xtasks/"
+    TASK_ON_LINE_URL = "https://xtasks.xg.tagtic.cn/xtasks/"
+    TASK_URL = ext.DEBUG ? ext.TASK_OFF_LINE_URL : ext.TASK_ON_LINE_URL
+
+
+
+    //配置中心接口文档
+    BASE_CONFIG_ON_LINE_URL = "https://monetization.tagtic.cn/rule/v1/calculate/"
+    BASE_CONFIG_OFF_LINE_URL = "https://monetization.dev.tagtic.cn/rule/v1/calculate/"
+    BASE_CONFIG_URL = ext.DEBUG ? BASE_CONFIG_OFF_LINE_URL : BASE_CONFIG_ON_LINE_URL
+    BASE_RULE = ext.DEBUG ? "-dev" : "-prod"
+
+    //H5 地址
+    H5_OFF_LINE_URL = "https://recharge-web.dev.tagtic.cn/" + ext.APP_IDENTIFICATION + "/index.html#/"
+    H5_ON_LINE_URL = "https://recharge-web.xg.tagtic.cn/" + ext.APP_IDENTIFICATION + "/index.html#/"
+    HTTP_H5 = ext.DEBUG ? ext.H5_OFF_LINE_URL : ext.H5_ON_LINE_URL
+
+    //福利，签到，新人福利
+    AWARD_OFF_LINE_URL = "https://award.dev.tagtic.cn/"
+    AWARD_ON_LINE_URL = "https://award.xg.tagtic.cn/"
+    HTTP_AWARD = ext.DEBUG ? ext.AWARD_OFF_LINE_URL : ext.AWARD_ON_LINE_URL
+
+
+    //幸运金币
+    LUCK_GOLD_OFF_LINE_URL = "https://luck-score.dev.tagtic.cn/luck/"
+    LUCK_GOLD_ON_LINE_URL = "https://luck-score.xg.tagtic.cn/luck/"
+    HTTP_LUCK_GOLD = ext.DEBUG ? ext.LUCK_GOLD_OFF_LINE_URL : ext.LUCK_GOLD_ON_LINE_URL
+
+    //game游戏配置
+    GAME_OFF_LINE_URL = "https://recharge.dev.xg.tagtic.cn/" + ext.APP_IDENTIFICATION + "/index.html"
+    GAME_ON_LINE_URL = "https://recharge.xg.tagtic.cn/" + ext.APP_IDENTIFICATION + "/index.html"
+    HTTP_GAME_URL = ext.DEBUG ? ext.GAME_OFF_LINE_URL : ext.GAME_ON_LINE_URL
+
+
+    //广告配置
+    AD_CONFIG = APP_IDENTIFICATION + "-adConfig-V2"+BASE_RULE
+
+
+    //大数据统计
+    ANALYSIS_DATA = "appbatterycdbx"
+
+    //友盟Key
+    ANALYSIS_U_MENG = "5fdc0cfb842ba953b88eb318"
+
+    //腾讯Bugly
+    BUGLY_ID = "d5d3c3b4ef"
+
+    // 微信API
+    WX_API = "wxbb53fbd69a7c545c"
+
+}
+

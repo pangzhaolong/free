@@ -1,0 +1,22 @@
+apply from: rootProject.file('gradle/module.build.gradle')
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    defaultConfig {
+        if (isBuildModule.toBoolean()) {
+            applicationId "com.infinities.reward.shopping"
+        }
+    }
+    //统一资源前缀，规范资源引用
+    resourcePrefix "login_"
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar','*aar'])
+    api project(path: ':common:library-common')
+    api project(path: ':common:library-share')
+    annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+}

@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:id="@+id/rl_userinfo_logo"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@+id/title_bar"
+            android:background="#FFFFFF">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:text="头像"
+                android:textColor="#222222"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="15dp"
+                android:background="#E5E3E3" />
+
+            <com.donews.common.views.CircleImageView
+                android:id="@+id/iv_userinfo_logo"
+                imageHeadUrl="@{userInfoBean.headImageNull ? userInfoBean.headImg : @drawable/user_logo }"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/user_logo" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_userinfo_name"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@+id/rl_userinfo_logo"
+            android:background="#FFFFFF">
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:text="用户名"
+                android:textColor="#222222"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_userinfo_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:text="@{userInfoBean.userName}"
+                android:textColor="#AEAEAE"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="15dp"
+                android:background="#E5E3E3" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/rl_userinfo_mobile"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@+id/rl_userinfo_name"
+            android:background="#FFFFFF">
+
+            <TextView
+                android:id="@+id/tv_invitation_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:text="我的邀请码"
+                android:textColor="#222222"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_userinfo_yaoqing_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:text="@{userInfoBean.inviteCode}"
+                android:textColor="#AEAEAE"
+                android:textSize="16sp" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/rl_userinfo_yaoqing_code"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@+id/rl_line_view"
+            android:background="#FFFFFF"
+            android:clickable="@{TextUtils.isEmpty(userInfoBean.getMobile())}">
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:text="手机号"
+                android:textColor="#222222"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_userinfo_mobile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:text='@{!TextUtils.isEmpty(userInfoBean.getMobile())? @string/mine_bind_tv : @string/mine_must_bind}'
+                android:textColor="@color/common_them"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="15dp"
+                android:background="#E5E3E3" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_userinfo_wachat"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@+id/rl_userinfo_yaoqing_code"
+            android:background="#FFFFFF"
+            android:clickable="@{TextUtils.isEmpty(userInfoBean.getWechatExtra() != null ? userInfoBean.getWechatExtra().getOpenId() : null) }">
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:text="微信"
+                android:textColor="#222222"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_userinfo_wachat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:text='@{!TextUtils.isEmpty(userInfoBean.getWechatExtra() != null ? userInfoBean.getWechatExtra().getOpenId() : null) ?  @string/mine_bind_tv :  @string/mine_must_bind}'
+                android:textColor="@color/common_them"
+                android:textSize="16sp" />
+
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/rl_line_view"
+            android:layout_below="@+id/rl_userinfo_mobile"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@color/search_ranking_vertically" />
+
+        <com.donews.common.views.BaseTitleBar
+            android:id="@+id/title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <data>
+
+        <import type="com.donews.common.contract.UserInfoBean" />
+
+        <import type="android.text.TextUtils" />
+
+        <variable
+            name="userInfoBean"
+            type="UserInfoBean" />
+    </data>
+
+
+</layout>

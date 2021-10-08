@@ -1,0 +1,25 @@
+apply from: rootProject.file('gradle/module.build.gradle')
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    defaultConfig {
+        if (isBuildModule.toBoolean()) {
+            applicationId "com.donews.home"
+        }
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [AROUTER_MODULE_NAME: project.getName()]
+            }
+        }
+    }
+    //统一资源前缀，规范资源引用
+    resourcePrefix "home_"
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    api project(':common:library-common')
+    annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
+}

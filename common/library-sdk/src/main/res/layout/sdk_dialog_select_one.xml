@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
+
+    <View
+        android:id="@+id/new_version_v"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/transparent"
+        android:layout_marginTop="40dp"/>
+
+    <LinearLayout
+        android:id="@+id/ll"
+        android:background="@drawable/sdk_bg_dialog_select"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/new_version_v"
+        android:orientation="vertical">
+      <TextView
+          android:paddingTop="30dp"
+          android:text="分享成功"
+          android:gravity="center"
+          android:textColor="@color/black"
+          android:textSize="16sp"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"/>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/new_version_msg_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="5dp"
+                android:gravity="center"
+                android:text="观看视频成功，额外获得20金币"
+                android:textSize="15dp" />
+        </androidx.core.widget.NestedScrollView>
+
+
+            <TextView
+                android:id="@+id/new_version_bt"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="我知道了"
+                android:gravity="center"
+                android:textSize="18dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="放弃。。"
+            android:gravity="center"
+            android:textSize="18dp" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/new_version_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="@mipmap/dialog_logo_bg"
+        android:src="@mipmap/dialog_logo_img" />
+
+    <ImageView
+        android:layout_alignTop="@+id/ll"
+        android:layout_alignRight="@id/ll"
+        android:src="@mipmap/close_icon"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="18dp"
+        android:layout_height="18dp"/>
+
+</RelativeLayout>

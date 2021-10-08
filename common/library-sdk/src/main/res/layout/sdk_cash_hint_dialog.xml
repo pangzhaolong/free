@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource">
+
+    <data>
+
+        <variable
+            name="titleName"
+            type="String" />
+
+        <variable
+            name="okName"
+            type="String" />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/rank_item_30"
+            android:layout_marginRight="@dimen/rank_item_30"
+            android:background="@drawable/popupwindow_white_bg"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/padding_right"
+            android:paddingRight="@dimen/padding_left">
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_top"
+                android:layout_marginBottom="@dimen/padding_bottom"
+                android:gravity="center"
+                android:text="温馨提示"
+                android:textColor="@color/black"
+                android:textSize="@dimen/textSize_18"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/mine_cash_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_top"
+                android:layout_marginBottom="@dimen/padding_bottom"
+                android:gravity="center"
+                android:lineSpacingExtra="1dp"
+                android:lineSpacingMultiplier="1.2"
+                android:text="@{titleName}"
+                android:textColor="@color/A666666"
+                android:textSize="@dimen/textSize_16" />
+
+            <Button
+                android:id="@+id/ok"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/rank_item_20"
+                android:layout_marginBottom="@dimen/rank_item_20"
+                android:background="@drawable/cash_sdk_item_cash"
+                android:padding="@dimen/padding_10"
+                android:paddingBottom="@dimen/padding_10"
+                android:text="@{okName}"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textSize_16" />
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

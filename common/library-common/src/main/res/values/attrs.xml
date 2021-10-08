@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--圆弧进度条-->
+    <declare-styleable name="CommonCircleProgressBar">
+        <attr name="common_radius" format="dimension" />
+        <attr name="common_strokeWidth" format="dimension" />
+        <attr name="common_ringColor" format="color" />
+        <attr name="common_strokeBgColor" format="color" />
+        <attr name="common_progress" format="integer"/>
+    </declare-styleable>
+
+
+
+    <declare-styleable name="ProgressScaleView">
+
+        <attr name="progressMax" format="integer" />
+        <!--进度条padding-->
+        <attr name="proPadding" format="dimension" />
+        <attr name="progress" format="integer" />
+        <attr name="proInterval" format="dimension" />
+        <attr name="progressHeight" format="dimension" />
+        <!--是否显进度条上面的刻度-->
+        <attr name="proShowScale" format="boolean" />
+        <!--刻度距离下面进度条的距离-->
+        <attr name="scaleDistance" format="dimension" />
+        <!--刻度字体大小-->
+        <attr name="scaleFontSize" format="dimension" />
+        <!--刻度颜色值-->
+        <attr name="scaleFontColor" format="color|reference" />
+        <!--刻度比，一刻度表示多少值，默认1:1-->
+        <attr name="scaleThan" format="integer" />
+
+
+        <attr name="proBackgroundColor" format="color|reference" />
+        <attr name="progressDefaultColor" format="color|reference" />
+        <attr name="progressColor" format="color|reference" />
+
+
+    </declare-styleable>
+</resources>

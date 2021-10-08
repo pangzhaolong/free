@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">library-commen</string>
+    <string name="mine_progress">%</string>
+    <string name="mine_news_text">有新版本啦！</string>
+    <string name="mine__content">1,系统更流畅,特殊网络下数据体验</string>
+    <string name="mine_news_hint">新版本优化点</string>
+    <string name="mine_cancel">暂不升级</string>
+    <string name="mine_must_tv">立即升级</string>
+</resources>

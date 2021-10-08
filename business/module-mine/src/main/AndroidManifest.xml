@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.donews.mine">
+
+    <application>
+        <activity
+            android:name=".backdoor.BackDoorActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.InvitationCodeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.SettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.UserCenterActivity"
+            android:screenOrientation="portrait" />
+    </application>
+
+</manifest>

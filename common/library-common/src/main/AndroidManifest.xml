@@ -1,0 +1,37 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.donews.common">
+    <!--    允许程序读取用户的日程信息-->
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <!--  写入日程,但不可读取  -->
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+    <!--	允许程序写入外部存储,如SD卡上写文件-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <application>
+        <provider
+            android:name=".download.DownloadFileProvider"
+            android:authorities="${applicationId}.DNFileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/dn_download_config" />
+
+
+        </provider>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/dn_file_paths" />
+        </provider>
+
+        <activity
+            android:name=".updatedialog.UpdateActivityDialog"
+            android:theme="@style/UpdateDialogTheme" />
+    </application>
+</manifest>

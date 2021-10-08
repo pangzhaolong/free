@@ -1,0 +1,85 @@
+{
+  "defaultExtraInfo": {
+    "extraCode": "",
+    "extraName": ""
+  },
+  "channelInfoList": [
+    {
+      "channel": "walkkuaishouzm",
+      "excludeDefaultExtraInfo": true,
+      "extraInfo": {
+        "invCode": "",
+        "extraName": ""
+      }
+    },
+    {
+      "channel": "walkneibu",
+      "extraInfo": {
+        "invCode": ""
+      }
+    },
+    {
+      "channel": "walkSougou",
+      "extraInfo": {
+        "invCode": ""
+      }
+    },
+    {
+      "channel": "walktoutiao",
+      "extraInfo": {
+        "invCode": "",
+        "actionId": ""
+      }
+    },
+    {
+      "channel": "walktoutiao2",
+      "extraInfo": {
+        "invCode": "",
+        "actionId": ""
+      }
+    },
+    {
+      "channel": "walktoutiao3",
+      "extraInfo": {
+        "invCode": "",
+        "actionId": ""
+      }
+    },
+    {
+      "channel": "walktoutiao4",
+      "extraInfo": {
+        "invCode": ""
+      }
+    },
+    {
+      "channel": "walktoutiao5",
+      "extraInfo": {
+        "invCode": ""
+      }
+    },
+    {
+      "channel": "walktoutiaozm",
+      "extraInfo": {
+        "invCode": ""
+      }
+    },
+    {
+      "channel": "walktoutiaozm2",
+      "extraInfo": {
+        "invCode": ""
+      }
+    },
+    {
+      "channel": "walkVivo",
+      "extraInfo": {
+        "invCode": ""
+      }
+    },
+    {
+      "channel": "walk",
+      "extraInfo": {
+        "invCode": ""
+      }
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@color/white" />
+
+    <item android:bottom="96dp">
+        <bitmap
+            android:gravity="center|fill_horizontal"
+            android:src="@mipmap/icon_welcome_content_image" />
+    </item>
+
+    <item
+        android:id="@+id/bottom_logo"
+        android:bottom="30dp">
+        <bitmap
+            android:gravity="bottom|center_horizontal"
+            android:src="@mipmap/icon_welcome_logo" />
+    </item>
+
+
+</layer-list>

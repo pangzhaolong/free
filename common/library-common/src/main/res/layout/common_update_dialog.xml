@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.donews.common.contract.ApplyUpdataBean" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="updataBean"
+            type="ApplyUpdataBean" />
+
+        <variable
+            name="clickProxy"
+            type="com.donews.common.updatedialog.UpdateActivityDialog.ClickProxy" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:backgroundTint="@color/transparent">
+
+        <RelativeLayout
+            android:layout_width="301dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/base_popupwindow_white_bg">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rl_update_dialog_info"
+                android:paddingBottom="30dp">
+
+                <Button
+                    android:id="@+id/btn_update_sure"
+                    android:layout_width="128dp"
+                    android:layout_height="34dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/base_popup_selected_bg"
+                    android:onClick="@{clickProxy::immUpgrade}"
+                    android:text="@string/mine_must_tv"
+                    android:textColor="#FFFFFF" />
+
+                <Button
+                    android:id="@+id/btn_update_no"
+                    android:layout_width="128dp"
+                    android:layout_height="34dp"
+                    android:layout_below="@+id/btn_update_sure"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/base_popup_cancel_bg"
+                    android:onClick="@{clickProxy::cancelUpgrade}"
+                    android:text="@string/mine_cancel"
+                    android:textColor="#393939"
+                    android:textSize="16sp"
+                    android:visibility="@{updataBean.force_upgrade==1?View.GONE:View.VISIBLE}" />
+
+                <ProgressBar
+                    android:id="@+id/progress_bar_h"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:layout_below="@+id/btn_update_no"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:max="100"
+                    android:progress='@{updataBean.progress}'
+                    android:progressDrawable="@drawable/common_personal_center_level_progress_bg" />
+
+                <TextView
+                    android:id="@+id/tv_progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/progress_bar_h"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="20dp"
+                    android:text="@{updataBean.progress + @string/mine_progress}" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_update_dialog_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_update_dialog_title"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="30dp">
+
+                <TextView
+                    android:id="@+id/tv_update_dialog_text_a"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{updataBean.upgrade_info}"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:text="版本升级" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_update_dialog_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="25dp"
+                android:text="@string/mine_news_text"
+                android:textColor="#393939"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+</layout>

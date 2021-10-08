@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF">
+
+
+        <ImageView
+            android:id="@+id/cicle_login_logo"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100dp"
+            android:background="@drawable/ic_launcher_round" />
+
+        <TextView
+            android:id="@+id/tv_login_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cicle_login_logo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:text="让运动更有价值"
+            android:textColor="#4A4A4A"
+            android:textSize="16sp" />
+
+        <RelativeLayout
+            android:id="@+id/rl_wachat_login"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_below="@+id/tv_login_desc"
+            android:layout_marginLeft="53dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginRight="53dp"
+            android:background="@drawable/wachat_login_bg">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="19dp"
+                android:src="@drawable/weixin_logo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="微信登录"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_mobile_login"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_below="@+id/rl_wachat_login"
+            android:layout_marginLeft="53dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="53dp"
+            android:background="@drawable/mobile_login_bg">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="19dp"
+                android:src="@drawable/shouji_logo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="手机登录"
+                android:textColor="#373737"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</layout>

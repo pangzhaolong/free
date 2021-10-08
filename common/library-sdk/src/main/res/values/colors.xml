@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="sdk_integral_red">#FF5A00</color>
+    <color name="sdk_black_80">#cc000000</color>
+</resources>

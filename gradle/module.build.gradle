@@ -1,0 +1,108 @@
+if (isBuildModule.toBoolean()) {
+    //作为独立App应用运行
+    apply plugin: 'com.android.application'
+} else {
+    //作为组件运行
+    apply plugin: 'com.android.library'
+}
+
+android {
+    compileSdkVersion rootProject.ext.android_version.compileSdkVersion
+    buildToolsVersion rootProject.ext.android_version.buildToolsVersion
+    defaultConfig {
+        minSdkVersion rootProject.ext.android_version.minSdkVersion
+        targetSdkVersion rootProject.ext.android_version.targetSdkVersion
+        versionCode rootProject.ext.android_version.versionCode
+        versionName rootProject.ext.android_version.versionName
+        consumerProguardFiles 'consumer-rules.pro'
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+
+//        buildConfigField("String", "LOGIN_URL", "\"${rootProject.ext.DEBUG ? rootProject.ext.LOGIN_TEST_URL : rootProject.ext.LOGIN_ON_LINE_URL}\"")
+        buildConfigField("String", "LOGIN_URL", "\"${rootProject.LOGIN_URL}\"")
+        buildConfigField("String", "TASK_URL", "\"${rootProject.TASK_URL}\"")
+        buildConfigField("String", "BASE_CONFIG_URL", "\"${rootProject.BASE_CONFIG_URL}\"")
+        buildConfigField("String", "BASE_RULE_URL", "\"${rootProject.BASE_RULE}\"")
+        buildConfigField("boolean", "HTTP_DEBUG", "${ rootProject.ext.DEBUG }")
+        buildConfigField("String", "HTTP_H5", "\"${rootProject.HTTP_H5}\"")
+        buildConfigField("String", "HTTP_AWARD", "\"${rootProject.HTTP_AWARD}\"")
+        buildConfigField("String", "HTTP_LUCK_GOLD", "\"${rootProject.HTTP_LUCK_GOLD}\"")
+        buildConfigField("String", "HTTP_GAME_URL", "\"${rootProject.HTTP_GAME_URL}\"")
+        buildConfigField("String", "APP_IDENTIFICATION", "\"${rootProject.APP_IDENTIFICATION}\"")
+        buildConfigField("String", "AD_CONFIG", "\"${rootProject.AD_CONFIG}\"")
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [AROUTER_MODULE_NAME: project.getName()]
+            }
+        }
+        ndk {
+            // 添加项目所需CPU类型的最小集
+            abiFilters "armeabi-v7a" //, "armeabi","x86"
+        }
+
+    }
+    signingConfigs {
+
+        release {
+            keyAlias 'key0'
+            keyPassword '123456'
+            storeFile rootProject.file('keystore/jkzaaaa.jks')
+            storePassword '123456'
+//            v2SigningEnabled true
+//            v1SigningEnabled true
+        }
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+
+        }
+    }
+    sourceSets {
+        main {
+            //jni库统一放在libs目录下
+//            jniLibs.srcDir = ['libs']
+            if (isBuildModule.toBoolean()) {
+                //单独运行
+                manifest.srcFile 'src/main/alone/AndroidManifest.xml'
+            } else {
+                //合并到宿主中
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+//                resources{
+//                    exclude 'src/debug/*'
+//                }
+                java {
+                    //正式版本时.剔除debug文件夹下的所有调式文件
+                    exclude 'debug/**'
+                }
+            }
+        }
+    }
+    //开启dataBinding
+    dataBinding {
+        enabled true
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
+
+    compileOptions {
+        sourceCompatibility rootProject.ext.android_version.java_version
+        targetCompatibility rootProject.ext.android_version.java_version
+    }
+}
+

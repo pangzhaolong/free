@@ -1,0 +1,68 @@
+apply from: rootProject.file('gradle/module.build.gradle')
+
+android {
+    defaultConfig {
+        if (isBuildModule.toBoolean()){
+            applicationId "gov.pianzong.androidnga"
+            versionCode 1000000
+        }
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [AROUTER_MODULE_NAME: project.getName()]
+            }
+        }
+        ndk {
+            abiFilters "armeabi-v7a"
+        }
+        buildConfigField("String", "SPLASH_ID", "\"${rootProject.SPLASH_ID}\"")
+        buildConfigField("String", "INTERSTITIAL_ID", "\"${rootProject.INTERSTITIAL_ID}\"")
+        buildConfigField("String", "BANNER_ID", "\"${rootProject.BANNER_ID}\"")
+        buildConfigField("String", "REWARD_VIDEO_ID", "\"${rootProject.REWARD_VIDEO_ID}\"")
+        buildConfigField("String", "FULL_SCREEN_VIDEO_ID", "\"${rootProject.FULL_SCREEN_VIDEO_ID}\"")
+        buildConfigField("String", "NEWS_FEED_CUSTOM_RENDER_ID", "\"${rootProject.NEWS_FEED_CUSTOM_RENDER_ID}\"")
+        buildConfigField("String", "NEWS_FEED_TEMPLATE_ID", "\"${rootProject.NEWS_FEED_TEMPLATE_ID}\"")
+        buildConfigField("String", "DRAW_FEED_ID", "\"${rootProject.DRAW_FEED_ID}\"")
+    }
+    //统一资源前缀，规范资源引用
+    resourcePrefix "sdk_"
+
+    signingConfigs {
+        release {
+            keyAlias = 'grpubr'
+            storePassword 'addaddadd'
+            keyPassword 'addaddadd'
+            storeFile file('release.keystore')
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+        }
+
+        debug {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+        }
+    }
+
+}
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar','*.aar'])
+
+    api project(':common:library-common')
+
+
+
+
+}

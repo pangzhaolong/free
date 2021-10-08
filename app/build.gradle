@@ -1,0 +1,118 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'walle'
+
+def var = rootProject.ext.DEBUG ? "offline" : "online"
+def identification = rootProject.ext.APP_IDENTIFICATION
+android {
+    compileSdkVersion rootProject.ext.android_version.compileSdkVersion
+    buildToolsVersion rootProject.ext.android_version.buildToolsVersion
+    aaptOptions {
+        cruncherEnabled = false
+        useNewCruncher = false
+
+    }
+    defaultConfig {
+        applicationId rootProject.ext.app["mainApplicationId"]
+        minSdkVersion rootProject.ext.android_version.minSdkVersion
+        targetSdkVersion rootProject.ext.android_version.targetSdkVersion
+        versionCode rootProject.ext.android_version.versionCode
+        versionName rootProject.ext.android_version.versionName
+        multiDexEnabled true
+        flavorDimensions "versionCode"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [AROUTER_MODULE_NAME: project.getName()]
+            }
+        }
+
+        ndk {
+            // 添加项目所需CPU类型的最小集
+            abiFilters "armeabi-v7a" //, "armeabi","x86"
+        }
+
+    }
+
+    signingConfigs {
+
+        release {
+            keyAlias 'key0'
+            keyPassword '123456'
+            storeFile rootProject.file('keystore/jkzaaaa.jks')
+            storePassword '123456'
+//            v2SigningEnabled true
+//            v1SigningEnabled true
+        }
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+
+        }
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+
+        }
+    }
+
+    //统一资源前缀,规范资源引用
+    resourcePrefix "app_"
+    //开启dataBinding
+    dataBinding {
+        enabled true
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+}
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    //宿主项目中判断组件是否需要独立运行
+    if (isBuildModule.toBoolean()) {
+        //组件独立运行时，宿主项目直接依赖基础库，避免编译错误
+        implementation project(':common:library-base')
+    } else {
+
+        implementation project(path: ':module-main')
+        implementation project(path: ':business:module-mine')
+        implementation project(path: ':business:module-home')
+        implementation project(path: ':module-login')
+        implementation project(path: ':common:library-webview')
+        implementation project(path: ':common:library-sdk')
+        implementation project(path: ':common:library-crashhandler')
+
+
+
+
+    }
+    annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
+
+
+}
+
+walle {
+    // 指定渠道包的输出路径
+    apkOutputFolder = new File("${project.buildDir}/outputs/channels");
+    // apkOutputFolder = new File("E:/health/channel");
+    // 定制渠道包的APK的文件名称
+    apkFileNameFormat = '${appName}-${channel}-v${versionName}-${versionCode}-${buildTime}_' + var + identification + '.apk';
+    // 渠道配置文件
+    configFile = new File("${project.getProjectDir()}/config.json")
+}

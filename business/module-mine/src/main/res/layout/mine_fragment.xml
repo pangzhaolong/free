@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/res/android/skin">
+
+    <data>
+
+        <import type="com.donews.common.contract.UserInfoBean" />
+
+        <import type="com.donews.mine.viewModel.MineViewModel" />
+
+        <import type="android.view.View" />
+
+        <import type="com.donews.mine.bean.QueryBean" />
+
+        <variable
+            name="user"
+            type="UserInfoBean" />
+
+        <variable
+            name="listener"
+            type="MineViewModel" />
+
+        <variable
+            name="query"
+            type="QueryBean" />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="@drawable/mine_top_bg_shape"
+            skin:enable="true" />
+
+        <RelativeLayout
+            android:id="@+id/rl_center_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:onClick="@{listener::onClickInfoLogin}">
+
+            <com.donews.common.views.CircleImageView
+                android:id="@+id/iv_user_logo"
+                imageHeadUrl="@{user.headImageNull ? user.headImg : @drawable/user_logo }"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:background="@drawable/user_logo" />
+
+            <TextView
+                android:id="@+id/tv_userinfo_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="9dp"
+                android:layout_toRightOf="@+id/iv_user_logo"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:text="@{user.login ? user.userName : @string/mine_user_login_tv}"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/btn_yaoqingcode"
+                android:layout_width="88dp"
+                android:layout_height="28dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="14dp"
+                android:background="@drawable/user_yaoqing_code_bg"
+                android:onClick="@{listener::onInvitationCode}"
+                android:text="@string/mine_code_hint"
+                android:textColor="@color/common_them"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_userinfo_yaoqing_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_userinfo_name"
+                android:layout_marginLeft="9dp"
+                android:layout_toRightOf="@+id/iv_user_logo"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@{user.login? @string/mine_user_code+user.inviteCode:@string/mine_user_login_hint}"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/btn_copy"
+                android:layout_width="40dp"
+                android:layout_height="18dp"
+                android:layout_below="@+id/tv_userinfo_name"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/tv_userinfo_yaoqing_code"
+                android:gravity="center"
+                android:onClick="@{() -> listener.onClickCopy(user.inviteCode)}"
+                android:background="@drawable/user_copy_bg"
+                android:text="@string/mine_copy"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"
+                android:visibility="@{user.login ? View.VISIBLE : View.GONE}">
+
+            </TextView>
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/rl_user_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/rl_center_info"
+            android:layout_marginTop="15dp">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"
+                android:scrollbars="none"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:descendantFocusability="blocksDescendants"
+                    android:orientation="vertical">
+
+
+                    <LinearLayout
+                        android:id="@+id/ll_glod_count"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:background="@drawable/ad_shape_bg"
+                        android:orientation="horizontal">
+
+                        <RelativeLayout
+                            android:id="@+id/rl_glod_count"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:onClick="@{listener::onCashPay}">
+
+                            <RelativeLayout
+                                android:id="@+id/gold_mine_view"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:paddingBottom="@dimen/card_padding">
+
+
+                                <TextView
+                                    android:id="@+id/tv_glod_count"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginTop="20dp"
+                                    android:text="@{user.login?String.valueOf(query.currentScore):@string/mine_user_gold}"
+                                    android:textColor="#222222"
+                                    android:textSize="24sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/tv_glod_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/tv_glod_count"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginTop="1dp"
+                                    android:text="@string/mine_now_gold_tv"
+                                    android:textColor="@color/A666666"
+                                    android:textSize="12sp" />
+
+
+                            </RelativeLayout>
+
+                            <TextView
+                                android:id="@+id/accept_info_hint"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginRight="@dimen/card_padding"
+                                android:background="@drawable/cen_cash_bg"
+                                android:paddingLeft="5dp"
+                                android:paddingRight="5dp"
+                                android:text="@string/mine_shou_into"
+                                android:textColor="#FFFFFF"
+                                android:textSize="10sp"
+                                android:visibility="@{user.login ? View.VISIBLE:View.GONE }" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/rl_glod_count_money"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:onClick="@{listener::onCashPay}"
+                            android:paddingBottom="@dimen/card_padding">
+
+                            <RelativeLayout
+                                android:id="@+id/rl_glod_count_money_a"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true">
+
+                                <TextView
+                                    android:id="@+id/tv_glod_count_money"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginTop="20dp"
+                                    android:text="@{user.login?String.valueOf(query.money):@string/mine_user_gold}"
+                                    android:textColor="#222222"
+                                    android:textSize="24sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/tv_glod_text_money"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/tv_glod_count_money"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginTop="1dp"
+
+                                    android:text="@string/mine_money_hint_tv"
+                                    android:textColor="@color/A666666"
+                                    android:textSize="12sp" />
+
+
+                            </RelativeLayout>
+
+
+                            <TextView
+                                android:id="@+id/tv_cash"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginRight="@dimen/card_padding"
+                                android:background="@drawable/cen_cash_bg"
+                                android:gravity="center"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:text="@string/mine_can_money"
+                                android:textColor="#FFFFFF"
+                                android:textSize="10sp"
+                                android:visibility="@{user.login ? View.VISIBLE:View.GONE }" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/tv_apply_money"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:background="@drawable/mine_code_btn_bg_sure"
+                                android:paddingLeft="10dp"
+                                android:paddingTop="3dp"
+                                android:paddingRight="10dp"
+                                android:paddingBottom="3dp"
+                                android:onClick="@{listener::onCashPay}"
+                                android:text="@string/mine_must_money"
+                                android:textColor="@color/white"
+                                android:textSize="12sp" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/padding_15"
+                        android:orientation="vertical"
+                        android:paddingLeft="@dimen/rank_item_19"
+                        android:paddingRight="@dimen/rank_item_19">
+
+
+                        <TextView
+                            android:id="@+id/inv_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/iv_yaoqing_logo_a"
+                            android:drawableRight="@drawable/right_arrow"
+                            android:drawablePadding="9dp"
+                            android:onClick="@{() -> listener.onClickView(@string/mine_invitation_tv,@string/mine_invitation_tv_url)}"
+                            android:paddingTop="@dimen/rank_item_19"
+                            android:paddingBottom="@dimen/rank_item_19"
+                            android:text="邀请好友"
+                            android:textColor="@color/A333333"
+                            android:textSize="@dimen/textSize_16" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1px"
+                            android:background="@color/interval_line" />
+
+                        <TextView
+                            android:id="@+id/setting_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/mine_setting_img"
+                            android:drawableRight="@drawable/right_arrow"
+                            android:drawablePadding="9dp"
+                            android:onClick="@{listener::goToSetting}"
+                            android:paddingTop="@dimen/rank_item_19"
+                            android:paddingBottom="@dimen/rank_item_19"
+                            android:text="设置"
+                            android:textColor="@color/A333333"
+                            android:textSize="@dimen/textSize_16" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1px"
+                            android:background="@color/interval_line" />
+
+                        <RelativeLayout
+                            android:id="@+id/rl_help_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{() -> listener.onClickView(@string/mine_my_service,@string/mine_my_service_url)}">
+
+                            <TextView
+                                android:id="@+id/help_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableLeft="@drawable/mine_help_img"
+                                android:drawablePadding="9dp"
+                                android:paddingTop="@dimen/rank_item_19"
+                                android:paddingBottom="@dimen/rank_item_19"
+                                android:text="帮助与反馈"
+                                android:textColor="@color/A333333"
+                                android:textSize="@dimen/textSize_16" />
+
+                            <TextView
+                                android:id="@+id/tv_help_hint"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:text="官方QQ群：3457136639"
+                                android:textColor="@color/A666666"
+                                android:textSize="@dimen/textSize_12" />
+
+                        </RelativeLayout>
+                    </LinearLayout>
+
+
+                    <RelativeLayout
+                        android:id="@+id/my_ad_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="15dp"
+                        android:gravity="center_horizontal" />
+
+                </LinearLayout>
+            </ScrollView>
+        </RelativeLayout>
+    </RelativeLayout>
+
+</layout>

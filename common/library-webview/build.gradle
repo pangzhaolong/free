@@ -1,0 +1,19 @@
+apply from: rootProject.file('gradle/module.build.gradle')
+
+android {
+    defaultConfig {
+        if (isBuildModule.toBoolean()) {
+            applicationId "com.donews.web"
+        }
+    }
+    //统一资源前缀，规范资源引用
+    resourcePrefix "web_"
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(path: ':common:library-common')
+    implementation project(path: ':common:library-share')
+    annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
+
+}
