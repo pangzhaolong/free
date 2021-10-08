@@ -15,11 +15,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:src="@drawable/dn_ad_close_iv"
         android:text="Hello World"
         android:textSize="35dp"
         android:visibility="gone" />
 
+    <!--        android:src="@drawable/dn_ad_close_iv"-->
     <FrameLayout
         android:id="@+id/ad_container"
         android:layout_width="match_parent"

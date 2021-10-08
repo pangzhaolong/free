@@ -41,7 +41,7 @@ public class MyApplication extends BaseApplication {
 
             CrashHandlerUtil.getInstance().init(this);
             AdLoadManager.getInstance().init(this, false);
-            
+
             // 集成bugly
             CrashReport.initCrashReport(getApplicationContext(), KeyConstant.getBuglyId(), BuildConfig.DEBUG);
 

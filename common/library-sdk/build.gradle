@@ -50,8 +50,8 @@ android {
 
         }
     }
-
 }
+
 repositories {
     flatDir {
         dirs 'libs'
@@ -59,11 +59,20 @@ repositories {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar','*.aar'])
 
     api project(':common:library-common')
 
-    api project(':common:libs')
+//
+//    api(name: 'libs/open_ad_sdk3800', ext: 'aar')
+//    api(name: 'libs/dn_csj_res', ext: 'aar')
+//    api(name: 'libs/dn_donewsx_res', ext: 'aar')
+//    api(name: 'libs/dn_gdt_res', ext: 'aar')
+//    api(name: 'libs/donewsSDK6.2', ext: 'aar')
+//    api(name: 'libs/GDTSDK.unionNormal.4.373.1243', ext: 'aar')
+
+
+//    api project(':common:libs:sdk-libs')
 
 
 }

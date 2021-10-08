@@ -31,16 +31,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    repositories {
-        flatDir {
-            dirs 'libs'
-        }
-    }
+}
 
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+
+//    api (name: 'DonewsBISdk', ext: 'aar')
+//    api (name: 'smantifraud', ext: 'aar')
 
     implementation rootProject.ext.androidx["androidx-appcompat"]
     implementation 'com.android.support:multidex:1.0.3'
@@ -58,6 +61,6 @@ dependencies {
     //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
     api 'com.tencent.bugly:nativecrashreport:3.9.2'
 
-    api project(':common:libs')
+//    api project(':common:libs:utils-libs')
 
 }
