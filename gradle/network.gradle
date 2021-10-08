@@ -11,7 +11,7 @@ ext {
     APP_IDENTIFICATION = "cdbx"
 
     //包名
-    APPLICATION_ID = "com.battery.cdbx"
+    APPLICATION_ID = "com.cdyf.lottery.jdd"
 
     // 正式环境base Url
     API_URL = "https://xtasks.xg.tagtic.cn/"
