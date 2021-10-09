@@ -148,7 +148,8 @@ public class IntegralAdDialog extends BaseFragmentDialog {
                         return;
                     }
                     if (progressButton.getCurrentText().contains("立即提现") && bean.isWithdraw) {
-                        loadingDialog = new LoadingDialog().setDismissOnBackPressed(false).setDismissOnTouchOutside(false)
+                        loadingDialog = new LoadingDialog().setDismissOnBackPressed(false).setDismissOnTouchOutside(
+                                false)
                                 .setDescription("加载中，请稍后");
                         loadingDialog.show(activity.getSupportFragmentManager(), "diaglog");
                         setCashMoney();
@@ -244,7 +245,8 @@ public class IntegralAdDialog extends BaseFragmentDialog {
         }
         SpannableString span = new SpannableString(content);
 
-        span.setSpan(new ForegroundColorSpan(0xffFF1A54), index, index + award.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        span.setSpan(new ForegroundColorSpan(0xffFF1A54), index, index + award.length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         textView.setText(span);
 
@@ -256,8 +258,8 @@ public class IntegralAdDialog extends BaseFragmentDialog {
 
     @Keep
     @DNMethodRoute(RouterActivityPath.ClassPath.WEB_VIEW_OBJ_ACTIVITY_JAVASCRIPT)
-    public void setCashMoney(){
-        AdSdkHttp.getCashMoney(bean.money,bean.pkg).observe(getViewLifecycleOwner(), new Observer<Integer>() {
+    public void setCashMoney() {
+        AdSdkHttp.getCashMoney(bean.money, bean.pkg).observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer o) {
                 if (o == CashType.TYPE_101.CODE) { // 表示需要绑定微信
@@ -292,7 +294,7 @@ public class IntegralAdDialog extends BaseFragmentDialog {
     public void onResume() {
         super.onResume();
         Log.i("chyy", " onResume：" + appUseTimes + " isHidden: " + isHidden());
-        Log.i("chyy", " onResume：" + appUseTimes + " isStartApp: " +isStartApp);
+        Log.i("chyy", " onResume：" + appUseTimes + " isStartApp: " + isStartApp);
         if (mHandler != null && mHandler.hasMessages(0)) {
             mHandler.removeMessages(0);
         }
@@ -356,7 +358,8 @@ public class IntegralAdDialog extends BaseFragmentDialog {
         IntegralDataSupply.getInstance().appActivateReport(bean);
 
         adSdkHttp.intervalReport(bean.pkg, bean.name, bean.downLoadUrl,
-                bean.deepLink, bean.appIcon, status, bean.type, bean.text, bean.desc, new SimpleCallBack<IntegralBean>() {
+                bean.deepLink, bean.appIcon, status, bean.type, bean.text, bean.desc,
+                new SimpleCallBack<IntegralBean>() {
                     @Override
                     public void onError(ApiException e) {
                     }
@@ -376,34 +379,41 @@ public class IntegralAdDialog extends BaseFragmentDialog {
         if (bean == null) {
             return;
         }
-        downloadManager = new DownloadManager(UtilsConfig.getApplication(), bean.pkg, bean.downLoadUrl, new DownloadListener() {
-            @Override
-            public void updateProgress(int progress) {
-                downLoadProgress = progress;
-                if (progressButton != null) {
-                    progressButton.setProgressText("下载中", progress);
-                    progressButton.postInvalidate();
-                }
-            }
+        downloadManager = new DownloadManager(UtilsConfig.getApplication(), bean.pkg, bean.downLoadUrl,
+                new DownloadListener() {
 
-            @Override
-            public void downloadComplete(String pkName, String path) {
-                PackageReceiver.installPackageHashMap.put(pkName, path);
-                downLoadProgress = 100;
-                downloadComplete = true;
-                intervalReport(3);
-                if (progressButton != null) {
-                    progressButton.setProgressText("下载中", 100);
-                    progressButton.setCurrentText("安装中");
-                    progressButton.postInvalidate();
-                }
-            }
+                    @Override
+                    public void onStart() {
 
-            @Override
-            public void downloadError(String error) {
+                    }
 
-            }
-        });
+                    @Override
+                    public void updateProgress(long currentLength, long totalLength, int progress) {
+                        downLoadProgress = progress;
+                        if (progressButton != null) {
+                            progressButton.setProgressText("下载中", progress);
+                            progressButton.postInvalidate();
+                        }
+                    }
+
+                    @Override
+                    public void downloadComplete(String pkName, String path) {
+                        PackageReceiver.installPackageHashMap.put(pkName, path);
+                        downLoadProgress = 100;
+                        downloadComplete = true;
+                        intervalReport(3);
+                        if (progressButton != null) {
+                            progressButton.setProgressText("下载中", 100);
+                            progressButton.setCurrentText("安装中");
+                            progressButton.postInvalidate();
+                        }
+                    }
+
+                    @Override
+                    public void downloadError(String error) {
+
+                    }
+                });
     }
 
 

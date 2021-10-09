@@ -26,11 +26,13 @@ public class DownloadManager {
         this(context, pkName, url, null, null, listener);
     }
 
-    public DownloadManager(Context context, String pkName, String url, String fileNameSuffix, DownloadListener listener) {
+    public DownloadManager(Context context, String pkName, String url, String fileNameSuffix,
+            DownloadListener listener) {
         this(context, pkName, url, null, fileNameSuffix, listener);
     }
 
-    public DownloadManager(Context context, String pkName, String url, String path, String fileNameSuffix, DownloadListener listener) {
+    public DownloadManager(Context context, String pkName, String url, String path, String fileNameSuffix,
+            DownloadListener listener) {
         this.mContext = context.getApplicationContext();
         this.url = url;
         this.path = path;
@@ -54,11 +56,10 @@ public class DownloadManager {
             if (TextUtils.isEmpty(fileNameSuffix)) {
                 downloadTask = new DownloadTask(mContext, pkName, url, path, new DownloadTaskListener(listener));
             } else {
-                downloadTask = new DownloadTask(mContext, pkName, url, path, fileNameSuffix, new DownloadTaskListener(listener));
+                downloadTask = new DownloadTask(mContext, pkName, url, path, fileNameSuffix,
+                        new DownloadTaskListener(listener));
             }
-
         }
-
         downloadTask.execute();
     }
 
@@ -89,10 +90,19 @@ public class DownloadManager {
 
         }
 
+
         @Override
-        public void onUpdate(int progress, String filepath) {
+        public void onStart() {
             if (listener != null) {
-                listener.updateProgress(progress);
+                listener.onStart();
+            }
+        }
+
+        @Override
+        public void onProgress(long currentLength, long totalLength, String filepath) {
+            if (listener != null) {
+                int progress = (int) (currentLength * 100 / totalLength);
+                listener.updateProgress(currentLength, totalLength, progress);
             }
         }
 
@@ -119,7 +129,7 @@ public class DownloadManager {
         }
 
         @Override
-        public void onPaused(int progress, String filepath) {
+        public void onPaused(String filepath) {
 
         }
 
@@ -129,7 +139,7 @@ public class DownloadManager {
         }
 
         @Override
-        public void onPathError(String filepath) {
+        public void onFinish() {
 
         }
     }

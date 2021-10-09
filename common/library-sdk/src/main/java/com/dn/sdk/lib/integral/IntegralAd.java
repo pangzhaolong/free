@@ -131,7 +131,8 @@ public class IntegralAd implements LifecycleObserver {
         isStartApp = false;
         IntegralView integralView = new IntegralView(activity.getApplicationContext());
 
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
         if (requestInfo.width != 0) {
             params.width = (int) requestInfo.width;
         } else {
@@ -217,34 +218,41 @@ public class IntegralAd implements LifecycleObserver {
         if (bean == null) {
             return;
         }
-        downloadManager = new DownloadManager(UtilsConfig.getApplication(), bean.pkg, bean.downLoadUrl, new DownloadListener() {
-            @Override
-            public void updateProgress(int progress) {
-                downLoadProgress = progress;
-                if (progressButton != null) {
-                    progressButton.setProgressText("下载中", progress);
-                    progressButton.postInvalidate();
-                }
-            }
+        downloadManager = new DownloadManager(UtilsConfig.getApplication(), bean.pkg, bean.downLoadUrl,
+                new DownloadListener() {
 
-            @Override
-            public void downloadComplete(String pkName, String path) {
-                PackageReceiver.installPackageHashMap.put(pkName, path);
-                downLoadProgress = 100;
-                downloadComplete = true;
-                intervalReport(3);
-                if (progressButton != null) {
-                    progressButton.setProgressText("下载中", 100);
-                    progressButton.setCurrentText("安装中");
-                    progressButton.postInvalidate();
-                }
-            }
+                    @Override
+                    public void onStart() {
 
-            @Override
-            public void downloadError(String error) {
+                    }
 
-            }
-        });
+                    @Override
+                    public void updateProgress(long currentLength, long totalLength, int progress) {
+                        downLoadProgress = progress;
+                        if (progressButton != null) {
+                            progressButton.setProgressText("下载中", progress);
+                            progressButton.postInvalidate();
+                        }
+                    }
+
+                    @Override
+                    public void downloadComplete(String pkName, String path) {
+                        PackageReceiver.installPackageHashMap.put(pkName, path);
+                        downLoadProgress = 100;
+                        downloadComplete = true;
+                        intervalReport(3);
+                        if (progressButton != null) {
+                            progressButton.setProgressText("下载中", 100);
+                            progressButton.setCurrentText("安装中");
+                            progressButton.postInvalidate();
+                        }
+                    }
+
+                    @Override
+                    public void downloadError(String error) {
+
+                    }
+                });
     }
 
     private static final long AWARD_TIME = 30 * 1000;
@@ -390,7 +398,8 @@ public class IntegralAd implements LifecycleObserver {
         IntegralDataSupply.getInstance().appActivateReport(bean);
 
         adSdkHttp.intervalReport(bean.pkg, bean.name, bean.downLoadUrl,
-                bean.deepLink, bean.appIcon, status, bean.type, bean.text, bean.desc, new SimpleCallBack<IntegralBean>() {
+                bean.deepLink, bean.appIcon, status, bean.type, bean.text, bean.desc,
+                new SimpleCallBack<IntegralBean>() {
                     @Override
                     public void onError(ApiException e) {
                     }

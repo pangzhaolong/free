@@ -92,9 +92,16 @@ public class IntegralEvent {
     }
 
     private void downLoadApp(IntegralBean.DataBean bean) {
-        DownloadManager downloadManager = new DownloadManager(UtilsConfig.getApplication(), bean.pkg, bean.downLoadUrl, new DownloadListener() {
+        DownloadManager downloadManager = new DownloadManager(UtilsConfig.getApplication(), bean.pkg,
+                bean.downLoadUrl, new DownloadListener() {
+
             @Override
-            public void updateProgress(int progress) {
+            public void onStart() {
+
+            }
+
+            @Override
+            public void updateProgress(long currentLength, long totalLength, int progress) {
 
             }
 

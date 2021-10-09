@@ -100,6 +100,7 @@ public class PathUtils {
                 }
             } catch (IOException exception) {
                 exception.printStackTrace();
+                return null;
             }
         }
         return file;

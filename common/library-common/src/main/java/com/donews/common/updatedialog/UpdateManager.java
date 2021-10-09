@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.BuildConfig;
-import com.donews.common.contract.ApplyUpdataBean;
+import com.donews.common.contract.ApplyUpdateBean;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
@@ -91,7 +91,7 @@ public class UpdateManager {
                 .params("package_name", DeviceUtils.getPackage())
                 .params("channel", DeviceUtils.getChannelName())
                 .cacheMode(CacheMode.NO_CACHE)
-                .execute(new SimpleCallBack<ApplyUpdataBean>() {
+                .execute(new SimpleCallBack<ApplyUpdateBean>() {
                     @Override
                     public void onError(ApiException e) {
                         if (updateListener != null) {
@@ -100,7 +100,7 @@ public class UpdateManager {
                     }
 
                     @Override
-                    public void onSuccess(ApplyUpdataBean updateBean) {
+                    public void onSuccess(ApplyUpdateBean updateBean) {
 
                         verifyYetShowUpdateDialog(context, updateBean, commonUpdateShowDialog, updateListener);
                     }
@@ -114,7 +114,7 @@ public class UpdateManager {
      * @param context    上下文
      * @param updateBean 更新类
      */
-    private void verifyYetShowUpdateDialog(Context context, ApplyUpdataBean updateBean,
+    private void verifyYetShowUpdateDialog(Context context, ApplyUpdateBean updateBean,
                                            final boolean commonUpdateShowDialog, UpdateListener updateListener) {
         if (updateBean == null) {
             return;

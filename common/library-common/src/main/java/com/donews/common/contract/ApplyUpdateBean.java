@@ -8,7 +8,7 @@ import androidx.databinding.library.baseAdapters.BR;
  * @auther ming
  * @date$
  */
-public class ApplyUpdataBean extends BaseCustomViewModel {
+public class ApplyUpdateBean extends BaseCustomViewModel {
 
     /**
      * package_name : com.walk.fqzl
