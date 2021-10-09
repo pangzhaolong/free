@@ -6,20 +6,23 @@ package com.donews.common.download;
  * Description:
  */
 public interface DownloadListener {
+
+    void onStart();
+
     /**
      * 下载进度
      *
      * @param progress 进度
      */
-    void updateProgress(int progress);
+    void updateProgress(long currentLength, long totalLength, int progress);
 
     /**
      * 下载完成
      *
-     * @param pkName
-     * @param path 文件路径
+     * @param pkName 包名
+     * @param path   文件路径
      */
-    void downloadComplete(String pkName,String path);
+    void downloadComplete(String pkName, String path);
 
     /**
      * 下载失败

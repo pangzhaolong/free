@@ -1,6 +1,6 @@
 include ':common:library-crashhandler'
 include ':common:library-sdk'
-rootProject.name = 'NewsApplication'
+rootProject.name = 'lottery'
 include ':app'
 include 'common:library-base', 'common:library-common', 'common:library-network', 'common:library-utils'
 include 'common:library-share'

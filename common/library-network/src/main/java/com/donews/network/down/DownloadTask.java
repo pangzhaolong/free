@@ -3,8 +3,14 @@ package com.donews.network.down;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.donews.network.room.NetworkDatabase;
+import com.donews.network.room.bean.DownloadInfo;
+import com.donews.network.room.dao.DownloadInfoDao;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,8 +21,14 @@ import java.io.StringWriter;
 import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -30,70 +42,313 @@ import okhttp3.ResponseBody;
 public class DownloadTask {
     private static final String TAG = "DownloadTask";
 
+    /** 缓存文件后缀 */
+    private static final String TEMP_FILE_SUFFIX = ".temp";
+    /** 更新间隔，避免频繁更新(以进度每增长1为单位) */
+    private static final int UPDATE_INTERVAL = 1;
+    /** 超时时间 */
+    private static final int DEFAULT_TIME_OUT = 60 * 5;
+    /** 读取超时时间 */
+    private static final int DEFAULT_READ_TIME_OUT = 60 * 5;
+    /** 下载错误重试次数 */
+    private static final int RETRY_DOWNLOAD_TIMES = 3;
+
+    /** 暂停下载 */
     private volatile boolean isPaused = false;
+    /** 关闭下载 */
     private volatile boolean isCancel = false;
 
+    private static final int DOWNLOAD_INIT = 1;
+    private static final int DOWNLOAD_READY = 2;
+    private static final int DOWNLOAD_RUNNING = 3;
+    private static final int DOWNLOAD_SUCCESS = 4;
+    private static final int DOWNLOAD_PAUSE = 5;
+    private static final int DOWNLOAD_CANCEL = 6;
+    private static final int DOWNLOAD_FAILED = 7;
+    private static final int SDCARD_MISS = 8;
+    private static final int UPDATE_PROGRESS = 9;
+
+
+    private Context mContext;
+    private final String mPkName;
+    private final String mUrl;
+    private final String mSavePath;
+    private final String mFileSuffix;
+    private final TaskDownloadListener mListener;
+
+    private final File mTempFile;
+    private final File mDownloadFile;
+
+    private String mFilePath;
+
+    /** 下载状态 */
+    private int mDownloadState;
+
+    /** 重试次数 */
+    private int retryTimes = 0;
+
+
+    private OkHttpClient mOkHttpClient;
+    private Call mCall;
+    private Disposable mDisposable;
+
+    private DownloadInfoDao mDownloadInfoDao;
+    /** 对应数据库对象 */
+    private DownloadInfo mDownloadInfo;
+
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
+
+    public DownloadTask(Context mContext, String pkName, String url, String path, TaskDownloadListener listener) {
+        this(mContext, pkName, url, path, PathUtils.getFileExtensionFromUrl(url), listener);
+    }
+
+    public DownloadTask(Context mContext, String pkName, String url, TaskDownloadListener listener) {
+        this(mContext, pkName, url, null, listener);
+    }
+
+
+    /***
+     *
+     *  Url没有后缀的时候，下载.apk
+     *
+     * @param context 上下文对象
+     * @param pkName  下载文件（apk）包名
+     * @param url 下载文件地址
+     * @param savePath 指定文件保存地址
+     * @param fileSuffix 指定文件保存后缀
+     * @param listener 下载监听器
+     */
+    public DownloadTask(Context context, String pkName, String url, String savePath, String fileSuffix,
+            TaskDownloadListener listener) {
+        this.mContext = context.getApplicationContext();
+        this.mPkName = pkName;
+        this.mUrl = url;
+        this.mSavePath = savePath;
+        this.mFileSuffix = fileSuffix;
+        this.mListener = listener;
+
+        String fileNameTemp = MD5Util.MD5(url) + TEMP_FILE_SUFFIX;
+        String fileNameReally = MD5Util.MD5(url) + fileSuffix;
+
+        mTempFile = PathUtils.getPathFile(context, savePath, fileNameTemp);
+        String tempFilePath = mTempFile.getAbsolutePath();
+        mDownloadFile = new File(tempFilePath.substring(0, tempFilePath.lastIndexOf("/")), fileNameReally);
+        retryTimes = 0;
+        mOkHttpClient = getOkHttpClient();
+        mDownloadState = DOWNLOAD_INIT;
+    }
+
+
+    public void execute() {
+        if (mDownloadState == DOWNLOAD_RUNNING) {
+            return;
+        }
+        if (mDownloadInfoDao == null) {
+            mDownloadInfoDao = NetworkDatabase.getInstance(mContext).getDownloadInfoDao();
+        }
+        isPaused = false;
+        isCancel = false;
+        startDownload();
+    }
+
+    /** 检测下载是否添加到数据库 */
+    private void startDownload() {
+        mDownloadState = DOWNLOAD_READY;
+        if (mDownloadFile.exists()) {
+            //如果已经存在并且下载完成
+            mDownloadState = DOWNLOAD_RUNNING;
+            if (mListener != null) {
+                mListener.onStart();
+            }
+            mDownloadState = DOWNLOAD_SUCCESS;
+            mFilePath = mDownloadFile.getAbsolutePath();
+            if (mListener != null) {
+                mListener.onSuccess(mPkName, mFilePath);
+                mListener.onFinish();
+            }
+            if (mTempFile.exists()) {
+                if (!mTempFile.delete()) {
+                    Log.i(TAG, "tempFile is exists,but delete failed,url = " + mUrl);
+                }
+            }
+            return;
+        }
+        Observable.just(mUrl)
+                .flatMap(new Function<String, ObservableSource<String>>() {
+                    @Override
+                    public ObservableSource<String> apply(@NonNull String s) throws Exception {
+                        //判断数据库是否有下载
+                        if (TextUtils.isEmpty(s)) {
+                            return Observable.error(new Throwable("download url is empty"));
+                        }
+                        if (mTempFile == null) {
+                            return Observable.error(new Throwable("mTempFile is null"));
+                        }
+                        mFilePath = mTempFile.getAbsolutePath();
+                        mDownloadInfo = mDownloadInfoDao.queryDownloadInfo(mUrl, mSavePath, mFileSuffix);
+                        if (mDownloadInfo == null) {
+                            mDownloadInfo = new DownloadInfo();
+                            mDownloadInfo.setUrl(mUrl);
+                            mDownloadInfo.setSavePath(mSavePath);
+                            mDownloadInfo.setFileSuffix(mFileSuffix);
+                            mDownloadInfo.setTempFilePath(mTempFile.getAbsolutePath());
+                            mDownloadInfo.setDownloadFilePath(mDownloadFile.getAbsolutePath());
+                            mDownloadInfo.setTotalLength(-1);
+                            mDownloadInfo.setCurrentLength(mTempFile.length());
+                            mDownloadInfo.setStatus(0);
+                            long id = mDownloadInfoDao.insertDownloadInfo(mDownloadInfo);
+                            mDownloadInfo.setId(id);
+                        } else {
+                            mDownloadInfo.setCurrentLength(mTempFile.length());
+                            mDownloadInfoDao.uploadDownloadInfo(mDownloadInfo);
+                        }
+                        return Observable.just(mUrl);
+                    }
+                })
+                .flatMap(new Function<String, ObservableSource<String>>() {
+
+                    @Override
+                    public ObservableSource<String> apply(@NonNull String s) throws Exception {
+                        //开始下载时，已下载的文件大小
+                        long startLength = mTempFile.length();
+                        Request request = new Request.Builder()
+                                .url(mUrl)
+                                .header("RANGE", "bytes=" + startLength + "-")
+                                .addHeader("Connection", "close")
+                                .build();
+                        mCall = mOkHttpClient.newCall(request);
+                        Response response = mCall.execute();
+                        ResponseBody responseBody = response.body();
+                        if (responseBody == null) {
+                            return Observable.error(new Throwable("responseBody is null"));
+                        }
+                        //得到输入流
+                        InputStream inputStream = responseBody.byteStream();
+                        //得到任意保存文件处理类实例,断点续传
+                        RandomAccessFile randomAccessFile = new RandomAccessFile(mTempFile.getAbsolutePath(), "rw");
+                        if (startLength != 0) {
+                            randomAccessFile.seek(startLength);
+                        }
+                        //剩余下载的文件大小
+                        long contentLength = responseBody.contentLength();
+                        long totalLength = contentLength + startLength;
+                        mDownloadInfo.setTotalLength(totalLength);
+                        long currentLength = startLength;
+                        byte[] buffer = new byte[1024 * 4];
+                        int length;
+                        updateProgress(currentLength, totalLength);
+                        try {
+                            while ((length = randomAccessFile.read(buffer)) != -1) {
+                                currentLength += length;
+                                mDownloadInfo.setCurrentLength(currentLength);
+                                //写入文件
+                                randomAccessFile.write(buffer, 0, length);
+                                updateProgress(currentLength, totalLength);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            //写入错误，则更新进度
+                            mDownloadInfoDao.uploadDownloadInfo(mDownloadInfo);
+                        } finally {
+                            try {
+                                inputStream.close();
+                                randomAccessFile.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        //下载完成，则删除这条记录
+                        mDownloadInfoDao.deleteDownloadInfo(mDownloadInfo);
+                        return Observable.just(mFilePath);
+                    }
+                })
+
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<String>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        mDisposable = d;
+                        mDownloadState = DOWNLOAD_RUNNING;
+                        if (mListener != null) {
+                            mListener.onStart();
+                        }
+                    }
+
+                    @Override
+                    public void onNext(@NonNull String s) {
+                        mDownloadState = DOWNLOAD_SUCCESS;
+                        if (mListener != null) {
+                            mListener.onSuccess(mPkName, s);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        if (mDownloadState == DOWNLOAD_PAUSE) {
+                            if (mListener != null) {
+                                mListener.onPaused(mFilePath);
+                            }
+                        } else {
+                            mDownloadState = DOWNLOAD_FAILED;
+                            if (retryTimes < RETRY_DOWNLOAD_TIMES) {
+                                execute();
+                                retryTimes++;
+                                Log.e(TAG, " retry_download_times : " + retryTimes);
+                            } else {
+                                if (mListener != null) {
+                                    mListener.onFailed(getStackTraceString(e));
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+
+    }
+
+
+    protected static String getStackTraceString(Throwable tr) {
+        if (tr == null) {
+            return "";
+        }
+        Throwable t = tr;
+        while (t != null) {
+            if (t instanceof UnknownHostException) {
+                return "";
+            }
+            t = t.getCause();
+        }
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        tr.printStackTrace(pw);
+        pw.flush();
+        return sw.toString();
+    }
+
 
     /**
-     * 单线程下载
+     * 更新下载进度
      */
-    private volatile static boolean downloading = false;
-    private int RETRY_DOWNLOAD_TIMES = 3;
-    private int downLoadFlag = 0;
-
-    private static final int DOWNLOAD_SUCCESS = 0;
-    private static final int DOWNLOAD_FAILED = 1;
-    private static final int DOWNLOAD_PAUSE = 2;
-    private static final int DOWNLOAD_CANCEL = 3;
-    private static final int SDCARD_MISS = 4;
-    private static final int UPDATE_PROGRESS = 5;
-
-    /**
-     * 更新间隔，避免频繁更新
-     */
-    private static final int updateInterval = 1;
-    /**
-     * 当前下载进度
-     */
-    private int currentProgress = 0;
-
-    private TaskDownloadListener mListener;
-
-    private String mUrl;
-
-
-    private Context context;
-
-    /**
-     * 下载文件
-     */
-    private File fileTemp;
-    private File fileDownloaded;
-    private String filePath;
-    private String fileNameTemp;
-    private String fileNameReally;
-    private String pkName;
-
-
-    private OkHttpClient okHttpClient;
-
-    /**
-     * 超时时间
-     */
-    private static final int DEFAULT_TIME_OUT = 60 * 5;
-
-    /**
-     * 读取超时时间
-     */
-    private static final int DEFAULT_READ_TIME_OUT = 60 * 5;
-
-    private String fileSuffix;
-    private String tempFileSuffix = ".temp";
-    private String path;
+    private void updateProgress(long currentLength, long totalLength) {
+        if (mListener != null) {
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    mListener.onProgress(currentLength, totalLength, mFilePath);
+                }
+            });
+        }
+    }
 
     private OkHttpClient getOkHttpClient() {
-        if (okHttpClient == null) {
-            okHttpClient = new OkHttpClient.Builder()
+        if (mOkHttpClient == null) {
+            mOkHttpClient = new OkHttpClient.Builder()
                     //连接超时时间
                     .connectTimeout(DEFAULT_TIME_OUT, TimeUnit.SECONDS)
                     //写操作 超时时间
@@ -106,307 +361,71 @@ public class DownloadTask {
 //                    .addInterceptor(new RedirectIntercept())
                     .build();
         }
-        return okHttpClient;
+        return mOkHttpClient;
     }
 
-
-    public DownloadTask(Context context, String pkName, String url, TaskDownloadListener listener) {
-        this(context, pkName, url, null, listener);
-    }
-
-    /**
-     * @param context
-     * @param url
-     * @param path
-     * @param listener
-     */
-    public DownloadTask(Context context, String pkName, String url, String path, TaskDownloadListener listener) {
-        this(context, pkName, url, path, PathUtils.getFileExtensionFromUrl(url), listener);
-    }
-
-    //Url没有后缀的时候，下载.apk
-    public DownloadTask(Context context, String pkName, String url, String path, String fileSuffix, TaskDownloadListener listener) {
-        this.context = context;
-        this.fileSuffix = fileSuffix;
-        this.path = path;
-        this.pkName = pkName;
-        this.fileNameTemp = MD5Util.MD5(url) + tempFileSuffix;
-        this.fileNameReally = MD5Util.MD5(url) + fileSuffix;
-
-        fileTemp = PathUtils.getPathFile(context, path, fileNameTemp);
-
-        String tempPath = fileTemp.getAbsolutePath();
-
-        fileDownloaded = new File(tempPath.substring(0, tempPath.lastIndexOf("/")), fileNameReally);
-
-        this.mUrl = url;
-
-        this.mListener = listener;
-        downLoadFlag = 0;
-        okHttpClient = getOkHttpClient();
-        Log.i(TAG," filePath: "+tempPath);
-    }
-
-
-    private Call mCall;
-
-    /**
-     * 有断点续传功能的
-     */
-    public void getRenewalDownRequest() {
-        downloading = true;
-        if (fileDownloaded.exists()) {
-            Log.e(TAG, "downloadFilePath: " + fileDownloaded.getAbsolutePath());
-            if (fileTemp.exists()) {
-                fileTemp.delete();
-            }
-            mListener.onSuccess(pkName, fileDownloaded.getAbsolutePath());
-            downloading = false;
-            return;
-        }
-
-        //开始下载时，已下载的文件大小
-        long startLength = fileTemp.length();
-        Log.e(TAG, "startLength: " + startLength);
-        Request request = new Request.Builder()
-                .url(mUrl)
-                .header("RANGE", "bytes=" + startLength + "-")
-                .addHeader("Connection", "close")
-                .build();
-
-        downloading = true;
-
-        //构建了一个完整的http请求
-        mCall = getOkHttpClient().newCall(request);
-        //发送请求
-        mCall.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.e(TAG, "onFailure: " + getStackTraceString(e));
-                sendErrorMsg(e.getMessage());
-
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-
-                ResponseBody responseBody = response.body();
-                InputStream inputStream = responseBody.byteStream();//得到输入流
-                RandomAccessFile randomAccessFile = new RandomAccessFile(fileTemp.getAbsolutePath(), "rw");//得到任意保存文件处理类实例
-
-                //剩余下载的文件大小
-                long mResidueTotalLength = responseBody.contentLength();
-                Log.e(TAG, " onResponse: startLength " + startLength + " residueContentLength: " + mResidueTotalLength);
-                if (startLength > 0 && mResidueTotalLength == 0) {
-                    upDateProgress(100);
-                }
-                Log.i(TAG, " responseBody getLength  " + responseBody.contentLength());
-                if (fileTemp.length() != 0) {
-                    randomAccessFile.seek(fileTemp.length());
-                }
-
-                readFileStream(inputStream, randomAccessFile, startLength, mResidueTotalLength);
-            }
-
-        });
-    }
-
-
-    public void execute() {
-        if (fileTemp == null) {
-            sendErrorMsg("The download path is empty");
-            return;
-        }
-        filePath = fileTemp.getAbsolutePath();
-
-        if (downloading) {
-            return;
-        }
-        getRenewalDownRequest();
-    }
-
-
-    /**
-     * @param ips
-     */
-    private void readFileStream(InputStream ips, RandomAccessFile raf, long startLength, long residueContentLength) {
-        Log.e(TAG, " readFileStream: startLength " + startLength + " residueContentLength: " + residueContentLength);
-        byte[] buffer = new byte[1024 * 4];
-        int total = 0;
-        int len;
-        upDateProgress(0);
-        try {
-            while ((len = ips.read(buffer)) != -1) {
-                total += len;
-                //写入文件
-                raf.write(buffer, 0, len);
-                int progress = (int) ((total + startLength) * 100 / (startLength + residueContentLength));
-
-                if (isPaused) {
-                    mHandle.sendEmptyMessage(DOWNLOAD_PAUSE);
-                    break;
-                }
-                upDateProgress(progress);
-            }
-        } catch (IOException exception) {
-
-            exception.printStackTrace();
-            sendErrorMsg(getStackTraceString(exception));
-
-        } finally {
-            try {
-                ips.close();
-                raf.close();
-            } catch (IOException exception) {
-                exception.printStackTrace();
-                Log.e(TAG, "stream close exception : " + getStackTraceString(exception));
-            }
-
-        }
-    }
-
-    protected static String getStackTraceString(Throwable tr) {
-        if (tr == null) {
-            return "";
-        }
-
-        Throwable t = tr;
-        while (t != null) {
-            if (t instanceof UnknownHostException) {
-                return "";
-            }
-            t = t.getCause();
-        }
-
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        tr.printStackTrace(pw);
-        pw.flush();
-        return sw.toString();
-    }
-
-    private void sendErrorMsg(String errorMsg) {
-        Log.e(TAG, "sendErrorMsg :--->>>>>>>>>>>>" + errorMsg);
-
-        downloading = false;
-        if (downLoadFlag < RETRY_DOWNLOAD_TIMES) {
-            Log.e(TAG, " retry_download_times : " + downLoadFlag);
-            execute();
-            downLoadFlag++;
-        } else {
-            Message message = mHandle.obtainMessage();
-            message.what = DOWNLOAD_FAILED;
-            message.obj = errorMsg;
-            mHandle.sendMessage(message);
-        }
-    }
-
-    /**
-     * 更新下载进度
-     *
-     * @param progress 下载进度
-     */
-    private void upDateProgress(int progress) {
-
-        if (mListener != null) {
-            if ((progress - currentProgress) >= updateInterval && progress < 100) {
-                currentProgress = progress;
-                Message message = mHandle.obtainMessage();
-                message.arg1 = progress;
-                message.what = UPDATE_PROGRESS;
-                mHandle.sendMessage(message);
-            }
-            if (progress >= 100) {
-                mHandle.sendEmptyMessage(DOWNLOAD_SUCCESS);
-            }
-        }
-    }
-
-    private Handler mHandle = new Handler(Looper.myLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case DOWNLOAD_SUCCESS:
-                    if (mListener != null) {
-
-
-                        if (filePath.contains(tempFileSuffix)) {
-                            boolean renameResult = fileTemp.renameTo(fileDownloaded);
-                            Log.e(TAG, " renameResult:" + fileDownloaded.getAbsolutePath() + "  isExistance: " + renameResult);
-                            filePath = fileDownloaded.getAbsolutePath();
-                        }
-                        Log.e(TAG, " handleMessage onSuccess:" + filePath);
-                        mListener.onSuccess(pkName, filePath);
-                    }
-                    downloading = false;
-                    break;
-                case DOWNLOAD_FAILED:
-                    String errorMsg = (String) msg.obj;
-                    if (mListener != null) {
-                        mListener.onFailed(errorMsg);
-                    }
-                    downloading = false;
-                    break;
-                case DOWNLOAD_PAUSE:
-                    if (mListener != null) {
-                        mListener.onPaused(currentProgress, filePath);
-                    }
-                    downloading = false;
-                    break;
-                case DOWNLOAD_CANCEL:
-                    if (mListener != null) {
-                        mListener.onCancel(filePath);
-                    }
-                    downloading = false;
-                    break;
-                case SDCARD_MISS:
-                    if (mListener != null) {
-                        mListener.onPathError(filePath);
-                    }
-                    downloading = false;
-                    break;
-                case UPDATE_PROGRESS:
-                    if (mListener != null) {
-                        mListener.onUpdate(msg.arg1, filePath);
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
 
     public enum STATE {IDLE, RUNNING}
 
 
     public boolean isCancel() {
-        return isCancel;
+        return mDownloadState == DOWNLOAD_CANCEL;
     }
 
-    public void setCancel(boolean cancel) {
-        isCancel = cancel;
-        if (mCall != null) {
-            mCall.cancel();
-            mHandle.sendEmptyMessage(DOWNLOAD_CANCEL);
-        }
-
-
+    public boolean isPaused() {
+        return mDownloadState == DOWNLOAD_PAUSE;
     }
 
     public void pause() {
+        if (isPaused && mDownloadState == DOWNLOAD_PAUSE) {
+            return;
+        }
+        mDownloadState = DOWNLOAD_PAUSE;
         isPaused = true;
+        if (mDisposable != null && !mDisposable.isDisposed()) {
+            mDisposable.dispose();
+        }
+        if (mCall != null) {
+            mCall.cancel();
+        }
+        if (mListener != null) {
+            mListener.onPaused(mFilePath);
+        }
+    }
 
+    public void cancel() {
+        if (isCancel && mDownloadState == DOWNLOAD_CANCEL) {
+            return;
+        }
+        mDownloadState = DOWNLOAD_PAUSE;
+        if (mDisposable != null && !mDisposable.isDisposed()) {
+            mDisposable.dispose();
+        }
+        if (mCall != null) {
+            mCall.cancel();
+        }
+        if (mListener != null) {
+            mListener.onCancel(mFilePath);
+        }
+        isCancel = true;
     }
 
 
     public interface TaskDownloadListener {
+
         /**
-         * 下载更新
-         *
-         * @param progress 下载进度
-         * @param filepath 文件路径
+         * 下载开始
          */
-        void onUpdate(int progress, String filepath);
+        void onStart();
+
+        /**
+         * 下载进度更新
+         *
+         * @param currentLength 开始下载的文件长度
+         * @param totalLength   总的文件长度
+         * @param filepath      文件路径
+         */
+        void onProgress(long currentLength, long totalLength, String filepath);
 
         /**
          * 下载成功
@@ -426,10 +445,9 @@ public class DownloadTask {
         /**
          * 暂停下载
          *
-         * @param progress 下载进度
          * @param filepath 文件路径
          */
-        void onPaused(int progress, String filepath);
+        void onPaused(String filepath);
 
         /**
          * 取消下载
@@ -439,10 +457,8 @@ public class DownloadTask {
         void onCancel(String filepath);
 
         /**
-         * 文件路径错误
-         *
-         * @param filepath 文件路径
+         * 下载结束，无论成功还是失败
          */
-        void onPathError(String filepath);
+        void onFinish();
     }
 }

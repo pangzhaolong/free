@@ -12,6 +12,11 @@ ext {
     app = [
             mainApplicationId: rootProject.ext.APPLICATION_ID,//修改此值改包名
     ]
+
+    versions = [
+            "room": "2.3.0"
+    ]
+
     //androidx支持库配置
     androidx = [
             "androidx-appcompat"                  : "androidx.appcompat:appcompat:1.2.0",
@@ -28,6 +33,11 @@ ext {
             "junit"                               : "junit:junit:4.13",
             "androidx.test.ext-junit"             : "androidx.test.ext:junit:1.1.2",
             "androidx.test.espresso:espresso-core": "androidx.test.espresso:espresso-core:3.3.0",
+
+            "room-runtime"                        : "androidx.room:room-runtime:${versions.room}",
+            "room-compiler"                       : "androidx.room:room-compiler:${versions.room}",
+            "room-rxJava2"                        : "androidx.room:room-rxjava2:${versions.room}",
+
     ]
 
     //依赖第三方配置
@@ -38,12 +48,13 @@ ext {
             "mmkv"                         : "com.tencent:mmkv-static:1.2.7",
             "BaseRecyclerViewAdapterHelper": "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.0-beta11",
             "immersionbar"                 : "com.gyf.immersionbar:immersionbar:3.0.0",
-            "glide"                        : "com.github.bumptech.glide:glide:4.11.0",
-            "glide-compiler"               : "com.github.bumptech.glide:compiler:4.11.0",
+            "glide"                        : "com.github.bumptech.glide:glide:4.12.0",
+            "glide-compiler"               : "com.github.bumptech.glide:compiler:4.12.0",
             "arouter-api"                  : "com.alibaba:arouter-api:1.5.1",
             "arouter-compiler"             : "com.alibaba:arouter-compiler:1.5.1",
             //OkHttp
-            "okhttp"                       : "com.squareup.okhttp3:okhttp:3.14.9",
+            "okhttp"                       : "com.squareup.okhttp3:okhttp:4.9.2",
+            "okhttp-logging-interceptor"   : "com.squareup.okhttp3:logging-interceptor:4.9.2",
             "okio"                         : "com.squareup.okio:okio:1.17.2",
 
             //rx系列
@@ -53,6 +64,8 @@ ext {
             "retrofit-converter-gson"      : "com.squareup.retrofit2:converter-gson:2.9.0",
             "retrofit-adapter-rxjava2"     : "com.squareup.retrofit2:adapter-rxjava2:2.9.0",
 
+            //lruCache
+            "diskLruCache"                 : "com.jakewharton:disklrucache:2.0.2",
     ]
 
 

@@ -7,21 +7,18 @@ import androidx.lifecycle.MutableLiveData;
 import com.dn.drouter.ARouteHelper;
 import com.donews.base.model.BaseLiveDataModel;
 import com.donews.base.model.BaseModel;
-import com.donews.common.contract.ApplyUpdataBean;
+import com.donews.common.contract.ApplyUpdateBean;
 import com.donews.common.download.DownloadListener;
 import com.donews.common.download.DownloadManager;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.mine.bean.CacheBean;
 import com.donews.mine.Api.MineHttpApi;
-import com.donews.mine.bean.QueryBean;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
 import com.donews.utilslibrary.utils.AppCacheUtils;
-import com.donews.utilslibrary.utils.CalendarReminderUtils;
 import com.donews.utilslibrary.utils.DeviceUtils;
-import com.donews.utilslibrary.utils.LogUtil;
 
 import io.reactivex.disposables.Disposable;
 
@@ -30,9 +27,6 @@ public class SettingModel extends BaseLiveDataModel {
     private final CacheBean cacheBean = new CacheBean();
     private Disposable disposable;
     private boolean isremind = false;
-
-
-
 
 
     public void clearCache(Context context) {
@@ -57,24 +51,22 @@ public class SettingModel extends BaseLiveDataModel {
     }
 
 
-
-
     //----------------------检查更新-------------------
 
-    public  MutableLiveData<ApplyUpdataBean> applyUpdate( ) {
-        MutableLiveData<ApplyUpdataBean> liveData = new MutableLiveData<>();
-        addDisposable( EasyHttp.get(MineHttpApi.APK_INFO)
+    public MutableLiveData<ApplyUpdateBean> applyUpdate() {
+        MutableLiveData<ApplyUpdateBean> liveData = new MutableLiveData<>();
+        addDisposable(EasyHttp.get(MineHttpApi.APK_INFO)
                 .params("package_name", DeviceUtils.getPackage())
                 .params("channel", DeviceUtils.getChannelName())
                 .cacheMode(CacheMode.NO_CACHE)
-                .execute(new SimpleCallBack<ApplyUpdataBean>() {
+                .execute(new SimpleCallBack<ApplyUpdateBean>() {
                     @Override
                     public void onError(ApiException e) {
 
                     }
 
                     @Override
-                    public void onSuccess(ApplyUpdataBean updataBean) {
+                    public void onSuccess(ApplyUpdateBean updataBean) {
                         liveData.postValue(updataBean);
 
                     }
@@ -85,17 +77,25 @@ public class SettingModel extends BaseLiveDataModel {
     }
 
     public static void downLoadApk(Context context,
-                                   ApplyUpdataBean applyUpdataBean,
-                                   BaseModel model) {
-        DownloadManager downloadManager = new DownloadManager(context,context.getPackageName(), applyUpdataBean.getApk_url(), new DownloadListener() {
+            ApplyUpdateBean applyUpdateBean,
+            BaseModel model) {
+        DownloadManager downloadManager = new DownloadManager(context, context.getPackageName(),
+                applyUpdateBean.getApk_url(), new DownloadListener() {
+
             @Override
-            public void updateProgress(int progress) {
-                applyUpdataBean.setProgress(progress);
+            public void onStart() {
+
             }
 
             @Override
-            public void downloadComplete(String pkName,String path) {
-                applyUpdataBean.setProgress(100);
+            public void updateProgress(long currentLength, long totalLength, int progress) {
+                applyUpdateBean.setProgress(progress);
+            }
+
+
+            @Override
+            public void downloadComplete(String pkName, String path) {
+                applyUpdateBean.setProgress(100);
                 if (model != null) {
                     model.loadComplete();
                     return;

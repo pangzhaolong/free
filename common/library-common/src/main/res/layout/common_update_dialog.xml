@@ -4,13 +4,13 @@
 
     <data>
 
-        <import type="com.donews.common.contract.ApplyUpdataBean" />
+        <import type="com.donews.common.contract.ApplyUpdateBean" />
 
         <import type="android.view.View" />
 
         <variable
             name="updataBean"
-            type="ApplyUpdataBean" />
+            type="com.donews.common.contract.ApplyUpdateBean" />
 
         <variable
             name="clickProxy"

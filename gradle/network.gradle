@@ -1,6 +1,6 @@
 ext {
     // true 表示测试环境，false表示正式环境
-    DEBUG = true
+    DEBUG = false
 
     //版本号，版本名称 版本号对应于版本名称，
     // 例如：1.2.1->12010;1.3.2->13020
@@ -11,7 +11,7 @@ ext {
     APP_IDENTIFICATION = "cdbx"
 
     //包名
-    APPLICATION_ID = "com.battery.cdbx"
+    APPLICATION_ID = "com.cdyf.lottery.jdd"
 
     // 正式环境base Url
     API_URL = "https://xtasks.xg.tagtic.cn/"

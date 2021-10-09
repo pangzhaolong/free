@@ -1,18 +1,13 @@
 package com.donews.mine.viewModel;
 
 import android.content.Context;
-import android.view.View;
 
 import androidx.databinding.ViewDataBinding;
-import androidx.lifecycle.MutableLiveData;
 
-import com.donews.base.popwindow.ConfirmPopupWindow;
 import com.donews.base.utils.ToastUtil;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
-import com.donews.common.contract.ApplyUpdataBean;
-import com.donews.common.contract.LoginHelp;
+import com.donews.common.contract.ApplyUpdateBean;
 import com.donews.mine.model.SettingModel;
-import com.donews.mine.ui.SettingActivity;
 import com.donews.utilslibrary.utils.DeviceUtils;
 
 public class SettingViewModel extends BaseLiveDataViewModel<SettingModel>{
@@ -48,10 +43,10 @@ public class SettingViewModel extends BaseLiveDataViewModel<SettingModel>{
 //        }
 //    }
 
-    public void updateLogic(ApplyUpdataBean applyUpdataBean) {
-        if (applyUpdataBean.getVersion_code() <= DeviceUtils.getAppVersionCode()) {
+    public void updateLogic(ApplyUpdateBean applyUpdateBean) {
+        if (applyUpdateBean.getVersion_code() <= DeviceUtils.getAppVersionCode()) {
             ToastUtil.show(mContext, "当前已是最新版本！");
-        } else if (applyUpdataBean.getVersion_code() > DeviceUtils.getAppVersionCode()) {
+        } else if (applyUpdateBean.getVersion_code() > DeviceUtils.getAppVersionCode()) {
         }
     }
 
