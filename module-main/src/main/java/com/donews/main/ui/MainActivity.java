@@ -114,7 +114,7 @@ public class MainActivity
             case 1:
                 AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
                 ImmersionBar.with(this)
-                        .statusBarColor(R.color.main_blue_57)
+                        .statusBarColor(R.color.white)
                         .navigationBarColor(R.color.white)
                         .fitsSystemWindows(true)
                         .autoDarkModeEnable(true)
@@ -128,7 +128,7 @@ public class MainActivity
         fragments = new ArrayList<>();
         //通过ARouter 获取其他组件提供的fragment
         Fragment homeFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.Home.PAGER_HOME).navigation();
-        Fragment userFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.User.PAGER_USER).navigation();
+        Fragment userFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.User.PAGER_USER_SETTING).navigation();
 
         fragments.add(homeFragment);
         fragments.add(userFragment);

@@ -73,6 +73,33 @@
 -keep class **Listener
 -keep public class * extends com.platform.dai.webview.CommonJSInterface{ *;}
 
+#---------[多牛model]其他第三方混淆排除--------------------
+#保持多牛的sdk模块中代码不混淆，保持原样
+-keep class cn.cd.dn.sdk.** { *; }
+-dontwarn cn.cd.dn.sdk.**
+
+#多牛model的aop模块代码不混淆，保持原样
+-keep class com.dncd.lib.aop.** { *; }
+-dontwarn com.dncd.lib.aop.**
+
+#多牛model的apt模块代码不混淆，保持原样
+-keep class com.dncd.apt.** { *; }
+-dontwarn com.dncd.apt.**
+
+#用到的第三方库排除。不混淆(包装的hook模块)
+-keep class com.chat_hook.** { *; }
+-dontwarn com.chat_hook.**
+#内部的封装hook核心代码模块
+-keep class com.swift.sandhook.** { *; }
+-dontwarn com.swift.sandhook.**
+#---------[多牛model]其他第三方排除结束--------------------
+#EventBus 过滤
+-keep class org.greenrobot.** { *; }
+-dontwarn org.greenrobot.**
+#EventBus的Lib过滤
+-keep class com.dn.events.** { *; }
+-dontwarn com.dn.events.**
+
 #webview
 -keep class com.donews.web.javascript.** { *; }
 

@@ -69,7 +69,7 @@
                         android:background="@drawable/main_btn_refuse_drawable"
                         android:gravity="center"
                         android:minHeight="36dp"
-                        android:text="拒绝"
+                        android:text="再想想"
                         android:textColor="#5765FF"
                         android:textSize="@dimen/textSize_16" />
 
@@ -139,7 +139,7 @@
                         android:background="@drawable/main_btn_agree_drawable"
                         android:gravity="center"
                         android:minHeight="36dp"
-                        android:text="查看指引"
+                        android:text="同意并使用"
                         android:textColor="@color/white" />
 
                 </LinearLayout>
