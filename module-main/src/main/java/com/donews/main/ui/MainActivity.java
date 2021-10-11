@@ -56,7 +56,6 @@ public class MainActivity
 
     private NavigationController mNavigationController;
     private long mInterval = 0; // 兩次返回鍵的间隔时间
- 
 
 
     public static void start(Context context) {
@@ -127,11 +126,17 @@ public class MainActivity
     private void initFragment() {
         fragments = new ArrayList<>();
         //通过ARouter 获取其他组件提供的fragment
-        Fragment homeFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.Home.PAGER_HOME).navigation();
-        Fragment userFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.User.PAGER_USER_SETTING).navigation();
+//        Fragment homeFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.Home.PAGER_HOME).navigation();
+//        Fragment userFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.User.PAGER_USER_SETTING).navigation();
 
-        fragments.add(homeFragment);
-        fragments.add(userFragment);
+        fragments.add(
+                (Fragment) ARouter.getInstance()
+                        .build(RouterFragmentPath.Home.PAGER_HOME)
+                        .navigation());
+        fragments.add(
+                (Fragment) ARouter.getInstance()
+                        .build(RouterFragmentPath.User.PAGER_USER)
+                        .navigation());
         adapter = new MainPageAdapter(getSupportFragmentManager(),
                 FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         adapter.setData(fragments);

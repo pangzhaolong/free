@@ -8,8 +8,6 @@ import androidx.lifecycle.LifecycleOwner;
 
 import com.donews.base.utils.ToastUtil;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
-import com.donews.common.contract.ApplyUpdataBean;
-import com.donews.mine.databinding.MineFragmentBinding;
 import com.donews.mine.databinding.MineSettingFragmentBinding;
 import com.donews.mine.model.SettingModel;
 import com.donews.utilslibrary.utils.DeviceUtils;
@@ -49,13 +47,6 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
 //            updateLogic((ApplyUpdataBean) data);
 //        }
 //    }
-
-    public void updateLogic(ApplyUpdataBean applyUpdataBean) {
-        if (applyUpdataBean.getVersion_code() <= DeviceUtils.getAppVersionCode()) {
-            ToastUtil.show(baseActivity, "当前已是最新版本！");
-        } else if (applyUpdataBean.getVersion_code() > DeviceUtils.getAppVersionCode()) {
-        }
-    }
 
     public void clearCache() {
         mModel.clearCache(baseActivity);

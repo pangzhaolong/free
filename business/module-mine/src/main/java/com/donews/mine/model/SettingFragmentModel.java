@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.dn.drouter.ARouteHelper;
 import com.donews.base.model.BaseLiveDataModel;
 import com.donews.base.model.BaseModel;
-import com.donews.common.contract.ApplyUpdataBean;
 import com.donews.common.download.DownloadListener;
 import com.donews.common.download.DownloadManager;
 import com.donews.common.router.RouterFragmentPath;
@@ -51,66 +50,6 @@ public class SettingFragmentModel extends BaseLiveDataModel {
             e.printStackTrace();
             return "获取失败";
         }
-    }
-
-
-
-
-    //----------------------检查更新-------------------
-
-    public  MutableLiveData<ApplyUpdataBean> applyUpdate( ) {
-        MutableLiveData<ApplyUpdataBean> liveData = new MutableLiveData<>();
-        addDisposable( EasyHttp.get(MineHttpApi.APK_INFO)
-                .params("package_name", DeviceUtils.getPackage())
-                .params("channel", DeviceUtils.getChannelName())
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(new SimpleCallBack<ApplyUpdataBean>() {
-                    @Override
-                    public void onError(ApiException e) {
-
-                    }
-
-                    @Override
-                    public void onSuccess(ApplyUpdataBean updataBean) {
-                        liveData.postValue(updataBean);
-
-                    }
-
-                }));
-        return liveData;
-
-    }
-
-    public static void downLoadApk(Context context,
-                                   ApplyUpdataBean applyUpdataBean,
-                                   BaseModel model) {
-        DownloadManager downloadManager = new DownloadManager(context,context.getPackageName(), applyUpdataBean.getApk_url(), new DownloadListener() {
-            @Override
-            public void updateProgress(int progress) {
-                applyUpdataBean.setProgress(progress);
-            }
-
-            @Override
-            public void downloadComplete(String pkName,String path) {
-                applyUpdataBean.setProgress(100);
-                if (model != null) {
-                    model.loadComplete();
-                    return;
-                }
-                ARouteHelper.invoke(RouterFragmentPath.ClassPath.HOME_VIEW_MODEL, "downLoadEnd", "下载完成");
-            }
-
-            @Override
-            public void downloadError(String error) {
-                if (model != null) {
-                    model.loadFail("下载失败");
-                    return;
-                }
-                ARouteHelper.invoke(RouterFragmentPath.ClassPath.HOME_VIEW_MODEL, "downLoadEnd", "下载失败");
-            }
-        });
-        downloadManager.setImmInstall(true);
-        downloadManager.start();
     }
 
 

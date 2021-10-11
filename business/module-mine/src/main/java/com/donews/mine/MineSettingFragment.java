@@ -13,7 +13,7 @@ import com.donews.mine.viewModel.SettingFragmentViewModel;
  *  * 版本：V1.0<br>
  */
 @Route(path = RouterFragmentPath.User.PAGER_USER_SETTING)
-public class SettingFragment extends MvvmLazyLiveDataFragment<MineSettingFragmentBinding, SettingFragmentViewModel> {
+public class MineSettingFragment extends MvvmLazyLiveDataFragment<MineSettingFragmentBinding, SettingFragmentViewModel> {
 
 
     @Override
