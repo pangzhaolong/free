@@ -66,6 +66,9 @@ ext {
 
             //lruCache
             "diskLruCache"                 : "com.jakewharton:disklrucache:2.0.2",
+
+            //日志
+            "logger"                         : "com.orhanobut:logger:2.2.0",
     ]
 
 

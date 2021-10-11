@@ -33,5 +33,9 @@
         <activity
             android:name=".updatedialog.UpdateActivityDialog"
             android:theme="@style/UpdateDialogTheme" />
+
+        <activity
+            android:name=".updatedialog.UpdateSkipDialog"
+            android:theme="@style/UpdateDialogTheme" />
     </application>
 </manifest>

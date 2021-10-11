@@ -76,4 +76,6 @@ dependencies {
 
     api rootProject.ext.dependencies["rxBinding"]
     api project(path: ':common:lib_eventbus')
+
+    api rootProject.ext.dependencies["logger"]
 }

@@ -12,6 +12,10 @@ import androidx.multidex.MultiDex;
 
 import com.donews.base.BuildConfig;
 import com.donews.utilslibrary.base.UtilsConfig;
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.FormatStrategy;
+import com.orhanobut.logger.Logger;
+import com.orhanobut.logger.PrettyFormatStrategy;
 
 import java.util.List;
 
@@ -36,7 +40,15 @@ public class BaseApplication extends Application {
         ContextHolder.getInstance().setAppContext(this);
         UtilsConfig.init(this);
         setsDebug(BuildConfig.DEBUG);
-
+        FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
+                .tag("Lottery")
+                .build();
+        Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy) {
+            @Override
+            public boolean isLoggable(int priority, @Nullable String tag) {
+                return BuildConfig.DEBUG;
+            }
+        });
     }
 
     /**

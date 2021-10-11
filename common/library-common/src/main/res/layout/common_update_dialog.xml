@@ -93,7 +93,8 @@
             app:layout_constraintHorizontal_weight="2"
             app:layout_constraintStart_toStartOf="@id/bg_view"
             app:layout_constraintTop_toTopOf="@id/btn_update"
-            tools:ignore="TouchTargetSizeCheck" />
+            tools:ignore="TouchTargetSizeCheck"
+            tools:visibility="visible" />
 
         <ProgressBar
             android:id="@+id/pb_progress"
@@ -108,14 +109,13 @@
             app:layout_constraintStart_toStartOf="@id/bg_view"
             app:layout_constraintTop_toTopOf="@id/btn_update"
             tools:progress="100"
-            tools:visibility="visible" />
+            tools:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_progress"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:gravity="center"
-            android:text="@string/common_update_progress"
             app:layout_constraintBottom_toBottomOf="@id/pb_progress"
             app:layout_constraintEnd_toEndOf="@id/pb_progress"
             app:layout_constraintStart_toStartOf="@id/pb_progress"
