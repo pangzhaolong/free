@@ -16,18 +16,46 @@
 
     </data>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:background="@drawable/mine_top_bg_shape"
-            skin:enable="true" />
+        <include
+            android:id="@+id/set_bdsj"
+            layout="@layout/mine_setting_fragment_item" />
+
+        <include
+            android:id="@+id/set_fxapp"
+            layout="@layout/mine_setting_fragment_item" />
+
+        <include
+            android:id="@+id/set_yhxy"
+            layout="@layout/mine_setting_fragment_item" />
+
+        <include
+            android:id="@+id/set_yszcl"
+            layout="@layout/mine_setting_fragment_item" />
+
+        <include
+            android:id="@+id/set_yjfk"
+            layout="@layout/mine_setting_fragment_item" />
+
+        <include
+            android:id="@+id/set_gywm"
+            layout="@layout/mine_setting_fragment_item" />
+
+        <include
+            android:id="@+id/set_qchc"
+            layout="@layout/mine_setting_fragment_item" />
+
+        <include
+            android:id="@+id/set_zxzh"
+            layout="@layout/mine_setting_fragment_item" />
 
 
-    </RelativeLayout>
+
+    </LinearLayout>
 
 </layout>

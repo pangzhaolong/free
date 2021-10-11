@@ -37,6 +37,7 @@ import com.donews.network.request.PutRequest;
 import com.donews.network.utils.HttpLog;
 import com.donews.network.utils.RxUtil;
 import com.donews.network.utils.Utils;
+import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor;
 
 import java.io.File;
 import java.io.InputStream;
@@ -111,6 +112,11 @@ public final class EasyHttp {
         retrofitBuilder.addCallAdapterFactory(RxJava2CallAdapterFactory.create());//增加RxJava2CallAdapterFactory
         rxCacheBuilder = new RxCache.Builder().init(sContext)
                 .diskConverter(new SerializableDiskConverter());      //目前只支持Serializable和Gson缓存其它可以自己扩展
+
+        if(BuildConfig.DEBUG){
+            //添加代理调试
+            okHttpClientBuilder.addInterceptor(new OkHttpProfilerInterceptor());
+        }
     }
 
     public static EasyHttp getInstance() {

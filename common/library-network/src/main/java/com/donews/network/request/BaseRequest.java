@@ -18,6 +18,7 @@ package com.donews.network.request;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.donews.network.BuildConfig;
 import com.donews.network.EasyHttp;
 import com.donews.network.api.ApiService;
 import com.donews.network.cache.RxCache;
@@ -34,6 +35,7 @@ import com.donews.network.model.HttpParams;
 import com.donews.network.utils.HttpLog;
 import com.donews.network.utils.RxUtil;
 import com.donews.network.utils.Utils;
+import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor;
 
 import java.io.File;
 import java.io.InputStream;
@@ -417,6 +419,11 @@ public abstract class BaseRequest<R extends BaseRequest> {
 
             //添加头  头添加放在最前面方便其他拦截器可能会用到
             newClientBuilder.addInterceptor(new HeadersInterceptor(headers));
+
+            if(BuildConfig.DEBUG){
+                //添加代理调试
+                newClientBuilder.addInterceptor(new OkHttpProfilerInterceptor());
+            }
 
             for (Interceptor interceptor : interceptors) {
                 if (interceptor instanceof BaseDynamicInterceptor) {

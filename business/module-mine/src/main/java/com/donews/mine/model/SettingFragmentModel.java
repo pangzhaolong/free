@@ -27,10 +27,6 @@ public class SettingFragmentModel extends BaseLiveDataModel {
     private Disposable disposable;
     private boolean isremind = false;
 
-
-
-
-
     public void clearCache(Context context) {
         AppCacheUtils.clearAllCache(context);
         cacheBean.setCacheValue(cacheData(context));
