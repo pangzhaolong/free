@@ -18,6 +18,7 @@ import com.donews.main.R;
 import com.donews.main.databinding.MainDialogPeopleGuideBinding;
 import com.donews.base.fragmentdialog.AbstractFragmentDialog;
 import com.donews.common.router.RouterActivityPath;
+import com.donews.main.utils.SplashUtils;
 
 import java.util.Objects;
 
@@ -60,8 +61,10 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
 
 
         //退出应用
-        dataBinding.tvExit.setOnClickListener(v ->
-                Objects.requireNonNull(getActivity()).finish());
+        dataBinding.tvExit.setOnClickListener(v -> {
+            Objects.requireNonNull(getActivity()).finish();
+            SplashUtils.INSTANCE.savePersonExit(false);
+        });
 
         //查看指引
         dataBinding.tvLookGuide.setOnClickListener(v -> {
@@ -70,7 +73,6 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
             }
             disMissDialog();
         });
-
 
 
     }

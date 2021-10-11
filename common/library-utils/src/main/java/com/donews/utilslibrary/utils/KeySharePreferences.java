@@ -12,6 +12,8 @@ public class KeySharePreferences {
     //本地sp存储目录
     public final static String SP_KEY = BuildConfig.APP_IDENTIFICATION + "_sp";
 
+    //本地的userInfo对象
+    public final static String USER_INFO = "user_info";
     // 本地token
     public final static String TOKEN = "token";
     //本地用户的userId

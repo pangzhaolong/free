@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -13,8 +14,35 @@
             android:id="@+id/ad_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="110dp" />
+            android:background="@color/white" />
 
+        <LinearLayout
+            android:id="@+id/splash_progress_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/ad_container"
+            android:layout_marginBottom="@dimen/dp_40"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:text="正在努力加载数据..." />
+
+            <!--水平进度条 -->
+            <ProgressBar
+                android:id="@+id/splash_progress"
+                style="@style/AppTheme.Start.Progess"
+                android:layout_width="300dp"
+                android:layout_height="20dp"
+                android:progressBackgroundTint="@color/dialog_cancel_press"
+                android:progressDrawable="@color/A2CB5FF"
+                android:max="100" />
+        </LinearLayout>
 
     </RelativeLayout>
 </layout>

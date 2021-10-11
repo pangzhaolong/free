@@ -40,6 +40,9 @@ public class RouterFragmentPath
         
         /** 个人中心 */
         public static final String PAGER_USER = USER + "/User";
+
+        /** 用户设置 */
+        public static final String PAGER_USER_SETTING = USER + "/Setting";
     }
 
 

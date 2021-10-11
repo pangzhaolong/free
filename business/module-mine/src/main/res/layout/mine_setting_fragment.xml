@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/res/android/skin"
+    tools:ignore="MissingDefaultResource,ResourceName">
+
+    <data>
+
+        <import type="com.donews.mine.viewModel.SettingFragmentViewModel" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="listener"
+            type="SettingFragmentViewModel" />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="@drawable/mine_top_bg_shape"
+            skin:enable="true" />
+
+
+    </RelativeLayout>
+
+</layout>

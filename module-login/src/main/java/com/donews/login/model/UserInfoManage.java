@@ -3,7 +3,8 @@ package com.donews.login.model;
 import androidx.lifecycle.MutableLiveData;
 
 import com.dn.drouter.ARouteHelper;
-import com.donews.base.model.BaseModel;
+import com.dn.events.events.LoginUserStatus;
+import com.donews.base.utils.GsonUtils;
 import com.donews.common.contract.DataBean;
 import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.UserInfoBean;
@@ -26,6 +27,7 @@ import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.SPUtils;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -244,7 +246,7 @@ public class UserInfoManage {
      *
      * @param data 请求的参数
      */
-    public static MutableLiveData<UserInfoBean> onLoadBindUserInfo(String data ) {
+    public static MutableLiveData<UserInfoBean> onLoadBindUserInfo(String data) {
         MutableLiveData<UserInfoBean> mutableLiveData = new MutableLiveData<UserInfoBean>();
         EasyHttp.post(LoginApi.BIND)
                 .upJson(data)
@@ -285,14 +287,17 @@ public class UserInfoManage {
                 .execute(new SimpleCallBack<UserInfoBean>() {
                     @Override
                     public void onError(ApiException e) {
+                        EventBus.getDefault().post(new LoginUserStatus(-1));
                         LogUtil.i(e.getCode() + e.getMessage() + "");
                     }
 
                     @Override
                     public void onSuccess(UserInfoBean userInfoBean) {
                         if (userInfoBean == null) {
+                            EventBus.getDefault().post(new LoginUserStatus(0));
                             return;
                         }
+                        EventBus.getDefault().post(new LoginUserStatus(1));
                         setHttpToken(userInfoBean);
                         LogUtil.i(userInfoBean.toString());
                         mutableLiveData.postValue(userInfoBean);
@@ -345,6 +350,7 @@ public class UserInfoManage {
     private static void setHttpToken(UserInfoBean userInfoBean) {
         LogUtil.d("Token" + userInfoBean.getToken());
         LoginHelp.getInstance().setUserInfoBean(userInfoBean);
+        SPUtils.setInformain(KeySharePreferences.USER_INFO, GsonUtils.toJson(userInfoBean));
         SPUtils.setInformain(KeySharePreferences.TOKEN, userInfoBean.getToken());
         SPUtils.setInformain(KeySharePreferences.USER_ID, userInfoBean.getId());
         AnalysisHelp.registerUserId();
@@ -372,6 +378,7 @@ public class UserInfoManage {
                 .execute(new SimpleCallBack<UserInfoBean>() {
                     @Override
                     public void onError(ApiException e) {
+                        EventBus.getDefault().post(new LoginUserStatus(-2));
                         LogUtil.i(e.getCode() + e.getMessage() + "");
                     }
 
@@ -382,6 +389,7 @@ public class UserInfoManage {
                         setHttpToken(userInfoBean);
 
                         refreshUserTag(userInfoBean);
+                        EventBus.getDefault().post(new LoginUserStatus(1));
                     }
                 });
     }

@@ -75,5 +75,5 @@ dependencies {
     api 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
     api rootProject.ext.dependencies["rxBinding"]
-
+    api project(path: ':common:lib_eventbus')
 }
