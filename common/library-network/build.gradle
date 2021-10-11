@@ -77,5 +77,6 @@ dependencies {
     api rootProject.ext.androidx["room-rxJava2"]
 
     api rootProject.ext.dependencies["logger"]
+    implementation 'com.localebro:okhttpprofiler:1.0.8'
 }
 
