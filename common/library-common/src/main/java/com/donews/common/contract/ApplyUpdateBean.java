@@ -23,6 +23,7 @@ public class ApplyUpdateBean extends BaseCustomViewModel {
     private String channel;
     private String apk_url;
     private int version_code;
+    /** 1 强制更新 */
     private int force_upgrade;
     private String upgrade_info;
     private int progress;
@@ -86,7 +87,8 @@ public class ApplyUpdateBean extends BaseCustomViewModel {
         this.upgrade_info = upgrade_info;
         notifyPropertyChanged(BR.upgrade_info);
     }
-      @Bindable
+
+    @Bindable
     public int getProgress() {
         return progress;
     }

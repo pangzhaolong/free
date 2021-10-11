@@ -285,6 +285,7 @@ public class DownloadTask {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
+                        Log.e(TAG, e.getMessage());
                         if (mDownloadState == DOWNLOAD_PAUSE) {
                             if (mListener != null) {
                                 mListener.onPaused(mFilePath);
