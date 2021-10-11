@@ -56,6 +56,8 @@ ext {
             "okhttp"                       : "com.squareup.okhttp3:okhttp:4.9.2",
             "okhttp-logging-interceptor"   : "com.squareup.okhttp3:logging-interceptor:4.9.2",
             "okio"                         : "com.squareup.okio:okio:1.17.2",
+            "okhttpprofiler"               : "com.localebro:okhttpprofiler:1.0.8",
+
 
             //rx系列
             "rxandroid"                    : "io.reactivex.rxjava2:rxandroid:2.1.1",
@@ -68,7 +70,7 @@ ext {
             "diskLruCache"                 : "com.jakewharton:disklrucache:2.0.2",
 
             //日志
-            "logger"                         : "com.orhanobut:logger:2.2.0",
+            "logger"                       : "com.orhanobut:logger:2.2.0",
     ]
 
 
