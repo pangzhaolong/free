@@ -73,6 +73,9 @@ ext {
 
             //日志
             "logger"                       : "com.orhanobut:logger:2.2.0",
+
+            //banner控件
+            "bannerViewpager"              : "com.github.zhpanvip:bannerviewpager:3.5.4",
     ]
 
 
