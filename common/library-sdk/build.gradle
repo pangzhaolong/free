@@ -9,14 +9,14 @@ android {
         ndk {
             abiFilters "armeabi-v7a"
         }
-        buildConfigField("String", "SPLASH_ID", "")
-        buildConfigField("String", "INTERSTITIAL_ID", "")
-        buildConfigField("String", "BANNER_ID", "")
-        buildConfigField("String", "REWARD_VIDEO_ID", "")
-        buildConfigField("String", "FULL_SCREEN_VIDEO_ID", "")
-        buildConfigField("String", "NEWS_FEED_CUSTOM_RENDER_ID", "")
-        buildConfigField("String", "NEWS_FEED_TEMPLATE_ID", "")
-        buildConfigField("String", "DRAW_FEED_ID", "")
+        buildConfigField("String", "SPLASH_ID", "\"1\"")
+        buildConfigField("String", "INTERSTITIAL_ID",  "\"1\"")
+        buildConfigField("String", "BANNER_ID",  "\"1\"")
+        buildConfigField("String", "REWARD_VIDEO_ID",  "\"1\"")
+        buildConfigField("String", "FULL_SCREEN_VIDEO_ID",  "\"1\"")
+        buildConfigField("String", "NEWS_FEED_CUSTOM_RENDER_ID",  "\"1\"")
+        buildConfigField("String", "NEWS_FEED_TEMPLATE_ID",  "\"1\"")
+        buildConfigField("String", "DRAW_FEED_ID",  "\"1\"")
     }
     //统一资源前缀，规范资源引用
     resourcePrefix "sdk_"
