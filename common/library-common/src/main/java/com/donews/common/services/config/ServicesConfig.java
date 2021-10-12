@@ -34,18 +34,6 @@ public class ServicesConfig {
          * 弹窗服务
          */
         public static final String DIALOG_SERVICE = "/dialog/dialogPage";
-
-
-        /**
-         * 猜字，猜成语，模块
-         */
-        public static final String DIALOG_SERVICE_GUESS_EVENT = "com.donews.dialog.provider.DialogProvider.guessEvent";
-
-        public static final String DIALOG_SERVICE_GUESS_LOOK_VIDEO = "com.donews.dialog.provider.DialogProvider.guessLookVideo";
-        public static final String DIALOG_SERVICE_GUESS_NO_ENERGY = "com.donews.dialog.provider.DialogProvider.guessNoEnergy";
-        public static final String DIALOG_SERVICE_GUESS_ANSWER_HINT = "com.donews.dialog.provider.DialogProvider.answerHint";
-        public static final String DIALOG_SERVICE_RED_PACKET = "com.donews.dialog.provider.DialogProvider.redPacket";
-
     }
 
 

@@ -9,32 +9,22 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#F9F9F9">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/home_category_vp2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/A999999" />
-        </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/smart_layout"
             android:layout_width="match_parent"
-            android:background="#E9423E"
-            android:layout_height="220dp">
+            android:layout_height="220dp"
+            android:background="@drawable/home_jdd_title_bg">
 
             <ImageView
                 android:id="@+id/home_jdd_logo_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
                 android:src="@drawable/home_jdd_logo"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -44,8 +34,10 @@
                 android:id="@+id/home_jdd_title_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:src="@drawable/home_jdd_title"
                 app:layout_constraintLeft_toRightOf="@+id/home_jdd_logo_iv"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="MissingConstraints" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -62,7 +54,7 @@
                 android:id="@+id/home_jdd_help"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
                 android:src="@drawable/home_jdd_help"
                 app:layout_constraintRight_toRightOf="parent"
@@ -74,25 +66,41 @@
                 android:id="@+id/home_search_bar"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_40"
-                android:layout_marginTop="10dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
-                android:background="#ffffff"
+                android:background="@drawable/home_jdd_search_bg"
                 android:drawableLeft="@drawable/home_jdd_search"
                 android:gravity="center_vertical"
                 android:hint="支持搜索淘宝/京东/拼多多优惠"
+                android:paddingLeft="14dp"
                 app:layout_constraintTop_toBottomOf="@+id/home_jdd_logo_iv"
                 tools:ignore="MissingConstraints" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="170dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="vertical">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/home_category_vp2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/home_category_tl"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_40"
-            android:layout_marginTop="100dp"
-            app:tabIndicatorColor="#ff0000" />
+            android:layout_marginTop="120dp"
+            app:tabIndicatorColor="@color/white"
+            app:tabSelectedTextColor="@color/white"
+            app:tabTextColor="@color/A999999" />
 
     </FrameLayout>
 
