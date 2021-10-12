@@ -1,15 +1,19 @@
 package com.donews.mail.views
 
+import android.app.Activity
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.donews.detail.R
 import com.donews.mail.adapter.MailPageackFragmentListAdapter
 import com.donews.mail.beans.MailPackageTabItem
 import com.donews.mail.entitys.resps.MailPackHomeListItemResp
 import com.donews.mail.model.MailModel
+import io.reactivex.disposables.Disposable
 
 /**
  * @author lcl
@@ -37,8 +41,9 @@ class MailPackFragmentVpLayout : LinearLayout {
     //列表适配器
     private lateinit var listAdapter: MailPageackFragmentListAdapter
 
-    //数据代码
-    private lateinit var datas: MutableList<MailPackHomeListItemResp>
+    //数据订阅订阅对象
+    private var listLiveData: MutableLiveData<MutableList<MailPackHomeListItemResp>?> =
+        MutableLiveData()
 
     constructor(context: Context?) : super(context) {
         init()
@@ -71,17 +76,42 @@ class MailPackFragmentVpLayout : LinearLayout {
      */
     fun bindDataList(tabItem: MailPackageTabItem) {
         this.tabItem = tabItem
-        getListData()
+        getListData(isRefresh = true, isLoadCache = true)
     }
 
     private fun init() {
+        listLiveData.observe(context as FragmentActivity, {
+            updateData()
+        })
         addView(itemIncludeView)
         updateData()
     }
 
-    //获取列表数据
-    private fun getListData() {
-        mModel
+    private var listDataDisposable: Disposable? = null
+
+    /**
+     * 获取列表数据
+     * @param isRefresh 是否为下拉加载，T:是，F:否
+     * @param isLoadCache 是否允许加载缓存，T:允许，F:不允许
+     */
+    private fun getListData(isRefresh: Boolean, isLoadCache: Boolean = false) {
+        if (::tabItem.isInitialized) {
+            return //还未初始化
+        }
+        if (isLoadCache) {
+            //允许加载缓存
+            val cacheList: MutableList<MailPackHomeListItemResp>? =
+                mModel.getMailHomeListCacheData(tabItem)
+            if (cacheList?.isNotEmpty() == true) {
+                listLiveData.postValue(cacheList)
+                return //存在缓存数据。直接使用
+            }
+        }
+        if (listDataDisposable != null && listDataDisposable!!.isDisposed) {
+            //上一个任务正在运行。那么结束上一个
+            listDataDisposable?.dispose()
+        }
+        listDataDisposable = mModel.getMailHomeListData(isRefresh, tabItem, listLiveData)
     }
 
     //更新数据
@@ -89,13 +119,12 @@ class MailPackFragmentVpLayout : LinearLayout {
         if (!::listAdapter.isInitialized) {
             //还未初始化
             listAdapter = MailPageackFragmentListAdapter(
-                0
+                R.layout.mail_package_vp_list_item
             )
             vpRecycler.adapter = listAdapter
         }
-        if (!::datas.isInitialized) {
-            return //数据还未初始化
+        listLiveData.value?.apply {
+            listAdapter.setNewData(this)
         }
-        listAdapter.setNewData(datas)
     }
 }

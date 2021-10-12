@@ -22,7 +22,7 @@ class MailPackageFragment :
 
     //viewPager 适配器
     val vpAdapter: MailPageackFragmentVPAdapter by lazy {
-        MailPageackFragmentVPAdapter(R.layout.mail_package_fragment_vp_item)
+        MailPageackFragmentVPAdapter()
     }
 
     override fun getLayoutId(): Int = R.layout.mail_package_fragment
@@ -36,7 +36,12 @@ class MailPackageFragment :
     private fun initView() {
         //监听分类
         mViewModel.tabListLiveData.observe(this,{
-            mDataBinding.mailFrmVp.adapter = vpAdapter
+            if(mDataBinding.mailFrmVp.adapter == null) {
+                mDataBinding.mailFrmVp.adapter = vpAdapter
+            }
+            it?.apply {
+                vpAdapter.setNewData(this)
+            }
         })
         //绑定tabLayout和viewPager
         TabLayoutMediator(mDataBinding.mailFrmTab, mDataBinding.mailFrmVp) { tab, position ->

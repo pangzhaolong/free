@@ -22,6 +22,7 @@
     <color name="text_hint_color">#C9C9C9</color>
     <color name="text_hint_color2">#D8D8D8</color>
     <color name="text_logout_color">#CE3D3A</color>
+    <color name="text_red">#FFFE3738</color>
 
     <color name="dialog_confirm_unpress">#5B8DF0</color>
     <color name="dialog_confirm_press">#A4C5FC</color>
