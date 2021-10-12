@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="detail_ImageButton_Style">
+        <item name="android:padding">0dp</item>
+        <item name="android:background">@null</item>
+        <item name="android:scaleType">centerInside</item>
+        <item name="android:contentDescription">@null</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+</resources>
