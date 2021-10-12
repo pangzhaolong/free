@@ -3,7 +3,6 @@ package com.donews.home.model;
 import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.model.BaseLiveDataModel;
-import com.donews.home.api.HomeApi;
 import com.donews.home.bean.HomeBean;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
@@ -16,7 +15,7 @@ import com.donews.network.exception.ApiException;
  * 日期： 2020/12/7 11:12<br>
  * 版本：V1.0<br>
  */
-public class HomeModel extends BaseLiveDataModel {
+public class CatModel extends BaseLiveDataModel {
 
 
     /**
@@ -26,7 +25,8 @@ public class HomeModel extends BaseLiveDataModel {
      */
     public MutableLiveData<HomeBean> getNetData() {
         MutableLiveData<HomeBean> mutableLiveData = new MutableLiveData<>();
-        addDisposable(EasyHttp.get(HomeApi.SuperCategory)
+        addDisposable(EasyHttp.post("")
+                .upJson("")
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<HomeBean>() {
 

@@ -7,35 +7,158 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/smart_layout"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/home_search_bar"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FF2D2D"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="60dp"
+                android:layout_marginEnd="20dp"
+                android:background="#930000">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/home_tip1_atv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="三步省钱"
+                    android:textColor="@color/white"
+                    tools:ignore="MissingConstraints" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/home_tip2_atv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#930000"
+                    android:gravity="center_vertical"
+                    android:text="1"
+                    android:textColor="@color/white"
+                    app:layout_constraintLeft_toRightOf="@+id/home_tip1_atv"
+                    tools:ignore="MissingConstraints" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/home_tip3_atv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="进入淘宝"
+                    android:textColor="@color/white"
+                    app:layout_constraintLeft_toRightOf="@+id/home_tip2_atv"
+                    tools:ignore="MissingConstraints" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+
+                    android:id="@+id/home_tip4_atv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#930000"
+                    android:gravity="center_vertical"
+                    android:text="2"
+                    android:textColor="@color/white"
+                    app:layout_constraintLeft_toRightOf="@+id/home_tip3_atv"
+                    tools:ignore="MissingConstraints" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/home_tip5_atv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#930000"
+                    android:gravity="center_vertical"
+                    android:text="复制商品标题"
+                    android:textColor="@color/white"
+                    app:layout_constraintLeft_toRightOf="@+id/home_tip4_atv"
+                    tools:ignore="MissingConstraints" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/home_tip6_atv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#930000"
+                    android:gravity="center_vertical"
+                    android:text="3"
+                    android:textColor="@color/white"
+                    app:layout_constraintLeft_toRightOf="@+id/home_tip5_atv"
+                    tools:ignore="MissingConstraints" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/home_tip7_atv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#930000"
+                    android:gravity="center_vertical"
+                    android:text="粘贴搜索"
+                    android:textColor="@color/white"
+                    app:layout_constraintLeft_toRightOf="@+id/home_tip6_atv"
+                    tools:ignore="MissingConstraints" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="@dimen/dp_40"
+                    android:layout_height="wrap_content"
+                    android:background="#ffaa00"
+                    android:gravity="center"
+                    android:text="攻略"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="MissingConstraints" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/home_category_vp2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:background="@color/A999999" />
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/smart_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/home_search_bar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="80dp"
+                android:background="#f0f0ff"
+                android:gravity="center_vertical"
+                android:hint="支持搜索淘宝/京东/拼多多优惠"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/home_help_iv"
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="@dimen/dp_40"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:background="#ff0000"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/home_category_tl"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_40"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="80dp"
-            android:background="#f0f0ff"
-            android:gravity="center_vertical"
-            android:hint="支持搜索淘宝/京东/拼多多优惠"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="MissingConstraints" />
+            android:layout_marginTop="100dp"
+            android:background="@color/white"
+            app:tabIndicatorAnimationMode="linear"
+            app:tabIndicatorColor="#ff0000" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/home_help_iv"
-            android:layout_width="@dimen/dp_40"
-            android:layout_height="@dimen/dp_40"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:background="#ff00ff"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="MissingConstraints" />
+    </FrameLayout>
 
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

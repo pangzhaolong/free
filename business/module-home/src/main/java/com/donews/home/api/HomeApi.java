@@ -72,5 +72,12 @@ public class HomeApi {
     public final static String SIGN = BuildConfig.HTTP_AWARD + "award/v1/sign/list";
 
 
+    /*
+     * 精选页面顶部Banner，金刚区展示数据
+     * */
+
+    public final static String BaseUrl = BuildConfig.DEBUG ? "https://lottery.dev.tagtic.cn/shop" : "https://lottery.xg.tagtic.cn/shop";
+    public final static String TopBannerUrl = BaseUrl + "/v1/top-layout";
+    public final static String SuperCategory = BaseUrl + "/v1/super-category-list";
 
 }
