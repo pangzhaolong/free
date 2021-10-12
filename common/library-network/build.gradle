@@ -17,8 +17,6 @@ android {
                         "room.expandProjection": "true"]
             }
         }
-
-
     }
 
     //统一资源前缀,规范资源引用
@@ -39,7 +37,7 @@ dependencies {
     api rootProject.ext.dependencies["retrofit-adapter-rxjava2"]
 
     api rootProject.ext.androidx["room-runtime"]
-    annotationProcessor rootProject.ext.androidx["room-compiler"]
+    kapt rootProject.ext.androidx["room-compiler"]
     api rootProject.ext.androidx["room-rxJava2"]
 
     api rootProject.ext.dependencies["logger"]

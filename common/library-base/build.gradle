@@ -6,32 +6,42 @@ android {
 
 
 dependencies {
+
+    api rootProject.ext.androidx["junit"]
+    api rootProject.ext.androidx["androidx.test.ext-junit"]
+    api rootProject.ext.androidx["androidx.test.espresso:espresso-core"]
+
     api rootProject.ext.androidx["androidx-appcompat"]
     api rootProject.ext.androidx["androidx.annotation"]
-    api rootProject.ext.androidx["androidx.lifecycle"]
     api rootProject.ext.androidx["androidx.core"]
     api rootProject.ext.androidx["androidx.core-ktx"]
-    api rootProject.ext.androidx["androidx.viewmodel"]
     api rootProject.ext.androidx["androidx.recyclerview"]
+
+    api rootProject.ext.androidx["androidx.lifecycle-runtime"]
+    api rootProject.ext.androidx["androidx.lifecycle-runtime-ktx"]
+    api rootProject.ext.androidx["androidx.lifecycle-viewmodel-ktx"]
+    api rootProject.ext.androidx["androidx.lifecycle-livedata-ktx"]
+    api rootProject.ext.androidx["androidx.lifecycle-process"]
+
+
+    api rootProject.ext.dependencies["kotlin-coroutines"]
+    api rootProject.ext.dependencies["kotlin-coroutines-android"]
+
     api rootProject.ext.androidx["androidx.constraintlayout"]
     api rootProject.ext.androidx["android.material"]
     api rootProject.ext.androidx["androidx.navigation-fragment"]
     api rootProject.ext.androidx["androidx.navigation-ui:"]
+
     api rootProject.ext.dependencies["gson"]
     api rootProject.ext.dependencies["rxjava2"]
-//    api rootProject.ext.dependencies["mmkv"]
+
     api rootProject.ext.dependencies["BaseRecyclerViewAdapterHelper"]
     api rootProject.ext.dependencies["immersionbar"]
     api rootProject.ext.dependencies["glide"]
-    api rootProject.ext.androidx["junit"]
-    api rootProject.ext.androidx["androidx.test.ext-junit"]
-    api rootProject.ext.androidx["androidx.test.espresso:espresso-core"]
+
     api 'com.android.support:multidex:1.0.3'
-    api project(path: ':common:library-utils')
-    api 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-
     api rootProject.ext.dependencies["rxBinding"]
-    api project(path: ':common:lib_eventbus')
-
     api rootProject.ext.dependencies["logger"]
+    api project(path: ':common:library-utils')
+    api project(path: ':common:lib_eventbus')
 }

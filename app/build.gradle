@@ -11,7 +11,6 @@ android {
     aaptOptions {
         cruncherEnabled = false
         useNewCruncher = false
-
     }
     defaultConfig {
         applicationId rootProject.ext.app["mainApplicationId"]
@@ -23,9 +22,9 @@ android {
         flavorDimensions "versionCode"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = [AROUTER_MODULE_NAME: project.getName()]
+        kapt {
+            arguments {
+                arg("AROUTER_MODULE_NAME", project.getName())
             }
         }
 
@@ -109,7 +108,7 @@ android {
 }
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
-    annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
+    kapt rootProject.ext.dependencies["arouter-compiler"]
 
     //宿主项目中判断组件是否需要独立运行
     if (isBuildModule.toBoolean()) {

@@ -14,7 +14,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar','*aar'])
     api project(path: ':common:library-common')
     api project(path: ':common:library-share')
-    annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
+    kapt rootProject.ext.dependencies["arouter-compiler"]
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
 }

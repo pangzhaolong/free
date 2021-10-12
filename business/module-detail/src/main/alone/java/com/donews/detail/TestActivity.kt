@@ -12,6 +12,6 @@ class TestActivity : AppCompatActivity() {
     }
 
     fun clickGoodsDetail(view: View) {
-        GoodsDetailActivity.start(this)
+        GoodsDetailActivity.start(this, "25081212714", null)
     }
 }
