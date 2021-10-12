@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'walle'
 
 def var = rootProject.ext.DEBUG ? "offline" : "online"
@@ -66,10 +66,35 @@ android {
 
     //统一资源前缀,规范资源引用
     resourcePrefix "app_"
-    //开启dataBinding
-    dataBinding {
-        enabled true
+
+    sourceSets {
+        main {
+            if (isBuildModule.toBoolean()) {
+                //在main文件夹下建立alone文件夹，下面可以放java文件，资源文件等测试文件
+                //这里进行设置使用单独运行还是合并运行的Manifest.xml
+                //在main文件夹下建立debug文件夹，下面可以放java文件，资源文件等测试文件
+                //这里进行设置使用单独运行还是合并运行的Manifest.xml,
+                if (file('src/main/alone/AndroidManifest.xml').exists()) {
+                    manifest.srcFile 'src/main/alone/AndroidManifest.xml'
+                } else {
+                    manifest.srcFile 'src/main/AndroidManifest.xml'
+                }
+                java.srcDirs = ['src/main/alone/java',
+                                'src/main/java']
+                res.srcDirs = ['src/main/alone/res',
+                               'src/main/res']
+            } else {
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+                java.srcDirs = ['src/main/java']
+            }
+        }
     }
+
+    //开启dataBinding
+    buildFeatures {
+        dataBinding true
+    }
+
     lintOptions {
         checkReleaseBuilds false
         // Or, if you prefer, you can continue to check for errors in release builds,
@@ -84,27 +109,21 @@ android {
 }
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
+
     //宿主项目中判断组件是否需要独立运行
     if (isBuildModule.toBoolean()) {
         //组件独立运行时，宿主项目直接依赖基础库，避免编译错误
-        implementation project(':common:library-base')
+        implementation project(':common:library-common')
     } else {
-
         implementation project(path: ':module-main')
-        implementation project(path: ':business:module-mine')
-        implementation project(path: ':business:module-home')
         implementation project(path: ':module-login')
         implementation project(path: ':common:library-webview')
         implementation project(path: ':common:library-sdk')
         implementation project(path: ':common:library-crashhandler')
-
-
-
-
+        implementation project(path: ':business:module-mine')
+        implementation project(path: ':business:module-home')
     }
-    annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
-
-
 }
 
 walle {

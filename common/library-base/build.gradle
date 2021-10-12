@@ -1,54 +1,9 @@
-//if (isBuildModule.toBoolean()) {
-//    apply plugin: 'com.android.application'
-//} else {
-    apply plugin: 'com.android.library'
-//}
+apply from: rootProject.file('gradle/library.build.gradle')
 android {
-    compileSdkVersion rootProject.ext.android_version.compileSdkVersion
-    buildToolsVersion rootProject.ext.android_version.buildToolsVersion
-    defaultConfig {
-        minSdkVersion rootProject.ext.android_version.minSdkVersion
-        targetSdkVersion rootProject.ext.android_version.targetSdkVersion
-        versionCode 100
-        versionName "1.0"
-        multiDexEnabled true
-
-        consumerProguardFiles 'consumer-rules.pro'
-    }
-    sourceSets {
-        main {
-//            jniLibs.srcDirs = ['libs']
-            if (isBuildModule.toBoolean()) {
-            } else {
-                resources {
-                    //正式版本时，排除debug文件夹下所有调试文件
-                    exclude 'src/debug/*'
-                }
-            }
-        }
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-
     //统一资源前缀,规范资源引用
     resourcePrefix "base_"
-
-    dataBinding {
-        enabled true
-    }
-
-    compileOptions {
-        sourceCompatibility rootProject.ext.android_version.java_version
-        targetCompatibility rootProject.ext.android_version.java_version
-    }
-
-
 }
+
 
 dependencies {
     api rootProject.ext.androidx["androidx-appcompat"]

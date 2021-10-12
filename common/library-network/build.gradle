@@ -1,15 +1,10 @@
-apply plugin: 'com.android.library'
+apply from: rootProject.file('gradle/library.build.gradle')
 
 android {
-    compileSdkVersion rootProject.ext.android_version.compileSdkVersion
-    buildToolsVersion rootProject.ext.android_version.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion rootProject.ext.android_version.minSdkVersion
-        targetSdkVersion rootProject.ext.android_version.targetSdkVersion
         versionCode 1
         versionName "1.0.0"
-        consumerProguardFiles 'consumer-rules.pro'
         buildConfigField("String", "BASE_URL", "\"${rootProject.ext.DEBUG ? rootProject.ext.API_TEST_URL : rootProject.ext.API_URL}\"")
         buildConfigField("String", "BASE2_URL", "\"${rootProject.ext.DEBUG ? rootProject.ext.API_TEST2_URL : rootProject.ext.API2_URL}\"")
 
@@ -25,38 +20,9 @@ android {
 
 
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-
-    sourceSets {
-        main {
-//            jniLibs.srcDirs = ['libs']
-            if (isBuildModule.toBoolean()) {
-            } else {
-                resources {
-                    //正式版本时，排除debug文件夹下所有调试文件
-                    exclude 'src/debug/*'
-                }
-            }
-        }
-    }
 
     //统一资源前缀,规范资源引用
     resourcePrefix "net_"
-
-    compileOptions {
-        sourceCompatibility rootProject.ext.android_version.java_version
-        targetCompatibility rootProject.ext.android_version.java_version
-    }
-
-    lintOptions {
-        checkReleaseBuilds false
-        abortOnError false
-    }
 }
 
 dependencies {

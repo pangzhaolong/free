@@ -1,10 +1,4 @@
-if (isBuildModule.toBoolean()) {
-    //作为独立App应用运行
-    apply plugin: 'com.android.application'
-} else {
-    //作为组件运行
-    apply plugin: 'com.android.library'
-}
+apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
@@ -16,24 +10,19 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.android_version.minSdkVersion
         targetSdkVersion rootProject.ext.android_version.targetSdkVersion
-        versionCode rootProject.ext.android_version.versionCode
-        versionName rootProject.ext.android_version.versionName
-        consumerProguardFiles 'consumer-rules.pro'
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        versionCode 100
+        versionName "1.0"
         multiDexEnabled true
 
+        consumerProguardFiles 'consumer-rules.pro'
 
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = [AROUTER_MODULE_NAME: project.getName()]
             }
         }
-        ndk {
-            // 添加项目所需CPU类型的最小集
-            abiFilters "armeabi-v7a" //, "armeabi","x86"
-        }
-
     }
+
     signingConfigs {
         release {
             keyAlias 'key0'
@@ -55,6 +44,7 @@ android {
             signingConfig signingConfigs.release
         }
     }
+
     sourceSets {
         main {
             if (isBuildModule.toBoolean()) {
@@ -62,11 +52,7 @@ android {
                 //这里进行设置使用单独运行还是合并运行的Manifest.xml
                 //在main文件夹下建立debug文件夹，下面可以放java文件，资源文件等测试文件
                 //这里进行设置使用单独运行还是合并运行的Manifest.xml,
-                if (file('src/main/alone/AndroidManifest.xml').exists()) {
-                    manifest.srcFile 'src/main/alone/AndroidManifest.xml'
-                } else {
-                    manifest.srcFile 'src/main/AndroidManifest.xml'
-                }
+                manifest.srcFile 'src/main/AndroidManifest.xml'
                 java.srcDirs = ['src/main/alone/java',
                                 'src/main/java']
                 res.srcDirs = ['src/main/alone/res',
@@ -77,16 +63,9 @@ android {
             }
         }
     }
-    //开启dataBinding
+
     buildFeatures {
         dataBinding true
-    }
-
-    lintOptions {
-        checkReleaseBuilds false
-        // Or, if you prefer, you can continue to check for errors in release builds,
-        // but continue the build even when errors are found:
-        abortOnError false
     }
 
     compileOptions {
@@ -99,3 +78,8 @@ android {
     }
 }
 
+//repositories {
+//    flatDir {
+//        dirs 'libs'
+//    }
+//}

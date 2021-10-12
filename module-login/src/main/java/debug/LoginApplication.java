@@ -17,6 +17,6 @@ public class LoginApplication extends BaseApplication {
         EasyHttp.init(this);
         EasyHttp.getInstance().debug("LOGIN")
         .addInterceptor(new HttpExprInterceptor());
-        AnalysisHelp.init(this);
+//        AnalysisHelp.init(this);
     }
 }
