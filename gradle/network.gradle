@@ -20,6 +20,27 @@ ext {
     API_TEST_URL = "https://lottery.dev.tagtic.cn/shop/"
     API_ULR = ext.DEBUG ? API_TEST_URL : API_REALSE_URL
 
+    // 正式环境base Url
+    API2_URL = "https://www.qusobook.com/"
+    // 测试环境的base2 url
+    API_TEST2_URL = "http://120.31.70.243:8181/"
+
+    // 开屏广告id
+    SPLASH_ID = "42314";
+    // 插屏广告id
+    INTERSTITIAL_ID = "44511";
+    // Banner广告id
+    BANNER_ID = "44507";
+    // 激励视频广告Id
+    REWARD_VIDEO_ID = "43359";
+    // 全屏视频广告id
+    FULL_SCREEN_VIDEO_ID = "5354";
+    // 信息流自渲染广告id
+    NEWS_FEED_CUSTOM_RENDER_ID = "43366";
+    // 信息流模广告id
+    NEWS_FEED_TEMPLATE_ID = "43362";
+    // Draw流广告id
+    DRAW_FEED_ID = "";
 
     // 登录的地址
     LOGIN_TEST_URL = "https://monetization.dev.tagtic.cn/"
@@ -37,6 +58,28 @@ ext {
     BASE_CONFIG_OFF_LINE_URL = "https://monetization.dev.tagtic.cn/rule/v1/calculate/"
     BASE_CONFIG_URL = ext.DEBUG ? BASE_CONFIG_OFF_LINE_URL : BASE_CONFIG_ON_LINE_URL
     BASE_RULE = ext.DEBUG ? "-dev" : "-prod"
+
+    //H5 地址
+    H5_OFF_LINE_URL = "https://recharge-web.dev.tagtic.cn/" + ext.APP_IDENTIFICATION + "/index.html#/"
+    H5_ON_LINE_URL = "https://recharge-web.xg.tagtic.cn/" + ext.APP_IDENTIFICATION + "/index.html#/"
+    HTTP_H5 = ext.DEBUG ? ext.H5_OFF_LINE_URL : ext.H5_ON_LINE_URL
+
+    //福利，签到，新人福利
+    AWARD_OFF_LINE_URL = "https://award.dev.tagtic.cn/"
+    AWARD_ON_LINE_URL = "https://award.xg.tagtic.cn/"
+    HTTP_AWARD = ext.DEBUG ? ext.AWARD_OFF_LINE_URL : ext.AWARD_ON_LINE_URL
+
+
+    //幸运金币
+    LUCK_GOLD_OFF_LINE_URL = "https://luck-score.dev.tagtic.cn/luck/"
+    LUCK_GOLD_ON_LINE_URL = "https://luck-score.xg.tagtic.cn/luck/"
+    HTTP_LUCK_GOLD = ext.DEBUG ? ext.LUCK_GOLD_OFF_LINE_URL : ext.LUCK_GOLD_ON_LINE_URL
+
+    //game游戏配置
+    GAME_OFF_LINE_URL = "https://recharge.dev.xg.tagtic.cn/" + ext.APP_IDENTIFICATION + "/index.html"
+    GAME_ON_LINE_URL = "https://recharge.xg.tagtic.cn/" + ext.APP_IDENTIFICATION + "/index.html"
+    HTTP_GAME_URL = ext.DEBUG ? ext.GAME_OFF_LINE_URL : ext.GAME_ON_LINE_URL
+
 
     //广告配置
     AD_CONFIG = APP_IDENTIFICATION + "-adConfig-V2" + BASE_RULE
