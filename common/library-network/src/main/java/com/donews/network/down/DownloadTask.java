@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import com.donews.network.room.NetworkDatabase;
 import com.donews.network.room.bean.DownloadInfo;
 import com.donews.network.room.dao.DownloadInfoDao;
+import com.orhanobut.logger.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -186,21 +187,26 @@ public class DownloadTask {
                         }
                         mFilePath = mTempFile.getAbsolutePath();
                         mDownloadInfo = mDownloadInfoDao.queryDownloadInfo(mUrl, mSavePath, mFileSuffix);
-                        if (mDownloadInfo == null) {
-                            mDownloadInfo = new DownloadInfo();
-                            mDownloadInfo.setUrl(mUrl);
-                            mDownloadInfo.setSavePath(mSavePath);
-                            mDownloadInfo.setFileSuffix(mFileSuffix);
-                            mDownloadInfo.setTempFilePath(mTempFile.getAbsolutePath());
-                            mDownloadInfo.setDownloadFilePath(mDownloadFile.getAbsolutePath());
-                            mDownloadInfo.setTotalLength(-1);
-                            mDownloadInfo.setCurrentLength(mTempFile.length());
-                            mDownloadInfo.setStatus(0);
-                            long id = mDownloadInfoDao.insertDownloadInfo(mDownloadInfo);
-                            mDownloadInfo.setId(id);
-                        } else {
-                            mDownloadInfo.setCurrentLength(mTempFile.length());
-                            mDownloadInfoDao.uploadDownloadInfo(mDownloadInfo);
+                        try {
+                            if (mDownloadInfo == null) {
+                                mDownloadInfo = new DownloadInfo();
+                                mDownloadInfo.setUrl(mUrl);
+                                mDownloadInfo.setSavePath(mSavePath);
+                                mDownloadInfo.setFileSuffix(mFileSuffix);
+                                mDownloadInfo.setTempFilePath(mTempFile.getAbsolutePath());
+                                mDownloadInfo.setDownloadFilePath(mDownloadFile.getAbsolutePath());
+                                mDownloadInfo.setTotalLength(-1);
+                                mDownloadInfo.setCurrentLength(mTempFile.length());
+                                mDownloadInfo.setStatus(0);
+                                long id = mDownloadInfoDao.insertDownloadInfo(mDownloadInfo);
+                                mDownloadInfo.setId(id);
+                            } else {
+                                mDownloadInfo.setCurrentLength(mTempFile.length());
+                                mDownloadInfoDao.uploadDownloadInfo(mDownloadInfo);
+                            }
+                            Logger.d(mDownloadInfo.toString());
+                        } catch (Exception e) {
+                            Logger.e(e, "");
                         }
                         return Observable.just(mUrl);
                     }
@@ -214,51 +220,69 @@ public class DownloadTask {
                         Request request = new Request.Builder()
                                 .url(mUrl)
                                 .header("RANGE", "bytes=" + startLength + "-")
-                                .addHeader("Connection", "close")
                                 .build();
                         mCall = mOkHttpClient.newCall(request);
-                        Response response = mCall.execute();
-                        ResponseBody responseBody = response.body();
-                        if (responseBody == null) {
-                            return Observable.error(new Throwable("responseBody is null"));
-                        }
-                        //得到输入流
-                        InputStream inputStream = responseBody.byteStream();
-                        //得到任意保存文件处理类实例,断点续传
-                        RandomAccessFile randomAccessFile = new RandomAccessFile(mTempFile.getAbsolutePath(), "rw");
-                        if (startLength != 0) {
-                            randomAccessFile.seek(startLength);
-                        }
-                        //剩余下载的文件大小
-                        long contentLength = responseBody.contentLength();
-                        long totalLength = contentLength + startLength;
-                        mDownloadInfo.setTotalLength(totalLength);
-                        long currentLength = startLength;
-                        byte[] buffer = new byte[1024 * 4];
-                        int length;
-                        updateProgress(currentLength, totalLength);
+                        InputStream inputStream = null;
+                        RandomAccessFile randomAccessFile = null;
                         try {
-                            while ((length = randomAccessFile.read(buffer)) != -1) {
+                            Response response = mCall.execute();
+                            ResponseBody responseBody = response.body();
+                            if (responseBody == null) {
+                                return Observable.error(new Throwable("responseBody is null"));
+                            }
+                            //得到输入流
+                            inputStream = responseBody.byteStream();
+                            //得到任意保存文件处理类实例,断点续传
+                            randomAccessFile = new RandomAccessFile(mTempFile.getAbsolutePath(), "rw");
+                            if (startLength != 0) {
+                                randomAccessFile.seek(startLength);
+                            }
+                            //剩余下载的文件大小
+                            long contentLength = responseBody.contentLength();
+                            long totalLength = contentLength + startLength;
+                            mDownloadInfo.setTotalLength(totalLength);
+                            long currentLength = startLength;
+                            byte[] buffer = new byte[1024 * 4];
+                            int length;
+                            updateProgress(currentLength, totalLength);
+                            while ((length = inputStream.read(buffer)) != -1) {
                                 currentLength += length;
                                 mDownloadInfo.setCurrentLength(currentLength);
                                 //写入文件
                                 randomAccessFile.write(buffer, 0, length);
                                 updateProgress(currentLength, totalLength);
                             }
-                        } catch (Exception e) {
+                        } catch (IOException e) {
                             e.printStackTrace();
+                            Logger.e(e, "");
                             //写入错误，则更新进度
                             mDownloadInfoDao.uploadDownloadInfo(mDownloadInfo);
+                            //读写错误则删除缓存文件，防止下一次继续读写导致文件包错误
+                            mTempFile.delete();
+                            return Observable.error(new Throwable("下载失败"));
                         } finally {
                             try {
-                                inputStream.close();
-                                randomAccessFile.close();
+                                if (inputStream != null) {
+                                    inputStream.close();
+                                }
+                                if (randomAccessFile != null) {
+                                    randomAccessFile.close();
+                                }
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
                         }
                         //下载完成，则删除这条记录
                         mDownloadInfoDao.deleteDownloadInfo(mDownloadInfo);
+                        if (mFilePath.contains(TEMP_FILE_SUFFIX)) {
+                            boolean renameResult = mTempFile.renameTo(mDownloadFile);
+                            if (renameResult) {
+                                mFilePath = mDownloadFile.getAbsolutePath();
+                                Logger.d("download Success = " + mDownloadFile.getAbsolutePath());
+                            } else {
+                                return Observable.error(new Throwable("temp file rename to downloadFile failed"));
+                            }
+                        }
                         return Observable.just(mFilePath);
                     }
                 })
@@ -285,7 +309,7 @@ public class DownloadTask {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        Log.e(TAG, e.getMessage());
+                        Logger.e(e, "");
                         if (mDownloadState == DOWNLOAD_PAUSE) {
                             if (mListener != null) {
                                 mListener.onPaused(mFilePath);
@@ -357,7 +381,7 @@ public class DownloadTask {
                     //读操作超时时间
                     .readTimeout(DEFAULT_READ_TIME_OUT, TimeUnit.SECONDS)
                     //尝试重连，默认
-                    .retryOnConnectionFailure(true)
+                    .retryOnConnectionFailure(false)
                     //重定向
 //                    .addInterceptor(new RedirectIntercept())
                     .build();

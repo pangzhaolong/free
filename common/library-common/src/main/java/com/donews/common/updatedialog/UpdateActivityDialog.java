@@ -15,6 +15,9 @@ import com.donews.common.contract.ApplyUpdateBean;
 import com.donews.common.databinding.CommonUpdateDialogBinding;
 import com.donews.common.download.DownloadListener;
 import com.donews.common.download.DownloadManager;
+import com.orhanobut.logger.Logger;
+
+import java.text.DecimalFormat;
 
 /**
  * @author by SnowDragon
@@ -35,6 +38,8 @@ public class UpdateActivityDialog extends BaseAppDialogActivity {
     private CommonUpdateDialogBinding mDataBinding;
     DownloadManager downloadManager;
 
+    private float mTotalSize = 0;
+
     @Override
     public void initView() {
         if (getIntent() != null) {
@@ -45,12 +50,8 @@ public class UpdateActivityDialog extends BaseAppDialogActivity {
         }
         mDataBinding.setUpdataBean(updateBean);
         mDataBinding.pbProgress.setVisibility(View.GONE);
-        createdDownloadTask();
     }
 
-    private void createdDownloadTask() {
-
-    }
 
     @Override
     public void setDataBinding() {
@@ -78,7 +79,6 @@ public class UpdateActivityDialog extends BaseAppDialogActivity {
         }
     }
 
-
     private void downloadApk(Context context, boolean callback) {
         //注意这里传入applicationContext，否则在下载完成的时候调用finish，导致上下文无效，无法升级
         DownloadListener listener = null;
@@ -91,12 +91,7 @@ public class UpdateActivityDialog extends BaseAppDialogActivity {
 
                 @Override
                 public void updateProgress(long currentLength, long totalLength, int progress) {
-                    updateBean.setProgress(progress);
-                    String text = getString(R.string.common_update_progress, byte2MB(currentLength),
-                            byte2MB(totalLength));
-                    if (mDataBinding != null) {
-                        mDataBinding.tvProgress.setText(text);
-                    }
+                    UpdateActivityDialog.this.updateProgress(currentLength, totalLength, progress);
                 }
 
                 @Override
@@ -117,11 +112,25 @@ public class UpdateActivityDialog extends BaseAppDialogActivity {
         downloadManager.start();
     }
 
+    private void updateProgress(long currentLength, long totalLength, int progress) {
+        updateBean.setProgress(progress);
+        if (mTotalSize == 0) {
+            mTotalSize = totalLength / 1024f / 1024f;
+        }
+        float currentResult = currentLength / 1024f / 1024;
+        String text = getString(R.string.common_update_progress, currentResult, mTotalSize);
+        if (mDataBinding != null) {
+            mDataBinding.tvProgress.setText(text);
+        }
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (downloadManager != null) {
-            downloadManager.pause();
+        if (updateBean.getForce_upgrade() == 1) {
+            if (downloadManager != null) {
+                downloadManager.pause();
+            }
         }
         UpdateManager.getInstance().disposed();
     }
@@ -132,16 +141,5 @@ public class UpdateActivityDialog extends BaseAppDialogActivity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    /**
-     * byte 字节转换为 MB 单位
-     *
-     * @param length 字节长度
-     * @return 保留2为长度的MB长度
-     */
-    private float byte2MB(long length) {
-        float result = length * 1.00f / 8 / 1024 / 1024;
-        return (float) Math.round(result * 100) / 100;
     }
 }

@@ -9,9 +9,8 @@ buildscript {
     addRepos(repositories)
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.0'
-
         classpath "com.alibaba:arouter-register:1.0.2"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.20"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.meituan.android.walle:plugin:1.1.7'
 
 

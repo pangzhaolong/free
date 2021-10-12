@@ -75,6 +75,8 @@ dependencies {
     api rootProject.ext.androidx["room-runtime"]
     annotationProcessor rootProject.ext.androidx["room-compiler"]
     api rootProject.ext.androidx["room-rxJava2"]
-    implementation 'com.localebro:okhttpprofiler:1.0.8'
+
+    api rootProject.ext.dependencies["logger"]
+    api rootProject.ext.dependencies["okhttpprofiler"]
 }
 

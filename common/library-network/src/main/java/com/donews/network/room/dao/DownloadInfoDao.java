@@ -31,7 +31,10 @@ public interface DownloadInfoDao {
     @Update
     void uploadDownloadInfo(DownloadInfo downloadInfo);
 
-    @Query("SELECT *  FROM download_info WHERE url = :url AND save_path = :savePath AND file_suffix = :fileSuffix " +
+    @Query("SELECT *  FROM download_info " +
+            "WHERE url = :url " +
+            "AND (:fileSuffix IS NULL OR file_suffix = :fileSuffix) " +
+            "AND (:savePath is NULL OR save_path = :savePath) " +
             "LIMIT 1")
     DownloadInfo queryDownloadInfo(String url, String savePath, String fileSuffix);
 
