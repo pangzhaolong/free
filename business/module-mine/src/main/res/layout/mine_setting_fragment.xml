@@ -16,46 +16,55 @@
 
     </data>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/set_list_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical">
 
-        <include
-            android:id="@+id/set_bdsj"
-            layout="@layout/mine_setting_fragment_item" />
+            <include
+                android:id="@+id/set_bdsj"
+                layout="@layout/mine_setting_fragment_item" />
 
-        <include
-            android:id="@+id/set_fxapp"
-            layout="@layout/mine_setting_fragment_item" />
+            <include
+                android:id="@+id/set_fxapp"
+                layout="@layout/mine_setting_fragment_item" />
 
-        <include
-            android:id="@+id/set_yhxy"
-            layout="@layout/mine_setting_fragment_item" />
+            <include
+                android:id="@+id/set_yhxy"
+                layout="@layout/mine_setting_fragment_item" />
 
-        <include
-            android:id="@+id/set_yszcl"
-            layout="@layout/mine_setting_fragment_item" />
+            <include
+                android:id="@+id/set_yszcl"
+                layout="@layout/mine_setting_fragment_item" />
 
-        <include
-            android:id="@+id/set_yjfk"
-            layout="@layout/mine_setting_fragment_item" />
+            <include
+                android:id="@+id/set_yjfk"
+                layout="@layout/mine_setting_fragment_item" />
 
-        <include
-            android:id="@+id/set_gywm"
-            layout="@layout/mine_setting_fragment_item" />
+            <include
+                android:id="@+id/set_gywm"
+                layout="@layout/mine_setting_fragment_item" />
 
-        <include
-            android:id="@+id/set_qchc"
-            layout="@layout/mine_setting_fragment_item" />
+            <include
+                android:id="@+id/set_qchc"
+                layout="@layout/mine_setting_fragment_item" />
 
-        <include
-            android:id="@+id/set_zxzh"
-            layout="@layout/mine_setting_fragment_item" />
+            <include
+                android:id="@+id/set_zxzh"
+                layout="@layout/mine_setting_fragment_item" />
 
+            <!--<TextView
+                android:id="@+id/tv_exit_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="退出登录"/>-->
+        </LinearLayout>
+    </ScrollView>
 
-
-    </LinearLayout>
 
 </layout>

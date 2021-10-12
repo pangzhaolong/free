@@ -135,7 +135,7 @@ public class MainActivity
                         .navigation());
         fragments.add(
                 (Fragment) ARouter.getInstance()
-                        .build(RouterFragmentPath.User.PAGER_USER)
+                        .build(RouterFragmentPath.User.PAGER_USER_SETTING)
                         .navigation());
         adapter = new MainPageAdapter(getSupportFragmentManager(),
                 FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
