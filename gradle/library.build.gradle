@@ -1,0 +1,79 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+apply from: rootProject.file('gradle/common.build.gradle')
+
+android {
+    compileSdkVersion rootProject.ext.android_version.compileSdkVersion
+    buildToolsVersion rootProject.ext.android_version.buildToolsVersion
+    defaultConfig {
+        minSdkVersion rootProject.ext.android_version.minSdkVersion
+        targetSdkVersion rootProject.ext.android_version.targetSdkVersion
+        versionCode 100
+        versionName "1.0"
+        multiDexEnabled true
+
+        consumerProguardFiles 'consumer-rules.pro'
+
+        kapt {
+            arguments {
+                arg("AROUTER_MODULE_NAME", project.getName())
+            }
+        }
+    }
+
+    signingConfigs {
+        release {
+            keyAlias 'key0'
+            keyPassword '123456'
+            storeFile rootProject.file('keystore/jkzaaaa.jks')
+            storePassword '123456'
+        }
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+
+    sourceSets {
+        main {
+            if (isBuildModule.toBoolean()) {
+                //在main文件夹下建立alone文件夹，下面可以放java文件，资源文件等测试文件
+                //这里进行设置使用单独运行还是合并运行的Manifest.xml
+                //在main文件夹下建立debug文件夹，下面可以放java文件，资源文件等测试文件
+                //这里进行设置使用单独运行还是合并运行的Manifest.xml,
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+                java.srcDirs = ['src/main/alone/java',
+                                'src/main/java']
+                res.srcDirs = ['src/main/alone/res',
+                               'src/main/res']
+            } else {
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+                java.srcDirs = ['src/main/java']
+            }
+        }
+    }
+
+    buildFeatures {
+        dataBinding true
+    }
+
+    compileOptions {
+        sourceCompatibility rootProject.ext.android_version.java_version
+        targetCompatibility rootProject.ext.android_version.java_version
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}

@@ -8,5 +8,4 @@ package com.donews.network;
  */
 public class BaseUrlConfig {
     public final static String BASE_URL1 = BuildConfig.BASE_URL;
-    public final static String BASE_URL2 = BuildConfig.BASE2_URL;
 }

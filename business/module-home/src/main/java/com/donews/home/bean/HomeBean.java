@@ -2,11 +2,74 @@ package com.donews.home.bean;
 
 import com.donews.common.contract.BaseCustomViewModel;
 
-/**
- * <p> 所有bean文件集成BaseCustomViewModel，为后面的混淆做准备</p>
- * 作者： created by honeylife<br>
- * 日期： 2021/7/21 14:59<br>
- * 版本：V1.0<br>
- */
-public  class HomeBean extends BaseCustomViewModel {
+import java.util.List;
+
+public class HomeBean extends BaseCustomViewModel {
+    private List<CategoryItem> list;
+
+    public List<CategoryItem> getList() {
+        return list;
+    }
+
+    public void setList(List<CategoryItem> list) {
+        this.list = list;
+    }
+
+    @Override
+    public String toString() {
+        return "CategoryBean{" +
+                "list=" + list +
+                '}';
+    }
+
+    public class CategoryItem {
+        String cid;
+        String cname;
+        String cpic;
+//        String subcategories;
+
+        public String getCid() {
+            return cid;
+        }
+
+        public String getCname() {
+            return cname;
+        }
+
+        public String getCpic() {
+            return cpic;
+        }
+//
+//        public String getSubcategories() {
+//            return subcategories;
+//        }
+
+        public void setCid(String cid) {
+            this.cid = cid;
+        }
+
+        public void setCname(String cname) {
+            this.cname = cname;
+        }
+
+        public void setCpic(String cpic) {
+            this.cpic = cpic;
+        }
+//
+//        public void setSubcategories(String subcategories) {
+//            this.subcategories = subcategories;
+//        }
+
+        @Override
+        public String toString() {
+            return "CategoryItem{" +
+                    "cid='" + cid + '\'' +
+                    ", cname='" + cname + '\'' +
+                    ", cpic='" + cpic + '\'' +
+//                    ", subcategories='" + subcategories + '\'' +
+                    '}';
+        }
+    }
+
+
 }

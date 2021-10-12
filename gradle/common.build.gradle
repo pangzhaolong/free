@@ -1,0 +1,12 @@
+android {
+    defaultConfig {
+        buildConfigField("String", "APP_IDENTIFICATION", "\"${rootProject.APP_IDENTIFICATION}\"")
+        buildConfigField("String", "LOGIN_URL", "\"${rootProject.LOGIN_URL}\"")
+        buildConfigField("String", "BASE_URL", "\"${rootProject.API_ULR}\"")
+        buildConfigField("String", "TASK_URL", "\"${rootProject.TASK_URL}\"")
+        buildConfigField("String", "BASE_CONFIG_URL", "\"${rootProject.BASE_CONFIG_URL}\"")
+        buildConfigField("String", "BASE_RULE_URL", "\"${rootProject.BASE_RULE}\"")
+        buildConfigField("boolean", "HTTP_DEBUG", "${rootProject.ext.DEBUG}")
+        buildConfigField("String", "AD_CONFIG", "\"${rootProject.AD_CONFIG}\"")
+    }
+}

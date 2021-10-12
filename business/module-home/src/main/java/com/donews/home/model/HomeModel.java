@@ -3,6 +3,7 @@ package com.donews.home.model;
 import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.model.BaseLiveDataModel;
+import com.donews.home.api.HomeApi;
 import com.donews.home.bean.HomeBean;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
@@ -25,8 +26,7 @@ public class HomeModel extends BaseLiveDataModel {
      */
     public MutableLiveData<HomeBean> getNetData() {
         MutableLiveData<HomeBean> mutableLiveData = new MutableLiveData<>();
-        addDisposable(EasyHttp.post("")
-                .upJson("")
+        addDisposable(EasyHttp.get(HomeApi.SuperCategory)
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<HomeBean>() {
 

@@ -5,6 +5,10 @@ if (isBuildModule.toBoolean()) {
     //作为组件运行
     apply plugin: 'com.android.library'
 }
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+apply from: rootProject.file('gradle/common.build.gradle')
 
 android {
     compileSdkVersion rootProject.ext.android_version.compileSdkVersion
@@ -18,24 +22,12 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
-//        buildConfigField("String", "LOGIN_URL", "\"${rootProject.ext.DEBUG ? rootProject.ext.LOGIN_TEST_URL : rootProject.ext.LOGIN_ON_LINE_URL}\"")
-        buildConfigField("String", "LOGIN_URL", "\"${rootProject.LOGIN_URL}\"")
-        buildConfigField("String", "TASK_URL", "\"${rootProject.TASK_URL}\"")
-        buildConfigField("String", "BASE_CONFIG_URL", "\"${rootProject.BASE_CONFIG_URL}\"")
-        buildConfigField("String", "BASE_RULE_URL", "\"${rootProject.BASE_RULE}\"")
-        buildConfigField("boolean", "HTTP_DEBUG", "${ rootProject.ext.DEBUG }")
-        buildConfigField("String", "HTTP_H5", "\"${rootProject.HTTP_H5}\"")
-        buildConfigField("String", "HTTP_AWARD", "\"${rootProject.HTTP_AWARD}\"")
-        buildConfigField("String", "HTTP_LUCK_GOLD", "\"${rootProject.HTTP_LUCK_GOLD}\"")
-        buildConfigField("String", "HTTP_GAME_URL", "\"${rootProject.HTTP_GAME_URL}\"")
-        buildConfigField("String", "APP_IDENTIFICATION", "\"${rootProject.APP_IDENTIFICATION}\"")
-        buildConfigField("String", "AD_CONFIG", "\"${rootProject.AD_CONFIG}\"")
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = [AROUTER_MODULE_NAME: project.getName()]
+        kapt {
+            arguments {
+                arg("AROUTER_MODULE_NAME", project.getName())
             }
         }
+
         ndk {
             // 添加项目所需CPU类型的最小集
             abiFilters "armeabi-v7a" //, "armeabi","x86"
@@ -43,14 +35,11 @@ android {
 
     }
     signingConfigs {
-
         release {
             keyAlias 'key0'
             keyPassword '123456'
             storeFile rootProject.file('keystore/jkzaaaa.jks')
             storePassword '123456'
-//            v2SigningEnabled true
-//            v1SigningEnabled true
         }
     }
     buildTypes {
@@ -64,32 +53,33 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
-
         }
     }
     sourceSets {
         main {
-            //jni库统一放在libs目录下
-//            jniLibs.srcDir = ['libs']
             if (isBuildModule.toBoolean()) {
-                //单独运行
-                manifest.srcFile 'src/main/alone/AndroidManifest.xml'
-            } else {
-                //合并到宿主中
-                manifest.srcFile 'src/main/AndroidManifest.xml'
-//                resources{
-//                    exclude 'src/debug/*'
-//                }
-                java {
-                    //正式版本时.剔除debug文件夹下的所有调式文件
-                    exclude 'debug/**'
+                //在main文件夹下建立alone文件夹，下面可以放java文件，资源文件等测试文件
+                //这里进行设置使用单独运行还是合并运行的Manifest.xml
+                //在main文件夹下建立debug文件夹，下面可以放java文件，资源文件等测试文件
+                //这里进行设置使用单独运行还是合并运行的Manifest.xml,
+                if (file('src/main/alone/AndroidManifest.xml').exists()) {
+                    manifest.srcFile 'src/main/alone/AndroidManifest.xml'
+                } else {
+                    manifest.srcFile 'src/main/AndroidManifest.xml'
                 }
+                java.srcDirs = ['src/main/alone/java',
+                                'src/main/java']
+                res.srcDirs = ['src/main/alone/res',
+                               'src/main/res']
+            } else {
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+                java.srcDirs = ['src/main/java']
             }
         }
     }
     //开启dataBinding
-    dataBinding {
-        enabled true
+    buildFeatures {
+        dataBinding true
     }
 
     lintOptions {
@@ -99,10 +89,12 @@ android {
         abortOnError false
     }
 
-
     compileOptions {
         sourceCompatibility rootProject.ext.android_version.java_version
         targetCompatibility rootProject.ext.android_version.java_version
     }
-}
 
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
