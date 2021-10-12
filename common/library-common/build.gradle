@@ -3,9 +3,7 @@ apply from: rootProject.file('gradle/library.build.gradle')
 android {
 
     defaultConfig {
-        buildConfigField("String", "TASK_URL", "\"${rootProject.TASK_URL}\"")
-        buildConfigField("String", "BASE_CONFIG_URL", "\"${rootProject.BASE_CONFIG_URL}\"")
-        buildConfigField("String", "BASE_RULE_URL", "\"${rootProject.BASE_RULE}\"")
+
     }
 
 

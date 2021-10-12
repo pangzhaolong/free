@@ -5,6 +5,7 @@ import com.donews.detail.bean.GoodsDetailInfo
 import com.donews.detail.repository.GoodsDetailRepository
 import com.donews.network.callback.SimpleCallBack
 import com.donews.network.exception.ApiException
+import com.orhanobut.logger.Logger
 
 /**
  * 商品详情ViewModel
@@ -25,11 +26,15 @@ class GoodsDetailViewModel : BaseLiveDataViewModel<GoodsDetailRepository>() {
         mModel.queryGoodsDetailInfo(id, goodsId,
             object : SimpleCallBack<GoodsDetailInfo>() {
                 override fun onError(e: ApiException?) {
-
+                    Logger.e(e, "")
                 }
 
                 override fun onSuccess(t: GoodsDetailInfo?) {
-
+                    if (t == null) {
+                        Logger.d("请求为null")
+                    } else {
+                        Logger.d(t)
+                    }
                 }
             })
     }

@@ -9,14 +9,14 @@ android {
         ndk {
             abiFilters "armeabi-v7a"
         }
-        buildConfigField("String", "SPLASH_ID", "\"${rootProject.SPLASH_ID}\"")
-        buildConfigField("String", "INTERSTITIAL_ID", "\"${rootProject.INTERSTITIAL_ID}\"")
-        buildConfigField("String", "BANNER_ID", "\"${rootProject.BANNER_ID}\"")
-        buildConfigField("String", "REWARD_VIDEO_ID", "\"${rootProject.REWARD_VIDEO_ID}\"")
-        buildConfigField("String", "FULL_SCREEN_VIDEO_ID", "\"${rootProject.FULL_SCREEN_VIDEO_ID}\"")
-        buildConfigField("String", "NEWS_FEED_CUSTOM_RENDER_ID", "\"${rootProject.NEWS_FEED_CUSTOM_RENDER_ID}\"")
-        buildConfigField("String", "NEWS_FEED_TEMPLATE_ID", "\"${rootProject.NEWS_FEED_TEMPLATE_ID}\"")
-        buildConfigField("String", "DRAW_FEED_ID", "\"${rootProject.DRAW_FEED_ID}\"")
+        buildConfigField("String", "SPLASH_ID", "")
+        buildConfigField("String", "INTERSTITIAL_ID", "")
+        buildConfigField("String", "BANNER_ID", "")
+        buildConfigField("String", "REWARD_VIDEO_ID", "")
+        buildConfigField("String", "FULL_SCREEN_VIDEO_ID", "")
+        buildConfigField("String", "NEWS_FEED_CUSTOM_RENDER_ID", "")
+        buildConfigField("String", "NEWS_FEED_TEMPLATE_ID", "")
+        buildConfigField("String", "DRAW_FEED_ID", "")
     }
     //统一资源前缀，规范资源引用
     resourcePrefix "sdk_"

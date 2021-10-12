@@ -5,8 +5,7 @@ android {
     defaultConfig {
         versionCode 1
         versionName "1.0.0"
-        buildConfigField("String", "BASE_URL", "\"${rootProject.ext.DEBUG ? rootProject.ext.API_TEST_URL : rootProject.ext.API_URL}\"")
-        buildConfigField("String", "BASE2_URL", "\"${rootProject.ext.DEBUG ? rootProject.ext.API_TEST2_URL : rootProject.ext.API2_URL}\"")
+
 
         //Room 配置
         javaCompileOptions {

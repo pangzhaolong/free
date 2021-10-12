@@ -3,7 +3,7 @@
     package="com.donews.detail">
 
     <application
-        android:name="com.donews.base.base.BaseApplication"
+        android:name=".TestApp"
         android:label="@string/detail_app_name"
         android:theme="@style/AppTheme">
         <activity

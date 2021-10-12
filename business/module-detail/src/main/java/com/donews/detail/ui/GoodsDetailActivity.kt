@@ -5,9 +5,11 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.donews.base.activity.MvvmBaseLiveDataActivity
+import com.donews.detail.BuildConfig
 import com.donews.detail.R
 import com.donews.detail.databinding.DetailActivityGoodsDetailBinding
 import com.donews.detail.viewmodel.GoodsDetailViewModel
+import com.donews.network.BuildConfig.BASE_URL
 import com.orhanobut.logger.Logger
 
 /**

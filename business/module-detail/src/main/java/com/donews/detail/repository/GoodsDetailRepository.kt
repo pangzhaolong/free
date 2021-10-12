@@ -18,7 +18,7 @@ class GoodsDetailRepository : BaseLiveDataModel() {
      * 查询商品详情信息
      */
     fun queryGoodsDetailInfo(id: String?, goodsId: String?, callBack: SimpleCallBack<GoodsDetailInfo>) {
-        val getRequest = EasyHttp.get("");
+        val getRequest = EasyHttp.get("https://lottery.dev.tagtic.cn/v1/get-goods-details");
         id?.let {
             getRequest.params("id", it)
         }
