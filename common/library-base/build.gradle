@@ -55,6 +55,7 @@ dependencies {
     api rootProject.ext.androidx["androidx.annotation"]
     api rootProject.ext.androidx["androidx.lifecycle"]
     api rootProject.ext.androidx["androidx.core"]
+    api rootProject.ext.androidx["androidx.core-ktx"]
     api rootProject.ext.androidx["androidx.viewmodel"]
     api rootProject.ext.androidx["androidx.recyclerview"]
     api rootProject.ext.androidx["androidx.constraintlayout"]
