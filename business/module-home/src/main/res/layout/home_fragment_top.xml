@@ -14,14 +14,18 @@
         <com.zhpan.bannerview.BannerViewPager
             android:id="@+id/home_top_banner_view_pager"
             android:layout_width="match_parent"
-            android:layout_height="160dp"/>
+            android:layout_height="160dp" />
 
         <GridView
             android:id="@+id/home_column_gv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="155dp"
             android:layout_marginTop="10dp"
-            android:numColumns="5" />
+            android:background="@drawable/home_jdd_grid_bg"
+            android:gravity="center"
+            android:horizontalSpacing="4dp"
+            android:numColumns="5"
+            android:verticalSpacing="10dp" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
@@ -37,9 +41,7 @@
             android:id="@+id/home_good_product_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp" />
+            android:layout_marginTop="10dp" />
     </LinearLayout>
 
 </layout>
