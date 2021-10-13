@@ -5,6 +5,9 @@ apply plugin: 'walle'
 
 def var = rootProject.ext.DEBUG ? "offline" : "online"
 def identification = rootProject.ext.APP_IDENTIFICATION
+
+
+
 android {
     compileSdkVersion rootProject.ext.android_version.compileSdkVersion
     buildToolsVersion rootProject.ext.android_version.buildToolsVersion
@@ -68,7 +71,7 @@ android {
 
     sourceSets {
         main {
-            if (isBuildModule.toBoolean()) {
+            if (rootProject.ext.isBuildModule) {
                 //在main文件夹下建立alone文件夹，下面可以放java文件，资源文件等测试文件
                 //这里进行设置使用单独运行还是合并运行的Manifest.xml
                 //在main文件夹下建立debug文件夹，下面可以放java文件，资源文件等测试文件
@@ -111,7 +114,7 @@ dependencies {
     kapt rootProject.ext.dependencies["arouter-compiler"]
 
     //宿主项目中判断组件是否需要独立运行
-    if (isBuildModule.toBoolean()) {
+    if (rootProject.ext.isBuildModule) {
         //组件独立运行时，宿主项目直接依赖基础库，避免编译错误
         implementation project(':common:library-common')
     } else {
