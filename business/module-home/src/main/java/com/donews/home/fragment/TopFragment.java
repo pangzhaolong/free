@@ -7,6 +7,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -67,7 +68,7 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
         mDataBinding.homeColumnGv.setAdapter(mGridAdapter);
 
         mTopGoodsAdapter = new TopGoodsAdapter(this.getContext());
-        mDataBinding.homeGoodProductRv.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        mDataBinding.homeGoodProductRv.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
         mDataBinding.homeGoodProductRv.setAdapter(mTopGoodsAdapter);
     }
 

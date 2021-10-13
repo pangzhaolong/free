@@ -50,7 +50,7 @@ public class TopModel extends BaseLiveDataModel {
     public MutableLiveData<TopGoodsBean> getTopGoodsData() {
         MutableLiveData<TopGoodsBean> mutableLiveData = new MutableLiveData<>();
 
-        EasyHttp.get(HomeApi.TopBannerUrl)
+        EasyHttp.get(HomeApi.goodsList)
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<TopGoodsBean>() {
 

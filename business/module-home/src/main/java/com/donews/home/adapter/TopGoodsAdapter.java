@@ -43,10 +43,18 @@ public class TopGoodsAdapter extends RecyclerView.Adapter<TopGoodsAdapter.GoodsV
         return holder;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull GoodsViewHolder holder, int position) {
 
-        Glide.with(mContext).load(mGoodsList.get(position).getMainPic()).into(holder.getPicIv());
+        TopGoodsBean.goodsInfo gi = mGoodsList.get(position);
+        if (gi == null) {
+            return;
+        }
+
+        Glide.with(mContext).load(gi.getMain_pic()).into(holder.getPicIv());
+        holder.getDesTv().setText(gi.getTitle());
+        holder.getSalesTv().setText("已售" + gi.getMonth_sales());
     }
 
 

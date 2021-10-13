@@ -62,31 +62,31 @@ public class TopGoodsBean extends BaseCustomViewModel {
         @SerializedName("main_pic")
         private String main_pic;
         @SerializedName("marketing_main_pic")
-        private String marketingMainPic;
+        private String marketing_main_pic;
         @SerializedName("original_price")
-        private Integer originalPrice;
+        private float original_price;
         @SerializedName("actual_price")
-        private Integer actualPrice;
+        private float actual_price;
         @SerializedName("discounts")
-        private Integer discounts;
+        private float discounts;
         @SerializedName("coupon_link")
-        private String couponLink;
+        private String coupon_link;
         @SerializedName("coupon_price")
-        private Integer couponPrice;
+        private float coupon_price;
         @SerializedName("month_sales")
-        private Integer monthSales;
+        private int month_sales;
         @SerializedName("brand_id")
-        private String brandId;
+        private String brand_id;
         @SerializedName("brand_name")
-        private String brandName;
+        private String brand_name;
         @SerializedName("shop_type")
-        private Integer shopType;
+        private int shop_type;
         @SerializedName("haitao")
-        private Integer haitao;
+        private int haitao;
         @SerializedName("seller_id")
-        private String sellerId;
+        private String seller_id;
         @SerializedName("shop_name")
-        private String shopName;
+        private String shop_name;
 
         public String getId() {
             return id;
@@ -160,116 +160,116 @@ public class TopGoodsBean extends BaseCustomViewModel {
             this.tbcid = tbcid;
         }
 
-        public String getMainPic() {
-            return mainPic;
+        public String getMain_pic() {
+            return main_pic;
         }
 
-        public void setMainPic(String mainPic) {
-            this.mainPic = mainPic;
+        public void setMain_pic(String main_pic) {
+            this.main_pic = main_pic;
         }
 
-        public String getMarketingMainPic() {
-            return marketingMainPic;
+        public String getMarketing_main_pic() {
+            return marketing_main_pic;
         }
 
-        public void setMarketingMainPic(String marketingMainPic) {
-            this.marketingMainPic = marketingMainPic;
+        public void setMarketing_main_pic(String marketing_main_pic) {
+            this.marketing_main_pic = marketing_main_pic;
         }
 
-        public Integer getOriginalPrice() {
-            return originalPrice;
+        public float getOriginal_price() {
+            return original_price;
         }
 
-        public void setOriginalPrice(Integer originalPrice) {
-            this.originalPrice = originalPrice;
+        public void setOriginal_price(float original_price) {
+            this.original_price = original_price;
         }
 
-        public Integer getActualPrice() {
-            return actualPrice;
+        public float getActual_price() {
+            return actual_price;
         }
 
-        public void setActualPrice(Integer actualPrice) {
-            this.actualPrice = actualPrice;
+        public void setActual_price(float actual_price) {
+            this.actual_price = actual_price;
         }
 
-        public Integer getDiscounts() {
+        public float getDiscounts() {
             return discounts;
         }
 
-        public void setDiscounts(Integer discounts) {
+        public void setDiscounts(float discounts) {
             this.discounts = discounts;
         }
 
-        public String getCouponLink() {
-            return couponLink;
+        public String getCoupon_link() {
+            return coupon_link;
         }
 
-        public void setCouponLink(String couponLink) {
-            this.couponLink = couponLink;
+        public void setCoupon_link(String coupon_link) {
+            this.coupon_link = coupon_link;
         }
 
-        public Integer getCouponPrice() {
-            return couponPrice;
+        public float getCoupon_price() {
+            return coupon_price;
         }
 
-        public void setCouponPrice(Integer couponPrice) {
-            this.couponPrice = couponPrice;
+        public void setCoupon_price(float coupon_price) {
+            this.coupon_price = coupon_price;
         }
 
-        public Integer getMonthSales() {
-            return monthSales;
+        public int getMonth_sales() {
+            return month_sales;
         }
 
-        public void setMonthSales(Integer monthSales) {
-            this.monthSales = monthSales;
+        public void setMonth_sales(int month_sales) {
+            this.month_sales = month_sales;
         }
 
-        public String getBrandId() {
-            return brandId;
+        public String getBrand_id() {
+            return brand_id;
         }
 
-        public void setBrandId(String brandId) {
-            this.brandId = brandId;
+        public void setBrand_id(String brand_id) {
+            this.brand_id = brand_id;
         }
 
-        public String getBrandName() {
-            return brandName;
+        public String getBrand_name() {
+            return brand_name;
         }
 
-        public void setBrandName(String brandName) {
-            this.brandName = brandName;
+        public void setBrand_name(String brand_name) {
+            this.brand_name = brand_name;
         }
 
-        public Integer getShopType() {
-            return shopType;
+        public int getShop_type() {
+            return shop_type;
         }
 
-        public void setShopType(Integer shopType) {
-            this.shopType = shopType;
+        public void setShop_type(int shop_type) {
+            this.shop_type = shop_type;
         }
 
-        public Integer getHaitao() {
+        public int getHaitao() {
             return haitao;
         }
 
-        public void setHaitao(Integer haitao) {
+        public void setHaitao(int haitao) {
             this.haitao = haitao;
         }
 
-        public String getSellerId() {
-            return sellerId;
+        public String getSeller_id() {
+            return seller_id;
         }
 
-        public void setSellerId(String sellerId) {
-            this.sellerId = sellerId;
+        public void setSeller_id(String seller_id) {
+            this.seller_id = seller_id;
         }
 
-        public String getShopName() {
-            return shopName;
+        public String getShop_name() {
+            return shop_name;
         }
 
-        public void setShopName(String shopName) {
-            this.shopName = shopName;
+        public void setShop_name(String shop_name) {
+            this.shop_name = shop_name;
         }
     }
 }
