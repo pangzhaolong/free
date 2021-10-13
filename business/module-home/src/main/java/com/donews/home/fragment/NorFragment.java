@@ -5,11 +5,14 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.donews.base.fragment.MvvmLazyLiveDataFragment;
 import com.donews.home.R;
 import com.donews.home.adapter.FragmentAdapter;
 import com.donews.home.adapter.FragmentCategoryAdapter;
+import com.donews.home.adapter.NorGoodsAdapter;
 import com.donews.home.bean.HomeBean;
 import com.donews.home.databinding.HomeFragmentNorBinding;
 import com.donews.home.viewModel.NorViewModel;
@@ -19,8 +22,11 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding, NorViewModel> {
 
-    public NorFragment(HomeBean.CategoryItem categoryItem) {
+    private final HomeBean.CategoryItem mCategoryItem;
+    private NorGoodsAdapter mNorGoodsAdapter;
 
+    public NorFragment(HomeBean.CategoryItem categoryItem) {
+        mCategoryItem = categoryItem;
     }
 
     @Override
@@ -31,28 +37,17 @@ public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mNorGoodsAdapter = new NorGoodsAdapter(this.getContext());
+        mDataBinding.homeNorGoodsRv.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        mDataBinding.homeNorGoodsRv.setAdapter(mNorGoodsAdapter);
 
-        /*mDataBinding.homeCategoryVp2.setAdapter(new FragmentCategoryAdapter(this));
-        TabLayoutMediator tab = new TabLayoutMediator(mDataBinding.homeCategoryTl, mDataBinding.homeCategoryVp2, new TabLayoutMediator.TabConfigurationStrategy() {
-            @Override
-            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                switch (position) {
-                    case 0:
-                        tab.setText("人气");
-                        break;
-                    case 1:
-                        tab.setText("最新");
-                        break;
-                    case 2:
-                        tab.setText("销量");
-                        break;
-                    case 3:
-                        tab.setText("价格");
-                        break;
-                }
+        mViewModel.getNorGoodsData(mCategoryItem.getCid()).observe(getViewLifecycleOwner(), norGoodsBean -> {
+            if (norGoodsBean == null) {
+                return;
             }
+
+            mNorGoodsAdapter.refreshData(norGoodsBean.getList());
         });
-        tab.attach();*/
     }
 
     @Override

@@ -3,7 +3,9 @@ package com.donews.home.model;
 import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.model.BaseLiveDataModel;
+import com.donews.home.api.HomeApi;
 import com.donews.home.bean.HomeBean;
+import com.donews.home.bean.NorGoodsBean;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
@@ -23,12 +25,11 @@ public class NorModel extends BaseLiveDataModel {
      *
      * @return 返回 homeBean的数据
      */
-    public MutableLiveData<HomeBean> getNetData() {
-        MutableLiveData<HomeBean> mutableLiveData = new MutableLiveData<>();
-        addDisposable(EasyHttp.post("")
-                .upJson("")
+    public MutableLiveData<NorGoodsBean> getNorGoodsData(String cids) {
+        MutableLiveData<NorGoodsBean> mutableLiveData = new MutableLiveData<>();
+        addDisposable(EasyHttp.get(HomeApi.goodsList + "?cids=" + cids)
                 .cacheMode(CacheMode.NO_CACHE)
-                .execute(new SimpleCallBack<HomeBean>() {
+                .execute(new SimpleCallBack<NorGoodsBean>() {
 
                     @Override
                     public void onError(ApiException e) {
@@ -36,8 +37,8 @@ public class NorModel extends BaseLiveDataModel {
                     }
 
                     @Override
-                    public void onSuccess(HomeBean homeBean) {
-                        mutableLiveData.postValue(homeBean);
+                    public void onSuccess(NorGoodsBean norGoodsBean) {
+                        mutableLiveData.postValue(norGoodsBean);
                     }
                 }));
 
