@@ -3,8 +3,10 @@
     package="com.donews.home">
 
     <application>
-
-
+        <activity
+            android:name=".HomeSearchActivity"
+            android:exported="true"
+            android:windowSoftInputMode="stateAlwaysHidden" />
     </application>
 
 </manifest>

@@ -74,7 +74,7 @@ public class MainActivity
         int defaultColor = getResources().getColor(R.color.common_AEAEAE);
 
         mNavigationController = mDataBinding.bottomView.material()
-                .addItem(R.drawable.main_home, "充电", checkColor)
+                .addItem(R.drawable.main_home, "首页", checkColor)
 //                .addItem(R.drawable.main_notify, "福利", checkColor)
                 .addItem(R.drawable.main_user, "我的", checkColor)
                 .setDefaultColor(defaultColor)

@@ -1,5 +1,6 @@
 package com.donews.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -62,7 +63,7 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
 
         mFragmentAdapter = new FragmentAdapter(this);
 
-        mDataBinding.homeCategoryVp2.setUserInputEnabled(false);
+//        mDataBinding.homeCategoryVp2.setUserInputEnabled(false);
         mDataBinding.homeCategoryVp2.setAdapter(mFragmentAdapter);
         mDataBinding.homeCategoryTl.setTabMode(TabLayout.MODE_SCROLLABLE);
         TabLayoutMediator tab = new TabLayoutMediator(mDataBinding.homeCategoryTl, mDataBinding.homeCategoryVp2, (tab1, position) -> {
@@ -73,6 +74,11 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
             }
         });
         tab.attach();
+
+        mDataBinding.homeSearchBar.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), HomeSearchActivity.class);
+            startActivity(intent);
+        });
     }
 
     @Override
