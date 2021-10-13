@@ -37,9 +37,15 @@ dependencies {
 
     api rootProject.ext.dependencies["BaseRecyclerViewAdapterHelper"]
     api rootProject.ext.dependencies["immersionbar"]
-    api rootProject.ext.dependencies["glide"]
 
-    api 'com.android.support:multidex:1.0.3'
+    //图片加载库
+    api rootProject.ext.dependencies["glide"]
+    api rootProject.ext.dependencies["glideOkHttp"]
+    api rootProject.ext.dependencies["glideTransformations"]
+    kapt rootProject.ext.dependencies["glide-compiler"]
+
+    api rootProject.ext.dependencies["multidex"]
+
     api rootProject.ext.dependencies["rxBinding"]
     api rootProject.ext.dependencies["logger"]
     api project(path: ':common:library-utils')
