@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.system.Os;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListAdapter;
 
@@ -52,6 +53,7 @@ public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSe
             }
         });
         tab.attach();
+        mDataBinding.homeSearchBack.setOnClickListener(v -> finish());
         mDataBinding.homeSearchEdit.setDefaultFocusHighlightEnabled(false);
         mDataBinding.homeSearchEdit.addTextChangedListener(new TextWatcher() {
             @Override

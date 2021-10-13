@@ -79,6 +79,10 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
             Intent intent = new Intent(v.getContext(), HomeSearchActivity.class);
             startActivity(intent);
         });
+        mDataBinding.homeJddHelp.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), HomeHelpActivity.class);
+            startActivity(intent);
+        });
     }
 
     @Override
