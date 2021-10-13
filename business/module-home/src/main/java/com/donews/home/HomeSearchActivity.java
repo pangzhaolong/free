@@ -15,12 +15,19 @@ import com.donews.base.activity.MvvmBaseLiveDataActivity;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.home.adapter.SearchFragmentAdapter;
 import com.donews.home.databinding.HomeJddSearchSearchBinding;
+import com.donews.home.viewModel.SearchViewModel;
 import com.donews.utilslibrary.utils.LogUtil;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.gyf.immersionbar.ImmersionBar;
 
-public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSearchBinding, BaseLiveDataViewModel> {
+/**
+ * <p> </p>
+ * 作者： created by dw<br>
+ * 日期： 2021/10/13 14:13<br>
+ * 版本：V1.0<br>
+ */
+public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSearchBinding, SearchViewModel> {
 
     private SearchFragmentAdapter mSearchFragmentAdapter;
 

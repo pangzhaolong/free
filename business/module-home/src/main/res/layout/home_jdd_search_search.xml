@@ -22,7 +22,7 @@
                 android:id="@+id/home_search_back"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:padding="5dp"
+                android:padding="10dp"
                 android:src="@drawable/home_back" />
 
             <androidx.appcompat.widget.AppCompatEditText
@@ -30,9 +30,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginStart="10dp"
+                android:textCursorDrawable="@drawable/home_search_edit_cursor_color"
                 android:layout_toStartOf="@+id/home_search_do"
                 android:layout_toEndOf="@+id/home_search_back"
                 android:gravity="center_vertical"
+                android:background="@null"
                 android:hint="支持搜索淘宝/京东/拼多多优惠" />
 
             <androidx.appcompat.widget.AppCompatTextView

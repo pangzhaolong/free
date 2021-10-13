@@ -1,14 +1,17 @@
 package com.donews.home;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.gyf.immersionbar.ImmersionBar;
 
+/**
+ * <p> </p>
+ * 作者： created by dw<br>
+ * 日期： 2021/10/13 14:13<br>
+ * 版本：V1.0<br>
+ */
 public class HomeHelpActivity extends AppCompatActivity {
 
 
