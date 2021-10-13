@@ -1,12 +1,13 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 apply plugin: 'com.alibaba.arouter'
 buildscript {
+    apply from: rootProject.file('gradle/baseMothed.gradle')
     apply from: rootProject.file('gradle/network.gradle')
     apply from: rootProject.file('gradle/config.gradle')
     ext {
         kotlin_version = '1.5.31'
     }
-    addRepos(repositories)
+    addRepositories(repositories)
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.0'
         classpath "com.alibaba:arouter-register:1.0.2"
@@ -19,7 +20,7 @@ buildscript {
     }
 }
 allprojects {
-    addRepos(repositories)
+    addRepositories(repositories)
 }
 
 task clean(type: Delete) {

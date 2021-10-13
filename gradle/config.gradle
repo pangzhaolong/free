@@ -1,4 +1,7 @@
 ext {
+
+    isBuildModule = readLocalProperty("isBuildModule", isBuildModule.toString()).toBoolean()
+
     android_version = [
             compileSdkVersion: 30,
             buildToolsVersion: "30.0.2",
@@ -88,19 +91,4 @@ ext {
             "kotlin-coroutines"            : "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.kolinCoroutines",
             "kotlin-coroutines-android"    : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.kolinCoroutines",
     ]
-
-
 }
-
-def addRepos(RepositoryHandler handler) {
-    handler.google()
-    handler.jcenter()
-    handler.mavenCentral()
-    //Add the JitPack repository
-    handler.maven { url "https://jitpack.io" }
-    handler.maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
-    handler.maven { url 'https://repo1.maven.org/maven2/' }
-
-}
-
-ext.addRepos = this.&addRepos
