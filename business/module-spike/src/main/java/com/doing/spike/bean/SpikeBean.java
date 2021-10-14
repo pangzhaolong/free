@@ -363,5 +363,15 @@ public class SpikeBean extends BaseCustomViewModel {
         private String ddqTime;
         @SerializedName("status")
         private Integer status;
+
+        public String getRound() {
+            return round;
+        }
+
+        public void setRound(String round) {
+            this.round = round;
+        }
+
+        private String round;
     }
 }

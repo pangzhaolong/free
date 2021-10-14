@@ -55,7 +55,7 @@ public class SpikeTimeAdapter extends RecyclerView.Adapter<SpikeTimeAdapter.Spik
     @SuppressLint("RecyclerView")
     public void onBindViewHolder(@NonNull SpikeViewHolder holder, int position) {
         SpikeBean.RoundsListDTO roundsListDTO = mSpikeBeans.getRoundsList().get(position);
-        holder.mtimeShow.setText(roundsListDTO.getDdqTime());
+        holder.mtimeShow.setText(roundsListDTO.getRound()+"场");
         holder.mSpikeType.setText(roundsListDTO.getStatus() == 0 ? "已开抢" : roundsListDTO.getStatus() == 1 ? "疯抢中" :
                 roundsListDTO.getStatus() == 2 ? "即将开始" : "");
 
