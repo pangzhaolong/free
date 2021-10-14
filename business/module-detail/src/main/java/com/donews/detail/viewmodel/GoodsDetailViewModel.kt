@@ -1,6 +1,18 @@
 package com.donews.detail.viewmodel
 
+import android.content.Context
+import android.graphics.drawable.Drawable
+import android.os.Build
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.style.ImageSpan
+import androidx.core.content.ContextCompat
+import androidx.core.text.set
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.donews.base.base.BaseApplication
 import com.donews.base.viewmodel.BaseLiveDataViewModel
+import com.donews.detail.R
 import com.donews.detail.bean.GoodsDetailInfo
 import com.donews.detail.repository.GoodsDetailRepository
 import com.donews.network.callback.SimpleCallBack
@@ -16,11 +28,12 @@ import com.orhanobut.logger.Logger
  */
 class GoodsDetailViewModel : BaseLiveDataViewModel<GoodsDetailRepository>() {
 
+    private val _goodeDetailLiveData: MutableLiveData<GoodsDetailInfo> = MutableLiveData()
+    val goodeDetailLiveData: LiveData<GoodsDetailInfo> = _goodeDetailLiveData
 
     override fun createModel(): GoodsDetailRepository {
         return GoodsDetailRepository()
     }
-
 
     fun getGoodsDetailInfo(id: String?, goodsId: String?) {
         mModel.queryGoodsDetailInfo(id, goodsId,
@@ -30,10 +43,9 @@ class GoodsDetailViewModel : BaseLiveDataViewModel<GoodsDetailRepository>() {
                 }
 
                 override fun onSuccess(t: GoodsDetailInfo?) {
-                    if (t == null) {
-                        Logger.d("请求为null")
-                    } else {
-                        Logger.d(t)
+                    Logger.d(t)
+                    t?.let {
+                        _goodeDetailLiveData.postValue(it)
                     }
                 }
             })

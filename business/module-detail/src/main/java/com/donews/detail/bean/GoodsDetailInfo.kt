@@ -1,4 +1,6 @@
 package com.donews.detail.bean
+
+import com.donews.common.contract.BaseCustomViewModel
 import com.google.gson.annotations.SerializedName
 
 
@@ -10,130 +12,192 @@ import com.google.gson.annotations.SerializedName
  * @date 2021/10/12 14:54
  */
 data class GoodsDetailInfo(
+    /** 商品id 若查询结果id=-1，则说明该商品非大淘客平台商品，数据为淘宝直接返回的数据，由于淘宝数据的缓存时间相对较长，会出现商品信息和详情信息不一致的情况*/
     @SerializedName("id")
-    val id: String,
+    var id: String,
+    /** 淘宝商品id */
     @SerializedName("goods_id")
-    val goodsId: String,
+    var goodsId: String,
+    /** 商品淘宝链接 */
     @SerializedName("item_link")
-    val itemLink: String,
+    var itemLink: String,
+    /** 淘宝标题 */
     @SerializedName("title")
-    val title: String,
+    var title: String,
+    /** 大淘客短标题 */
     @SerializedName("dtitle")
-    val dtitle: String,
+    var dtitle: String,
+    /** 特色文案（商品卖点） */
     @SerializedName("special_text")
-    val specialText: List<String>,
+    var specialText: List<String>,
+    /** 推广文案 */
     @SerializedName("desc")
-    val desc: String,
+    var desc: String,
+    /** 商品在大淘客的分类id */
     @SerializedName("cid")
-    val cid: String,
+    var cid: String,
+    /** 商品在大淘客的二级分类id，该分类为前端分类，一个商品可能有多个二级分类id */
     @SerializedName("subcid")
-    val subcid: List<String>,
+    var subcid: List<Int>,
+    /**  商品在淘宝的分类id */
     @SerializedName("tbcid")
-    val tbcid: String,
+    var tbcid: String,
+    /** 商品主图链接 */
     @SerializedName("main_pic")
-    val mainPic: String,
+    var mainPic: String,
+    /** 营销主图链接 */
     @SerializedName("marketing_main_pic")
-    val marketingMainPic: String,
+    var marketingMainPic: String,
+    /**商品视频（新增字段）*/
     @SerializedName("video")
-    val video: String,
+    var video: String,
+    /** 商品原价 */
     @SerializedName("original_price")
-    val originalPrice: Int,
+    var originalPrice: Float,
+    /** 券后价 */
     @SerializedName("actual_price")
-    val actualPrice: Int,
+    var actualPrice: Float,
+    /** 折扣力度 */
     @SerializedName("discounts")
-    val discounts: Int,
+    var discounts: Float,
+    /** 优惠券链接 */
     @SerializedName("coupon_link")
-    val couponLink: String,
+    var couponLink: String,
+    /** 券总量 */
     @SerializedName("coupon_total_num")
-    val couponTotalNum: Int,
+    var couponTotalNum: Int,
+    /** 领券量 */
     @SerializedName("coupon_receive_num")
-    val couponReceiveNum: Int,
+    var couponReceiveNum: Int,
+    /**  优惠券结束时间 */
     @SerializedName("coupon_end_time")
-    val couponEndTime: String,
+    var couponEndTime: String,
+    /** 优惠券开始时间 */
     @SerializedName("coupon_start_time")
-    val couponStartTime: String,
+    var couponStartTime: String,
+    /**  优惠券金额 */
     @SerializedName("coupon_price")
-    val couponPrice: Int,
+    var couponPrice: Float,
+    /** 优惠券使用条件 */
     @SerializedName("coupon_conditions")
-    val couponConditions: String,
+    var couponConditions: String,
+    /** 30天销量 */
     @SerializedName("month_sales")
-    val monthSales: Int,
+    var monthSales: Int,
+    /** 2小时销量 */
     @SerializedName("two_hours_sales")
-    val twoHoursSales: Int,
+    var twoHoursSales: Int,
     @SerializedName("daily_sales")
-    val dailySales: Int,
+    /** 当天销量 */
+    var dailySales: Int,
     @SerializedName("brand")
-    val brand: Int,
+    /** 是否是品牌商品 */
+    var brand: Int,
     @SerializedName("brand_id")
-    val brandId: String,
+    /** 品牌id */
+    var brandId: String,
     @SerializedName("brand_name")
-    val brandName: String,
+    /**  品牌名称 */
+    var brandName: String,
+    /** 商品上架时间 */
     @SerializedName("create_time")
-    val createTime: String,
+    var createTime: String,
+    /** 活动类型，1-无活动，2-淘抢购，3-聚划算 */
     @SerializedName("activity_type")
-    val activityType: Int,
+    var activityType: Int,
+    /** 活动开始时间 */
     @SerializedName("activity_start_time")
-    val activityStartTime: String,
+    var activityStartTime: String,
+    /** 活动结束时间 */
     @SerializedName("activity_end_time")
-    val activityEndTime: String,
+    var activityEndTime: String,
+    /** 店铺类型，1-天猫，0-淘宝 */
     @SerializedName("shop_type")
-    val shopType: Int,
+    var shopType: Int,
+    /** 是否是金牌卖家，1-是，0-非金牌卖家 */
     @SerializedName("gold_sellers")
-    val goldSellers: Int,
+    var goldSellers: Int,
+    /** 淘宝卖家id，也是店铺id。店铺转链可用此字段 */
     @SerializedName("seller_id")
-    val sellerId: String,
+    var sellerId: String,
+    /** 店铺名称 */
     @SerializedName("shop_name")
-    val shopName: String,
+    var shopName: String,
+    /** 淘宝店铺等级 */
     @SerializedName("shop_level")
-    val shopLevel: Int,
+    var shopLevel: Int,
+    /** 描述分 */
     @SerializedName("desc_score")
-    val descScore: Int,
+    var descScore: Float,
+    /** 描述相符 */
     @SerializedName("dsr_score")
-    val dsrScore: Int,
+    var dsrScore: Float,
+    /**  描述同行比 */
     @SerializedName("dsr_percent")
-    val dsrPercent: Int,
+    var dsrPercent: Float,
+    /** 物流服务 */
     @SerializedName("ship_score")
-    val shipScore: Int,
+    var shipScore: Float,
+    /** 物流同行比 */
     @SerializedName("ship_percent")
-    val shipPercent: Int,
+    var shipPercent: Float,
+    /** 服务态度 */
     @SerializedName("service_score")
-    val serviceScore: Int,
+    var serviceScore: Float,
+    /** 服务同行比 */
     @SerializedName("service_percent")
-    val servicePercent: Int,
+    var servicePercent: Float,
     @SerializedName("hot_push")
-    val hotPush: Int,
+    /** 热推值 */
+    var hotPush: Int,
     @SerializedName("team_name")
-    val teamName: String,
+    /** 放单人名称 */
+    var teamName: String,
     @SerializedName("detail_pics")
-    val detailPics: String,
+    /** 商品详情图（需要做适配） */
+    var detailPics: String,
+    /** 淘宝轮播图 */
     @SerializedName("imgs")
-    val imgs: String,
+    var imgs: String,
+    /** 相关商品图 */
     @SerializedName("reimgs")
-    val reimgs: String,
+    var reimgs: String,
+    /** 定金，若无定金，则显示0 */
     @SerializedName("quan_m_link")
-    val quanMLink: Int,
+    var quanMLink: Int,
+    /**  立减，若无立减金额，则显示0*/
     @SerializedName("hz_quan_over")
-    val hzQuanOver: Int,
+    var hzQuanOver: Int,
+    /**  0.不包运费险 1.包运费险*/
     @SerializedName("yunfeixian")
-    val yunfeixian: Int,
+    var yunfeixian: Int,
+    /** 预估淘礼金 */
     @SerializedName("estimate_amount")
-    val estimateAmount: Int,
+    var estimateAmount: Float,
     @SerializedName("shop_logo")
-    val shopLogo: String,
+    var shopLogo: String,
     @SerializedName("freeship_remote_district")
-    val freeshipRemoteDistrict: Int,
+    /** 偏远地区包邮，0.不包邮，1.包邮 */
+    var freeshipRemoteDistrict: Int,
     @SerializedName("is_subdivision")
-    val isSubdivision: Int,
+    /** 该商品是否有细分类目：0不是，1是 */
+    var isSubdivision: Int,
     @SerializedName("subdivision_id")
-    val subdivisionId: String,
+    /** 该商品所属细分类目id */
+    var subdivisionId: String,
+    /** 该商品所属细分类目名称 */
     @SerializedName("subdivision_name")
-    val subdivisionName: String,
+    var subdivisionName: String,
+    /** 该商品所属细分类目排名 */
     @SerializedName("subdivision_rank")
-    val subdivisionRank: Int,
+    var subdivisionRank: Int,
+    /** 24小时销量（8/17新增字段） */
     @SerializedName("sales24h")
-    val sales24h: Int,
+    var sales24h: Int,
+    /** 是否近30天历史最低价，0-否；1-是(8/18新增字段) */
     @SerializedName("lowest")
-    val lowest: Int,
+    var lowest: Int,
+    /** 优惠券ID(9/15新增字段) */
     @SerializedName("coupon_id")
-    val couponId: String
-)
+    var couponId: String
+) : BaseCustomViewModel()

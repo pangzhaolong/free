@@ -1,4 +1,7 @@
 ext {
+
+    isBuildModule = readLocalProperty("isBuildModule", isBuildModule.toString()).toBoolean()
+
     android_version = [
             compileSdkVersion: 30,
             buildToolsVersion: "30.0.2",
@@ -22,6 +25,9 @@ ext {
 
     //androidx支持库配置
     androidx = [
+
+            "multidex"                            : "com.android.support:multidex:1.0.3",
+
             "androidx-appcompat"                  : "androidx.appcompat:appcompat:1.3.1",
             "androidx.core"                       : "androidx.core:core:$versions.androidXCore",
             "androidx.core-ktx"                   : "androidx.core:core-ktx:$versions.androidXCore",
@@ -32,6 +38,7 @@ ext {
             "android.material"                    : "com.google.android.material:material:1.2.1",
             "androidx.navigation-fragment"        : "androidx.navigation:navigation-fragment:2.1.0",
             "androidx.navigation-ui:"             : "androidx.navigation:navigation-ui:2.1.0",
+
             "junit"                               : "junit:junit:4.13",
             "androidx.test.ext-junit"             : "androidx.test.ext:junit:1.1.2",
             "androidx.test.espresso:espresso-core": "androidx.test.espresso:espresso-core:3.3.0",
@@ -50,14 +57,17 @@ ext {
 
     //依赖第三方配置
     dependencies = [
+
+            "multidex"                     : "com.android.support:multidex:1.0.3",
+
             "gson"                         : "com.google.code.gson:gson:2.8.6",
-            "rxjava2"                      : "io.reactivex.rxjava2:rxjava:2.2.10",
-            "rxpermissions"                : "com.github.tbruyelle:rxpermissions:0.10.2",
             "mmkv"                         : "com.tencent:mmkv-static:1.2.7",
             "BaseRecyclerViewAdapterHelper": "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.0-beta11",
             "immersionbar"                 : "com.gyf.immersionbar:immersionbar:3.0.0",
             "glide"                        : "com.github.bumptech.glide:glide:4.12.0",
             "glide-compiler"               : "com.github.bumptech.glide:compiler:4.12.0",
+            "glideOkHttp"                  : "com.github.bumptech.glide:okhttp3-integration:4.12.0",
+            "glideTransformations"         : "jp.wasabeef:glide-transformations:2.0.2",
 
             "arouter-api"                  : "com.alibaba:arouter-api:1.5.2",
             "arouter-compiler"             : "com.alibaba:arouter-compiler:1.5.2",
@@ -67,13 +77,15 @@ ext {
             "okio"                         : "com.squareup.okio:okio:1.17.2",
             "okhttpprofiler"               : "com.localebro:okhttpprofiler:1.0.8",
 
-
-            //rx系列
-            "rxandroid"                    : "io.reactivex.rxjava2:rxandroid:2.1.1",
             "retrofit"                     : "com.squareup.retrofit2:retrofit:2.9.0",
-            "rxBinding"                    : "com.jakewharton.rxbinding4:rxbinding:4.0.0",
             "retrofit-converter-gson"      : "com.squareup.retrofit2:converter-gson:2.9.0",
             "retrofit-adapter-rxjava2"     : "com.squareup.retrofit2:adapter-rxjava2:2.9.0",
+
+            //rx系列
+            "rxjava2"                      : "io.reactivex.rxjava2:rxjava:2.2.10",
+            "rxpermissions"                : "com.github.tbruyelle:rxpermissions:0.10.2",
+            "rxandroid"                    : "io.reactivex.rxjava2:rxandroid:2.1.1",
+            "rxBinding"                    : "com.jakewharton.rxbinding4:rxbinding:4.0.0",
 
             //lruCache
             "diskLruCache"                 : "com.jakewharton:disklrucache:2.0.2",
@@ -88,19 +100,4 @@ ext {
             "kotlin-coroutines"            : "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.kolinCoroutines",
             "kotlin-coroutines-android"    : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.kolinCoroutines",
     ]
-
-
 }
-
-def addRepos(RepositoryHandler handler) {
-    handler.google()
-    handler.jcenter()
-    handler.mavenCentral()
-    //Add the JitPack repository
-    handler.maven { url "https://jitpack.io" }
-    handler.maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
-    handler.maven { url 'https://repo1.maven.org/maven2/' }
-
-}
-
-ext.addRepos = this.&addRepos

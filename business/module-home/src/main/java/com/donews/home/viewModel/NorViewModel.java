@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.home.bean.HomeBean;
+import com.donews.home.bean.NorGoodsBean;
 import com.donews.home.model.HomeModel;
 import com.donews.home.model.NorModel;
 
@@ -21,7 +22,7 @@ public class NorViewModel extends BaseLiveDataViewModel<NorModel>{
     }
 
 
-    public MutableLiveData<HomeBean> getNetHomeData(){
-        return mModel.getNetData();
+    public MutableLiveData<NorGoodsBean> getNorGoodsData(String cids){
+        return mModel.getNorGoodsData(cids);
     }
  }

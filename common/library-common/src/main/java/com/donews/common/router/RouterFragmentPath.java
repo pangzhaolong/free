@@ -32,6 +32,17 @@ public class RouterFragmentPath
 
     }
 
+    /** 秒杀组件 */
+    public static class Spike
+    {
+        private static final String SPIKE = "/spike";
+
+        /** 秒杀 */
+        public static final String PAGER_SPIKE = SPIKE + "/Spike";
+
+    }
+
+
     /** sdkTest */
     public static class TestSdk {
         private static final String TEST = "/test";

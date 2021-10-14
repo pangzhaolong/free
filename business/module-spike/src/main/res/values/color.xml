@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <color name="selected_color" tools:ignore="ResourceName">#F86583</color>
+    <color name="un_time_color" tools:ignore="ResourceName">#333333</color>
+
+    <color name="un_time_title_color" tools:ignore="ResourceName">#A2A2A2</color>
+
+    <color name="bg_color" tools:ignore="ResourceName">#F5F5F5</color>
+</resources>

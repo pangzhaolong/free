@@ -22,7 +22,7 @@ public class HomeBean extends BaseCustomViewModel {
                 '}';
     }
 
-    public class CategoryItem {
+    public static class CategoryItem {
         String cid;
         String cname;
         String cpic;

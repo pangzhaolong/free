@@ -1,31 +1,91 @@
 package com.donews.home.adapter;
 
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.donews.home.R;
+import com.donews.home.bean.SpecialCategoryBean;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GridAdapter extends BaseAdapter {
-    public GridAdapter() {
 
+    private final Context mContext;
+    private List<SpecialCategoryBean> mSpelCategoryList = new ArrayList<>();
+
+    public GridAdapter(Context context) {
+        mContext = context;
+    }
+
+    public void refreshData(List<SpecialCategoryBean> list) {
+        mSpelCategoryList.clear();
+        mSpelCategoryList.addAll(list);
+        notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return 0;
+        return mSpelCategoryList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return mSpelCategoryList.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        return null;
+        ItemViewHolder holder = null;
+        if (convertView == null) {
+            convertView = View.inflate(mContext, R.layout.home_fragment_top_grid_item, null);
+            holder = new ItemViewHolder();
+            holder.logoIv = convertView.findViewById(R.id.home_top_grid_item_iv);
+            holder.logoTv = convertView.findViewById(R.id.home_top_grid_item_tv);
+            convertView.setTag(holder);
+        } else {
+            holder = (ItemViewHolder) convertView.getTag();
+        }
+
+        Glide.with(mContext).load(mSpelCategoryList.get(position).getImg()).into(holder.logoIv);
+        holder.logoTv.setText(mSpelCategoryList.get(position).getTitle());
+
+        return convertView;
+    }
+
+    public static class ItemViewHolder {
+        ImageView logoIv;
+        TextView logoTv;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

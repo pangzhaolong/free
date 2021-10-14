@@ -1,8 +1,10 @@
 package com.donews.detail.repository
 
+import androidx.lifecycle.MutableLiveData
 import com.donews.base.model.BaseLiveDataModel
 import com.donews.detail.bean.GoodsDetailInfo
 import com.donews.network.EasyHttp
+import com.donews.network.cache.model.CacheMode
 import com.donews.network.callback.SimpleCallBack
 
 /**
@@ -18,7 +20,9 @@ class GoodsDetailRepository : BaseLiveDataModel() {
      * 查询商品详情信息
      */
     fun queryGoodsDetailInfo(id: String?, goodsId: String?, callBack: SimpleCallBack<GoodsDetailInfo>) {
-        val getRequest = EasyHttp.get("https://lottery.dev.tagtic.cn/v1/get-goods-details");
+        val urlCreator = UrlCreator()
+        val getRequest = EasyHttp.get(urlCreator.getGoodsDetailApi())
+            .cacheMode(CacheMode.NO_CACHE)
         id?.let {
             getRequest.params("id", it)
         }

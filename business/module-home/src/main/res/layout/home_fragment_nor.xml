@@ -11,33 +11,34 @@
     <LinearLayout
         android:id="@+id/home_category_cl"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#F9F9F9"
         android:orientation="vertical">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="#ff00ff" />
+        <!--
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/home_category_tl"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_40"
+                    android:background="@color/white"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tabIndicatorColor="#ff0000"
+                    tools:ignore="MissingConstraints" />
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/home_category_tl"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_40"
-            android:background="@color/white"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tabIndicatorColor="#ff0000"
-            tools:ignore="MissingConstraints" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:background="@color/A999999" />
 
-        <View
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/home_category_vp2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintTop_toBottomOf="@+id/home_category_tl" />-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/home_nor_goods_rv"
             android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:background="@color/A999999" />
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/home_category_vp2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintTop_toBottomOf="@+id/home_category_tl" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
 </layout>
