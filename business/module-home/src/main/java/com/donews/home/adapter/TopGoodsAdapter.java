@@ -14,17 +14,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.donews.home.R;
 import com.donews.home.bean.TopGoodsBean;
+import com.donews.home.listener.GoodsDetailListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TopGoodsAdapter extends RecyclerView.Adapter<TopGoodsAdapter.GoodsViewHolder> {
+public class TopGoodsAdapter extends RecyclerView.Adapter<TopGoodsAdapter.GoodsViewHolder> implements View.OnClickListener {
 
     private final Context mContext;
     private final List<TopGoodsBean.goodsInfo> mGoodsList = new ArrayList<>();
+    private GoodsDetailListener mListener;
 
-    public TopGoodsAdapter(Context context) {
+    public TopGoodsAdapter(Context context, GoodsDetailListener listener) {
         mContext = context;
+        mListener = listener;
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -52,15 +55,23 @@ public class TopGoodsAdapter extends RecyclerView.Adapter<TopGoodsAdapter.GoodsV
             return;
         }
 
+        holder.itemView.setTag(gi);
+        holder.itemView.setOnClickListener(this::onClick);
         Glide.with(mContext).load(gi.getMain_pic()).into(holder.getPicIv());
         holder.getDesTv().setText(gi.getTitle());
         holder.getSalesTv().setText("已售" + gi.getMonth_sales());
     }
 
-
     @Override
     public int getItemCount() {
         return mGoodsList.size();
+    }
+
+    @Override
+    public void onClick(View v) {
+        TopGoodsBean.goodsInfo gi = (TopGoodsBean.goodsInfo) v.getTag();
+
+        mListener.onClick(gi.getId(), gi.getGoods_id());
     }
 
     public static class GoodsViewHolder extends RecyclerView.ViewHolder {
