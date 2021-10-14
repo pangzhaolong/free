@@ -126,8 +126,5 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
                 .withString("params_id", id)
                 .withString("params_goods_id", goodsId)
                 .navigation();
-//        ARouter.getInstance().build(RouterActivityPath.GoodsDetail.GOODS_DETAIL)
-//                .withString("params_id", "35925577")
-//                .navigation();
     }
 }

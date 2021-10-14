@@ -14,25 +14,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.donews.home.R;
 import com.donews.home.bean.NorGoodsBean;
-import com.donews.home.bean.TopGoodsBean;
+import com.donews.home.bean.SearchResultTbBean;
 import com.donews.home.listener.GoodsDetailListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsViewHolder> implements View.OnClickListener{
-
+public class SearchSugTbAdapter extends RecyclerView.Adapter<SearchSugTbAdapter.ResultViewHolder> implements View.OnClickListener {
     private final Context mContext;
-    private final List<NorGoodsBean.goodsInfo> mGoodsList = new ArrayList<>();
+    private final List<SearchResultTbBean.goodsInfo> mGoodsList = new ArrayList<>();
     private GoodsDetailListener mListener;
 
-    public NorGoodsAdapter(Context context, GoodsDetailListener listener) {
+    public SearchSugTbAdapter(Context context, GoodsDetailListener listener) {
         mContext = context;
         mListener = listener;
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void refreshData(List<NorGoodsBean.goodsInfo> list) {
+    public void refreshData(List<SearchResultTbBean.goodsInfo> list) {
         mGoodsList.clear();
         mGoodsList.addAll(list);
         notifyDataSetChanged();
@@ -41,17 +40,16 @@ public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsV
 
     @NonNull
     @Override
-    public GoodsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_fragent_nor_goods_item, parent, false);
-        final GoodsViewHolder holder = new GoodsViewHolder(view);
+    public ResultViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_search_result_tb_item, parent, false);
+        final ResultViewHolder holder = new ResultViewHolder(view);
         return holder;
     }
 
-    @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull GoodsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ResultViewHolder holder, int position) {
 
-        NorGoodsBean.goodsInfo gi = mGoodsList.get(position);
+        SearchResultTbBean.goodsInfo gi = mGoodsList.get(position);
         if (gi == null) {
             return;
         }
@@ -59,13 +57,13 @@ public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsV
         holder.itemView.setTag(gi);
         holder.itemView.setOnClickListener(this::onClick);
 
-        Glide.with(mContext).load(gi.getMain_pic()).into(holder.getPicIv());
-        holder.desTv.setText(gi.getTitle());
-        holder.salesTv.setText("已售" + gi.getMonth_sales());
-        holder.priceTv.setText(gi.getActual_price() + "");
-        holder.shopTv.setText(gi.getShop_name());
-    }
 
+        Glide.with(mContext).load(gi.getMainPic()).into(holder.getPicIv());
+        holder.desTv.setText(gi.getTitle());
+        holder.salesTv.setText("已售" + gi.getMonthSales());
+        holder.priceTv.setText(gi.getActualPrice() + "");
+        holder.shopTv.setText(gi.getShopName());
+    }
 
     @Override
     public int getItemCount() {
@@ -74,12 +72,12 @@ public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsV
 
     @Override
     public void onClick(View v) {
-        NorGoodsBean.goodsInfo gi = (NorGoodsBean.goodsInfo) v.getTag();
+        SearchResultTbBean.goodsInfo gi = (SearchResultTbBean.goodsInfo) v.getTag();
 
-        mListener.onClick(gi.getId(), gi.getGoods_id());
+        mListener.onClick(gi.getId(), gi.getGoodsId());
     }
 
-    public static class GoodsViewHolder extends RecyclerView.ViewHolder {
+    public static class ResultViewHolder extends RecyclerView.ViewHolder {
 
         private final ImageView picIv;
         private final TextView desTv;
@@ -108,7 +106,7 @@ public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsV
         }
 
 
-        public GoodsViewHolder(@NonNull View itemView) {
+        public ResultViewHolder(@NonNull View itemView) {
             super(itemView);
 
             picIv = itemView.findViewById(R.id.home_top_goods_item_pic);
@@ -120,28 +118,3 @@ public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsV
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

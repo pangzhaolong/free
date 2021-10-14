@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.donews.base.model.BaseLiveDataModel;
 import com.donews.home.api.HomeApi;
 import com.donews.home.bean.DataBean;
+import com.donews.home.bean.SearchResultTbBean;
 import com.donews.home.bean.TopGoodsBean;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
@@ -25,12 +26,12 @@ public class TbModel extends BaseLiveDataModel {
      *
      * @return 返回 homeBean的数据
      */
-    public MutableLiveData<DataBean> getNetData() {
-        MutableLiveData<DataBean> mutableLiveData = new MutableLiveData<>();
+    public MutableLiveData<SearchResultTbBean> getSearchResultData(String keyWord) {
+        MutableLiveData<SearchResultTbBean> mutableLiveData = new MutableLiveData<>();
 
-        EasyHttp.get(HomeApi.TopBannerUrl)
+        EasyHttp.get(HomeApi.searchResultUrl+"?key_words=" + keyWord)
                 .cacheMode(CacheMode.NO_CACHE)
-                .execute(new SimpleCallBack<DataBean>() {
+                .execute(new SimpleCallBack<SearchResultTbBean>() {
 
                     @Override
                     public void onError(ApiException e) {
@@ -38,32 +39,12 @@ public class TbModel extends BaseLiveDataModel {
                     }
 
                     @Override
-                    public void onSuccess(DataBean dataBean) {
-                        mutableLiveData.postValue(dataBean);
+                    public void onSuccess(SearchResultTbBean searchResultTbBean) {
+                        mutableLiveData.postValue(searchResultTbBean);
                     }
                 });
 
         return mutableLiveData;
     }
 
-    public MutableLiveData<TopGoodsBean> getTopGoodsData() {
-        MutableLiveData<TopGoodsBean> mutableLiveData = new MutableLiveData<>();
-
-        EasyHttp.get(HomeApi.goodsList)
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(new SimpleCallBack<TopGoodsBean>() {
-
-                    @Override
-                    public void onError(ApiException e) {
-                        mutableLiveData.postValue(null);
-                    }
-
-                    @Override
-                    public void onSuccess(TopGoodsBean dataBean) {
-                        mutableLiveData.postValue(dataBean);
-                    }
-                });
-
-        return mutableLiveData;
-    }
 }
