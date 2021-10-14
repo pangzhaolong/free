@@ -12,17 +12,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.donews.home.R;
 import com.donews.home.bean.SearchSugBean;
+import com.donews.home.listener.SearchSugClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchSugAdapter extends RecyclerView.Adapter<SearchSugAdapter.SugViewHolder> {
+public class SearchSugAdapter extends RecyclerView.Adapter<SearchSugAdapter.SugViewHolder> implements View.OnClickListener {
 
     private final Context mContext;
     private final List<SearchSugBean.SugItem> mGoodsList = new ArrayList<>();
 
-    public SearchSugAdapter(Context context) {
+    private SearchSugClickListener mListener;
+
+    public SearchSugAdapter(Context context, SearchSugClickListener listener) {
         mContext = context;
+        mListener = listener;
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -47,13 +51,23 @@ public class SearchSugAdapter extends RecyclerView.Adapter<SearchSugAdapter.SugV
         if (mGoodsList.size() <= 0) {
             return;
         }
+
+        holder.itemView.setOnClickListener(this::onClick);
+        holder.itemView.setTag(position);
         holder.desTv.setText(mGoodsList.get(position).getKw());
     }
-
 
     @Override
     public int getItemCount() {
         return mGoodsList.size();
+    }
+
+    @Override
+    public void onClick(View v) {
+        int position = (int) v.getTag();
+
+        String info = mGoodsList.get(position).getKw();
+        mListener.onClick(info);
     }
 
     public static class SugViewHolder extends RecyclerView.ViewHolder {

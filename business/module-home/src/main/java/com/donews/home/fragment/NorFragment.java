@@ -8,19 +8,22 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.donews.base.fragment.MvvmLazyLiveDataFragment;
+import com.donews.common.router.RouterActivityPath;
 import com.donews.home.R;
 import com.donews.home.adapter.FragmentAdapter;
 import com.donews.home.adapter.FragmentCategoryAdapter;
 import com.donews.home.adapter.NorGoodsAdapter;
 import com.donews.home.bean.HomeBean;
 import com.donews.home.databinding.HomeFragmentNorBinding;
+import com.donews.home.listener.GoodsDetailListener;
 import com.donews.home.viewModel.NorViewModel;
 import com.donews.utilslibrary.utils.LogUtil;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding, NorViewModel> {
+public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding, NorViewModel> implements GoodsDetailListener {
 
     private final HomeBean.CategoryItem mCategoryItem;
     private NorGoodsAdapter mNorGoodsAdapter;
@@ -37,7 +40,7 @@ public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mNorGoodsAdapter = new NorGoodsAdapter(this.getContext());
+        mNorGoodsAdapter = new NorGoodsAdapter(this.getContext(), this);
         mDataBinding.homeNorGoodsRv.setLayoutManager(new LinearLayoutManager(this.getContext()));
         mDataBinding.homeNorGoodsRv.setAdapter(mNorGoodsAdapter);
 
@@ -54,5 +57,13 @@ public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding
     public void onDestroy() {
         super.onDestroy();
         LogUtil.e("NorFragment onDestroy");
+    }
+
+    @Override
+    public void onClick(String id, String goodsId) {
+        ARouter.getInstance().build(RouterActivityPath.GoodsDetail.GOODS_DETAIL)
+                .withString("params_id", id)
+                .withString("params_goods_id", goodsId)
+                .navigation();
     }
 }

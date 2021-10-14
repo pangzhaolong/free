@@ -20,8 +20,8 @@ import java.util.Map;
 
 public class SearchFragmentAdapter extends FragmentStateAdapter {
 
-    private List<HomeBean.CategoryItem> list = new ArrayList<>();
-    private Map<String, Fragment> mFragmentMap = new HashMap<>();
+    private final List<HomeBean.CategoryItem> list = new ArrayList<>();
+    private final Map<Integer, Fragment> mFragmentMap = new HashMap<>();
 
     @SuppressLint("NotifyDataSetChanged")
     public void refreshData(List<HomeBean.CategoryItem> list) {
@@ -30,33 +30,25 @@ public class SearchFragmentAdapter extends FragmentStateAdapter {
         notifyDataSetChanged();
     }
 
+    public void search(String keyWord) {
+        ((TbFragment)mFragmentMap.get(0)).search(keyWord);
+    }
+
     public SearchFragmentAdapter(@NonNull FragmentActivity activity) {
         super(activity);
     }
 
-    private Fragment mkFragment(HomeBean.CategoryItem categoryItem) {
-        return new TbFragment();
-        /*if (categoryItem == null) {
-            if (mFragmentMap.get(null) == null) {
-                mFragmentMap.put(null, new TopFragment());
-            }
-            return mFragmentMap.get(null);
-        } else {
-            if (mFragmentMap.get(categoryItem.getCid()) == null) {
-                mFragmentMap.put(categoryItem.getCid(), new NorFragment(categoryItem));
-            }
-            return mFragmentMap.get(categoryItem.getCid());
-        }*/
+    private Fragment mkFragment(int position) {
+        if (mFragmentMap.get(position) == null) {
+            mFragmentMap.put(position, new TbFragment());
+        }
+        return mFragmentMap.get(position);
     }
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        if (position == 0) {
-            return mkFragment(null);
-        } else {
-            return mkFragment(this.list.get(position - 1));
-        }
+        return mkFragment(position);
     }
 
     @Override

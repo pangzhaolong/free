@@ -7,18 +7,23 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.donews.base.fragment.MvvmLazyLiveDataFragment;
+import com.donews.common.router.RouterActivityPath;
 import com.donews.home.R;
 import com.donews.home.adapter.SearchFindAdapter;
 import com.donews.home.adapter.SearchHistoryAdapter;
+import com.donews.home.adapter.SearchSugTbAdapter;
 import com.donews.home.databinding.HomeFragmentSearchTbBinding;
+import com.donews.home.listener.GoodsDetailListener;
 import com.donews.home.viewModel.TbViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBinding, TbViewModel> {
+public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBinding, TbViewModel> implements GoodsDetailListener {
 
 
     private final List<String> mSearchHistoryList = new ArrayList<>();
@@ -26,6 +31,26 @@ public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBin
 
     private SearchHistoryAdapter mSearchHistoryAdapter;
     private SearchFindAdapter mSearchFindAdapter;
+
+    private SearchSugTbAdapter mSearchSugTbAdapter;
+
+    public void search(String keyWord) {
+        mDataBinding.homeSearchTbTipsLl.setVisibility(View.GONE);
+        mDataBinding.homeSearchTbGoodsRv.setVisibility(View.VISIBLE);
+
+        mViewModel.getSearchResultData(keyWord).observe(getViewLifecycleOwner(), searchResultTbBean -> {
+            if (searchResultTbBean == null || searchResultTbBean.getList().size() <= 0) {
+                mDataBinding.homeSearchTbTipsLl.setVisibility(View.VISIBLE);
+                mDataBinding.homeSearchTbGoodsRv.setVisibility(View.GONE);
+                return;
+            }
+
+            mSearchSugTbAdapter.refreshData(searchResultTbBean.getList());
+
+            mDataBinding.homeSearchTbTipsLl.setVisibility(View.GONE);
+            mDataBinding.homeSearchTbGoodsRv.setVisibility(View.VISIBLE);
+        });
+    }
 
     @Override
     public int getLayoutId() {
@@ -108,43 +133,22 @@ public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBin
             mSearchHistoryList.clear();
             mSearchHistoryAdapter.refreshData(mSearchHistoryList);
         });
-/*
-        mDataBinding.homeTopBannerViewPager
-                .setLifecycleRegistry(getLifecycle())
-                .setAdapter(new TopBannerViewAdapter(this.getContext())).create();
 
-        mDataBinding.homeTopBannerViewPager.setCanLoop(true);
-        LogUtil.e("TopFragment onViewCreated");
-        mViewModel.getTopBannerData().observe(getViewLifecycleOwner(), dataBean -> {
-            // 获取数据
-            if (dataBean == null) {
-                // 处理接口出错的问题
-                return;
-            }
-            mDataBinding.homeTopBannerViewPager.refreshData(dataBean.getBannners());
-            mGridAdapter.refreshData(dataBean.getSpecial_category());
-            // 处理正常的逻辑。
-        });
-
-        mViewModel.getTopGoodsData().observe(getViewLifecycleOwner(), topGoodsBean -> {
-            if (topGoodsBean == null) {
-                return;
-            }
-
-            mTopGoodsAdapter.refreshData(topGoodsBean.getList());
-        });
-
-        mGridAdapter = new GridAdapter(this.getContext());
-        mDataBinding.homeColumnGv.setAdapter(mGridAdapter);
-
-        mTopGoodsAdapter = new TopGoodsAdapter(this.getContext());
-        mDataBinding.homeGoodProductRv.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
-        mDataBinding.homeGoodProductRv.setAdapter(mTopGoodsAdapter);*/
+        mSearchSugTbAdapter = new SearchSugTbAdapter(this.getContext(), this);
+        mDataBinding.homeSearchTbGoodsRv.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        mDataBinding.homeSearchTbGoodsRv.setAdapter(mSearchSugTbAdapter);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
 
+    @Override
+    public void onClick(String id, String goodsId) {
+        ARouter.getInstance().build(RouterActivityPath.GoodsDetail.GOODS_DETAIL)
+                .withString("params_id", id)
+                .withString("params_goods_id", goodsId)
+                .navigation();
     }
 }

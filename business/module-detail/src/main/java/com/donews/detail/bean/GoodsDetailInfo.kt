@@ -77,7 +77,7 @@ data class GoodsDetailInfo(
     var couponStartTime: String,
     /**  优惠券金额 */
     @SerializedName("coupon_price")
-    var couponPrice: Float,
+    var couponPrice: String,
     /** 优惠券使用条件 */
     @SerializedName("coupon_conditions")
     var couponConditions: String,

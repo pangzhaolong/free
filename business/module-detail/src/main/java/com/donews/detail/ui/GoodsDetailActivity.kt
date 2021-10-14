@@ -34,19 +34,6 @@ class GoodsDetailActivity : MvvmBaseLiveDataActivity<DetailActivityGoodsDetailBi
         private const val PARAMS_ID = "params_id"
         private const val PARAMS_GOODS_ID = "params_goods_id"
         private val TAB_TITLE = arrayOf("商品", "详情")
-
-
-        @JvmStatic
-        fun start(context: Context, id: String?, goodsId: String?) {
-            val starter = Intent(context, GoodsDetailActivity::class.java)
-            id?.let {
-                starter.putExtra(PARAMS_ID, id)
-            }
-            goodsId?.let {
-                starter.putExtra(PARAMS_GOODS_ID, goodsId)
-            }
-            context.startActivity(starter)
-        }
     }
 
     private var id: String? = null
@@ -55,6 +42,11 @@ class GoodsDetailActivity : MvvmBaseLiveDataActivity<DetailActivityGoodsDetailBi
     private var totalScrollerY: Int = 0
     private var currentScrollY = 0
     private lateinit var goodsDetailAdapter: GoodsDetailAdapter
+
+    private var recyclerViewScrollState: Int = RecyclerView.SCROLL_STATE_IDLE
+    private var tabLayoutScrollRecyclerView: Boolean = false
+
+    private var tabTile = arrayListOf<String>()
 
     override fun getLayoutId(): Int {
         return R.layout.detail_activity_goods_detail
@@ -69,63 +61,55 @@ class GoodsDetailActivity : MvvmBaseLiveDataActivity<DetailActivityGoodsDetailBi
             .fitsSystemWindows(false)
             .init()
 
+        refreshToolBar()
+
         val statusBarHeight = ImmersionBar.getStatusBarHeight(this)
         val layoutParams: ConstraintLayout.LayoutParams =
             mDataBinding.viewBgStatusBar.layoutParams as ConstraintLayout.LayoutParams
         layoutParams.height = statusBarHeight
         mDataBinding.viewBgStatusBar.layoutParams = layoutParams
 
-        for (index in TAB_TITLE.indices) {
-            val tab = mDataBinding.tabLayout.newTab().apply {
-                text = TAB_TITLE[index]
-            }
-            mDataBinding.tabLayout.addTab(tab)
-        }
-
-//        mDataBinding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-//            override fun onTabSelected(tab: TabLayout.Tab?) {
-//                val layoutManager: LinearLayoutManager = mDataBinding.rvContent.layoutManager as LinearLayoutManager
-//                if (mDataBinding.tabLayout.selectedTabPosition == 0) {
-//                    layoutManager.scrollToPositionWithOffset(0, 0)
-//                } else {
-//                    layoutManager.scrollToPositionWithOffset(4, 0)
-//                }
-//            }
-//
-//            override fun onTabUnselected(tab: TabLayout.Tab?) {
-//
-//            }
-//
-//            override fun onTabReselected(tab: TabLayout.Tab?) {
-//
-//            }
-//
-//        })
-
-
-        refreshToolBar()
+        mDataBinding.eventListener = EventListener()
 
         mDataBinding.rvContent.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 currentScrollY += dy
                 refreshToolBar()
-
-                val layoutManager: LinearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
-                val position = layoutManager.findFirstVisibleItemPosition()
-                val viewType = goodsDetailAdapter.getItemViewType(position)
-                Logger.d(viewType)
-                if (viewType == 5) {
-                    mDataBinding.tabLayout.getTabAt(1)?.select()
-                } else {
-                    mDataBinding.tabLayout.getTabAt(0)?.select()
+                if (recyclerViewScrollState != RecyclerView.SCROLL_STATE_IDLE) {
+                    val layoutManager: LinearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
+                    val position = layoutManager.findFirstVisibleItemPosition()
+                    val viewType = goodsDetailAdapter.getItemViewType(position)
+                    if (viewType == 5) {
+                        mDataBinding.tabLayout.setScrollPosition(1, 0f, false)
+                    } else {
+                        mDataBinding.tabLayout.setScrollPosition(0, 0f, false)
+                    }
                 }
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                recyclerViewScrollState = newState
             }
         })
 
-
         mViewModel.goodeDetailLiveData.observe(this,
             {
+
+                if (it.detailPics.isBlank()) {
+                    tabTile.add(TAB_TITLE[0])
+                } else {
+                    tabTile.add(TAB_TITLE[0])
+                    tabTile.add(TAB_TITLE[1])
+                }
+                for (index in tabTile.indices) {
+                    val tab = mDataBinding.tabLayout.newTab().apply {
+                        text = TAB_TITLE[index]
+                    }
+                    mDataBinding.tabLayout.addTab(tab)
+                }
+
                 goodsDetailAdapter = GoodsDetailAdapter(this, lifecycle, it)
                 mDataBinding.rvContent.adapter = goodsDetailAdapter
             })
@@ -206,5 +190,12 @@ class GoodsDetailActivity : MvvmBaseLiveDataActivity<DetailActivityGoodsDetailBi
         progress = (currentScrollY * 100f / totalScrollerY).toInt()
         val alpha = progress / 100f
         mDataBinding.viewBgStatusBar.alpha = alpha
+    }
+
+
+    inner class EventListener {
+        fun clickBack(view: View) {
+            this@GoodsDetailActivity.finish()
+        }
     }
 }
