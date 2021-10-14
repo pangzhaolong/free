@@ -22,7 +22,7 @@ class MailPackageFragment :
 
     //viewPager 适配器
     val vpAdapter: MailPageackFragmentVPAdapter by lazy {
-        MailPageackFragmentVPAdapter()
+        MailPageackFragmentVPAdapter(mDataBinding.mailFrmVp)
     }
 
     override fun getLayoutId(): Int = R.layout.mail_package_fragment

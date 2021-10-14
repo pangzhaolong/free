@@ -2,6 +2,7 @@ package com.donews.mail.model
 
 import androidx.lifecycle.MutableLiveData
 import com.donews.base.model.BaseLiveDataModel
+import com.donews.mail.beans.MailPackageFragmentListBean
 import com.donews.mail.beans.MailPackageTabItem
 import com.donews.mail.entitys.resps.MailPackHomeListItemResp
 import com.donews.mail.entitys.resps.MailPackHomeListResp
@@ -21,7 +22,7 @@ import kotlin.math.ceil
  */
 class MailModel : BaseLiveDataModel() {
 
-    companion object{
+    companion object {
         /** 9.9包邮页面的列表接口地址(每个tab的列表数据接口地址) */
         val API_NINE_OP_GOODS_LIST = "${BuildConfig.BASE_URL}v1/nine-op-goods-list"
     }
@@ -55,7 +56,7 @@ class MailModel : BaseLiveDataModel() {
     fun getMailHomeListData(
         isRefresh: Boolean,
         tabItem: MailPackageTabItem,
-        mutableLiveData: MutableLiveData<MutableList<MailPackHomeListItemResp>?>
+        mutableLiveData: MutableLiveData<MailPackageFragmentListBean>
     ): Disposable? {
         var pageId = 1
         val cacheData = mailHomeListCacheData[tabItem.type]
@@ -75,7 +76,7 @@ class MailModel : BaseLiveDataModel() {
             .cacheMode(CacheMode.NO_CACHE)
             .execute(object : SimpleCallBack<MailPackHomeListResp?>() {
                 override fun onError(e: ApiException) {
-                    mutableLiveData.postValue(null)
+                    mutableLiveData.postValue(MailPackageFragmentListBean(tabItem, null))
                 }
 
                 override fun onSuccess(bean: MailPackHomeListResp?) {
@@ -92,7 +93,7 @@ class MailModel : BaseLiveDataModel() {
                         }
                     }
                     //通知数据
-                    mutableLiveData.postValue(bean?.list)
+                    mutableLiveData.postValue(MailPackageFragmentListBean(tabItem, bean?.list))
                 }
             })
         addDisposable(disp)

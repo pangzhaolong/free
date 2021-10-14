@@ -1,21 +1,21 @@
 package com.donews.mail.views
 
-import android.animation.Animator
-import android.app.Activity
 import android.content.Context
 import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.LinearInterpolator
 import android.widget.LinearLayout
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.donews.detail.R
 import com.donews.mail.adapter.MailPageackFragmentListAdapter
+import com.donews.mail.beans.MailPackageFragmentListBean
 import com.donews.mail.beans.MailPackageTabItem
 import com.donews.mail.entitys.resps.MailPackHomeListItemResp
 import com.donews.mail.model.MailModel
@@ -63,17 +63,17 @@ class MailPackFragmentVpLayout : LinearLayout {
     private lateinit var listAdapter: MailPageackFragmentListAdapter
 
     //数据订阅订阅对象
-    private var listLiveData: MutableLiveData<MutableList<MailPackHomeListItemResp>?> =
+    private var listLiveData: MutableLiveData<MailPackageFragmentListBean> =
         MutableLiveData()
-
-    //当前正在请求的控制对象
-    private var listDataDisposable: Disposable? = null
 
     //是否允许显示悬浮去往顶部的按钮
     private val isAllowShowFloatGoTo = true
 
     //显示悬浮的回到顶部的最大距离、达到这个距离才会显示悬浮按钮
     private val showFloatGoToMaxPX = 30000
+
+    //列表的布局管理器
+    private lateinit var layoutManager: RecyclerView.LayoutManager
 
     constructor(context: Context?) : super(context) {
         init()
@@ -100,20 +100,28 @@ class MailPackFragmentVpLayout : LinearLayout {
         init()
     }
 
+
     /**
      * 绑定tab，将当前的列表和指定分类绑定
-     * @param datas
+     * @param isAnimLoad 是否显示加载动画
+     * @param tabItem 当前对应的分类
      */
-    fun bindDataList(tabItem: MailPackageTabItem) {
+    fun bindDataList(isAnimLoad: Boolean, tabItem: MailPackageTabItem) {
         this.tabItem = tabItem
         smRefesehLayout.setEnableRefresh(true)
-        smRefesehLayout.setEnableLoadMore(true)
+        smRefesehLayout.setEnableLoadMore(false)
         smRefesehLayout.resetNoMoreData()
+        listAdapter.loadMoreModule?.isEnableLoadMore = true
+        listAdapter.loadMoreModule?.loadMoreComplete()
 //        smRefesehLayout.setEnableAutoLoadMore(true)
-        tabItemIsInitLoad = true
         vpGoTop.visibility = View.GONE
         listAdapter.setNewData(mutableListOf())
-        smRefesehLayout.autoRefresh()
+        tabItemIsInitLoad = true
+        if (isAnimLoad) {
+            smRefesehLayout.autoRefresh()
+        } else {
+            refreshLoadData()
+        }
     }
 
     /**
@@ -126,10 +134,43 @@ class MailPackFragmentVpLayout : LinearLayout {
     /**
      * 回到列表的顶部
      */
-    fun goToTopBy() {
-        vpRecycler.smoothScrollToPosition(0)
+    fun goToTopBy(pos: Int = 0) {
+        vpRecycler.scrollToPosition(pos)
     }
 
+    /**
+     * 设置网络模式
+     */
+    fun setGridLayoutManager() {
+        layoutManager = GridLayoutManager(context, 2)
+        vpRecycler.layoutManager = layoutManager
+        //更新adapter
+        listAdapter = MailPageackFragmentListAdapter()
+        vpRecycler.adapter = listAdapter
+        listAdapter.loadMoreModule?.setOnLoadMoreListener {
+            //加载更多
+            getListData(isRefresh = false, isLoadCache = false)
+        }
+        smRefesehLayout.autoRefresh()
+    }
+
+    /**
+     * 设置为列表模式(为后期扩展预留)
+     */
+    fun setLinearLayoutManager() {
+        layoutManager = LinearLayoutManager(context)
+        vpRecycler.layoutManager = layoutManager
+        //更新Adapter
+        listAdapter = MailPageackFragmentListAdapter()
+        vpRecycler.adapter = listAdapter
+        listAdapter.loadMoreModule?.setOnLoadMoreListener {
+            //加载更多
+            getListData(isRefresh = false, isLoadCache = false)
+        }
+        smRefesehLayout.autoRefresh()
+    }
+
+    //初始加载数据
     private fun init() {
         vpRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -138,24 +179,14 @@ class MailPackFragmentVpLayout : LinearLayout {
             }
         })
         vpGoTop.setOnClickListener {
-            if (vpRecycler.computeVerticalScrollOffset() > showFloatGoToMaxPX * 2) {
-                goToTopBy()
-            } else {
-                goToTopAnim()
-            }
+            goToTopBy(12) //移动到 10
+            goToTopAnim() //然后以动画的方式移动到顶部
         }
         smRefesehLayout.setOnRefreshListener {
-            //设置下拉刷新
-            if (tabItemIsInitLoad) {
-                getListData(isRefresh = true, isLoadCache = true)
-            } else {
-                getListData(isRefresh = true, isLoadCache = false)
-            }
-            tabItemIsInitLoad = false
+            refreshLoadData()
         }
         smRefesehLayout.setOnLoadMoreListener {
             //设置上拉加载更多
-            vpRecycler.overScrollMode = View.OVER_SCROLL_IF_CONTENT_SCROLLS
             getListData(isRefresh = false, isLoadCache = false)
         }
         //订阅数据
@@ -167,8 +198,7 @@ class MailPackFragmentVpLayout : LinearLayout {
             ViewGroup.LayoutParams.MATCH_PARENT,
         )
         addView(itemIncludeView, lp)
-        //配置网格
-        vpRecycler.layoutManager = GridLayoutManager(context, 2)
+
         updateData()
     }
 
@@ -206,6 +236,19 @@ class MailPackFragmentVpLayout : LinearLayout {
         }
     }
 
+    //刷新加载数据
+    private fun refreshLoadData(){
+        //设置下拉刷新
+        if (tabItemIsInitLoad) {
+            getListData(isRefresh = true, isLoadCache = true)
+        } else {
+            getListData(isRefresh = true, isLoadCache = false)
+        }
+        listAdapter.loadMoreModule?.loadMoreComplete()
+        listAdapter.loadMoreModule?.isEnableLoadMore = false
+        tabItemIsInitLoad = false
+    }
+
     /**
      * 获取列表数据
      * @param isRefresh 是否为下拉加载，T:是，F:否
@@ -221,38 +264,66 @@ class MailPackFragmentVpLayout : LinearLayout {
             val cacheList: MutableList<MailPackHomeListItemResp>? =
                 mModel.getMailHomeListCacheData(tabItem)
             if (cacheList?.isNotEmpty() == true) {
-                listLiveData.postValue(cacheList)
+                listLiveData.postValue(MailPackageFragmentListBean(tabItem, cacheList))
                 return //存在缓存数据。直接使用
             }
         }
-        if (listDataDisposable != null && listDataDisposable!!.isDisposed) {
-            //上一个任务正在运行。那么结束上一个
-            listDataDisposable?.dispose()
-        }
-        listDataDisposable = mModel.getMailHomeListData(isRefresh, tabItem, listLiveData)
+        mModel.getMailHomeListData(isRefresh, tabItem, listLiveData)
     }
 
     //更新数据
     private fun updateData() {
         smRefesehLayout.closeHeaderOrFooter()
         if (!::listAdapter.isInitialized) {
-            //还未初始化
-            listAdapter = MailPageackFragmentListAdapter()
-            vpRecycler.adapter = listAdapter
+            setGridLayoutManager()
         }
+        //数据更新通知。更新数据操作
         listLiveData.value?.apply {
+            listAdapter.loadMoreModule?.isEnableLoadMore = true
+            if (!this@MailPackFragmentVpLayout::tabItem.isInitialized) {
+                return@apply //类型还未初始化。无效操作
+            }
+            if (this@MailPackFragmentVpLayout.tabItem.type != this.tabItem.type) {
+                return@apply //通知的数据不是当前的对应的类型。放弃更新
+            }
+            if (this.updateList == null) {
+                if (!isRefresh) {
+                    listAdapter.loadMoreModule?.loadMoreFail()
+                }
+                return@apply
+            }
             if (isRefresh) {
-                if (this.isEmpty() || this.size < mModel.pageSize) {
-                    smRefesehLayout.setNoMoreData(this.isEmpty())
+                if (this.updateList.isEmpty() || this.updateList.size < mModel.pageSize) {
+                    smRefesehLayout.setNoMoreData(this.updateList.isEmpty())
                     smRefesehLayout.setEnableLoadMore(false)
                 }
-                listAdapter.setNewData(this)
+                listAdapter.setNewData(this.updateList)
             } else {
-                if (this.isEmpty()) {
+                if (this.updateList.isEmpty()) {
+                    listAdapter.loadMoreModule?.loadMoreEnd()
                     smRefesehLayout.setEnableLoadMore(false)
+                } else {
+                    listAdapter.loadMoreModule?.loadMoreComplete()
                 }
-                listAdapter.addData(this)
+                listAdapter.addData(this.updateList)
             }
         }
+    }
+
+    //检查是否滑动到了顶部
+    private fun getScrollIsTop(): Boolean {
+        val lm = vpRecycler.layoutManager ?: return true
+        when (vpRecycler.layoutManager) {
+            is LinearLayoutManager -> {
+
+            }
+            is GridLayoutManager -> {
+
+            }
+            is StaggeredGridLayoutManager -> {
+
+            }
+        }
+        return true
     }
 }

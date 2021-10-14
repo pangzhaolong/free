@@ -33,17 +33,25 @@
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
     <!-- 悬浮按钮:回到顶部按钮 -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/vp_go_top"
+    <LinearLayout
         android:layout_width="45dp"
         android:layout_height="45dp"
-        tools:ignore="ContentDescription"
-        android:src="@mipmap/ic_launcher"
+        android:orientation="vertical"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
-        app:elevation="4dp"
-        android:scaleType="center"/>
+        android:gravity="center">
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/vp_go_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="ContentDescription"
+            android:src="@mipmap/ic_launcher"
+            android:background="@color/dialog_cancel_press"
+            app:backgroundTint="@color/dialog_cancel_press"
+            app:elevation="4dp"
+            android:scaleType="fitCenter"/>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

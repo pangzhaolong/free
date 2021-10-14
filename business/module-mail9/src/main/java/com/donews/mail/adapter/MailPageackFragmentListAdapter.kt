@@ -1,9 +1,10 @@
 package com.donews.mail.adapter
 
-import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.donews.base.utils.glide.GlideUtils
 import com.donews.detail.R
+import com.donews.mail.adapter.global.BaseListAdAdapter
 import com.donews.mail.entitys.resps.MailPackHomeListItemResp
 
 /**
@@ -12,9 +13,9 @@ import com.donews.mail.entitys.resps.MailPackHomeListItemResp
  * Description:
  * 包邮页面的列表的适配器
  */
-class MailPageackFragmentListAdapter : BaseQuickAdapter<MailPackHomeListItemResp, BaseViewHolder>(
+class MailPageackFragmentListAdapter : BaseListAdAdapter<MailPackHomeListItemResp, BaseViewHolder>(
     R.layout.mail_package_vp_list_item
-) {
+), LoadMoreModule {
     override fun convert(helper: BaseViewHolder, item: MailPackHomeListItemResp?) {
         item?.apply {
             //绑定文字数据

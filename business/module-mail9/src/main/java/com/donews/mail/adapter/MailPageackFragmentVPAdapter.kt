@@ -1,6 +1,7 @@
 package com.donews.mail.adapter
 
 import android.view.View
+import androidx.viewpager2.widget.ViewPager2
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.donews.detail.R
@@ -13,7 +14,9 @@ import com.donews.mail.views.MailPackFragmentVpLayout
  * Description:
  * 包邮页面的
  */
-class MailPageackFragmentVPAdapter : BaseQuickAdapter<MailPackageTabItem, BaseViewHolder>(
+class MailPageackFragmentVPAdapter(
+    val targetVp: ViewPager2
+) : BaseQuickAdapter<MailPackageTabItem, BaseViewHolder>(
     R.layout.mail_package_fragment_vp_item
 ) {
     override fun createBaseViewHolder(view: View): BaseViewHolder {
@@ -24,7 +27,10 @@ class MailPageackFragmentVPAdapter : BaseQuickAdapter<MailPackageTabItem, BaseVi
         when (helper.itemView) {
             is MailPackFragmentVpLayout -> {
                 //绑定数据
-                (helper.itemView as MailPackFragmentVpLayout).bindDataList(item!!)
+                (helper.itemView as MailPackFragmentVpLayout).bindDataList(
+                    targetVp.currentItem == helper.adapterPosition,
+                    item!!
+                )
             }
         }
     }
