@@ -7,7 +7,6 @@ def var = rootProject.ext.DEBUG ? "offline" : "online"
 def identification = rootProject.ext.APP_IDENTIFICATION
 
 
-
 android {
     compileSdkVersion rootProject.ext.android_version.compileSdkVersion
     buildToolsVersion rootProject.ext.android_version.buildToolsVersion
@@ -126,6 +125,7 @@ dependencies {
         implementation project(path: ':business:module-mine')
         implementation project(path: ':business:module-home')
         implementation project(path: ':business:module-spike')
+        implementation project(path: ':business:module-detail')
     }
 }
 

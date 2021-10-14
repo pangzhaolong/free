@@ -122,12 +122,12 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
 
     @Override
     public void onClick(String id, String goodsId) {
-        /*ARouter.getInstance().build(RouterActivityPath.GoodsDetail.GOODS_DETAIL)
+        ARouter.getInstance().build(RouterActivityPath.GoodsDetail.GOODS_DETAIL)
                 .withString("params_id", id)
                 .withString("params_goods_id", goodsId)
-                .navigation();*/
-        ARouter.getInstance().build(RouterActivityPath.GoodsDetail.GOODS_DETAIL)
-                .withString("params_id", "35925577")
                 .navigation();
+//        ARouter.getInstance().build(RouterActivityPath.GoodsDetail.GOODS_DETAIL)
+//                .withString("params_id", "35925577")
+//                .navigation();
     }
 }

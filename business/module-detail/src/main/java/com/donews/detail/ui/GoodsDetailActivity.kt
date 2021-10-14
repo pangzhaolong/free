@@ -82,25 +82,25 @@ class GoodsDetailActivity : MvvmBaseLiveDataActivity<DetailActivityGoodsDetailBi
             mDataBinding.tabLayout.addTab(tab)
         }
 
-        mDataBinding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                val layoutManager: LinearLayoutManager = mDataBinding.rvContent.layoutManager as LinearLayoutManager
-                if (mDataBinding.tabLayout.selectedTabPosition == 0) {
-                    layoutManager.scrollToPositionWithOffset(0, 0)
-                } else {
-                    layoutManager.scrollToPositionWithOffset(4, 0)
-                }
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-
-            }
-
-        })
+//        mDataBinding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+//            override fun onTabSelected(tab: TabLayout.Tab?) {
+//                val layoutManager: LinearLayoutManager = mDataBinding.rvContent.layoutManager as LinearLayoutManager
+//                if (mDataBinding.tabLayout.selectedTabPosition == 0) {
+//                    layoutManager.scrollToPositionWithOffset(0, 0)
+//                } else {
+//                    layoutManager.scrollToPositionWithOffset(4, 0)
+//                }
+//            }
+//
+//            override fun onTabUnselected(tab: TabLayout.Tab?) {
+//
+//            }
+//
+//            override fun onTabReselected(tab: TabLayout.Tab?) {
+//
+//            }
+//
+//        })
 
 
         refreshToolBar()
@@ -114,6 +114,7 @@ class GoodsDetailActivity : MvvmBaseLiveDataActivity<DetailActivityGoodsDetailBi
                 val layoutManager: LinearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
                 val position = layoutManager.findFirstVisibleItemPosition()
                 val viewType = goodsDetailAdapter.getItemViewType(position)
+                Logger.d(viewType)
                 if (viewType == 5) {
                     mDataBinding.tabLayout.getTabAt(1)?.select()
                 } else {

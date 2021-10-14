@@ -10,7 +10,6 @@
         android:id="@+id/detail_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:onClick="clickGoodsDetail"
         android:text="商品详情测试"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
