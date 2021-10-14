@@ -12,7 +12,7 @@ class TestActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.detail_activity_test)
-        val button:Button = findViewById(R.id.detail_button)
+        val button: Button = findViewById(R.id.detail_button)
         button.setOnClickListener {
             ARouter.getInstance().build(RouterActivityPath.GoodsDetail.GOODS_DETAIL)
                 .withString("params_id", "35925577")

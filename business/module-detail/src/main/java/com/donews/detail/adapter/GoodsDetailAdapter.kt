@@ -36,7 +36,11 @@ class GoodsDetailAdapter(val context: Context, val lifecycle: Lifecycle, val goo
 
 
     override fun getItemCount(): Int {
-        return 5
+        return if (goodsDetailInfo.detailPics.isBlank()) {
+            4
+        } else {
+            5
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -49,7 +53,7 @@ class GoodsDetailAdapter(val context: Context, val lifecycle: Lifecycle, val goo
             2 -> return 3
             //店铺信息
             3 -> return 4
-            //详情信息
+            //详情信息图片
             4 -> return 5
         }
         return position
@@ -201,22 +205,21 @@ class GoodsDetailAdapter(val context: Context, val lifecycle: Lifecycle, val goo
         try {
             val detailPicInfos =
                 gson.fromJson<List<DetailPicInfo>>(detailPicInfo, object : TypeToken<List<DetailPicInfo>>() {}.type)
-
             detailInfoViewHolder.dataBinding.llImgs.removeAllViews()
-
-            for (detailPic in detailPicInfos) {
-                val imageView = ImageView(context)
-                val params = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                )
-                params.bottomMargin = DensityUtils.dip2px(10f)
-                detailInfoViewHolder.dataBinding.llImgs.addView(imageView, params)
-                Glide.with(context)
-                    .load(detailPic.img)
-                    .into(imageView)
+            detailPicInfos?.let {
+                for (detailPic in detailPicInfos) {
+                    val imageView = ImageView(context)
+                    val params = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    )
+                    params.bottomMargin = DensityUtils.dip2px(10f)
+                    detailInfoViewHolder.dataBinding.llImgs.addView(imageView, params)
+                    Glide.with(context)
+                        .load(detailPic.img)
+                        .into(imageView)
+                }
             }
-            Logger.d(detailPicInfos)
         } catch (e: JsonParseException) {
             Logger.d(e)
         }

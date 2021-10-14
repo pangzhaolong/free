@@ -19,3 +19,5 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+# dialog 模块
+-keep class com.donews.detail.bean.**{*;}
