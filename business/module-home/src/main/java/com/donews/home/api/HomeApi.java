@@ -80,5 +80,6 @@ public class HomeApi {
     public final static String TopBannerUrl = BaseUrl + "/v1/top-layout";
     public final static String SuperCategory = BaseUrl + "/v1/super-category-list";
     public final static String goodsList = BaseUrl + "/v1/goods-list";
+    public final static String searchSugUrl = BaseUrl + "/v1/search-suggestion";
 
 }

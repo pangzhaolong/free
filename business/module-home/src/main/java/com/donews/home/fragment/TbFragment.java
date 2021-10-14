@@ -1,7 +1,6 @@
 package com.donews.home.fragment;
 
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
@@ -11,18 +10,22 @@ import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.donews.base.fragment.MvvmLazyLiveDataFragment;
 import com.donews.home.R;
-import com.donews.home.adapter.GridAdapter;
-import com.donews.home.adapter.TopBannerViewAdapter;
-import com.donews.home.adapter.TopGoodsAdapter;
-import com.donews.home.databinding.HomeFragmentTopBinding;
-import com.donews.home.viewModel.TopViewModel;
-import com.donews.utilslibrary.utils.LogUtil;
+import com.donews.home.adapter.SearchFindAdapter;
+import com.donews.home.adapter.SearchHistoryAdapter;
+import com.donews.home.databinding.HomeFragmentSearchTbBinding;
+import com.donews.home.viewModel.TbViewModel;
 
-public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding, TopViewModel> {
+import java.util.ArrayList;
+import java.util.List;
+
+public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBinding, TbViewModel> {
 
 
-    private GridAdapter mGridAdapter;
-    private TopGoodsAdapter mTopGoodsAdapter;
+    private final List<String> mSearchHistoryList = new ArrayList<>();
+    private final List<String> mSearchFindList = new ArrayList<>();
+
+    private SearchHistoryAdapter mSearchHistoryAdapter;
+    private SearchFindAdapter mSearchFindAdapter;
 
     @Override
     public int getLayoutId() {
@@ -32,6 +35,79 @@ public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding,
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        mSearchFindList.add("测试");
+        mSearchFindList.add("测试测试");
+        mSearchFindList.add("测试测试测试");
+        mSearchFindList.add("测试测试测试测试");
+        mSearchFindList.add("测试测试测试测试测试");
+        mSearchFindList.add("测试");
+        mSearchFindList.add("测试测试");
+        mSearchFindList.add("测试测试测试");
+        mSearchFindList.add("测试测试测试测试");
+        mSearchFindList.add("测试测试测试测试测试");
+
+        mSearchFindAdapter = new SearchFindAdapter(this.getContext());
+        GridLayoutManager manager = new GridLayoutManager(this.getContext(), 40);
+        manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                String strText = mSearchFindList.get(position);
+                int strLen = strText.getBytes().length;
+                if (strLen >= 40) {
+                    return 40;
+                }
+
+                return strText.getBytes().length;
+            }
+        });
+
+        mDataBinding.homeSearchFindRv.setLayoutManager(manager);
+        mDataBinding.homeSearchFindRv.setAdapter(mSearchFindAdapter);
+        mSearchFindAdapter.refreshData(mSearchFindList);
+
+        if (mSearchHistoryList.size() <= 0) {
+            mDataBinding.homeSearchHistoryTl.setVisibility(View.GONE);
+        } else {
+            mDataBinding.homeSearchHistoryTl.setVisibility(View.VISIBLE);
+        }
+
+        mSearchHistoryList.add("哈哈");
+        mSearchHistoryList.add("测试");
+        mSearchHistoryList.add("测试测试");
+        mSearchHistoryList.add("测试");
+        mSearchHistoryList.add("测试测试");
+        mSearchHistoryList.add("测试");
+        if (mSearchHistoryList.size() <= 0) {
+            mDataBinding.homeSearchHistoryTl.setVisibility(View.GONE);
+        } else {
+            mDataBinding.homeSearchHistoryTl.setVisibility(View.VISIBLE);
+        }
+
+        mSearchHistoryAdapter = new SearchHistoryAdapter(this.getContext());
+        manager = new GridLayoutManager(this.getContext(), 40);
+        manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                String strText = mSearchHistoryList.get(position);
+                int strLen = strText.getBytes().length;
+                if (strLen >= 40) {
+                    return 40;
+                }
+
+                return strText.getBytes().length;
+            }
+        });
+
+        mDataBinding.homeSearchHistoryRv.setLayoutManager(manager);
+        mDataBinding.homeSearchHistoryRv.setAdapter(mSearchHistoryAdapter);
+        mSearchHistoryAdapter.refreshData(mSearchHistoryList);
+
+        mDataBinding.homeSearchHistoryCleanTv.setOnClickListener(v -> {
+            mDataBinding.homeSearchHistoryTl.setVisibility(View.GONE);
+            mSearchHistoryList.clear();
+            mSearchHistoryAdapter.refreshData(mSearchHistoryList);
+        });
 /*
         mDataBinding.homeTopBannerViewPager
                 .setLifecycleRegistry(getLifecycle())

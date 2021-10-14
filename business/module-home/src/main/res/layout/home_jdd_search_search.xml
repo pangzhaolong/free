@@ -30,12 +30,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginStart="10dp"
-                android:textCursorDrawable="@drawable/home_search_edit_cursor_color"
                 android:layout_toStartOf="@+id/home_search_do"
                 android:layout_toEndOf="@+id/home_search_back"
-                android:gravity="center_vertical"
                 android:background="@null"
-                android:hint="支持搜索淘宝/京东/拼多多优惠" />
+                android:gravity="center_vertical"
+                android:hint="支持搜索淘宝/京东/拼多多优惠"
+                android:textCursorDrawable="@drawable/home_search_edit_cursor_color" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/home_search_do"
@@ -69,6 +69,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/home_search_suggestion_rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
         </FrameLayout>
 
 

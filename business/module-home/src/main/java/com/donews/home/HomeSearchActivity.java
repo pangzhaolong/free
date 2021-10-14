@@ -1,5 +1,6 @@
 package com.donews.home;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.system.Os;
@@ -10,10 +11,13 @@ import android.widget.AbsListView;
 import android.widget.ListAdapter;
 
 import androidx.annotation.RequiresApi;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.donews.base.activity.MvvmBaseLiveDataActivity;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.home.adapter.SearchFragmentAdapter;
+import com.donews.home.adapter.SearchSugAdapter;
 import com.donews.home.databinding.HomeJddSearchSearchBinding;
 import com.donews.home.viewModel.SearchViewModel;
 import com.donews.utilslibrary.utils.LogUtil;
@@ -30,10 +34,14 @@ import com.gyf.immersionbar.ImmersionBar;
 public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSearchBinding, SearchViewModel> {
 
     private SearchFragmentAdapter mSearchFragmentAdapter;
+    private SearchSugAdapter mSearchSugAdapter;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mContext = this;
     }
 
     @Override
@@ -61,7 +69,6 @@ public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSe
         });
         tab.attach();
         mDataBinding.homeSearchBack.setOnClickListener(v -> finish());
-        mDataBinding.homeSearchEdit.setDefaultFocusHighlightEnabled(false);
         mDataBinding.homeSearchEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -75,8 +82,29 @@ public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSe
 
             @Override
             public void afterTextChanged(Editable s) {
+                if (s.toString().equalsIgnoreCase("")) {
+                    mDataBinding.homeSearchSuggestionRv.setVisibility(View.GONE);
+                    mDataBinding.homeSearchPlatformLl.setVisibility(View.VISIBLE);
+                    return;
+                }
                 LogUtil.e("xxxxxxx: " + s);
+                mViewModel.getSearchData(s.toString()).observe((LifecycleOwner) mContext, searchSugBean -> {
+                    if (searchSugBean.getList().size() <= 0) {
+                        mDataBinding.homeSearchSuggestionRv.setVisibility(View.GONE);
+                        mDataBinding.homeSearchPlatformLl.setVisibility(View.VISIBLE);
+                    } else {
+                        mDataBinding.homeSearchSuggestionRv.setVisibility(View.VISIBLE);
+                        mDataBinding.homeSearchPlatformLl.setVisibility(View.GONE);
+                    }
+                    mSearchSugAdapter.refreshData(searchSugBean.getList());
+                });
             }
         });
+
+        mSearchSugAdapter = new SearchSugAdapter(this);
+        mDataBinding.homeSearchSuggestionRv.setLayoutManager(new LinearLayoutManager(this));
+        mDataBinding.homeSearchSuggestionRv.setAdapter(mSearchSugAdapter);
+        mDataBinding.homeSearchSuggestionRv.setVisibility(View.GONE);
+        mDataBinding.homeSearchPlatformLl.setVisibility(View.VISIBLE);
     }
 }

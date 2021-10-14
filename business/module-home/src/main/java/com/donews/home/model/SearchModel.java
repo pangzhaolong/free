@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.donews.base.model.BaseLiveDataModel;
 import com.donews.home.api.HomeApi;
 import com.donews.home.bean.DataBean;
+import com.donews.home.bean.SearchSugBean;
 import com.donews.home.bean.TopGoodsBean;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
@@ -25,12 +26,12 @@ public class SearchModel extends BaseLiveDataModel {
      *
      * @return 返回 homeBean的数据
      */
-    public MutableLiveData<TopGoodsBean> getSearchData(String search) {
-        MutableLiveData<TopGoodsBean> mutableLiveData = new MutableLiveData<>();
-
-        EasyHttp.get(HomeApi.goodsList)
+    public MutableLiveData<SearchSugBean> getSearchData(String search) {
+        MutableLiveData<SearchSugBean> mutableLiveData = new MutableLiveData<>();
+//        https://lottery.dev.tagtic.cn/shop/v1/search-suggestion?key_words=%E5%93%88%E5%93%88&type=1
+        EasyHttp.get(HomeApi.searchSugUrl + "?key_words=" + search)
                 .cacheMode(CacheMode.NO_CACHE)
-                .execute(new SimpleCallBack<TopGoodsBean>() {
+                .execute(new SimpleCallBack<SearchSugBean>() {
 
                     @Override
                     public void onError(ApiException e) {
@@ -38,8 +39,8 @@ public class SearchModel extends BaseLiveDataModel {
                     }
 
                     @Override
-                    public void onSuccess(TopGoodsBean dataBean) {
-                        mutableLiveData.postValue(dataBean);
+                    public void onSuccess(SearchSugBean searchSugBean) {
+                        mutableLiveData.postValue(searchSugBean);
                     }
                 });
 
