@@ -2,10 +2,10 @@ package com.donews.mail.model
 
 import androidx.lifecycle.MutableLiveData
 import com.donews.base.model.BaseLiveDataModel
-import com.donews.base.model.BaseModel
 import com.donews.mail.beans.MailPackageTabItem
 import com.donews.mail.entitys.resps.MailPackHomeListItemResp
 import com.donews.mail.entitys.resps.MailPackHomeListResp
+import com.donews.network.BuildConfig
 import com.donews.network.EasyHttp
 import com.donews.network.cache.model.CacheMode
 import com.donews.network.callback.SimpleCallBack
@@ -21,8 +21,13 @@ import kotlin.math.ceil
  */
 class MailModel : BaseLiveDataModel() {
 
-    /** 所有的请求分页大小都设定为：30 */
-    private var pageSize = 30
+    companion object{
+        /** 9.9包邮页面的列表接口地址(每个tab的列表数据接口地址) */
+        val API_NINE_OP_GOODS_LIST = "${BuildConfig.BASE_URL}v1/nine-op-goods-list"
+    }
+
+    /** 加载更多数据时候的分页大小：40 */
+    val pageSize = 40
 
     /**
      * [getMailHomeListData]接口的缓存数据
@@ -57,9 +62,8 @@ class MailModel : BaseLiveDataModel() {
         if (!isRefresh && cacheData?.isNotEmpty() == true) {
             //有数据。并且为加载更多模式。那么计算页码
             pageId += ceil(cacheData.size / pageSize * 1.0).toInt()
-
         }
-        val disp: Disposable = EasyHttp.get("")
+        val disp: Disposable = EasyHttp.get(API_NINE_OP_GOODS_LIST)
             .params(
                 mutableMapOf(
                     Pair("page_id", "$pageId"),
@@ -81,7 +85,7 @@ class MailModel : BaseLiveDataModel() {
                     } else {
                         if (mailHomeListCacheData[tabItem.type] != null) {
                             if (bean?.list?.isNotEmpty() == true) {
-                                mailHomeListCacheData[tabItem.type]!!.addAll(bean.list)
+                                mailHomeListCacheData[tabItem.type]!!.addAll(bean!!.list)
                             }
                         } else {
                             mailHomeListCacheData[tabItem.type] = bean?.list

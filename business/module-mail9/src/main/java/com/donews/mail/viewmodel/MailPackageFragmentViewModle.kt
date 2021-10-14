@@ -25,7 +25,7 @@ class MailPackageFragmentViewModle : BaseLiveDataViewModel<MailModel>() {
      * 获取tab数据
      */
     fun getTabDatas() {
-        if (tabListLiveData.value == null) {
+        if (tabListLiveData.value == null || tabListLiveData.value!!.isEmpty()) {
             val list = mutableListOf<MailPackageTabItem>()
             list.add(MailPackageTabItem(-1, "精选"))
             list.add(MailPackageTabItem(1, "5.9元区"))
