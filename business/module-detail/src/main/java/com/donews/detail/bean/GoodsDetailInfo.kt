@@ -1,4 +1,6 @@
 package com.donews.detail.bean
+
+import com.donews.common.contract.BaseCustomViewModel
 import com.google.gson.annotations.SerializedName
 
 
@@ -11,129 +13,129 @@ import com.google.gson.annotations.SerializedName
  */
 data class GoodsDetailInfo(
     @SerializedName("id")
-    val id: String,
+    var id: String,
     @SerializedName("goods_id")
-    val goodsId: String,
+    var goodsId: String,
     @SerializedName("item_link")
-    val itemLink: String,
+    var itemLink: String,
     @SerializedName("title")
-    val title: String,
+    var title: String,
     @SerializedName("dtitle")
-    val dtitle: String,
+    var dtitle: String,
     @SerializedName("special_text")
-    val specialText: List<String>,
+    var specialText: List<Any>,
     @SerializedName("desc")
-    val desc: String,
+    var desc: String,
     @SerializedName("cid")
-    val cid: String,
+    var cid: String,
     @SerializedName("subcid")
-    val subcid: List<String>,
+    var subcid: List<Any>,
     @SerializedName("tbcid")
-    val tbcid: String,
+    var tbcid: String,
     @SerializedName("main_pic")
-    val mainPic: String,
+    var mainPic: String,
     @SerializedName("marketing_main_pic")
-    val marketingMainPic: String,
+    var marketingMainPic: String,
     @SerializedName("video")
-    val video: String,
+    var video: String,
     @SerializedName("original_price")
-    val originalPrice: Int,
+    var originalPrice: Double,
     @SerializedName("actual_price")
-    val actualPrice: Int,
+    var actualPrice: Double,
     @SerializedName("discounts")
-    val discounts: Int,
+    var discounts: Double,
     @SerializedName("coupon_link")
-    val couponLink: String,
+    var couponLink: String,
     @SerializedName("coupon_total_num")
-    val couponTotalNum: Int,
+    var couponTotalNum: Int,
     @SerializedName("coupon_receive_num")
-    val couponReceiveNum: Int,
+    var couponReceiveNum: Int,
     @SerializedName("coupon_end_time")
-    val couponEndTime: String,
+    var couponEndTime: String,
     @SerializedName("coupon_start_time")
-    val couponStartTime: String,
+    var couponStartTime: String,
     @SerializedName("coupon_price")
-    val couponPrice: Int,
+    var couponPrice: Int,
     @SerializedName("coupon_conditions")
-    val couponConditions: String,
+    var couponConditions: String,
     @SerializedName("month_sales")
-    val monthSales: Int,
+    var monthSales: Int,
     @SerializedName("two_hours_sales")
-    val twoHoursSales: Int,
+    var twoHoursSales: Int,
     @SerializedName("daily_sales")
-    val dailySales: Int,
+    var dailySales: Int,
     @SerializedName("brand")
-    val brand: Int,
+    var brand: Int,
     @SerializedName("brand_id")
-    val brandId: String,
+    var brandId: String,
     @SerializedName("brand_name")
-    val brandName: String,
+    var brandName: String,
     @SerializedName("create_time")
-    val createTime: String,
+    var createTime: String,
     @SerializedName("activity_type")
-    val activityType: Int,
+    var activityType: Int,
     @SerializedName("activity_start_time")
-    val activityStartTime: String,
+    var activityStartTime: String,
     @SerializedName("activity_end_time")
-    val activityEndTime: String,
+    var activityEndTime: String,
     @SerializedName("shop_type")
-    val shopType: Int,
+    var shopType: Int,
     @SerializedName("gold_sellers")
-    val goldSellers: Int,
+    var goldSellers: Int,
     @SerializedName("seller_id")
-    val sellerId: String,
+    var sellerId: String,
     @SerializedName("shop_name")
-    val shopName: String,
+    var shopName: String,
     @SerializedName("shop_level")
-    val shopLevel: Int,
+    var shopLevel: Int,
     @SerializedName("desc_score")
-    val descScore: Int,
+    var descScore: Double,
     @SerializedName("dsr_score")
-    val dsrScore: Int,
+    var dsrScore: Double,
     @SerializedName("dsr_percent")
-    val dsrPercent: Int,
+    var dsrPercent: Int,
     @SerializedName("ship_score")
-    val shipScore: Int,
+    var shipScore: Double,
     @SerializedName("ship_percent")
-    val shipPercent: Int,
+    var shipPercent: Int,
     @SerializedName("service_score")
-    val serviceScore: Int,
+    var serviceScore: Double,
     @SerializedName("service_percent")
-    val servicePercent: Int,
+    var servicePercent: Int,
     @SerializedName("hot_push")
-    val hotPush: Int,
+    var hotPush: Int,
     @SerializedName("team_name")
-    val teamName: String,
+    var teamName: String,
     @SerializedName("detail_pics")
-    val detailPics: String,
+    var detailPics: String,
     @SerializedName("imgs")
-    val imgs: String,
+    var imgs: String,
     @SerializedName("reimgs")
-    val reimgs: String,
+    var reimgs: String,
     @SerializedName("quan_m_link")
-    val quanMLink: Int,
+    var quanMLink: Int,
     @SerializedName("hz_quan_over")
-    val hzQuanOver: Int,
+    var hzQuanOver: Int,
     @SerializedName("yunfeixian")
-    val yunfeixian: Int,
+    var yunfeixian: Int,
     @SerializedName("estimate_amount")
-    val estimateAmount: Int,
+    var estimateAmount: Int,
     @SerializedName("shop_logo")
-    val shopLogo: String,
+    var shopLogo: String,
     @SerializedName("freeship_remote_district")
-    val freeshipRemoteDistrict: Int,
+    var freeshipRemoteDistrict: Int,
     @SerializedName("is_subdivision")
-    val isSubdivision: Int,
+    var isSubdivision: Int,
     @SerializedName("subdivision_id")
-    val subdivisionId: String,
+    var subdivisionId: String,
     @SerializedName("subdivision_name")
-    val subdivisionName: String,
+    var subdivisionName: String,
     @SerializedName("subdivision_rank")
-    val subdivisionRank: Int,
+    var subdivisionRank: Int,
     @SerializedName("sales24h")
-    val sales24h: Int,
+    var sales24h: Int,
     @SerializedName("lowest")
-    val lowest: Int,
+    var lowest: Int,
     @SerializedName("coupon_id")
-    val couponId: String
-)
+    var couponId: String
+) : BaseCustomViewModel()

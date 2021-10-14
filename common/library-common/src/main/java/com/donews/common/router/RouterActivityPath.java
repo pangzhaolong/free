@@ -58,7 +58,15 @@ public class RouterActivityPath {
     public static class ClassPath {
         public static final String WEB_VIEW_OBJ_ACTIVITY_JAVASCRIPT = "com.donews.web.javascript.JavaScriptInterface";
         public static final String MINE_ACTIVITY_JAVASCRIPT = "com.donews.main.ui.MainActivity";
-        public static final String METHOD_FRAGMENT_SET_POSITION = "com.donews.main.ui.MainActivity.setCurrentItemPosition";
+        public static final String METHOD_FRAGMENT_SET_POSITION = "com.donews.main.ui.MainActivity" +
+                ".setCurrentItemPosition";
 
+    }
+
+
+    public static class GoodsDetail {
+        public static final String DETAIL = "/detail";
+        //商品详情页
+        public static final String GOODS_DETAIL = DETAIL + "/goodsDetail";
     }
 }

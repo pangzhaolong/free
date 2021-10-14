@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="detail_back_margin">8dp</dimen>
+    <dimen name="detail_title">16.44dp</dimen>
+    <dimen name="detail_content_padding">10.960dp</dimen>
+</resources>

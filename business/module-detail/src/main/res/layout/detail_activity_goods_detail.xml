@@ -10,37 +10,101 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.GoodsDetailActivity">
+        android:background="@color/detail_f4f4f4">
 
-        <ImageButton
-            android:id="@+id/imgBtn_back"
-            style="@style/detail_ImageButton_Style"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:contentDescription="@null"
-            android:padding="4dp"
-            android:src="@drawable/detail_ic_back_v2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.zhpan.bannerview.BannerViewPager
-            android:id="@+id/bvp_banner"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_content"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_msg"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:background="@color/detail_f4f4f4"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/bvp_banner" />
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/view_bg_status_bar"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:background="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.legacy.widget.Space
+            android:id="@+id/space_toolbar"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_bg_status_bar" />
+
+        <ImageView
+            android:id="@+id/iv_toolbar_bg"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:contentDescription="@null"
+            android:src="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/space_toolbar"
+            app:layout_constraintEnd_toEndOf="@id/space_toolbar"
+            app:layout_constraintStart_toStartOf="@id/space_toolbar"
+            app:layout_constraintTop_toTopOf="@id/space_toolbar" />
+
+        <ImageView
+            android:id="@+id/iv_bg_btn_back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@null"
+            android:padding="8dp"
+            android:src="@drawable/detail_circle_black_translucence"
+            app:layout_constraintStart_toStartOf="@id/space_toolbar"
+            app:layout_constraintTop_toTopOf="@id/space_toolbar" />
+
+        <ImageButton
+            android:id="@+id/imgBtn_back_white"
+            style="@style/detail_ImageButton_Style"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@null"
+            android:padding="14dp"
+            android:src="@drawable/detail_ic_back"
+            app:layout_constraintBottom_toBottomOf="@id/iv_bg_btn_back"
+            app:layout_constraintEnd_toEndOf="@id/iv_bg_btn_back"
+            app:layout_constraintStart_toStartOf="@id/iv_bg_btn_back"
+            app:layout_constraintTop_toTopOf="@id/iv_bg_btn_back"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <ImageButton
+            android:id="@+id/imgBtn_back_black"
+            style="@style/detail_ImageButton_Style"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@null"
+            android:padding="14dp"
+            android:src="@drawable/detail_ic_back"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@id/space_toolbar"
+            app:layout_constraintTop_toTopOf="@id/space_toolbar"
+            app:tint="@color/black"
+            tools:visibility="invisible" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            app:layout_constraintBottom_toBottomOf="@id/space_toolbar"
+            app:layout_constraintEnd_toEndOf="@id/space_toolbar"
+            app:layout_constraintStart_toStartOf="@id/space_toolbar"
+            app:layout_constraintTop_toTopOf="@id/space_toolbar"
+            app:tabIndicatorColor="@color/detail_theme_color"
+            app:tabIndicatorFullWidth="false"
+            app:tabMode="fixed"
+            app:tabPaddingEnd="12dp"
+            app:tabPaddingStart="12dp"
+            app:tabRippleColor="@android:color/transparent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

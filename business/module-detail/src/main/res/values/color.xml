@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="detail_f4f4f4">#F4F4F4</color>
+    <color name="detail_8888888">#888888</color>
+    <color name="detail_ffebed">#FFEBED</color>
+    <color name="detail_ff313e">#FF313E</color>
+    <color name="detail_ff3738">#FE3738</color>
+    <color name="detail_555555">#555555</color>
+
+    <color name="detail_status_bar_color">#7f000000</color>
+    <color name="detail_theme_color">#F91415</color>
+</resources>

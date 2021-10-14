@@ -4,9 +4,9 @@
     <item>
         <inset
             android:drawable="@drawable/detail_ic_back"
-            android:insetLeft="2dp"
+            android:insetLeft="8dp"
             android:insetTop="8dp"
-            android:insetRight="14dp"
+            android:insetRight="8dp"
             android:insetBottom="8dp" />
     </item>
 </layer-list>
