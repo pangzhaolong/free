@@ -8,6 +8,10 @@
         <variable
             name="eventListener"
             type="com.donews.detail.ui.GoodsDetailActivity.EventListener" />
+
+        <variable
+            name="detailInfo"
+            type="com.donews.detail.bean.GoodsDetailInfo" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,7 +26,7 @@
             android:background="@color/detail_f4f4f4"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/view_bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -111,5 +115,86 @@
             app:tabPaddingEnd="12dp"
             app:tabPaddingStart="12dp"
             app:tabRippleColor="@android:color/transparent" />
+
+        <View
+            android:id="@+id/view_bottom"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/iv_copy"
+            android:layout_width="0dp"
+            android:layout_height="43.84dp"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/detail_bg_bottom_left"
+            android:gravity="center"
+            android:onClick="@{eventListener::clickCopy}"
+            android:text="@string/detail_copy_command"
+            android:textColor="@color/detail_theme_color"
+            app:layout_constraintBottom_toBottomOf="@id/view_bottom"
+            app:layout_constraintEnd_toStartOf="@id/iv_buy"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/view_bottom" />
+
+        <ImageView
+            android:id="@+id/iv_buy"
+            android:layout_width="0dp"
+            android:layout_height="43.84dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/detail_bg_bottom_right"
+            android:onClick="@{eventListener::clickBuy}"
+            app:layout_constraintBottom_toBottomOf="@id/view_bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/iv_copy"
+            app:layout_constraintTop_toTopOf="@id/view_bottom" />
+
+        <TextView
+            android:id="@+id/tv_actual_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="@{@string/detail_buy_price(String.valueOf(detailInfo.actualPrice))}"
+            android:textColor="@color/white"
+            android:textSize="16.44dp"
+            app:layout_constraintBottom_toTopOf="@id/tv_buy_msg"
+            app:layout_constraintEnd_toStartOf="@id/tv_original_price"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="@id/iv_buy"
+            app:layout_constraintTop_toTopOf="@id/iv_buy"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="¥8.9" />
+
+        <TextView
+            android:id="@+id/tv_original_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0.6"
+            android:text="@{@string/detail_buy_price(String.valueOf(detailInfo.originalPrice))}"
+            android:textColor="@color/white"
+            android:textSize="12.056dp"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_actual_price"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_actual_price"
+            app:layout_constraintTop_toTopOf="@id/tv_actual_price"
+            tools:text="¥11.9" />
+
+        <TextView
+            android:id="@+id/tv_buy_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/detail_save_money_buy"
+            android:textColor="@color/white"
+            android:textSize="12.056dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/iv_buy"
+            app:layout_constraintStart_toStartOf="@id/iv_buy"
+            app:layout_constraintTop_toBottomOf="@id/tv_actual_price" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

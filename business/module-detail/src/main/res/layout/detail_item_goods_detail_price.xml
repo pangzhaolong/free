@@ -10,6 +10,10 @@
         <variable
             name="detailInfo"
             type="com.donews.detail.bean.GoodsDetailInfo" />
+
+        <variable
+            name="eventListener"
+            type="com.donews.detail.ui.GoodsDetailActivity.EventListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,12 +41,12 @@
             android:textColor="@color/detail_theme_color"
             android:textSize="17.5dp"
             android:textStyle="bold"
-            app:layout_constraintBaseline_toBaselineOf="@id/tv_actual_Price"
-            app:layout_constraintBottom_toBottomOf="@id/tv_actual_Price"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_actual_price"
+            app:layout_constraintBottom_toBottomOf="@id/tv_actual_price"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/tv_actual_Price"
+            android:id="@+id/tv_actual_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="2dp"
@@ -61,9 +65,9 @@
             android:layout_marginStart="10.9dp"
             android:text="@{@string/detail_original_price(String.valueOf(detailInfo.originalPrice))}"
             android:textColor="@color/detail_8888888"
-            app:layout_constraintBaseline_toBaselineOf="@id/tv_actual_Price"
-            app:layout_constraintBottom_toBottomOf="@id/tv_actual_Price"
-            app:layout_constraintStart_toEndOf="@id/tv_actual_Price"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_actual_price"
+            app:layout_constraintBottom_toBottomOf="@id/tv_actual_price"
+            app:layout_constraintStart_toEndOf="@id/tv_actual_price"
             tools:text="原价 ¥ 15.9" />
 
         <TextView
@@ -73,9 +77,9 @@
             android:layout_marginEnd="@dimen/detail_content_padding"
             android:text="@{Html.fromHtml(@string/detail_month_sales(detailInfo.monthSales))}"
             android:textColor="@color/detail_8888888"
-            app:layout_constraintBottom_toBottomOf="@id/tv_actual_Price"
+            app:layout_constraintBottom_toBottomOf="@id/tv_actual_price"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_actual_Price"
+            app:layout_constraintTop_toTopOf="@id/tv_actual_price"
             tools:text="已售1119件" />
 
         <TextView
@@ -89,7 +93,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_actual_Price"
+            app:layout_constraintTop_toBottomOf="@id/tv_actual_price"
             tools:text="优信维生素b族泡腾片vb旗舰店正品补充多种复合维生素B1 B2 B6" />
 
 
@@ -179,6 +183,7 @@
                 android:id="@+id/tv_get_coupon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{eventListener::clickGetCoupon}"
                 android:paddingLeft="16.44dp"
                 android:text="@string/detail_get_coupon"
                 android:textColor="@color/detail_ff313e"

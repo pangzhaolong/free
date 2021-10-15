@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Paint
 import android.text.SpannableString
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -11,7 +12,6 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.donews.base.widget.CenterImageSpan
 import com.donews.common.utils.DensityUtils
 import com.donews.detail.R
@@ -19,6 +19,7 @@ import com.donews.detail.bean.DetailPicInfo
 import com.donews.detail.bean.GoodsDetailInfo
 import com.donews.detail.databinding.*
 import com.donews.detail.ui.GoodsDetailActivity
+import com.donews.detail.ui.GoodsDetailActivity.EventListener
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.google.gson.reflect.TypeToken
@@ -31,7 +32,12 @@ import com.orhanobut.logger.Logger
  * @version v1.0
  * @date 2021/10/14 10:07
  */
-class GoodsDetailAdapter(val context: Context, val lifecycle: Lifecycle, val goodsDetailInfo: GoodsDetailInfo) :
+class GoodsDetailAdapter(
+    val context: Context,
+    val lifecycle: Lifecycle,
+    val eventListener: EventListener,
+    val goodsDetailInfo: GoodsDetailInfo
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
@@ -89,8 +95,7 @@ class GoodsDetailAdapter(val context: Context, val lifecycle: Lifecycle, val goo
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val viewType = getItemViewType(position)
-        when (viewType) {
+        when (getItemViewType(position)) {
             1 -> {
                 val bannerViewHolder: BannerViewHolder = holder as BannerViewHolder
                 bindBannerView(bannerViewHolder, goodsDetailInfo)
@@ -129,8 +134,20 @@ class GoodsDetailAdapter(val context: Context, val lifecycle: Lifecycle, val goo
     }
 
     private fun bindBannerView(bannerViewHolder: BannerViewHolder, goodsDetailInfo: GoodsDetailInfo) {
-        val data: List<String> = goodsDetailInfo.imgs.split(",")
-        bannerViewHolder.dataBinding.bvpBanner.refreshData(data)
+        if (goodsDetailInfo.imgs.isBlank()) {
+            bannerViewHolder.dataBinding.bvpBanner.visibility = View.GONE
+            bannerViewHolder.dataBinding.ivMainPic.visibility = View.VISIBLE
+            Glide.with(context)
+                .load(goodsDetailInfo.mainPic)
+                .placeholder(R.drawable.detail_img_placeholder)
+                .centerCrop()
+                .into(bannerViewHolder.dataBinding.ivMainPic)
+        } else {
+            val data: List<String> = goodsDetailInfo.imgs.split(",")
+            bannerViewHolder.dataBinding.bvpBanner.visibility = View.VISIBLE
+            bannerViewHolder.dataBinding.ivMainPic.visibility = View.GONE
+            bannerViewHolder.dataBinding.bvpBanner.refreshData(data)
+        }
     }
     //endregion
 
@@ -141,6 +158,7 @@ class GoodsDetailAdapter(val context: Context, val lifecycle: Lifecycle, val goo
     private fun bindPriceView(priceViewHolder: PriceViewHolder, goodsDetailInfo: GoodsDetailInfo) {
         val dataBinding = priceViewHolder.dataBinding
         dataBinding.detailInfo = goodsDetailInfo
+        dataBinding.eventListener = eventListener
         //添加删除线
         dataBinding.tvOriginalPrice.paint.flags = Paint.STRIKE_THRU_TEXT_FLAG
         dataBinding.tvTitle.text = getTitleString(goodsDetailInfo)
@@ -207,16 +225,23 @@ class GoodsDetailAdapter(val context: Context, val lifecycle: Lifecycle, val goo
                 gson.fromJson<List<DetailPicInfo>>(detailPicInfo, object : TypeToken<List<DetailPicInfo>>() {}.type)
             detailInfoViewHolder.dataBinding.llImgs.removeAllViews()
             detailPicInfos?.let {
+
+                val screenWidth = DensityUtils.getScreenWidth()
                 for (detailPic in detailPicInfos) {
                     val imageView = ImageView(context)
-                    val params = LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                    )
-                    params.bottomMargin = DensityUtils.dip2px(10f)
+                    var width = LinearLayout.LayoutParams.MATCH_PARENT;
+                    var height = LinearLayout.LayoutParams.WRAP_CONTENT
+                    if (detailPic.width != 0) {
+                        val scale = screenWidth * 1.0f / detailPic.width
+                        width = screenWidth
+                        height = (detailPic.height * scale).toInt()
+                    }
+
+                    val params = LinearLayout.LayoutParams(width, height)
                     detailInfoViewHolder.dataBinding.llImgs.addView(imageView, params)
                     Glide.with(context)
                         .load(detailPic.img)
+                        .placeholder(R.drawable.detail_img_placeholder)
                         .into(imageView)
                 }
             }

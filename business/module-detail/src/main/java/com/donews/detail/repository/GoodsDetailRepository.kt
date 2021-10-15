@@ -1,8 +1,8 @@
 package com.donews.detail.repository
 
-import androidx.lifecycle.MutableLiveData
 import com.donews.base.model.BaseLiveDataModel
 import com.donews.detail.bean.GoodsDetailInfo
+import com.donews.detail.bean.PrivilegeLinkInfo
 import com.donews.network.EasyHttp
 import com.donews.network.cache.model.CacheMode
 import com.donews.network.callback.SimpleCallBack
@@ -30,6 +30,19 @@ class GoodsDetailRepository : BaseLiveDataModel() {
             getRequest.params("goods_id", id)
         }
         val disposable = getRequest.execute(callBack)
+        addDisposable(disposable)
+    }
+
+    /**
+     * 查询商品转链
+     */
+    fun queryPrivilegeLink(goodsId: String, couponId: String, callBack: SimpleCallBack<PrivilegeLinkInfo>) {
+        val urlCreator = UrlCreator()
+        val disposable = EasyHttp.get(urlCreator.getPrivilegeLinkApi())
+            .cacheMode(CacheMode.NO_CACHE)
+            .params("goods_id", goodsId)
+            .params("coupon_id", couponId)
+            .execute(callBack)
         addDisposable(disposable)
     }
 }

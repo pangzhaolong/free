@@ -10,4 +10,7 @@
     <string name="detail_desc_score">描述：%s</string>
     <string name="detail_service_score">卖家：%S</string>
     <string name="detail_ship_score">物流：%s</string>
+    <string name="detail_buy_price">¥%s</string>
+    <string name="detail_copy_command">复制口令</string>
+    <string name="detail_save_money_buy">省钱购买</string>
 </resources>

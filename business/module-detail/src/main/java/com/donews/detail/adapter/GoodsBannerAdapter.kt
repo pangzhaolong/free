@@ -15,7 +15,10 @@ import com.zhpan.bannerview.BaseViewHolder
 class GoodsBannerAdapter : BaseBannerAdapter<String>() {
 
     override fun bindData(holder: BaseViewHolder<String>, data: String, position: Int, pageSize: Int) {
-        Glide.with(holder.itemView.context).load(data).into(holder.findViewById(R.id.iv_img))
+        Glide.with(holder.itemView.context)
+            .load(data)
+            .placeholder(R.drawable.detail_img_placeholder)
+            .into(holder.findViewById(R.id.iv_img))
     }
 
     override fun getLayoutId(viewType: Int): Int {

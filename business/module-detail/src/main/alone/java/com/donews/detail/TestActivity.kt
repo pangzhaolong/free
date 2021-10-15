@@ -15,7 +15,8 @@ class TestActivity : AppCompatActivity() {
         val button: Button = findViewById(R.id.detail_button)
         button.setOnClickListener {
             ARouter.getInstance().build(RouterActivityPath.GoodsDetail.GOODS_DETAIL)
-                .withString("params_id", "35925577")
+//                .withString("params_id", "35925577")
+                .withString("params_goods_id", "636116457588")
                 .navigation()
         }
     }

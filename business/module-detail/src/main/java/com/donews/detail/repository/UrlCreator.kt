@@ -16,4 +16,8 @@ class UrlCreator {
         return BuildConfig.BASE_URL + "v1/get-goods-details"
     }
 
+    /** 搞笑转链接口 */
+    fun getPrivilegeLinkApi(): String {
+        return BuildConfig.BASE_URL + "v1/get-privilege-link"
+    }
 }

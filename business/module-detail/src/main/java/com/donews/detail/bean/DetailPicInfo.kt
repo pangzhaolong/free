@@ -17,7 +17,7 @@ data class DetailPicInfo(
     @SerializedName("img")
     var img: String,
     @SerializedName("width")
-    var width: String,
+    var width: Int,
     @SerializedName("height")
-    var height: String
+    var height: Int
 ) : BaseCustomViewModel()

@@ -88,6 +88,7 @@
             android:text="全部商品"
             android:textColor="@color/white"
             android:textSize="12.056dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/iv_ic_shop" />
     </androidx.constraintlayout.widget.ConstraintLayout>
