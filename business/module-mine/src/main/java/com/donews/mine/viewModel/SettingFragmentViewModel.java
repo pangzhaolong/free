@@ -43,44 +43,36 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
     //标题集合
     private List<String> itemTitles = new ArrayList() {
         {
-            add("绑定手机");
-            add("分享App");
             add("用户协议");
             add("隐私政策");
             add("意见反馈");
             add("关于我们");
             add("清除缓存");
-            add("注销账号");
+            add("分享App");
         }
     };
     //点击监听
     private Map<Integer, Runnable> itemClicks = new HashMap() {
         {
-            put(0, (Runnable) () -> {//绑定手机号
-                ToastUtil.show(baseActivity, "游客账号暂无法绑定手机号");
-            });
-            put(1, (Runnable) () -> {//分享APP
-                ToastUtil.show(baseActivity, "分享APP");
-            });
-            put(2, (Runnable) () -> { //用户协议
+            put(0, (Runnable) () -> { //用户协议
                 Bundle bundle = new Bundle();
                 bundle.putString("url", BuildConfig.HTTP_H5 + "SLAs");
                 bundle.putString("title", "用户协议");
                 ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
             });
-            put(3, (Runnable) () -> { //隐私政策
+            put(1, (Runnable) () -> { //隐私政策
                 Bundle bundle = new Bundle();
                 bundle.putString("url", BuildConfig.HTTP_H5 + "privacy");
                 bundle.putString("title", "隐私政策");
                 ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
             });
-            put(4, (Runnable) () -> { //意见反馈
+            put(2, (Runnable) () -> { //意见反馈
                 helperAndUpload("意见反馈", "customer");
             });
-            put(5, (Runnable) () -> { //关于我们
+            put(3, (Runnable) () -> { //关于我们
                 ToastUtil.show(baseActivity, "关于我们");
             });
-            put(6, (Runnable) () -> { //清除缓存
+            put(4, (Runnable) () -> { //清除缓存
                 ConfirmPopupWindow confirmPopupWindow = new ConfirmPopupWindow(baseActivity);
                 confirmPopupWindow.show();
                 confirmPopupWindow.setTitleText("确定清除缓存？").setOkOnClick(v -> {
@@ -89,8 +81,8 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
                 }).setCancelOnClick(v -> confirmPopupWindow.hide());
                 ToastUtil.show(baseActivity, "清楚缓存");
             });
-            put(7, (Runnable) () -> { //注销账号
-                ToastUtil.show(baseActivity, "暂时不支持注销游客账号");
+            put(5, (Runnable) () -> {//分享APP
+                ToastUtil.show(baseActivity, "分享APP");
             });
         }
     };
@@ -148,7 +140,7 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
     public String getItemDescText(int pos) {
         if (pos == 1) {
             return "邀请好友一起中奖";
-        } else if (pos == 6) { //垃圾
+        } else if (pos == 4) { //垃圾
             return getAppCacheSize();
         } else {
             return "";

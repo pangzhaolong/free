@@ -7,6 +7,13 @@
             name="commodity"
             type="com.doing.spike.bean.SpikeBean.GoodsListDTO"></variable>
 
+
+
+        <variable
+            name="period"
+            type="com.doing.spike.bean.SpikeBean.RoundsListDTO"></variable>
+
+
     </data>
 
     <LinearLayout
@@ -19,9 +26,9 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -84,73 +91,126 @@
                         android:textSize="13dp"></TextView>
                 </LinearLayout>
 
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
                     android:orientation="horizontal">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="¥"
-                        android:textColor="#FD1E60"
-                        android:textSize="13dp"></TextView>
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="¥"
+                                android:textColor="#FD1E60"
+                                android:textSize="13dp"></TextView>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{commodity.actualPrice.toString()}"
+                                android:textColor="#FD1E60"
+                                android:textSize="16dp"></TextView>
+
+                            <TextView
+                                android:id="@+id/original_price"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:text='@{"¥"+commodity.originalPrice.toString()}'
+                                android:textColor="#999999"
+                                android:textSize="13dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="bottom"
+                            android:orientation="horizontal"
+                            android:paddingBottom="15dp">
+
+                            <ImageView
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_gravity="bottom"
+                                android:src="@drawable/fire_icon"></ImageView>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="月销"
+                                android:textColor="#777777"
+                                android:textSize="13dp"></TextView>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="3dp"
+                                android:text="@{commodity.getSales().toString()}"
+                                android:textColor="#FF81A5"
+                                android:textSize="13dp"></TextView>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:text="件"
+                                android:textColor="#777777"
+                                android:textSize="13dp"></TextView>
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/grabbed_bg"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:text="@{commodity.actualPrice.toString()}"
-                        android:textColor="#FD1E60"
-                        android:textSize="16dp"></TextView>
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/spike_quantity_shape"
+                        android:orientation="vertical"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp">
 
-                    <TextView
-                        android:id="@+id/original_price"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:text='@{"¥"+commodity.originalPrice.toString()}'
-                        android:textColor="#999999"
-                        android:textSize="13dp" />
-                </LinearLayout>
+                        <TextView
+                            android:id="@+id/grabbed_number"
+                            android:layout_gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="13dp"
+                            android:text='@{(period!=null&amp;period.getStatus()==2)?"即将开抢":"已抢"+commodity.monthSales.toString()+"件"}'
+                            android:textColor="#FFFFFF"></TextView>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="bottom"
-                    android:orientation="horizontal"
-                    android:paddingBottom="15dp">
+                        <ProgressBar
+                            android:layout_marginTop="5dp"
+                            android:id="@+id/spike_progress"
+                            style="@android:style/Widget.ProgressBar.Horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:progressDrawable="@drawable/progressbar"
+                            android:max="@{commodity.getSales}"
+                            android:progress="50"
+                            />
 
-                    <ImageView
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:layout_gravity="bottom"
-                        android:src="@drawable/fire_icon"></ImageView>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="月销"
-                        android:textColor="#777777"
-                        android:textSize="13dp"></TextView>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="3dp"
-                        android:text="@{commodity.monthSales.toString()}"
-                        android:textColor="#FF81A5"
-                        android:textSize="16dp"></TextView>
+                    </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:text="件"
-                        android:textColor="#777777"
-                        android:textSize="13dp"></TextView>
-                </LinearLayout>
+                </RelativeLayout>
+
+
             </LinearLayout>
 
 

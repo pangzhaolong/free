@@ -15,17 +15,20 @@ import com.bumptech.glide.Glide;
 import com.donews.home.R;
 import com.donews.home.bean.NorGoodsBean;
 import com.donews.home.bean.TopGoodsBean;
+import com.donews.home.listener.GoodsDetailListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsViewHolder> {
+public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsViewHolder> implements View.OnClickListener{
 
     private final Context mContext;
     private final List<NorGoodsBean.goodsInfo> mGoodsList = new ArrayList<>();
+    private GoodsDetailListener mListener;
 
-    public NorGoodsAdapter(Context context) {
+    public NorGoodsAdapter(Context context, GoodsDetailListener listener) {
         mContext = context;
+        mListener = listener;
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -53,6 +56,9 @@ public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsV
             return;
         }
 
+        holder.itemView.setTag(gi);
+        holder.itemView.setOnClickListener(this::onClick);
+
         Glide.with(mContext).load(gi.getMain_pic()).into(holder.getPicIv());
         holder.desTv.setText(gi.getTitle());
         holder.salesTv.setText("已售" + gi.getMonth_sales());
@@ -64,6 +70,13 @@ public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsV
     @Override
     public int getItemCount() {
         return mGoodsList.size();
+    }
+
+    @Override
+    public void onClick(View v) {
+        NorGoodsBean.goodsInfo gi = (NorGoodsBean.goodsInfo) v.getTag();
+
+        mListener.onClick(gi.getId(), gi.getGoods_id());
     }
 
     public static class GoodsViewHolder extends RecyclerView.ViewHolder {

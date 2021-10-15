@@ -81,5 +81,6 @@ public class HomeApi {
     public final static String SuperCategory = BaseUrl + "/v1/super-category-list";
     public final static String goodsList = BaseUrl + "/v1/goods-list";
     public final static String searchSugUrl = BaseUrl + "/v1/search-suggestion";
+    public final static String searchResultUrl = BaseUrl + "/v1/list-super-goods";
 
 }

@@ -322,6 +322,17 @@ public class SpikeBean extends BaseCustomViewModel {
             this.subcid = subcid;
         }
 
+        public Integer getSales() {
+            return sales;
+        }
+
+        public void setSales(Integer sales) {
+            this.sales = sales;
+        }
+
+        private Integer sales;
+
+
         @SerializedName("activity_type")
         private Integer activityType;
         @SerializedName("activity_start_time")

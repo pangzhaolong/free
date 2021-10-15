@@ -17,8 +17,8 @@
         android:layout_height="wrap_content"
         android:text="8:00 场"></TextView>
     <TextView
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
         android:layout_marginTop="10dp"
         android:id="@+id/spike_type"
         android:textColor="@color/un_time_title_color"

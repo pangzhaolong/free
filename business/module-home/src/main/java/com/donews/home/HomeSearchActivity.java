@@ -19,6 +19,7 @@ import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.home.adapter.SearchFragmentAdapter;
 import com.donews.home.adapter.SearchSugAdapter;
 import com.donews.home.databinding.HomeJddSearchSearchBinding;
+import com.donews.home.listener.SearchSugClickListener;
 import com.donews.home.viewModel.SearchViewModel;
 import com.donews.utilslibrary.utils.LogUtil;
 import com.google.android.material.tabs.TabLayout;
@@ -31,11 +32,13 @@ import com.gyf.immersionbar.ImmersionBar;
  * 日期： 2021/10/13 14:13<br>
  * 版本：V1.0<br>
  */
-public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSearchBinding, SearchViewModel> {
+public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSearchBinding, SearchViewModel> implements SearchSugClickListener {
 
     private SearchFragmentAdapter mSearchFragmentAdapter;
     private SearchSugAdapter mSearchSugAdapter;
     private Context mContext;
+
+    private String mPreKeyWord;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,22 +91,43 @@ public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSe
                     return;
                 }
                 LogUtil.e("xxxxxxx: " + s);
-                mViewModel.getSearchData(s.toString()).observe((LifecycleOwner) mContext, searchSugBean -> {
-                    if (searchSugBean.getList().size() <= 0) {
-                        mDataBinding.homeSearchSuggestionRv.setVisibility(View.GONE);
-                        mDataBinding.homeSearchPlatformLl.setVisibility(View.VISIBLE);
-                    } else {
-                        mDataBinding.homeSearchSuggestionRv.setVisibility(View.VISIBLE);
-                        mDataBinding.homeSearchPlatformLl.setVisibility(View.GONE);
-                    }
-                    mSearchSugAdapter.refreshData(searchSugBean.getList());
-                });
+                search(s.toString());
             }
         });
 
-        mSearchSugAdapter = new SearchSugAdapter(this);
+        mSearchSugAdapter = new SearchSugAdapter(this, this);
         mDataBinding.homeSearchSuggestionRv.setLayoutManager(new LinearLayoutManager(this));
         mDataBinding.homeSearchSuggestionRv.setAdapter(mSearchSugAdapter);
+        mDataBinding.homeSearchSuggestionRv.setVisibility(View.GONE);
+        mDataBinding.homeSearchPlatformLl.setVisibility(View.VISIBLE);
+
+        mDataBinding.homeSearchDo.setOnClickListener(v -> {
+            search(mDataBinding.homeSearchEdit.getText().toString());
+        });
+    }
+
+    private void search(String keyWord) {
+        if (mPreKeyWord.equalsIgnoreCase(keyWord)) {
+            return;
+        }
+        mViewModel.getSearchData(keyWord).observe((LifecycleOwner) mContext, searchSugBean -> {
+            if (searchSugBean.getList().size() <= 0) {
+                mDataBinding.homeSearchSuggestionRv.setVisibility(View.GONE);
+                mDataBinding.homeSearchPlatformLl.setVisibility(View.VISIBLE);
+            } else {
+                mDataBinding.homeSearchSuggestionRv.setVisibility(View.VISIBLE);
+                mDataBinding.homeSearchPlatformLl.setVisibility(View.GONE);
+            }
+            mSearchSugAdapter.refreshData(searchSugBean.getList());
+        });
+
+        mPreKeyWord = keyWord;
+    }
+
+    @Override
+    public void onClick(String keyWord) {
+        mSearchFragmentAdapter.search(keyWord);
+
         mDataBinding.homeSearchSuggestionRv.setVisibility(View.GONE);
         mDataBinding.homeSearchPlatformLl.setVisibility(View.VISIBLE);
     }

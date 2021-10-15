@@ -75,8 +75,9 @@ public class MainActivity
 
         mNavigationController = mDataBinding.bottomView.material()
                 .addItem(R.drawable.main_home, "首页", checkColor)
+                .addItem(R.drawable.main_user, "9.9包邮", checkColor)
                 .addItem(R.drawable.main_user, "马上抢", checkColor)
-//                .addItem(R.drawable.main_notify, "福利", checkColor)
+////                .addItem(R.drawable.main_notify, "福利", checkColor)
                 .addItem(R.drawable.main_user, "我的", checkColor)
                 .setDefaultColor(defaultColor)
                 .enableAnimateLayoutChanges()
@@ -133,6 +134,10 @@ public class MainActivity
         fragments.add(
                 (Fragment) ARouter.getInstance()
                         .build(RouterFragmentPath.Home.PAGER_HOME)
+                        .navigation());
+        fragments.add(
+                (Fragment) ARouter.getInstance()
+                        .build(RouterFragmentPath.Mail.PAGE_MAIL_PACKAGE)
                         .navigation());
         fragments.add(
                 (Fragment) ARouter.getInstance()

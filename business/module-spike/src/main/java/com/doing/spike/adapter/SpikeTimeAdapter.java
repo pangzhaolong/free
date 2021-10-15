@@ -31,7 +31,6 @@ public class SpikeTimeAdapter extends RecyclerView.Adapter<SpikeTimeAdapter.Spik
     private IClickCallbackListener mClickListener;
     private CenterLayoutManager mCenterLayoutManager;
     private RecyclerView mRecyclerView;
-    private SpikeViewHolder mLayoutHolder;
     private SpikeViewHolder mPanicBuying;
 
     public SpikeTimeAdapter(Context context, CenterLayoutManager centerLayoutManager, RecyclerView recyclerView) {
@@ -45,27 +44,40 @@ public class SpikeTimeAdapter extends RecyclerView.Adapter<SpikeTimeAdapter.Spik
     public SpikeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(mLayoutId, parent, false);
         SpikeViewHolder holder = new SpikeViewHolder(view);
+        slidePosition();
         return holder;
     }
 
-    public void getLayout(int layoutId) {
-        this.mLayoutId = layoutId;
+
+    /**
+     * * 方法用来打开应用时自动定位到当前疯抢中
+     */
+    public void slidePosition() {
+        if (mCenterLayoutManager != null) {
+            for (int i = 0; i < mSpikeBeans.getRoundsList().size(); i++) {
+                if (mSpikeBeans.getRoundsList().get(i).getStatus() == 1) {
+                    mCenterLayoutManager.smoothScrollToPosition(mRecyclerView, new RecyclerView.State(), i);
+                    break;
+                }
+            }
+        }
     }
+
 
     @SuppressLint("RecyclerView")
     public void onBindViewHolder(@NonNull SpikeViewHolder holder, int position) {
         SpikeBean.RoundsListDTO roundsListDTO = mSpikeBeans.getRoundsList().get(position);
-        holder.mtimeShow.setText(roundsListDTO.getRound()+"场");
+        holder.mtimeShow.setText(roundsListDTO.getRound() + "场");
         holder.mSpikeType.setText(roundsListDTO.getStatus() == 0 ? "已开抢" : roundsListDTO.getStatus() == 1 ? "疯抢中" :
                 roundsListDTO.getStatus() == 2 ? "即将开始" : "");
-
-        if (roundsListDTO.getStatus() == 1 && mLayoutHolder == null) {
+        //把当前疯抢中的 holder 存为全局变量，当点击时，需要把 这个holder 修改为未选中
+        if (roundsListDTO.getStatus() == 1 && mPanicBuying == null) {
             setSelectType(holder);
-            mCenterLayoutManager.smoothScrollToPosition(mRecyclerView, new RecyclerView.State(), position);
             mPanicBuying = holder;
-        } else if (mLayoutHolder != null && mLayoutHolder.mtimeShow.getText().toString().equals(roundsListDTO.getDdqTime())) {
+            //这是点
+        } else if (mPanicBuying != null && mPanicBuying.mtimeShow.getText().toString().equals(roundsListDTO.getDdqTime())) {
             setSelectType(holder);
-            mLayoutHolder = holder;
+            mPanicBuying = holder;
         } else {
             unSetSelectType(holder);
         }
@@ -73,18 +85,15 @@ public class SpikeTimeAdapter extends RecyclerView.Adapter<SpikeTimeAdapter.Spik
             @Override
             public void onClick(View v) {
                 //防止重复点击
-                if ((mLayoutHolder != null) && (mLayoutHolder == holder)) {
+                if ((mPanicBuying != null) && (mPanicBuying == holder)) {
                     return;
                 }
                 setSelectType(holder);
-                if (mLayoutHolder != null) {
-                    unSetSelectType(mLayoutHolder);
-                }  mLayoutHolder = holder;
                 if (mPanicBuying != null) {
                     unSetSelectType(mPanicBuying);
                     mPanicBuying = null;
                 }
-                mLayoutHolder = holder;
+                mPanicBuying = holder;
                 mCenterLayoutManager.smoothScrollToPosition(mRecyclerView, new RecyclerView.State(), position);
                 //点击后的事件回调
                 if (mClickListener != null) {
@@ -117,6 +126,10 @@ public class SpikeTimeAdapter extends RecyclerView.Adapter<SpikeTimeAdapter.Spik
 
     public void setClickListener(IClickCallbackListener onClickListener) {
         this.mClickListener = onClickListener;
+    }
+
+    public void getLayout(int layoutId) {
+        this.mLayoutId = layoutId;
     }
 
     @Override

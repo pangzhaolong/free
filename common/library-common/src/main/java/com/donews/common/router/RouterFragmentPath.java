@@ -12,14 +12,24 @@ package com.donews.common.router;
 public class RouterFragmentPath
 {
     
+    /** 9.9包邮的组件 */
+    public static class Mail
+    {
+        private static final String Mail = "/mail";
+        
+        /** 包邮的页面组件Fragment */
+        public static final String PAGE_MAIL_PACKAGE = Mail + "/mailPackageFragment";
+        
+    }
+
     /** 首页组件 */
     public static class Home
     {
         private static final String HOME = "/home";
-        
+
         /** 首页 */
         public static final String PAGER_HOME = HOME + "/Home";
-        
+
     }
 
     /** 秒杀组件 */

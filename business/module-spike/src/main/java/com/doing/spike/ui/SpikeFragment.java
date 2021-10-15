@@ -56,7 +56,7 @@ public class SpikeFragment extends MvvmLazyLiveDataFragment<SpikeFramentBinding,
         mSpikeAdapter.setClickListener(new SpikeTimeAdapter.IClickCallbackListener() {
             @Override
             public void onClick(SpikeBean.RoundsListDTO roundsListDTO) {
-                mViewModel.getNetHomeData(roundsListDTO.getDdqTime());
+                mViewModel.getNetHomeData(roundsListDTO.getDdqTime(),roundsListDTO);
             }
         });
 
@@ -75,16 +75,16 @@ public class SpikeFragment extends MvvmLazyLiveDataFragment<SpikeFramentBinding,
     @SuppressLint("FragmentLiveDataObserve")
     private void initContent( ) {
         // 获取网路数据
-        mViewModel.getNetHomeData("").observe(SpikeFragment.this, spikeBean -> {
+        mViewModel.getNetHomeData("",null).observe(SpikeFragment.this, combinationSpikeBean -> {
             // 获取数据
-            if (spikeBean == null) {
+            if (combinationSpikeBean == null) {
                 return;
             }
             if(mSpikeAdapter.getSpikeBeans()==null){
-                mSpikeAdapter.setSpikeBeans(spikeBean);
+                mSpikeAdapter.setSpikeBeans(combinationSpikeBean.getSpikeBean());
                 mSpikeAdapter.notifyDataSetChanged();
             }
-            mSpikeContextAdapter.setSpikeBeans(spikeBean);
+            mSpikeContextAdapter.setCombinationSpikeBean(combinationSpikeBean);
             mSpikeContextAdapter.notifyDataSetChanged();
 
         });

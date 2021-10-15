@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="MissingConstraints,MissingClass">
+
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/mail_sm_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.scwang.smart.refresh.header.ClassicsHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/vp_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:scrollbars="vertical"
+            android:scrollbarSize="3dp"
+            android:scrollbarTrackVertical="@drawable/mail_recycler_scroll_bar_bg"
+            android:scrollbarThumbVertical="@drawable/mail_recycler_scroll_bar_down"/>
+
+        <com.scwang.smart.refresh.footer.ClassicsFooter
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+    <!-- 悬浮按钮:回到顶部按钮 -->
+    <LinearLayout
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:orientation="vertical"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center">
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/vp_go_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="ContentDescription"
+            android:src="@mipmap/ic_launcher"
+            android:background="@color/dialog_cancel_press"
+            app:backgroundTint="@color/dialog_cancel_press"
+            app:elevation="4dp"
+            android:scaleType="fitCenter"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
