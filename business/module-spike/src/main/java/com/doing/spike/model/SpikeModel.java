@@ -9,6 +9,7 @@ package com.doing.spike.model;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.doing.spike.bean.CombinationSpikeBean;
 import com.doing.spike.bean.SpikeBean;
 import com.donews.base.model.BaseLiveDataModel;
 import com.donews.network.EasyHttp;
@@ -26,7 +27,8 @@ public class SpikeModel extends BaseLiveDataModel {
      *
      * @return 返回 SpikeBean
      */
-    public void getNetData(MutableLiveData<SpikeBean> mutableLiveData, String time) {
+    public void getNetData(MutableLiveData<CombinationSpikeBean> mutableLiveData, String time,  SpikeBean.RoundsListDTO roundsListDTO) {
+        unDisposable();
         addDisposable(EasyHttp.get(URL)
                 .cacheMode(CacheMode.NO_CACHE)
                 .params(PARAMS_TIME, time.toString())
@@ -39,7 +41,10 @@ public class SpikeModel extends BaseLiveDataModel {
                     @Override
                     public void onSuccess(SpikeBean spikeBean) {
                         if(spikeBean!=null){
-                            mutableLiveData.postValue(spikeBean);
+                            CombinationSpikeBean combinationSpikeBean=new CombinationSpikeBean();
+                            combinationSpikeBean.setRoundsListDTO(roundsListDTO);
+                            combinationSpikeBean.setSpikeBean(spikeBean);
+                            mutableLiveData.postValue(combinationSpikeBean);
                         }
                     }
                 }));
