@@ -124,9 +124,9 @@ dependencies {
         implementation project(path: ':common:library-crashhandler')
         implementation project(path: ':business:module-mine')
         implementation project(path: ':business:module-home')
+        implementation project(path: ':business:module-mail9')
         implementation project(path: ':business:module-spike')
         implementation project(path: ':business:module-detail')
-        implementation project(path: ':business:module-mail9')
     }
 }
 

@@ -86,7 +86,7 @@ class MailModel : BaseLiveDataModel() {
                     } else {
                         if (mailHomeListCacheData[tabItem.type] != null) {
                             if (bean?.list?.isNotEmpty() == true) {
-                                mailHomeListCacheData[tabItem.type]!!.addAll(bean!!.list)
+                                mailHomeListCacheData[tabItem.type]!!.addAll(bean.list)
                             }
                         } else {
                             mailHomeListCacheData[tabItem.type] = bean?.list

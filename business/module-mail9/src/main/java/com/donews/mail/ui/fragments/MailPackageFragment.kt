@@ -25,7 +25,9 @@ class MailPackageFragment :
         MailPageackFragmentVPAdapter(mDataBinding.mailFrmVp)
     }
 
-    override fun getLayoutId(): Int = R.layout.mail_package_fragment
+    override fun getLayoutId(): Int {
+        return R.layout.mail_package_fragment
+    }
 
     override fun onFragmentFirstVisible() {
         super.onFragmentFirstVisible()
@@ -35,8 +37,8 @@ class MailPackageFragment :
     //初始化
     private fun initView() {
         //监听分类
-        mViewModel.tabListLiveData.observe(this,{
-            if(mDataBinding.mailFrmVp.adapter == null) {
+        mViewModel.tabListLiveData.observe(this, {
+            if (mDataBinding.mailFrmVp.adapter == null) {
                 mDataBinding.mailFrmVp.adapter = vpAdapter
             }
             it?.apply {

@@ -6,11 +6,6 @@ android {
         if (isBuildModule.toBoolean()) {
             applicationId "com.mobile.spike"
         }
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = [AROUTER_MODULE_NAME: project.getName()]
-            }
-        }
     }
     //统一资源前缀，规范资源引用
     resourcePrefix "spike_"
