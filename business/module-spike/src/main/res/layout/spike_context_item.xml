@@ -191,7 +191,7 @@
                             android:text='@{(period!=null&amp;period.getStatus()==2)?"即将开抢":"已抢"+commodity.monthSales.toString()+"件"}'
                             android:textColor="#FFFFFF"></TextView>
 
-                        <ProgressBar
+                        <android.widget.ProgressBar
                             android:layout_marginTop="5dp"
                             android:id="@+id/spike_progress"
                             style="@android:style/Widget.ProgressBar.Horizontal"
@@ -200,8 +200,8 @@
                             android:layout_marginStart="5dp"
                             android:layout_marginEnd="5dp"
                             android:progressDrawable="@drawable/progressbar"
-                            android:max="@{commodity.getSales}"
-                            android:progress="50"
+                            android:max="@{commodity.getCoupon_total_num()}"
+                            android:progress="@{commodity.getCoupon_receive_num()}"
                             />
 
 
