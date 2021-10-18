@@ -205,8 +205,14 @@ class GoodsDetailAdapter(
 
     private fun bindShopInfoView(shopInfoViewHolder: ShopInfoViewHolder, goodsDetailInfo: GoodsDetailInfo) {
         shopInfoViewHolder.dataBinding.detailInfo = goodsDetailInfo
+
+        var path = goodsDetailInfo.shopLogo
+        //防止返回数据没有https前缀导致图片加载失败
+        if (!path.startsWith("http")) {
+            path = "https:$path"
+        }
         Glide.with(shopInfoViewHolder.dataBinding.ivIcShop)
-            .load(goodsDetailInfo.shopLogo)
+            .load(path)
             .into(shopInfoViewHolder.dataBinding.ivIcShop)
     }
     //endregion
