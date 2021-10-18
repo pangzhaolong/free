@@ -3,9 +3,14 @@ package com.donews.mail.views
 import android.content.Context
 import android.os.Build
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
+import android.view.ViewConfiguration
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Scroller
+import androidx.annotation.Dimension.SP
+import androidx.core.view.ViewConfigurationCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.GridLayoutManager
@@ -13,6 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
+import com.blankj.utilcode.util.ConvertUtils
+import com.blankj.utilcode.util.ScreenUtils
 import com.donews.detail.R
 import com.donews.mail.adapter.MailPageackFragmentListAdapter
 import com.donews.mail.beans.MailPackageFragmentListBean
@@ -21,8 +28,13 @@ import com.donews.mail.entitys.resps.MailPackHomeListItemResp
 import com.donews.mail.model.MailModel
 import com.donews.mail.utils.ViewScrollBarUtil
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.scwang.smart.refresh.header.ClassicsHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import io.reactivex.disposables.Disposable
+import android.graphics.LinearGradient
+
+
+
 
 /**
  * @author lcl
@@ -41,8 +53,20 @@ class MailPackFragmentVpLayout : LinearLayout {
     private val smRefesehLayout: SmartRefreshLayout by lazy {
         itemIncludeView.findViewById(R.id.mail_sm_refresh)
     }
+    private val smRefesehHeadLayout: ClassicsHeader by lazy {
+        itemIncludeView.findViewById(R.id.mail_sm_refresh_head)
+    }
     private val vpGoTop: FloatingActionButton by lazy {
         itemIncludeView.findViewById(R.id.vp_go_top)
+    }
+    private val topBg: View by lazy {
+        val v: View = itemIncludeView.findViewById(R.id.mail_top_bg)
+        val lp = v.layoutParams ?: ViewGroup.LayoutParams(
+            (ScreenUtils.getScreenWidth() + ScreenUtils.getScreenWidth() * 0.15).toInt(),
+            ConvertUtils.dp2px(100F)
+        )
+        v.layoutParams = lp
+        v
     }
 
     //当前模块的Model对象。
@@ -100,6 +124,9 @@ class MailPackFragmentVpLayout : LinearLayout {
         init()
     }
 
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+    }
 
     /**
      * 绑定tab，将当前的列表和指定分类绑定
@@ -176,12 +203,17 @@ class MailPackFragmentVpLayout : LinearLayout {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 buildScrollBar(dy)
                 buildFloatGoToBut(dy)
+                scrollTopBg(dy)
             }
         })
         vpGoTop.setOnClickListener {
             goToTopBy(12) //移动到 10
             goToTopAnim() //然后以动画的方式移动到顶部
         }
+        //设置下拉刷新区域的属性
+        smRefesehHeadLayout.setAccentColorId(R.color.FFFF990)
+        smRefesehHeadLayout.setTextSizeTime(SP,13F)
+        //刷新容器
         smRefesehLayout.setOnRefreshListener {
             refreshLoadData()
         }
@@ -237,7 +269,7 @@ class MailPackFragmentVpLayout : LinearLayout {
     }
 
     //刷新加载数据
-    private fun refreshLoadData(){
+    private fun refreshLoadData() {
         //设置下拉刷新
         if (tabItemIsInitLoad) {
             getListData(isRefresh = true, isLoadCache = true)
@@ -325,5 +357,19 @@ class MailPackFragmentVpLayout : LinearLayout {
             }
         }
         return true
+    }
+
+    //滑动距离
+    private var scrollPx = 0
+    //滑动顶部顶部背景
+    private fun scrollTopBg(dy: Int) {
+        scrollPx = vpRecycler.computeVerticalScrollOffset()
+        if ((topBg.y == 0F && scrollPx == 0) ||
+            topBg.y < -topBg.height && scrollPx > topBg.height
+        ) {
+            return //不在可滑动范围了。终止滑动,防止过度无效调用
+        }
+        topBg.y = (-vpRecycler.computeVerticalScrollOffset()).toFloat()
+        Log.e("this", "滑动中：$dy,${topBg.y}")
     }
 }

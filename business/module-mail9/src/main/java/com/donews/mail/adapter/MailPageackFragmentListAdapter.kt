@@ -1,8 +1,10 @@
 package com.donews.mail.adapter
 
+import com.alibaba.android.arouter.launcher.ARouter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.donews.base.utils.glide.GlideUtils
+import com.donews.common.router.RouterActivityPath
 import com.donews.detail.R
 import com.donews.mail.adapter.global.BaseListAdAdapter
 import com.donews.mail.entitys.resps.MailPackHomeListItemResp
@@ -42,6 +44,13 @@ class MailPageackFragmentListAdapter : BaseListAdAdapter<MailPackHomeListItemRes
                 item.mainPic,
                 helper.getView(R.id.vp_list_icon)
             )
+            helper.itemView.setOnClickListener {
+                //点击
+                ARouter.getInstance().build(RouterActivityPath.GoodsDetail.GOODS_DETAIL)
+                    .withString("params_id", id)
+                    .withString("params_goods_id", goodsId)
+                    .navigation()
+            }
         }
     }
 

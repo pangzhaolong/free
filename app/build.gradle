@@ -121,7 +121,7 @@ dependencies {
         implementation project(path: ':module-login')
         implementation project(path: ':common:library-webview')
         implementation project(path: ':common:library-sdk')
-        implementation project(path: ':common:library-crashhandler')
+        releaseImplementation project(path: ':common:library-crashhandler')
         implementation project(path: ':business:module-mine')
         implementation project(path: ':business:module-home')
         implementation project(path: ':business:module-mail9')

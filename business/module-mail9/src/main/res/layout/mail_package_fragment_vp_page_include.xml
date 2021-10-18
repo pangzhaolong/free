@@ -6,12 +6,22 @@
     android:layout_height="match_parent"
     tools:ignore="MissingConstraints,MissingClass">
 
+    <!-- 空间宽高。实际再代码中重置了 -->
+    <View
+        android:id="@+id/mail_top_bg"
+        android:layout_width="500dp"
+        android:layout_height="100dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@drawable/mail_title_bot_radus_bar"/>
+
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:id="@+id/mail_sm_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.scwang.smart.refresh.header.ClassicsHeader
+        <com.donews.mail.views.MailClassicsHeader
+            android:id="@+id/mail_sm_refresh_head"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
