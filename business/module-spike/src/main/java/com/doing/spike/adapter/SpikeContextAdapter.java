@@ -35,8 +35,8 @@ public class SpikeContextAdapter extends RecyclerView.Adapter<SpikeContextAdapte
     private int mLayoutId;
     private CombinationSpikeBean mCombinationSpikeBean;
     private Context mContext;
-
-    SpikeBean.RoundsListDTO mRoundsListDTO;
+    private OnItemClickListener mListener;
+    private SpikeBean.RoundsListDTO mRoundsListDTO;
     public SpikeContextAdapter(Context context ) {
         this.mContext = context.getApplicationContext();
 
@@ -58,7 +58,7 @@ public class SpikeContextAdapter extends RecyclerView.Adapter<SpikeContextAdapte
     }
 
     public void onBindViewHolder(@NonNull SpikeViewHolder holder, int position) {
-      SpikeBean.GoodsListDTO goodsListDTO= mCombinationSpikeBean.getSpikeBean().getGoodsList().get(position);
+        final  SpikeBean.GoodsListDTO goodsListDTO= mCombinationSpikeBean.getSpikeBean().getGoodsList().get(position);
         holder.mSpikeContextItemBinding.setCommodity(goodsListDTO);
         RoundedCorners roundedCorners = new RoundedCorners(5);
         RequestOptions options = RequestOptions.bitmapTransform(roundedCorners);
@@ -73,7 +73,14 @@ public class SpikeContextAdapter extends RecyclerView.Adapter<SpikeContextAdapte
             holder.mSpikeContextItemBinding.spikeProgress.setVisibility(View.VISIBLE);
             holder.mSpikeContextItemBinding.setPeriod(mCombinationSpikeBean.getRoundsListDTO());
         }
-
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null) {
+                    mListener.onItemClick(goodsListDTO);
+                }
+            }
+        });
     }
 
 
@@ -95,4 +102,13 @@ public class SpikeContextAdapter extends RecyclerView.Adapter<SpikeContextAdapte
 
         }
     }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.mListener = listener;
+    }
+    public interface OnItemClickListener {
+        void onItemClick(SpikeBean.GoodsListDTO goodsListDTO);
+    }
+
+
 }
