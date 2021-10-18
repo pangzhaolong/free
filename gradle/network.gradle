@@ -13,6 +13,7 @@ ext {
     //包名
     APPLICATION_ID = "com.cdyf.lottery.jdd"
 
+    ANALYSIS_U_MENG = "616d1dd2ac9567566e9b97e3" //友盟Key
 
     // 正式环境base Url
     // 测试环境的base url
