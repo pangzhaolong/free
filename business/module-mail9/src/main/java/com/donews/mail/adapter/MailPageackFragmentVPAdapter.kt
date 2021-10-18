@@ -4,7 +4,7 @@ import android.view.View
 import androidx.viewpager2.widget.ViewPager2
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.donews.detail.R
+import com.donews.mail.R
 import com.donews.mail.beans.MailPackageTabItem
 import com.donews.mail.views.MailPackFragmentVpLayout
 

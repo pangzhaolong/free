@@ -5,7 +5,7 @@ import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.donews.base.utils.glide.GlideUtils
 import com.donews.common.router.RouterActivityPath
-import com.donews.detail.R
+import com.donews.mail.R
 import com.donews.mail.adapter.global.BaseListAdAdapter
 import com.donews.mail.entitys.resps.MailPackHomeListItemResp
 

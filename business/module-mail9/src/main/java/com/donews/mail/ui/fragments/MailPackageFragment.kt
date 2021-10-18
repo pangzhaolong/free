@@ -1,12 +1,11 @@
 package com.donews.mail.ui.fragments
 
-import androidx.databinding.DataBindingUtil
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.donews.base.fragment.MvvmLazyLiveDataFragment
 import com.donews.common.router.RouterFragmentPath
-import com.donews.detail.R
-import com.donews.detail.databinding.MailPackageFragmentBinding
+import com.donews.mail.R
 import com.donews.mail.adapter.MailPageackFragmentVPAdapter
+import com.donews.mail.databinding.MailPackageFragmentBinding
 import com.donews.mail.viewmodel.MailPackageFragmentViewModle
 import com.google.android.material.tabs.TabLayoutMediator
 
