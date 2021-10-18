@@ -31,7 +31,7 @@ public class SearchFragmentAdapter extends FragmentStateAdapter {
     }
 
     public void search(String keyWord) {
-        ((TbFragment)mFragmentMap.get(0)).search(keyWord);
+        ((TbFragment) mFragmentMap.get(0)).search(keyWord);
     }
 
     public SearchFragmentAdapter(@NonNull FragmentActivity activity) {

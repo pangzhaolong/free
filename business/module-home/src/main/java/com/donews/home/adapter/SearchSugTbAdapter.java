@@ -57,12 +57,20 @@ public class SearchSugTbAdapter extends RecyclerView.Adapter<SearchSugTbAdapter.
         holder.itemView.setTag(gi);
         holder.itemView.setOnClickListener(this::onClick);
 
-
-        Glide.with(mContext).load(gi.getMainPic()).into(holder.getPicIv());
+        Glide.with(mContext).load(gi.getMainPic()).into(holder.picIv);
         holder.desTv.setText(gi.getTitle());
-        holder.salesTv.setText("已售" + gi.getMonthSales());
+        float sales = gi.getMonthSales();
+        if (sales >= 10000) {
+            sales /= 10000;
+            String strSales = String.format("%.1f", sales);
+            holder.salesTv.setText("已售" + strSales + "万");
+        } else {
+            holder.salesTv.setText("已售" + gi.getMonthSales());
+        }
+
         holder.priceTv.setText(gi.getActualPrice() + "");
         holder.shopTv.setText(gi.getShopName());
+        holder.giftTv.setText(gi.getCouponPrice() + "元");
     }
 
     @Override
@@ -86,35 +94,16 @@ public class SearchSugTbAdapter extends RecyclerView.Adapter<SearchSugTbAdapter.
         private final TextView salesTv;
         private final TextView shopTv;
 
-        public ImageView getPicIv() {
-            return picIv;
-        }
-
-
-        public TextView getDesTv() {
-            return desTv;
-        }
-
-
-        public TextView getGiftTv() {
-            return giftTv;
-        }
-
-
-        public TextView getSalesTv() {
-            return salesTv;
-        }
-
 
         public ResultViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            picIv = itemView.findViewById(R.id.home_top_goods_item_pic);
-            desTv = itemView.findViewById(R.id.home_top_goods_item_des);
-            priceTv = itemView.findViewById(R.id.home_top_goods_item_price_atv);
-            giftTv = itemView.findViewById(R.id.home_top_goods_item_gift);
-            salesTv = itemView.findViewById(R.id.home_top_goods_item_sales);
-            shopTv = itemView.findViewById(R.id.home_top_goods_item_shop_atv);
+            picIv = itemView.findViewById(R.id.home_search_goods_item_pic_iv);
+            desTv = itemView.findViewById(R.id.home_search_goods_item_des);
+            priceTv = itemView.findViewById(R.id.home_search_goods_item_price_atv);
+            giftTv = itemView.findViewById(R.id.home_search_goods_item_gift_atv);
+            salesTv = itemView.findViewById(R.id.home_search_goods_item_sales);
+            shopTv = itemView.findViewById(R.id.home_search_goods_item_shop_atv);
         }
     }
 }

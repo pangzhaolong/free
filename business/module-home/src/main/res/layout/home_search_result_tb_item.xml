@@ -3,14 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
-    android:orientation="horizontal">
+    android:layout_height="140dp"
+    android:background="@color/white"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="5dp">
 
     <ImageView
-        android:id="@+id/home_top_goods_item_pic"
+        android:id="@+id/home_search_goods_item_pic_iv"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:background="@color/A999999"
         android:scaleType="center"
         tools:ignore="MissingConstraints" />
 
@@ -21,57 +23,96 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/home_top_goods_item_des"
+            android:id="@+id/home_search_goods_item_des"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
             android:text="【拍四件】 二阳花椒锅巴零食小吃"
+            android:textColor="@color/black"
+            android:textSize="16sp"
             tools:ignore="MissingConstraints" />
 
         <RelativeLayout
             android:id="@+id/home_top_goods_item_price"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/home_top_goods_item_des"
+            android:layout_height="26dp"
+            android:layout_below="@+id/home_search_goods_item_des"
+            android:layout_marginTop="4dp"
             android:orientation="horizontal"
             tools:ignore="MissingConstraints">
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/home_top_goods_item_price_atv"
+                android:id="@+id/home_search_goods_item_price_tip_atv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:text="劵后 ￥6.92"
+                android:layout_centerVertical="true"
+                android:text="劵后"
                 tools:ignore="MissingConstraints" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/home_top_goods_item_gift_atv"
+                android:id="@+id/home_search_goods_item_price_atv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginEnd="10dp"
-                android:text="劵5元" />
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/home_search_goods_item_price_tip_atv"
+                android:text="￥6.92"
+                android:textColor="#F33838"
+                tools:ignore="MissingConstraints" />
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/home_goods_item_gift_big_bg"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="券"
+                    android:textColor="#F33838"
+                    android:textSize="12sp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/home_search_goods_item_gift_atv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/home_goods_item_gift_bg"
+                    android:gravity="center"
+                    android:text="10元"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
         </RelativeLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/home_top_goods_item_sales"
+            android:id="@+id/home_search_goods_item_sales"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:text="已售8.7万"
             tools:ignore="MissingConstraints" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp">
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/home_top_goods_item_shop_atv"
+                android:id="@+id/home_search_goods_item_shop_atv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="二阳旗舰店"
                 tools:ignore="MissingConstraints" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/home_top_goods_item_goshop"
+                android:id="@+id/home_search_goods_item_goshop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"

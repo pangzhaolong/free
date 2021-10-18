@@ -7,6 +7,7 @@ import android.system.Os;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.ListAdapter;
 
@@ -18,6 +19,7 @@ import com.donews.base.activity.MvvmBaseLiveDataActivity;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.home.adapter.SearchFragmentAdapter;
 import com.donews.home.adapter.SearchSugAdapter;
+import com.donews.home.bean.SearchHistory;
 import com.donews.home.databinding.HomeJddSearchSearchBinding;
 import com.donews.home.listener.SearchSugClickListener;
 import com.donews.home.viewModel.SearchViewModel;
@@ -38,13 +40,14 @@ public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSe
     private SearchSugAdapter mSearchSugAdapter;
     private Context mContext;
 
-    private String mPreKeyWord;
+    private String mPreKeyWord = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mContext = this;
+        SearchHistory.Ins().read();
     }
 
     @Override
@@ -107,10 +110,11 @@ public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSe
     }
 
     private void search(String keyWord) {
-        if (mPreKeyWord.equalsIgnoreCase(keyWord)) {
+        String strKeyWord = keyWord.trim();
+        if (mPreKeyWord.equalsIgnoreCase(strKeyWord) || strKeyWord.equalsIgnoreCase("")) {
             return;
         }
-        mViewModel.getSearchData(keyWord).observe((LifecycleOwner) mContext, searchSugBean -> {
+        mViewModel.getSearchData(strKeyWord).observe((LifecycleOwner) mContext, searchSugBean -> {
             if (searchSugBean.getList().size() <= 0) {
                 mDataBinding.homeSearchSuggestionRv.setVisibility(View.GONE);
                 mDataBinding.homeSearchPlatformLl.setVisibility(View.VISIBLE);
@@ -121,14 +125,25 @@ public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSe
             mSearchSugAdapter.refreshData(searchSugBean.getList());
         });
 
-        mPreKeyWord = keyWord;
+        mPreKeyWord = strKeyWord;
     }
 
     @Override
     public void onClick(String keyWord) {
         mSearchFragmentAdapter.search(keyWord);
 
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+
         mDataBinding.homeSearchSuggestionRv.setVisibility(View.GONE);
         mDataBinding.homeSearchPlatformLl.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        SearchHistory.Ins().write(SearchHistory.Ins().toString());
+        SearchHistory.Ins().clear();
     }
 }
