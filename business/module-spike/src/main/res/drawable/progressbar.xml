@@ -9,7 +9,6 @@
             <corners android:radius="85dip" />
             <!--梯度-->
             <gradient
-                android:angle="20"
                 android:centerColor="#FFC4CF"
                 android:endColor="#FFC4CF"
                 android:startColor="#FFC4CF" />
@@ -21,7 +20,6 @@
             <shape>
                 <corners android:radius="85dip" />
                 <gradient
-                    android:angle="20"
                     android:centerColor="#80ffb600"
                     android:centerY="0.75"
                     android:endColor="#a0ffcb00"
@@ -35,7 +33,6 @@
             <shape>
                 <corners android:radius="85dip" />
                 <gradient
-                    android:angle="20"
                     android:endColor="#FFFFFF"
                     android:startColor="#FFFFFF" />
             </shape>

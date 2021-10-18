@@ -97,6 +97,45 @@ public class SpikeBean extends BaseCustomViewModel {
         private String brandName;
         @SerializedName("create_time")
         private String createTime;
+        private Integer sales;
+        @SerializedName("activity_type")
+        private Integer activityType;
+        @SerializedName("activity_start_time")
+        private String activityStartTime;
+        @SerializedName("activity_end_time")
+        private String activityEndTime;
+        @SerializedName("seller_id")
+        private String sellerId;
+        @SerializedName("shop_name")
+        private String shopName;
+        @SerializedName("quan_m_link")
+        private Integer quanMLink;
+        @SerializedName("hz_quan_over")
+        private Integer hzQuanOver;
+        @SerializedName("yunfeixian")
+        private Integer yunfeixian;
+        @SerializedName("subcid")
+        private List<?> subcid;
+
+        public Integer getCoupon_total_num() {
+            return coupon_total_num;
+        }
+
+        public void setCoupon_total_num(Integer coupon_total_num) {
+            this.coupon_total_num = coupon_total_num;
+        }
+
+        public Integer getCoupon_receive_num() {
+            return coupon_receive_num;
+        }
+
+        public void setCoupon_receive_num(Integer coupon_receive_num) {
+            this.coupon_receive_num = coupon_receive_num;
+        }
+
+        private Integer coupon_total_num;
+        private Integer coupon_receive_num;
+
 
         public String getId() {
             return id;
@@ -330,27 +369,7 @@ public class SpikeBean extends BaseCustomViewModel {
             this.sales = sales;
         }
 
-        private Integer sales;
 
-
-        @SerializedName("activity_type")
-        private Integer activityType;
-        @SerializedName("activity_start_time")
-        private String activityStartTime;
-        @SerializedName("activity_end_time")
-        private String activityEndTime;
-        @SerializedName("seller_id")
-        private String sellerId;
-        @SerializedName("shop_name")
-        private String shopName;
-        @SerializedName("quan_m_link")
-        private Integer quanMLink;
-        @SerializedName("hz_quan_over")
-        private Integer hzQuanOver;
-        @SerializedName("yunfeixian")
-        private Integer yunfeixian;
-        @SerializedName("subcid")
-        private List<?> subcid;
     }
 
     public static class RoundsListDTO implements Serializable {
