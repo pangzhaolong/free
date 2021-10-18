@@ -5,7 +5,7 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.view.View
 import com.donews.base.base.BaseApplication
-import com.donews.detail.R
+import com.donews.mail.R
 
 /**
  * @author lcl

@@ -1,13 +1,9 @@
 package com.donews.mail.adapter.global
 
-import android.view.View
 import android.view.ViewGroup
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.donews.common.contract.BaseCustomViewModel
-import com.donews.detail.R
-import com.donews.mail.beans.MailPackageTabItem
-import com.donews.mail.views.MailPackFragmentVpLayout
 
 /**
  * @author lcl

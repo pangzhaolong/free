@@ -5,22 +5,18 @@ import android.os.Build
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
-import android.view.ViewConfiguration
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.Scroller
 import androidx.annotation.Dimension.SP
-import androidx.core.view.ViewConfigurationCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import androidx.viewpager2.widget.ViewPager2
 import com.blankj.utilcode.util.ConvertUtils
 import com.blankj.utilcode.util.ScreenUtils
-import com.donews.detail.R
+import com.donews.mail.R
 import com.donews.mail.adapter.MailPageackFragmentListAdapter
 import com.donews.mail.beans.MailPackageFragmentListBean
 import com.donews.mail.beans.MailPackageTabItem
@@ -30,10 +26,6 @@ import com.donews.mail.utils.ViewScrollBarUtil
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.scwang.smart.refresh.header.ClassicsHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
-import io.reactivex.disposables.Disposable
-import android.graphics.LinearGradient
-
-
 
 
 /**
