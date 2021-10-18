@@ -1,36 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="220dp"
+    android:background="@drawable/home_goods_item_bg"
+    android:orientation="vertical"
+    android:paddingBottom="10dp">
 
     <ImageView
-        android:id="@+id/home_top_goods_item_pic"
+        android:id="@+id/home_top_goods_item_iv"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:scaleType="center" />
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:scaleType="matrix" />
 
     <TextView
         android:id="@+id/home_top_goods_item_des"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/home_top_goods_item_iv"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="【返20元猫超卡】 防嗮衣长袖运动外套" />
 
     <LinearLayout
-        android:id="@+id/home_top_goods_item_price"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" />
+        android:layout_height="40dp"
+        android:layout_above="@+id/home_top_goods_item_bottom"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/home_top_goods_item_gift"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|right"
+            android:text="￥"
+            android:textColor="#F33838"
+            tools:ignore="RtlHardcoded" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/home_top_goods_item_sales"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/home_top_goods_item_price_atv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|left"
+            android:text="9.9"
+            android:textColor="#F33838"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:ignore="RtlHardcoded" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/home_top_goods_item_bottom"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+        android:layout_height="26dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/home_top_goods_item_sales"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="已售4.8万"
+            android:textColor="#A9AEB1" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/home_goods_item_gift_big_bg"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="券"
+                android:textColor="#F33838"
+                android:textSize="12sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/home_top_goods_item_gift_atv"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/home_goods_item_gift_bg"
+                android:gravity="center"
+                android:text="10元"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>
 
 
 

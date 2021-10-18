@@ -1,5 +1,6 @@
 package com.donews.home.fragment;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
 
@@ -7,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.donews.base.fragment.MvvmLazyLiveDataFragment;
@@ -41,6 +43,12 @@ public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mNorGoodsAdapter = new NorGoodsAdapter(this.getContext(), this);
+        mDataBinding.homeNorGoodsRv.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                outRect.bottom = 10;
+            }
+        });
         mDataBinding.homeNorGoodsRv.setLayoutManager(new LinearLayoutManager(this.getContext()));
         mDataBinding.homeNorGoodsRv.setAdapter(mNorGoodsAdapter);
 

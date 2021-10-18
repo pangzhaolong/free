@@ -11,17 +11,22 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.donews.home.R;
+import com.donews.home.bean.SearchHistory;
+import com.donews.home.listener.SearchHistoryListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchFindAdapter extends RecyclerView.Adapter<SearchFindAdapter.FindViewHolder> {
+public class SearchFindAdapter extends RecyclerView.Adapter<SearchFindAdapter.FindViewHolder> implements View.OnClickListener {
 
     private final Context mContext;
     private final List<String> mGoodsList = new ArrayList<>();
 
-    public SearchFindAdapter(Context context) {
+    private SearchHistoryListener mListener;
+
+    public SearchFindAdapter(Context context, SearchHistoryListener listener) {
         mContext = context;
+        mListener = listener;
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -30,7 +35,6 @@ public class SearchFindAdapter extends RecyclerView.Adapter<SearchFindAdapter.Fi
         mGoodsList.addAll(list);
         notifyDataSetChanged();
     }
-
 
     @NonNull
     @Override
@@ -46,6 +50,9 @@ public class SearchFindAdapter extends RecyclerView.Adapter<SearchFindAdapter.Fi
         if (mGoodsList.size() <= 0) {
             return;
         }
+
+        holder.itemView.setOnClickListener(this);
+        holder.itemView.setTag(position);
         holder.desTv.setText(mGoodsList.get(position));
     }
 
@@ -53,6 +60,12 @@ public class SearchFindAdapter extends RecyclerView.Adapter<SearchFindAdapter.Fi
     @Override
     public int getItemCount() {
         return mGoodsList.size();
+    }
+
+    @Override
+    public void onClick(View v) {
+        int position = (int) v.getTag();
+        mListener.onClick(mGoodsList.get(position));
     }
 
     public static class FindViewHolder extends RecyclerView.ViewHolder {

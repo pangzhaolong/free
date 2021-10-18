@@ -1,6 +1,7 @@
 package com.donews.home.fragment;
 
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
 
@@ -8,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.donews.base.fragment.MvvmLazyLiveDataFragment;
@@ -16,17 +18,19 @@ import com.donews.home.R;
 import com.donews.home.adapter.SearchFindAdapter;
 import com.donews.home.adapter.SearchHistoryAdapter;
 import com.donews.home.adapter.SearchSugTbAdapter;
+import com.donews.home.bean.SearchHistory;
 import com.donews.home.databinding.HomeFragmentSearchTbBinding;
 import com.donews.home.listener.GoodsDetailListener;
+import com.donews.home.listener.SearchHistoryListener;
 import com.donews.home.viewModel.TbViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBinding, TbViewModel> implements GoodsDetailListener {
+public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBinding, TbViewModel> implements GoodsDetailListener, SearchHistoryListener {
 
 
-    private final List<String> mSearchHistoryList = new ArrayList<>();
+    //    private final List<String> mSearchHistoryList = new ArrayList<>();
     private final List<String> mSearchFindList = new ArrayList<>();
 
     private SearchHistoryAdapter mSearchHistoryAdapter;
@@ -35,6 +39,11 @@ public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBin
     private SearchSugTbAdapter mSearchSugTbAdapter;
 
     public void search(String keyWord) {
+
+        if (!SearchHistory.Ins().getList().contains(keyWord)) {
+            SearchHistory.Ins().addHistory(keyWord);
+        }
+
         mDataBinding.homeSearchTbTipsLl.setVisibility(View.GONE);
         mDataBinding.homeSearchTbGoodsRv.setVisibility(View.VISIBLE);
 
@@ -61,18 +70,18 @@ public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBin
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mSearchFindList.add("测试");
-        mSearchFindList.add("测试测试");
-        mSearchFindList.add("测试测试测试");
-        mSearchFindList.add("测试测试测试测试");
-        mSearchFindList.add("测试测试测试测试测试");
-        mSearchFindList.add("测试");
-        mSearchFindList.add("测试测试");
-        mSearchFindList.add("测试测试测试");
-        mSearchFindList.add("测试测试测试测试");
-        mSearchFindList.add("测试测试测试测试测试");
+        mSearchFindList.add("面膜");
+        mSearchFindList.add("洗面奶");
+        mSearchFindList.add("洗衣液");
+        mSearchFindList.add("口红");
+        mSearchFindList.add("螺蛳粉");
+        mSearchFindList.add("洗发水");
+        mSearchFindList.add("眼影");
+        mSearchFindList.add("口罩");
+        mSearchFindList.add("坚果");
+        mSearchFindList.add("连衣裙");
 
-        mSearchFindAdapter = new SearchFindAdapter(this.getContext());
+        mSearchFindAdapter = new SearchFindAdapter(this.getContext(), this);
         GridLayoutManager manager = new GridLayoutManager(this.getContext(), 40);
         manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
@@ -91,30 +100,18 @@ public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBin
         mDataBinding.homeSearchFindRv.setAdapter(mSearchFindAdapter);
         mSearchFindAdapter.refreshData(mSearchFindList);
 
-        if (mSearchHistoryList.size() <= 0) {
+        if (SearchHistory.Ins().getList().size() <= 0) {
             mDataBinding.homeSearchHistoryTl.setVisibility(View.GONE);
         } else {
             mDataBinding.homeSearchHistoryTl.setVisibility(View.VISIBLE);
         }
 
-        mSearchHistoryList.add("哈哈");
-        mSearchHistoryList.add("测试");
-        mSearchHistoryList.add("测试测试");
-        mSearchHistoryList.add("测试");
-        mSearchHistoryList.add("测试测试");
-        mSearchHistoryList.add("测试");
-        if (mSearchHistoryList.size() <= 0) {
-            mDataBinding.homeSearchHistoryTl.setVisibility(View.GONE);
-        } else {
-            mDataBinding.homeSearchHistoryTl.setVisibility(View.VISIBLE);
-        }
-
-        mSearchHistoryAdapter = new SearchHistoryAdapter(this.getContext());
+        mSearchHistoryAdapter = new SearchHistoryAdapter(this.getContext(), this);
         manager = new GridLayoutManager(this.getContext(), 40);
         manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                String strText = mSearchHistoryList.get(position);
+                String strText = SearchHistory.Ins().getList().get(position);
                 int strLen = strText.getBytes().length;
                 if (strLen >= 40) {
                     return 40;
@@ -126,17 +123,31 @@ public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBin
 
         mDataBinding.homeSearchHistoryRv.setLayoutManager(manager);
         mDataBinding.homeSearchHistoryRv.setAdapter(mSearchHistoryAdapter);
-        mSearchHistoryAdapter.refreshData(mSearchHistoryList);
+        mSearchHistoryAdapter.refreshData(SearchHistory.Ins().getList());
 
         mDataBinding.homeSearchHistoryCleanTv.setOnClickListener(v -> {
             mDataBinding.homeSearchHistoryTl.setVisibility(View.GONE);
-            mSearchHistoryList.clear();
-            mSearchHistoryAdapter.refreshData(mSearchHistoryList);
+            SearchHistory.Ins().write("");
+            SearchHistory.Ins().getList().clear();
+            mSearchHistoryAdapter.refreshData(SearchHistory.Ins().getList());
         });
 
         mSearchSugTbAdapter = new SearchSugTbAdapter(this.getContext(), this);
+        mDataBinding.homeSearchTbGoodsRv.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                outRect.bottom = 10;
+            }
+        });
         mDataBinding.homeSearchTbGoodsRv.setLayoutManager(new LinearLayoutManager(this.getContext()));
         mDataBinding.homeSearchTbGoodsRv.setAdapter(mSearchSugTbAdapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        mSearchHistoryAdapter.refreshData(SearchHistory.Ins().getList());
     }
 
     @Override
@@ -150,5 +161,10 @@ public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBin
                 .withString("params_id", id)
                 .withString("params_goods_id", goodsId)
                 .navigation();
+    }
+
+    @Override
+    public void onClick(String keyWord) {
+        search(keyWord);
     }
 }

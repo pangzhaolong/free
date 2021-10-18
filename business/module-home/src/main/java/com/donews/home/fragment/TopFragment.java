@@ -2,6 +2,7 @@ package com.donews.home.fragment;
 
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
 
@@ -71,6 +72,15 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
         mDataBinding.homeColumnGv.setAdapter(mGridAdapter);
 
         mTopGoodsAdapter = new TopGoodsAdapter(this.getContext(), this);
+        mDataBinding.homeGoodProductRv.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+//                super.getItemOffsets(outRect, view, parent, state);
+                outRect.bottom = 20;
+                outRect.left = 10;
+                outRect.right = 10;
+            }
+        });
         mDataBinding.homeGoodProductRv.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
         mDataBinding.homeGoodProductRv.setAdapter(mTopGoodsAdapter);
     }

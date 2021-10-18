@@ -11,17 +11,21 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.donews.home.R;
+import com.donews.home.listener.SearchHistoryListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdapter.HistoryViewHolder> {
+public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdapter.HistoryViewHolder> implements View.OnClickListener {
 
     private final Context mContext;
     private final List<String> mGoodsList = new ArrayList<>();
 
-    public SearchHistoryAdapter(Context context) {
+    private SearchHistoryListener mListener;
+
+    public SearchHistoryAdapter(Context context, SearchHistoryListener listener) {
         mContext = context;
+        mListener = listener;
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -46,6 +50,9 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
         if (mGoodsList.size() <= 0) {
             return;
         }
+
+        holder.itemView.setOnClickListener(this);
+        holder.itemView.setTag(position);
         holder.desTv.setText(mGoodsList.get(position));
     }
 
@@ -53,6 +60,12 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
     @Override
     public int getItemCount() {
         return mGoodsList.size();
+    }
+
+    @Override
+    public void onClick(View v) {
+        int position = (int) v.getTag();
+        mListener.onClick(mGoodsList.get(position));
     }
 
     public static class HistoryViewHolder extends RecyclerView.ViewHolder {

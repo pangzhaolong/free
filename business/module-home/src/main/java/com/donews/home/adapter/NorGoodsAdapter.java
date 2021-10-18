@@ -20,7 +20,7 @@ import com.donews.home.listener.GoodsDetailListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsViewHolder> implements View.OnClickListener{
+public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsViewHolder> implements View.OnClickListener {
 
     private final Context mContext;
     private final List<NorGoodsBean.goodsInfo> mGoodsList = new ArrayList<>();
@@ -59,11 +59,21 @@ public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsV
         holder.itemView.setTag(gi);
         holder.itemView.setOnClickListener(this::onClick);
 
-        Glide.with(mContext).load(gi.getMain_pic()).into(holder.getPicIv());
-        holder.desTv.setText(gi.getTitle());
-        holder.salesTv.setText("已售" + gi.getMonth_sales());
+        Glide.with(mContext).load(gi.getMain_pic()).into(holder.picIv);
+        holder.desTv.setText(gi.getDtitle());
+
+        float sales = gi.getMonth_sales();
+        if (sales >= 10000) {
+            sales /= 10000;
+            String strSales = String.format("%.1f", sales);
+            holder.salesTv.setText("已售" + strSales + "万");
+        } else {
+            holder.salesTv.setText("已售" + gi.getMonth_sales());
+        }
+
         holder.priceTv.setText(gi.getActual_price() + "");
         holder.shopTv.setText(gi.getShop_name());
+        holder.giftTv.setText(gi.getCoupon_price()+"元");
     }
 
 
@@ -88,35 +98,15 @@ public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsV
         private final TextView salesTv;
         private final TextView shopTv;
 
-        public ImageView getPicIv() {
-            return picIv;
-        }
-
-
-        public TextView getDesTv() {
-            return desTv;
-        }
-
-
-        public TextView getGiftTv() {
-            return giftTv;
-        }
-
-
-        public TextView getSalesTv() {
-            return salesTv;
-        }
-
-
         public GoodsViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            picIv = itemView.findViewById(R.id.home_top_goods_item_pic);
-            desTv = itemView.findViewById(R.id.home_top_goods_item_des);
-            priceTv = itemView.findViewById(R.id.home_top_goods_item_price_atv);
-            giftTv = itemView.findViewById(R.id.home_top_goods_item_gift);
-            salesTv = itemView.findViewById(R.id.home_top_goods_item_sales);
-            shopTv = itemView.findViewById(R.id.home_top_goods_item_shop_atv);
+            picIv = itemView.findViewById(R.id.home_nor_goods_item_pic_iv);
+            desTv = itemView.findViewById(R.id.home_nor_goods_item_des);
+            priceTv = itemView.findViewById(R.id.home_nor_goods_item_price_atv);
+            giftTv = itemView.findViewById(R.id.home_nor_goods_item_gift_atv);
+            salesTv = itemView.findViewById(R.id.home_nor_goods_item_sales);
+            shopTv = itemView.findViewById(R.id.home_nor_goods_item_shop_atv);
         }
     }
 }
