@@ -43,6 +43,21 @@ public class RouterActivityPath {
          * 绑定手机
          */
         public static final String PAGER_BIND_PHONE = USER + "/bindphone";
+
+    }
+
+    public static class Mine {
+        private static final String MINE = "/mine";
+
+        /**
+         * 参与记录
+         */
+        public static final String PAGER_PARTICIPATE_RECORD = MINE + "/participateRecord";
+
+        /**
+         * 中奖记录
+         */
+        public static final String PAGER_WINNING_RECORD = MINE + "/mineWinningRecord";
     }
 
 

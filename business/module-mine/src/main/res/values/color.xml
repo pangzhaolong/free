@@ -2,4 +2,10 @@
 <resources>
     <color name="cash_grade_withdraw_color">#FDB12E</color>
 
+    <color name="mine_red_default">#F33838</color>
+    <color name="mine_red_default_w">#FEE5E7</color>
+    <color name="mine_red_min">#D03838</color>
+    <color name="mine_df7b75">#DF7B75</color>
+    <color name="mine_e66a59">#E66A59</color>
+    <color name="mine_5c5b5b">#5C5B5B</color>
 </resources>

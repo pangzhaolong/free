@@ -115,11 +115,21 @@ public class MainActivity
             case 1:
                 AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
                 ImmersionBar.with(this)
-                        .statusBarColor(R.color.white)
+                        .statusBarColor(R.color.FF8030)
                         .navigationBarColor(R.color.white)
                         .fitsSystemWindows(true)
                         .autoDarkModeEnable(true)
                         .init();
+                break;
+            case 3:
+                AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
+                ImmersionBar.with(this)
+                        .statusBarColor(R.color.main_color_bar)
+                        .navigationBarColor(R.color.white)
+                        .fitsSystemWindows(true)
+                        .autoDarkModeEnable(true)
+                        .init();
+                break;
 
             default:
         }
@@ -145,6 +155,7 @@ public class MainActivity
                         .navigation());
         fragments.add(
                 (Fragment) ARouter.getInstance()
+//                        .build(RouterFragmentPath.User.PAGER_USER)
                         .build(RouterFragmentPath.User.PAGER_USER_SETTING)
                         .navigation());
         adapter = new MainPageAdapter(getSupportFragmentManager(),

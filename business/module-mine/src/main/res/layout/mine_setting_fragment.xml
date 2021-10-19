@@ -95,18 +95,22 @@
                 layout="@layout/mine_setting_fragment_item" />
 
             <View
-                style="@style/HorizontalLine"/>
+                style="@style/HorizontalLine"
+                android:visibility="gone"/>
 
             <include
                 android:id="@+id/set_yjfk"
-                layout="@layout/mine_setting_fragment_item" />
+                layout="@layout/mine_setting_fragment_item"
+                android:visibility="gone"/>
 
             <View
-                style="@style/HorizontalLine"/>
+                style="@style/HorizontalLine"
+                android:visibility="gone"/>
 
             <include
                 android:id="@+id/set_gywm"
-                layout="@layout/mine_setting_fragment_item" />
+                layout="@layout/mine_setting_fragment_item"
+                android:visibility="gone"/>
 
             <View
                 style="@style/HorizontalLine"
@@ -117,11 +121,13 @@
                 layout="@layout/mine_setting_fragment_item" />
 
             <View
-                style="@style/HorizontalLine"/>
+                style="@style/HorizontalLine"
+                android:visibility="gone"/>
 
             <include
                 android:id="@+id/set_qchc"
-                layout="@layout/mine_setting_fragment_item" />
+                layout="@layout/mine_setting_fragment_item"
+                android:visibility="gone"/>
 
             <!--<TextView
                 android:id="@+id/tv_exit_login"
