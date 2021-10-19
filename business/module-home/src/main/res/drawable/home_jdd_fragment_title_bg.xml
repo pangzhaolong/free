@@ -10,6 +10,9 @@
             android:useLevel="false">
             <!-- 实心 -->
             <solid android:color="#E9423E" />
+            <corners
+                android:bottomLeftRadius="100dp"
+                android:bottomRightRadius="100dp" />
             <padding
                 android:bottom="5dp"
                 android:left="5dp"

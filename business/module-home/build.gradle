@@ -20,4 +20,6 @@ dependencies {
 
     kapt rootProject.ext.dependencies["arouter-compiler"]
     api rootProject.ext.dependencies['bannerViewpager']
+
+    implementation('org.raphets:roundimageview:1.2.0')
 }

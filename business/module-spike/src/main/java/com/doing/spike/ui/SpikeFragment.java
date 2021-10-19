@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.doing.spike.R;
 import com.doing.spike.adapter.SpikeContextAdapter;
 import com.doing.spike.adapter.SpikeTimeAdapter;
@@ -28,6 +29,7 @@ import com.doing.spike.databinding.SpikeFramentBinding;
 import com.doing.spike.util.CenterLayoutManager;
 import com.doing.spike.viewModel.SpikeViewModel;
 import com.donews.base.fragment.MvvmLazyLiveDataFragment;
+import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 
 @Route(path = RouterFragmentPath.Spike.PAGER_SPIKE)
@@ -56,11 +58,12 @@ public class SpikeFragment extends MvvmLazyLiveDataFragment<SpikeFramentBinding,
         mSpikeAdapter.setClickListener(new SpikeTimeAdapter.IClickCallbackListener() {
             @Override
             public void onClick(SpikeBean.RoundsListDTO roundsListDTO) {
-                mViewModel.getNetHomeData(roundsListDTO.getDdqTime(),roundsListDTO);
+                mViewModel.getNetHomeData(roundsListDTO.getDdqTime(), roundsListDTO);
             }
         });
 
         mSpikeContextAdapter = new SpikeContextAdapter(this.getContext());
+
         mSpikeContextAdapter.getLayout(R.layout.spike_context_item);
         //设置时间的滑动
         mDataBinding.spikeTimeScroll.setAdapter(mSpikeAdapter);
@@ -69,18 +72,32 @@ public class SpikeFragment extends MvvmLazyLiveDataFragment<SpikeFramentBinding,
         mDataBinding.spikeContentRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mDataBinding.spikeContentRecyclerView.setAdapter(mSpikeContextAdapter);
 
+        mSpikeContextAdapter.setOnItemClickListener(new SpikeContextAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(SpikeBean.GoodsListDTO goodsListDTO) {
+                if (goodsListDTO != null) {
+                    ARouter.getInstance().build(RouterActivityPath.GoodsDetail.GOODS_DETAIL)
+                            .withString("params_id", goodsListDTO.getId())
+                            .withString("params_goods_id", goodsListDTO.getGoodsId())
+                            .navigation();
+                }
+
+            }
+        });
+
+
     }
 
 
     @SuppressLint("FragmentLiveDataObserve")
-    private void initContent( ) {
+    private void initContent() {
         // 获取网路数据
-        mViewModel.getNetHomeData("",null).observe(SpikeFragment.this, combinationSpikeBean -> {
+        mViewModel.getNetHomeData("", null).observe(SpikeFragment.this, combinationSpikeBean -> {
             // 获取数据
             if (combinationSpikeBean == null) {
                 return;
             }
-            if(mSpikeAdapter.getSpikeBeans()==null){
+            if (mSpikeAdapter.getSpikeBeans() == null) {
                 mSpikeAdapter.setSpikeBeans(combinationSpikeBean.getSpikeBean());
                 mSpikeAdapter.notifyDataSetChanged();
             }

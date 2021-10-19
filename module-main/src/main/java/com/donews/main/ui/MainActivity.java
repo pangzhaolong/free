@@ -74,11 +74,11 @@ public class MainActivity
         int defaultColor = getResources().getColor(R.color.common_AEAEAE);
 
         mNavigationController = mDataBinding.bottomView.material()
-                .addItem(R.drawable.main_home, "首页", checkColor)
-                .addItem(R.drawable.main_user, "9.9包邮", checkColor)
-                .addItem(R.drawable.main_user, "马上抢", checkColor)
+                .addItem(R.drawable.main_home_checked, "首页", checkColor)
+                .addItem(R.drawable.main_mail9_normal, "9.9包邮", checkColor)
+                .addItem(R.drawable.main_seckill_normal, "马上抢", checkColor)
 ////                .addItem(R.drawable.main_notify, "福利", checkColor)
-                .addItem(R.drawable.main_user, "我的", checkColor)
+                .addItem(R.drawable.main_uesr_normal, "我的", checkColor)
                 .setDefaultColor(defaultColor)
                 .enableAnimateLayoutChanges()
                 .build();

@@ -4,6 +4,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.home.bean.DataBean;
+import com.donews.home.bean.RealTimeBean;
+import com.donews.home.bean.SecKilBean;
 import com.donews.home.bean.TopGoodsBean;
 import com.donews.home.model.TopModel;
 
@@ -27,5 +29,13 @@ public class TopViewModel extends BaseLiveDataViewModel<TopModel> {
 
     public MutableLiveData<TopGoodsBean> getTopGoodsData() {
         return mModel.getTopGoodsData();
+    }
+
+    public MutableLiveData<RealTimeBean> getRealTimeData() {
+        return mModel.getRealTimeData();
+    }
+
+    public MutableLiveData<SecKilBean> getSecKilData() {
+        return mModel.getSecKilData();
     }
 }
