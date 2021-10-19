@@ -58,10 +58,11 @@ class MailModel : BaseLiveDataModel() {
         tabItem: MailPackageTabItem,
         mutableLiveData: MutableLiveData<MailPackageFragmentListBean>
     ): Disposable? {
+        //TODO 如果考虑内存的话。后期可以优化缓存数据的处理方式
         var pageId = 1
         val cacheData = mailHomeListCacheData[tabItem.type]
         if (!isRefresh && cacheData?.isNotEmpty() == true) {
-            //有数据。并且为加载更多模式。那么计算页码
+            //有数据。并且为加载更多模式。那么计算页码(如果考虑内存情况。后期可以优化)
             pageId += ceil(cacheData.size / pageSize * 1.0).toInt()
         }
         val disp: Disposable = EasyHttp.get(API_NINE_OP_GOODS_LIST)

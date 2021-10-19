@@ -113,6 +113,23 @@
             android:id="@+id/home_search_tb_goods_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
             android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/home_search_loading_ll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="数据加载中..." />
+        </LinearLayout>
     </FrameLayout>
 </layout>

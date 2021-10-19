@@ -94,7 +94,8 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         );
     }
 
-    public static final long SPLASH_WAIT_TIME = 3 * 1000;
+    //启动页正常的等待时间
+    public static final long SPLASH_WAIT_TIME = 1 * 1000;
     private CountDownTimer countDownTimer;
     private int adShowCount = 1; //广告播放的次数
     //是否为后台到前台。即:是有后台唤醒到前台并非正常启动流程，T:唤醒，F:正常的启动逻辑

@@ -34,6 +34,15 @@ public class SearchFragmentAdapter extends FragmentStateAdapter {
         ((TbFragment) mFragmentMap.get(0)).search(keyWord);
     }
 
+    public void showHistorySearch(String keyWord) {
+        ((TbFragment) mFragmentMap.get(0)).showHistorySearchData(keyWord);
+    }
+
+
+    public void showDefaultLayout() {
+        ((TbFragment) mFragmentMap.get(0)).showDefaultLayout();
+    }
+
     public SearchFragmentAdapter(@NonNull FragmentActivity activity) {
         super(activity);
     }

@@ -48,7 +48,7 @@ public class SecKilBean extends BaseCustomViewModel {
         this.roundsList = roundsList;
     }
 
-    public static class goodsInfo {
+    public static class goodsInfo extends BaseCustomViewModel{
         @SerializedName("id")
         private String id;
         @SerializedName("goods_id")
@@ -361,7 +361,7 @@ public class SecKilBean extends BaseCustomViewModel {
         }
     }
 
-    public static class roundInfo {
+    public static class roundInfo extends BaseCustomViewModel{
         @SerializedName("ddq_time")
         private String ddqTime;
         @SerializedName("status")

@@ -2,6 +2,7 @@ package com.donews.home.bean;
 
 import com.donews.common.contract.BaseCustomViewModel;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class HomeBean extends BaseCustomViewModel {
@@ -22,7 +23,7 @@ public class HomeBean extends BaseCustomViewModel {
                 '}';
     }
 
-    public static class CategoryItem {
+    public static class CategoryItem extends BaseCustomViewModel {
         String cid;
         String cname;
         String cpic;

@@ -49,7 +49,6 @@ public class MineViewModel extends BaseLiveDataViewModel<MineModel> {
     public void setDataBinDing(MineFragmentBinding dataBinding, FragmentActivity baseActivity) {
         this.dataBinding = dataBinding;
         this.baseActivity = baseActivity;
-        dataBinding.setListener(this);
     }
 
 

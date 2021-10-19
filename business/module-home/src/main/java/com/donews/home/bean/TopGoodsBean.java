@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import com.donews.common.contract.BaseCustomViewModel;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class TopGoodsBean extends BaseCustomViewModel {
@@ -40,7 +41,7 @@ public class TopGoodsBean extends BaseCustomViewModel {
                 '}';
     }
 
-    public static class goodsInfo {
+    public static class goodsInfo extends BaseCustomViewModel {
         @SerializedName("id")
         private String id;
         @SerializedName("goods_id")

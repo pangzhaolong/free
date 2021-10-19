@@ -4,6 +4,12 @@
 
     <application>
         <activity
+            android:name=".ui.MineWinningRecordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.MineParticipateRecordActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".backdoor.BackDoorActivity"
             android:screenOrientation="portrait" />
         <activity

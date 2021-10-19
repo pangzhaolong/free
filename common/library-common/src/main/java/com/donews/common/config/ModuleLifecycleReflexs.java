@@ -26,5 +26,11 @@ public class ModuleLifecycleReflexs {
      */
     private static final String UserInit = "com.donews.user.UserModuleInit";
 
-    public static String[] initModuleNames = {MainInit, BaseInit};
+    /**
+     * home 缓存初始化
+     */
+
+    private static final String HomeInit = "com.donews.home.application.HomeModuleInit";
+
+    public static String[] initModuleNames = {MainInit, BaseInit, HomeInit};
 }

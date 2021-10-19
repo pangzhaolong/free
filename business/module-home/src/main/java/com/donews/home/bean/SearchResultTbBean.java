@@ -28,7 +28,7 @@ public class SearchResultTbBean extends BaseCustomViewModel {
         this.pageId = pageId;
     }
 
-    public static class goodsInfo {
+    public static class goodsInfo extends BaseCustomViewModel{
         @SerializedName("id")
         private String id;
         @SerializedName("goods_id")

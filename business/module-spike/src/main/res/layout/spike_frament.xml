@@ -18,13 +18,14 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="230dp"
-            android:background="#FE3776"></ImageView>
+
+            android:background="@drawable/spike_head_bg"></ImageView>
 
         <TextView
             android:id="@+id/spike_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="90dp"
+            android:layout_marginTop="70dp"
             android:gravity="center"
             android:text="整点限时抢"
             android:textColor="#FFFFFF"
@@ -92,15 +93,13 @@
                 android:id="@+id/spike_time_scroll"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                ></androidx.recyclerview.widget.RecyclerView>
+                android:layout_height="wrap_content"/>
 
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/spike_content_recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                ></androidx.recyclerview.widget.RecyclerView>
+                android:layout_height="match_parent"/>
 
         </LinearLayout>
 

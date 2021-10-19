@@ -3,6 +3,8 @@ package com.donews.mine;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.lifecycle.Observer;
+
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.donews.base.fragment.MvvmLazyLiveDataFragment;
 import com.donews.common.router.RouterFragmentPath;
@@ -24,7 +26,9 @@ public class MineSettingFragment extends MvvmLazyLiveDataFragment<MineSettingFra
         super.onFragmentFirstVisible();
         initView();
         mViewModel.lifecycleOwner = this;
-
+        mViewModel.updateUIFlg.observe(this, result -> {
+            bindViewText();
+        });
     }
 
     @Override

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/res/android/skin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    tools:ignore="MissingConstraints">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/ad_shape_bg"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <com.donews.mine.views.SectionCornerMessageLayout
+        android:id="@+id/mine_me_list_icon_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="4dp"
+        android:background="@color/white"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/mine_me_list_icon"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="@color/text_hint_color"
+            android:scaleType="fitXY"
+            android:src="@mipmap/ic_launcher" />
+    </com.donews.mine.views.SectionCornerMessageLayout>
+
+    <TextView
+        android:id="@+id/mine_me_list_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:ellipsize="end"
+        android:gravity="left|center_horizontal"
+        android:maxLines="2"
+        android:text="title"
+        android:layout_marginLeft="7dp"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="@+id/mine_me_list_icon_layout"
+        app:layout_constraintRight_toRightOf="@+id/mine_me_list_icon_layout"
+        app:layout_constraintTop_toBottomOf="@+id/mine_me_list_icon_layout" />
+
+    <LinearLayout
+        android:id="@+id/mine_me_list_count_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_marginRight="3dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/mine_me_list_title"
+        app:layout_constraintTop_toBottomOf="@+id/mine_me_list_title">
+
+        <ImageView
+            android:id="@+id/mine_me_list_count_icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/ic_launcher_round" />
+
+        <TextView
+            android:id="@+id/mine_me_list_count_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:includeFontPadding="false"
+            android:paddingLeft="7dp"
+            android:text="1"
+            android:textColor="@color/text_red"
+            android:textSize="21sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/mine_me_list_count_goto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:background="@drawable/mine_shape_me_goto_read"
+            android:paddingLeft="13dp"
+            android:paddingTop="5dp"
+            android:paddingRight="13dp"
+            android:paddingBottom="5dp"
+            android:text="立即抽奖"
+            android:textColor="@color/mine_df7b75"
+            android:textSize="14sp"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/mine_me_list_bot_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:ellipsize="end"
+        android:gravity="left|center_horizontal"
+        android:singleLine="true"
+        android:text="累计5人参与抽奖"
+        android:paddingBottom="8dp"
+        android:textColor="@color/text_hint_color"
+        android:textSize="13sp"
+        app:layout_constraintLeft_toLeftOf="@+id/mine_me_list_title"
+        app:layout_constraintRight_toRightOf="@+id/mine_me_list_icon_layout"
+        app:layout_constraintTop_toBottomOf="@+id/mine_me_list_count_layout" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -56,13 +56,15 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
         {
             put(0, (Runnable) () -> { //用户协议
                 Bundle bundle = new Bundle();
-                bundle.putString("url", BuildConfig.HTTP_H5 + "SLAs");
+                bundle.putString("url",
+                        "http://ad-static-xg.tagtic.cn/wangzhuan/file/9e5f7a06cbf80a2186e3e34a70f0c360.html");
                 bundle.putString("title", "用户协议");
                 ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
             });
             put(1, (Runnable) () -> { //隐私政策
                 Bundle bundle = new Bundle();
-                bundle.putString("url", BuildConfig.HTTP_H5 + "privacy");
+                bundle.putString("url",
+                        "http://ad-static-xg.tagtic.cn/wangzhuan/file/b7f18dcb857e80eab353cfb99c3f042e.html");
                 bundle.putString("title", "隐私政策");
                 ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
             });
@@ -79,7 +81,7 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
                     confirmPopupWindow.hide();
                     clearAppCache();
                 }).setCancelOnClick(v -> confirmPopupWindow.hide());
-                ToastUtil.show(baseActivity, "清楚缓存");
+                ToastUtil.show(baseActivity, "清除缓存");
             });
             put(5, (Runnable) () -> {//分享APP
                 ToastUtil.show(baseActivity, "分享APP");
@@ -139,7 +141,8 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
      */
     public String getItemDescText(int pos) {
         if (pos == 1) {
-            return "邀请好友一起中奖";
+//            return "邀请好友一起中奖";
+            return "";
         } else if (pos == 4) { //垃圾
             return getAppCacheSize();
         } else {
@@ -179,6 +182,7 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
      */
     private void clearAppCache() {
         AppCacheUtils.cleanInternalCache(baseActivity);
+        AppCacheUtils.clearAllCache(baseActivity);
         updateUIFlg.postValue(updateUIFlg.getValue() + 1);
     }
 

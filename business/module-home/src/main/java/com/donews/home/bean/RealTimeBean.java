@@ -19,7 +19,7 @@ public class RealTimeBean extends BaseCustomViewModel {
         this.list = list;
     }
 
-    public static class goodsInfo {
+    public static class goodsInfo extends BaseCustomViewModel{
         @SerializedName("id")
         private String id;
         @SerializedName("goods_id")

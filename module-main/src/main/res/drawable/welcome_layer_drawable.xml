@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<layer-list xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:ignore="ResourceName">
 
     <item android:drawable="@color/white" />
 
-    <item android:bottom="96dp">
+    <!--<item android:bottom="96dp">
         <bitmap
             android:gravity="center|fill_horizontal"
             android:src="@mipmap/icon_welcome_content_image" />
-    </item>
+    </item>-->
 
     <item
         android:id="@+id/bottom_logo"
-        android:bottom="30dp">
+        android:bottom="65dp">
         <bitmap
             android:gravity="bottom|center_horizontal"
-            android:src="@mipmap/icon_welcome_logo" />
+            android:src="@mipmap/main_splash_b_icon" />
     </item>
 
 
