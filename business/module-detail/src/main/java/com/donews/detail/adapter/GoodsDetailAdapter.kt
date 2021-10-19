@@ -18,7 +18,6 @@ import com.donews.detail.R
 import com.donews.detail.bean.DetailPicInfo
 import com.donews.detail.bean.GoodsDetailInfo
 import com.donews.detail.databinding.*
-import com.donews.detail.ui.GoodsDetailActivity
 import com.donews.detail.ui.GoodsDetailActivity.EventListener
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
@@ -37,9 +36,18 @@ class GoodsDetailAdapter(
     val lifecycle: Lifecycle,
     val eventListener: EventListener,
     val goodsDetailInfo: GoodsDetailInfo
-) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    companion object {
+        const val TYPE_BANNER = 1
+        const val TYPE_PRICE = 2
+        const val TYPE_RECOMMEND = 3
+        const val TYPE_SHOP_INFO = 4
+        const val TYPE_DETAIL_PICS = 5
+
+        const val POSITION_GOODS = 0
+        const val POSITION_DETAIL_PICS = 4
+    }
 
     override fun getItemCount(): Int {
         return if (goodsDetailInfo.detailPics.isBlank()) {
@@ -52,15 +60,15 @@ class GoodsDetailAdapter(
     override fun getItemViewType(position: Int): Int {
         when (position) {
             //banner
-            0 -> return 1
+            0 -> return TYPE_BANNER
             //价格
-            1 -> return 2
+            1 -> return TYPE_PRICE
             //推荐
-            2 -> return 3
+            2 -> return TYPE_RECOMMEND
             //店铺信息
-            3 -> return 4
+            3 -> return TYPE_SHOP_INFO
             //详情信息图片
-            4 -> return 5
+            4 -> return TYPE_DETAIL_PICS
         }
         return position
     }
@@ -68,24 +76,24 @@ class GoodsDetailAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         when (viewType) {
-            1 -> {
+            TYPE_BANNER -> {
                 val dataBinding = DetailItemGoodsDetailBannerBinding.inflate(layoutInflater, parent, false)
                 return BannerViewHolder(dataBinding)
             }
-            2 -> {
+            TYPE_PRICE -> {
                 val dataBinding = DetailItemGoodsDetailPriceBinding.inflate(layoutInflater, parent, false)
                 return PriceViewHolder(dataBinding)
             }
-            3 -> {
+            TYPE_RECOMMEND -> {
                 val dataBinding = DetailItemGoodsDetailRecommendBinding.inflate(layoutInflater, parent, false)
                 return RecommendViewHolder(dataBinding)
             }
 
-            4 -> {
+            TYPE_SHOP_INFO -> {
                 val dataBinding = DetailItemGoodsDetailShopInfoBinding.inflate(layoutInflater, parent, false)
                 return ShopInfoViewHolder(dataBinding)
             }
-            5 -> {
+            TYPE_DETAIL_PICS -> {
                 val dataBinding = DetailItemGoodsDetailDetailBinding.inflate(layoutInflater, parent, false)
                 return DetailInfoViewHolder(dataBinding)
             }

@@ -23,10 +23,9 @@ import com.orhanobut.logger.Logger
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.net.Uri
-import android.view.MotionEvent
 import android.widget.Toast
 import com.donews.detail.bean.GoodsDetailInfo
-import com.donews.detail.bean.PrivilegeLinkInfo
+import com.donews.detail.utils.OffsetLinearLayoutManager
 import com.donews.network.result.LoadResult
 
 
@@ -58,19 +57,10 @@ class GoodsDetailActivity : MvvmBaseLiveDataActivity<DetailActivityGoodsDetailBi
     private var currentScrollY = 0
     private lateinit var goodsDetailAdapter: GoodsDetailAdapter
 
-    private var recyclerViewScrollState: Int = RecyclerView.SCROLL_STATE_IDLE
     private var tabTile = arrayListOf<String>()
 
-    //判读是否是recyclerView主动引起的滑动，true- 是，false- 否，由tablayout引起的
-    private var isRecyclerScroll: Boolean = false
-
-    //记录上一次位置，防止在同一内容块里滑动 重复定位到tablayout
-    private var lastPos: Int = 0;
-
-    //用于recyclerView滑动到指定的位置
-    private var canScroll: Boolean = false
-    private var scrollToPosition: Int = 0
-
+    private var mLastTabPosition = 0
+    private var mRecyclerViewScroll = false
 
     override fun getLayoutId(): Int {
         return R.layout.detail_activity_goods_detail
@@ -97,15 +87,43 @@ class GoodsDetailActivity : MvvmBaseLiveDataActivity<DetailActivityGoodsDetailBi
         mDataBinding.eventListener = EventListener()
         mDataBinding.tvOriginalPrice.paint.flags = Paint.STRIKE_THRU_TEXT_FLAG
 
+        mDataBinding.rvContent.layoutManager = OffsetLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        mDataBinding.rvContent.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                currentScrollY += dy
+                refreshToolBar()
+                val manager: LinearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val position = manager.findFirstVisibleItemPosition()
+                val viewType = recyclerView.adapter?.getItemViewType(position) ?: kotlin.run { 0 }
+                if (viewType == GoodsDetailAdapter.TYPE_DETAIL_PICS) {
+                    if (mLastTabPosition != 1) {
+                        mRecyclerViewScroll = true
+                        mDataBinding.tabLayout.getTabAt(1)?.select()
+                        mLastTabPosition = 1
+                    }
+                } else {
+                    if (mLastTabPosition != 0) {
+                        mRecyclerViewScroll = true
+                        mDataBinding.tabLayout.getTabAt(0)?.select()
+                        mLastTabPosition = 0
+                    }
+                }
+            }
+        })
 
         mDataBinding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                val pos = tab.position
-                isRecyclerScroll = false
-                if (pos == 1) {
-                    moveToPosition(5)
+                if (!mRecyclerViewScroll) {
+                    val position = tab.position
+                    if (position == 0) {
+                        moveToPosition(GoodsDetailAdapter.POSITION_GOODS)
+                    } else {
+                        moveToPosition(GoodsDetailAdapter.POSITION_DETAIL_PICS)
+                    }
                 } else {
-                    moveToPosition(0)
+                    mRecyclerViewScroll = false
                 }
             }
 
@@ -113,43 +131,6 @@ class GoodsDetailActivity : MvvmBaseLiveDataActivity<DetailActivityGoodsDetailBi
             }
 
             override fun onTabReselected(tab: TabLayout.Tab) {
-
-            }
-
-        })
-//        mDataBinding.rvContent.setOnTouchListener { _, event ->
-//            //当滑动由recyclerView触发时，isRecyclerScroll 置true
-//            if (event.action == MotionEvent.ACTION_DOWN) {
-//                isRecyclerScroll = true
-//            }
-//            false
-//        }
-        mDataBinding.rvContent.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                currentScrollY += dy
-                refreshToolBar()
-                if (isRecyclerScroll) {
-                    //第一个可见的view的位置，即tablayou需定位的位置
-                    val manager: LinearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
-                    val position = manager.findFirstVisibleItemPosition();
-                    if (lastPos != position) {
-                        mDataBinding.tabLayout.setScrollPosition(position, 0f, true);
-                    }
-                    lastPos = position
-                }
-            }
-
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                recyclerViewScrollState = newState
-                if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                    isRecyclerScroll = true
-                }
-                if (canScroll) {
-                    canScroll = false
-                    moveToPosition(scrollToPosition)
-                }
             }
         })
 
@@ -166,7 +147,12 @@ class GoodsDetailActivity : MvvmBaseLiveDataActivity<DetailActivityGoodsDetailBi
                 val tab = mDataBinding.tabLayout.newTab().apply {
                     text = TAB_TITLE[index]
                 }
-                mDataBinding.tabLayout.addTab(tab)
+                if (index == 0) {
+                    mDataBinding.tabLayout.addTab(tab, true)
+                    mLastTabPosition = 0
+                } else {
+                    mDataBinding.tabLayout.addTab(tab)
+                }
             }
             //绑定数据
             mDataBinding.detailInfo = it
@@ -201,11 +187,17 @@ class GoodsDetailActivity : MvvmBaseLiveDataActivity<DetailActivityGoodsDetailBi
             totalScrollerY = (DensityUtils.getScreenWidth() / 4f * 2).toInt()
         }
 
+
         val halfToolbarScrollY = totalScrollerY / 2
         var progress: Int
+
+        val manager: LinearLayoutManager = mDataBinding.rvContent.layoutManager as LinearLayoutManager
+        val scrollY = currentScrollY
+
         when {
-            currentScrollY <= halfToolbarScrollY -> {
-                progress = (currentScrollY * 100f / halfToolbarScrollY).toInt()
+            scrollY <= halfToolbarScrollY -> {
+                mDataBinding.rvContent.scrollY
+                progress = (scrollY * 100f / halfToolbarScrollY).toInt()
                 mDataBinding.tabLayout.visibility = View.GONE
                 mDataBinding.imgBtnBackBlack.visibility = View.GONE
                 mDataBinding.ivToolbarBg.visibility = View.GONE
@@ -219,8 +211,8 @@ class GoodsDetailActivity : MvvmBaseLiveDataActivity<DetailActivityGoodsDetailBi
                     it.alpha = alpha
                 }
             }
-            currentScrollY <= totalScrollerY -> {
-                progress = ((currentScrollY - halfToolbarScrollY) * 100f / halfToolbarScrollY).toInt()
+            scrollY <= totalScrollerY -> {
+                progress = ((scrollY - halfToolbarScrollY) * 100f / halfToolbarScrollY).toInt()
                 mDataBinding.ivBgBtnBack.visibility = View.GONE
                 mDataBinding.imgBtnBackWhite.visibility = View.GONE
 
@@ -256,35 +248,13 @@ class GoodsDetailActivity : MvvmBaseLiveDataActivity<DetailActivityGoodsDetailBi
             }
         }
 
-        progress = (currentScrollY * 100f / totalScrollerY).toInt()
+        progress = (scrollY * 100f / totalScrollerY).toInt()
         val alpha = progress / 100f
         mDataBinding.viewBgStatusBar.alpha = alpha
     }
 
     private fun moveToPosition(position: Int) {
-        // 第一个可见的view的位置
-        val layoutManager: LinearLayoutManager = mDataBinding.rvContent.layoutManager as LinearLayoutManager
-        val firstItem = layoutManager.findFirstVisibleItemPosition();
-        // 最后一个可见的view的位置
-        val lastItem = layoutManager.findLastVisibleItemPosition();
-        when {
-            position <= firstItem -> {
-                // 如果跳转位置firstItem 之前(滑出屏幕的情况)，就smoothScrollToPosition可以直接跳转，
-                mDataBinding.rvContent.smoothScrollToPosition(position);
-            }
-            position <= lastItem -> {
-                // 跳转位置在firstItem 之后，lastItem 之间（显示在当前屏幕），smoothScrollBy来滑动到指定位置
-                val top = mDataBinding.rvContent.getChildAt(position - firstItem).top
-                mDataBinding.rvContent.smoothScrollBy(0, top);
-            }
-            else -> {
-                // 如果要跳转的位置在lastItem 之后，则先调用smoothScrollToPosition将要跳转的位置滚动到可见位置
-                // 再通过onScrollStateChanged控制再次调用当前moveToPosition方法，执行上一个判断中的方法
-                mDataBinding.rvContent.smoothScrollToPosition(position);
-                scrollToPosition = position;
-                canScroll = true
-            }
-        }
+        mDataBinding.rvContent.smoothScrollToPosition(position)
     }
 
 
