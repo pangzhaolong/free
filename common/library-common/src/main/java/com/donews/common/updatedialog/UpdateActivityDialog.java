@@ -15,9 +15,6 @@ import com.donews.common.contract.ApplyUpdateBean;
 import com.donews.common.databinding.CommonUpdateDialogBinding;
 import com.donews.common.download.DownloadListener;
 import com.donews.common.download.DownloadManager;
-import com.orhanobut.logger.Logger;
-
-import java.text.DecimalFormat;
 
 /**
  * @author by SnowDragon
@@ -38,8 +35,6 @@ public class UpdateActivityDialog extends BaseAppDialogActivity {
     private CommonUpdateDialogBinding mDataBinding;
     DownloadManager downloadManager;
 
-    private float mTotalSize = 0;
-
     @Override
     public void initView() {
         if (getIntent() != null) {
@@ -49,7 +44,7 @@ public class UpdateActivityDialog extends BaseAppDialogActivity {
             finish();
         }
         mDataBinding.setUpdataBean(updateBean);
-        mDataBinding.pbProgress.setVisibility(View.GONE);
+        mDataBinding.groupProgress.setVisibility(View.GONE);
     }
 
 
@@ -66,8 +61,8 @@ public class UpdateActivityDialog extends BaseAppDialogActivity {
             boolean forceUpgrade = updateBean.getForce_upgrade() == 1;
             downloadApk(UpdateActivityDialog.this, forceUpgrade);
             if (forceUpgrade) {
-                mDataBinding.pbProgress.setVisibility(View.VISIBLE);
-                mDataBinding.btnUpdate.setVisibility(View.GONE);
+                mDataBinding.groupProgress.setVisibility(View.VISIBLE);
+                mDataBinding.btnForceUpgrade.setVisibility(View.GONE);
             } else {
                 UpdateActivityDialog.this.finish();
             }
@@ -114,12 +109,9 @@ public class UpdateActivityDialog extends BaseAppDialogActivity {
 
     private void updateProgress(long currentLength, long totalLength, int progress) {
         updateBean.setProgress(progress);
-        if (mTotalSize == 0) {
-            mTotalSize = totalLength / 1024f / 1024f;
-        }
-        float currentResult = currentLength / 1024f / 1024;
-        String text = getString(R.string.common_update_progress, currentResult, mTotalSize);
+        String text = getString(R.string.common_update_progress, progress);
         if (mDataBinding != null) {
+            mDataBinding.pbProgress.setProgress(progress);
             mDataBinding.tvProgress.setText(text);
         }
     }

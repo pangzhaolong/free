@@ -33,7 +33,7 @@ public class UpdateManager {
 
     public static UpdateManager getInstance() {
         if (instance == null) {
-            synchronized (UpdateManager.class) {
+            synchronized(UpdateManager.class) {
                 if (instance == null) {
                     instance = new UpdateManager();
                 }
@@ -85,7 +85,8 @@ public class UpdateManager {
      * @param commonUpdateShowDialog
      * @return
      */
-    public Disposable checkVersionUpdate(Context context, final boolean commonUpdateShowDialog, UpdateListener updateListener) {
+    public Disposable checkVersionUpdate(Context context, final boolean commonUpdateShowDialog,
+            UpdateListener updateListener) {
 
         return EasyHttp.get(APK_INFO)
                 .params("package_name", DeviceUtils.getPackage())
@@ -101,10 +102,8 @@ public class UpdateManager {
 
                     @Override
                     public void onSuccess(ApplyUpdateBean updateBean) {
-
                         verifyYetShowUpdateDialog(context, updateBean, commonUpdateShowDialog, updateListener);
                     }
-
                 });
     }
 
@@ -115,7 +114,7 @@ public class UpdateManager {
      * @param updateBean 更新类
      */
     private void verifyYetShowUpdateDialog(Context context, ApplyUpdateBean updateBean,
-                                           final boolean commonUpdateShowDialog, UpdateListener updateListener) {
+            final boolean commonUpdateShowDialog, UpdateListener updateListener) {
         if (updateBean == null) {
             return;
         }
@@ -139,7 +138,8 @@ public class UpdateManager {
         }
 
         //定时任务状态，非强制更新一天出现一次弹窗
-        if (!DateTimeUtils.isSameDay(System.currentTimeMillis(), SPUtils.getLongInformain(TIMED_TASK_UP_UPDATE_TIME, 0))) {
+        if (!DateTimeUtils.isSameDay(System.currentTimeMillis(),
+                SPUtils.getLongInformain(TIMED_TASK_UP_UPDATE_TIME, 0))) {
 
             UpdateActivityDialog.showUpdateDialog(context, updateBean);
             SPUtils.setInformain(TIMED_TASK_UP_UPDATE_TIME, System.currentTimeMillis());
