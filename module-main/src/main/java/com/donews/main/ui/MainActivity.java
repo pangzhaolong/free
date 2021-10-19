@@ -3,7 +3,6 @@ package com.donews.main.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -15,10 +14,8 @@ import com.dn.sdk.AdLoadManager;
 import com.dn.sdk.bean.RequestInfo;
 import com.dn.sdk.constant.AdIdConfig;
 import com.donews.base.activity.MvvmBaseLiveDataActivity;
-import com.donews.base.base.AppManager;
 import com.donews.base.base.AppStatusConstant;
 import com.donews.base.base.AppStatusManager;
-import com.donews.base.storage.MmkvHelper;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.common.adapter.ScreenAutoAdapter;
 import com.donews.common.router.RouterActivityPath;
@@ -28,9 +25,9 @@ import com.donews.main.R;
 import com.donews.main.adapter.MainPageAdapter;
 import com.donews.main.common.CommonParams;
 import com.donews.main.databinding.MainActivityMainBinding;
+import com.donews.main.utils.ExitInterceptUtils;
 import com.donews.utilslibrary.analysis.AnalysisHelp;
 import com.donews.utilslibrary.analysis.AnalysisParam;
-import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.gyf.immersionbar.BarHide;
 import com.gyf.immersionbar.ImmersionBar;
 
@@ -55,8 +52,6 @@ public class MainActivity
     private MainPageAdapter adapter;
 
     private NavigationController mNavigationController;
-    private long mInterval = 0; // 兩次返回鍵的间隔时间
-
 
     public static void start(Context context) {
         context.startActivity(new Intent(context, MainActivity.class));
@@ -128,8 +123,10 @@ public class MainActivity
     private void initFragment() {
         fragments = new ArrayList<>();
         //通过ARouter 获取其他组件提供的fragment
-//        Fragment homeFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.Home.PAGER_HOME).navigation();
-//        Fragment userFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.User.PAGER_USER_SETTING).navigation();
+//        Fragment homeFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.Home.PAGER_HOME)
+//        .navigation();
+//        Fragment userFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.User.PAGER_USER_SETTING)
+//        .navigation();
 
         fragments.add(
                 (Fragment) ARouter.getInstance()
@@ -181,20 +178,7 @@ public class MainActivity
 
     @Override
     public void onBackPressed() {
-        long spent = System.currentTimeMillis() - mInterval;
-        long mDiffTime = 2000;
-        if (spent < mDiffTime) {
-            // 程序关闭
-            AppStatusManager.getInstance().setAppStatus(AppStatusConstant.STATUS_FORCE_KILLED);
-            AnalysisUtils.onEvent(this, AnalysisParam.SHUTDOWN);
-            AppManager.getInstance().AppExit();
-            finish();
-        } else {
-            Toast.makeText(getApplicationContext(), "再按一次退出！",
-                    Toast.LENGTH_SHORT).show();
-            mInterval = System.currentTimeMillis();
-        }
-
+        ExitInterceptUtils.INSTANCE.intercept(this);
     }
 
     @Override
