@@ -9,6 +9,8 @@
 package com.doing.spike.ui;
 
 import android.annotation.SuppressLint;
+import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,6 +71,15 @@ public class SpikeFragment extends MvvmLazyLiveDataFragment<SpikeFramentBinding,
         mDataBinding.spikeTimeScroll.setAdapter(mSpikeAdapter);
         mDataBinding.spikeTimeScroll.setLayoutManager(centerLayoutManager);
         //设置商品内容
+        mDataBinding.spikeContentRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                super.getItemOffsets(outRect, view, parent, state);
+                outRect.left = 10;
+                outRect.right = 10;
+                outRect.top = 10;
+            }
+        });
         mDataBinding.spikeContentRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mDataBinding.spikeContentRecyclerView.setAdapter(mSpikeContextAdapter);
 

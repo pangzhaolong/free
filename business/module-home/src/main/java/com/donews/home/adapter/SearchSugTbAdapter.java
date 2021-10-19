@@ -37,7 +37,6 @@ public class SearchSugTbAdapter extends RecyclerView.Adapter<SearchSugTbAdapter.
         notifyDataSetChanged();
     }
 
-
     @NonNull
     @Override
     public ResultViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

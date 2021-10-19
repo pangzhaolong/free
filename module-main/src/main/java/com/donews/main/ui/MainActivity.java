@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.dn.events.events.NavEvent;
 import com.dn.sdk.AdLoadManager;
 import com.dn.sdk.bean.RequestInfo;
 import com.dn.sdk.constant.AdIdConfig;
@@ -33,6 +34,10 @@ import com.donews.utilslibrary.analysis.AnalysisParam;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.gyf.immersionbar.BarHide;
 import com.gyf.immersionbar.ImmersionBar;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +71,8 @@ public class MainActivity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         ScreenAutoAdapter.match(this, 375.0f);
         super.onCreate(savedInstanceState);
+
+        EventBus.getDefault().register(this);
     }
 
 
@@ -95,6 +102,13 @@ public class MainActivity
             }
         });
         AppStatusManager.getInstance().setAppStatus(AppStatusConstant.STATUS_NORMAL);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onGetMessage(NavEvent navEvent) {
+        if (navEvent.navIndex == 2) {
+            mDataBinding.cvContentView.setCurrentItem(2);
+        }
     }
 
     /**
@@ -205,13 +219,15 @@ public class MainActivity
                     Toast.LENGTH_SHORT).show();
             mInterval = System.currentTimeMillis();
         }
-
     }
 
     @Override
     protected void onDestroy() {
         ImmersionBar.destroy(this, null);
         AppStatusManager.getInstance().setAppStatus(AppStatusConstant.STATUS_FORCE_KILLED);
+
+        EventBus.getDefault().unregister(this);
+
         super.onDestroy();
     }
 }
