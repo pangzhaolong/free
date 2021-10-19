@@ -6,14 +6,15 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -25,20 +26,16 @@ import com.donews.home.R;
 import com.donews.home.adapter.GridAdapter;
 import com.donews.home.adapter.TopBannerViewAdapter;
 import com.donews.home.adapter.TopGoodsAdapter;
-import com.donews.home.bean.TopBannerBean;
 import com.donews.home.databinding.HomeFragmentTopBinding;
 import com.donews.home.listener.GoodsDetailListener;
 import com.donews.home.viewModel.TopViewModel;
 import com.donews.utilslibrary.utils.LogUtil;
 
+import java.lang.ref.WeakReference;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding, TopViewModel> implements GoodsDetailListener {
@@ -51,6 +48,9 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
     private String mNextDdqTime = "";
     private String mCurTime = "";
     private String mNextTime = "";
+
+
+    private TimerHandler mTimerHandler;
 
     @Override
     public int getLayoutId() {
@@ -66,6 +66,8 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
         mDataBinding.homeTopBannerViewPager
                 .setLifecycleRegistry(getLifecycle())
                 .setAdapter(new TopBannerViewAdapter(this.getContext())).create();
+
+        mTimerHandler = new TimerHandler(Looper.getMainLooper(), this);
 
         mDataBinding.homeTopBannerViewPager.setCanLoop(true);
         LogUtil.e("TopFragment onViewCreated");
@@ -136,7 +138,7 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
         mDataBinding.homeGoodProductRv.setAdapter(mTopGoodsAdapter);
     }
 
-    @SuppressLint("DefaultLocale")
+    @SuppressLint({"DefaultLocale", "SetTextI18n"})
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void loadSecKilData() {
         mViewModel.getSecKilData().observe(getViewLifecycleOwner(), secKilBean -> {
@@ -164,22 +166,21 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
                 mNextTime = secKilBean.getRoundsList().get(index + 1).getRound();
             }
 
+            doSomeThing();
 
             mDataBinding.homeTopTjLl.setVisibility(View.VISIBLE);
             Glide.with(this).load(secKilBean.getGoodsList().get(0).getMainPic()).into(mDataBinding.homeTopTj2ItemIv1);
             mDataBinding.homeTopTj2ItemTv1.setText(secKilBean.getGoodsList().get(0).getDtitle());
-            mDataBinding.homeTopTj2ItemPriceTv1.setText(String.format("%f", secKilBean.getGoodsList().get(0).getActualPrice()));
+            mDataBinding.homeTopTj2ItemPriceTv1.setText("" + secKilBean.getGoodsList().get(0).getActualPrice());
             ///
             Glide.with(this).load(secKilBean.getGoodsList().get(1).getMainPic()).into(mDataBinding.homeTopTj2ItemIv2);
 
             mDataBinding.homeTopTj2ItemTv2.setText(secKilBean.getGoodsList().get(1).getDtitle());
-            mDataBinding.homeTopTj2ItemPriceTv2.setText(String.format("%f", secKilBean.getGoodsList().get(0).getActualPrice()));
-
-
+            mDataBinding.homeTopTj2ItemPriceTv2.setText("" + secKilBean.getGoodsList().get(0).getActualPrice());
         });
     }
 
-    @SuppressLint("SimpleDateFormat")
+    @SuppressLint({"SimpleDateFormat", "SetTextI18n"})
     private void doSomeThing() {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -197,7 +198,7 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
                 if (time.length < 2) {
                     mDataBinding.homeTopItem2TimeTv.setText("");
                 } else {
-                    mDataBinding.homeTopItem2TimeTv.setText(time[0] + "场");
+                    mDataBinding.homeTopItem2TimeTv.setText(time[0] + "点场");
                     mDataBinding.homeTopItem2CountdownTv.setText("正在抢购");
                 }
             }
@@ -206,15 +207,62 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
                 mDataBinding.homeTopItem2CountdownTv.setText("");
             } else {
                 try {
-                    c.setTime(Objects.requireNonNull(format.parse(mCurDdqTime)));
+                    c.setTime(Objects.requireNonNull(format.parse(mNextDdqTime)));
                 } catch (ParseException ignored) {
 
                 }
                 long delta = calendar.getTimeInMillis() - c.getTimeInMillis();
                 if (delta < 0 && delta > -30 * 60 * 1000) {
                     //发送1秒消息
+                    if (!mNextTime.equalsIgnoreCase("")) {
+                        String[] time = mNextTime.split(":");
+                        if (time.length == 2) {
+                            mDataBinding.homeTopItem2TimeTv.setText(time[0] + "点场");
+                            mDataBinding.homeTopItem2CountdownTv.setText("倒计时...");
+                            mTimerHandler.sendEmptyMessage(10001);
+                        }
+                    }
                 }
             }
+        }
+    }
+
+    private static class TimerHandler extends Handler {
+
+        private final WeakReference<TopFragment> mTopFragment;
+
+        public TimerHandler(Looper looper, TopFragment fragment) {
+            super(looper);
+            mTopFragment = new WeakReference<>(fragment);
+        }
+
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 10001) {
+                checkTime();
+            }
+        }
+
+        @SuppressLint("SimpleDateFormat")
+        private void checkTime() {
+            TopFragment fragment = mTopFragment.get();
+            Calendar calendar = Calendar.getInstance();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Calendar c = Calendar.getInstance();
+            try {
+                c.setTime(Objects.requireNonNull(format.parse(fragment.mNextDdqTime)));
+            } catch (ParseException ignored) {
+            }
+            long delta = c.getTimeInMillis() - calendar.getTimeInMillis();
+            if (delta < 0) {
+                return;
+            }
+
+            String strTime = format.format(new Date(delta));
+            fragment.mDataBinding.homeTopItem2CountdownTv.setText(strTime);
+
+            fragment.mTimerHandler.sendEmptyMessageDelayed(10001, 1000);
         }
     }
 
@@ -261,6 +309,11 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
         super.onDestroy();
 
         LogUtil.e("TopFragment onDestroy");
+
+        if (mTimerHandler != null) {
+            mTimerHandler.removeCallbacksAndMessages(null);
+            mTimerHandler = null;
+        }
     }
 
     @Override
