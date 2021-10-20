@@ -18,7 +18,6 @@ public class SearchHistory {
         public static SearchHistory searchHistory = new SearchHistory();
     }
 
-
     private final List<String> mHistoryList = new ArrayList<>();
 
     private SearchHistory() {

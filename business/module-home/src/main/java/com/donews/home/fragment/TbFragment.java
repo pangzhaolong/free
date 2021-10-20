@@ -19,6 +19,9 @@ import com.donews.home.adapter.SearchFindAdapter;
 import com.donews.home.adapter.SearchHistoryAdapter;
 import com.donews.home.adapter.SearchSugTbAdapter;
 import com.donews.home.bean.SearchHistory;
+import com.donews.home.bean.SearchResultTbBean;
+import com.donews.home.bean.TmpSearchHistory;
+import com.donews.home.cache.GoodsCache;
 import com.donews.home.databinding.HomeFragmentSearchTbBinding;
 import com.donews.home.listener.GoodsDetailListener;
 import com.donews.home.listener.SearchHistoryListener;
@@ -29,8 +32,6 @@ import java.util.List;
 
 public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBinding, TbViewModel> implements GoodsDetailListener, SearchHistoryListener {
 
-
-    //    private final List<String> mSearchHistoryList = new ArrayList<>();
     private final List<String> mSearchFindList = new ArrayList<>();
 
     private SearchHistoryAdapter mSearchHistoryAdapter;
@@ -38,27 +39,62 @@ public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBin
 
     private SearchSugTbAdapter mSearchSugTbAdapter;
 
+    private String mCurKeyWord = "";
+
     public void search(String keyWord) {
+
+        mDataBinding.homeSearchLoadingLl.setVisibility(View.VISIBLE);
+        mDataBinding.homeSearchTbTipsLl.setVisibility(View.GONE);
+        mDataBinding.homeSearchTbGoodsRv.setVisibility(View.GONE);
 
         if (!SearchHistory.Ins().getList().contains(keyWord)) {
             SearchHistory.Ins().addHistory(keyWord);
         }
 
-        mDataBinding.homeSearchTbTipsLl.setVisibility(View.GONE);
-        mDataBinding.homeSearchTbGoodsRv.setVisibility(View.VISIBLE);
+        if (!TmpSearchHistory.Ins().getList().contains(keyWord)) {
+            TmpSearchHistory.Ins().getList().add(keyWord);
+        }
 
-        mViewModel.getSearchResultData(keyWord).observe(getViewLifecycleOwner(), searchResultTbBean -> {
-            if (searchResultTbBean == null || searchResultTbBean.getList().size() <= 0) {
-                mDataBinding.homeSearchTbTipsLl.setVisibility(View.VISIBLE);
-                mDataBinding.homeSearchTbGoodsRv.setVisibility(View.GONE);
-                return;
-            }
+        mCurKeyWord = keyWord;
 
-            mSearchSugTbAdapter.refreshData(searchResultTbBean.getList());
+        SearchResultTbBean searchResultTbBean = GoodsCache.readGoodsBean(SearchResultTbBean.class, mCurKeyWord);
+        showSearchTbBean(searchResultTbBean, true);
 
-            mDataBinding.homeSearchTbTipsLl.setVisibility(View.GONE);
-            mDataBinding.homeSearchTbGoodsRv.setVisibility(View.VISIBLE);
+        mViewModel.getSearchResultData(keyWord).observe(getViewLifecycleOwner(), resultTbBean -> {
+            showSearchTbBean(resultTbBean, true);
         });
+    }
+
+    private void showSearchTbBean(SearchResultTbBean searchResultTbBean, boolean needSave) {
+        if (searchResultTbBean == null || searchResultTbBean.getList().size() <= 0) {
+            mDataBinding.homeSearchTbTipsLl.setVisibility(View.VISIBLE);
+            mDataBinding.homeSearchTbGoodsRv.setVisibility(View.GONE);
+            mDataBinding.homeSearchLoadingLl.setVisibility(View.GONE);
+            return;
+        }
+
+        mSearchSugTbAdapter.refreshData(searchResultTbBean.getList());
+
+        mDataBinding.homeSearchTbGoodsRv.setVisibility(View.VISIBLE);
+        mDataBinding.homeSearchLoadingLl.setVisibility(View.GONE);
+        mDataBinding.homeSearchTbTipsLl.setVisibility(View.GONE);
+
+        GoodsCache.saveGoodsBean(searchResultTbBean, mCurKeyWord);
+    }
+
+    public void showHistorySearchData(String keyWord) {
+        mDataBinding.homeSearchLoadingLl.setVisibility(View.VISIBLE);
+        mDataBinding.homeSearchTbTipsLl.setVisibility(View.GONE);
+        mDataBinding.homeSearchTbGoodsRv.setVisibility(View.GONE);
+
+        SearchResultTbBean searchResultTbBean = GoodsCache.readGoodsBean(SearchResultTbBean.class, keyWord);
+        showSearchTbBean(searchResultTbBean, false);
+    }
+
+    public void showDefaultLayout() {
+        mDataBinding.homeSearchTbTipsLl.setVisibility(View.VISIBLE);
+        mDataBinding.homeSearchTbGoodsRv.setVisibility(View.GONE);
+        mDataBinding.homeSearchLoadingLl.setVisibility(View.GONE);
     }
 
     @Override

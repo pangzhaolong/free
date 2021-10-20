@@ -18,7 +18,7 @@ public class SearchSugBean extends BaseCustomViewModel {
         this.list = list;
     }
 
-    public static class SugItem {
+    public static class SugItem extends BaseCustomViewModel{
         @SerializedName("kw")
         private String kw;
         @SerializedName("total")

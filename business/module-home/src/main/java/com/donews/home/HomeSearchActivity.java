@@ -20,6 +20,7 @@ import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.home.adapter.SearchFragmentAdapter;
 import com.donews.home.adapter.SearchSugAdapter;
 import com.donews.home.bean.SearchHistory;
+import com.donews.home.bean.TmpSearchHistory;
 import com.donews.home.databinding.HomeJddSearchSearchBinding;
 import com.donews.home.listener.SearchSugClickListener;
 import com.donews.home.viewModel.SearchViewModel;
@@ -74,7 +75,7 @@ public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSe
             }
         });
         tab.attach();
-        mDataBinding.homeSearchBack.setOnClickListener(v -> finish());
+        mDataBinding.homeSearchBack.setOnClickListener(v -> onBackPressedEx());
         mDataBinding.homeSearchEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -129,6 +130,32 @@ public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSe
     }
 
     @Override
+    public void onBackPressed() {
+        onBackPressedEx();
+    }
+
+    private int mHistoryIndex = -5;
+
+    private void onBackPressedEx() {
+        if (mHistoryIndex == -5) {
+            mHistoryIndex = TmpSearchHistory.Ins().getList().size() - 1;
+        }
+
+        mHistoryIndex--;
+        if (mHistoryIndex == -1) {
+            mSearchFragmentAdapter.showDefaultLayout();
+            return;
+        }
+
+        if (mHistoryIndex < -1) {
+            finish();
+            return;
+        }
+
+        mSearchFragmentAdapter.showHistorySearch(TmpSearchHistory.Ins().getList().get(mHistoryIndex));
+    }
+
+    @Override
     public void onClick(String keyWord) {
         mSearchFragmentAdapter.search(keyWord);
 
@@ -145,5 +172,6 @@ public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSe
 
         SearchHistory.Ins().write(SearchHistory.Ins().toString());
         SearchHistory.Ins().clear();
+        TmpSearchHistory.Ins().clear();
     }
 }

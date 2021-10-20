@@ -93,13 +93,12 @@ public class SpikeContextAdapter extends RecyclerView.Adapter<SpikeContextAdapte
         this.mCombinationSpikeBean = bean;
     }
 
-    class SpikeViewHolder extends RecyclerView.ViewHolder {
+    static class SpikeViewHolder extends RecyclerView.ViewHolder {
         SpikeContextItemBinding mSpikeContextItemBinding;
 
         public SpikeViewHolder(@NonNull SpikeContextItemBinding spikeContextItemBinding) {
             super(spikeContextItemBinding.getRoot());
             this.mSpikeContextItemBinding = spikeContextItemBinding;
-
         }
     }
 
