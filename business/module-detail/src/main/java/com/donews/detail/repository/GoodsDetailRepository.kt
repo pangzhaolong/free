@@ -27,7 +27,7 @@ class GoodsDetailRepository : BaseLiveDataModel() {
             getRequest.params("id", it)
         }
         goodsId?.let {
-            getRequest.params("goods_id", id)
+            getRequest.params("goods_id", goodsId)
         }
         val disposable = getRequest.execute(callBack)
         addDisposable(disposable)

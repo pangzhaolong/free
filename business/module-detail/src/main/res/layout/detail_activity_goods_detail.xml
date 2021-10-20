@@ -5,6 +5,9 @@
 
     <data>
 
+
+        <import type="android.view.View" />
+
         <variable
             name="eventListener"
             type="com.donews.detail.ui.GoodsDetailActivity.EventListener" />
@@ -12,6 +15,11 @@
         <variable
             name="detailInfo"
             type="com.donews.detail.bean.GoodsDetailInfo" />
+
+        <variable
+            name="hasCoupon"
+            type="Boolean" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -177,6 +185,7 @@
             android:layout_height="wrap_content"
             android:alpha="0.6"
             android:text="@{@string/detail_buy_price(String.valueOf(detailInfo.originalPrice))}"
+            android:visibility="@{hasCoupon?View.VISIBLE:View.GONE}"
             android:textColor="@color/white"
             android:textSize="12.056dp"
             app:layout_constraintBaseline_toBaselineOf="@id/tv_actual_price"

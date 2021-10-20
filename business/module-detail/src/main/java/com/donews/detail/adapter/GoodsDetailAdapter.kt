@@ -167,10 +167,17 @@ class GoodsDetailAdapter(
         val dataBinding = priceViewHolder.dataBinding
         dataBinding.detailInfo = goodsDetailInfo
         dataBinding.eventListener = eventListener
-        //添加删除线
-        dataBinding.tvOriginalPrice.paint.flags = Paint.STRIKE_THRU_TEXT_FLAG
+
+        val hadCoupon = goodsDetailInfo.couponId.isNotBlank() && goodsDetailInfo.couponLink.isNotBlank()
+        dataBinding.hasCoupon = hadCoupon
+
         dataBinding.tvTitle.text = getTitleString(goodsDetailInfo)
-        dataBinding.tvCouponDate.text = getCouponDateString(goodsDetailInfo)
+
+        if (hadCoupon) {
+            //添加删除线
+            dataBinding.tvOriginalPrice.paint.flags = Paint.STRIKE_THRU_TEXT_FLAG
+            dataBinding.tvCouponDate.text = getCouponDateString(goodsDetailInfo)
+        }
     }
 
     private fun getTitleString(goodsDetailInfo: GoodsDetailInfo): SpannableString {

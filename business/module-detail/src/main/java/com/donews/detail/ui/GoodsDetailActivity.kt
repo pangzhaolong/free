@@ -156,6 +156,9 @@ class GoodsDetailActivity : MvvmBaseLiveDataActivity<DetailActivityGoodsDetailBi
             }
             //绑定数据
             mDataBinding.detailInfo = it
+            val hadCoupon = it.couponId.isNotBlank() && it.couponLink.isNotBlank()
+            mDataBinding.hasCoupon = hadCoupon
+
             goodsDetailAdapter = GoodsDetailAdapter(this, lifecycle, EventListener(), it)
             mDataBinding.rvContent.adapter = goodsDetailAdapter
 
