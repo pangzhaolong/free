@@ -194,7 +194,8 @@ class MailPackFragmentVpLayout : LinearLayout {
         vpRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 buildScrollBar(dy)
-                buildFloatGoToBut(dy)
+                //屏蔽回顶部的按钮相关逻辑
+//                buildFloatGoToBut(dy)
                 scrollTopBg(dy)
             }
         })

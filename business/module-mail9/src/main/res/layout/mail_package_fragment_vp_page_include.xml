@@ -57,10 +57,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:ignore="ContentDescription"
-            android:src="@mipmap/ic_launcher"
+            android:src="@drawable/ic_launcher_round"
+            android:layout_gravity="center"
             android:background="@color/dialog_cancel_press"
             app:backgroundTint="@color/dialog_cancel_press"
             app:elevation="4dp"
+            android:visibility="gone"
+            tools:visibility="visible"
             android:scaleType="fitCenter"/>
     </LinearLayout>
 

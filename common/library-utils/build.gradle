@@ -31,6 +31,8 @@ dependencies {
     api rootProject.ext.dependencies["mmkv"]
     implementation  'com.umeng.umsdk:common:9.4.2'
     implementation  'com.umeng.umsdk:asms:1.4.1'
+    //友盟分享
+    implementation  'com.umeng.umsdk:share-core:7.1.6'//分享核心库，必选
     //可选集成，对应产品中稳定性模块（错误捕获），
     // 该功能已经独⽴立成为新的应⽤用性能监控产品 U-APM
     implementation 'com.umeng.umsdk:apm:1.4.2'

@@ -26,7 +26,12 @@ public class ShareManager {
 
     }
 
-
+    /**
+     * 分享微信
+     * @param cmd 值来源：[ShareManager]
+     * @param item 分享内容
+     * @param activity 上下文
+     */
     public void share(final int cmd, ShareItem item, FragmentActivity activity) {
         switch (cmd) {
             case SHARE_COMMAND_WX:
