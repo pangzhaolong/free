@@ -39,12 +39,6 @@ public class HomeRealTimeActivity extends MvvmBaseLiveDataActivity<HomeRealTimeA
         mDataBinding.homeRealtimeTl.getTabAt(4).setText("热词飙升榜");
         mDataBinding.homeRealtimeTl.getTabAt(5).setText("热词排行榜");
         mDataBinding.homeRealtimeTl.getTabAt(6).setText("综合热搜榜");
-        /*mDataBinding.homeRealtimeTl.post(new Runnable() {
-            @Override
-            public void run() {
-                IndicatorLineUtil.setIndicator(mDataBinding.homeRealtimeTl, 20, 20);
-            }
-        });*/
 
         mDataBinding.homeRealtimeTl.setTabMode(TabLayout.MODE_SCROLLABLE);
 

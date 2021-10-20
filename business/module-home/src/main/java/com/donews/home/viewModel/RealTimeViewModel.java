@@ -21,7 +21,7 @@ public class RealTimeViewModel extends BaseLiveDataViewModel<RealTimeModel> {
         return new RealTimeModel();
     }
 
-    public MutableLiveData<RealTimeBean> getSearchData(String search) {
+    public MutableLiveData<RealTimeBean> getRealTimeData(String search) {
         return mModel.getRealTimeData(search);
     }
 }

@@ -35,6 +35,9 @@
                 android:background="@null"
                 android:gravity="center_vertical"
                 android:hint="支持搜索淘宝/京东/拼多多优惠"
+                android:inputType="text"
+                android:lines="1"
+                android:maxLines="1"
                 android:textCursorDrawable="@drawable/home_search_edit_cursor_color" />
 
             <androidx.appcompat.widget.AppCompatTextView

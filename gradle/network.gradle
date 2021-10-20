@@ -91,7 +91,7 @@ ext {
     ANALYSIS_U_MENG = "616d1dd2ac9567566e9b97e3"
 
     //腾讯Bugly
-    BUGLY_ID = "d5d3c3b4ef"
+    BUGLY_ID = "7ffc3d262a"
 
     // 微信API
     WX_API = "wxbb53fbd69a7c545c"

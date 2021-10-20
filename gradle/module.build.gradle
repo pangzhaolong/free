@@ -34,25 +34,25 @@ android {
         }
 
     }
-    signingConfigs {
+    /*signingConfigs {
         release {
             keyAlias 'key0'
             keyPassword '123456'
             storeFile rootProject.file('keystore/jkzaaaa.jks')
             storePassword '123456'
         }
-    }
+    }*/
     buildTypes {
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+//            signingConfig signingConfigs.release
 
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+//            signingConfig signingConfigs.release
         }
     }
     sourceSets {

@@ -106,7 +106,10 @@ public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSe
         mDataBinding.homeSearchPlatformLl.setVisibility(View.VISIBLE);
 
         mDataBinding.homeSearchDo.setOnClickListener(v -> {
-            search(mDataBinding.homeSearchEdit.getText().toString());
+            mDataBinding.homeSearchSuggestionRv.setVisibility(View.GONE);
+            mDataBinding.homeSearchPlatformLl.setVisibility(View.VISIBLE);
+            mSearchFragmentAdapter.search(mDataBinding.homeSearchEdit.getText().toString());
+//            search(mDataBinding.homeSearchEdit.getText().toString());
         });
     }
 
