@@ -95,22 +95,18 @@
                 layout="@layout/mine_setting_fragment_item" />
 
             <View
-                style="@style/HorizontalLine"
-                android:visibility="gone"/>
+                style="@style/HorizontalLine"/>
 
             <include
                 android:id="@+id/set_yjfk"
-                layout="@layout/mine_setting_fragment_item"
-                android:visibility="gone"/>
+                layout="@layout/mine_setting_fragment_item"/>
 
             <View
-                style="@style/HorizontalLine"
-                android:visibility="gone"/>
+                style="@style/HorizontalLine"/>
 
             <include
                 android:id="@+id/set_gywm"
-                layout="@layout/mine_setting_fragment_item"
-                android:visibility="gone"/>
+                layout="@layout/mine_setting_fragment_item"/>
 
             <View
                 style="@style/HorizontalLine"

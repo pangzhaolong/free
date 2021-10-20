@@ -1,6 +1,9 @@
 package com.donews.mine.viewModel;
 
+import static com.donews.common.router.RouterActivityPath.Mine.PAGER_MINE_ABOUT_ACTIVITY;
+
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -23,6 +26,7 @@ import com.donews.mine.BuildConfig;
 import com.donews.mine.R;
 import com.donews.mine.databinding.MineSettingFragmentBinding;
 import com.donews.mine.model.SettingModel;
+import com.donews.mine.ui.AboutActivity;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.utils.AppCacheUtils;
 import com.donews.utilslibrary.utils.DeviceUtils;
@@ -69,10 +73,15 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
                 ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
             });
             put(2, (Runnable) () -> { //意见反馈
-                helperAndUpload("意见反馈", "customer");
+                Bundle bundle = new Bundle();
+                bundle.putString("url",
+                        "https://www.wjx.top/vm/YhnxHHh.aspx");
+                bundle.putString("title", "意见反馈");
+                ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
             });
             put(3, (Runnable) () -> { //关于我们
-                ToastUtil.show(baseActivity, "关于我们");
+                ARouter.getInstance().build(PAGER_MINE_ABOUT_ACTIVITY)
+                        .navigation(baseActivity);
             });
             put(4, (Runnable) () -> { //清除缓存
                 ConfirmPopupWindow confirmPopupWindow = new ConfirmPopupWindow(baseActivity);
@@ -81,7 +90,6 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
                     confirmPopupWindow.hide();
                     clearAppCache();
                 }).setCancelOnClick(v -> confirmPopupWindow.hide());
-                ToastUtil.show(baseActivity, "清除缓存");
             });
             put(5, (Runnable) () -> {//分享APP
                 ToastUtil.show(baseActivity, "分享APP");

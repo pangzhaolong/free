@@ -165,6 +165,41 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- 相似中奖列表 -->
+    <!-- 相似中奖列表(中奖名单) -->
+    <LinearLayout
+        android:id="@+id/mine_win_code_sele_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/ad_shape_bg"
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:paddingTop="15dp"
+        android:paddingRight="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/mine_win_code_win_desc_layout">
+
+        <TextView
+            android:id="@+id/mine_win_code_sele_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <!--
+            我参与过的抽奖的商品列表所展示的容器。商品的item视图：
+            R.layout.incl_mine_winning_record_list_good
+         -->
+        <LinearLayout
+            android:id="@+id/mine_win_code_sele_good_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp">
+            <!-- 中奖名单的显示容器 -->
+        </LinearLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
