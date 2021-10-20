@@ -1,5 +1,6 @@
 package com.donews.main.entitys.resps
 
+import com.donews.common.contract.BaseCustomViewModel
 import com.google.gson.annotations.SerializedName
 
 
@@ -26,7 +27,7 @@ data class ExitInterceptConfig(
     /** 日程提醒持续时间 */
     @SerializedName("calendarRemindDuration")
     var calendarRemindDuration: Int = 30,
-)
+): BaseCustomViewModel()
 
 data class NotLotteryConfig(
     /** 最小抽中概率 */
@@ -44,13 +45,13 @@ data class NotLotteryConfig(
     /** 点击关闭显示的广告类型 */
     @SerializedName("adType")
     var adType: Int = 2,
-)
+): BaseCustomViewModel()
 
 data class OpenRedPacketConfig(
     /** 按钮延迟显示的延迟时间，单位秒 */
     @SerializedName("closeBtnLazyShow")
     var closeBtnLazyShow: Int = 3
-)
+): BaseCustomViewModel()
 
 data class ContinueLotteryConfig(
     /** 再抽几次最下值 */
@@ -68,6 +69,6 @@ data class ContinueLotteryConfig(
     /** 推荐商品获取接口路径地址 */
     @SerializedName("recommendGoodsPath")
     var recommendGoodsPath: String = ""
-)
+): BaseCustomViewModel()
 
 

@@ -3,10 +3,12 @@ package com.donews.main.utils
 import android.app.Activity
 import android.content.Context
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.donews.base.base.AppManager
 import com.donews.base.base.AppStatusConstant
 import com.donews.base.base.AppStatusManager
 import com.donews.main.BuildConfig
+import com.donews.main.dialog.NotLotteryDialog
 import com.donews.main.entitys.resps.ExitInterceptConfig
 import com.donews.network.EasyHttp
 import com.donews.network.cache.model.CacheMode
@@ -55,7 +57,7 @@ object ExitInterceptUtils {
         getInterceptConfig()
     }
 
-    fun intercept(activity: Activity) {
+    fun intercept(activity: AppCompatActivity) {
         if (!exitInterceptConfig.intercept) {
             val duration = System.currentTimeMillis() - mFirstClickBackTime
             if (duration < CLICK_INTERVAL) {
@@ -101,24 +103,25 @@ object ExitInterceptUtils {
     /***
      *  显示未抽奖弹出框
      */
-    private fun showNotLotteryDialog(context: Context) {
-
+    private fun showNotLotteryDialog(activity: AppCompatActivity) {
+        val dialog = NotLotteryDialog.newInstance(exitInterceptConfig.notLotteryConfig)
+        dialog.show(activity.supportFragmentManager, NotLotteryDialog::class.java.simpleName)
     }
 
     /**
      * 开红包弹出框
-     * @param context Context
+     * @param activity activity
      */
-    private fun showOpenRedPacketDialog(context: Context) {
+    private fun showOpenRedPacketDialog(activity: AppCompatActivity) {
 
     }
 
 
     /**
      * 继续抽奖弹出框
-     * @param context Context
+     * @param activity activity
      */
-    private fun showContinueLotteryDialog(context: Context) {
+    private fun showContinueLotteryDialog(activity: AppCompatActivity) {
 
     }
 }
