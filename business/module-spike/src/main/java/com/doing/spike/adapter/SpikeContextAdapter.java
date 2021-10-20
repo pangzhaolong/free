@@ -27,8 +27,8 @@ import com.doing.spike.R;
 import com.doing.spike.bean.CombinationSpikeBean;
 import com.doing.spike.bean.SpikeBean;
 import com.doing.spike.databinding.SpikeContextItemBinding;
+import com.donews.utilslibrary.utils.UrlUtils;
 
-import java.util.List;
 
 public class SpikeContextAdapter extends RecyclerView.Adapter<SpikeContextAdapter.SpikeViewHolder> {
 
@@ -37,11 +37,11 @@ public class SpikeContextAdapter extends RecyclerView.Adapter<SpikeContextAdapte
     private Context mContext;
     private OnItemClickListener mListener;
     private SpikeBean.RoundsListDTO mRoundsListDTO;
-    public SpikeContextAdapter(Context context ) {
+
+    public SpikeContextAdapter(Context context) {
         this.mContext = context.getApplicationContext();
 
     }
-
 
 
     @NonNull
@@ -58,17 +58,19 @@ public class SpikeContextAdapter extends RecyclerView.Adapter<SpikeContextAdapte
     }
 
     public void onBindViewHolder(@NonNull SpikeViewHolder holder, int position) {
-        final  SpikeBean.GoodsListDTO goodsListDTO= mCombinationSpikeBean.getSpikeBean().getGoodsList().get(position);
+        final SpikeBean.GoodsListDTO goodsListDTO = mCombinationSpikeBean.getSpikeBean().getGoodsList().get(position);
         holder.mSpikeContextItemBinding.setCommodity(goodsListDTO);
         RoundedCorners roundedCorners = new RoundedCorners(5);
         RequestOptions options = RequestOptions.bitmapTransform(roundedCorners);
-        Glide.with(mContext).load(mCombinationSpikeBean.getSpikeBean().getGoodsList().get(position).getMainPic()).apply(options).into(holder.mSpikeContextItemBinding.picture);
+        String imageUrl = mCombinationSpikeBean.getSpikeBean().getGoodsList().get(position).getMainPic();
+        imageUrl = UrlUtils.formatUrlPrefix(imageUrl);
+        Glide.with(mContext).load(imageUrl).apply(options).into(holder.mSpikeContextItemBinding.picture);
         holder.mSpikeContextItemBinding.originalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-        if(mCombinationSpikeBean.getRoundsListDTO()!=null&& mCombinationSpikeBean.getRoundsListDTO().getStatus()==2){
+        if (mCombinationSpikeBean.getRoundsListDTO() != null && mCombinationSpikeBean.getRoundsListDTO().getStatus() == 2) {
             holder.mSpikeContextItemBinding.grabbedBg.setBackgroundDrawable(mContext.getDrawable(R.drawable.spike_green_shape));
             holder.mSpikeContextItemBinding.spikeProgress.setVisibility(View.GONE);
             holder.mSpikeContextItemBinding.setPeriod(mCombinationSpikeBean.getRoundsListDTO());
-        }else{
+        } else {
             holder.mSpikeContextItemBinding.grabbedBg.setBackgroundDrawable(mContext.getDrawable(R.drawable.spike_quantity_shape));
             holder.mSpikeContextItemBinding.spikeProgress.setVisibility(View.VISIBLE);
             holder.mSpikeContextItemBinding.setPeriod(mCombinationSpikeBean.getRoundsListDTO());
@@ -105,6 +107,7 @@ public class SpikeContextAdapter extends RecyclerView.Adapter<SpikeContextAdapte
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.mListener = listener;
     }
+
     public interface OnItemClickListener {
         void onItemClick(SpikeBean.GoodsListDTO goodsListDTO);
     }

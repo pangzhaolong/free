@@ -203,7 +203,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
     //获取启动页广告配置。主要是双屏广告
     private void loadSplashConfig() {
         //如果为唤醒模式、非冷启动。则不显示进度条
-        if(mIsBackgroundToFore || !SplashUtils.INSTANCE.isColdStart()){
+        if (mIsBackgroundToFore || !SplashUtils.INSTANCE.isColdStart()) {
             mDataBinding.splashProgressLayout.setVisibility(View.GONE);
         }
         setSplashProgress(10);
@@ -350,10 +350,17 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         if (lackedPermission.size() == 0) {
             loadSplashConfig();
         } else {
-            // 请求所缺少的权限，在onRequestPermissionsResult中再看是否获得权限，如果获得权限就可以调用SDK，否则不要调用SDK。
-            String[] requestPermissions = new String[lackedPermission.size()];
-            lackedPermission.toArray(requestPermissions);
-            requestPermissions(requestPermissions, 1024);
+            String reqFlg = com.blankj.utilcode.util.SPUtils.getInstance().getString("slpashPermissionRequest", "");
+            if (reqFlg.isEmpty()) {
+                // 请求所缺少的权限，在onRequestPermissionsResult中再看是否获得权限，如果获得权限就可以调用SDK，否则不要调用SDK。
+                com.blankj.utilcode.util.SPUtils.getInstance().put("slpashPermissionRequest", "1");
+                String[] requestPermissions = new String[lackedPermission.size()];
+                lackedPermission.toArray(requestPermissions);
+                requestPermissions(requestPermissions, 1024);
+            }else{
+                //已经申请过了。则直接跳过
+                loadSplashConfig();
+            }
         }
 
     }
@@ -373,15 +380,19 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 1024 && hasAllPermissionsGranted(grantResults)) {
+        //修改为不需要处理拒绝的逻辑。只要回来就直接过
+        if (requestCode == 1024) {
             loadSplashConfig();
-        } else {
-            // 如果用户没有授权，那么应该说明意图，引导用户去设置里面授权。
-            //  Toast.makeText(this, "应用缺少必要的权限！请点击\"权限\"，打开所需要的权限。", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-            intent.setData(Uri.parse("package:" + getPackageName()));
-            startActivity(intent);
-            finish();
         }
+//        if (requestCode == 1024 && hasAllPermissionsGranted(grantResults)) {
+//            loadSplashConfig();
+//        } else {
+//            // 如果用户没有授权，那么应该说明意图，引导用户去设置里面授权。
+//            //  Toast.makeText(this, "应用缺少必要的权限！请点击\"权限\"，打开所需要的权限。", Toast.LENGTH_LONG).show();
+//            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+//            intent.setData(Uri.parse("package:" + getPackageName()));
+//            startActivity(intent);
+//            finish();
+//        }
     }
 }
