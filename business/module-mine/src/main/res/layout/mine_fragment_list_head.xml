@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/mine_f6f9fb">
 
     <ImageView
         android:id="@+id/mine_me_top_bt_bg"

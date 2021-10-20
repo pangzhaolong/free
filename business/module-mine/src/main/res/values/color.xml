@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingDefaultResource">
     <color name="cash_grade_withdraw_color">#FDB12E</color>
 
     <color name="mine_red_default">#F33838</color>
@@ -8,4 +8,6 @@
     <color name="mine_df7b75">#DF7B75</color>
     <color name="mine_e66a59">#E66A59</color>
     <color name="mine_5c5b5b">#5C5B5B</color>
+    <color name="mine_e65155">#E65155</color>
+    <color name="mine_f6f9fb">#F6F9FB</color>
 </resources>

@@ -41,7 +41,7 @@ public class MineWinningRecordActivity extends
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ImmersionBar.with(this)
-                .statusBarColor(R.color.white)
+                .statusBarColor(R.color.mine_f6f9fb)
                 .navigationBarColor(R.color.white)
                 .fitsSystemWindows(true)
                 .autoDarkModeEnable(true)
