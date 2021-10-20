@@ -8,7 +8,7 @@ ext {
     VERSION_CODE = 10000
     VERSION_NAME = "1.0.0"
     // app标识identification
-    APP_IDENTIFICATION = "cdbx"
+    APP_IDENTIFICATION = "jdd"
 
     //包名
     APPLICATION_ID = "com.cdyf.lottery.jdd"
