@@ -90,8 +90,8 @@ public class UpdateManager {
 
         return EasyHttp.get(APK_INFO)
                 .params("package_name", DeviceUtils.getPackage())
-//                .params("channel", DeviceUtils.getChannelName())
-                .params("channel", "cdbx")
+                .params("channel", DeviceUtils.getChannelName())
+//                .params("channel", "cdbx")
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<ApplyUpdateBean>() {
                     @Override
