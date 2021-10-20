@@ -5,9 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:ignore="MissingConstraints"
-    android:paddingTop="10dp"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp">
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:background="@color/white">
     <ImageView
         android:id="@+id/vp_list_icon"
         android:layout_width="match_parent"
@@ -23,6 +24,8 @@
         app:layout_constraintRight_toRightOf="@+id/vp_list_icon"
         android:layout_marginTop="5dp"
         android:text="title"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:singleLine="true"
         android:ellipsize="end"
         android:textColor="@color/black"
@@ -31,6 +34,7 @@
     <LinearLayout
         android:id="@+id/vp_list_pre_layout"
         android:layout_width="0dp"
+        android:layout_marginLeft="5dp"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="@+id/vp_list_icon"
         app:layout_constraintTop_toBottomOf="@+id/vp_list_title"
@@ -66,7 +70,7 @@
         android:id="@+id/vp_list_flg_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="@+id/vp_list_icon"
+        app:layout_constraintLeft_toLeftOf="@+id/vp_list_pre_layout"
         app:layout_constraintTop_toBottomOf="@+id/vp_list_pre_layout"
         app:layout_constraintRight_toRightOf="@+id/vp_list_icon"
         android:orientation="horizontal"
@@ -128,7 +132,7 @@
         android:singleLine="true"
         android:ellipsize="end"
         android:layout_marginTop="5dp"
-        app:layout_constraintLeft_toLeftOf="@+id/vp_list_icon"
+        app:layout_constraintLeft_toLeftOf="@+id/vp_list_pre_layout"
         app:layout_constraintTop_toBottomOf="@+id/vp_list_flg_layout"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

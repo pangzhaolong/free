@@ -15,22 +15,20 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:orientation="horizontal"
-            android:gravity="center"
+            android:gravity="center|center_vertical"
             android:background="@drawable/mail_title_bar">
-            <TextView
-                android:id="@+id/mail_title_l"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="9.9"
-                android:textSize="18sp"
-                android:textColor="@color/white"/>
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@mipmap/mail_top_title"/>
             <TextView
                 android:id="@+id/mail_title_r"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="包邮"
-                android:textSize="14sp"
+                android:textSize="20sp"
                 android:layout_marginTop="3dp"
+                android:layout_marginLeft="3dp"
                 android:textColor="@color/white"/>
         </LinearLayout>
 
