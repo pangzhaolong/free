@@ -1,30 +1,31 @@
 package com.donews.common.router;
 
+import androidx.fragment.app.Fragment;
+
+import com.alibaba.android.arouter.launcher.ARouter;
+
 /**
  * 应用模块: 组件化路由
  * <p>
  * 类描述: 用于组件化开发中,ARouter Fragment路径统一注册, 注册的路径请写好注释、标注业务功能
  * <p>
- *
+ * <p>
  * 作者： created by honeylife<br>
  * 日期： 2020-02-25
  */
-public class RouterFragmentPath
-{
-    
+public class RouterFragmentPath {
+
     /** 9.9包邮的组件 */
-    public static class Mail
-    {
+    public static class Mail {
         private static final String Mail = "/mail";
-        
+
         /** 包邮的页面组件Fragment */
         public static final String PAGE_MAIL_PACKAGE = Mail + "/mailPackageFragment";
-        
+
     }
 
     /** 首页组件 */
-    public static class Home
-    {
+    public static class Home {
         private static final String HOME = "/home";
 
         /** 首页 */
@@ -33,13 +34,23 @@ public class RouterFragmentPath
     }
 
     /** 秒杀组件 */
-    public static class Spike
-    {
+    public static class Spike {
         private static final String SPIKE = "/spike";
 
         /** 秒杀 */
         public static final String PAGER_SPIKE = SPIKE + "/Spike";
 
+    }
+
+    /** 晒单页组件 */
+    public static class Unboxing {
+        private static final String UNBOXING = "/unboxing";
+
+        public static final String PAGER_UNBOXING_FRAGMENT = UNBOXING + "/unboxing";
+
+        public static Fragment getUnboxingFragment() {
+            return (Fragment) ARouter.getInstance().build(PAGER_UNBOXING_FRAGMENT).navigation();
+        }
     }
 
 
@@ -55,10 +66,9 @@ public class RouterFragmentPath
 
     }
 
-    public static class User
-    {
+    public static class User {
         private static final String USER = "/user";
-        
+
         /** 个人中心 */
         public static final String PAGER_USER = USER + "/UserInfo";
 
@@ -82,6 +92,7 @@ public class RouterFragmentPath
         public static final String WEB_VIEW_MODEL = "com.donews.web.viewmodel.WebViewModel";
 
     }
+
     public static class MethodPath {
         public static final String AD_LOAD_MANAGER_REFRESH_AD_CONFIG = "com.dn.sdk.AdLoadManager.refreshAdConfig";
     }
