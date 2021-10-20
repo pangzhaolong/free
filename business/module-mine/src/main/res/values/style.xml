@@ -5,4 +5,11 @@
         <item name="android:layout_height">1dp</item>
         <item name="android:background">@color/search_bg</item>
     </style>
+
+    <!-- 开奖的数字样式 -->
+    <style name="MineWinCodeNum" tools:ignore="ResourceName">
+        <item name="android:layout_width">@dimen/mine_win_mun_wh</item>
+        <item name="android:layout_height">@dimen/mine_win_mun_wh</item>
+        <item name="android:layout_marginLeft">10dp</item>
+    </style>
 </resources>

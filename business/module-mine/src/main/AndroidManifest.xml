@@ -4,6 +4,9 @@
 
     <application>
         <activity
+            android:name=".ui.MineWinningCodeActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.MineWinningRecordActivity"
             android:screenOrientation="portrait" />
         <activity

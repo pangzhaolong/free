@@ -58,6 +58,11 @@ public class RouterActivityPath {
          * 中奖记录
          */
         public static final String PAGER_WINNING_RECORD = MINE + "/mineWinningRecord";
+
+        /**
+         * 个人中心的开奖码页面
+         */
+        public static final String PAGER_MINE_WINNING_CODE_ACTIVITY = MINE + "/MineWinningCodeActivity";
     }
 
 

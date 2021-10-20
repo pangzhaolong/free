@@ -1,5 +1,7 @@
 package com.donews.mine.ui;
 
+import static com.donews.common.router.RouterActivityPath.Mine.PAGER_MINE_WINNING_CODE_ACTIVITY;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -10,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.donews.base.activity.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.mine.R;
@@ -67,7 +70,7 @@ public class MineParticipateRecordActivity extends
             loadMoreListData();
         });
         mDataBinding.mineParRecodLayout.setRefeshOnListener(refreshLayout -> {
-           refeshListData();
+            refeshListData();
         });
         addListHead();
         mDataBinding.mineParRecodLayout.setLayoutManager(new GridLayoutManager(this, 2));
@@ -109,12 +112,21 @@ public class MineParticipateRecordActivity extends
         }
         //添加head的数据
         for (int i = 0; i < 3; i++) {
-            View itemView = View.inflate(this, adapterHeadItemRes, null);
+            View itemView = getHeadItemView();
             recordListVP.addView(itemView,
                     new ViewGroup.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         }
+    }
 
+    //获取head的头每项数据
+    private View getHeadItemView() {
+        View mItemView = View.inflate(this, adapterHeadItemRes, null);
+        mItemView.setOnClickListener((v) -> {
+            ARouter.getInstance().build(PAGER_MINE_WINNING_CODE_ACTIVITY)
+                    .navigation();
+        });
+        return mItemView;
     }
 
     Handler h = new Handler();
