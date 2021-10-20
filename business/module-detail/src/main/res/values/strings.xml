@@ -7,7 +7,7 @@
     <string name="detail_coupon_date">%s-%s</string>
     <string name="detail_get_coupon">立即领券</string>
     <string name="detail_recommend_title">多多推荐</string>
-    <string name="detail_desc_score">描述：%s</string>
+    <string name="detail_dsr_score">描述：%s</string>
     <string name="detail_service_score">卖家：%S</string>
     <string name="detail_ship_score">物流：%s</string>
     <string name="detail_buy_price">¥%s</string>

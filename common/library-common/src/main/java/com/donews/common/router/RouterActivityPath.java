@@ -89,4 +89,9 @@ public class RouterActivityPath {
         //商品详情页
         public static final String GOODS_DETAIL = DETAIL + "/goodsDetail";
     }
+
+    public static class RealTime {
+        public static final String REALTIME = "/reltime";
+        public static final String REALTIME_DETAIL = REALTIME + "/realtimeDetail";
+    }
 }

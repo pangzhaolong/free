@@ -20,7 +20,7 @@ android {
     }
     //统一资源前缀，规范资源引用
     resourcePrefix "sdk_"
-
+/*
     signingConfigs {
         release {
             keyAlias = 'grpubr'
@@ -28,7 +28,7 @@ android {
             keyPassword 'addaddadd'
             storeFile file('release.keystore')
         }
-    }
+    }*/
 }
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="140dp"
+    android:background="@color/white"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="5dp">
+
+    <FrameLayout
+        android:layout_width="120dp"
+        android:layout_height="120dp">
+
+        <org.raphets.roundimageview.RoundImageView
+            android:id="@+id/home_realtime_goods_item_pic_iv"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:background="@color/A999999"
+            android:scaleType="matrix"
+            app:corner_radius="10dp"
+            app:type="round"
+            tools:ignore="MissingConstraints" />
+
+        <LinearLayout
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:background="#ff0000"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="TOP"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/home_realtime_goods_item_rank_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="01"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/home_realtime_goods_item_des"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="【拍四件】 二阳花椒锅巴零食小吃"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            tools:ignore="MissingConstraints" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/home_goods_item_gift_big_bg"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="券"
+                android:textColor="#F33838"
+                android:textSize="12sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/home_realtime_goods_item_gift_atv"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/home_goods_item_gift_bg"
+                android:gravity="center"
+                android:text="10元"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/home_realtime_goods_item_price"
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            tools:ignore="MissingConstraints">
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="￥"
+                android:textColor="#F33838"
+                android:textSize="12sp"
+                tools:ignore="MissingConstraints" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/home_realtime_goods_item_price_atv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="6.92"
+                android:textColor="#F33838"
+                android:textSize="16sp"
+                tools:ignore="MissingConstraints" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/home_realtime_goods_item_price_tip_atv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="劵后"
+                android:textColor="#F33838"
+                android:textSize="12sp"
+                tools:ignore="MissingConstraints" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="20dp"
+            android:background="#ff00ff">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/home_realtime_tv1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="近2小时疯抢"
+                tools:ignore="MissingConstraints" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/home_realtime_goods_item_shop_atv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/home_realtime_tv1"
+                android:text="8740"
+                android:textColor="#f3f3f3"
+                tools:ignore="MissingConstraints" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/home_realtime_goods_item_shop_atv"
+                android:text="件"
+                tools:ignore="MissingConstraints" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/home_realtime_goods_item_goshop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:text="立即抢"
+                android:textColor="@color/white"
+                tools:ignore="MissingConstraints" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

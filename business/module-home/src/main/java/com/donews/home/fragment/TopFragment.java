@@ -129,13 +129,14 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
         loadSecKilData();
 
         mDataBinding.homeTopItem2Rl.setOnClickListener(v -> EventBus.getDefault().post(new NavEvent(2)));
+        mDataBinding.homeTopItem1Rl.setOnClickListener(v -> ARouter.getInstance().build(RouterActivityPath.RealTime.REALTIME_DETAIL).navigation());
 
         mDataBinding.homeColumnGv.setAdapter(mGridAdapter);
 
         mDataBinding.homeGoodProductRv.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-                outRect.bottom = 20;
+                outRect.bottom = 16;
                 outRect.left = 5;
                 outRect.right = 5;
             }

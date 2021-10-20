@@ -4,6 +4,9 @@
 
     <application>
         <activity
+            android:name=".HomeRealTimeActivity"
+            android:exported="true" />
+        <activity
             android:name=".HomeSearchActivity"
             android:exported="true"
             android:windowSoftInputMode="stateAlwaysHidden" />

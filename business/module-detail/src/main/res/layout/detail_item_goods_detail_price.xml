@@ -7,6 +7,8 @@
 
         <import type="android.text.Html" />
 
+        <import type="android.view.View" />
+
         <variable
             name="detailInfo"
             type="com.donews.detail.bean.GoodsDetailInfo" />
@@ -14,6 +16,10 @@
         <variable
             name="eventListener"
             type="com.donews.detail.ui.GoodsDetailActivity.EventListener" />
+
+        <variable
+            name="hasCoupon"
+            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -64,6 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10.9dp"
             android:text="@{@string/detail_original_price(String.valueOf(detailInfo.originalPrice))}"
+            android:visibility="@{hasCoupon?View.VISIBLE:View.GONE}"
             android:textColor="@color/detail_8888888"
             app:layout_constraintBaseline_toBaselineOf="@id/tv_actual_price"
             app:layout_constraintBottom_toBottomOf="@id/tv_actual_price"
@@ -96,6 +103,11 @@
             app:layout_constraintTop_toBottomOf="@id/tv_actual_price"
             tools:text="优信维生素b族泡腾片vb旗舰店正品补充多种复合维生素B1 B2 B6" />
 
+        <androidx.constraintlayout.widget.Group
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{hasCoupon?View.VISIBLE:View.GONE}"
+            app:constraint_referenced_ids="cl_coupon_left,vcl_coupon_right" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_coupon_left"
