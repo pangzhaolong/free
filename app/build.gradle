@@ -10,10 +10,7 @@ def identification = rootProject.ext.APP_IDENTIFICATION
 android {
     compileSdkVersion rootProject.ext.android_version.compileSdkVersion
     buildToolsVersion rootProject.ext.android_version.buildToolsVersion
-    aaptOptions {
-        cruncherEnabled = false
-        useNewCruncher = false
-    }
+
     defaultConfig {
         applicationId rootProject.ext.app["mainApplicationId"]
         minSdkVersion rootProject.ext.android_version.minSdkVersion
@@ -37,10 +34,7 @@ android {
 
     }
 
-    ndkVersion '20.0.5594570'
-
     signingConfigs {
-
         release {
             keyAlias 'cdyfjdd'
             keyPassword 'cdyfjdd1008'
@@ -50,6 +44,7 @@ android {
 //            v1SigningEnabled true
         }
     }
+
     buildTypes {
         debug {
             minifyEnabled false
@@ -105,10 +100,16 @@ android {
         abortOnError false
     }
 
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
     compileOptions {
         sourceCompatibility 1.8
         targetCompatibility 1.8
     }
+
+    ndkVersion '20.0.5594570'
 }
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])

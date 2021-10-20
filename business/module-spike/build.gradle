@@ -14,8 +14,6 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    api project(':common:library-common')
-    implementation 'androidx.recyclerview:recyclerview:1.2.0'
-    compile'com.alibaba:arouter-api:1.3.1'
     kapt rootProject.ext.dependencies["arouter-compiler"]
+    api project(':common:library-common')
 }
