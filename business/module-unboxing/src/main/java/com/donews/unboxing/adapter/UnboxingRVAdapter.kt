@@ -1,6 +1,7 @@
 package com.donews.unboxing.adapter
 
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.donews.unboxing.bean.UnboxingBean
 
@@ -11,7 +12,7 @@ import com.donews.unboxing.bean.UnboxingBean
  * @version v1.0
  * @date 2021/10/20 19:21
  */
-class UnboxingRVAdapter(layoutResId: Int) : BaseQuickAdapter<UnboxingBean, BaseViewHolder>(layoutResId) {
+class UnboxingRVAdapter(layoutResId: Int) : BaseQuickAdapter<UnboxingBean, BaseViewHolder>(layoutResId),LoadMoreModule {
     override fun convert(helper: BaseViewHolder, item: UnboxingBean?) {
 
     }

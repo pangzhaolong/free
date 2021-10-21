@@ -28,9 +28,12 @@ class UnboxingFragment : MvvmLazyLiveDataFragment<UnboxingFragUnboxingBinding, U
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        unboxingRVAdapter.loadMoreModule?.setOnLoadMoreListener {
+            mViewModel.loadMoreData()
+        }
         mDataBinding.rvUnboxing.adapter = unboxingRVAdapter
         mViewModel.unboxingLiveData.observe(viewLifecycleOwner, {
-            unboxingRVAdapter.setNewData(it)
+            unboxingRVAdapter.addData(it)
         })
 
     }

@@ -17,10 +17,7 @@ dependencies {
     api project(':common:library-network')
     api project(':common:library-drouter')
 
-    api 'com.scwang.smart:refresh-layout-kernel:2.0.0-alpha-1'
-    api 'com.scwang.smart:refresh-header-classics:2.0.0-alpha-1'
-    api 'com.scwang.smart:refresh-footer-classics:2.0.0-alpha-1'
-
-
-
+    api rootProject.ext.dependencies["refresh-layout-kernel"]
+    api rootProject.ext.dependencies["refresh-header-classics"]
+    api rootProject.ext.dependencies["refresh-footer-classics"]
 }

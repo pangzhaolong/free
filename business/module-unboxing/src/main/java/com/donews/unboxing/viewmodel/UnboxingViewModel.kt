@@ -16,8 +16,16 @@ import com.donews.unboxing.repository.UnboxingRepository
  */
 class UnboxingViewModel : BaseLiveDataViewModel<UnboxingRepository>() {
 
+    companion object {
+        const val PAGE_SIZE = 20
+    }
+
+    private val allLoadData = mutableListOf<UnboxingBean>()
+
     private val _unboxingLiveData = MutableLiveData<MutableList<UnboxingBean>>()
     val unboxingLiveData = _unboxingLiveData
+
+    var mPageId = 0
 
     override fun createModel(): UnboxingRepository {
         return UnboxingRepository()
@@ -25,14 +33,34 @@ class UnboxingViewModel : BaseLiveDataViewModel<UnboxingRepository>() {
 
 
     fun getUnboxingData() {
-        mModel.getUnboxingData(object : SimpleCallBack<MutableList<UnboxingBean>>() {
+        mPageId = 0
+        mModel.getUnboxingData(mPageId, PAGE_SIZE, object : SimpleCallBack<MutableList<UnboxingBean>>() {
             override fun onError(e: ApiException) {
 
             }
 
             override fun onSuccess(t: MutableList<UnboxingBean>?) {
                 t?.let {
+                    allLoadData.clear()
+                    allLoadData.addAll(it)
                     _unboxingLiveData.value = it
+                    mPageId++
+                }
+            }
+        })
+    }
+
+    fun loadMoreData() {
+        mModel.getUnboxingData(mPageId, PAGE_SIZE, object : SimpleCallBack<MutableList<UnboxingBean>>() {
+            override fun onError(e: ApiException) {
+
+            }
+
+            override fun onSuccess(t: MutableList<UnboxingBean>?) {
+                t?.let {
+                    allLoadData.addAll(it)
+                    _unboxingLiveData.value = it
+                    mPageId++
                 }
             }
         })

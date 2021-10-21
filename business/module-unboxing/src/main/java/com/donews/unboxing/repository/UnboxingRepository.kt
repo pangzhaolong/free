@@ -19,9 +19,11 @@ class UnboxingRepository : BaseLiveDataModel() {
      * 获取晒单页数据
      * @param callBack SimpleCallBack<UnboxingBean> 数据返回回调
      */
-    fun getUnboxingData(callBack: SimpleCallBack<MutableList<UnboxingBean>>) {
+    fun getUnboxingData(pageId: Int, pageSize: Int, callBack: SimpleCallBack<MutableList<UnboxingBean>>) {
         val unboxingUrlCreator = UnboxingUrlCreator()
         val disposable = EasyHttp.get(unboxingUrlCreator.getUnboxingDataUrl())
+            .params("page_id", pageId.toString())
+            .params("page_size", pageSize.toString())
             .execute(callBack)
         addDisposable(disposable)
     }
