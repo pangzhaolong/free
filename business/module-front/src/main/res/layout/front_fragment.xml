@@ -378,40 +378,49 @@
                                     android:layout_marginTop="5dp"
                                     android:layout_marginEnd="10dp"
                                     android:layout_marginBottom="5dp"
-                                    android:background="@drawable/front_gift_info_bg"
-                                    android:orientation="horizontal">
+                                    android:background="@drawable/front_gift_info_bg">
 
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="match_parent"
-                                        android:layout_marginStart="10dp"
-                                        android:layout_marginTop="5dp"
-                                        android:layout_marginBottom="5dp"
-                                        android:gravity="center"
-                                        android:text="恭喜"
-                                        android:textColor="#D17500"
-                                        android:textSize="14sp"
-                                        android:textStyle="bold" />
+                                    <com.donews.front.views.VScrollLinearLayout
+                                        android:id="@+id/front_v_scroll_ll"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="20dp"
+                                        android:layout_marginEnd="10dp"
+                                        android:layout_marginTop="40dp"
+                                        android:background="@color/transparent">
 
-                                    <ImageView
-                                        android:id="@+id/front_gift_head_iv"
-                                        android:layout_width="40dp"
-                                        android:layout_height="40dp"
-                                        android:background="@color/transparent"
-                                        android:padding="5dp"
-                                        android:scaleType="matrix" />
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:layout_marginTop="5dp"
+                                            android:layout_marginBottom="5dp"
+                                            android:gravity="center"
+                                            android:text="恭喜"
+                                            android:textColor="#D17500"
+                                            android:textSize="14sp"
+                                            android:textStyle="bold" />
 
-                                    <TextView
-                                        android:id="@+id/front_gift_text"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="match_parent"
-                                        android:layout_marginTop="5dp"
-                                        android:layout_marginBottom="5dp"
-                                        android:gravity="center"
-                                        android:text="%s X9527抽中"
-                                        android:textColor="#D17500"
-                                        android:textSize="14sp"
-                                        android:textStyle="bold" />
+                                        <ImageView
+                                            android:id="@+id/front_gift_head_iv"
+                                            android:layout_width="35dp"
+                                            android:layout_height="35dp"
+                                            android:background="@color/transparent"
+                                            android:padding="5dp"
+                                            android:scaleType="matrix" />
+
+                                        <TextView
+                                            android:id="@+id/front_gift_text"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:layout_marginTop="5dp"
+                                            android:layout_marginBottom="5dp"
+                                            android:gravity="center"
+                                            android:text="%s X9527抽中"
+                                            android:textColor="#D17500"
+                                            android:textSize="14sp"
+                                            android:textStyle="bold" />
+                                    </com.donews.front.views.VScrollLinearLayout>
+
                                 </LinearLayout>
 
                             </LinearLayout>

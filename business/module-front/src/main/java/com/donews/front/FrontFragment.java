@@ -54,6 +54,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         mDataBinding.frontGiftText.setText(Html.fromHtml(String.format(getString(R.string.front_gift_text),
                 "x9527", "iPhone13")));
 
+        mDataBinding.frontVScrollLl.startLoop();
+
         mFragmentAdapter = new FragmentAdapter(this);
         mDataBinding.frontVp2.setAdapter(mFragmentAdapter);
         mDataBinding.frontCategoryTl.setTabMode(TabLayout.MODE_SCROLLABLE);
@@ -112,5 +114,17 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mLotteryCategoryBean = categoryBean;
             mFragmentAdapter.refreshData(categoryBean.getList());
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mDataBinding.frontVScrollLl.startLoop();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mDataBinding.frontVScrollLl.stopLoop();
     }
 }
