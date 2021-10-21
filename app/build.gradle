@@ -127,6 +127,7 @@ dependencies {
         implementation project(path: ':business:module-mail9')
         implementation project(path: ':business:module-spike')
         implementation project(path: ':business:module-detail')
+        implementation project(path: ':business:module-unboxing')
     }
 }
 

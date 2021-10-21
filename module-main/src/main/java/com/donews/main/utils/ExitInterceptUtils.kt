@@ -88,7 +88,7 @@ object ExitInterceptUtils {
      */
     private fun checkNotLottery(): Boolean {
         //TODO 用户当日是否抽奖
-        return false
+        return true
     }
 
     /**

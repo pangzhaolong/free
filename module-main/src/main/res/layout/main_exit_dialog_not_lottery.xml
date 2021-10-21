@@ -5,11 +5,14 @@
 
     <data>
 
+        <variable
+            name="probability"
+            type="Double" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/iv_title"
@@ -26,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#ff0000"
-            android:padding="30dp"
+            android:padding="20dp"
             app:constraint_referenced_ids="tv_probability,iv_goods_pic,tv_goods_title,tv_actual_price,tv_original_price,tv_buy_number,btn_next,btn_lottery"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -36,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
-            android:text="福气指数：你的抽奖概率97.4%"
+            android:text="@{@string/main_exit_not_lottery_probability(probability)}"
             app:layout_constraintBottom_toTopOf="@id/iv_goods_pic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -45,7 +48,10 @@
         <ImageView
             android:id="@+id/iv_goods_pic"
             android:layout_width="220dp"
-            android:layout_height="300dp"
+            android:layout_height="220dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:src="#0000ff"
             app:layout_constraintBottom_toTopOf="@id/tv_goods_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -126,6 +132,7 @@
             android:layout_height="30dp"
             android:layout_marginBottom="20dp"
             android:background="#ff0000"
+            android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@id/iv_title"
             app:layout_constraintEnd_toEndOf="@id/iv_title" />
 
