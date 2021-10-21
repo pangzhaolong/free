@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    android:background="@color/white"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/iv_photo"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tv_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="用户昵称"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/iv_photo"
+        app:layout_constraintTop_toTopOf="@id/iv_photo" />
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2021/9/25 13:10:05"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_photo"
+        app:layout_constraintStart_toStartOf="@id/tv_nickname" />
+
+    <TextView
+        android:id="@+id/tv_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="上海市"
+        app:layout_constraintBottom_toBottomOf="@id/iv_photo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/iv_photo" />
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_photo"
+        tools:text="评价详情评价详情评价详情评价详情评价详情评价详情评价详情评价详情" />
+
+    <ImageView
+        android:id="@+id/iv_pic_1"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toStartOf="@id/iv_pic_2"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_content"
+        tools:background="#ff0000" />
+
+    <ImageView
+        android:id="@+id/iv_pic_2"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        app:layout_constraintEnd_toStartOf="@id/iv_pic_3"
+        app:layout_constraintStart_toEndOf="@id/iv_pic_1"
+        app:layout_constraintTop_toTopOf="@id/iv_pic_1"
+        tools:background="#ff0000" />
+
+    <ImageView
+        android:id="@+id/iv_pic_3"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_pic_2"
+        app:layout_constraintTop_toTopOf="@id/iv_pic_1"
+        tools:background="#ff0000" />
+
+    <androidx.constraintlayout.helper.widget.Layer
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#00ff00"
+        app:constraint_referenced_ids="iv_goods_pic,tv_goods_title,tv_goods_title,btn_lottery"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_pic_1" />
+
+    <ImageView
+        android:id="@+id/iv_goods_pic"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_pic_1"
+        tools:background="#ffff00" />
+
+    <Button
+        android:id="@+id/btn_lottery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#ff00ff"
+        android:text="沾沾福气"
+        app:layout_constraintBottom_toBottomOf="@id/iv_goods_pic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/iv_goods_pic" />
+
+    <TextView
+        android:id="@+id/tv_goods_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/btn_lottery"
+        app:layout_constraintStart_toEndOf="@id/iv_goods_pic"
+        app:layout_constraintTop_toTopOf="@id/iv_goods_pic"
+        tools:text="六味地黄丸六味地黄丸六味地黄丸六味地黄丸六味地黄丸六味地黄丸六味地黄丸" />
+
+    <TextView
+        android:id="@+id/tv_goods_price"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="#FF0000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/iv_goods_pic"
+        app:layout_constraintEnd_toStartOf="@id/btn_lottery"
+        app:layout_constraintStart_toStartOf="@id/tv_goods_title"
+        tools:text="59.9" />
+
+    <ImageView
+        android:id="@+id/iv_ic_free"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        android:background="#ffff00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_goods_pic" />
+
+    <TextView
+        android:id="@+id/tv_lottery_cycles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@id/tv_lottery_number"
+        app:layout_constraintStart_toEndOf="@id/iv_ic_free"
+        app:layout_constraintTop_toTopOf="@id/iv_ic_free"
+        tools:text="第20211020期" />
+
+    <TextView
+        android:id="@+id/tv_lottery_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/iv_ic_free"
+        app:layout_constraintStart_toStartOf="@id/tv_lottery_cycles"
+        app:layout_constraintTop_toBottomOf="@id/tv_lottery_cycles"
+        tools:text="2233445" />
+
+    <TextView
+        android:id="@+id/tv_like_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/iv_ic_free"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/iv_ic_free"
+        tools:text="123456" />
+
+    <ImageView
+        android:id="@+id/iv_ic_like"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="10dp"
+        android:background="#0000ff"
+        app:layout_constraintBottom_toBottomOf="@id/tv_like_number"
+        app:layout_constraintEnd_toStartOf="@id/tv_like_number"
+        app:layout_constraintTop_toTopOf="@id/tv_like_number" />
+</androidx.constraintlayout.widget.ConstraintLayout>

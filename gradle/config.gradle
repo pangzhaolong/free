@@ -99,5 +99,10 @@ ext {
             //kotlin 协程
             "kotlin-coroutines"            : "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.kolinCoroutines",
             "kotlin-coroutines-android"    : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.kolinCoroutines",
+
+
+            "refresh-layout-kernel"        : "com.scwang.smart:refresh-layout-kernel:2.0.0-alpha-1",
+            "refresh-header-classics"      : "com.scwang.smart:refresh-header-classics:2.0.0-alpha-1",
+            "refresh-footer-classics"      : "com.scwang.smart:refresh-footer-classics:2.0.0-alpha-1",
     ]
 }

@@ -11,6 +11,7 @@ import com.donews.main.ui.SplashActivity;
 import com.donews.base.base.BaseApplication;
 import com.donews.common.IModuleInit;
 import com.donews.common.adapter.ScreenAutoAdapter;
+import com.donews.main.utils.ExitInterceptUtils;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.converter.GsonDiskConverter;
 import com.donews.network.cache.model.CacheMode;
@@ -123,6 +124,8 @@ public class MainModuleInit implements IModuleInit {
                 .addCommonHeaders(httpHeaders);
 
         application.registerActivityLifecycleCallbacks(callbacks);
+
+        ExitInterceptUtils.INSTANCE.init();
         return false;
     }
 

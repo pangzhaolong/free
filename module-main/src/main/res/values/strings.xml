@@ -15,4 +15,5 @@
         以提供统计分析服务，并通过地理位置校准报表数据准确性，提供基础反作弊能力。</string>
 
     <string name="main_str_people_guide_refuse_hint">需要同意个人信息保护指引才能继续使用%1$sApp</string>
+    <string name="main_exit_not_lottery_probability">福气指数：你的抽奖概率%.1f%%</string>
 </resources>

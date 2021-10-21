@@ -123,7 +123,7 @@ public abstract class AbstractFragmentDialog<T extends ViewDataBinding> extends 
             // 布局文件居中
             dialogWindow.setGravity(Gravity.CENTER);
             lp.windowAnimations = animId;
-            // dialogWindow.setLayout(lp.MATCH_PARENT, lp.WRAP_CONTENT);// 为了让对话框宽度铺满
+//             dialogWindow.setLayout(lp.MATCH_PARENT, lp.WRAP_CONTENT);// 为了让对话框宽度铺满
             //设置弹窗的宽度，
             lp.width = width;
             lp.height = WindowManager.LayoutParams.MATCH_PARENT;
