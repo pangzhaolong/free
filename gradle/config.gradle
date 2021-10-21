@@ -21,6 +21,7 @@ ext {
             "lifecycle"      : "2.3.1",
             "androidXCore"   : "1.6.0",
             "kolinCoroutines": "1.5.1",
+            "refreshLayout"  : "2.0.3",
     ]
 
     //androidx支持库配置
@@ -101,8 +102,8 @@ ext {
             "kotlin-coroutines-android"    : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.kolinCoroutines",
 
 
-            "refresh-layout-kernel"        : "com.scwang.smart:refresh-layout-kernel:2.0.0-alpha-1",
-            "refresh-header-classics"      : "com.scwang.smart:refresh-header-classics:2.0.0-alpha-1",
-            "refresh-footer-classics"      : "com.scwang.smart:refresh-footer-classics:2.0.0-alpha-1",
+            "refresh-layout-kernel"        : "com.scwang.smart:refresh-layout-kernel:$versions.refreshLayout",
+            "refresh-header-classics"      : "com.scwang.smart:refresh-header-classics:$versions.refreshLayout",
+            "refresh-footer-classics"      : "com.scwang.smart:refresh-footer-classics:$versions.refreshLayout",
     ]
 }

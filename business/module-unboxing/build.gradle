@@ -1,4 +1,5 @@
 apply from: rootProject.file('gradle/module.build.gradle')
+apply plugin: 'kotlin-android'
 
 
 android {

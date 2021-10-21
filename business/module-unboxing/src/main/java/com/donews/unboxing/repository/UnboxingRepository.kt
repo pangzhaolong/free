@@ -2,6 +2,7 @@ package com.donews.unboxing.repository
 
 import com.donews.base.model.BaseLiveDataModel
 import com.donews.network.EasyHttp
+import com.donews.network.cache.model.CacheMode
 import com.donews.network.callback.SimpleCallBack
 import com.donews.unboxing.bean.UnboxingBean
 
@@ -22,6 +23,7 @@ class UnboxingRepository : BaseLiveDataModel() {
     fun getUnboxingData(pageId: Int, pageSize: Int, callBack: SimpleCallBack<MutableList<UnboxingBean>>) {
         val unboxingUrlCreator = UnboxingUrlCreator()
         val disposable = EasyHttp.get(unboxingUrlCreator.getUnboxingDataUrl())
+            .cacheMode(CacheMode.NO_CACHE)
             .params("page_id", pageId.toString())
             .params("page_size", pageSize.toString())
             .execute(callBack)

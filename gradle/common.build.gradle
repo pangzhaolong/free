@@ -2,7 +2,9 @@ android {
     defaultConfig {
         buildConfigField("String", "APP_IDENTIFICATION", "\"${rootProject.APP_IDENTIFICATION}\"")
         buildConfigField("String", "LOGIN_URL", "\"${rootProject.LOGIN_URL}\"")
-        buildConfigField("String", "BASE_URL", "\"${rootProject.API_ULR}\"")
+        buildConfigField("String", "BASE_URL", "\"${rootProject.API_SHOP_URL}\"")
+        buildConfigField("String", "API_LOTTERY_URL", "\"${rootProject.API_LOTTERY_URL}\"")
+        buildConfigField("String", "API_WALLET_URL", "\"${rootProject.API_WALLET_URL}\"")
         buildConfigField("String", "TASK_URL", "\"${rootProject.TASK_URL}\"")
         buildConfigField("String", "BASE_CONFIG_URL", "\"${rootProject.BASE_CONFIG_URL}\"")
         buildConfigField("String", "BASE_RULE_URL", "\"${rootProject.BASE_RULE}\"")

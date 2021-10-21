@@ -15,10 +15,18 @@ ext {
 
 
     // 正式环境base Url
-    // 测试环境的base url
-    API_REALSE_URL = "https://lottery.dev.tagtic.cn/shop/"
-    API_TEST_URL = "https://lottery.dev.tagtic.cn/shop/"
-    API_ULR = ext.DEBUG ? API_TEST_URL : API_REALSE_URL
+
+    API_BASE_URL_REALSE = "https://lottery.dev.tagtic.cn/"
+    API_BASE_URL_TEST = "https://lottery.dev.tagtic.cn/"
+    API_BASE_URL = ext.DEBUG ? API_BASE_URL_TEST : API_BASE_URL_REALSE
+
+    //商品相关接口
+    API_SHOP_URL = API_BASE_URL + "shop/"
+    //抽奖相关接口
+    API_LOTTERY_URL = API_BASE_URL + "lottery/"
+    //钱包相关接口
+    API_WALLET_URL = API_BASE_URL + "wallet/"
+
 
     // 正式环境base Url
     API2_URL = "https://www.qusobook.com/"
