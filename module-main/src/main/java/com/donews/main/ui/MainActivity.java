@@ -152,7 +152,7 @@ public class MainActivity
 
         fragments.add(
                 (Fragment) ARouter.getInstance()
-                        .build(RouterFragmentPath.Home.PAGER_HOME)
+                        .build(RouterFragmentPath.Front.PAGER_FRONT)
                         .navigation());
         fragments.add(
                 (Fragment) ARouter.getInstance()

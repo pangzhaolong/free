@@ -1,5 +1,6 @@
 package com.donews.home;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -106,6 +107,9 @@ public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSe
         mDataBinding.homeSearchPlatformLl.setVisibility(View.VISIBLE);
 
         mDataBinding.homeSearchDo.setOnClickListener(v -> {
+            InputMethodManager inputMethodManager = (InputMethodManager) mContext.getSystemService(Activity.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
             mDataBinding.homeSearchSuggestionRv.setVisibility(View.GONE);
             mDataBinding.homeSearchPlatformLl.setVisibility(View.VISIBLE);
             mSearchFragmentAdapter.search(mDataBinding.homeSearchEdit.getText().toString());

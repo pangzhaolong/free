@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
@@ -51,7 +52,6 @@ import java.util.TimeZone;
 
 public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding, TopViewModel> implements GoodsDetailListener {
 
-
     private GridAdapter mGridAdapter;
     private TopGoodsAdapter mTopGoodsAdapter;
 
@@ -61,6 +61,8 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
     private String mNextTime = "";
 
     private TimerHandler mTimerHandler;
+
+    private DataBean mDataBean = null;
 
     @Override
     public int getLayoutId() {
@@ -84,13 +86,12 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
         mDataBinding.homeTopBannerViewPager.setCanLoop(true);
         LogUtil.e("TopFragment onViewCreated");
 
-        DataBean tmpDataBean = GoodsCache.readGoodsBean(DataBean.class, "");
-        if (tmpDataBean != null && tmpDataBean.getBannners() != null && tmpDataBean.getBannners().size() > 0) {
-            LogUtil.e("TopFragment tmpDataBean in :" + tmpDataBean);
-            mDataBinding.homeTopBannerViewPager.refreshData(tmpDataBean.getBannners());
-            mGridAdapter.refreshData(tmpDataBean.getSpecial_category());
+        mDataBean = GoodsCache.readGoodsBean(DataBean.class, "");
+        if (mDataBean != null && mDataBean.getBannners() != null && mDataBean.getBannners().size() > 0) {
+            LogUtil.e("TopFragment tmpDataBean in :" + mDataBean);
+//            mDataBinding.homeTopBannerViewPager.refreshData(mDataBean.getBannners());
+            mGridAdapter.refreshData(mDataBean.getSpecial_category());
         }
-//        LogUtil.e("TopFragment tmpDataBean out");
 
         mViewModel.getTopBannerData().observe(getViewLifecycleOwner(), dataBean -> {
             // 获取数据
@@ -98,7 +99,8 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
                 // 处理接口出错的问题
                 return;
             }
-            mDataBinding.homeTopBannerViewPager.refreshData(dataBean.getBannners());
+            mDataBean = dataBean;
+//            mDataBinding.homeTopBannerViewPager.refreshData(dataBean.getBannners());
             mGridAdapter.refreshData(dataBean.getSpecial_category());
             GoodsCache.saveGoodsBean(dataBean, "");
         });
@@ -143,6 +145,27 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
         });
         mDataBinding.homeGoodProductRv.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
         mDataBinding.homeGoodProductRv.setAdapter(mTopGoodsAdapter);
+
+        mDataBinding.homeTopShowSrl.setOnRefreshListener(() -> new Handler().postDelayed(() -> mDataBinding.homeTopShowSrl.setRefreshing(false), 1000));
+
+        /*mDataBinding.homeTopBannerViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                if (position < 0 || position >= mDataBean.getBannners().size()) {
+                    return;
+                }
+                BannerBean bannerBean = mDataBean.getBannners().get(position);
+                if (bannerBean == null) {
+                    return;
+                }
+
+                if (!bannerBean.getLink().equalsIgnoreCase("")) {
+
+                }
+
+            }
+        });*/
     }
 
     private void showRealTimeBean(RealTimeBean realTimeBean) {

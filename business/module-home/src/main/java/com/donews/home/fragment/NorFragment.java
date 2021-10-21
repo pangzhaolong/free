@@ -2,6 +2,7 @@ package com.donews.home.fragment;
 
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -9,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.donews.base.fragment.MvvmLazyLiveDataFragment;
@@ -63,6 +65,8 @@ public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding
         mDataBinding.homeNorGoodsRv.setAdapter(mNorGoodsAdapter);
 
         mViewModel.getNorGoodsData(mCategoryItem.getCid()).observe(getViewLifecycleOwner(), this::showNorGoodsBean);
+
+        mDataBinding.homeNorShowSrl.setOnRefreshListener(() -> new Handler().postDelayed(() -> mDataBinding.homeNorShowSrl.setRefreshing(false), 1000));
     }
 
     private void showNorGoodsBean(NorGoodsBean norGoodsBean) {

@@ -2,6 +2,8 @@ package com.donews.home.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,12 +11,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.donews.base.widget.CenterImageSpan;
 import com.donews.home.R;
 import com.donews.home.bean.TopGoodsBean;
 import com.donews.home.listener.GoodsDetailListener;
+import com.donews.utilslibrary.utils.UrlUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,8 +62,8 @@ public class TopGoodsAdapter extends RecyclerView.Adapter<TopGoodsAdapter.GoodsV
 
         holder.itemView.setTag(gi);
         holder.itemView.setOnClickListener(this::onClick);
-        Glide.with(mContext).load(gi.getMain_pic()).into(holder.picIv);
-        holder.desTv.setText(gi.getDtitle());
+        Glide.with(mContext).load(UrlUtils.formatUrlPrefix(gi.getMain_pic())).into(holder.picIv);
+        holder.desTv.setText(getTitleString(gi));
 
         float sales = gi.getMonth_sales();
         if (sales >= 10000) {
@@ -69,7 +74,24 @@ public class TopGoodsAdapter extends RecyclerView.Adapter<TopGoodsAdapter.GoodsV
             holder.salesTv.setText("已售" + gi.getMonth_sales());
         }
         holder.priceTv.setText(gi.getActual_price() + "");
-        holder.giftTv.setText(gi.getCoupon_price()+"元");
+        holder.giftTv.setText(gi.getCoupon_price() + "元");
+    }
+
+    private SpannableString getTitleString(TopGoodsBean.goodsInfo goodsInfo) {
+        String span = "d ";
+        int resId = goodsInfo.getShop_type() == 1 ? R.drawable.home_ic_tianmao : R.drawable.home_ic_taobao;
+        SpannableString spannableString = new SpannableString(span + goodsInfo.getDtitle());
+
+        Drawable drawable = ContextCompat.getDrawable(mContext, resId);
+        if (drawable != null) {
+            //计算大小，使其和文字高度一般一致
+            float height = mContext.getResources().getDimension(R.dimen.home_title) * 0.85f;
+            float width = height / drawable.getIntrinsicHeight() * drawable.getIntrinsicWidth();
+            drawable.setBounds(0, 0, (int) width, (int) height);
+        }
+        CenterImageSpan imageSpan = new CenterImageSpan(drawable);
+        spannableString.setSpan(imageSpan, 0, 1, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return spannableString;
     }
 
     @Override

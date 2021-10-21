@@ -3,16 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="220dp"
+    android:layout_height="270dp"
     android:background="@drawable/home_goods_item_bg"
     android:orientation="vertical"
-    android:paddingBottom="10dp">
+    android:paddingBottom="4dp">
 
     <org.raphets.roundimageview.RoundImageView
         android:id="@+id/home_top_goods_item_iv"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:scaleType="matrix"
+        android:layout_height="180dp"
+        android:scaleType="centerInside"
         app:leftTop_corner_radius="10dp"
         app:rightTop_corner_radius="10dp"
         app:type="round" />
@@ -23,14 +23,16 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/home_top_goods_item_iv"
         android:layout_marginStart="5dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="5dp"
         android:ellipsize="end"
         android:maxLines="2"
-        android:text="【返20元猫超卡】 防嗮衣长袖运动外套" />
+        android:text="【返20元猫超卡】 防嗮衣长袖运动外套"
+        android:textColor="#2c2c2c" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="24dp"
         android:layout_above="@+id/home_top_goods_item_bottom"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
@@ -43,6 +45,7 @@
             android:gravity="center_vertical|right"
             android:text="￥"
             android:textColor="#F33838"
+            android:textSize="12sp"
             tools:ignore="RtlHardcoded" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -52,15 +55,14 @@
             android:gravity="center_vertical|left"
             android:text="9.9"
             android:textColor="#F33838"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:textSize="16sp"
             tools:ignore="RtlHardcoded" />
     </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/home_top_goods_item_bottom"
         android:layout_width="match_parent"
-        android:layout_height="26dp"
+        android:layout_height="24dp"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp">
@@ -71,13 +73,16 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:text="已售4.8万"
-            android:textColor="#A9AEB1" />
+            android:textColor="#A9AEB1"
+            android:textSize="12sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
             android:background="@drawable/home_goods_item_gift_big_bg"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -96,7 +101,7 @@
                 android:gravity="center"
                 android:text="10元"
                 android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textSize="10sp" />
         </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>
