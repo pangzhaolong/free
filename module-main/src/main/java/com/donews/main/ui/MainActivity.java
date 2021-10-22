@@ -123,8 +123,7 @@ public class MainActivity
             case 1:
                 AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
                 ImmersionBar.with(this)
-                        .statusBarColor(R.color.FF8030)
-//                        .statusBarColor(R.color.transparent)
+                        .statusBarColor(R.color.white)
                         .navigationBarColor(R.color.white)
                         .fitsSystemWindows(true)
                         .autoDarkModeEnable(true)
