@@ -132,6 +132,7 @@ dependencies {
         implementation project(path: ':business:module-spike')
         implementation project(path: ':business:module-detail')
         implementation project(path: ':business:module-unboxing')
+        implementation project(path: ':business:module-reward')
     }
 }
 
