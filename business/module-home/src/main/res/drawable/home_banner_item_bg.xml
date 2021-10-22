@@ -2,13 +2,15 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="ResourceName">
+
+    <!-- 中心背景 -->
     <item>
-        <shape android:shape="rectangle">
-            <gradient
-                android:endColor="#FFE9433E"
-                android:startColor="#FFFF6C65"
-                android:type="linear" />
-            <corners android:radius="7dp" />
+        <shape
+            android:shape="rectangle"
+            android:useLevel="false">
+            <!-- 实心 -->
+            <solid android:color="@color/white" />
+            <corners android:radius="10dp" />
         </shape>
     </item>
 </layer-list>

@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.dn.events.events.NavEvent;
 import com.donews.base.fragment.MvvmLazyLiveDataFragment;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.home.adapter.FragmentAdapter;
@@ -17,6 +18,8 @@ import com.donews.home.databinding.HomeFragmentBinding;
 import com.donews.home.viewModel.HomeViewModel;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+
+import org.greenrobot.eventbus.EventBus;
 
 
 /**
@@ -60,7 +63,6 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         mFragmentAdapter = new FragmentAdapter(this);
 
 //        mDataBinding.homeCategoryVp2.setUserInputEnabled(false);
@@ -75,7 +77,7 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
         });
         tab.attach();
 
-        mDataBinding.homeSearchBar.setOnClickListener(v -> {
+        mDataBinding.homeSearchRl.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), HomeSearchActivity.class);
             startActivity(intent);
         });
@@ -83,12 +85,13 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
             Intent intent = new Intent(v.getContext(), HomeHelpActivity.class);
             startActivity(intent);
         });
+
+        mDataBinding.homeBannerLl.setOnClickListener(v -> EventBus.getDefault().post(new NavEvent(2)));
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
     }
 
 

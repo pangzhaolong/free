@@ -7,17 +7,13 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.donews.base.fragment.MvvmLazyLiveDataFragment;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.home.R;
-import com.donews.home.adapter.FragmentAdapter;
-import com.donews.home.adapter.FragmentCategoryAdapter;
 import com.donews.home.adapter.NorGoodsAdapter;
 import com.donews.home.bean.HomeBean;
 import com.donews.home.bean.NorGoodsBean;
@@ -26,8 +22,6 @@ import com.donews.home.databinding.HomeFragmentNorBinding;
 import com.donews.home.listener.GoodsDetailListener;
 import com.donews.home.viewModel.NorViewModel;
 import com.donews.utilslibrary.utils.LogUtil;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 
 public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding, NorViewModel> implements GoodsDetailListener {
 

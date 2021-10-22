@@ -66,7 +66,7 @@ public class MainActivity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         ScreenAutoAdapter.match(this, 375.0f);
         super.onCreate(savedInstanceState);
-
+        EventBus.getDefault().register(this);
     }
 
 
@@ -132,7 +132,7 @@ public class MainActivity
             case 3:
                 AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
                 ImmersionBar.with(this)
-                        .statusBarColor(R.color.main_color_bar)
+                        .statusBarColor(R.color.white)
                         .navigationBarColor(R.color.white)
                         .fitsSystemWindows(true)
                         .autoDarkModeEnable(true)
@@ -206,6 +206,7 @@ public class MainActivity
     protected void onDestroy() {
         ImmersionBar.destroy(this, null);
         AppStatusManager.getInstance().setAppStatus(AppStatusConstant.STATUS_FORCE_KILLED);
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 }
