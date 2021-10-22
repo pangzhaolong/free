@@ -35,7 +35,8 @@ import io.reactivex.subjects.BehaviorSubject;
  * 作者： created by honeylife<br>
  * 日期：2020-01-28
  */
-public abstract class MvvmLazyLiveDataFragment<V extends ViewDataBinding, VM extends BaseLiveDataViewModel> extends Fragment {
+public abstract class MvvmLazyLiveDataFragment<V extends ViewDataBinding, VM extends BaseLiveDataViewModel>
+        extends Fragment {
     protected V mDataBinding;
 
     protected VM mViewModel;
@@ -72,12 +73,15 @@ public abstract class MvvmLazyLiveDataFragment<V extends ViewDataBinding, VM ext
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
 
         if (null == rootView) {
             mDataBinding =
                     DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
+            mDataBinding.setLifecycleOwner(this);
             rootView = mDataBinding.getRoot();
+
         }
         return rootView;
     }

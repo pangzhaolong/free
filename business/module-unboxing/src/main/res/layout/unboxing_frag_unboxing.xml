@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="com.donews.unboxing.viewmodel.UnboxingViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,26 +21,44 @@
             android:background="@color/white"
             android:gravity="center"
             android:text="@string/unboxing_title"
-            android:textColor="@color/black"
-            android:textSize="24sp"
+            android:textColor="#2c2c2c"
+            android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_unboxing"
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/srl_refresh"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="#f4f4f4"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:binding_smart_loadMoreState="@={viewModel.loadMore}"
+            app:binding_smart_onLoadMore="@{viewModel.onLoadMore}"
+            app:binding_smart_onRefresh="@{viewModel.onRefresh}"
+            app:binding_smart_refreshState="@={viewModel.refreshing}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_title"
-            app:layout_constraintVertical_bias="0.0"
-            tools:listitem="@layout/unboxing_item_unboxing" />
+            app:layout_constraintTop_toBottomOf="@id/tv_title">
+
+            <com.scwang.smart.refresh.header.ClassicsHeader
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_unboxing"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#f4f4f4"
+                android:orientation="vertical"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/unboxing_item_unboxing" />
+
+            <com.scwang.smart.refresh.footer.ClassicsFooter
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

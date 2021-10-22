@@ -4,7 +4,7 @@ import com.donews.base.model.BaseLiveDataModel
 import com.donews.network.EasyHttp
 import com.donews.network.cache.model.CacheMode
 import com.donews.network.callback.SimpleCallBack
-import com.donews.unboxing.bean.UnboxingBean
+import com.donews.unboxing.bean.UnBoxingResp
 
 /**
  * 晒单页数据仓库
@@ -20,7 +20,7 @@ class UnboxingRepository : BaseLiveDataModel() {
      * 获取晒单页数据
      * @param callBack SimpleCallBack<UnboxingBean> 数据返回回调
      */
-    fun getUnboxingData(pageId: Int, pageSize: Int, callBack: SimpleCallBack<MutableList<UnboxingBean>>) {
+    fun getUnboxingData(pageId: Int, pageSize: Int, callBack: SimpleCallBack<UnBoxingResp>) {
         val unboxingUrlCreator = UnboxingUrlCreator()
         val disposable = EasyHttp.get(unboxingUrlCreator.getUnboxingDataUrl())
             .cacheMode(CacheMode.NO_CACHE)
