@@ -31,6 +31,10 @@ class UnboxingRVAdapter(layoutResId: Int) : BaseQuickAdapter<UnboxingBean, BaseV
 
     private val mmkv: MMKV = MMKV.mmkvWithID("unBoxingLikeData_" + AppInfo.getToken())!!
 
+    init {
+        addChildClickViewIds(R.id.btn_lottery)
+    }
+
     override fun onItemViewHolderCreated(viewHolder: BaseViewHolder, viewType: Int) {
         super.onItemViewHolderCreated(viewHolder, viewType)
         DataBindingUtil.bind<UnboxingItemUnboxingBinding>(viewHolder.itemView)
