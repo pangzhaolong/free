@@ -76,9 +76,9 @@ public class MainActivity
 
         mNavigationController = mDataBinding.bottomView.material()
                 .addItem(R.drawable.main_home_checked, "首页", checkColor)
-                .addItem(R.drawable.main_mail9_normal, "9.9包邮", checkColor)
-                .addItem(R.drawable.main_seckill_normal, "马上抢", checkColor)
-////                .addItem(R.drawable.main_notify, "福利", checkColor)
+                .addItem(R.drawable.main_uesr_normal, "晒单", checkColor)
+                .addItem(R.drawable.main_seckill_normal, "开奖", checkColor)
+                .addItem(R.drawable.main_buy, "省钱购", checkColor)
                 .addItem(R.drawable.main_uesr_normal, "我的", checkColor)
                 .setDefaultColor(defaultColor)
                 .enableAnimateLayoutChanges()
@@ -146,21 +146,20 @@ public class MainActivity
     private void initFragment() {
         fragments = new ArrayList<>();
         //通过ARouter 获取其他组件提供的fragment
-//        Fragment homeFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.Home.PAGER_HOME).navigation();
-//        Fragment userFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.User.PAGER_USER_SETTING).navigation();
+
+//        Fragment userFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.User.PAGER_USER_SETTING)
+//        .navigation();
 
         fragments.add(
                 (Fragment) ARouter.getInstance()
                         .build(RouterFragmentPath.Front.PAGER_FRONT)
                         .navigation());
-        fragments.add(
-                (Fragment) ARouter.getInstance()
-                        .build(RouterFragmentPath.Mail.PAGE_MAIL_PACKAGE)
-                        .navigation());
+        fragments.add(RouterFragmentPath.Unboxing.getUnboxingFragment());
         fragments.add(
                 (Fragment) ARouter.getInstance()
                         .build(RouterFragmentPath.Spike.PAGER_SPIKE)
                         .navigation());
+        fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Home.PAGER_HOME).navigation());
         fragments.add(
                 (Fragment) ARouter.getInstance()
                         .build(RouterFragmentPath.User.PAGER_USER_SETTING)
