@@ -67,7 +67,6 @@ public class MainActivity
         ScreenAutoAdapter.match(this, 375.0f);
         super.onCreate(savedInstanceState);
 
-        EventBus.getDefault().register(this);
     }
 
 
@@ -201,6 +200,8 @@ public class MainActivity
     @Override
     public void onBackPressed() {
         ExitInterceptUtils.INSTANCE.intercept(this);
+
+//        ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP).navigation();
     }
 
     @Override

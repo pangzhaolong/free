@@ -3,23 +3,21 @@ package com.donews.front;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.MutableLiveData;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.donews.base.fragment.MvvmLazyLiveDataFragment;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.front.adapter.FragmentAdapter;
-import com.donews.front.adapter.FrontGoodsAdapter;
 import com.donews.front.bean.LotteryCategoryBean;
 import com.donews.front.databinding.FrontFragmentBinding;
 import com.donews.front.viewModel.FrontViewModel;
@@ -27,8 +25,6 @@ import com.donews.front.views.TabItem;
 import com.donews.utilslibrary.utils.LogUtil;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-
-import java.util.Objects;
 
 @Route(path = RouterFragmentPath.Front.PAGER_FRONT)
 public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding, FrontViewModel> {

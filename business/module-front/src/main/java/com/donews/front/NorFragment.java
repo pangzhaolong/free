@@ -10,20 +10,22 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.donews.base.fragment.MvvmLazyLiveDataFragment;
-import com.donews.front.adapter.FrontGoodsAdapter;
+import com.donews.front.adapter.GiftGoodsAdapter;
+import com.donews.front.adapter.NorGoodsAdapter;
 import com.donews.front.bean.LotteryCategoryBean;
-import com.donews.front.databinding.FrontGiftFragmentBinding;
 import com.donews.front.databinding.FrontNorFragmentBinding;
-import com.donews.front.viewModel.GiftViewModel;
 import com.donews.front.viewModel.NorViewModel;
 
-public class NorFragment extends MvvmLazyLiveDataFragment<FrontNorFragmentBinding, NorViewModel> {
+public class NorFragment extends MvvmLazyLiveDataFragment<FrontNorFragmentBinding, NorViewModel> implements NorClickListener{
 
-    private FrontGoodsAdapter mFrontGoodsAdapter;
+    private NorGoodsAdapter mNorGoodsAdapter;
+    LotteryCategoryBean.categoryBean mCategoryBean;
+    private String mPageId = "0";
 
     public NorFragment(LotteryCategoryBean.categoryBean categoryBean) {
-
+        mCategoryBean = categoryBean;
     }
 
     @Override
@@ -38,7 +40,7 @@ public class NorFragment extends MvvmLazyLiveDataFragment<FrontNorFragmentBindin
         mDataBinding.frontNorSrl.setEnabled(false);
         mDataBinding.frontNorLoadingLl.setVisibility(View.GONE);
         mDataBinding.frontNorRv.setVisibility(View.VISIBLE);
-        mFrontGoodsAdapter = new FrontGoodsAdapter(this.getContext());
+        mNorGoodsAdapter = new NorGoodsAdapter(this.getContext(), this);
         mDataBinding.frontNorRv.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
@@ -46,7 +48,20 @@ public class NorFragment extends MvvmLazyLiveDataFragment<FrontNorFragmentBindin
             }
         });
         mDataBinding.frontNorRv.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        mDataBinding.frontNorRv.setAdapter(mFrontGoodsAdapter);
+        mDataBinding.frontNorRv.setAdapter(mNorGoodsAdapter);
 
+        mViewModel.getNetData(mCategoryBean.getCategoryId(), mPageId).observe(getViewLifecycleOwner(), norGoodsBean -> {
+            if (norGoodsBean == null || norGoodsBean.getList() == null || norGoodsBean.getList().size() <= 0) {
+                return;
+            }
+
+            mNorGoodsAdapter.refreshData(norGoodsBean.getList());
+        });
+
+    }
+
+    @Override
+    public void onClick(String goodsId) {
+//        ARouter.getInstance().build()
     }
 }

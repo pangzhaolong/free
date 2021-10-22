@@ -20,12 +20,12 @@ import com.donews.utilslibrary.utils.UrlUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.GoodsViewHolder> {
+public class GiftGoodsAdapter extends RecyclerView.Adapter<GiftGoodsAdapter.GoodsViewHolder> {
     private final List<FrontGoodsBean> mGoodsList = new ArrayList<>();
 
     private Context mContext;
 
-    public FrontGoodsAdapter(Context context) {
+    public GiftGoodsAdapter(Context context) {
         mContext = context;
         mGoodsList.add(new FrontGoodsBean("//img.alicdn.com/imgextra/i1/3572132423/O1CN010QeFcK1TlmFbKugvY_!!3572132423.jpg",
                 "沃隆每日蔓越莓干360g*12袋",
