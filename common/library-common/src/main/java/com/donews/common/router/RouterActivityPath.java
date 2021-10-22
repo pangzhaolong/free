@@ -99,4 +99,9 @@ public class RouterActivityPath {
         public static final String REALTIME = "/reltime";
         public static final String REALTIME_DETAIL = REALTIME + "/realtimeDetail";
     }
+
+    public static class Rp {
+        public static final String RP = "/rp";
+        public static final String PAGE_RP = RP + "/rp";
+    }
 }

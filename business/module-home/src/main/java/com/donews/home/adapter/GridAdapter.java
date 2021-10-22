@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.donews.home.R;
 import com.donews.home.bean.SpecialCategoryBean;
+import com.donews.utilslibrary.utils.UrlUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +58,7 @@ public class GridAdapter extends BaseAdapter {
             holder = (ItemViewHolder) convertView.getTag();
         }
 
-        Glide.with(mContext).load(mSpelCategoryList.get(position).getImg()).into(holder.logoIv);
+        Glide.with(mContext).load(UrlUtils.formatUrlPrefix(mSpelCategoryList.get(position).getImg())).into(holder.logoIv);
         holder.logoTv.setText(mSpelCategoryList.get(position).getTitle());
 
         return convertView;

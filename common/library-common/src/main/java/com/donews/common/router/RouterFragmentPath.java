@@ -33,6 +33,34 @@ public class RouterFragmentPath {
 
     }
 
+    /** 首页组件 **/
+    public static class Front
+    {
+        private static final String FRONT = "/front";
+
+        /** 首页 */
+        public static final String PAGER_FRONT = FRONT + "/Front";
+
+    }
+
+    public static class Blank
+    {
+        private static final String BLANK = "/blank";
+
+        /** 首页 */
+        public static final String PAGER_BLANK = BLANK + "/Blank";
+
+    }
+
+    public static class Face
+    {
+        private static final String FACE = "/face";
+
+        /** 首页 */
+        public static final String PAGER_FACE = FACE + "/Face";
+
+    }
+
     /** 秒杀组件 */
     public static class Spike {
         private static final String SPIKE = "/spike";

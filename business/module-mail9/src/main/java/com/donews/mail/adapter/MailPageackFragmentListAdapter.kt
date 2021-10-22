@@ -8,6 +8,7 @@ import com.donews.common.router.RouterActivityPath
 import com.donews.mail.R
 import com.donews.mail.adapter.global.BaseListAdAdapter
 import com.donews.mail.entitys.resps.MailPackHomeListItemResp
+import com.donews.utilslibrary.utils.UrlUtils
 
 /**
  * @author lcl
@@ -41,7 +42,7 @@ class MailPageackFragmentListAdapter : BaseListAdAdapter<MailPackHomeListItemRes
             //图标
             GlideUtils.loadImageView(
                 helper.itemView.context,
-                item.mainPic,
+                UrlUtils.formatUrlPrefix(item.mainPic),
                 helper.getView(R.id.vp_list_icon)
             )
             helper.itemView.setOnClickListener {

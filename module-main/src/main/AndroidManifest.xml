@@ -6,8 +6,8 @@
     <application>
         <activity
             android:name="com.donews.main.ui.SplashActivity"
-            android:screenOrientation="portrait"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Start">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,10 +38,15 @@
         <meta-data
             android:name="notch.config"
             android:value="portrait|landscape" />
+
         <activity
             android:name="com.donews.main.ui.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.RpActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/main_transparent_style" />
     </application>
 
 </manifest>
