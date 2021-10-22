@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:skin="http://schemas.android.com/res/android/skin">
+    xmlns:skin="http://schemas.android.com/res/android/skin"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -17,6 +18,7 @@
             android:id="@+id/mine_me_appt_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             app:elevation="0dp">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -35,17 +37,25 @@
             <LinearLayout
                 android:id="@+id/mine_me_select_bar"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                app:layout_collapseMode="pin"
-                android:orientation="horizontal"
+                android:layout_height="140dp"
                 android:background="@color/mine_f6f9fb"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_collapseMode="pin"
+                tools:ignore="MissingClass">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="精选推荐"
                     android:textSize="18sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
+<!--
+                <com.donews.mine.views.CSSView
+                    android:id="@+id/mine_ccs_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="#e0e0e0" />-->
             </LinearLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -54,7 +64,7 @@
             android:id="@+id/mine_me_list_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

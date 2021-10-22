@@ -74,6 +74,8 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
                 new GridLayoutManager(getActivity(), 2));
         mDataBinding.mineMeListLayout.getRecyclerView().setAdapter(adapter);
         mDataBinding.mineMeListLayout.getRefeshLayout().autoRefresh();
+
+//        mDataBinding.mineCcsView.refreshData();
     }
 
     @Override
@@ -101,6 +103,7 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
     }
 
     Handler h = new Handler();
+
     //下拉刷新数据
     private void refeshListData() {
         h.postDelayed(() -> {

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:weightSum="7"
+    tools:ignore="MissingDefaultResource">
+
+    <com.donews.mine.views.CCSItemView
+        android:id="@+id/mine_css_item1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <com.donews.mine.views.CCSItemView
+        android:id="@+id/mine_css_item2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <com.donews.mine.views.CCSItemView
+        android:id="@+id/mine_css_item3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <com.donews.mine.views.CCSItemView
+        android:id="@+id/mine_css_item4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <com.donews.mine.views.CCSItemView
+        android:id="@+id/mine_css_item5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <com.donews.mine.views.CCSItemView
+        android:id="@+id/mine_css_item6"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <com.donews.mine.views.CCSItemView
+        android:id="@+id/mine_css_item7"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+    <!--    <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/mine_city_car_speed_bg">
+
+            <TextView
+                android:id="@+id/mine_ccs_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="4dp"
+                android:text="北京"
+                android:textColor="#884900" />
+            <TextView
+                android:id="@+id/mine_ccs_speed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:background="@drawable/mine_city_car_speed_bk"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:textSize="13sp"
+                android:layout_marginBottom="4dp"
+                android:text="2.02"/>
+
+        </FrameLayout>-->
+
+</LinearLayout>
