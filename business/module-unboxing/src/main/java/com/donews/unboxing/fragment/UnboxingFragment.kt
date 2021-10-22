@@ -40,6 +40,11 @@ class UnboxingFragment : MvvmLazyLiveDataFragment<UnboxingFragUnboxingBinding, U
         super.onViewCreated(view, savedInstanceState)
         mDataBinding.viewModel = mViewModel
 
+        unboxingRVAdapter.setOnItemChildClickListener { adapter, view, position ->
+            val data = adapter.data[position]
+            //TODO 跳转抽奖页面
+        }
+
         unboxingRVAdapter.setDiffCallback(object : DiffUtil.ItemCallback<UnboxingBean>() {
             override fun areItemsTheSame(oldItem: UnboxingBean, newItem: UnboxingBean): Boolean {
                 return oldItem.id == newItem.id

@@ -51,7 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="9dp"
-            android:text="@{unboxingBean.publishAt}"
+            android:text="@{unboxingBean.publishAt*1000}"
             android:textSize="10sp"
             app:layout_constraintBaseline_toBaselineOf="@id/tv_nickname"
             app:layout_constraintStart_toEndOf="@id/tv_nickname" />
@@ -110,15 +110,15 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_pics"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/tv_nickname"
             app:layout_constraintTop_toBottomOf="@id/tv_content"
             app:spanCount="3"
-            tools:itemCount="9" />
+            tools:itemCount="5"
+            tools:listitem="@layout/unboxing_item_pic" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier_content_bottom"

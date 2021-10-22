@@ -27,7 +27,7 @@ fun imageLoader(
     placeHolderDrawable: Drawable? = null,
     defaultDrawable: Drawable? = null
 ) {
-    url?.let {
+    url?.trim().let {
         if (roundRadius > 0) {
             val radius = DensityUtils.dip2px(roundRadius)
             Glide.with(view)
