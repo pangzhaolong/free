@@ -13,6 +13,6 @@ class UnboxingUrlCreator {
 
     /** 商品详情api */
     fun getUnboxingDataUrl(): String {
-        return BuildConfig.BASE_URL + "v1/get-goods-details"
+        return BuildConfig.API_LOTTERY_URL + "v1/lucky-show"
     }
 }
