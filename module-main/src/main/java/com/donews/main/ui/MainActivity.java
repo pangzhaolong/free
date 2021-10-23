@@ -200,6 +200,7 @@ public class MainActivity
         ExitInterceptUtils.INSTANCE.intercept(this);
 
 //        ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP).navigation();
+        ARouter.getInstance().build(RouterActivityPath.Mine.PAGE_MINE_REWARD_HISTORY).navigation();
     }
 
     @Override
