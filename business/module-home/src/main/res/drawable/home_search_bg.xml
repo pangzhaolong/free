@@ -8,9 +8,16 @@
         <shape
             android:shape="rectangle"
             android:useLevel="false">
-            <!-- 实心 -->
-            <solid android:color="#E9423E" />
+            <stroke
+                android:width="2dp"
+                android:color="#F33838" />
+            <solid android:color="#ffffff" />
             <corners android:radius="20dp" />
+            <padding
+                android:bottom="2dp"
+                android:left="2dp"
+                android:right="2dp"
+                android:top="2dp" />
         </shape>
     </item>
 </layer-list>

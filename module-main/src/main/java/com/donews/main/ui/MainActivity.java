@@ -74,6 +74,7 @@ public class MainActivity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         ScreenAutoAdapter.match(this, 375.0f);
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -150,7 +151,7 @@ public class MainActivity
             case 3:
                 AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
                 ImmersionBar.with(this)
-                        .statusBarColor(R.color.main_color_bar)
+                        .statusBarColor(R.color.white)
                         .navigationBarColor(R.color.white)
                         .fitsSystemWindows(true)
                         .autoDarkModeEnable(true)
@@ -179,7 +180,7 @@ public class MainActivity
         fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Home.PAGER_HOME).navigation());
         fragments.add(
                 (Fragment) ARouter.getInstance()
-                        .build(RouterFragmentPath.User.PAGER_USER_SETTING)
+                        .build(RouterFragmentPath.User.PAGER_USER)
                         .navigation());
         adapter = new MainPageAdapter(getSupportFragmentManager(),
                 FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
@@ -224,6 +225,7 @@ public class MainActivity
     protected void onDestroy() {
         ImmersionBar.destroy(this, null);
         AppStatusManager.getInstance().setAppStatus(AppStatusConstant.STATUS_FORCE_KILLED);
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 

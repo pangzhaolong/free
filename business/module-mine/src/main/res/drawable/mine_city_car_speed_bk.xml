@@ -3,12 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="ResourceName">
 
-    <!-- 中心背景 -->
     <item>
-        <shape android:shape="ring"
+        <shape
+            android:shape="rectangle"
             android:useLevel="false">
-            <solid android:color="#F5DBB0" />
-            <size android:width="10dp" android:height="10dp"/>
+            <!-- 实心 -->
+            <solid android:color="@color/white" />
+            <corners android:radius="2dp" />
         </shape>
     </item>
 </layer-list>

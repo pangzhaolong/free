@@ -120,6 +120,7 @@
                                 tools:ignore="MissingConstraints">
 
                                 <TextView
+                                    android:id="@+id/front_rp_title"
                                     android:layout_width="wrap_content"
                                     android:layout_height="24dp"
                                     android:layout_marginStart="10dp"
@@ -127,7 +128,17 @@
                                     android:gravity="center"
                                     android:text="抽奖开红包"
                                     android:textColor="#2c2c2c"
+                                    android:textSize="15sp"
                                     android:textStyle="bold" />
+
+                                <ImageView
+                                    android:id="@+id/front_rp_help_iv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="24dp"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_marginTop="4dp"
+                                    android:layout_toRightOf="@+id/front_rp_title"
+                                    android:src="@drawable/front_rp_help" />
 
                                 <TextView
                                     android:id="@+id/front_cash_get_tv"
@@ -136,10 +147,10 @@
                                     android:layout_alignParentRight="true"
                                     android:layout_marginTop="4dp"
                                     android:layout_marginEnd="10dp"
-                                    android:background="@drawable/front_cash_get_bg"
+                                    android:background="@drawable/front_rp_get_cash_bg"
                                     android:gravity="center"
                                     android:text="提现"
-                                    android:textColor="@color/white" />
+                                    android:textColor="#ED4944" />
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -264,7 +275,9 @@
                                     <FrameLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="10dp"
+                                        android:layout_marginStart="20dp"
                                         android:layout_marginTop="10dp"
+                                        android:layout_marginEnd="20dp"
                                         android:layout_marginBottom="20dp">
 
                                         <ProgressBar
@@ -385,8 +398,8 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="20dp"
-                                        android:layout_marginEnd="10dp"
                                         android:layout_marginTop="40dp"
+                                        android:layout_marginEnd="10dp"
                                         android:background="@color/transparent">
 
                                         <TextView

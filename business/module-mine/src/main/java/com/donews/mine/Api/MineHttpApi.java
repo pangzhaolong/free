@@ -61,4 +61,6 @@ public class MineHttpApi {
     public static final String WITHDRAW = BuildConfig.HTTP_AWARD + "wall/v2/pay";
     public static final String WITHDRAW_RECORD = BuildConfig.HTTP_AWARD + "wall/v2/deposit/detail";
 
+    public static final String lotteryRewardHistoryUrl = BuildConfig.API_LOTTERY_URL+"/v1/list-open-lottery-record";
+
 }
