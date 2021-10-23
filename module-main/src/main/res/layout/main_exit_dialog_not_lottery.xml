@@ -8,6 +8,18 @@
         <variable
             name="probability"
             type="Double" />
+
+        <variable
+            name="goodsBean"
+            type="com.donews.main.entitys.resps.ExitDialogRecommendGoods" />
+
+        <variable
+            name="eventListener"
+            type="com.donews.main.dialog.NotLotteryDialog.EventListener" />
+
+        <variable
+            name="totalPeople"
+            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,125 +28,142 @@
 
         <ImageView
             android:id="@+id/iv_title"
-            android:layout_width="200dp"
-            android:layout_height="40dp"
-            android:background="@color/A2CB5FF"
-            app:layout_constraintBottom_toTopOf="@id/tv_probability"
+            android:layout_width="280dp"
+            android:layout_height="49dp"
+            android:src="@drawable/main_exit_not_lottery_title"
+            app:layout_constraintBottom_toTopOf="@id/cl_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed" />
 
-        <androidx.constraintlayout.helper.widget.Layer
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#ff0000"
-            android:padding="20dp"
-            app:constraint_referenced_ids="tv_probability,iv_goods_pic,tv_goods_title,tv_actual_price,tv_original_price,tv_buy_number,btn_next,btn_lottery"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_probability"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:text="@{@string/main_exit_not_lottery_probability(probability)}"
-            app:layout_constraintBottom_toTopOf="@id/iv_goods_pic"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_title" />
-
-        <ImageView
-            android:id="@+id/iv_goods_pic"
-            android:layout_width="220dp"
-            android:layout_height="220dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:src="#0000ff"
-            app:layout_constraintBottom_toTopOf="@id/tv_goods_title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_probability" />
-
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/barrier_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="left"
-            app:constraint_referenced_ids="tv_probability,iv_goods_pic" />
-
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/barrier_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="right"
-            app:constraint_referenced_ids="tv_probability,iv_goods_pic" />
-
-        <TextView
-            android:id="@+id/tv_goods_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/tv_actual_price"
-            app:layout_constraintStart_toStartOf="@id/barrier_left"
-            app:layout_constraintTop_toBottomOf="@id/iv_goods_pic"
-            tools:text="商品标题" />
-
-        <TextView
-            android:id="@+id/tv_actual_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1"
-            app:layout_constraintBottom_toTopOf="@id/btn_next"
-            app:layout_constraintStart_toStartOf="@id/tv_goods_title"
-            app:layout_constraintTop_toBottomOf="@id/tv_goods_title" />
-
-        <TextView
-            android:id="@+id/tv_original_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="2dp"
-            android:text="5.9"
-            app:layout_constraintBaseline_toBaselineOf="@id/tv_actual_price"
-            app:layout_constraintStart_toEndOf="@id/tv_actual_price"
-            app:layout_constraintTop_toTopOf="@id/tv_actual_price" />
-
-        <TextView
-            android:id="@+id/tv_buy_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="2dp"
-            android:text="累计1.8万人抢购"
-            app:layout_constraintBaseline_toBaselineOf="@id/tv_actual_price"
-            app:layout_constraintEnd_toEndOf="@id/barrier_right"
-            app:layout_constraintTop_toTopOf="@id/tv_actual_price" />
-
-        <Button
-            android:id="@+id/btn_next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="换一个"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_content"
+            android:layout_width="302dp"
+            android:layout_height="433dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/common_bg_white_corner_13"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@id/barrier_left"
-            app:layout_constraintTop_toBottomOf="@id/tv_actual_price" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_title">
 
-        <Button
-            android:id="@+id/btn_lottery"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="参与抽奖"
-            app:layout_constraintEnd_toEndOf="@id/barrier_right"
-            app:layout_constraintTop_toBottomOf="@id/tv_actual_price" />
+            <TextView
+                android:id="@+id/tv_probability"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:text="@{@string/main_exit_not_lottery_probability(probability)}"
+                android:textColor="@color/common_2C2C2C"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="福气指数：你的抽中概率为97.4%" />
+
+            <ImageView
+                android:id="@+id/iv_goods_pic"
+                android:layout_width="243dp"
+                android:layout_height="243dp"
+                android:layout_marginTop="10dp"
+                android:src="#0000ff"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_probability"
+                app:url="@{goodsBean.mainPic}" />
+
+            <TextView
+                android:id="@+id/tv_goods_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                android:ellipsize="end"
+                android:gravity="start|center_vertical"
+                android:lineSpacingExtra="19dp"
+                android:maxLines="1"
+                android:text="@{goodsBean.title}"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="@id/iv_goods_pic"
+                app:layout_constraintStart_toStartOf="@id/iv_goods_pic"
+                app:layout_constraintTop_toBottomOf="@id/iv_goods_pic"
+                tools:text="商品标题" />
+
+            <TextView
+                android:id="@+id/tv_actual_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@string/main_exit_price"
+                android:textColor="@color/common_e9423e"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="@id/tv_goods_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_goods_title"
+                tools:text="¥ 24" />
+
+            <TextView
+                android:id="@+id/tv_original_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:text="@{@string/main_exit_price(goodsBean.originalPrice)}"
+                android:textSize="15sp"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_actual_price"
+                app:layout_constraintStart_toEndOf="@id/tv_actual_price"
+                app:layout_constraintTop_toTopOf="@id/tv_actual_price"
+                tools:text="¥ 1699" />
+
+            <TextView
+                android:id="@+id/tv_buy_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{@string/main_buy_number(totalPeople)}"
+                android:textSize="12sp"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_actual_price"
+                app:layout_constraintEnd_toEndOf="@id/iv_goods_pic"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@id/tv_original_price"
+                app:layout_constraintTop_toTopOf="@id/tv_actual_price"
+                tools:text="累计1.8万人抢购" />
+
+            <Button
+                android:id="@+id/btn_next"
+                android:layout_width="94dp"
+                android:layout_height="38dp"
+                android:layout_marginTop="17dp"
+                android:background="@drawable/main_exit_btn_bg_negative"
+                android:onClick="@{eventListener::clickNext}"
+                android:text="@string/main_exit_other"
+                android:textColor="@color/common_F43838"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@id/btn_lottery"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_actual_price" />
+
+            <Button
+                android:id="@+id/btn_lottery"
+                android:layout_width="165dp"
+                android:layout_height="38dp"
+                android:background="@drawable/main_exit_btn_bg_positive"
+                android:onClick="@{eventListener::clickLottery}"
+                android:text="@string/main_exit_lottery"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_next"
+                app:layout_constraintTop_toTopOf="@id/btn_next" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView
             android:id="@+id/iv_close"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginBottom="20dp"
-            android:background="#ff0000"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginBottom="8dp"
+            android:onClick="@{eventListener::clickClose}"
+            android:src="@drawable/common_close"
             android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@id/iv_title"
             app:layout_constraintEnd_toEndOf="@id/iv_title" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

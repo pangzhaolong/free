@@ -1,7 +1,5 @@
-package com.donews.unboxing.databinding
+package com.donews.common.databinding
 
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import androidx.databinding.BindingConversion
 import java.text.SimpleDateFormat
 import java.util.*

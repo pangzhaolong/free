@@ -1,4 +1,4 @@
-package com.donews.unboxing.databinding
+package com.donews.common.databinding
 
 import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
@@ -9,7 +9,6 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.donews.common.utils.DensityUtils
-import com.orhanobut.logger.Logger
 
 /**
  * data binding BindingAdapter

@@ -1,6 +1,7 @@
 package com.donews.base.fragmentdialog;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,12 +14,16 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.DialogFragment;
 
 import com.donews.base.R;
+
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 
 /**
@@ -33,10 +38,16 @@ public abstract class AbstractFragmentDialog<T extends ViewDataBinding> extends 
     private int animId = R.style.BaseDialogOutInAnim;
     protected T dataBinding;
 
+
     /**
      * 背景色是否变暗
      */
     protected boolean backgroundDim = true;
+
+    private OnDismissListener mOnDismissListener;
+    private SureListener mOnSureListener;
+    private CancelListener mOnCancelListener;
+    private CloseListener mOnCloseListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,7 +74,7 @@ public abstract class AbstractFragmentDialog<T extends ViewDataBinding> extends 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
 
         // 弹出框外面是否可取消
         getDialog().setCanceledOnTouchOutside(dismissOnTouchOutside);
@@ -88,7 +99,8 @@ public abstract class AbstractFragmentDialog<T extends ViewDataBinding> extends 
         }
 
         RelativeLayout rl = new RelativeLayout(getContext());
-        ViewGroup.LayoutParams pm = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        ViewGroup.LayoutParams pm = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
         rl.setLayoutParams(pm);
 
         rl.setGravity(Gravity.CENTER);
@@ -109,9 +121,9 @@ public abstract class AbstractFragmentDialog<T extends ViewDataBinding> extends 
             WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
             Point point = new Point();
 
-            if (Build.VERSION.SDK_INT>Build.VERSION_CODES.M){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 mContext.getDisplay().getRealSize(point);
-            }else {
+            } else {
                 wm.getDefaultDisplay().getSize(point);
             }
             int width = point.x;
@@ -164,10 +176,7 @@ public abstract class AbstractFragmentDialog<T extends ViewDataBinding> extends 
     public static final int VERSION_CODES = 29;
 
     public void disMissDialog() {
-
         dismissAllowingStateLoss();
-
-
     }
 
 
@@ -177,10 +186,52 @@ public abstract class AbstractFragmentDialog<T extends ViewDataBinding> extends 
     public void onBackPressDismissBefore() {
     }
 
+    public OnDismissListener getOnDismissListener() {
+        return mOnDismissListener;
+    }
+
+    public void setOnDismissListener(OnDismissListener onDismissListener) {
+        mOnDismissListener = onDismissListener;
+    }
+
+    public SureListener getOnSureListener() {
+        return mOnSureListener;
+    }
+
+    public void setOnSureListener(SureListener onSureListener) {
+        mOnSureListener = onSureListener;
+    }
+
+    public CancelListener getOnCancelListener() {
+        return mOnCancelListener;
+    }
+
+    public void setOnCancelListener(CancelListener onCancelListener) {
+        mOnCancelListener = onCancelListener;
+    }
+
+    public CloseListener getOnCloseListener() {
+        return mOnCloseListener;
+    }
+
+    public void setOnCloseListener(CloseListener onCloseListener) {
+        mOnCloseListener = onCloseListener;
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
+        unDisposable();
     }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if (mOnDismissListener != null) {
+            mOnDismissListener.onDismiss(dialog);
+        }
+    }
+
 
     protected View rootView;
 
@@ -206,4 +257,23 @@ public abstract class AbstractFragmentDialog<T extends ViewDataBinding> extends 
         void onClose();
     }
 
+    public interface OnDismissListener {
+        void onDismiss(@NonNull DialogInterface dialog);
+    }
+
+
+    private CompositeDisposable mCompositeDisposable;
+
+    public void addDisposable(Disposable disposable) {
+        if (mCompositeDisposable == null) {
+            mCompositeDisposable = new CompositeDisposable();
+        }
+        mCompositeDisposable.add(disposable);
+    }
+
+    public void unDisposable() {
+        if (mCompositeDisposable != null && mCompositeDisposable.isDisposed()) {
+            mCompositeDisposable.clear();
+        }
+    }
 }

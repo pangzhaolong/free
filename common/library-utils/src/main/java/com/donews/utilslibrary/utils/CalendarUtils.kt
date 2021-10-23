@@ -123,6 +123,7 @@ object CalendarUtils {
      * @param desc String 日程说明
      * @param reminderTime Long 提示时间,单位毫秒
      * @param duration Long 提示持续时间，单位分钟
+     * @param rrule String 重复规则
      * @param previousDate Long 提前previous Date时间提醒,单位分钟
      */
     fun addCalendarEvent(
@@ -131,6 +132,7 @@ object CalendarUtils {
         desc: String,
         reminderTime: Long,
         duration: Long,
+        rule: String? = null,
         vararg previousDate: Long
     ) {
         val calId = checkAndAddCalendarAccount(context)
@@ -150,10 +152,15 @@ object CalendarUtils {
             put("calendar_id", calId)
             put(CalendarContract.Events.DTSTART, startTime)
             put(CalendarContract.Events.DTEND, endTime)
+
+            if (!rule.isNullOrBlank()) {
+                put(CalendarContract.Events.RRULE, rule)
+            }
             //设置闹钟提醒
             put(CalendarContract.Events.HAS_ALARM, 1)
             //这个是时区，必须有
             put(CalendarContract.Events.EVENT_TIMEZONE, "Asia/Shanghai")
+
         }
 
         val eventUri = context.contentResolver.insert(CALENDAR_EVENT_URL, event)

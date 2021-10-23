@@ -48,6 +48,10 @@ dependencies {
 
     api rootProject.ext.dependencies["rxBinding"]
     api rootProject.ext.dependencies["logger"]
+
+    api rootProject.ext.dependencies["easypermissions"]
+    api rootProject.ext.dependencies["easypermissions-ktx"]
+
     api project(path: ':common:library-utils')
     api project(path: ':common:lib_eventbus')
 }

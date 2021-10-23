@@ -1,12 +1,9 @@
 package com.donews.unboxing.fragment
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
-import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.chad.library.adapter.base.diff.BrvahAsyncDifferConfig
 import com.donews.base.fragment.MvvmLazyLiveDataFragment
 import com.donews.common.router.RouterFragmentPath
 import com.donews.unboxing.R
@@ -15,10 +12,6 @@ import com.donews.unboxing.bean.UnboxingBean
 import com.donews.unboxing.databinding.UnboxingFragUnboxingBinding
 import com.donews.unboxing.smartrefreshlayout.SmartRefreshState
 import com.donews.unboxing.viewmodel.UnboxingViewModel
-import com.donews.utilslibrary.utils.AppInfo
-import com.donews.utilslibrary.utils.DeviceUtils
-import com.orhanobut.logger.Logger
-import com.tencent.mmkv.MMKV
 
 /**
  * 晒单页 fragment

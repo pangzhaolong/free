@@ -16,4 +16,19 @@
 
     <string name="main_str_people_guide_refuse_hint">需要同意个人信息保护指引才能继续使用%1$sApp</string>
     <string name="main_exit_not_lottery_probability">福气指数：你的抽奖概率%.1f%%</string>
+    <string name="main_exit_other">换一个</string>
+    <string name="main_exit_lottery">免费抢购</string>
+    <string name="main_exit_price">¥ %.2f</string>
+    <string name="main_buy_number">累计%s人抢购</string>
+
+    <string name="main_exit_not_open_red_packed_number_1">你还有</string>
+    <string name="main_exit_not_open_red_packed_number_2"> %d个 </string>
+    <string name="main_exit_not_open_red_packed_number_3"> 现金红包未开启 </string>
+    <string name="main_exit_btn_open_red_packet">开红包领现金</string>
+    <string name="main_exit_remind_delay">稍后提示</string>
+    <string name="main_exit_open_remind">开启提醒</string>
+    <string name="main_exit_know">我知道了</string>
+    <string name="main_exit_continue_lottery_title">再抽%s次，中间概率可提升%s%%</string>
+    <string name="main_exit_remind_titl">温馨提示</string>
+    <string name="main_exit_remind_msg">明日%s点开奖，记得回来看看哦。\n祝你中奖</string>
 </resources>

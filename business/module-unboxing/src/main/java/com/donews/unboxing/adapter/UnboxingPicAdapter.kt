@@ -1,6 +1,5 @@
 package com.donews.unboxing.adapter
 
-import android.database.DatabaseUtils
 import androidx.databinding.DataBindingUtil
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder

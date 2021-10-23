@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.events.NavEvent;
@@ -31,6 +33,8 @@ import com.donews.utilslibrary.analysis.AnalysisHelp;
 import com.donews.utilslibrary.analysis.AnalysisParam;
 import com.gyf.immersionbar.BarHide;
 import com.gyf.immersionbar.ImmersionBar;
+import com.orhanobut.logger.Logger;
+import com.vmadalin.easypermissions.EasyPermissions;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -58,6 +62,10 @@ public class MainActivity
 
     private NavigationController mNavigationController;
 
+    /** 初始选择tab */
+    @Autowired(name = "position")
+    int mPosition = 0;
+
     public static void start(Context context) {
         context.startActivity(new Intent(context, MainActivity.class));
     }
@@ -66,11 +74,20 @@ public class MainActivity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         ScreenAutoAdapter.match(this, 375.0f);
         super.onCreate(savedInstanceState);
-
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        ARouter.getInstance().inject(this);
+        if (mNavigationController != null) {
+            mNavigationController.setSelect(mPosition);
+        }
+    }
 
     private void initView(int position) {
+        ARouter.getInstance().inject(this);
         int checkColor = getResources().getColor(R.color.common_btn_color_sec);
         int defaultColor = getResources().getColor(R.color.common_AEAEAE);
 
@@ -93,6 +110,7 @@ public class MainActivity
             @Override
             public void onSelected(int index, int old) {
                 toggleStatusBar(index);
+                mPosition = index;
             }
         });
         AppStatusManager.getInstance().setAppStatus(AppStatusConstant.STATUS_NORMAL);
@@ -184,7 +202,7 @@ public class MainActivity
                 .autoDarkModeEnable(true)
                 .init();
         initFragment();
-        initView(0);
+        initView(mPosition);
         // 获取数美deviceId之后，调用refresh接口刷新
         CommonParams.setNetWork();
         CommonParams.getCommonNetWork();
@@ -207,5 +225,13 @@ public class MainActivity
         ImmersionBar.destroy(this, null);
         AppStatusManager.getInstance().setAppStatus(AppStatusConstant.STATUS_FORCE_KILLED);
         super.onDestroy();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+            @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults,
+                ExitInterceptUtils.INSTANCE.getRemindDialog());
     }
 }

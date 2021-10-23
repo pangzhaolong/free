@@ -105,5 +105,9 @@ ext {
             "refresh-layout-kernel"        : "com.scwang.smart:refresh-layout-kernel:$versions.refreshLayout",
             "refresh-header-classics"      : "com.scwang.smart:refresh-header-classics:$versions.refreshLayout",
             "refresh-footer-classics"      : "com.scwang.smart:refresh-footer-classics:$versions.refreshLayout",
+
+            //权限申请框紧
+            "easypermissions"              : "pub.devrel:easypermissions:3.0.0",
+            "easypermissions-ktx"          : "com.vmadalin:easypermissions-ktx:1.0.0",
     ]
 }

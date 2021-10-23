@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.donews.common.decoration.GridItemDecoration
 import com.donews.common.utils.DensityUtils
@@ -17,7 +16,6 @@ import com.donews.unboxing.R
 import com.donews.unboxing.bean.UnboxingBean
 import com.donews.unboxing.databinding.UnboxingItemUnboxingBinding
 import com.donews.utilslibrary.utils.AppInfo
-import com.orhanobut.logger.Logger
 import com.tencent.mmkv.MMKV
 
 /**

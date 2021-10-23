@@ -1,15 +1,27 @@
 package com.donews.main.dialog
 
 import android.content.Context
+import android.content.DialogInterface
+import android.graphics.Paint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.donews.base.fragmentdialog.AbstractFragmentDialog
+import com.donews.base.model.BaseLiveDataModel
+import com.donews.base.viewmodel.BaseLiveDataViewModel
 import com.donews.main.R
 import com.donews.main.databinding.MainExitDialogNotLotteryBinding
+import com.donews.main.entitys.resps.ExitDialogRecommendGoodsResp
 import com.donews.main.entitys.resps.NotLotteryConfig
+import com.donews.main.utils.ExitInterceptUtils
+import com.donews.network.EasyHttp
+import com.donews.network.cache.model.CacheMode
+import com.donews.network.callback.SimpleCallBack
+import com.donews.network.exception.ApiException
 import com.orhanobut.logger.Logger
+import io.reactivex.disposables.CompositeDisposable
 import kotlin.random.Random
 
 /**
@@ -22,6 +34,10 @@ import kotlin.random.Random
 class NotLotteryDialog : AbstractFragmentDialog<MainExitDialogNotLotteryBinding>() {
 
     companion object {
+
+        const val LIMIT_DATA = "1"
+
+        const val TEN_THOUSAND = 10000
 
         const val PARAMS_CONFIG = "config"
 
@@ -55,6 +71,25 @@ class NotLotteryDialog : AbstractFragmentDialog<MainExitDialogNotLotteryBinding>
     }
 
     override fun initView() {
+        //原价 中划线
+        dataBinding.tvOriginalPrice.paint.flags = Paint.STRIKE_THRU_TEXT_FLAG
+
+        //点击事件
+        dataBinding.eventListener = EventListener()
+
+        //请求商品信息
+        requestGoodsInfo()
+
+        showCloseBtn()
+    }
+
+    private fun showCloseBtn() {
+        handler.postDelayed(Runnable {
+            dataBinding.ivClose.visibility = View.VISIBLE
+        }, notLotteryConfig.closeBtnLazyShow * 1000L)
+    }
+
+    private fun randomProbability() {
         val min = notLotteryConfig.minProbability
         val max = notLotteryConfig.maxProbability
         val delta = max - min
@@ -62,13 +97,55 @@ class NotLotteryDialog : AbstractFragmentDialog<MainExitDialogNotLotteryBinding>
         val probability = min + random.nextDouble(delta)
         Logger.d(probability * 100)
         dataBinding.probability = probability * 100
-        handler.postDelayed(Runnable {
-            dataBinding.ivClose.visibility = View.VISIBLE
-        }, notLotteryConfig.closeBtnLazyShow * 1000L)
-        requestGoodsInfo()
     }
 
-    fun requestGoodsInfo() {
+    private fun requestGoodsInfo() {
+        val disposable = EasyHttp.get(ExitInterceptUtils.getRecommendGoodsUrl())
+            .cacheMode(CacheMode.NO_CACHE)
+            .params("limit", LIMIT_DATA)
+            .execute(object : SimpleCallBack<ExitDialogRecommendGoodsResp>() {
+                override fun onError(e: ApiException?) {
 
+                }
+
+                override fun onSuccess(t: ExitDialogRecommendGoodsResp?) {
+                    t?.list?.get(0)?.let {
+                        if (dataBinding != null) {
+
+                            randomProbability()
+
+                            dataBinding.goodsBean = it
+
+                            val peopleNumberString = if (it.totalPeople > TEN_THOUSAND) {
+                                (it.totalPeople / TEN_THOUSAND).toString().substring(0, 3)
+
+                            } else {
+                                it.totalPeople.toString()
+                            }
+                            dataBinding.totalPeople = peopleNumberString
+                        }
+                    }
+                }
+            })
+        addDisposable(disposable)
+    }
+
+
+    inner class EventListener {
+        fun clickNext(view: View) {
+            requestGoodsInfo()
+        }
+
+        fun clickLottery(view: View) {
+            if (onSureListener != null) {
+                onSureListener.onSure()
+            }
+        }
+
+        fun clickClose(view: View) {
+            if (onCloseListener != null) {
+                onCloseListener.onClose()
+            }
+        }
     }
 }

@@ -22,7 +22,7 @@
 
                 <data
                     android:host="${applicationId}"
-                    android:scheme="charge" />
+                    android:scheme="jdd" />
             </intent-filter>
         </activity>
         <!-- 沉寝式适配-->

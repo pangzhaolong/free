@@ -1,13 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
+        <variable
+            name="remindConfig"
+            type="com.donews.main.entitys.resps.RemindConfig" />
+
+        <variable
+            name="eventListener"
+            type="com.donews.main.dialog.RemindDialog.EventListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
+        <ImageView
+            android:id="@+id/iv_window"
+            android:layout_width="285dp"
+            android:layout_height="190dp"
+            android:background="@drawable/common_bg_white_corner_13"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="23dp"
+            android:onClick="@{eventListener::clickIvClose}"
+            android:src="@drawable/common_close"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@id/iv_window"
+            app:layout_constraintEnd_toEndOf="@id/iv_window" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="23dp"
+            android:text="@string/main_exit_remind_titl"
+            android:textColor="@color/common_F33737"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/iv_window"
+            app:layout_constraintStart_toStartOf="@id/iv_window"
+            app:layout_constraintTop_toTopOf="@id/iv_window" />
+
+        <TextView
+            android:id="@+id/tv_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@{@string/main_exit_remind_msg(remindConfig.remindTime)}"
+            android:textColor="@color/common_2C2C2C"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="@id/iv_window"
+            app:layout_constraintStart_toStartOf="@id/iv_window"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            tools:text="@string/main_exit_remind_msg" />
+
+        <Button
+            android:id="@+id/btn_next"
+            android:layout_width="117dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="22dp"
+            android:background="@drawable/main_exit_btn_bg_negative"
+            android:onClick="@{eventListener::clickRemind}"
+            android:text="@string/main_exit_open_remind"
+            android:textColor="@color/common_F43838"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@id/btn_close"
+            app:layout_constraintStart_toStartOf="@id/iv_window"
+            app:layout_constraintTop_toBottomOf="@id/tv_msg" />
+
+        <Button
+            android:id="@+id/btn_close"
+            android:layout_width="117dp"
+            android:layout_height="38dp"
+            android:background="@drawable/main_exit_btn_bg_positive"
+            android:onClick="@{eventListener::clickClose}"
+            android:text="@string/main_exit_know"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/iv_window"
+            app:layout_constraintStart_toEndOf="@id/btn_next"
+            app:layout_constraintTop_toTopOf="@id/btn_next"
+            app:layout_goneMarginTop="22dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

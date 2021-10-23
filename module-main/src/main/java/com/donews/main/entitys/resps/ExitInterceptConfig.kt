@@ -21,13 +21,15 @@ data class ExitInterceptConfig(
     var openRedPacketConfig: OpenRedPacketConfig = OpenRedPacketConfig(),
     @SerializedName("continueLotteryConfig")
     var continueLotteryConfig: ContinueLotteryConfig = ContinueLotteryConfig(),
+    @SerializedName("remindConfig")
+    var remindConfig: RemindConfig = RemindConfig(),
     /** 日程开始时间 */
     @SerializedName("calendarRemindStartTime")
     var calendarRemindStartTime: String = "10:00:00",
     /** 日程提醒持续时间 */
     @SerializedName("calendarRemindDuration")
     var calendarRemindDuration: Int = 30,
-): BaseCustomViewModel()
+) : BaseCustomViewModel()
 
 data class NotLotteryConfig(
     /** 最小抽中概率 */
@@ -45,13 +47,13 @@ data class NotLotteryConfig(
     /** 点击关闭显示的广告类型 */
     @SerializedName("adType")
     var adType: Int = 2,
-): BaseCustomViewModel()
+) : BaseCustomViewModel()
 
 data class OpenRedPacketConfig(
     /** 按钮延迟显示的延迟时间，单位秒 */
     @SerializedName("closeBtnLazyShow")
     var closeBtnLazyShow: Int = 3
-): BaseCustomViewModel()
+) : BaseCustomViewModel()
 
 data class ContinueLotteryConfig(
     /** 再抽几次最下值 */
@@ -68,7 +70,18 @@ data class ContinueLotteryConfig(
     var maxProbability: Double = 0.88,
     /** 推荐商品获取接口路径地址 */
     @SerializedName("recommendGoodsPath")
-    var recommendGoodsPath: String = ""
-): BaseCustomViewModel()
+    var recommendGoodsPath: String = "",
+    /** 按钮延迟显示的延迟时间，单位秒 */
+    @SerializedName("closeBtnLazyShow")
+    var closeBtnLazyShow: Int = 3,
+) : BaseCustomViewModel()
+
+data class RemindConfig(
+    /** 按钮延迟显示的延迟时间，单位秒 */
+    @SerializedName("closeBtnLazyShow")
+    var closeBtnLazyShow: Int = 3,
+    /**提醒时间*/
+    val remindTime: String = "10"
+) : BaseCustomViewModel()
 
 
