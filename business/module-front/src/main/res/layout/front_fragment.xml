@@ -110,259 +110,289 @@
                             android:layout_marginBottom="10dp"
                             android:orientation="vertical">
 
-                            <RelativeLayout
-                                android:id="@+id/front_rp_rl"
+                            <FrameLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="160dp"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginEnd="10dp"
-                                android:background="@drawable/front_cash_bg"
-                                tools:ignore="MissingConstraints">
-
-                                <TextView
-                                    android:id="@+id/front_rp_title"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="24dp"
-                                    android:layout_marginStart="10dp"
-                                    android:layout_marginTop="4dp"
-                                    android:gravity="center"
-                                    android:text="抽奖开红包"
-                                    android:textColor="#2c2c2c"
-                                    android:textSize="15sp"
-                                    android:textStyle="bold" />
+                                android:layout_height="wrap_content">
 
                                 <ImageView
-                                    android:id="@+id/front_rp_help_iv"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="24dp"
-                                    android:layout_marginStart="10dp"
-                                    android:layout_marginTop="4dp"
-                                    android:layout_toRightOf="@+id/front_rp_title"
-                                    android:src="@drawable/front_rp_help" />
-
-                                <TextView
-                                    android:id="@+id/front_cash_get_tv"
-                                    android:layout_width="70dp"
-                                    android:layout_height="28dp"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_marginTop="4dp"
-                                    android:layout_marginEnd="10dp"
-                                    android:background="@drawable/front_rp_get_cash_bg"
-                                    android:gravity="center"
-                                    android:text="提现"
-                                    android:textColor="#ED4944" />
-
-                                <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@+id/front_cash_get_tv"
-                                    android:layout_marginTop="6dp"
-                                    android:layout_marginBottom="10dp"
-                                    android:background="@drawable/front_cash_rp_bg"
-                                    android:orientation="vertical">
+                                    android:background="@drawable/front_banner_bg" />
+
+                                <RelativeLayout
+                                    android:id="@+id/front_rp_rl"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="160dp"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_marginEnd="10dp"
+                                    android:background="@drawable/front_cash_bg"
+                                    tools:ignore="MissingConstraints">
+
+                                    <TextView
+                                        android:id="@+id/front_rp_title"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="24dp"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginTop="4dp"
+                                        android:gravity="center"
+                                        android:text="抽奖开红包"
+                                        android:textColor="#2c2c2c"
+                                        android:textSize="15sp"
+                                        android:textStyle="bold" />
+
+                                    <ImageView
+                                        android:id="@+id/front_rp_help_iv"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="24dp"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginTop="4dp"
+                                        android:layout_toRightOf="@+id/front_rp_title"
+                                        android:src="@drawable/front_rp_help" />
+
+                                    <TextView
+                                        android:id="@+id/front_cash_get_tv"
+                                        android:layout_width="70dp"
+                                        android:layout_height="28dp"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_marginTop="4dp"
+                                        android:layout_marginEnd="10dp"
+                                        android:background="@drawable/front_rp_get_cash_bg"
+                                        android:gravity="center"
+                                        android:text="提现"
+                                        android:textColor="#ED4944" />
 
                                     <LinearLayout
-                                        android:id="@+id/front_rp_ll"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_below="@+id/front_cash_get_tv"
-                                        android:layout_marginTop="10dp"
-                                        android:paddingTop="5dp"
-                                        android:paddingBottom="5dp"
-                                        android:weightSum="5">
-
-                                        <FrameLayout
-                                            android:layout_width="0dp"
-                                            android:layout_height="wrap_content"
-                                            android:layout_weight="1">
-
-                                            <ImageView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center"
-                                                android:src="@drawable/front_rp_open" />
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center_horizontal|bottom"
-                                                android:gravity="center"
-                                                android:text="1/1"
-                                                android:textColor="@color/white" />
-                                        </FrameLayout>
-
-                                        <FrameLayout
-                                            android:layout_width="0dp"
-                                            android:layout_height="wrap_content"
-                                            android:layout_weight="1">
-
-                                            <ImageView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center"
-                                                android:src="@drawable/front_rp_open" />
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center_horizontal|bottom"
-                                                android:gravity="center"
-                                                android:text="1/1"
-                                                android:textColor="@color/white" />
-                                        </FrameLayout>
-
-                                        <FrameLayout
-                                            android:layout_width="0dp"
-                                            android:layout_height="wrap_content"
-                                            android:layout_weight="1">
-
-                                            <ImageView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center"
-                                                android:src="@drawable/front_rp_open" />
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center_horizontal|bottom"
-                                                android:gravity="center"
-                                                android:text="1/1"
-                                                android:textColor="@color/white" />
-                                        </FrameLayout>
-
-                                        <FrameLayout
-                                            android:layout_width="0dp"
-                                            android:layout_height="wrap_content"
-                                            android:layout_weight="1">
-
-                                            <ImageView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center"
-                                                android:src="@drawable/front_rp_close" />
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center_horizontal|bottom"
-                                                android:gravity="center"
-                                                android:text="1/1"
-                                                android:textColor="@color/white" />
-                                        </FrameLayout>
-
-                                        <FrameLayout
-                                            android:layout_width="0dp"
-                                            android:layout_height="wrap_content"
-                                            android:layout_weight="1">
-
-                                            <ImageView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center"
-                                                android:src="@drawable/front_rp_wait" />
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center_horizontal|bottom"
-                                                android:gravity="center"
-                                                android:text="1/11"
-                                                android:textColor="@color/white" />
-                                        </FrameLayout>
-                                    </LinearLayout>
-
-                                    <FrameLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="10dp"
-                                        android:layout_marginStart="20dp"
-                                        android:layout_marginTop="10dp"
-                                        android:layout_marginEnd="20dp"
-                                        android:layout_marginBottom="20dp">
-
-                                        <ProgressBar
-                                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="3dp"
-                                            android:layout_gravity="center_vertical"
-                                            android:max="100"
-                                            android:progress="40"
-                                            android:progressDrawable="@drawable/front_rp_progress_bg" />
+                                        android:layout_marginTop="6dp"
+                                        android:layout_marginBottom="10dp"
+                                        android:background="@drawable/front_cash_rp_bg"
+                                        android:orientation="vertical">
 
                                         <LinearLayout
+                                            android:id="@+id/front_rp_ll"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
-                                            android:orientation="horizontal"
+                                            android:layout_below="@+id/front_cash_get_tv"
+                                            android:layout_marginTop="10dp"
+                                            android:paddingTop="5dp"
+                                            android:paddingBottom="5dp"
                                             android:weightSum="5">
 
                                             <FrameLayout
+                                                android:id="@+id/front_rp_open_fl1"
                                                 android:layout_width="0dp"
-                                                android:layout_height="10dp"
+                                                android:layout_height="wrap_content"
                                                 android:layout_weight="1">
 
                                                 <ImageView
-                                                    android:layout_width="10dp"
-                                                    android:layout_height="10dp"
+                                                    android:id="@+id/front_rp_iv1"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
                                                     android:layout_gravity="center"
-                                                    android:background="#FFFCEE"
-                                                    android:src="@drawable/front_dot_bg" />
+                                                    android:background="@drawable/front_rp_open" />
+
+                                                <TextView
+                                                    android:id="@+id/front_rp_tv1"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_gravity="center_horizontal|bottom"
+                                                    android:layout_marginBottom="6dp"
+                                                    android:gravity="center"
+                                                    android:text="1/1"
+                                                    android:textColor="@color/white" />
                                             </FrameLayout>
 
                                             <FrameLayout
+                                                android:id="@+id/front_rp_open_fl2"
                                                 android:layout_width="0dp"
-                                                android:layout_height="10dp"
+                                                android:layout_height="wrap_content"
                                                 android:layout_weight="1">
 
                                                 <ImageView
-                                                    android:layout_width="10dp"
-                                                    android:layout_height="10dp"
+                                                    android:id="@+id/front_rp_iv2"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
                                                     android:layout_gravity="center"
-                                                    android:background="#FFFCEE"
-                                                    android:src="@drawable/front_dot_bg" />
+                                                    android:background="@drawable/front_rp_open" />
+
+                                                <TextView
+                                                    android:id="@+id/front_rp_tv2"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_gravity="center_horizontal|bottom"
+                                                    android:layout_marginBottom="6dp"
+                                                    android:gravity="center"
+                                                    android:text="1/1"
+                                                    android:textColor="@color/white" />
                                             </FrameLayout>
 
                                             <FrameLayout
+                                                android:id="@+id/front_rp_open_fl3"
                                                 android:layout_width="0dp"
-                                                android:layout_height="10dp"
+                                                android:layout_height="wrap_content"
                                                 android:layout_weight="1">
 
                                                 <ImageView
-                                                    android:layout_width="10dp"
-                                                    android:layout_height="10dp"
+                                                    android:id="@+id/front_rp_iv3"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
                                                     android:layout_gravity="center"
-                                                    android:background="#FFFCEE"
-                                                    android:src="@drawable/front_dot_close_bg" />
+                                                    android:background="@drawable/front_rp_open" />
+
+                                                <TextView
+                                                    android:id="@+id/front_rp_tv3"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_gravity="center_horizontal|bottom"
+                                                    android:layout_marginBottom="6dp"
+                                                    android:gravity="center"
+                                                    android:text="1/1"
+                                                    android:textColor="@color/white" />
                                             </FrameLayout>
 
                                             <FrameLayout
+                                                android:id="@+id/front_rp_open_fl4"
                                                 android:layout_width="0dp"
-                                                android:layout_height="10dp"
+                                                android:layout_height="wrap_content"
                                                 android:layout_weight="1">
 
                                                 <ImageView
-                                                    android:layout_width="10dp"
-                                                    android:layout_height="10dp"
+                                                    android:id="@+id/front_rp_iv4"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
                                                     android:layout_gravity="center"
-                                                    android:background="#FFFCEE"
-                                                    android:src="@drawable/front_dot_close_bg" />
+                                                    android:background="@drawable/front_rp_close" />
+
+                                                <TextView
+                                                    android:id="@+id/front_rp_tv4"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_gravity="center_horizontal|bottom"
+                                                    android:layout_marginBottom="6dp"
+                                                    android:gravity="center"
+                                                    android:text="1/1"
+                                                    android:textColor="@color/white" />
                                             </FrameLayout>
 
                                             <FrameLayout
+                                                android:id="@+id/front_rp_open_fl5"
                                                 android:layout_width="0dp"
-                                                android:layout_height="10dp"
+                                                android:layout_height="wrap_content"
                                                 android:layout_weight="1">
 
                                                 <ImageView
-                                                    android:layout_width="10dp"
-                                                    android:layout_height="10dp"
+                                                    android:id="@+id/front_rp_iv5"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
                                                     android:layout_gravity="center"
-                                                    android:background="#FFFCEE"
-                                                    android:src="@drawable/front_dot_close_bg" />
+                                                    android:background="@drawable/front_rp_wait" />
+
+                                                <TextView
+                                                    android:id="@+id/front_rp_tv5"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_gravity="center_horizontal|bottom"
+                                                    android:layout_marginBottom="6dp"
+                                                    android:gravity="center"
+                                                    android:text="1/11"
+                                                    android:textColor="@color/white" />
                                             </FrameLayout>
                                         </LinearLayout>
-                                    </FrameLayout>
-                                </LinearLayout>
-                            </RelativeLayout>
+
+                                        <FrameLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="10dp"
+                                            android:layout_marginStart="20dp"
+                                            android:layout_marginTop="10dp"
+                                            android:layout_marginEnd="20dp"
+                                            android:layout_marginBottom="20dp">
+
+                                            <ProgressBar
+                                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="3dp"
+                                                android:layout_gravity="center_vertical"
+                                                android:max="100"
+                                                android:progress="40"
+                                                android:progressDrawable="@drawable/front_rp_progress_bg" />
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:orientation="horizontal"
+                                                android:weightSum="5">
+
+                                                <FrameLayout
+                                                    android:layout_width="0dp"
+                                                    android:layout_height="10dp"
+                                                    android:layout_weight="1">
+
+                                                    <ImageView
+                                                        android:layout_width="10dp"
+                                                        android:layout_height="10dp"
+                                                        android:layout_gravity="center"
+                                                        android:background="#FFFCEE"
+                                                        android:src="@drawable/front_dot_bg" />
+                                                </FrameLayout>
+
+                                                <FrameLayout
+                                                    android:layout_width="0dp"
+                                                    android:layout_height="10dp"
+                                                    android:layout_weight="1">
+
+                                                    <ImageView
+                                                        android:layout_width="10dp"
+                                                        android:layout_height="10dp"
+                                                        android:layout_gravity="center"
+                                                        android:background="#FFFCEE"
+                                                        android:src="@drawable/front_dot_bg" />
+                                                </FrameLayout>
+
+                                                <FrameLayout
+                                                    android:layout_width="0dp"
+                                                    android:layout_height="10dp"
+                                                    android:layout_weight="1">
+
+                                                    <ImageView
+                                                        android:layout_width="10dp"
+                                                        android:layout_height="10dp"
+                                                        android:layout_gravity="center"
+                                                        android:background="#FFFCEE"
+                                                        android:src="@drawable/front_dot_close_bg" />
+                                                </FrameLayout>
+
+                                                <FrameLayout
+                                                    android:layout_width="0dp"
+                                                    android:layout_height="10dp"
+                                                    android:layout_weight="1">
+
+                                                    <ImageView
+                                                        android:layout_width="10dp"
+                                                        android:layout_height="10dp"
+                                                        android:layout_gravity="center"
+                                                        android:background="#FFFCEE"
+                                                        android:src="@drawable/front_dot_close_bg" />
+                                                </FrameLayout>
+
+                                                <FrameLayout
+                                                    android:layout_width="0dp"
+                                                    android:layout_height="10dp"
+                                                    android:layout_weight="1">
+
+                                                    <ImageView
+                                                        android:layout_width="10dp"
+                                                        android:layout_height="10dp"
+                                                        android:layout_gravity="center"
+                                                        android:background="#FFFCEE"
+                                                        android:src="@drawable/front_dot_close_bg" />
+                                                </FrameLayout>
+                                            </LinearLayout>
+                                        </FrameLayout>
+                                    </LinearLayout>
+                                </RelativeLayout>
+                            </FrameLayout>
 
                             <LinearLayout
                                 android:id="@+id/front_gift_ll"

@@ -6,6 +6,8 @@ import com.donews.base.model.BaseLiveDataModel;
 import com.donews.front.api.FrontApi;
 import com.donews.front.bean.FrontBean;
 import com.donews.front.bean.LotteryCategoryBean;
+import com.donews.front.bean.RedPacketBean;
+import com.donews.front.bean.WalletBean;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
@@ -33,6 +35,46 @@ public class FrontModel extends BaseLiveDataModel {
                     @Override
                     public void onSuccess(LotteryCategoryBean categoryBean) {
                         mutableLiveData.postValue(categoryBean);
+                    }
+                }));
+
+        return mutableLiveData;
+    }
+
+    public MutableLiveData<WalletBean> getRpData() {
+        MutableLiveData<WalletBean> mutableLiveData = new MutableLiveData<>();
+        addDisposable(EasyHttp.get(FrontApi.walletRedPacketUrl)
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new SimpleCallBack<WalletBean>() {
+
+                    @Override
+                    public void onError(ApiException e) {
+                        mutableLiveData.postValue(null);
+                    }
+
+                    @Override
+                    public void onSuccess(WalletBean walletBean) {
+                        mutableLiveData.postValue(walletBean);
+                    }
+                }));
+
+        return mutableLiveData;
+    }
+
+    public MutableLiveData<RedPacketBean> openRpData() {
+        MutableLiveData<RedPacketBean> mutableLiveData = new MutableLiveData<>();
+        addDisposable(EasyHttp.post(FrontApi.walletRedPacketUrl)
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new SimpleCallBack<RedPacketBean>() {
+
+                    @Override
+                    public void onError(ApiException e) {
+                        mutableLiveData.postValue(null);
+                    }
+
+                    @Override
+                    public void onSuccess(RedPacketBean redPacketBean) {
+                        mutableLiveData.postValue(redPacketBean);
                     }
                 }));
 

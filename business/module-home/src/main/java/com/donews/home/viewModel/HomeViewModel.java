@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.home.bean.HomeBean;
+import com.donews.home.bean.SecKilBean;
 import com.donews.home.model.HomeModel;
 
 /**
@@ -22,5 +23,9 @@ public class HomeViewModel extends BaseLiveDataViewModel<HomeModel>{
 
     public MutableLiveData<HomeBean> getNetHomeData(){
         return mModel.getNetData();
+    }
+
+    public MutableLiveData<SecKilBean> getSecKilData() {
+        return mModel.getSecKilData();
     }
  }

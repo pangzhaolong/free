@@ -8,50 +8,73 @@
 
     <org.raphets.roundimageview.RoundImageView
         android:id="@+id/front_goods_item_iv"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_centerVertical="true"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:scaleType="fitXY"
         app:corner_radius="10dp"
         app:type="round" />
 
-    <TextView
-        android:id="@+id/front_goods_item_des_tv"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="10dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
         android:layout_toEndOf="@+id/front_goods_item_iv"
-        android:ellipsize="end"
-        android:maxLines="2"
-        android:text="波佐见日本进口陶瓷餐具釉下彩日式海波纹家用大餐盘"
-        android:textColor="#2C2C2C"
-        android:textSize="16sp" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/front_goods_item_price_tv"
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:layout_below="@+id/front_goods_item_des_tv"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="6dp"
-        android:layout_toEndOf="@+id/front_goods_item_iv"
-        android:gravity="center_vertical"
-        android:maxLines="1"
-        android:text="￥1699"
-        android:textColor="#A9AEB1" />
+        <TextView
+            android:id="@+id/front_goods_item_des_tv"
+            android:layout_width="match_parent"
+            android:layout_height="37dp"
+            android:layout_marginStart="10dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="波佐见日本进口陶瓷餐具釉下彩日式海波纹家用大餐盘"
+            android:textColor="#2C2C2C"
+            android:textSize="13sp" />
 
-    <TextView
-        android:id="@+id/front_item_do_tv"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/front_item_do"
-        android:gravity="center"
-        android:text="0元抽奖"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text="参考价"
+                android:textColor="#A9AEB1"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/front_goods_item_price_tv"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text="￥1699"
+                android:textColor="#A9AEB1"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/front_item_do_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="6dp"
+            android:paddingBottom="4dp"
+            android:background="@drawable/front_goods_item_do"
+            android:gravity="center"
+            android:text="0元抽奖"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
 </RelativeLayout>

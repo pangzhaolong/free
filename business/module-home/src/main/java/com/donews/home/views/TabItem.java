@@ -1,4 +1,4 @@
-package com.donews.front.views;
+package com.donews.home.views;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.donews.front.R;
+import com.donews.home.R;
 import com.donews.utilslibrary.utils.LogUtil;
 
 public class TabItem extends FrameLayout {
@@ -19,9 +19,9 @@ public class TabItem extends FrameLayout {
 
     public TabItem(@NonNull Context context) {
         super(context);
-        LayoutInflater.from(context).inflate(R.layout.front_tab_item, this, true);
-        mTitleTv = findViewById(R.id.front_tab_item_title);
-        mBgView = findViewById(R.id.front_tab_item_bg);
+        LayoutInflater.from(context).inflate(R.layout.home_tab_item, this, true);
+        mTitleTv = findViewById(R.id.home_tab_item_title);
+        mBgView = findViewById(R.id.home_tab_item_bg);
     }
 
     public void setTitle(String title) {

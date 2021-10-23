@@ -16,7 +16,7 @@ public class VScrollLinearLayout extends LinearLayout {
     private final LinearLayout mLinearLayout;
     private ValueAnimator mValueAnimator;
     private LayoutParams mLayoutParams;
-    private int mTopMargin = 10001;
+    private int mLeftMargin = 10001;
 
     public VScrollLinearLayout(Context context) {
         super(context);
@@ -47,11 +47,11 @@ public class VScrollLinearLayout extends LinearLayout {
         mValueAnimator = ValueAnimator.ofInt(0, 400);
         mValueAnimator.addUpdateListener(animation -> {
             mLayoutParams = (LayoutParams) mLinearLayout.getLayoutParams();
-            if (mTopMargin > 1000) {
-                mTopMargin = mLayoutParams.topMargin;
-                LogUtil.e("xx xx:" + mLayoutParams.topMargin);
+            if (mLeftMargin > 1000) {
+                mLeftMargin = mLayoutParams.leftMargin;
+                LogUtil.e("xx xx:" + mLayoutParams.leftMargin);
             }
-            mLayoutParams.topMargin = mTopMargin - (int) animation.getAnimatedValue();
+            mLayoutParams.leftMargin = mLeftMargin - (int) animation.getAnimatedValue();
             mLinearLayout.setLayoutParams(mLayoutParams);
         });
         mValueAnimator.addListener(new Animator.AnimatorListener() {
@@ -63,7 +63,7 @@ public class VScrollLinearLayout extends LinearLayout {
             @Override
             public void onAnimationEnd(Animator animation) {
                 mLayoutParams = (LayoutParams) mLinearLayout.getLayoutParams();
-                mLayoutParams.topMargin = mTopMargin + mLayoutParams.height;
+                mLayoutParams.leftMargin = mLeftMargin + mLayoutParams.width;
                 mLinearLayout.setLayoutParams(mLayoutParams);
             }
 
