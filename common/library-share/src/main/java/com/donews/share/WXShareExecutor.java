@@ -64,17 +64,23 @@ public class WXShareExecutor extends ShareExecutor {
 
     @Override
     public void share(final int cmd, final ShareItem shareInfo, FragmentActivity baseActivity) {
+        Object path = null;
+        try {
+            path = Integer.parseInt(shareInfo.getIcon());
+        } catch (Exception e) {
+            path = shareInfo.getIcon();
+        }
         if (shareInfo.getType() == ShareItem.TYPE_IMAGE) {
             Glide.with(mActivity)
                     .asBitmap()
-                    .load(shareInfo.getIcon())
+                    .load(path)
                     .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                            Log.e("TAG", "=E===" + shareInfo.toString());
-                            shareImage(cmd, resource, shareInfo);
-                        }
-                    });
+                @Override
+                public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                    Log.e("TAG", "=E===" + shareInfo.toString());
+                    shareImage(cmd, resource, shareInfo);
+                }
+            });
 
         } else if (shareInfo.getType() == ShareItem.TYPE_H5) {
             if (TextUtils.isEmpty(shareInfo.getImageUrl())) {
@@ -83,7 +89,7 @@ public class WXShareExecutor extends ShareExecutor {
 
                 Glide.with(mActivity)
                         .asBitmap()
-                        .load(shareInfo.getIcon())
+                        .load(path)
                         .into(new SimpleTarget<Bitmap>() {
                             @Override
                             public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {

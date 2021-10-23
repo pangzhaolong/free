@@ -4,6 +4,9 @@
 
     <application>
         <activity
+            android:name=".ui.MineUserCancellationActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.AboutActivity"
             android:screenOrientation="portrait" />
         <activity

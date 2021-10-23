@@ -38,7 +38,7 @@ public abstract class BaesLoadMoreAdapter<T, VH extends BaseViewHolder>
     /**
      * 页码大小
      */
-    private int pageSize = 25;
+    public int pageSize = 25;
 
     /**
      * 上拉加载更多
@@ -56,20 +56,46 @@ public abstract class BaesLoadMoreAdapter<T, VH extends BaseViewHolder>
     }
 
     /**
+     * 下拉刷新开始
+     */
+    public void refeshStart(){
+        getLoadMoreModule().setAutoLoadMore(false);
+        getLoadMoreModule().setEnableLoadMore(false);
+        getLoadMoreModule().loadMoreEnd(true);
+    }
+
+    /**
+     * 下拉刷新结束
+     */
+    public void refeshFinish(){
+        getLoadMoreModule().setAutoLoadMore(getData().size() >= pageSize);
+        getLoadMoreModule().setEnableLoadMore(true);
+        getLoadMoreModule().loadMoreComplete();
+    }
+
+
+
+    /**
      * 上拉加载更多完成
      *
-     * @param isSucc 是否成功
+     * @param isSucc    是否成功
      * @param isLoadEnd 是否结束自动加载，一般再在无数据返回时候结束
      *                  T:结束加载，F:允许加载
      */
-    public void loadMoreFinish(Boolean isSucc,Boolean isLoadEnd) {
-        if(isSucc) {
-            getLoadMoreModule().loadMoreComplete();
-            if(isLoadEnd){
+    public void loadMoreFinish(Boolean isSucc, Boolean isLoadEnd) {
+        if (isSucc) {
+            if (isLoadEnd) {
                 //结束加载更多
                 getLoadMoreModule().loadMoreEnd();
+                if(getData().size() < pageSize){
+                    getLoadMoreModule().setEnableLoadMore(false);
+                }else{
+                    getLoadMoreModule().setEnableLoadMore(true);
+                }
+            }else{
+                getLoadMoreModule().loadMoreComplete();
             }
-        }else{
+        } else {
             getLoadMoreModule().loadMoreFail();
         }
     }
@@ -80,7 +106,7 @@ public abstract class BaesLoadMoreAdapter<T, VH extends BaseViewHolder>
      * @return 分页加载的页码
      */
     public int getLoadMorePage() {
-        return (int) ceil(getData().size() / (pageSize * 1.0));
+        return (int) ceil(getData().size() / (pageSize * 1.0) + 1);
     }
 
     /**

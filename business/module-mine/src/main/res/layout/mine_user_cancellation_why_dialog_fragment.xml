@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:ignore="MissingConstraints">
+
+    <LinearLayout
+        android:id="@+id/iv_close"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="right"
+        android:layout_marginTop="5dp"
+        android:gravity="right|center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintRight_toRightOf="@+id/rl_root_layout"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/common_update_close" />
+    </LinearLayout>
+
+    <!-- 内容区域 -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rl_root_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/mine_un_reg_dialog_bg"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="54dp">
+        <LinearLayout
+            android:id="@+id/mine_cancell_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <!-- 原因选择的视图 -->
+            <RelativeLayout
+                android:id="@+id/mine_content_select"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_title_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="44dp"
+                    android:text="请选择您的注销原因"
+                    android:textColor="#F33737"
+                    android:textSize="18sp" />
+
+                <RadioGroup
+                    android:id="@+id/rg_rad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/tv_title_text">
+
+                    <LinearLayout
+                        android:id="@+id/ll_select_a"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="25dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/ll_select_a_but"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:background="@drawable/mine_check_bg"
+                            android:button="@null"
+                            android:checked="false" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:text="不懂抽奖规则"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/ll_select_b"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="25dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/ll_select_b_but"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:background="@drawable/mine_check_bg"
+                            android:button="@null"
+                            android:checked="false" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:text="没有找到心仪的奖品"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/ll_select_c"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="25dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/ll_select_c_but"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:background="@drawable/mine_check_bg"
+                            android:button="@null"
+                            android:checked="false" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:text="不想用了"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                </RadioGroup>
+
+            </RelativeLayout>
+            <!-- 结果的视图 -->
+            <LinearLayout
+                android:id="@+id/mine_content_result"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <TextView
+                    android:id="@+id/tv_result_title_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="47dp"
+                    android:layout_gravity="center"
+                    android:text="请选择您的注销原因"
+                    android:textColor="#2C2C2C"
+                    android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/tv_result_desc_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:lineHeight="20dp"
+                    android:text="7天内登录可恢复原账号，7天\n后账号不可恢复"
+                    android:textColor="#2C2C2C"
+                    android:textSize="15sp" />
+            </LinearLayout>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_submit"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@+id/mine_cancell_content"
+            android:textColor="@color/white"
+            android:background="@drawable/mine_un_reg_select_but"
+            android:text="提交"
+            android:layout_marginTop="39dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

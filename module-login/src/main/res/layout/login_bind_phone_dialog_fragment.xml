@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:ignore="MissingConstraints">
+
+    <RelativeLayout
+        android:id="@+id/rl_root_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/login_bind_tel_dialog_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_bind_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="130dp"
+            android:text="绑定手机号,开奖 领奖不错过"
+            android:textColor="#F33737"
+            android:textSize="18sp" />
+
+        <RelativeLayout
+            android:id="@+id/rl_mobile_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_bind_text"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginRight="20dp">
+
+            <EditText
+                android:id="@+id/edit_mobile_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="输入手机号码"
+                android:inputType="number"
+                android:maxLength="11"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:id="@+id/iv_login_close_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/edit_close_logo" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/edit_mobile_code"
+                android:layout_marginTop="9dp"
+                android:background="#F5F2F2" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_verification_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_mobile_code"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginRight="20dp">
+
+            <EditText
+                android:id="@+id/edit_verification_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="输入验证码"
+                android:inputType="number"
+                android:maxLength="6"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_verification_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/login_get_code_border_bg"
+                android:paddingLeft="10dp"
+                android:paddingTop="4dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="4dp"
+                android:text="获取验证码"
+                android:textColor="#E9E9E9"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/btn_verification_code"
+                android:layout_width="52dp"
+                android:layout_height="22dp"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:text="60s"
+                android:visibility="gone"
+                android:textColor="#AEAEAE" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/edit_verification_code"
+                android:layout_marginTop="9dp"
+                android:background="#F5F2F2" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_mobile_login"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/rl_verification_code"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="36dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="54dp"
+            android:background="@drawable/mobile_login_bg">
+
+            <TextView
+                android:id="@+id/tv_next_bind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="确定"
+                android:textColor="#AEAEAE"
+                android:textSize="16sp" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/iv_login_close"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp"
+        android:gravity="right|center_vertical"
+        app:layout_constraintRight_toRightOf="@+id/rl_root_layout"
+        app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/common_update_close" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

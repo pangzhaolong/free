@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.dn.drouter.ARouteHelper;
 import com.dn.events.events.LoginUserStatus;
+import com.dn.events.events.UserTelBindEvent;
 import com.donews.base.utils.GsonUtils;
 import com.donews.common.contract.DataBean;
 import com.donews.common.contract.LoginHelp;
@@ -273,6 +274,40 @@ public class UserInfoManage {
         return mutableLiveData;
     }
 
+    /**
+     * 用户绑定手机接口,Dialog方式绑定
+     *
+     * @param data 请求的参数
+     * @return 如果通知为空表示错误
+     */
+    public static MutableLiveData<UserInfoBean> onLoadBindUserInfoDialog(String data) {
+        MutableLiveData<UserInfoBean> mutableLiveData = new MutableLiveData<>();
+        EasyHttp.post(LoginApi.BIND)
+                .upJson(data)
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new SimpleCallBack<UserInfoBean>() {
+                    @Override
+                    public void onError(ApiException e) {
+                        LogUtil.i(e.getCode() + e.getMessage() + "");
+                        mutableLiveData.postValue(null);
+                    }
+
+                    @Override
+                    public void onSuccess(UserInfoBean userInfoBean) {
+                        EventBus.getDefault().post(new UserTelBindEvent());
+                        LogUtil.i(userInfoBean.toString());
+                        setHttpToken(userInfoBean);
+                        mutableLiveData.postValue(userInfoBean);
+                        ARouteHelper.build(ServicesConfig.User.LOGIN_SUCCESS).invoke();
+                        ARouteHelper.invoke(RouterActivityPath.ClassPath.WEB_VIEW_OBJ_ACTIVITY_JAVASCRIPT
+                                , "onReloadUrl");
+
+                    }
+                });
+
+        return mutableLiveData;
+    }
+
 
     /**
      * 登录的接口
@@ -297,12 +332,11 @@ public class UserInfoManage {
                             EventBus.getDefault().post(new LoginUserStatus(0));
                             return;
                         }
-                        EventBus.getDefault().post(new LoginUserStatus(1));
                         setHttpToken(userInfoBean);
                         LogUtil.i(userInfoBean.toString());
                         mutableLiveData.postValue(userInfoBean);
                         refreshUserTag(userInfoBean);
-
+                        EventBus.getDefault().post(new LoginUserStatus(1));
                     }
                 });
 

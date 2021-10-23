@@ -92,8 +92,6 @@ public class MobileActivity extends MvvmBaseLiveDataActivity<LoginMobileActivity
                     mDataBinding.rlMobileLogin.setBackgroundResource(R.drawable.mobile_login_bg);
                     mDataBinding.tvLoginText.setTextColor(Color.parseColor("#AEAEAE"));
                 }
-
-
             }
 
             @Override

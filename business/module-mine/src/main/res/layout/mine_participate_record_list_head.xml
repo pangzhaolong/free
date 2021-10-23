@@ -10,28 +10,36 @@
     tools:ignore="MissingConstraints">
 
     <!-- 中奖记录 -->
-    <LinearLayout
-        android:id="@+id/mine_par_record_layout"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/ad_shape_bg"/>
+        android:background="@drawable/ad_shape_bg">
+
+        <LinearLayout
+            android:id="@+id/mine_par_record_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+        <include
+            layout="@layout/incl_open_win_not_data"/>
+    </FrameLayout>
 
     <!-- 精选的标题 -->
     <LinearLayout
         android:id="@+id/mine_par_record_select_bar"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        app:layout_collapseMode="pin"
-        android:orientation="horizontal"
         android:gravity="center"
-        android:background="@color/white">
+        android:orientation="horizontal"
+        app:layout_collapseMode="pin"
+        android:layout_marginTop="15dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="精选推荐"
             android:textSize="18sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
     </LinearLayout>
 
 </LinearLayout>

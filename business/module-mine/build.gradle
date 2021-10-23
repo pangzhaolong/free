@@ -15,5 +15,6 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version" 
     api project(':common:library-common')
     kapt rootProject.ext.dependencies["arouter-compiler"]
-
+    implementation('org.raphets:roundimageview:1.2.0')
+    implementation 'com.classic.common:multiple-status-view:1.5.1'
 }

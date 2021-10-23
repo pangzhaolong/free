@@ -104,6 +104,14 @@ public class RouterFragmentPath {
         public static final String PAGER_USER_SETTING = USER + "/MineSetting";
     }
 
+    public static class Login {
+        private static final String JDD_LOGIN = "/jdd_login";
+        /**
+         * 绑定手机弹窗
+         */
+        public static final String PAGER_BIND_PHONE_DIALOG_FRAGMENT = JDD_LOGIN + "/BindPhoneDialogFragment";
+    }
+
 
     public static class Web {
         private static final String WEB = "/web";
