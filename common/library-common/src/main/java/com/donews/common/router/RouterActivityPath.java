@@ -83,6 +83,12 @@ public class RouterActivityPath {
          * 关于我们
          */
         public static final String PAGER_MINE_ABOUT_ACTIVITY = MINE + "/AboutActivity";
+
+
+        /**
+         * 往期开奖
+         */
+        public static final String PAGE_MINE_REWARD_HISTORY = MINE + "/RewardHistoryActivity";
     }
 
 

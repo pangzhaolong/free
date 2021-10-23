@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/mine_reward_history_item_bg"
+    android:orientation="vertical"
+    tools:ignore="MissingDefaultResource">
+
+    <TextView
+        android:id="@+id/mine_reward_title_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:text="20210928期开奖码"
+        android:textColor="@color/white"
+        android:textSize="15sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:weightSum="7">
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/mine_reward_num_1_tv"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:background="@drawable/mine_reward_history_item_num_bg"
+                android:gravity="center"
+                android:paddingEnd="4dp"
+                android:paddingBottom="2dp"
+                android:text="1"
+                android:textColor="#2C2C2C"
+                android:textSize="21sp"
+                tools:ignore="RtlSymmetry" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/mine_reward_num_2_tv"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:background="@drawable/mine_reward_history_item_num_bg"
+                android:gravity="center"
+                android:paddingEnd="4dp"
+                android:paddingBottom="2dp"
+                android:text="1"
+                android:textColor="#2C2C2C"
+                android:textSize="21sp"
+                tools:ignore="RtlSymmetry" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/mine_reward_num_3_tv"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:background="@drawable/mine_reward_history_item_num_bg"
+                android:gravity="center"
+                android:paddingEnd="4dp"
+                android:paddingBottom="2dp"
+                android:text="1"
+                android:textColor="#2C2C2C"
+                android:textSize="21sp"
+                tools:ignore="RtlSymmetry" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/mine_reward_num_4_tv"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:background="@drawable/mine_reward_history_item_num_bg"
+                android:gravity="center"
+                android:paddingEnd="4dp"
+                android:paddingBottom="2dp"
+                android:text="1"
+                android:textColor="#2C2C2C"
+                android:textSize="21sp"
+                tools:ignore="RtlSymmetry" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/mine_reward_num_5_tv"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:background="@drawable/mine_reward_history_item_num_bg"
+                android:gravity="center"
+                android:paddingEnd="4dp"
+                android:paddingBottom="2dp"
+                android:text="1"
+                android:textColor="#2C2C2C"
+                android:textSize="21sp"
+                tools:ignore="RtlSymmetry" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/mine_reward_num_6_tv"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:background="@drawable/mine_reward_history_item_num_bg"
+                android:gravity="center"
+                android:paddingEnd="4dp"
+                android:paddingBottom="2dp"
+                android:text="1"
+                android:textColor="#2C2C2C"
+                android:textSize="21sp"
+                tools:ignore="RtlSymmetry" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/mine_reward_num_7_tv"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:background="@drawable/mine_reward_history_item_num_bg"
+                android:gravity="center"
+                android:paddingEnd="4dp"
+                android:paddingBottom="2dp"
+                android:text="1"
+                android:textColor="#2C2C2C"
+                android:textSize="21sp"
+                tools:ignore="RtlSymmetry" />
+        </FrameLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

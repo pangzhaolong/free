@@ -4,20 +4,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
-import android.system.Os;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsListView;
-import android.widget.ListAdapter;
 
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.donews.base.activity.MvvmBaseLiveDataActivity;
-import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.home.adapter.SearchFragmentAdapter;
 import com.donews.home.adapter.SearchSugAdapter;
 import com.donews.home.bean.SearchHistory;
