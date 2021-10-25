@@ -7,7 +7,6 @@ import androidx.multidex.MultiDex;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.DNEventBusUtils;
-import com.dn.sdk.AdLoadManager;
 import com.donews.base.base.BaseApplication;
 import com.donews.base.utils.CrashHandlerUtil;
 import com.donews.common.config.ModuleLifecycleConfig;
@@ -42,7 +41,6 @@ public class MyApplication extends BaseApplication {
             ModuleLifecycleConfig.getInstance().initModuleAhead(this);
 
             CrashHandlerUtil.getInstance().init(this);
-            AdLoadManager.getInstance().init(this, false);
 
             // 集成bugly
             CrashReport.initCrashReport(getApplicationContext(), KeyConstant.getBuglyId(), BuildConfig.DEBUG);

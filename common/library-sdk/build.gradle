@@ -2,34 +2,18 @@ apply from: rootProject.file('gradle/library.build.gradle')
 
 android {
     defaultConfig {
-//        if (isBuildModule.toBoolean()) {
-//            applicationId "gov.pianzong.androidnga"
-//            versionCode 1000000
-//        }
         ndk {
             abiFilters "armeabi-v7a"
         }
-        buildConfigField("String", "SPLASH_ID", "\"1\"")
-        buildConfigField("String", "INTERSTITIAL_ID",  "\"1\"")
-        buildConfigField("String", "BANNER_ID",  "\"1\"")
-        buildConfigField("String", "REWARD_VIDEO_ID",  "\"1\"")
-        buildConfigField("String", "FULL_SCREEN_VIDEO_ID",  "\"1\"")
-        buildConfigField("String", "NEWS_FEED_CUSTOM_RENDER_ID",  "\"1\"")
-        buildConfigField("String", "NEWS_FEED_TEMPLATE_ID",  "\"1\"")
-        buildConfigField("String", "DRAW_FEED_ID",  "\"1\"")
     }
-    //统一资源前缀，规范资源引用
-    resourcePrefix "sdk_"
-/*
-    signingConfigs {
-        release {
-            keyAlias = 'grpubr'
-            storePassword 'addaddadd'
-            keyPassword 'addaddadd'
-            storeFile file('release.keystore')
-        }
-    }*/
 }
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
     api project(':common:library-common')

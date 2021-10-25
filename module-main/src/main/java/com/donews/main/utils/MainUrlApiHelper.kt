@@ -1,7 +1,5 @@
 package com.donews.main.utils
 
-import com.dn.sdk.api.UrlCreator
-import com.dn.sdk.utils.SdkLogUtils
 import com.donews.main.BuildConfig
 import com.donews.network.EasyHttp
 import com.donews.network.cache.model.CacheMode
@@ -57,7 +55,6 @@ object MainUrlApiHelper {
         if (tag != null) {
             params = "$params&$tag"
         }
-        SdkLogUtils.i(SdkLogUtils.TAG, " $tag")
         return "${BASE_URL}${appentUrl}${params}"
     }
 

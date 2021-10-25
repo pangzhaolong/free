@@ -5,7 +5,6 @@ import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.dn.sdk.widget.AdVideoCloseView;
 import com.donews.main.BuildConfig;
 import com.donews.main.ui.SplashActivity;
 import com.donews.base.base.BaseApplication;
@@ -42,7 +41,6 @@ public class MainModuleInit implements IModuleInit {
 
         @Override
         public void onActivityCreated(@NotNull Activity activity, Bundle savedInstanceState) {
-            AdVideoCloseView.onAddView(activity);
 //            setExcludeFromRecentsActivity();
         }
 
@@ -62,7 +60,6 @@ public class MainModuleInit implements IModuleInit {
 
         @Override
         public void onActivityPaused(@NotNull Activity activity) {
-            AdVideoCloseView.onVideoPauseActivity(activity);
         }
 
         @Override

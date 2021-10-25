@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="vertical"
+    android:layout_height="wrap_content"
     android:layout_marginTop="50dp"
-    android:layout_height="wrap_content">
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/view_tv"
         android:layout_width="wrap_content"
-        android:text="6 秒之后跳过"
-        android:textSize="@dimen/textSize_12"
+        android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:textColor="@color/white"
         android:layout_marginTop="20dp"
-        android:layout_marginRight="@dimen/padding_right"
-        android:paddingLeft="7dp"
-        android:paddingRight="7dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
+        android:layout_marginEnd="@dimen/padding_right"
         android:background="@drawable/sdk_ad_video_close_bg"
-        android:layout_height="wrap_content"/>
+        android:paddingLeft="7dp"
+        android:paddingTop="5dp"
+        android:paddingRight="7dp"
+        android:paddingBottom="5dp"
+        android:text="6 秒之后跳过"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textSize_12" />
 
 </LinearLayout>

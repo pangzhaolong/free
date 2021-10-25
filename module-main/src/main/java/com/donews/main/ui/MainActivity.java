@@ -13,9 +13,6 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.events.NavEvent;
-import com.dn.sdk.AdLoadManager;
-import com.dn.sdk.bean.RequestInfo;
-import com.dn.sdk.constant.AdIdConfig;
 import com.donews.base.activity.MvvmBaseLiveDataActivity;
 import com.donews.base.base.AppStatusConstant;
 import com.donews.base.base.AppStatusManager;
@@ -33,7 +30,6 @@ import com.donews.utilslibrary.analysis.AnalysisHelp;
 import com.donews.utilslibrary.analysis.AnalysisParam;
 import com.gyf.immersionbar.BarHide;
 import com.gyf.immersionbar.ImmersionBar;
-import com.orhanobut.logger.Logger;
 import com.vmadalin.easypermissions.EasyPermissions;
 
 import org.greenrobot.eventbus.EventBus;
@@ -216,9 +212,6 @@ public class MainActivity
         // 获取数美deviceId之后，调用refresh接口刷新
         CommonParams.setNetWork();
         CommonParams.getCommonNetWork();
-
-        AdLoadManager.getInstance()
-                .cacheRewardVideo(this, new RequestInfo(AdIdConfig.REWARD_VIDEO_ID), null);
 
         UpdateManager.getInstance().checkUpdate(this, false);
     }

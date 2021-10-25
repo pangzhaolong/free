@@ -6,43 +6,28 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
-import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import androidx.annotation.Nullable;
-
-import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.ScreenUtils;
-import com.dn.drouter.ARouteHelper;
 import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.NetworkChanageEvnet;
-import com.dn.sdk.AdLoadManager;
-import com.dn.sdk.bean.RequestInfo;
-import com.dn.sdk.constant.AdIdConfig;
-import com.dn.sdk.listener.AdSplashListener;
 import com.donews.base.activity.MvvmBaseLiveDataActivity;
-import com.donews.base.utils.ToastUtil;
-import com.donews.base.viewmodel.BaseLiveDataViewModel;
-import com.donews.common.contract.LoginHelp;
-import com.donews.common.router.RouterActivityPath;
-import com.donews.main.R;
-import com.donews.main.common.CommonParams;
-import com.donews.main.databinding.MainActivitySplashBinding;
-import com.donews.main.dialog.PersonGuideDialog;
 import com.donews.base.base.AppStatusConstant;
 import com.donews.base.base.AppStatusManager;
+import com.donews.base.utils.ToastUtil;
+import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.common.adapter.ScreenAutoAdapter;
-import com.donews.main.entitys.resps.SplashDoubleADConfigResp;
+import com.donews.common.contract.LoginHelp;
+import com.donews.main.R;
+import com.donews.main.databinding.MainActivitySplashBinding;
+import com.donews.main.dialog.PersonGuideDialog;
 import com.donews.main.utils.SplashUtils;
 import com.donews.utilslibrary.analysis.AnalysisHelp;
 import com.donews.utilslibrary.base.SmSdkConfig;
@@ -58,10 +43,6 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import kotlin.Unit;
-import kotlin.jvm.functions.Function0;
-import kotlin.jvm.functions.Function1;
 
 /**
  * 应用模块: 主业务模块
@@ -253,8 +234,6 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
             mDataBinding.adContainer.setLayoutParams(lp);
         }
         SmSdkConfig.initData(UtilsConfig.getApplication());
-        RequestInfo requestInfo = new RequestInfo(AdIdConfig.SPLASH_ID);
-        requestInfo.container = mDataBinding.adContainer;
 
         startCountDown();
 
