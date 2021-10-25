@@ -66,4 +66,8 @@ object AdSdkManager {
         DnMediationAdSdk.setUserId(userId)
         DnMediationAdSdk.setOAID(oaid)
     }
+
+    fun getContext(): Context {
+        return context
+    }
 }

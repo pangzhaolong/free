@@ -3,6 +3,7 @@ package com.dn.sdk.sdk.interfaces.proxy
 import android.view.View
 import com.dn.sdk.sdk.bean.RequestInfo
 import com.dn.sdk.sdk.interfaces.listener.IAdNativeListener
+import com.dn.sdk.sdk.statistics.CountTrackImpl
 
 /**
  * 自渲染信息流 监听器代理
@@ -15,6 +16,9 @@ class AdNativeListenerProxy(
     private val requestInfo: RequestInfo,
     private val listener: IAdNativeListener? = null
 ) : IAdNativeListener {
+
+    private val countTrack = CountTrackImpl(requestInfo)
+
     override fun onLoad(views: MutableList<View>?) {
         listener?.onLoad(views)
     }
@@ -37,6 +41,7 @@ class AdNativeListenerProxy(
 
     override fun onShow() {
         listener?.onShow()
+        countTrack.onShow()
     }
 
     override fun onVideoStart() {
@@ -53,6 +58,7 @@ class AdNativeListenerProxy(
 
     override fun onVideoCompleted() {
         listener?.onVideoCompleted()
+        countTrack.onVideoComplete()
     }
 
     override fun onVideoError(code: Int, error: String?) {
@@ -61,17 +67,21 @@ class AdNativeListenerProxy(
 
     override fun onError(code: Int, msg: String?) {
         listener?.onError(code, msg)
+        countTrack.onLoadError()
     }
 
     override fun onAdClick() {
         listener?.onAdClick()
+        countTrack.onClick()
     }
 
     override fun onAdShow() {
         listener?.onAdShow()
+        countTrack.onShow()
     }
 
     override fun onAdClose() {
         listener?.onAdClose()
+        countTrack.onAdClose()
     }
 }

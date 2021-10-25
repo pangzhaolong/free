@@ -2,6 +2,7 @@ package com.dn.sdk.sdk.interfaces.proxy
 
 import com.dn.sdk.sdk.bean.RequestInfo
 import com.dn.sdk.sdk.interfaces.listener.IAdFullVideoListener
+import com.dn.sdk.sdk.statistics.CountTrackImpl
 
 /**
  * 全屏视频监听器代理类
@@ -14,16 +15,21 @@ class AdFullVideoListenerProxy(
     private val requestInfo: RequestInfo,
     private val listener: IAdFullVideoListener? = null
 ) : IAdFullVideoListener {
+
+    private val countTrack = CountTrackImpl(requestInfo)
+
     override fun onLoad() {
         listener?.onLoad()
     }
 
     override fun onLoadFail(code: Int, error: String?) {
         listener?.onLoadFail(code, error)
+        countTrack.onLoadError()
     }
 
     override fun onLoadTimeout() {
         listener?.onLoadTimeout()
+        countTrack.onLoadError()
     }
 
     override fun onLoadCached() {
@@ -32,18 +38,22 @@ class AdFullVideoListenerProxy(
 
     override fun onFullVideoAdShow() {
         listener?.onFullVideoAdShow()
+        countTrack.onShow()
     }
 
     override fun onFullVideoClick() {
         listener?.onFullVideoClick()
+        countTrack.onClick()
     }
 
     override fun onFullVideoClosed() {
         listener?.onFullVideoClosed()
+        countTrack.onAdClose()
     }
 
     override fun onFullVideoComplete() {
         listener?.onFullVideoComplete()
+        countTrack.onVideoComplete()
     }
 
     override fun onFullVideoError() {

@@ -2,6 +2,7 @@ package com.dn.sdk.sdk.interfaces.proxy
 
 import com.dn.sdk.sdk.bean.RequestInfo
 import com.dn.sdk.sdk.interfaces.listener.IAdSplashListener
+import com.dn.sdk.sdk.statistics.CountTrackImpl
 
 /**
  * 代理监听器
@@ -14,6 +15,9 @@ class AdSplashListenerProxy(
     private val requestInfo: RequestInfo,
     private val listener: IAdSplashListener? = null
 ) : IAdSplashListener {
+
+    private val countTrack = CountTrackImpl(requestInfo)
+
     override fun onLoadFail(code: Int, error: String?) {
         listener?.onAdShowFail(code, error)
     }
@@ -28,14 +32,17 @@ class AdSplashListenerProxy(
 
     override fun onError(code: Int, msg: String?) {
         listener?.onError(code, msg)
+        countTrack.onLoadError()
     }
 
     override fun onAdShow() {
         listener?.onAdShow()
+        countTrack.onShow()
     }
 
     override fun onAdClicked() {
         listener?.onAdClicked()
+        countTrack.onClick()
     }
 
     override fun onAdShowFail(code: Int, error: String?) {

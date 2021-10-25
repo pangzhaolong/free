@@ -42,6 +42,9 @@ public class RequestInfo {
     /** 广告高度 */
     private int mHeight;
 
+    /** 是否预加载 */
+    private boolean preload;
+
     /** 1竖屏，2横屏，默认竖屏 */
     private int mOrientation = 1;
     /** 激励奖励 */
@@ -202,6 +205,14 @@ public class RequestInfo {
         mOrientation = orientation;
     }
 
+    public boolean isPreload() {
+        return preload;
+    }
+
+    public void setPreload(boolean preload) {
+        this.preload = preload;
+    }
+
     @NonNull
     @Override
     public String toString() {
@@ -214,6 +225,7 @@ public class RequestInfo {
                 ", mContainer=" + mContainer +
                 ", mWidth=" + mWidth +
                 ", mHeight=" + mHeight +
+                ", preload=" + preload +
                 ", mOrientation=" + mOrientation +
                 ", mRewardName='" + mRewardName + '\'' +
                 ", mRewardAmount=" + mRewardAmount +

@@ -3,6 +3,7 @@ package com.dn.sdk.sdk.interfaces.proxy
 import android.view.View
 import com.dn.sdk.sdk.bean.RequestInfo
 import com.dn.sdk.sdk.interfaces.listener.IAdNativeExpressListener
+import com.dn.sdk.sdk.statistics.CountTrackImpl
 
 /**
  * 模板信息流 监听器代理
@@ -15,12 +16,16 @@ class AdNativeExpressListenerProxy(
     private val requestInfo: RequestInfo,
     private val listener: IAdNativeExpressListener? = null
 ) : IAdNativeExpressListener {
+
+    private val countTrack = CountTrackImpl(requestInfo)
+
     override fun onLoad(views: MutableList<View>?) {
         listener?.onLoad(views)
     }
 
     override fun onLoadFail(code: Int, error: String?) {
         listener?.onLoadFail(code, error)
+        countTrack.onLoadError()
     }
 
     override fun onSelected(i: Int, s: String?) {
@@ -37,6 +42,7 @@ class AdNativeExpressListenerProxy(
 
     override fun onShow() {
         listener?.onShow()
+        countTrack.onShow()
     }
 
     override fun onVideoStart() {
@@ -53,6 +59,7 @@ class AdNativeExpressListenerProxy(
 
     override fun onVideoCompleted() {
         listener?.onVideoCompleted()
+        countTrack.onVideoComplete()
     }
 
     override fun onVideoError(code: Int, error: String?) {
@@ -65,14 +72,17 @@ class AdNativeExpressListenerProxy(
 
     override fun onAdClick() {
         listener?.onAdClick()
+        countTrack.onClick()
     }
 
     override fun onAdShow() {
         listener?.onAdShow()
+        countTrack.onShow()
     }
 
     override fun onAdClose() {
         listener?.onAdClose()
+        countTrack.onAdClose()
     }
 
     override fun onRenderFail(view: View?, msg: String?, code: Int) {

@@ -2,6 +2,7 @@ package com.dn.sdk.sdk.interfaces.proxy
 
 import com.dn.sdk.sdk.bean.RequestInfo
 import com.dn.sdk.sdk.interfaces.listener.IAdRewardVideoListener
+import com.dn.sdk.sdk.statistics.CountTrackImpl
 
 /**
  * 激励视频监听器
@@ -14,6 +15,9 @@ class AdRewardVideoListenerProxy(
     private val requestInfo: RequestInfo,
     private val listener: IAdRewardVideoListener? = null
 ) : IAdRewardVideoListener {
+
+    private val countTrack = CountTrackImpl(requestInfo)
+
     override fun onLoad() {
         listener?.onLoad()
     }
@@ -32,18 +36,22 @@ class AdRewardVideoListenerProxy(
 
     override fun onRewardAdShow() {
         listener?.onRewardAdShow()
+        countTrack.onShow()
     }
 
     override fun onRewardBarClick() {
         listener?.onRewardBarClick()
+        countTrack.onClick()
     }
 
     override fun onRewardedClosed() {
         listener?.onRewardedClosed()
+        countTrack.onAdClose()
     }
 
     override fun onRewardVideoComplete() {
         listener?.onRewardVideoComplete()
+        countTrack.onVideoComplete()
     }
 
     override fun onRewardVideoError() {
@@ -64,5 +72,6 @@ class AdRewardVideoListenerProxy(
 
     override fun onError(code: Int, msg: String?) {
         listener?.onError(code, msg)
+        countTrack.onLoadError()
     }
 }
