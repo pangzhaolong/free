@@ -23,13 +23,25 @@ object AdSdkManager {
     private lateinit var context: Context
 
     /** 渠道信息 */
-    private var channel: String? = null
+    var channel: String? = null
+        set(value) {
+            field = value
+            DnMediationAdSdk.setChannel(value)
+        }
 
     /** 用户信息 */
-    private var userId: String? = null
+    var userId: String? = null
+        set(value) {
+            field = value
+            DnMediationAdSdk.setUserId(value)
+        }
 
     /** OAID 信息 */
-    private var oaid: String? = null
+    var oaid: String? = null
+        set(value) {
+            field = value
+            DnMediationAdSdk.setOAID(value)
+        }
 
     @Volatile
     private var hadInit = false
@@ -57,17 +69,14 @@ object AdSdkManager {
         TTAdManagerHolder.init(context, groMoreAppId, openDebug)
     }
 
+    fun getContext(): Context {
+        return context
+    }
+
     /** 初始化设置额外的信息 */
     fun setInfo(channel: String, userId: String, oaid: String) {
         this.channel = channel
         this.userId = userId
         this.oaid = oaid
-        DnMediationAdSdk.setChannel(channel)
-        DnMediationAdSdk.setUserId(userId)
-        DnMediationAdSdk.setOAID(oaid)
-    }
-
-    fun getContext(): Context {
-        return context
     }
 }
