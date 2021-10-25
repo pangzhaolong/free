@@ -1,8 +1,7 @@
-package com.dn.sdk.sdk.tt;
+package com.dn.sdk.sdk.dn;
 
 import android.app.Activity;
 import android.content.Context;
-
 
 import com.dn.sdk.sdk.bean.RequestInfo;
 import com.dn.sdk.sdk.bean.SDKType;
@@ -14,76 +13,74 @@ import com.dn.sdk.sdk.interfaces.listener.IAdNativeListener;
 import com.dn.sdk.sdk.interfaces.listener.IAdRewardVideoListener;
 import com.dn.sdk.sdk.interfaces.listener.IAdSplashListener;
 import com.dn.sdk.sdk.interfaces.listener.preload.IAdPreloadVideoViewListener;
-import com.dn.sdk.sdk.interfaces.loader.ILoader;
+import com.dn.sdk.sdk.interfaces.loader.IRealLoader;
+import com.dn.sdk.sdk.dn.helper.DnAdBannerLoadHelper;
+import com.dn.sdk.sdk.dn.helper.DnAdFullVideoLoadHelper;
+import com.dn.sdk.sdk.dn.helper.DnAdInterstitialLoadHelper;
+import com.dn.sdk.sdk.dn.helper.DnAdNativeExpressLoadHelper;
+import com.dn.sdk.sdk.dn.helper.DnAdRewardVideoLoadHelper;
+import com.dn.sdk.sdk.dn.helper.DnAdSplashLoadHelper;
 import com.dn.sdk.sdk.interfaces.proxy.AdBannerListenerProxy;
 import com.dn.sdk.sdk.interfaces.proxy.AdFullVideoListenerProxy;
 import com.dn.sdk.sdk.interfaces.proxy.AdInterstitialListenerProxy;
-import com.dn.sdk.sdk.interfaces.proxy.AdNativeExpressListenerProxy;
 import com.dn.sdk.sdk.interfaces.proxy.AdRewardVideoListenerProxy;
 import com.dn.sdk.sdk.interfaces.proxy.AdSplashListenerProxy;
-import com.dn.sdk.sdk.tt.helper.TTAdBannerLoadHelper;
-import com.dn.sdk.sdk.tt.helper.TTAdFullVideoLoadHelper;
-import com.dn.sdk.sdk.tt.helper.TTAdInterstitialLoadHelper;
-import com.dn.sdk.sdk.tt.helper.TTAdNativeExpressLoadHelper;
-import com.dn.sdk.sdk.tt.helper.TTAdRewardVideoLoadHelper;
-import com.dn.sdk.sdk.tt.helper.TTAdSplashLoadHelper;
 
 /**
- * 穿山甲 GroMore 聚合封装
+ * 多牛聚合sdk 加载
  *
  * @author XuShuai
  * @version v1.0
- * @date 2021/9/26 16:00
+ * @date 2021/9/27 15:24
  */
-@SuppressWarnings("unused")
-public class PolyTTLoader implements ILoader {
+public class DnNewsRealLoader implements IRealLoader {
     @Override
     public SDKType getSdkType() {
-        return SDKType.DO_GRO_MORE;
+        return SDKType.DO_NEWS;
     }
 
     @Override
     public void loadSplashAd(Activity activity, RequestInfo requestInfo, IAdSplashListener listener) {
-        new TTAdSplashLoadHelper().loadSplashAd(activity, requestInfo,
+        new DnAdSplashLoadHelper().loadAd(activity, requestInfo,
                 new AdSplashListenerProxy(requestInfo, listener));
     }
 
     @Override
     public void loadBannerAd(Activity activity, RequestInfo requestInfo, IAdBannerListener listener) {
-        new TTAdBannerLoadHelper().loadBannerAd(activity, requestInfo,
+        new DnAdBannerLoadHelper().loadAd(activity, requestInfo,
                 new AdBannerListenerProxy(requestInfo, listener));
     }
 
     @Override
     public void loadInterstitialAd(Activity activity, RequestInfo requestInfo, IAdInterstitialListener listener) {
-        new TTAdInterstitialLoadHelper().loadAd(activity, requestInfo,
+        new DnAdInterstitialLoadHelper().loadAd(activity, requestInfo,
                 new AdInterstitialListenerProxy(requestInfo, listener));
     }
 
     @Override
     public void loadRewardVideoAd(Activity activity, RequestInfo requestInfo, IAdRewardVideoListener listener) {
-        new TTAdRewardVideoLoadHelper().loadAd(activity, requestInfo,
+        new DnAdRewardVideoLoadHelper().loadAd(activity, requestInfo,
                 new AdRewardVideoListenerProxy(requestInfo, listener));
     }
 
     @Override
     public void preloadRewardViewAd(Activity activity, RequestInfo requestInfo,
             IAdPreloadVideoViewListener viewListener, IAdRewardVideoListener listener) {
-        new TTAdRewardVideoLoadHelper().preloadAd(activity, requestInfo, viewListener,
+        new DnAdRewardVideoLoadHelper().preloadAd(activity, requestInfo, viewListener,
                 new AdRewardVideoListenerProxy(requestInfo, listener));
     }
 
 
     @Override
     public void loadFullVideoAd(Activity activity, RequestInfo requestInfo, IAdFullVideoListener listener) {
-        new TTAdFullVideoLoadHelper().loadAd(activity, requestInfo,
+        new DnAdFullVideoLoadHelper().loadAd(activity, requestInfo,
                 new AdFullVideoListenerProxy(requestInfo, listener));
     }
 
     @Override
-    public void preloadFullVideoAd(Activity activity, RequestInfo requestInfo, IAdPreloadVideoViewListener viewListener,
-            IAdFullVideoListener listener) {
-        new TTAdFullVideoLoadHelper().preloadAd(activity, requestInfo, viewListener,
+    public void preloadFullVideoAd(Activity activity, RequestInfo requestInfo,
+            IAdPreloadVideoViewListener viewListener, IAdFullVideoListener listener) {
+        new DnAdFullVideoLoadHelper().preloadAd(activity, requestInfo, viewListener,
                 new AdFullVideoListenerProxy(requestInfo, listener));
     }
 
@@ -95,7 +92,6 @@ public class PolyTTLoader implements ILoader {
 
     @Override
     public void loadFeedNativeExpressAd(Context context, RequestInfo requestInfo, IAdNativeExpressListener listener) {
-        new TTAdNativeExpressLoadHelper().loadAd(context, requestInfo,
-                new AdNativeExpressListenerProxy(requestInfo, listener));
+        new DnAdNativeExpressLoadHelper().loadAd(context, requestInfo, listener);
     }
 }

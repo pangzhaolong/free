@@ -7,6 +7,7 @@ import androidx.multidex.MultiDex;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.DNEventBusUtils;
+import com.dn.sdk.business.loader.AdLoader;
 import com.dn.sdk.sdk.AdSdkManager;
 import com.donews.base.base.BaseApplication;
 import com.donews.base.utils.CrashHandlerUtil;

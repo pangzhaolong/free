@@ -1,7 +1,7 @@
 package com.dn.sdk.sdk.interfaces.platform;
 
 
-import com.dn.sdk.sdk.interfaces.loader.ILoader;
+import com.dn.sdk.sdk.interfaces.loader.IRealLoader;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -52,5 +52,5 @@ public abstract class AbstractPlatform {
 
 	public abstract boolean isInit();
 
-	public abstract ILoader getLoader();
+	public abstract IRealLoader getLoader();
 }

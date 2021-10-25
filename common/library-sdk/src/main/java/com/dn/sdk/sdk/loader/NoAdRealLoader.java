@@ -13,7 +13,7 @@ import com.dn.sdk.sdk.interfaces.listener.IAdNativeListener;
 import com.dn.sdk.sdk.interfaces.listener.IAdRewardVideoListener;
 import com.dn.sdk.sdk.interfaces.listener.IAdSplashListener;
 import com.dn.sdk.sdk.interfaces.listener.preload.IAdPreloadVideoViewListener;
-import com.dn.sdk.sdk.interfaces.loader.ILoader;
+import com.dn.sdk.sdk.interfaces.loader.IRealLoader;
 
 
 /**
@@ -21,7 +21,7 @@ import com.dn.sdk.sdk.interfaces.loader.ILoader;
  * @version v1.0
  * @date 2021/9/27 11:03
  */
-public class NoAdLoader implements ILoader {
+public class NoAdRealLoader implements IRealLoader {
     @Override
     public SDKType getSdkType() {
         return SDKType.NO_AD;

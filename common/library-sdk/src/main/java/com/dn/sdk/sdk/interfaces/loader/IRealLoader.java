@@ -14,6 +14,8 @@ import com.dn.sdk.sdk.interfaces.listener.IAdRewardVideoListener;
 import com.dn.sdk.sdk.interfaces.listener.IAdSplashListener;
 import com.dn.sdk.sdk.interfaces.listener.preload.IAdPreloadVideoViewListener;
 
+import javax.annotation.Nullable;
+
 
 /**
  * 广告加载类
@@ -22,7 +24,7 @@ import com.dn.sdk.sdk.interfaces.listener.preload.IAdPreloadVideoViewListener;
  * @version v1.0
  * @date 2021/9/26 14:42
  */
-public interface ILoader {
+public interface IRealLoader {
 
     /**
      * 当前loader使用的SDK Type
@@ -34,7 +36,7 @@ public interface ILoader {
     /**
      * 开屏广告 (启动广告)
      */
-    void loadSplashAd(Activity activity, RequestInfo requestInfo, IAdSplashListener listener);
+    void loadSplashAd(Activity activity, RequestInfo requestInfo, @Nullable IAdSplashListener listener);
 
     /**
      * Banner广告

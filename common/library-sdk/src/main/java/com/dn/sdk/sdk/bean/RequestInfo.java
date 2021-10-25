@@ -4,7 +4,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import com.dn.sdk.sdk.interfaces.loader.ILoader;
+import com.dn.sdk.sdk.interfaces.loader.IRealLoader;
+import com.dn.sdk.sdk.platform.IPlatform;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +20,7 @@ import java.util.Map;
 public class RequestInfo {
 
     /** 广告加载器 */
-    private ILoader mLoader;
+    private IPlatform mPlatform;
 
     /** 请求广告类型 */
     private AdType mAdType;
@@ -65,16 +66,12 @@ public class RequestInfo {
     private String mUserId;
 
 
-    public RequestInfo(ILoader loader) {
-        mLoader = loader;
+    public IPlatform getPlatform() {
+        return mPlatform;
     }
 
-    public ILoader getLoader() {
-        return mLoader;
-    }
-
-    public void setLoader(ILoader loader) {
-        mLoader = loader;
+    public void setPlatform(IPlatform platform) {
+        mPlatform = platform;
     }
 
     public AdType getAdType() {
@@ -217,7 +214,7 @@ public class RequestInfo {
     @Override
     public String toString() {
         return "RequestInfo{" +
-                "mLoader=" + mLoader +
+                "mPlatform=" + mPlatform +
                 ", mAdType=" + mAdType +
                 ", mAppId='" + mAppId + '\'' +
                 ", mAdId='" + mAdId + '\'' +

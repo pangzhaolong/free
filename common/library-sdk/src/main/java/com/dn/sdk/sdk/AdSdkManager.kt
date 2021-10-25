@@ -6,6 +6,7 @@ import android.content.Context
 import android.os.Looper
 import com.bytedance.sdk.openadsdk.TTAdManager
 import com.dn.admediation.csj.api.DnMediationAdSdk
+import com.dn.sdk.sdk.interfaces.ISdkManager
 import com.dn.sdk.sdk.tt.TTAdManagerHolder
 import com.donews.b.start.DoNewsAdManagerHolder
 import com.donews.b.utils.DnLogSwitchUtils
@@ -18,7 +19,7 @@ import com.donews.b.utils.DnLogSwitchUtils
  * @date 2021/10/25 14:07
  */
 @SuppressLint("StaticFieldLeak")
-object AdSdkManager {
+object AdSdkManager : ISdkManager {
 
     private lateinit var context: Context
 
@@ -46,7 +47,7 @@ object AdSdkManager {
     @Volatile
     private var hadInit = false
 
-    fun initSDK(context: Application, openDebug: Boolean, groMoreAppId: String) {
+    override fun initSDK(context: Application, openDebug: Boolean, groMoreAppId: String) {
         if (Thread.currentThread() == Looper.getMainLooper().thread) {
             this.context = context.applicationContext
             if (!hadInit) {
@@ -74,7 +75,7 @@ object AdSdkManager {
     }
 
     /** 初始化设置额外的信息 */
-    fun setInfo(channel: String, userId: String, oaid: String) {
+    override fun setInfo(channel: String, userId: String, oaid: String) {
         this.channel = channel
         this.userId = userId
         this.oaid = oaid
