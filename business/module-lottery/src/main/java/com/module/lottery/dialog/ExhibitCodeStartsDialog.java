@@ -8,20 +8,24 @@ import android.os.Message;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 
 import com.module_lottery.R;
+import com.module_lottery.databinding.ExhibitCodeDialogLayoutBinding;
 
 import java.lang.ref.WeakReference;
 
 //展示生成的抽奖码
-public class ExhibitCodeStartsDialog extends Dialog implements View.OnClickListener {
+public class ExhibitCodeStartsDialog extends BaseDialog implements View.OnClickListener {
     private Context context;
+    private ExhibitCodeDialogLayoutBinding exhibitCodeDialogLayout;
     private OnStateListener mOnFinishListener;
     private LotteryHandler mLotteryHandler = new LotteryHandler(this);
 
@@ -30,20 +34,24 @@ public class ExhibitCodeStartsDialog extends Dialog implements View.OnClickListe
         this.context = context;
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.exhibit_code_dialog_layout);
-        Window dialogWindow = getWindow();
-        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-        DisplayMetrics d = context.getResources().getDisplayMetrics(); // 获取屏幕宽、高用
-        lp.width = (int) (d.widthPixels * 0.7); // 宽度设置为屏幕宽度的80%
-        //lp.dimAmount=0.0f;//外围遮罩透明度0.0f-1.0f
-        dialogWindow.setAttributes(lp);
-        dialogWindow.setGravity(Gravity.CENTER);//内围区域底部显示
+        exhibitCodeDialogLayout = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.exhibit_code_dialog_layout, null, false);
+        setContentView(exhibitCodeDialogLayout.getRoot());
         Message mes = new Message();
         mes.what = 1;
         mLotteryHandler.sendMessageDelayed(mes, 3000);
+        exhibitCodeDialogLayout.closure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnFinishListener != null) {
+                    mOnFinishListener.onFinish();
+                }
+            }
+        });
+
     }
 
 

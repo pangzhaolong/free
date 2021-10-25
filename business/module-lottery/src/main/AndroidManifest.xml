@@ -3,17 +3,19 @@
     package="com.module_lottery">
     <application>
         <activity
+            android:launchMode="singleTask"
             android:name="com.module.lottery.ui.LotteryActivity"
-            android:exported="true"></activity>
+            android:exported="true"/>
 
 
         <activity
+            android:launchMode="singleInstance"
             android:name="com.module.lottery.ui.RaidersActivity"
-            android:exported="true"></activity>
+            android:exported="true"/>
 
         <activity
             android:name="com.module.lottery.ui.ContactCustomerActivity"
-            android:exported="true"></activity>
+            android:exported="true"/>
 
 
 

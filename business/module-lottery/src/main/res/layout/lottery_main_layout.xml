@@ -49,23 +49,16 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="@dimen/lottery_constant_50"
+                android:gravity="center"
+                android:layout_marginStart="15dp"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                <ImageView
+                    android:layout_width="47dp"
+                    android:layout_height="47dp"
                     android:gravity="center"
-                    android:text="分享"
-                    android:textColor="#000000"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="分享"
-                    android:textSize="10dp"
-                    android:textColor="#B7B7B7"/>
+                    android:src="@mipmap/share_icon" />
             </LinearLayout>
 
             <RelativeLayout
@@ -83,49 +76,34 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:background="#000000"
+                    android:background="#FD2933"
                     android:gravity="center"
                     android:text="0元抽奖"
                     android:textColor="#FFFFFF" />
 
-                <TextView
+
+                <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_above="@+id/panic_buying_button"
                     android:layout_marginBottom="10dp"
-                    android:background="#D7D7D7"
-                    android:gravity="center"
-                    android:paddingStart="5dp"
-                    android:paddingTop="5dp"
-                    android:paddingEnd="5dp"
-                    android:textSize="12dp"
-                    android:paddingBottom="5dp"
-                    android:text="观看视频，参与抽奖"
-                    android:textColor="#000000" />
+                    android:src="@mipmap/hint_content" />
 
             </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="@dimen/lottery_constant_50"
+                android:layout_marginEnd="15dp"
+                android:gravity="center"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                <ImageView
+                    android:layout_width="47dp"
+                    android:layout_height="47dp"
                     android:gravity="center"
-                    android:text="购买"
-                    android:textColor="#000000"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="购买"
-                    android:textSize="10dp"
-                    android:textColor="#B7B7B7"/>
-
+                    android:src="@mipmap/buy_icon" />
             </LinearLayout>
 
 

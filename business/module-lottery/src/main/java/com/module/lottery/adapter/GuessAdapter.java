@@ -37,6 +37,7 @@ import com.module.lottery.bean.CommodityBean;
 import com.module.lottery.bean.LotteryCodeBean;
 import com.module.lottery.bean.MaylikeBean;
 import com.module.lottery.ui.RaidersActivity;
+import com.module.lottery.utils.ImageUtils;
 import com.module_lottery.databinding.GuesslikeHeadLayoutBinding;
 import com.module_lottery.databinding.GuesslikeItemLayoutBinding;
 
@@ -84,7 +85,7 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (mHeaderView != null && position == TYPE_HEADER) {
             if (holder instanceof ListHolder && mCommodityBean != null) {
                 ListHolder listHolder = ((ListHolder) (holder));
-                setImage(listHolder.mGuesslikeHeadBinding.guessLikeHeadImg, mCommodityBean.getMainPic());
+                ImageUtils.setImage(mContext,listHolder.mGuesslikeHeadBinding.guessLikeHeadImg, mCommodityBean.getMainPic(),5);
                 //价格
                 listHolder.mGuesslikeHeadBinding.price.setText(mCommodityBean.getDisplayPrice() + "");
                 //参考价格
@@ -95,10 +96,10 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 //初始化参与者信息
                 if (mCommodityBean.getParticipateBean() != null) {
                     if (mCommodityBean.getParticipateBean().getList().size() > 4) {
-                        setImage(listHolder.mGuesslikeHeadBinding.participateAvatarOne, mCommodityBean.getParticipateBean().getList().get(0).getAvatar());
-                        setImage(listHolder.mGuesslikeHeadBinding.participateAvatarTwo, mCommodityBean.getParticipateBean().getList().get(1).getAvatar());
-                        setImage(listHolder.mGuesslikeHeadBinding.participateAvatarThree, mCommodityBean.getParticipateBean().getList().get(2).getAvatar());
-                        setImage(listHolder.mGuesslikeHeadBinding.participateAvatarFor, mCommodityBean.getParticipateBean().getList().get(3).getAvatar());
+                        ImageUtils.setImage(mContext,listHolder.mGuesslikeHeadBinding.participateAvatarOne, mCommodityBean.getParticipateBean().getList().get(0).getAvatar(),360);
+                        ImageUtils.setImage(mContext,listHolder.mGuesslikeHeadBinding.participateAvatarTwo, mCommodityBean.getParticipateBean().getList().get(1).getAvatar(),360);
+                        ImageUtils.setImage(mContext,listHolder.mGuesslikeHeadBinding.participateAvatarThree, mCommodityBean.getParticipateBean().getList().get(2).getAvatar(),360);
+                        ImageUtils.setImage(mContext,listHolder.mGuesslikeHeadBinding.participateAvatarFor, mCommodityBean.getParticipateBean().getList().get(3).getAvatar(),360);
                     } else {
                         Log.d(TAG, "头像数量不满足");
                     }
@@ -125,6 +126,7 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 String imageUrl = mCommodityBean.getGuessLikeData().get(position - 1).getMainPic();
                 imageUrl = UrlUtils.formatUrlPrefix(imageUrl);
                 RoundedCorners roundedCorners = new RoundedCorners(5);
+
                 RequestOptions options = RequestOptions.bitmapTransform(roundedCorners);
                 Glide.with(mContext).load(imageUrl).apply(options).into(guessViewHolder.mGuesslikeItemLayoutBinding.itemImageSrc);
                 guessViewHolder.mGuesslikeItemLayoutBinding.itemTitle.setText(mCommodityBean.getGuessLikeData().get(position - 1).getTitle());
@@ -145,11 +147,11 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
 
-    private void setImage(ImageView view, String src) {
+    private static void setImage(Context context,ImageView view, String src,int roundingRadius) {
         src = UrlUtils.formatUrlPrefix(src);
-        RoundedCorners roundedCorners = new RoundedCorners(5);
+        RoundedCorners roundedCorners = new RoundedCorners(roundingRadius);
         RequestOptions options = RequestOptions.bitmapTransform(roundedCorners);
-        Glide.with(mContext).load(src).apply(options).into(view);
+        Glide.with(context).load(src).apply(options).into(view);
     }
 
 

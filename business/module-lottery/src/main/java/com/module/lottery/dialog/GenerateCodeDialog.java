@@ -19,8 +19,8 @@ import com.module_lottery.R;
 
 import java.lang.ref.WeakReference;
 
-//抽奖码小于6个
-public class GenerateCodeDialog extends Dialog implements View.OnClickListener {
+//生成抽奖码
+public class GenerateCodeDialog extends BaseDialog implements View.OnClickListener {
     private Context context;
     private OnStateListener mOnFinishListener;
     private LotteryHandler mLotteryHandler = new LotteryHandler(this);
@@ -34,13 +34,6 @@ public class GenerateCodeDialog extends Dialog implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.generate_dialog_layout);
-        Window dialogWindow = getWindow();
-        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-        DisplayMetrics d = context.getResources().getDisplayMetrics(); // 获取屏幕宽、高用
-        lp.width = (int) (d.widthPixels * 0.7); // 宽度设置为屏幕宽度的80%
-        //lp.dimAmount=0.0f;//外围遮罩透明度0.0f-1.0f
-        dialogWindow.setAttributes(lp);
-        dialogWindow.setGravity(Gravity.CENTER);//内围区域底部显示
         Message mes = new Message();
         mes.what = 1;
         mLotteryHandler.sendMessageDelayed(mes, 3000);

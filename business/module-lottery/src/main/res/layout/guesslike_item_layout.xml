@@ -13,8 +13,8 @@
         android:background="@drawable/item_shape"
         android:orientation="vertical">
 
-        <ImageView
-
+        <com.module.lottery.view.ItemImageView
+            android:scaleType="fitXY"
             android:id="@+id/item_image_src"
             android:layout_width="match_parent"
             android:layout_height="168dp" />

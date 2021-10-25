@@ -8,35 +8,62 @@ import android.os.Message;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 
+import com.module.lottery.bean.LotteryCodeBean;
 import com.module_lottery.R;
+import com.module_lottery.databinding.ReceiveDialogLayoutBinding;
 
 import java.lang.ref.WeakReference;
 
-//抽奖码小于6个
-public class LotteryCodeStartsDialog extends BaseDialog implements View.OnClickListener {
+//领取抽奖
+public class ReceiveLotteryDialog extends BaseDialog implements View.OnClickListener {
     private Context context;
     private OnStateListener mOnFinishListener;
     private LotteryHandler mLotteryHandler = new LotteryHandler(this);
+    private LotteryCodeBean mLotteryCodeBean;
+    private ReceiveDialogLayoutBinding receiveDialogLayout;
 
-    public LotteryCodeStartsDialog(Context context) {
+    public ReceiveLotteryDialog(Context context, LotteryCodeBean lotteryCodeBean) {
         super(context, R.style.dialogTransparent);//内容样式在这里引入
         this.context = context;
+        this.mLotteryCodeBean = lotteryCodeBean;
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.lottery_start_dialog_layout);
+        receiveDialogLayout = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.receive_dialog_layout, null, false);
+        receiveDialogLayout.setData(mLotteryCodeBean);
+        setContentView(receiveDialogLayout.getRoot());
+
+        receiveDialogLayout.closureButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+        receiveDialogLayout.jumpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dismiss();
+
+
+            }
+        });
         Message mes = new Message();
         mes.what = 1;
-        mLotteryHandler.sendMessageDelayed(mes, 3000);
+        mLotteryHandler.sendMessageDelayed(mes, 1000);
+
     }
 
 
@@ -76,9 +103,9 @@ public class LotteryCodeStartsDialog extends BaseDialog implements View.OnClickL
     }
 
     private static class LotteryHandler extends Handler {
-        private WeakReference<LotteryCodeStartsDialog> reference;   //
+        private WeakReference<ReceiveLotteryDialog> reference;   //
 
-        LotteryHandler(LotteryCodeStartsDialog context) {
+        LotteryHandler(ReceiveLotteryDialog context) {
             reference = new WeakReference(context);
         }
 
@@ -87,9 +114,9 @@ public class LotteryCodeStartsDialog extends BaseDialog implements View.OnClickL
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
-                    if (reference.get() != null && reference.get().mOnFinishListener != null) {
+                    if (reference.get() != null) {
                         //广告跳转
-                        reference.get().mOnFinishListener.onJumpAd();
+                        reference.get().receiveDialogLayout.closureButton.setVisibility(View.VISIBLE);
                     }
                     break;
             }

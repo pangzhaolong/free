@@ -1,6 +1,7 @@
 package com.module.lottery.ui;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -27,6 +28,7 @@ import com.module.lottery.dialog.GenerateCodeDialog;
 import com.module.lottery.dialog.LessMaxDialog;
 import com.module.lottery.dialog.LotteryCodeStartsDialog;
 import com.module.lottery.dialog.NoDrawDialog;
+import com.module.lottery.dialog.ReceiveLotteryDialog;
 import com.module.lottery.model.LotteryModel;
 import com.module.lottery.utils.GridSpaceItemDecoration;
 import com.module.lottery.view.TextureVideoViewOutlineProvider;
@@ -51,10 +53,16 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     //    String id = "tb:655412572200";
     GuessAdapter guessAdapter;
 
+    @Autowired(name = "action")
+    String mAction;
+
+
     int mPageNumber = 1;
     boolean refresh = true;
     //抽奖码的对象用来拦截返回
     LotteryCodeBean mLotteryCodeBean;
+
+
 
     @Override
     protected int getLayoutId() {
@@ -89,6 +97,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         mDataBinding.panicBuyingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 //开始抽奖
                 //弹框抽奖码生成dialog
                 LotteryCodeStartsDialog lotteryCodeStartsDialog = new LotteryCodeStartsDialog(LotteryActivity.this);
@@ -144,6 +153,26 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
 
 
+    //生成抽奖码的Dialog
+    private void showReceiveLotteryDialog(){
+        ReceiveLotteryDialog receiveLottery=new ReceiveLotteryDialog(LotteryActivity.this,mLotteryCodeBean);
+        receiveLottery.setStateListener(new ReceiveLotteryDialog.OnStateListener() {
+            @Override
+            public void onFinish() {
+            }
+
+            @Override
+            public void onJumpAd() {
+
+
+            }
+        });
+        receiveLottery.create();
+        receiveLottery.show();
+
+    }
+
+
 
 
 
@@ -153,6 +182,9 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         exhibitCodeStartsDialog.setStateListener(new ExhibitCodeStartsDialog.OnStateListener() {
             @Override
             public void onFinish() {
+                exhibitCodeStartsDialog.dismiss();
+                //显示立刻领取的dialog
+                showReceiveLotteryDialog();
             }
 
             @Override
@@ -196,6 +228,18 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        ARouter.getInstance().inject(this);
+        if(mAction!=null&&mAction.equals("newAction")){
+            clearState();
+            //加载抽奖商品详情信息
+            lotteryInfo();
+        }
+
+    }
 
     public void setObserveList() {
         //观察商品数据顶部
@@ -312,6 +356,11 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     }
 
 
+    private  void clearState(){
+        mPageNumber=1;
+        refresh=true;
+        mLotteryCodeBean=null;
+    }
 
     @SuppressLint("ResourceType")
     @Override
