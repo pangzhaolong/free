@@ -82,6 +82,17 @@ public class RouterFragmentPath {
     }
 
 
+    /** 抽奖组件 */
+    public static class Lottery
+    {
+        private static final String LOTTERY = "/lottery";
+
+        /** 抽奖 */
+        public static final String PAGER_LOTTERY = LOTTERY + "/lottery";
+
+    }
+
+
     /** sdkTest */
     public static class TestSdk {
         private static final String TEST = "/test";

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <dimen name="lottery_head_high">370dp</dimen>
+    <dimen name="lottery_constant_10">10dp</dimen>
+    <dimen name="lottery_constant_20">19dp</dimen>
+    <dimen name="lottery_constant_100">100dp</dimen>
+    <dimen name="lottery_constant_50">50dp</dimen>
+</resources>
