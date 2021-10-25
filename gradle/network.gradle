@@ -11,7 +11,7 @@ ext {
     APP_IDENTIFICATION = "jdd"
 
     //包名
-    APPLICATION_ID = "com.cdyf.lottery.jdd"
+    APPLICATION_ID = "com.cdyfnts.lottery.jdd.plus"
 
 
     // 正式环境base Url
