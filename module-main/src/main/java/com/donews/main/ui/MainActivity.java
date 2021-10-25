@@ -157,6 +157,15 @@ public class MainActivity
                         .autoDarkModeEnable(true)
                         .init();
                 break;
+            case 4:
+                AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
+                ImmersionBar.with(this)
+                        .statusBarColor(R.color.text_red)
+                        .navigationBarColor(R.color.white)
+                        .fitsSystemWindows(true)
+                        .autoDarkModeEnable(true)
+                        .init();
+                break;
             default:
         }
     }

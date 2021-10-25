@@ -7,16 +7,20 @@ import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.SPUtils;
 import com.donews.base.activity.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.mine.R;
 import com.donews.mine.adapters.MineParticipateRecordAdapter;
+import com.donews.mine.bean.resps.HistoryPeopleLottery;
 import com.donews.mine.databinding.MineActivityParticipateRecordBinding;
 import com.donews.mine.viewModel.MineParticipateRecordViewModel;
 import com.gyf.immersionbar.ImmersionBar;
@@ -39,6 +43,7 @@ public class MineParticipateRecordActivity extends
     private int adapterHeadItemRes = R.layout.mine_participate_record_list_head_item;
     //适配器对象
     private MineParticipateRecordAdapter adapter;
+    private boolean isRefresh = false;
 
     @Override
     protected int getLayoutId() {
@@ -64,6 +69,7 @@ public class MineParticipateRecordActivity extends
     }
 
     public void initView() {
+        mViewModel.setDataBinDing(mDataBinding);
         adapterHead = (ViewGroup) View.inflate(this, R.layout.mine_participate_record_list_head, null);
         adapter = new MineParticipateRecordAdapter();
         adapter.setOnLoadMoreListener((page, pageSize) -> {
@@ -78,10 +84,24 @@ public class MineParticipateRecordActivity extends
         mDataBinding.mineParRecodBack.setOnClickListener((v) -> {
             finish();
         });
+        mViewModel.peopleHistoryLiveData.observe(this, (items) -> {
+            mDataBinding.mineParRecodLayout.setRefeshComplete();
+            addListHeadData();
+        });
+        mViewModel.recommendGoodsLiveData.observe(this, listDTOS -> {
+            if (isRefresh) {
+                adapter.refeshFinish();
+            }
+            if (listDTOS == null || listDTOS.isEmpty()) {
+                adapter.setNewData(new ArrayList<>());
+            } else {
+                adapter.setNewData(listDTOS);
+            }
+            adapter.loadMoreFinish(true, false);
+            mDataBinding.mineParRecodLayout.getRefeshLayout().finishRefresh();
+        });
         mDataBinding.mineParRecodLayout.getRefeshLayout().autoRefresh();
     }
-
-    private List<Object> list = new ArrayList<>();
 
     private void initData() {
     }
@@ -110,47 +130,76 @@ public class MineParticipateRecordActivity extends
         if (recordListVP.getChildCount() != 0) {
             recordListVP.removeAllViews();
         }
+        if (mViewModel.peopleHistoryLiveData.getValue() == null ||
+                mViewModel.peopleHistoryLiveData.getValue().isEmpty()) {
+            recordListVP.removeAllViews();
+            return;
+        }
+        if (mViewModel.peopleHistoryLiveData.getValue() == null ||
+                mViewModel.peopleHistoryLiveData.getValue().isEmpty()) {
+            adapterHead.findViewById(R.id.mine_open_win_not_data_ll).setVisibility(View.VISIBLE);
+            return;
+        }
+        adapterHead.findViewById(R.id.mine_open_win_not_data_ll).setVisibility(View.GONE);
         //添加head的数据
-        for (int i = 0; i < 3; i++) {
-            View itemView = getHeadItemView();
+        for (HistoryPeopleLottery.Period period : mViewModel.peopleHistoryLiveData.getValue()) {
+            View itemView = getHeadItemView(period);
             recordListVP.addView(itemView,
                     new ViewGroup.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            //设置文字
+            TextView name = itemView.findViewById(R.id.mine_par_rec_ls_head_name);
+            name.setText(period.period + "期");
         }
     }
 
     //获取head的头每项数据
-    private View getHeadItemView() {
+    private View getHeadItemView(HistoryPeopleLottery.Period period) {
         View mItemView = View.inflate(this, adapterHeadItemRes, null);
+        ImageView icon = mItemView.findViewById(R.id.mine_par_rec_ls_head_icon);
+        TextView showFlg = mItemView.findViewById(R.id.mine_par_rec_ls_head_flg);
+        if (period.opend) {
+            //已经开奖
+            icon.setVisibility(View.VISIBLE);
+            icon.setImageResource(R.drawable.mine_win_open);
+        } else {
+            icon.setVisibility(View.INVISIBLE);
+            //未开奖
+        }
+        if (SPUtils.getInstance().getInt("" + period.period, 0) == 0) {
+            //未查看
+            showFlg.setVisibility(View.VISIBLE);
+            showFlg.setText("未查看");
+        } else {
+            //已查看
+            showFlg.setVisibility(View.INVISIBLE);
+            showFlg.setText("");
+        }
         mItemView.setOnClickListener((v) -> {
+            SPUtils.getInstance().put("" + period.period, 1);
             ARouter.getInstance().build(PAGER_MINE_WINNING_CODE_ACTIVITY)
+                    .withInt("period", period.period)
                     .navigation();
+            //直接将当前数据项目设置为已查看状态
+            showFlg.setVisibility(View.INVISIBLE);
+            showFlg.setText("");
         });
         return mItemView;
     }
 
-    Handler h = new Handler();
-
     //下拉刷新数据
     private void refeshListData() {
-        h.postDelayed(() -> {
-            mDataBinding.mineParRecodLayout.setRefeshComplete();
-            list.clear();
-            for (int i = 0; i < 50; i++) {
-                list.add("" + i);
-            }
-            adapter.setNewData(list);
-        }, 1000);
+        mViewModel.loadHistoryPeopleLottery();
+        adapter.loadMoreFinish(true, true);
+        isRefresh = true;
+        adapter.refeshStart();
+        mViewModel.loadRecommendGoods(25);
     }
 
     //上拉加载更多
     private void loadMoreListData() {
-        h.postDelayed(() -> {
-            for (int i = 0; i < 10; i++) {
-                list.add("" + i);
-            }
-            adapter.loadMoreFinish(true, false);
-            adapter.addData(list);
-        }, 1000);
+        isRefresh = false;
+        mViewModel.loadRecommendGoods(adapter.getData().size() + 15);
     }
+
 }

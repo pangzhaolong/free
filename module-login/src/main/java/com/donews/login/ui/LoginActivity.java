@@ -2,12 +2,17 @@ package com.donews.login.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import androidx.annotation.Nullable;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.dn.drouter.ARouteHelper;
 import com.donews.base.activity.MvvmBaseLiveDataActivity;
+import com.donews.base.utils.ToastUtil;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.services.ILoginService;
 import com.donews.common.services.config.ServicesConfig;
@@ -17,6 +22,7 @@ import com.donews.login.viewmodel.LoginViewModel;
 import com.donews.share.ISWXSuccessCallBack;
 import com.donews.share.WXHolderHelp;
 import com.donews.utilslibrary.utils.LogUtil;
+import com.gyf.immersionbar.ImmersionBar;
 
 /**
  * <p> </p>
@@ -34,13 +40,55 @@ public class LoginActivity extends MvvmBaseLiveDataActivity<LoginActivityBinding
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ImmersionBar.with(this)
+                .statusBarColor(R.color.white)
+                .navigationBarColor(R.color.white)
+                .fitsSystemWindows(true)
+                .autoDarkModeEnable(true)
+                .init();
     }
 
     @Override
     public void initView() {
         mViewModel.mActivity = this;
+        mDataBinding.titleBar
+                .setTitle("登录");
         mDataBinding.rlMobileLogin.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, MobileActivity.class)));
         mDataBinding.rlWachatLogin.setOnClickListener(v -> onWxLogin());
+        mDataBinding.rlWachatLoginFloat.setOnClickListener(v -> {
+            //檢查是否勾选协议
+            ToastUtil.showShort(this,"请先同意相关协议");
+            mDataBinding.llBotDesc.clearAnimation();
+            Animation anim = AnimationUtils.loadAnimation(this, R.anim.anim_not_select);
+            mDataBinding.llBotDesc.startAnimation(anim);
+        });
+        mDataBinding.llBotDesc.setOnClickListener(v -> {
+            mDataBinding.loginCkCheck.setChecked(!mDataBinding.loginCkCheck.isChecked());
+        });
+        mDataBinding.loginCkCheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                mDataBinding.rlWachatLogin.setEnabled(true);
+                mDataBinding.rlWachatLoginFloat.setVisibility(View.GONE);
+            } else {
+                mDataBinding.rlWachatLogin.setEnabled(false);
+                mDataBinding.rlWachatLoginFloat.setVisibility(View.VISIBLE);
+            }
+        });
+        mDataBinding.rlWachatLogin.setEnabled(false);
+        mDataBinding.tvUserXy.setOnClickListener(v -> { //用户协议
+            Bundle bundle = new Bundle();
+            bundle.putString("url",
+                    "http://ad-static-xg.tagtic.cn/wangzhuan/file/9e5f7a06cbf80a2186e3e34a70f0c360.html");
+            bundle.putString("title", "用户协议");
+            ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
+        });
+        mDataBinding.tvYxXy.setOnClickListener(v -> { //隐私协议
+            Bundle bundle = new Bundle();
+            bundle.putString("url",
+                    "http://ad-static-xg.tagtic.cn/wangzhuan/file/b7f18dcb857e80eab353cfb99c3f042e.html");
+            bundle.putString("title", "隐私政策");
+            ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
+        });
     }
 
     private void onWxLogin() {

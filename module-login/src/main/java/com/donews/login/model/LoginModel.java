@@ -9,6 +9,7 @@ import com.donews.common.contract.UserInfoBean;
 import com.donews.network.EasyHttp;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
+import com.donews.utilslibrary.utils.AppInfo;
 
 import io.reactivex.disposables.Disposable;
 
@@ -48,6 +49,7 @@ public class LoginModel extends BaseLiveDataModel {
      * @param code 微信的code
      */
     public MutableLiveData<UserInfoBean> onWXLogin(String code) {
+        AppInfo.saveWXLoginCode(code);
         return UserInfoManage.onLoadNetUserInfo(UserInfoManage.getNetDataStr(code));
     }
 
@@ -68,6 +70,16 @@ public class LoginModel extends BaseLiveDataModel {
      */
     public MutableLiveData<UserInfoBean> onBindPhone(String mobile, String verCode) {
         return UserInfoManage.onLoadBindUserInfo(UserInfoManage.getNetBindStr(mobile, verCode, ""));
+    }
+
+    /**
+     * 手机号绑定(Dialog方式绑定)
+     *
+     * @param mobile
+     * @param verCode
+     */
+    public MutableLiveData<UserInfoBean> onBindPhoneDialog(String mobile, String verCode) {
+        return UserInfoManage.onLoadBindUserInfoDialog(UserInfoManage.getNetBindStr(mobile, verCode, ""));
     }
 
 

@@ -25,4 +25,29 @@ public class AppInfo {
         return SPUtils.getInformain(KeySharePreferences.USER_ID, "");
     }
 
+    /**
+     * 保存微信登录的Code,此code是判断是否登录、重新自动登录的标志
+     * @param code
+     */
+    public static void saveWXLoginCode(String code){
+        SPUtils.setInformain("wxLoginCode",code);
+    }
+
+    /**
+     * 获取保存的微信登录凭证。
+     * @return null 或者 “” 表示未登录微信
+     */
+    public static String getWXLoginCode(){
+        return SPUtils.getInformain("wxLoginCode",null);
+    }
+
+    /**
+     * 判断是否微信登录了。此才是用户登录的标志
+     * @return T:表示已经登录，F:表示未登录
+     */
+    public static boolean checkIsWXLogin(){
+        String code = getWXLoginCode();
+        return code != null && code.length() > 0;
+    }
+
 }

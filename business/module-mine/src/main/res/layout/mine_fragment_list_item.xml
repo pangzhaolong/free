@@ -30,7 +30,6 @@
             android:id="@+id/mine_me_list_icon"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:background="@color/text_hint_color"
             android:scaleType="fitXY"
             android:src="@mipmap/ic_launcher" />
     </com.donews.mine.views.SectionCornerMessageLayout>
@@ -68,8 +67,9 @@
             android:id="@+id/mine_me_list_count_icon"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:scaleType="fitXY"
-            android:src="@mipmap/ic_launcher_round" />
+            android:scaleType="fitCenter"
+            android:src="@drawable/stage_gold_logo"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/mine_me_list_count_num"

@@ -37,11 +37,13 @@
             <LinearLayout
                 android:id="@+id/mine_me_select_bar"
                 android:layout_width="match_parent"
-                android:layout_height="140dp"
+                android:layout_height="wrap_content"
                 android:background="@color/mine_f6f9fb"
                 android:gravity="center"
                 android:orientation="vertical"
                 app:layout_collapseMode="pin"
+                android:paddingTop="5dp"
+                android:padding="5dp"
                 tools:ignore="MissingClass">
 
                 <TextView

@@ -1,15 +1,26 @@
 package com.donews.mine;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.donews.base.fragment.MvvmLazyLiveDataFragment;
+import com.donews.base.utils.ToastUtil;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.mine.databinding.MineSettingFragmentBinding;
 import com.donews.mine.viewModel.SettingFragmentViewModel;
+
+import java.io.File;
 
 
 /**
@@ -57,6 +68,9 @@ public class MineSettingFragment extends MvvmLazyLiveDataFragment<MineSettingFra
 
     private void initView() {
         mViewModel.setDataBinDing(mDataBinding, getBaseActivity());
+        mDataBinding.tvExitLogin.setOnClickListener(v->{
+            ToastUtil.show(getBaseActivity(),"退出登录按钮");
+        });
     }
 
     //绑定视图和文字

@@ -22,15 +22,11 @@ public class TabItem extends FrameLayout {
         LayoutInflater.from(context).inflate(R.layout.front_tab_item, this, true);
         mTitleTv = findViewById(R.id.front_tab_item_title);
         mBgView = findViewById(R.id.front_tab_item_bg);
-        LayoutParams layoutParams = (LayoutParams) mBgView.getLayoutParams();
-        layoutParams.width = mTitleTv.getWidth();
-        mBgView.setLayoutParams(layoutParams);
     }
 
     public void setTitle(String title) {
         mTitleTv.setText(title);
         mBgView.setVisibility(GONE);
-        LogUtil.e("xx:" + title);
     }
 
     public void selected() {

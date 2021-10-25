@@ -1,5 +1,7 @@
 package com.donews.home;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,13 +11,19 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.bumptech.glide.Glide;
 import com.dn.events.events.NavEvent;
 import com.donews.base.fragment.MvvmLazyLiveDataFragment;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.home.adapter.FragmentAdapter;
 import com.donews.home.bean.HomeBean;
+import com.donews.home.bean.SecKilBean;
+import com.donews.home.cache.GoodsCache;
 import com.donews.home.databinding.HomeFragmentBinding;
 import com.donews.home.viewModel.HomeViewModel;
+import com.donews.home.views.TabItem;
+import com.donews.utilslibrary.utils.LogUtil;
+import com.donews.utilslibrary.utils.UrlUtils;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -33,6 +41,8 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
     boolean isFirst = false;
     private FragmentAdapter mFragmentAdapter;
     private MutableLiveData<HomeBean> mHomeBean;
+
+    private Context mContext;
 
     @Override
     public int getLayoutId() {
@@ -63,20 +73,53 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mFragmentAdapter = new FragmentAdapter(this);
 
+        mContext = this.getContext();
+
+        mFragmentAdapter = new FragmentAdapter(this);
+        loadSecKilData();
 //        mDataBinding.homeCategoryVp2.setUserInputEnabled(false);
         mDataBinding.homeCategoryVp2.setAdapter(mFragmentAdapter);
         mDataBinding.homeCategoryTl.setTabMode(TabLayout.MODE_SCROLLABLE);
         TabLayoutMediator tab = new TabLayoutMediator(mDataBinding.homeCategoryTl, mDataBinding.homeCategoryVp2, (tab1, position) -> {
             if (position == 0) {
-                tab1.setText("精品");
+                tab1.setCustomView(new TabItem(mContext));
+                TabItem tabItem = (TabItem) tab1.getCustomView();
+                assert tabItem != null;
+                tabItem.setTitle("精品");
+                tabItem.selected();
             } else {
-                tab1.setText(mHomeBean.getValue().getList().get(position - 1).getCname());
+                tab1.setCustomView(new TabItem(mContext));
+                TabItem tabItem = (TabItem) tab1.getCustomView();
+                assert tabItem != null;
+                if (mHomeBean.getValue() == null || mHomeBean.getValue().getList() == null) {
+                    return;
+                }
+                tabItem.setTitle(mHomeBean.getValue().getList().get(position - 1).getCname());
             }
         });
         tab.attach();
 
+        mDataBinding.homeCategoryTl.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                TabItem tabItem = (TabItem) tab.getCustomView();
+                assert tabItem != null;
+                tabItem.selected();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                TabItem tabItem = (TabItem) tab.getCustomView();
+                assert tabItem != null;
+                tabItem.unSelected();
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
         mDataBinding.homeSearchRl.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), HomeSearchActivity.class);
             startActivity(intent);
@@ -88,6 +131,49 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
 
         mDataBinding.homeBannerLl.setOnClickListener(v -> EventBus.getDefault().post(new NavEvent(2)));
     }
+
+    private void loadSecKilData() {
+        SecKilBean tmpSecKilBean = GoodsCache.readGoodsBean(SecKilBean.class, "home_banner");
+        showSecKilBean(tmpSecKilBean);
+
+        mViewModel.getSecKilData().observe(getViewLifecycleOwner(), secKilBean -> {
+            showSecKilBean(secKilBean);
+            GoodsCache.saveGoodsBean(secKilBean, "home_banner");
+        });
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void showSecKilBean(SecKilBean secKilBean) {
+        if (secKilBean == null || secKilBean.getGoodsList() == null || secKilBean.getRoundsList().size() <= 0
+                || secKilBean.getGoodsList().size() < 2) {
+            mDataBinding.homeBannerLl.setVisibility(View.GONE);
+            return;
+        }
+
+        mDataBinding.homeBannerLl.setVisibility(View.VISIBLE);
+
+        SecKilBean.goodsInfo goodsInfo = secKilBean.getGoodsList().get(0);
+        Glide.with(this).load(UrlUtils.formatUrlPrefix(goodsInfo.getMainPic())).into(mDataBinding.homeSeckilRiv1);
+        mDataBinding.homeSeckilTv1.setText("直降" + goodsInfo.getDiscounts());
+        mDataBinding.homeSeckilPriceTv1.setText("￥" + goodsInfo.getActualPrice());
+        goodsInfo = secKilBean.getGoodsList().get(1);
+        Glide.with(this).load(UrlUtils.formatUrlPrefix(goodsInfo.getMainPic())).into(mDataBinding.homeSeckilRiv2);
+        mDataBinding.homeSeckilTv2.setText("直降" + goodsInfo.getDiscounts());
+        mDataBinding.homeSeckilPriceTv2.setText("￥" + goodsInfo.getActualPrice());
+        if (secKilBean.getGoodsList().size() > 2) {
+            goodsInfo = secKilBean.getGoodsList().get(2);
+            Glide.with(this).load(UrlUtils.formatUrlPrefix(goodsInfo.getMainPic())).into(mDataBinding.homeSeckilRiv3);
+            mDataBinding.homeSeckilTv3.setText("直降" + goodsInfo.getDiscounts());
+            mDataBinding.homeSeckilPriceTv3.setText("￥" + goodsInfo.getActualPrice());
+        }
+        if (secKilBean.getGoodsList().size() > 3) {
+            goodsInfo = secKilBean.getGoodsList().get(3);
+            Glide.with(this).load(UrlUtils.formatUrlPrefix(goodsInfo.getMainPic())).into(mDataBinding.homeSeckilRiv4);
+            mDataBinding.homeSeckilTv4.setText("直降" + goodsInfo.getDiscounts());
+            mDataBinding.homeSeckilPriceTv4.setText("￥" + goodsInfo.getActualPrice());
+        }
+    }
+
 
     @Override
     public void onResume() {

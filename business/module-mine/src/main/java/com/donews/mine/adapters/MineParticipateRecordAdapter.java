@@ -2,6 +2,7 @@ package com.donews.mine.adapters;
 
 import android.graphics.Paint;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -9,9 +10,13 @@ import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.ConvertUtils;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
+import com.donews.base.utils.ToastUtil;
+import com.donews.base.utils.glide.GlideUtils;
 import com.donews.mine.R;
+import com.donews.mine.bean.resps.RecommendGoodsResp;
 import com.donews.mine.views.refresh.adapters.BaesLoadMoreAdapter;
 import com.donews.mine.views.SectionCornerMessageLayout;
+import com.donews.utilslibrary.utils.UrlUtils;
 
 import java.util.List;
 
@@ -21,7 +26,7 @@ import java.util.List;
  * Description:
  * 参与记录 的适配器
  */
-public class MineParticipateRecordAdapter extends BaesLoadMoreAdapter<Object, BaseViewHolder> {
+public class MineParticipateRecordAdapter extends BaesLoadMoreAdapter<RecommendGoodsResp.ListDTO, BaseViewHolder> {
 
     @NonNull
     @Override
@@ -42,12 +47,20 @@ public class MineParticipateRecordAdapter extends BaesLoadMoreAdapter<Object, Ba
         super(R.layout.mine_participate_record_list_item);
     }
 
-    public MineParticipateRecordAdapter(int layoutResId, @Nullable List<Object> data) {
+    public MineParticipateRecordAdapter(int layoutResId, @Nullable List<RecommendGoodsResp.ListDTO> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(@NonNull BaseViewHolder baseViewHolder, @Nullable Object o) {
-
+    protected void convert(@NonNull BaseViewHolder helper, @Nullable RecommendGoodsResp.ListDTO item) {
+        ImageView icon = helper.getView(R.id.mine_par_reco_list_icon);
+        GlideUtils.loadImageView(icon.getContext(), UrlUtils.formatUrlPrefix(item.mainPic), icon);
+        helper.setText(R.id.mine_par_reco_list_title, item.title)
+                .setText(R.id.mine_par_reco_list_count_num, "¥" + item.originalPrice)
+                .setText(R.id.mine_par_reco_list_bot_info, "累计" + item.totalPeople + "人参与抽奖");
+        helper.getView(R.id.mine_par_reco_list_count_goto)
+                .setOnClickListener(v -> {
+                    ToastUtil.show(v.getContext(), "个人中心->参与抽奖");
+                });
     }
 }

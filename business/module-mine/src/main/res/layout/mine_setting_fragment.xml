@@ -117,21 +117,31 @@
                 layout="@layout/mine_setting_fragment_item" />
 
             <View
-                style="@style/HorizontalLine"
-                android:visibility="gone"/>
+                style="@style/HorizontalLine"/>
 
             <include
                 android:id="@+id/set_qchc"
-                layout="@layout/mine_setting_fragment_item"
-                android:visibility="gone"/>
+                layout="@layout/mine_setting_fragment_item"/>
 
-            <!--<TextView
+            <View
+                style="@style/HorizontalLine"/>
+
+            <include
+                android:id="@+id/set_zxzh"
+                layout="@layout/mine_setting_fragment_item"/>
+
+            <TextView
                 android:id="@+id/tv_exit_login"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="退出登录"/>-->
+                android:layout_height="48dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:background="@drawable/mine_me_open_not_win_but"
+                android:text="退出登录"
+                android:layout_marginTop="60dp"
+                android:layout_marginBottom="30dp"/>
         </LinearLayout>
     </ScrollView>
-
-
 </layout>

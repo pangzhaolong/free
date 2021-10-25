@@ -52,17 +52,17 @@ import java.util.TimeZone;
 
 public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding, TopViewModel> implements GoodsDetailListener {
 
-    private GridAdapter mGridAdapter;
+//    private GridAdapter mGridAdapter;
     private TopGoodsAdapter mTopGoodsAdapter;
 
-    private String mCurDdqTime = "";
-    private String mNextDdqTime = "";
-    private String mCurTime = "";
+//    private String mCurDdqTime = "";
+//    private String mNextDdqTime = "";
+//    private String mCurTime = "";
     private String mNextTime = "";
 
-    private TimerHandler mTimerHandler;
+//    private TimerHandler mTimerHandler;
 
-    private DataBean mDataBean = null;
+//    private DataBean mDataBean = null;
 
     @Override
     public int getLayoutId() {
@@ -75,35 +75,35 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mDataBinding.homeTopBannerViewPager
-                .setLifecycleRegistry(getLifecycle())
-                .setAdapter(new TopBannerViewAdapter(this.getContext())).create();
-
-        mTimerHandler = new TimerHandler(Looper.getMainLooper(), this);
+//        mDataBinding.homeTopBannerViewPager
+//                .setLifecycleRegistry(getLifecycle())
+//                .setAdapter(new TopBannerViewAdapter(this.getContext())).create();
+//
+//        mTimerHandler = new TimerHandler(Looper.getMainLooper(), this);
 
         mTopGoodsAdapter = new TopGoodsAdapter(this.getContext(), this);
-        mGridAdapter = new GridAdapter(this.getContext());
-        mDataBinding.homeTopBannerViewPager.setCanLoop(true);
+//        mGridAdapter = new GridAdapter(this.getContext());
+//        mDataBinding.homeTopBannerViewPager.setCanLoop(true);
         LogUtil.e("TopFragment onViewCreated");
 
-        mDataBean = GoodsCache.readGoodsBean(DataBean.class, "");
-        if (mDataBean != null && mDataBean.getBannners() != null && mDataBean.getBannners().size() > 0) {
-            LogUtil.e("TopFragment tmpDataBean in :" + mDataBean);
-//            mDataBinding.homeTopBannerViewPager.refreshData(mDataBean.getBannners());
-            mGridAdapter.refreshData(mDataBean.getSpecial_category());
-        }
+//        mDataBean = GoodsCache.readGoodsBean(DataBean.class, "");
+//        if (mDataBean != null && mDataBean.getBannners() != null && mDataBean.getBannners().size() > 0) {
+//            LogUtil.e("TopFragment tmpDataBean in :" + mDataBean);
+////            mDataBinding.homeTopBannerViewPager.refreshData(mDataBean.getBannners());
+//            mGridAdapter.refreshData(mDataBean.getSpecial_category());
+//        }
 
-        mViewModel.getTopBannerData().observe(getViewLifecycleOwner(), dataBean -> {
-            // 获取数据
-            if (dataBean == null) {
-                // 处理接口出错的问题
-                return;
-            }
-            mDataBean = dataBean;
-//            mDataBinding.homeTopBannerViewPager.refreshData(dataBean.getBannners());
-            mGridAdapter.refreshData(dataBean.getSpecial_category());
-            GoodsCache.saveGoodsBean(dataBean, "");
-        });
+//        mViewModel.getTopBannerData().observe(getViewLifecycleOwner(), dataBean -> {
+//            // 获取数据
+//            if (dataBean == null) {
+//                // 处理接口出错的问题
+//                return;
+//            }
+//            mDataBean = dataBean;
+////            mDataBinding.homeTopBannerViewPager.refreshData(dataBean.getBannners());
+//            mGridAdapter.refreshData(dataBean.getSpecial_category());
+//            GoodsCache.saveGoodsBean(dataBean, "");
+//        });
 
         TopGoodsBean goodsBean = GoodsCache.readGoodsBean(TopGoodsBean.class, "");
         if (goodsBean != null && goodsBean.getList() != null && goodsBean.getList().size() > 0) {
@@ -120,20 +120,20 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
             GoodsCache.saveGoodsBean(topGoodsBean, "");
         });
 
-        RealTimeBean tempRealTimeBean = GoodsCache.readGoodsBean(RealTimeBean.class, "top");
+        /*RealTimeBean tempRealTimeBean = GoodsCache.readGoodsBean(RealTimeBean.class, "top");
         showRealTimeBean(tempRealTimeBean);
 
         mViewModel.getRealTimeData().observe(getViewLifecycleOwner(), realTimeBean -> {
             showRealTimeBean(realTimeBean);
             GoodsCache.saveGoodsBean(realTimeBean, "top");
-        });
+        });*/
 
-        loadSecKilData();
+//        loadSecKilData();
 
-        mDataBinding.homeTopItem2Rl.setOnClickListener(v -> EventBus.getDefault().post(new NavEvent(2)));
-        mDataBinding.homeTopItem1Rl.setOnClickListener(v -> ARouter.getInstance().build(RouterActivityPath.RealTime.REALTIME_DETAIL).navigation());
+//        mDataBinding.homeTopItem2Rl.setOnClickListener(v -> EventBus.getDefault().post(new NavEvent(2)));
+//        mDataBinding.homeTopItem1Rl.setOnClickListener(v -> ARouter.getInstance().build(RouterActivityPath.RealTime.REALTIME_DETAIL).navigation());
 
-        mDataBinding.homeColumnGv.setAdapter(mGridAdapter);
+//        mDataBinding.homeColumnGv.setAdapter(mGridAdapter);
 
         mDataBinding.homeGoodProductRv.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
@@ -169,11 +169,11 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
     }
 
     private void showRealTimeBean(RealTimeBean realTimeBean) {
-        if (realTimeBean == null || realTimeBean.getList() == null || realTimeBean.getList().size() < 2) {
+        /*if (realTimeBean == null || realTimeBean.getList() == null || realTimeBean.getList().size() < 2) {
             mDataBinding.homeTopTjLl.setVisibility(View.GONE);
             return;
-        }
-        mDataBinding.homeTopTjLl.setVisibility(View.VISIBLE);
+        }*/
+        /*mDataBinding.homeTopTjLl.setVisibility(View.VISIBLE);
         Glide.with(this).load(realTimeBean.getList().get(0).getMainPic()).into(mDataBinding.homeTopTj1ItemIv1);
         float sales = realTimeBean.getList().get(0).getTwoHoursSales();
         if (sales > 10000) {
@@ -192,10 +192,10 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
         } else {
             mDataBinding.homeTopTj1ItemTv2.setText("2小时抢" + sales);
         }
-        mDataBinding.homeTopTj1ItemPriceTv2.setText(realTimeBean.getList().get(1).getActualPrice() + "");
+        mDataBinding.homeTopTj1ItemPriceTv2.setText(realTimeBean.getList().get(1).getActualPrice() + "");*/
     }
 
-    @SuppressLint({"DefaultLocale", "SetTextI18n"})
+    /*@SuppressLint({"DefaultLocale", "SetTextI18n"})
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void loadSecKilData() {
         SecKilBean tmpSecKilBean = GoodsCache.readGoodsBean(SecKilBean.class, "top");
@@ -345,7 +345,7 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
             fragment.mTimerHandler.sendEmptyMessageDelayed(10001, 1000);
         }
     }
-
+*/
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -389,11 +389,11 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
         super.onDestroy();
 
         LogUtil.e("TopFragment onDestroy");
-
+/*
         if (mTimerHandler != null) {
             mTimerHandler.removeCallbacksAndMessages(null);
             mTimerHandler = null;
-        }
+        }*/
     }
 
     @Override

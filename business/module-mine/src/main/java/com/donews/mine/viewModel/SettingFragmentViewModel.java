@@ -53,6 +53,7 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
             add("关于我们");
             add("清除缓存");
             add("分享App");
+            add("账户注销");
         }
     };
     //点击监听
@@ -93,6 +94,11 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
             });
             put(5, (Runnable) () -> {//分享APP
                 ToastUtil.show(baseActivity, "分享APP");
+            });
+            put(6, (Runnable) () -> {//账户注销
+                ARouter.getInstance()
+                        .build(RouterActivityPath.Mine.PAGER_MINEUSER_CANCELLATION_ACTIVITY)
+                        .navigation();
             });
         }
     };

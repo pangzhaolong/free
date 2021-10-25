@@ -6,6 +6,7 @@
     <data></data>
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/main_win_code_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
@@ -21,23 +22,28 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:background="@drawable/mine_title_bar">
-                <ImageView
-                    android:layout_width="56dp"
-                    android:layout_height="match_parent"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="20dp"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="20dp"
-                    android:src="@drawable/common_back_black"/>
+                android:layout_height="wrap_content"
+                android:background="@drawable/mine_me_open_top_bg"
+                android:fitsSystemWindows="true">
+
                 <TextView
                     android:id="@+id/main_win_code_title_name"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="56dp"
                     android:gravity="center"
-                    android:text="xxxxxx期开奖码"
-                    android:textColor="@color/white"/>
+                    android:text="xxxxxx期"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/main_win_code_title_back"
+                    android:layout_width="56dp"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingBottom="20dp"
+                    android:src="@drawable/common_back_black" />
             </FrameLayout>
 
             <androidx.recyclerview.widget.RecyclerView

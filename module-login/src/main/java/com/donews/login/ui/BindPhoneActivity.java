@@ -1,6 +1,7 @@
 package com.donews.login.ui;
 
 import android.graphics.Color;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -10,6 +11,8 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -55,7 +58,6 @@ public class BindPhoneActivity extends MvvmBaseLiveDataActivity<LoginBindPhoneAc
             }
         }
     };
-
 
     @Override
     public void initView() {
@@ -143,7 +145,6 @@ public class BindPhoneActivity extends MvvmBaseLiveDataActivity<LoginBindPhoneAc
             loadingHintDialog.disMissDialog();
         }
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-
     }
 
 

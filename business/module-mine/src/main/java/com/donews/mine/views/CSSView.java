@@ -40,9 +40,9 @@ public class CSSView extends LinearLayout {
         mCcsItemViews[6] = findViewById(R.id.mine_css_item7);
     }
 
-    private void refreshData(List<CSBean> list) {
-//        mCsBeanList.clear();
-//        mCsBeanList.addAll(list);
+    public void refreshData(List<CSBean> list) {
+        mCsBeanList.clear();
+        mCsBeanList.addAll(list);
         if (mCsBeanList.size() != 7) {
             return;
         }

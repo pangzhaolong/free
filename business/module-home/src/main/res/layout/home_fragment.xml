@@ -31,7 +31,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="4dp"
+                    android:layout_marginStart="10dp"
                     android:src="@drawable/home_jdd_search" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -105,7 +105,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="20dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/home_banner_bg"
@@ -177,7 +177,6 @@
                                 android:gravity="center"
                                 android:text="正在疯抢中 "
                                 android:textColor="@color/white" />
-
                         </RelativeLayout>
 
                         <LinearLayout
@@ -201,12 +200,16 @@
                                     android:layout_height="wrap_content">
 
                                     <org.raphets.roundimageview.RoundImageView
+                                        android:id="@+id/home_seckil_riv1"
                                         android:layout_width="62dp"
                                         android:layout_height="62dp"
-                                        android:background="@color/white"
+                                        android:scaleType="fitXY"
+                                        app:corner_radius="5dp"
+                                        app:type="round"
                                         tools:ignore="TooDeepLayout" />
 
                                     <TextView
+                                        android:id="@+id/home_seckil_tv1"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="left|bottom"
@@ -214,16 +217,20 @@
                                         android:gravity="center"
                                         android:text="直降￥200"
                                         android:textColor="#E9423E"
-                                        android:textSize="10sp" />
+                                        android:textSize="10sp"
+                                        tools:ignore="RtlHardcoded,SmallSp" />
                                 </FrameLayout>
 
                                 <TextView
+                                    android:id="@+id/home_seckil_price_tv1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="6dp"
                                     android:background="@drawable/home_banner_item_bg"
-                                    android:paddingStart="20dp"
-                                    android:paddingEnd="20dp"
+                                    android:ellipsize="end"
+                                    android:maxLines="1"
+                                    android:paddingStart="10dp"
+                                    android:paddingEnd="10dp"
                                     android:text="￥48"
                                     android:textColor="#E9423E"
                                     android:textSize="15sp" />
@@ -242,12 +249,16 @@
                                     android:layout_height="wrap_content">
 
                                     <org.raphets.roundimageview.RoundImageView
+                                        android:id="@+id/home_seckil_riv2"
                                         android:layout_width="62dp"
                                         android:layout_height="62dp"
-                                        android:background="@color/white"
+                                        android:scaleType="fitXY"
+                                        app:corner_radius="5dp"
+                                        app:type="round"
                                         tools:ignore="TooDeepLayout" />
 
                                     <TextView
+                                        android:id="@+id/home_seckil_tv2"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="left|bottom"
@@ -259,12 +270,15 @@
                                 </FrameLayout>
 
                                 <TextView
+                                    android:id="@+id/home_seckil_price_tv2"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="6dp"
                                     android:background="@drawable/home_banner_item_bg"
-                                    android:paddingStart="20dp"
-                                    android:paddingEnd="20dp"
+                                    android:ellipsize="end"
+                                    android:maxLines="1"
+                                    android:paddingStart="10dp"
+                                    android:paddingEnd="10dp"
                                     android:text="￥48"
                                     android:textColor="#E9423E"
                                     android:textSize="15sp" />
@@ -283,12 +297,16 @@
                                     android:layout_height="wrap_content">
 
                                     <org.raphets.roundimageview.RoundImageView
+                                        android:id="@+id/home_seckil_riv3"
                                         android:layout_width="62dp"
                                         android:layout_height="62dp"
-                                        android:background="@color/white"
+                                        android:scaleType="fitXY"
+                                        app:corner_radius="5dp"
+                                        app:type="round"
                                         tools:ignore="TooDeepLayout" />
 
                                     <TextView
+                                        android:id="@+id/home_seckil_tv3"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="left|bottom"
@@ -300,12 +318,15 @@
                                 </FrameLayout>
 
                                 <TextView
+                                    android:id="@+id/home_seckil_price_tv3"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="6dp"
                                     android:background="@drawable/home_banner_item_bg"
-                                    android:paddingStart="20dp"
-                                    android:paddingEnd="20dp"
+                                    android:ellipsize="end"
+                                    android:maxLines="1"
+                                    android:paddingStart="10dp"
+                                    android:paddingEnd="10dp"
                                     android:text="￥48"
                                     android:textColor="#E9423E"
                                     android:textSize="15sp" />
@@ -324,12 +345,16 @@
                                     android:layout_height="wrap_content">
 
                                     <org.raphets.roundimageview.RoundImageView
+                                        android:id="@+id/home_seckil_riv4"
                                         android:layout_width="62dp"
                                         android:layout_height="62dp"
-                                        android:background="@color/white"
+                                        android:scaleType="fitXY"
+                                        app:corner_radius="5dp"
+                                        app:type="round"
                                         tools:ignore="TooDeepLayout" />
 
                                     <TextView
+                                        android:id="@+id/home_seckil_tv4"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="left|bottom"
@@ -341,12 +366,15 @@
                                 </FrameLayout>
 
                                 <TextView
+                                    android:id="@+id/home_seckil_price_tv4"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="6dp"
                                     android:background="@drawable/home_banner_item_bg"
-                                    android:paddingStart="20dp"
-                                    android:paddingEnd="20dp"
+                                    android:ellipsize="end"
+                                    android:maxLines="1"
+                                    android:paddingStart="10dp"
+                                    android:paddingEnd="10dp"
                                     android:text="￥48"
                                     android:textColor="#E9423E"
                                     android:textSize="15sp" />
@@ -361,9 +389,11 @@
                     android:id="@+id/home_category_tl"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_40"
-                    app:tabIndicatorColor="@color/white"
-                    app:tabSelectedTextColor="@color/white"
-                    app:tabTextColor="#eeeeee" />
+                    android:background="@color/white"
+                    app:tabIndicatorColor="@color/transparent"
+                    app:tabIndicatorHeight="0dp"
+                    app:tabSelectedTextColor="#F64A43"
+                    app:tabTextColor="#6D6D6D" />
 
             </com.google.android.material.appbar.AppBarLayout>
 

@@ -50,6 +50,21 @@ public class RouterActivityPath {
         private static final String MINE = "/mine";
 
         /**
+         * 注销账户原因弹窗
+         */
+        public static final String DIALOG_USER_CANCELLATION_WHY_DIALOG_FRAGMENT = MINE + "/UserCancellationWhyDialogFragment";
+
+        /**
+         * 账户注销页面
+         */
+        public static final String PAGER_MINEUSER_CANCELLATION_ACTIVITY = MINE + "/MineUserCancellationActivity";
+
+        /**
+         * 设置页面
+         */
+        public static final String PAGER_ACTIVITY_SETTING = MINE + "/SettingActivity";
+
+        /**
          * 参与记录
          */
         public static final String PAGER_PARTICIPATE_RECORD = MINE + "/participateRecord";

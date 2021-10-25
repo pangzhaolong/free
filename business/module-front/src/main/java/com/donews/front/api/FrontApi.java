@@ -11,6 +11,7 @@ import com.donews.front.BuildConfig;
  */
 public class FrontApi {
 
-    public final static String lotteryCategoryUrl = BuildConfig.API_LOTTERY_URL + "/v1/categories";
-    public final static String lotteryGoodsUrl = BuildConfig.API_LOTTERY_URL + "/v1/goods-list";
+    public final static String lotteryCategoryUrl = BuildConfig.API_LOTTERY_URL + "v1/categories";
+    public final static String lotteryGoodsUrl = BuildConfig.API_LOTTERY_URL + "v1/goods-list";
+    public final static String walletRedPacketUrl = BuildConfig.API_WALLET_URL + "v1/red-packet";
 }
