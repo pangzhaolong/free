@@ -12,13 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.donews.base.fragment.MvvmLazyLiveDataFragment;
+import com.donews.common.router.RouterFragmentPath;
 import com.donews.front.adapter.GiftGoodsAdapter;
 import com.donews.front.adapter.NorGoodsAdapter;
 import com.donews.front.bean.LotteryCategoryBean;
 import com.donews.front.databinding.FrontNorFragmentBinding;
 import com.donews.front.viewModel.NorViewModel;
 
-public class NorFragment extends MvvmLazyLiveDataFragment<FrontNorFragmentBinding, NorViewModel> implements NorClickListener{
+public class NorFragment extends MvvmLazyLiveDataFragment<FrontNorFragmentBinding, NorViewModel> implements NorClickListener {
 
     private NorGoodsAdapter mNorGoodsAdapter;
     LotteryCategoryBean.categoryBean mCategoryBean;
@@ -38,8 +39,8 @@ public class NorFragment extends MvvmLazyLiveDataFragment<FrontNorFragmentBindin
         super.onViewCreated(view, savedInstanceState);
 
         mDataBinding.frontNorSrl.setEnabled(false);
-        mDataBinding.frontNorLoadingLl.setVisibility(View.GONE);
-        mDataBinding.frontNorRv.setVisibility(View.VISIBLE);
+        mDataBinding.frontNorLoadingLl.setVisibility(View.VISIBLE);
+        mDataBinding.frontNorRv.setVisibility(View.GONE);
         mNorGoodsAdapter = new NorGoodsAdapter(this.getContext(), this);
         mDataBinding.frontNorRv.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
@@ -56,6 +57,8 @@ public class NorFragment extends MvvmLazyLiveDataFragment<FrontNorFragmentBindin
             }
 
             mNorGoodsAdapter.refreshData(norGoodsBean.getList());
+            mDataBinding.frontNorLoadingLl.setVisibility(View.GONE);
+            mDataBinding.frontNorRv.setVisibility(View.VISIBLE);
         });
 
     }
@@ -63,5 +66,8 @@ public class NorFragment extends MvvmLazyLiveDataFragment<FrontNorFragmentBindin
     @Override
     public void onClick(String goodsId) {
 //        ARouter.getInstance().build()
+        ARouter.getInstance()
+                .build(RouterFragmentPath.Lottery.PAGER_LOTTERY).withString("goods_id", goodsId)
+                .navigation();
     }
 }

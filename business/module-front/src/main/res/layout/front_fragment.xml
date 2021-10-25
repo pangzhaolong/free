@@ -174,7 +174,6 @@
                                             android:id="@+id/front_rp_ll"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
-                                            android:layout_below="@+id/front_cash_get_tv"
                                             android:layout_marginTop="10dp"
                                             android:paddingTop="5dp"
                                             android:paddingBottom="5dp"
@@ -304,12 +303,13 @@
                                         <FrameLayout
                                             android:layout_width="match_parent"
                                             android:layout_height="10dp"
-                                            android:layout_marginStart="20dp"
-                                            android:layout_marginTop="10dp"
-                                            android:layout_marginEnd="20dp"
+                                            android:layout_marginStart="10dp"
+                                            android:layout_marginTop="6dp"
+                                            android:layout_marginEnd="10dp"
                                             android:layout_marginBottom="20dp">
 
                                             <ProgressBar
+                                                android:id="@+id/front_rp_progess"
                                                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                                                 android:layout_width="match_parent"
                                                 android:layout_height="3dp"
@@ -329,12 +329,12 @@
                                                     android:layout_height="10dp"
                                                     android:layout_weight="1">
 
-                                                    <ImageView
+                                                    <View
+                                                        android:id="@+id/front_rp_progress_iv1"
                                                         android:layout_width="10dp"
                                                         android:layout_height="10dp"
                                                         android:layout_gravity="center"
-                                                        android:background="#FFFCEE"
-                                                        android:src="@drawable/front_dot_bg" />
+                                                        android:background="@drawable/front_dot_bg" />
                                                 </FrameLayout>
 
                                                 <FrameLayout
@@ -342,12 +342,12 @@
                                                     android:layout_height="10dp"
                                                     android:layout_weight="1">
 
-                                                    <ImageView
+                                                    <View
+                                                        android:id="@+id/front_rp_progress_iv2"
                                                         android:layout_width="10dp"
                                                         android:layout_height="10dp"
                                                         android:layout_gravity="center"
-                                                        android:background="#FFFCEE"
-                                                        android:src="@drawable/front_dot_bg" />
+                                                        android:background="@drawable/front_dot_bg" />
                                                 </FrameLayout>
 
                                                 <FrameLayout
@@ -355,12 +355,12 @@
                                                     android:layout_height="10dp"
                                                     android:layout_weight="1">
 
-                                                    <ImageView
+                                                    <View
+                                                        android:id="@+id/front_rp_progress_iv3"
                                                         android:layout_width="10dp"
                                                         android:layout_height="10dp"
                                                         android:layout_gravity="center"
-                                                        android:background="#FFFCEE"
-                                                        android:src="@drawable/front_dot_close_bg" />
+                                                        android:background="@drawable/front_dot_bg" />
                                                 </FrameLayout>
 
                                                 <FrameLayout
@@ -368,12 +368,12 @@
                                                     android:layout_height="10dp"
                                                     android:layout_weight="1">
 
-                                                    <ImageView
+                                                    <View
+                                                        android:id="@+id/front_rp_progress_iv4"
                                                         android:layout_width="10dp"
                                                         android:layout_height="10dp"
                                                         android:layout_gravity="center"
-                                                        android:background="#FFFCEE"
-                                                        android:src="@drawable/front_dot_close_bg" />
+                                                        android:background="@drawable/front_dot_bg" />
                                                 </FrameLayout>
 
                                                 <FrameLayout
@@ -381,12 +381,12 @@
                                                     android:layout_height="10dp"
                                                     android:layout_weight="1">
 
-                                                    <ImageView
+                                                    <View
+                                                        android:id="@+id/front_rp_progress_iv5"
                                                         android:layout_width="10dp"
                                                         android:layout_height="10dp"
                                                         android:layout_gravity="center"
-                                                        android:background="#FFFCEE"
-                                                        android:src="@drawable/front_dot_close_bg" />
+                                                        android:background="@drawable/front_dot_bg" />
                                                 </FrameLayout>
                                             </LinearLayout>
                                         </FrameLayout>
@@ -415,56 +415,15 @@
                                     android:textSize="16sp"
                                     android:textStyle="bold" />
 
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginTop="5dp"
-                                    android:layout_marginEnd="10dp"
-                                    android:layout_marginBottom="5dp"
-                                    android:background="@drawable/front_gift_info_bg">
-
-                                    <com.donews.front.views.VScrollLinearLayout
-                                        android:id="@+id/front_v_scroll_ll"
+                                    <com.donews.front.views.BarrageView
+                                        android:id="@+id/front_barrage_view"
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="20dp"
-                                        android:layout_marginTop="40dp"
+                                        android:layout_height="35dp"
+                                        android:layout_gravity="center_vertical"
                                         android:layout_marginEnd="10dp"
-                                        android:background="@color/transparent">
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="match_parent"
-                                            android:layout_marginTop="5dp"
-                                            android:layout_marginBottom="5dp"
-                                            android:gravity="center"
-                                            android:text="恭喜"
-                                            android:textColor="#D17500"
-                                            android:textSize="14sp"
-                                            android:textStyle="bold" />
-
-                                        <ImageView
-                                            android:id="@+id/front_gift_head_iv"
-                                            android:layout_width="35dp"
-                                            android:layout_height="35dp"
-                                            android:background="@color/transparent"
-                                            android:padding="5dp"
-                                            android:scaleType="matrix" />
-
-                                        <TextView
-                                            android:id="@+id/front_gift_text"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="match_parent"
-                                            android:layout_marginTop="5dp"
-                                            android:layout_marginBottom="5dp"
-                                            android:gravity="center"
-                                            android:text="%s X9527抽中"
-                                            android:textColor="#D17500"
-                                            android:textSize="14sp"
-                                            android:textStyle="bold" />
-                                    </com.donews.front.views.VScrollLinearLayout>
-
-                                </LinearLayout>
+                                        android:background="@drawable/front_gift_info_bg"
+                                        android:orientation="horizontal">
+                                    </com.donews.front.views.BarrageView>
 
                             </LinearLayout>
                         </LinearLayout>

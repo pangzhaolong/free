@@ -5,6 +5,7 @@ android {
         buildConfigField("String", "BASE_URL", "\"${rootProject.API_SHOP_URL}\"")
         buildConfigField("String", "API_LOTTERY_URL", "\"${rootProject.API_LOTTERY_URL}\"")
         buildConfigField("String", "API_WALLET_URL", "\"${rootProject.API_WALLET_URL}\"")
+        buildConfigField("String", "API_USER_URL", "\"${rootProject.API_USER_URL}\"")
         buildConfigField("String", "TASK_URL", "\"${rootProject.TASK_URL}\"")
         buildConfigField("String", "BASE_CONFIG_URL", "\"${rootProject.BASE_CONFIG_URL}\"")
         buildConfigField("String", "BASE_RULE_URL", "\"${rootProject.BASE_RULE}\"")

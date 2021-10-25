@@ -49,18 +49,18 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
         mContext = this.getContext();
 
-        Glide.with(this).load("https://wx4.sinaimg.cn/orj360/95936907ly8gdi6ssvmecj20u00u0q51.jpg").into(mDataBinding.frontGiftHeadIv);
+        /*Glide.with(this).load("https://wx4.sinaimg.cn/orj360/95936907ly8gdi6ssvmecj20u00u0q51.jpg").into(mDataBinding.frontGiftHeadIv);
         mDataBinding.frontGiftText.setText(Html.fromHtml(String.format(getString(R.string.front_gift_text),
                 "x9527", "iPhone13")));
 
-        mDataBinding.frontVScrollLl.startLoop();
+        mDataBinding.frontVScrollLl.startLoop();*/
 
         mFragmentAdapter = new FragmentAdapter(this);
         mDataBinding.frontVp2.setAdapter(mFragmentAdapter);
         mDataBinding.frontCategoryTl.setTabMode(TabLayout.MODE_SCROLLABLE);
 
         TabLayoutMediator tab = new TabLayoutMediator(mDataBinding.frontCategoryTl, mDataBinding.frontVp2, (tab1, position) -> {
-            if (position == 0) {
+            /*if (position == 0) {
                 tab1.setCustomView(new TabItem(mContext));
                 TabItem tabItem = (TabItem) tab1.getCustomView();
                 assert tabItem != null;
@@ -76,7 +76,16 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                 if (mLotteryCategoryBean.getList() == null) {
                 }
                 tabItem.setTitle(mLotteryCategoryBean.getList().get(position - 1).getName());
+            }*/
+            tab1.setCustomView(new TabItem(mContext));
+            TabItem tabItem = (TabItem) tab1.getCustomView();
+            assert tabItem != null;
+            if (mLotteryCategoryBean == null) {
+                return;
             }
+            if (mLotteryCategoryBean.getList() == null) {
+            }
+            tabItem.setTitle(mLotteryCategoryBean.getList().get(position).getName());
         });
         tab.attach();
 
@@ -130,8 +139,12 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         if (rpBean.getHadLotteryTotal() == -1) {
             mDataBinding.frontRpIv1.setAlpha(0.5f);
             mDataBinding.frontRpTv1.setText(rpBean.getLotteryTotal() + "/" + rpBean.getLotteryTotal());
+            mDataBinding.frontRpProgess.setProgress(rpBean.getLotteryTotal());
+            mDataBinding.frontRpProgressIv1.setBackgroundResource(R.drawable.front_dot_bg);
         } else {
             mDataBinding.frontRpTv1.setText(rpBean.getHadLotteryTotal() + "/" + rpBean.getLotteryTotal());
+            mDataBinding.frontRpProgess.setProgress(rpBean.getHadLotteryTotal());
+            mDataBinding.frontRpProgressIv1.setBackgroundResource(R.drawable.front_dot_close_bg);
         }
         if (!rpBean.getOpened()) {
             if (rpBean.getHadLotteryTotal() < rpBean.getLotteryTotal()) {
@@ -148,8 +161,12 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         if (rpBean.getHadLotteryTotal() == -1) {
             mDataBinding.frontRpIv2.setAlpha(0.5f);
             mDataBinding.frontRpTv2.setText(rpBean.getLotteryTotal() + "/" + rpBean.getLotteryTotal());
+            mDataBinding.frontRpProgess.setProgress(rpBean.getLotteryTotal());
+            mDataBinding.frontRpProgressIv2.setBackgroundResource(R.drawable.front_dot_bg);
         } else {
             mDataBinding.frontRpTv2.setText(rpBean.getHadLotteryTotal() + "/" + rpBean.getLotteryTotal());
+            mDataBinding.frontRpProgess.setProgress(rpBean.getHadLotteryTotal());
+            mDataBinding.frontRpProgressIv2.setBackgroundResource(R.drawable.front_dot_close_bg);
         }
         if (!rpBean.getOpened()) {
             if (rpBean.getHadLotteryTotal() != -1 && rpBean.getHadLotteryTotal() < rpBean.getLotteryTotal()) {
@@ -166,8 +183,12 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         if (rpBean.getHadLotteryTotal() == -1) {
             mDataBinding.frontRpIv3.setAlpha(0.5f);
             mDataBinding.frontRpTv3.setText(rpBean.getLotteryTotal() + "/" + rpBean.getLotteryTotal());
+            mDataBinding.frontRpProgess.setProgress(rpBean.getLotteryTotal());
+            mDataBinding.frontRpProgressIv3.setBackgroundResource(R.drawable.front_dot_bg);
         } else {
             mDataBinding.frontRpTv3.setText(rpBean.getHadLotteryTotal() + "/" + rpBean.getLotteryTotal());
+            mDataBinding.frontRpProgess.setProgress(rpBean.getHadLotteryTotal());
+            mDataBinding.frontRpProgressIv3.setBackgroundResource(R.drawable.front_dot_close_bg);
         }
         if (!rpBean.getOpened()) {
             if (rpBean.getHadLotteryTotal() != -1 && rpBean.getHadLotteryTotal() < rpBean.getLotteryTotal()) {
@@ -184,8 +205,12 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         if (rpBean.getHadLotteryTotal() == -1) {
             mDataBinding.frontRpIv4.setAlpha(0.5f);
             mDataBinding.frontRpTv4.setText(rpBean.getLotteryTotal() + "/" + rpBean.getLotteryTotal());
+            mDataBinding.frontRpProgess.setProgress(rpBean.getLotteryTotal());
+            mDataBinding.frontRpProgressIv4.setBackgroundResource(R.drawable.front_dot_bg);
         } else {
             mDataBinding.frontRpTv4.setText(rpBean.getHadLotteryTotal() + "/" + rpBean.getLotteryTotal());
+            mDataBinding.frontRpProgess.setProgress(rpBean.getHadLotteryTotal());
+            mDataBinding.frontRpProgressIv4.setBackgroundResource(R.drawable.front_dot_close_bg);
         }
         if (!rpBean.getOpened()) {
             if (rpBean.getHadLotteryTotal() != -1 && rpBean.getHadLotteryTotal() < rpBean.getLotteryTotal()) {
@@ -202,8 +227,12 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         if (rpBean.getHadLotteryTotal() == -1) {
             mDataBinding.frontRpIv5.setAlpha(0.5f);
             mDataBinding.frontRpTv5.setText(rpBean.getLotteryTotal() + "/" + rpBean.getLotteryTotal());
+            mDataBinding.frontRpProgess.setProgress(rpBean.getLotteryTotal());
+            mDataBinding.frontRpProgressIv5.setBackgroundResource(R.drawable.front_dot_bg);
         } else {
             mDataBinding.frontRpTv5.setText(rpBean.getHadLotteryTotal() + "/" + rpBean.getLotteryTotal());
+            mDataBinding.frontRpProgess.setProgress(rpBean.getHadLotteryTotal());
+            mDataBinding.frontRpProgressIv5.setBackgroundResource(R.drawable.front_dot_close_bg);
         }
         if (!rpBean.getOpened()) {
             if (rpBean.getHadLotteryTotal() != -1 && rpBean.getHadLotteryTotal() < rpBean.getLotteryTotal()) {
@@ -214,19 +243,26 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         } else {
             mDataBinding.frontRpIv5.setBackgroundResource(R.drawable.front_rp_open);
         }
+        mDataBinding.frontRpProgess.setMax(rpBean.getLotteryTotal());
     }
 
     @Override
     public void onResume() {
         super.onResume();
-//        mDataBinding.frontVScrollLl.startLoop();
+        mDataBinding.frontBarrageView.resumeScroll();
         loadRpData();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-//        mDataBinding.frontVScrollLl.stopLoop();
+        mDataBinding.frontBarrageView.pauseScroll();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mDataBinding.frontBarrageView.stopScroll();
     }
 
     @Override

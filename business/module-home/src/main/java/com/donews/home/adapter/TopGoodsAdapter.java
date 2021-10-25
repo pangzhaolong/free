@@ -2,6 +2,7 @@ package com.donews.home.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
 import android.view.LayoutInflater;
@@ -65,21 +66,34 @@ public class TopGoodsAdapter extends RecyclerView.Adapter<TopGoodsAdapter.GoodsV
         Glide.with(mContext).load(UrlUtils.formatUrlPrefix(gi.getMain_pic())).into(holder.picIv);
         holder.desTv.setText(getTitleString(gi));
 
-        float sales = gi.getMonth_sales();
+        /*float sales = gi.getMonth_sales();
         if (sales >= 10000) {
             sales /= 10000;
             String strSales = String.format("%.1f", sales);
             holder.salesTv.setText("已售" + strSales + "万");
         } else {
             holder.salesTv.setText("已售" + gi.getMonth_sales());
-        }
-        holder.priceTv.setText(gi.getActual_price() + "");
-        holder.giftTv.setText(gi.getCoupon_price() + "元");
+        }*/
+        holder.priceTv.setText("￥"+gi.getOriginal_price());
+        holder.priceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
+        holder.giftTv.setText("￥"+gi.getCoupon_price() + "元券");
+        holder.actualPriveTv.setText("￥"+gi.getActual_price());
     }
 
     private SpannableString getTitleString(TopGoodsBean.goodsInfo goodsInfo) {
         String span = "d ";
-        int resId = goodsInfo.getShop_type() == 1 ? R.drawable.home_ic_tianmao : R.drawable.home_ic_taobao;
+        int resId = R.drawable.home_logo_tm;
+        switch (goodsInfo.getShop_type()) {
+            case 1:
+                resId = R.drawable.home_logo_tm;
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
         SpannableString spannableString = new SpannableString(span + goodsInfo.getDtitle());
 
         Drawable drawable = ContextCompat.getDrawable(mContext, resId);
@@ -111,7 +125,7 @@ public class TopGoodsAdapter extends RecyclerView.Adapter<TopGoodsAdapter.GoodsV
         private final ImageView picIv;
         private final TextView desTv;
         private final TextView priceTv;
-        private final TextView salesTv;
+        private final TextView actualPriveTv;
         private final TextView giftTv;
 
         public GoodsViewHolder(@NonNull View itemView) {
@@ -120,7 +134,7 @@ public class TopGoodsAdapter extends RecyclerView.Adapter<TopGoodsAdapter.GoodsV
             picIv = itemView.findViewById(R.id.home_top_goods_item_iv);
             desTv = itemView.findViewById(R.id.home_top_goods_item_des);
             priceTv = itemView.findViewById(R.id.home_top_goods_item_price_atv);
-            salesTv = itemView.findViewById(R.id.home_top_goods_item_sales);
+            actualPriveTv = itemView.findViewById(R.id.home_top_goods_item_price);
             giftTv = itemView.findViewById(R.id.home_top_goods_item_gift_atv);
         }
     }

@@ -18,11 +18,11 @@ import com.donews.common.router.RouterFragmentPath;
 import com.donews.home.adapter.FragmentAdapter;
 import com.donews.home.bean.HomeBean;
 import com.donews.home.bean.SecKilBean;
+import com.donews.home.bean.UserBean;
 import com.donews.home.cache.GoodsCache;
 import com.donews.home.databinding.HomeFragmentBinding;
 import com.donews.home.viewModel.HomeViewModel;
 import com.donews.home.views.TabItem;
-import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.UrlUtils;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -77,6 +77,7 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
         mContext = this.getContext();
 
         mFragmentAdapter = new FragmentAdapter(this);
+        loadUserList();
         loadSecKilData();
 //        mDataBinding.homeCategoryVp2.setUserInputEnabled(false);
         mDataBinding.homeCategoryVp2.setAdapter(mFragmentAdapter);
@@ -172,6 +173,28 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
             mDataBinding.homeSeckilTv4.setText("直降" + goodsInfo.getDiscounts());
             mDataBinding.homeSeckilPriceTv4.setText("￥" + goodsInfo.getActualPrice());
         }
+    }
+
+    private void loadUserList() {
+        mViewModel.getUserList().observe(getViewLifecycleOwner(), userBean -> {
+            if (userBean == null || userBean.getList() == null || userBean.getList().size() <= 0) {
+                mDataBinding.homeRandomUsersFl.setVisibility(View.GONE);
+                return;
+            }
+            mDataBinding.homeRandomUsersFl.setVisibility(View.VISIBLE);
+            UserBean.UserInfo userInfo = userBean.getList().get(0);
+            if (userInfo != null) {
+                Glide.with(this).load(UrlUtils.formatUrlPrefix(userInfo.getAvatar())).into(mDataBinding.homeBannerHeaderRiv1);
+            }
+            userInfo = userBean.getList().get(1);
+            if (userInfo != null) {
+                Glide.with(this).load(UrlUtils.formatUrlPrefix(userInfo.getAvatar())).into(mDataBinding.homeBannerHeaderRiv2);
+            }
+            userInfo = userBean.getList().get(2);
+            if (userInfo != null) {
+                Glide.with(this).load(UrlUtils.formatUrlPrefix(userInfo.getAvatar())).into(mDataBinding.homeBannerHeaderRiv3);
+            }
+        });
     }
 
 

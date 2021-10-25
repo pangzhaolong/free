@@ -8,7 +8,7 @@ ext {
     VERSION_CODE = 10000
     VERSION_NAME = "1.0.0"
     // app标识identification
-    APP_IDENTIFICATION = "jdd"
+    APP_IDENTIFICATION = "plus"
 
     //包名
     APPLICATION_ID = "com.cdyfnts.lottery.jdd.plus"
@@ -26,6 +26,8 @@ ext {
     API_LOTTERY_URL = API_BASE_URL + "lottery/"
     //钱包相关接口
     API_WALLET_URL = API_BASE_URL + "wallet/"
+    //用户相关接口
+    API_USER_URL = API_BASE_URL + "user/"
 
 
     // 正式环境base Url

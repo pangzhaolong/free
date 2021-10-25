@@ -28,9 +28,9 @@ public class NorGoodsBean extends BaseCustomViewModel {
         @SerializedName("main_pic")
         private String mainPic;
         @SerializedName("original_price")
-        private Integer originalPrice;
+        private float originalPrice;
         @SerializedName("lottery_status")
-        private Integer lotteryStatus;
+        private int lotteryStatus;
 
         public String getId() {
             return id;
@@ -64,19 +64,19 @@ public class NorGoodsBean extends BaseCustomViewModel {
             this.mainPic = mainPic;
         }
 
-        public Integer getOriginalPrice() {
+        public float getOriginalPrice() {
             return originalPrice;
         }
 
-        public void setOriginalPrice(Integer originalPrice) {
+        public void setOriginalPrice(float originalPrice) {
             this.originalPrice = originalPrice;
         }
 
-        public Integer getLotteryStatus() {
+        public int getLotteryStatus() {
             return lotteryStatus;
         }
 
-        public void setLotteryStatus(Integer lotteryStatus) {
+        public void setLotteryStatus(int lotteryStatus) {
             this.lotteryStatus = lotteryStatus;
         }
     }

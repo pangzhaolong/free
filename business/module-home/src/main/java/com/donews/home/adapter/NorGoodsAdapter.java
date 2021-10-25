@@ -83,7 +83,7 @@ public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsV
 
     private SpannableString getTitleString(NorGoodsBean.goodsInfo goodsInfo) {
         String span = "d ";
-        int resId = goodsInfo.getShop_type() == 1 ? R.drawable.home_ic_tianmao : R.drawable.home_ic_taobao;
+        int resId = goodsInfo.getShop_type() == 1 ? R.drawable.home_logo_tm : R.drawable.home_logo_tb;
         SpannableString spannableString = new SpannableString(span + goodsInfo.getDtitle());
 
         Drawable drawable = ContextCompat.getDrawable(mContext, resId);

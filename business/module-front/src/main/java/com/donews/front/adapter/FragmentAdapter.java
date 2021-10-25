@@ -32,7 +32,7 @@ public class FragmentAdapter extends FragmentStateAdapter {
     }
 
     private Fragment mkFragment(LotteryCategoryBean.categoryBean categoryItem) {
-        if (categoryItem == null) {
+        /*if (categoryItem == null) {
             if (mFragmentMap.get(null) == null) {
                 mFragmentMap.put(null, new GiftFragment());
             }
@@ -42,25 +42,31 @@ public class FragmentAdapter extends FragmentStateAdapter {
                 mFragmentMap.put(categoryItem.getCategoryId(), new NorFragment(categoryItem));
             }
             return mFragmentMap.get(categoryItem.getCategoryId());
+        }*/
+        if (mFragmentMap.get(categoryItem.getCategoryId()) == null) {
+            mFragmentMap.put(categoryItem.getCategoryId(), new NorFragment(categoryItem));
         }
+        return mFragmentMap.get(categoryItem.getCategoryId());
     }
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        if (position == 0) {
+        /*if (position == 0) {
             return mkFragment(null);
         } else {
             return mkFragment(this.list.get(position - 1));
-        }
+        }*/
+        return mkFragment(this.list.get(position));
     }
 
     @Override
     public int getItemCount() {
-        if (this.list == null || this.list.size() == 0) {
+        /*if (this.list == null || this.list.size() == 0) {
             return 1;
         } else {
             return this.list.size() + 1;
-        }
+        }*/
+        return this.list.size();
     }
 }
