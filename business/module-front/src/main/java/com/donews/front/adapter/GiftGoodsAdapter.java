@@ -20,7 +20,7 @@ import com.donews.utilslibrary.utils.UrlUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GiftGoodsAdapter extends RecyclerView.Adapter<GiftGoodsAdapter.GoodsViewHolder> {
+public class GiftGoodsAdapter extends RecyclerView.Adapter<GiftGoodsAdapter.GoodsViewHolder> implements View.OnClickListener{
     private final List<FrontGoodsBean> mGoodsList = new ArrayList<>();
 
     private Context mContext;
@@ -116,6 +116,11 @@ public class GiftGoodsAdapter extends RecyclerView.Adapter<GiftGoodsAdapter.Good
     @Override
     public int getItemCount() {
         return mGoodsList.size();
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 
     protected static class GoodsViewHolder extends RecyclerView.ViewHolder {

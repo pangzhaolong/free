@@ -94,20 +94,14 @@ class RemindDialog : AbstractFragmentDialog<MainExitDialogRemindBinding>(), Easy
     }
 
     private fun requiresPermission() {
-        if (EasyPermissions.somePermissionPermanentlyDenied(this, PAR)) {
-            Toast.makeText(context, "开启提醒失败", Toast.LENGTH_SHORT).show()
-            handler.postDelayed(Runnable {
-                onCancelListener?.onCancel()
-            }, 2000)
-        } else {
-            EasyPermissions.requestPermissions(
-                this,
-                "提醒需要日历权限",
-                REQUEST_PER_CODE,
-                Manifest.permission.READ_CALENDAR,
-                Manifest.permission.WRITE_CALENDAR
-            )
-        }
+        EasyPermissions.requestPermissions(
+            this,
+            "提醒需要日历权限",
+            REQUEST_PER_CODE,
+            Manifest.permission.READ_CALENDAR,
+            Manifest.permission.WRITE_CALENDAR
+        )
+
     }
 
 

@@ -35,4 +35,6 @@ public class KeySharePreferences {
      * app全局Crash配置
      */
     public final static String APP_GLOBAL_CRASH_CONFIG = "app_global_crash_config";
+
+    public final static String CLOSE_RED_PACKAGE_COUNTS = "close_red_package_counts";
 }

@@ -10,6 +10,8 @@ import com.donews.main.R
 import com.donews.main.databinding.MainExitDialogOpenRedPacketBinding
 import com.donews.main.entitys.resps.NotLotteryConfig
 import com.donews.main.entitys.resps.OpenRedPacketConfig
+import com.donews.utilslibrary.utils.KeySharePreferences
+import com.donews.utilslibrary.utils.SPUtils
 
 /**
  * 拦截开红包中奖弹出框
@@ -51,7 +53,8 @@ class OpenRedPacketDialog : AbstractFragmentDialog<MainExitDialogOpenRedPacketBi
     }
 
     override fun initView() {
-        dataBinding.redPacketNumber = 3
+        val number = SPUtils.getInformain(KeySharePreferences.CLOSE_RED_PACKAGE_COUNTS, 1)
+        dataBinding.redPacketNumber = number
         dataBinding.eventListener = EventListener()
         showCloseBtn()
     }

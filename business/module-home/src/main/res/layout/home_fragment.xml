@@ -6,7 +6,15 @@
     <data>
 
     </data>
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/home_srl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="MissingClass">
 
+    <com.scwang.smart.refresh.header.ClassicsHeader
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -132,6 +140,7 @@
                                 android:textStyle="bold" />
 
                             <FrameLayout
+                                android:id="@+id/home_random_users_fl"
                                 android:layout_width="wrap_content"
                                 android:layout_height="30dp"
                                 android:layout_marginEnd="20dp"
@@ -139,29 +148,26 @@
 
                                 <org.raphets.roundimageview.RoundImageView
                                     android:id="@+id/home_banner_header_riv1"
-                                    android:layout_width="30dp"
-                                    android:layout_height="30dp"
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp"
                                     android:layout_marginStart="10dp"
                                     android:layout_marginTop="4dp"
-                                    android:background="@color/black"
                                     app:type="circle" />
 
                                 <org.raphets.roundimageview.RoundImageView
                                     android:id="@+id/home_banner_header_riv2"
-                                    android:layout_width="30dp"
-                                    android:layout_height="30dp"
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp"
                                     android:layout_marginStart="30dp"
                                     android:layout_marginTop="4dp"
-                                    android:background="#ff00ff"
                                     app:type="circle" />
 
                                 <org.raphets.roundimageview.RoundImageView
                                     android:id="@+id/home_banner_header_riv3"
-                                    android:layout_width="30dp"
-                                    android:layout_height="30dp"
-                                    android:layout_marginStart="60dp"
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp"
+                                    android:layout_marginStart="50dp"
                                     android:layout_marginTop="4dp"
-                                    android:background="@color/white"
                                     app:type="circle" />
 
                             </FrameLayout>
@@ -408,4 +414,5 @@
 
     </LinearLayout>
 
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 </layout>

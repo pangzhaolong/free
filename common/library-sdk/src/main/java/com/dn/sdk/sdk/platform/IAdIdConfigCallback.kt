@@ -9,4 +9,6 @@ package com.dn.sdk.sdk.platform
  */
 interface IAdIdConfigCallback {
     fun initSuccess()
+
+
 }

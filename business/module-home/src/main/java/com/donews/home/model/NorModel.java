@@ -25,9 +25,9 @@ public class NorModel extends BaseLiveDataModel {
      *
      * @return 返回 homeBean的数据
      */
-    public MutableLiveData<NorGoodsBean> getNorGoodsData(String cids) {
+    public MutableLiveData<NorGoodsBean> getNorGoodsData(String cids, int pageId) {
         MutableLiveData<NorGoodsBean> mutableLiveData = new MutableLiveData<>();
-        addDisposable(EasyHttp.get(HomeApi.goodsList + "?cids=" + cids)
+        addDisposable(EasyHttp.get(HomeApi.goodsList + "?cids=" + cids + "&page_size=20&page_id=" + pageId)
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<NorGoodsBean>() {
 

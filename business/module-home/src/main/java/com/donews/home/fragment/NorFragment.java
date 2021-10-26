@@ -22,11 +22,15 @@ import com.donews.home.databinding.HomeFragmentNorBinding;
 import com.donews.home.listener.GoodsDetailListener;
 import com.donews.home.viewModel.NorViewModel;
 import com.donews.utilslibrary.utils.LogUtil;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 
 public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding, NorViewModel> implements GoodsDetailListener {
 
     private final HomeBean.CategoryItem mCategoryItem;
     private NorGoodsAdapter mNorGoodsAdapter;
+
+    private int mPageId = 0;
 
     public NorFragment(HomeBean.CategoryItem categoryItem) {
         mCategoryItem = categoryItem;
@@ -41,7 +45,7 @@ public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mDataBinding.homeNorShowSrl.setVisibility(View.GONE);
+        mDataBinding.homeNorSrl.setVisibility(View.GONE);
         mDataBinding.homeNorLoadingLl.setVisibility(View.VISIBLE);
 
         mNorGoodsAdapter = new NorGoodsAdapter(this.getContext(), this);
@@ -55,25 +59,45 @@ public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding
         NorGoodsBean tmpNorGoodsBean = GoodsCache.readGoodsBean(NorGoodsBean.class, mCategoryItem.getCid());
         showNorGoodsBean(tmpNorGoodsBean);
 
+        loadMoreData();
+
         mDataBinding.homeNorGoodsRv.setLayoutManager(new LinearLayoutManager(this.getContext()));
         mDataBinding.homeNorGoodsRv.setAdapter(mNorGoodsAdapter);
 
-        mViewModel.getNorGoodsData(mCategoryItem.getCid()).observe(getViewLifecycleOwner(), this::showNorGoodsBean);
+        initSrl();
+    }
 
-        mDataBinding.homeNorShowSrl.setOnRefreshListener(() -> new Handler().postDelayed(() -> mDataBinding.homeNorShowSrl.setRefreshing(false), 1000));
+    private void initSrl() {
+        mDataBinding.homeNorSrl.setEnableRefresh(false);
+        mDataBinding.homeNorSrl.setEnableAutoLoadMore(false);
+        mDataBinding.homeNorSrl.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                loadMoreData();
+            }
+        });
+    }
+
+    private void loadMoreData() {
+        mPageId++;
+        mViewModel.getNorGoodsData(mCategoryItem.getCid(), mPageId).observe(getViewLifecycleOwner(), this::showNorGoodsBean);
     }
 
     private void showNorGoodsBean(NorGoodsBean norGoodsBean) {
-        if (norGoodsBean == null) {
+        if (norGoodsBean == null || norGoodsBean.getList() == null || norGoodsBean.getList().size() <= 0) {
+            mDataBinding.homeNorSrl.finishLoadMoreWithNoMoreData();
+            mPageId--;
             return;
         }
+
+        mDataBinding.homeNorSrl.finishLoadMore();
 
         mNorGoodsAdapter.refreshData(norGoodsBean.getList());
 
         GoodsCache.saveGoodsBean(norGoodsBean, mCategoryItem.getCid());
 
         mDataBinding.homeNorLoadingLl.setVisibility(View.GONE);
-        mDataBinding.homeNorShowSrl.setVisibility(View.VISIBLE);
+        mDataBinding.homeNorSrl.setVisibility(View.VISIBLE);
     }
 
     @Override

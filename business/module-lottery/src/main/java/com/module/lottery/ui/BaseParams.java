@@ -2,6 +2,8 @@ package com.module.lottery.ui;
 
 import android.util.ArrayMap;
 
+import org.json.JSONObject;
+
 import java.util.Map;
 
 public class BaseParams {
@@ -18,7 +20,6 @@ public class BaseParams {
         Map<String , String>  params=new ArrayMap<>();
         return params;
     }
-
 
 
 }

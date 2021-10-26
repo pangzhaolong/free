@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.DiffUtil
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.android.arouter.launcher.ARouter
 import com.donews.base.fragment.MvvmLazyLiveDataFragment
 import com.donews.common.router.RouterFragmentPath
 import com.donews.unboxing.R
@@ -33,9 +34,12 @@ class UnboxingFragment : MvvmLazyLiveDataFragment<UnboxingFragUnboxingBinding, U
         super.onViewCreated(view, savedInstanceState)
         mDataBinding.viewModel = mViewModel
 
-        unboxingRVAdapter.setOnItemChildClickListener { adapter, view, position ->
-            val data = adapter.data[position]
-            //TODO 跳转抽奖页面
+        unboxingRVAdapter.setOnItemChildClickListener { adapter, _, position ->
+            val data: UnboxingBean = adapter.data[position] as UnboxingBean
+            ARouter.getInstance()
+                .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
+                .withString("goods_id", data.goodsId)
+                .navigation();
         }
 
         unboxingRVAdapter.setDiffCallback(object : DiffUtil.ItemCallback<UnboxingBean>() {

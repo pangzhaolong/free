@@ -16,7 +16,7 @@ public class NorViewModel extends BaseLiveDataViewModel<NorModel> {
     }
 
 
-    public MutableLiveData<NorGoodsBean> getNetData(String categoryId, String pageId) {
+    public MutableLiveData<NorGoodsBean> getNetData(String categoryId, int pageId) {
         return mModel.getNetData(categoryId, pageId);
     }
 }

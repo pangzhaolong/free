@@ -11,6 +11,7 @@ import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
 import com.module.lottery.bean.CommodityBean;
 import com.module.lottery.bean.ContactCustomerBean;
+import com.module.lottery.bean.GenerateCodeBean;
 import com.module.lottery.bean.LotteryBean;
 import com.module.lottery.bean.LotteryCodeBean;
 import com.module.lottery.bean.MaylikeBean;
@@ -34,8 +35,11 @@ public class LotteryModel extends BaseLiveDataModel {
     //抽奖码
     public static String LOTTERY_LOTTERY_CODE= LOTTERY_BASE+"v1/list-lottery-code";
 
+    //生成抽奖码
+    public static String LOTTERY_GENERATE_CODE= LOTTERY_BASE+"v1/gen-lottery-code";
 
-
+    //抽奖次数达到上限后,推荐一个抽奖商品
+    public static String LOTTERY_RECOMMEND_CODE= LOTTERY_BASE+"v1/recommend-lottery-goods";
 
 
     /**
@@ -180,6 +184,34 @@ public class LotteryModel extends BaseLiveDataModel {
                 }));
     }
 
+
+
+
+
+    /**
+     * 获取网路数据
+     *
+     * @return 返回 SpikeBean
+     */
+    public void getGenerateCode(MutableLiveData<GenerateCodeBean> mutableLiveData, String url, Map<String , String> params) {
+        unDisposable();
+        addDisposable(EasyHttp.get(url)
+                .cacheMode(CacheMode.NO_CACHE)
+                .params(params)
+                .execute(new SimpleCallBack<GenerateCodeBean>() {
+                    @Override
+                    public void onError(ApiException e) {
+                        mutableLiveData.postValue(null);
+                    }
+
+                    @Override
+                    public void onSuccess(GenerateCodeBean maylikeBean) {
+                        if(maylikeBean!=null){
+                            mutableLiveData.postValue(maylikeBean);
+                        }
+                    }
+                }));
+    }
 
 
 }

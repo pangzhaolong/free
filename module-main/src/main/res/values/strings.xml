@@ -18,7 +18,7 @@
     <string name="main_exit_not_lottery_probability">福气指数：你的抽奖概率%.1f%%</string>
     <string name="main_exit_other">换一个</string>
     <string name="main_exit_lottery">免费抢购</string>
-    <string name="main_exit_price">¥ %.2f</string>
+    <string name="main_exit_price">¥ %.1f</string>
     <string name="main_buy_number">累计%s人抢购</string>
 
     <string name="main_exit_not_open_red_packed_number_1">你还有</string>

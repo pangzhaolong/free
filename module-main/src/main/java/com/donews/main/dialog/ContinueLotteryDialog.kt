@@ -11,11 +11,14 @@ import android.text.SpannableString
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
 import android.view.View
+import com.alibaba.android.arouter.launcher.ARouter
 import com.donews.base.fragmentdialog.AbstractFragmentDialog
+import com.donews.common.router.RouterFragmentPath
 import com.donews.common.utils.DensityUtils
 import com.donews.main.R
 import com.donews.main.databinding.MainExitDialogContinueLotteryBinding
 import com.donews.main.entitys.resps.ContinueLotteryConfig
+import com.donews.main.entitys.resps.ExitDialogRecommendGoods
 import com.donews.main.entitys.resps.ExitDialogRecommendGoodsResp
 import com.donews.main.entitys.resps.NotLotteryConfig
 import com.donews.main.utils.ExitInterceptUtils
@@ -55,6 +58,7 @@ class ContinueLotteryDialog : AbstractFragmentDialog<MainExitDialogContinueLotte
 
     private lateinit var continueLotteryConfig: ContinueLotteryConfig
     private val handler = Handler(Looper.getMainLooper())
+    private var goodsInfo: ExitDialogRecommendGoods? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -113,13 +117,13 @@ class ContinueLotteryDialog : AbstractFragmentDialog<MainExitDialogContinueLotte
         spannable.setSpan(
             ForegroundColorSpan(Color.parseColor("#F53838")),
             2,
-            2+times.length,
+            2 + times.length,
             Spannable.SPAN_INCLUSIVE_EXCLUSIVE
         )
         spannable.setSpan(
             AbsoluteSizeSpan(DensityUtils.dip2px(20f)),
             2,
-            2+times.length,
+            2 + times.length,
             Spannable.SPAN_INCLUSIVE_EXCLUSIVE
         )
 
@@ -160,6 +164,9 @@ class ContinueLotteryDialog : AbstractFragmentDialog<MainExitDialogContinueLotte
                                 it.totalPeople.toString()
                             }
                             dataBinding.totalPeople = peopleNumberString
+
+                            goodsInfo = it
+
                         }
                     }
                 }
@@ -175,6 +182,12 @@ class ContinueLotteryDialog : AbstractFragmentDialog<MainExitDialogContinueLotte
         fun clickLottery(view: View) {
             if (onSureListener != null) {
                 onSureListener.onSure()
+            }
+            goodsInfo?.run {
+                ARouter.getInstance()
+                    .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
+                    .withString("goods_id", goodsId)
+                    .navigation();
             }
         }
 

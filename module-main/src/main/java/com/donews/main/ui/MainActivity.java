@@ -28,6 +28,8 @@ import com.donews.main.databinding.MainActivityMainBinding;
 import com.donews.main.utils.ExitInterceptUtils;
 import com.donews.utilslibrary.analysis.AnalysisHelp;
 import com.donews.utilslibrary.analysis.AnalysisParam;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.gyf.immersionbar.BarHide;
 import com.gyf.immersionbar.ImmersionBar;
 import com.vmadalin.easypermissions.EasyPermissions;
@@ -136,6 +138,7 @@ public class MainActivity
                         .fitsSystemWindows(true)
                         .autoDarkModeEnable(true)
                         .init();
+                AnalysisUtils.onEventEx(this, Dot.Btn_Home);
                 break;
             case 1:
                 AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
@@ -145,6 +148,10 @@ public class MainActivity
                         .fitsSystemWindows(true)
                         .autoDarkModeEnable(true)
                         .init();
+                AnalysisUtils.onEventEx(this, Dot.Btn_ShowTime);
+                break;
+            case 2:
+                AnalysisUtils.onEventEx(this, Dot.Btn_Lottery);
                 break;
             case 2:
                 AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
@@ -163,6 +170,7 @@ public class MainActivity
                         .fitsSystemWindows(true)
                         .autoDarkModeEnable(true)
                         .init();
+                AnalysisUtils.onEventEx(this, Dot.Btn_SaveMoneyBuy);
                 break;
             case 4:
                 AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
@@ -172,6 +180,7 @@ public class MainActivity
                         .fitsSystemWindows(true)
                         .autoDarkModeEnable(true)
                         .init();
+                AnalysisUtils.onEventEx(this, Dot.Btn_UserCenter);
                 break;
             default:
         }
@@ -225,7 +234,9 @@ public class MainActivity
         initView(mPosition);
         // 获取数美deviceId之后，调用refresh接口刷新
         CommonParams.setNetWork();
-        CommonParams.getCommonNetWork();
+
+        //此接口不需要
+//        CommonParams.getCommonNetWork();
 
         UpdateManager.getInstance().checkUpdate(this, false);
     }

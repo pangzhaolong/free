@@ -53,7 +53,6 @@ public class AnalysisHelp {
         if (SPUtils.getInformain(KeySharePreferences.AGREEMENT, false)) {
             setAnalysisInitUmeng(application);
         }
-
     }
 
     public static void setAnalysisInitUmeng(Application application) {

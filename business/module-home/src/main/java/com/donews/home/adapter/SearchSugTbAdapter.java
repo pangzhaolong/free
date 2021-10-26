@@ -79,7 +79,7 @@ public class SearchSugTbAdapter extends RecyclerView.Adapter<SearchSugTbAdapter.
 
     private SpannableString getTitleString(SearchResultTbBean.goodsInfo goodsInfo) {
         String span = "d ";
-        int resId = goodsInfo.getShopType() == 1 ? R.drawable.home_ic_tianmao : R.drawable.home_ic_taobao;
+        int resId = goodsInfo.getShopType() == 1 ? R.drawable.home_logo_tm : R.drawable.home_logo_tb;
         SpannableString spannableString = new SpannableString(span + goodsInfo.getDtitle());
 
         Drawable drawable = ContextCompat.getDrawable(mContext, resId);

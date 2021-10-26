@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsViewHolder> implements View.OnClickListener {
-    private final List<NorGoodsBean.GoodsInfo> mGoodsList = new ArrayList<>();
+    private List<NorGoodsBean.GoodsInfo> mGoodsList = new ArrayList<>();
 
     private Context mContext;
     private NorClickListener mListener;
@@ -35,9 +35,16 @@ public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsV
 
     @SuppressLint("NotifyDataSetChanged")
     public void refreshData(List<NorGoodsBean.GoodsInfo> list) {
-        mGoodsList.clear();
+//        mGoodsList.clear();
         mGoodsList.addAll(list);
         notifyDataSetChanged();
+    }
+
+    public void clear() {
+        if (mGoodsList != null) {
+            mGoodsList.clear();
+            mGoodsList = null;
+        }
     }
 
     @NonNull

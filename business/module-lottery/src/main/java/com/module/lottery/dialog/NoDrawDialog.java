@@ -2,6 +2,8 @@ package com.module.lottery.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -9,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -29,7 +32,7 @@ import com.module_lottery.R;
 import com.module_lottery.databinding.NoDrawDialogLayoutBinding;
 
 //没有抽奖码时的dialog
-public class  NoDrawDialog extends BaseDialog implements View.OnClickListener{
+public class  NoDrawDialog extends BaseDialog<NoDrawDialogLayoutBinding>{
     private Context mContext;
     private ExitDialogRecommendGoodsResp mExitDialogRecommendData;
     int limitNumber=1;
@@ -38,28 +41,27 @@ public class  NoDrawDialog extends BaseDialog implements View.OnClickListener{
         this.mContext = context;
     }
 
+    @Override
+    public int setLayout() {
+        return R.layout.no_draw_dialog_layout;
+    }
 
-    NoDrawDialogLayoutBinding mNoDrawDialogLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mNoDrawDialogLayout= DataBindingUtil.inflate(LayoutInflater.from(getContext()),R.layout.no_draw_dialog_layout,null,false);
-        setContentView(mNoDrawDialogLayout.getRoot());
         requestGoodsInfo();
-        mNoDrawDialogLayout.replace.setOnClickListener(new View.OnClickListener() {
+        mDataBinding.replace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 requestGoodsInfo();
             }
         });
 
-        mNoDrawDialogLayout.jumpButton.setOnClickListener(new View.OnClickListener() {
+        mDataBinding.jumpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(mExitDialogRecommendData!=null&& ClickDoubleUtil.isFastClick()){
-
-                    ClickDoubleUtil.isFastClick();
-
                     dismiss();
                     ARouter.getInstance()
                             .build(RouterFragmentPath.Lottery.PAGER_LOTTERY).withString("goods_id",mExitDialogRecommendData.getList().get(0).getGoodsId()).withString("action","newAction")
@@ -67,12 +69,19 @@ public class  NoDrawDialog extends BaseDialog implements View.OnClickListener{
                 }
             }
         });
+
+        mDataBinding.closure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
     }
 
     @Override
-    public void onClick(View view) {
+    public float setSize() {
+        return 0.7f;
     }
-
 
 
     @Override
@@ -97,9 +106,10 @@ public class  NoDrawDialog extends BaseDialog implements View.OnClickListener{
 
             @Override
             public void onSuccess(ExitDialogRecommendGoodsResp exitDialogRecommendGoodsResp) {
-           if(mNoDrawDialogLayout!=null&&exitDialogRecommendGoodsResp!=null&&exitDialogRecommendGoodsResp.getList().size()>0){
+           if(mDataBinding!=null&&exitDialogRecommendGoodsResp!=null&&exitDialogRecommendGoodsResp.getList().size()>0){
                mExitDialogRecommendData=exitDialogRecommendGoodsResp;
-               ImageUtils.setImage(mContext,mNoDrawDialogLayout.commodity,exitDialogRecommendGoodsResp.getList().get(0).getMainPic(),5);
+               ImageUtils.setImage(mContext,mDataBinding.commodity,exitDialogRecommendGoodsResp.getList().get(0).getMainPic(),5);
+               mDataBinding.number.setText(exitDialogRecommendGoodsResp.getList().get(0).getTotalPeople()+"");
              }
             }
         });

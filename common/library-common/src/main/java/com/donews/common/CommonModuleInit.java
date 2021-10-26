@@ -30,7 +30,7 @@ public class CommonModuleInit implements IModuleInit {
         application.registerReceiver(updateReceiver, intentFilter);
 
         //更新app维度数据
-        AppGlobalConfigManager.update();
+//        AppGlobalConfigManager.update();
 
         new SimpleApplicationObServer().register();
         return false;

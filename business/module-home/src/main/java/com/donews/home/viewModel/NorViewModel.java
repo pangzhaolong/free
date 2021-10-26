@@ -22,7 +22,7 @@ public class NorViewModel extends BaseLiveDataViewModel<NorModel>{
     }
 
 
-    public MutableLiveData<NorGoodsBean> getNorGoodsData(String cids){
-        return mModel.getNorGoodsData(cids);
+    public MutableLiveData<NorGoodsBean> getNorGoodsData(String cids, int pageId){
+        return mModel.getNorGoodsData(cids, pageId);
     }
  }

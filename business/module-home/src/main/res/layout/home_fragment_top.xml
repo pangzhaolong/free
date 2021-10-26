@@ -7,11 +7,11 @@
 
     </data>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/home_top_show_srl"
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/home_top_srl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp">
+        tools:ignore="MissingClass">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -46,8 +46,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="#e0e0e0"
-                        android:visibility="gone"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                         <GridView
                             android:id="@+id/home_column_gv"
@@ -353,5 +353,8 @@
             </FrameLayout>
         </androidx.core.widget.NestedScrollView>
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        <com.scwang.smart.refresh.footer.ClassicsFooter
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 </layout>

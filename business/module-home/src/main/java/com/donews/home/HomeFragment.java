@@ -18,14 +18,18 @@ import com.donews.common.router.RouterFragmentPath;
 import com.donews.home.adapter.FragmentAdapter;
 import com.donews.home.bean.HomeBean;
 import com.donews.home.bean.SecKilBean;
+import com.donews.home.bean.UserBean;
 import com.donews.home.cache.GoodsCache;
 import com.donews.home.databinding.HomeFragmentBinding;
 import com.donews.home.viewModel.HomeViewModel;
 import com.donews.home.views.TabItem;
-import com.donews.utilslibrary.utils.LogUtil;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.UrlUtils;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -49,18 +53,13 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
         return R.layout.home_fragment;
     }
 
-
     @Override
     protected void onFragmentFirstVisible() {
         super.onFragmentFirstVisible();
         isFirst = true;
-        // 获取网路数据
         mHomeBean = mViewModel.getNetHomeData();
-
         mHomeBean.observe(this, homeBean -> {
-            // 获取数据
             if (homeBean == null) {
-                // 处理接口出错的问题
                 return;
             }
             // 处理正常的逻辑。
@@ -77,8 +76,8 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
         mContext = this.getContext();
 
         mFragmentAdapter = new FragmentAdapter(this);
+        loadUserList();
         loadSecKilData();
-//        mDataBinding.homeCategoryVp2.setUserInputEnabled(false);
         mDataBinding.homeCategoryVp2.setAdapter(mFragmentAdapter);
         mDataBinding.homeCategoryTl.setTabMode(TabLayout.MODE_SCROLLABLE);
         TabLayoutMediator tab = new TabLayoutMediator(mDataBinding.homeCategoryTl, mDataBinding.homeCategoryVp2, (tab1, position) -> {
@@ -130,6 +129,18 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
         });
 
         mDataBinding.homeBannerLl.setOnClickListener(v -> EventBus.getDefault().post(new NavEvent(2)));
+
+        initSrl();
+
+        AnalysisUtils.onEventEx(this.getActivity(), Dot.Page_SaveMoneyBuy);
+    }
+
+    private void initSrl() {
+        mDataBinding.homeSrl.setOnRefreshListener(refreshLayout -> {
+            loadSecKilData();
+            loadUserList();
+            mDataBinding.homeSrl.finishRefresh();
+        });
     }
 
     private void loadSecKilData() {
@@ -172,6 +183,28 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
             mDataBinding.homeSeckilTv4.setText("直降" + goodsInfo.getDiscounts());
             mDataBinding.homeSeckilPriceTv4.setText("￥" + goodsInfo.getActualPrice());
         }
+    }
+
+    private void loadUserList() {
+        mViewModel.getUserList().observe(getViewLifecycleOwner(), userBean -> {
+            if (userBean == null || userBean.getList() == null || userBean.getList().size() <= 0) {
+                mDataBinding.homeRandomUsersFl.setVisibility(View.GONE);
+                return;
+            }
+            mDataBinding.homeRandomUsersFl.setVisibility(View.VISIBLE);
+            UserBean.UserInfo userInfo = userBean.getList().get(0);
+            if (userInfo != null) {
+                Glide.with(this).load(UrlUtils.formatUrlPrefix(userInfo.getAvatar())).into(mDataBinding.homeBannerHeaderRiv1);
+            }
+            userInfo = userBean.getList().get(1);
+            if (userInfo != null) {
+                Glide.with(this).load(UrlUtils.formatUrlPrefix(userInfo.getAvatar())).into(mDataBinding.homeBannerHeaderRiv2);
+            }
+            userInfo = userBean.getList().get(2);
+            if (userInfo != null) {
+                Glide.with(this).load(UrlUtils.formatUrlPrefix(userInfo.getAvatar())).into(mDataBinding.homeBannerHeaderRiv3);
+            }
+        });
     }
 
 

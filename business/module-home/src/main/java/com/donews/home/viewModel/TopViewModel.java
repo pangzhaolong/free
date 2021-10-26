@@ -27,8 +27,8 @@ public class TopViewModel extends BaseLiveDataViewModel<TopModel> {
         return mModel.getNetData();
     }
 
-    public MutableLiveData<TopGoodsBean> getTopGoodsData() {
-        return mModel.getTopGoodsData();
+    public MutableLiveData<TopGoodsBean> getTopGoodsData(int pageId) {
+        return mModel.getTopGoodsData(pageId);
     }
 
     public MutableLiveData<RealTimeBean> getRealTimeData() {

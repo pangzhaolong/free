@@ -3,12 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="ResourceName">
 
-    <!-- 中心背景 -->
     <item>
-        <shape android:shape="ring"
+        <shape
+            android:shape="oval"
             android:useLevel="false">
             <solid android:color="#F5DBB0" />
-            <size android:width="10dp" android:height="10dp"/>
+            <size
+                android:width="10dp"
+                android:height="10dp" />
+            <padding
+                android:bottom="2dp"
+                android:left="2dp"
+                android:right="2dp"
+                android:top="2dp" />
+        </shape>
+    </item>
+    <item>
+        <shape
+            android:shape="oval"
+            android:useLevel="false">
+            <solid android:color="#FFFFFF" />
+            <size
+                android:width="10dp"
+                android:height="10dp" />
         </shape>
     </item>
 </layer-list>
