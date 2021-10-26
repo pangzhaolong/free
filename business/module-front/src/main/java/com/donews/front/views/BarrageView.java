@@ -19,7 +19,7 @@ public class BarrageView extends LinearLayout {
     private UserAwardInfoView mAwardView1;
 
 
-    private final List<AwardBean> mAwardList = new ArrayList<>();
+    private final List<AwardBean.AwardInfo> mAwardList = new ArrayList<>();
 
     private ScrollHandler mScrollHandler = null;
 
@@ -38,18 +38,17 @@ public class BarrageView extends LinearLayout {
         addView(mAwardView1);
 
         mScrollHandler = new ScrollHandler(this);
-
-        refreshData();
     }
 
-    public void refreshData() {
-        initAwardList();
+    public void refreshData(List<AwardBean.AwardInfo> list) {
+        mAwardList.clear();
+        mAwardList.addAll(list);
 
         if (mAwardList.size() <= 0) {
             return;
         }
-        AwardBean awardBean = mAwardList.get(0);
-        mAwardView1.setUserAwardInfo(awardBean.avatar, awardBean.name, awardBean.award);
+        AwardBean.AwardInfo awardInfo = mAwardList.get(0);
+        mAwardView1.setUserAwardInfo(awardInfo.getAvatar(), awardInfo.getName(), awardInfo.getProduceName());
         mDefaultXPos = mAwardView1.getX();
         mAwardView1.setTranslationX(mDefaultXPos + 900);
         startScroll();
@@ -76,8 +75,8 @@ public class BarrageView extends LinearLayout {
 
     public void scrollViews() {
         mAwardView1.setTranslationX(mAwardView1.getX() - 10);
-        if (mAwardView1.getX() <= 40) {
-            mScrollHandler.sendEmptyMessageDelayed(10001, 2000);
+        if (mAwardView1.getX() <= 0) {
+            mScrollHandler.sendEmptyMessageDelayed(10001, 3000);
             return;
         }
         mScrollHandler.sendEmptyMessageDelayed(10000, 50);
@@ -89,8 +88,8 @@ public class BarrageView extends LinearLayout {
             mListIndex = 0;
         }
 
-        AwardBean awardBean = mAwardList.get(mListIndex);
-        mAwardView1.setUserAwardInfo(awardBean.avatar, awardBean.name, awardBean.award);
+        AwardBean.AwardInfo awardInfo = mAwardList.get(mListIndex);
+        mAwardView1.setUserAwardInfo(awardInfo.getAvatar(), awardInfo.getName(), awardInfo.getProduceName());
         mAwardView1.setTranslationX(mDefaultXPos + 500);
         mScrollHandler.sendEmptyMessageDelayed(10000, 50);
     }
@@ -112,29 +111,5 @@ public class BarrageView extends LinearLayout {
                 mBarrageView.get().reInitView();
             }
         }
-    }
-
-    private void initAwardList() {
-        mAwardList.add(new AwardBean(
-                "https://wx4.sinaimg.cn/orj360/95936907ly8gdi6ssvmecj20u00u0q51.jpg"
-                , "测试0", "iPhone13"));
-        mAwardList.add(new AwardBean(
-                "https://wx4.sinaimg.cn/orj360/95936907ly8gdi6ssvmecj20u00u0q51.jpg"
-                , "测试1", "iPhone13"));
-        mAwardList.add(new AwardBean(
-                "https://wx4.sinaimg.cn/orj360/95936907ly8gdi6ssvmecj20u00u0q51.jpg"
-                , "测试2", "iPhone13"));
-        mAwardList.add(new AwardBean(
-                "https://wx4.sinaimg.cn/orj360/95936907ly8gdi6ssvmecj20u00u0q51.jpg"
-                , "测试3", "iPhone13"));
-        mAwardList.add(new AwardBean(
-                "https://wx4.sinaimg.cn/orj360/95936907ly8gdi6ssvmecj20u00u0q51.jpg"
-                , "测试4", "iPhone13"));
-        mAwardList.add(new AwardBean(
-                "https://wx4.sinaimg.cn/orj360/95936907ly8gdi6ssvmecj20u00u0q51.jpg"
-                , "测试5", "iPhone13"));
-        mAwardList.add(new AwardBean(
-                "https://wx4.sinaimg.cn/orj360/95936907ly8gdi6ssvmecj20u00u0q51.jpg"
-                , "测试6", "iPhone13"));
     }
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.model.BaseLiveDataModel;
 import com.donews.front.api.FrontApi;
+import com.donews.front.bean.AwardBean;
 import com.donews.front.bean.FrontBean;
 import com.donews.front.bean.LotteryCategoryBean;
 import com.donews.front.bean.RedPacketBean;
@@ -75,6 +76,26 @@ public class FrontModel extends BaseLiveDataModel {
                     @Override
                     public void onSuccess(RedPacketBean redPacketBean) {
                         mutableLiveData.postValue(redPacketBean);
+                    }
+                }));
+
+        return mutableLiveData;
+    }
+
+    public MutableLiveData<AwardBean> getAwardList() {
+        MutableLiveData<AwardBean> mutableLiveData = new MutableLiveData<>();
+        addDisposable(EasyHttp.get(FrontApi.awardListUrl + "?offset=1&limit=10")
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new SimpleCallBack<AwardBean>() {
+
+                    @Override
+                    public void onError(ApiException e) {
+                        mutableLiveData.postValue(null);
+                    }
+
+                    @Override
+                    public void onSuccess(AwardBean awardBean) {
+                        mutableLiveData.postValue(awardBean);
                     }
                 }));
 
