@@ -1,70 +1,75 @@
 package com.module.lottery.dialog;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.donews.common.router.RouterFragmentPath;
+import com.donews.main.entitys.resps.ExitDialogRecommendGoods;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoodsResp;
+import com.donews.main.entitys.resps.ExitInterceptConfig;
 import com.donews.main.utils.ExitInterceptUtils;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.exception.ApiException;
-import com.donews.network.request.GetRequest;
+import com.module.lottery.bean.RecommendBean;
+import com.module.lottery.model.LotteryModel;
 import com.module.lottery.utils.ClickDoubleUtil;
 import com.module.lottery.utils.ImageUtils;
+import com.module.lottery.utils.RandomProbability;
 import com.module_lottery.R;
+import com.module_lottery.databinding.CongratulationsDialogLayoutBinding;
 import com.module_lottery.databinding.NoDrawDialogLayoutBinding;
 
-//没有抽奖码时的dialog
-public class  NoDrawDialog extends BaseDialog<NoDrawDialogLayoutBinding>{
+//满足6个恭喜dialog
+public class CongratulationsDialog extends BaseDialog<CongratulationsDialogLayoutBinding> {
     private Context mContext;
-    private ExitDialogRecommendGoodsResp mExitDialogRecommendData;
-    int limitNumber=1;
-    public NoDrawDialog( Context context) {
+    int limitNumber = 1;
+
+
+    public CongratulationsDialog(Context context) {
         super(context, R.style.dialogTransparent);//内容样式在这里引入
         this.mContext = context;
     }
 
+    //保存记录当前展示的商品
+    RecommendBean mRecommendBean;
+
+
     @Override
     public int setLayout() {
-        return R.layout.no_draw_dialog_layout;
+        return R.layout.congratulations_dialog_layout;
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestGoodsInfo();
+        requestGoodsInfo("");
         mDataBinding.replace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestGoodsInfo();
+                if (mRecommendBean != null && ClickDoubleUtil.isFastClick()) {
+                    requestGoodsInfo(mRecommendBean.getGoodsId());
+                }
             }
         });
 
         mDataBinding.jumpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mExitDialogRecommendData!=null&& ClickDoubleUtil.isFastClick()){
+                if (mRecommendBean != null) {
                     dismiss();
                     ARouter.getInstance()
-                            .build(RouterFragmentPath.Lottery.PAGER_LOTTERY).withString("goods_id",mExitDialogRecommendData.getList().get(0).getGoodsId()).withString("action","newAction")
+                            .build(RouterFragmentPath.Lottery.PAGER_LOTTERY).withString("goods_id", mRecommendBean.getGoodsId()).withString("action", "newAction")
                             .navigation();
                 }
             }
@@ -74,6 +79,9 @@ public class  NoDrawDialog extends BaseDialog<NoDrawDialogLayoutBinding>{
             @Override
             public void onClick(View v) {
                 dismiss();
+                if (mOnFinishListener != null) {
+                    mOnFinishListener.onFinish();
+                }
             }
         });
     }
@@ -86,7 +94,7 @@ public class  NoDrawDialog extends BaseDialog<NoDrawDialogLayoutBinding>{
 
     @Override
     public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
-        if(mOnFinishListener!=null){
+        if (mOnFinishListener != null) {
             mOnFinishListener.onFinish();
         }
         return super.onKeyDown(keyCode, event);
@@ -94,38 +102,40 @@ public class  NoDrawDialog extends BaseDialog<NoDrawDialogLayoutBinding>{
 
     OnFinishListener mOnFinishListener;
 
-
-
-    private void requestGoodsInfo() {
-        EasyHttp.get(ExitInterceptUtils.INSTANCE.getRecommendGoodsUrl()).cacheMode(CacheMode.NO_CACHE)
-                .params("limit", limitNumber+"").execute(new com.donews.network.callback.SimpleCallBack<ExitDialogRecommendGoodsResp>(){
+    private void requestGoodsInfo(String goods_id) {
+        EasyHttp.get(LotteryModel.LOTTERY_RECOMMEND_CODE).cacheMode(CacheMode.NO_CACHE)
+                .params("goods_id", goods_id + "").execute(new com.donews.network.callback.SimpleCallBack<RecommendBean>() {
             @Override
             public void onError(ApiException e) {
 
             }
 
             @Override
-            public void onSuccess(ExitDialogRecommendGoodsResp exitDialogRecommendGoodsResp) {
-           if(mDataBinding!=null&&exitDialogRecommendGoodsResp!=null&&exitDialogRecommendGoodsResp.getList().size()>0){
-               mExitDialogRecommendData=exitDialogRecommendGoodsResp;
-               ImageUtils.setImage(mContext,mDataBinding.commodity,exitDialogRecommendGoodsResp.getList().get(0).getMainPic(),5);
-               mDataBinding.number.setText(exitDialogRecommendGoodsResp.getList().get(0).getTotalPeople()+"");
-             }
+            public void onSuccess(RecommendBean recommendBean) {
+                if (mDataBinding != null && recommendBean != null) {
+                    mRecommendBean = recommendBean;
+                    if (mRecommendBean != null) {
+                        ImageUtils.setImage(mContext, mDataBinding.commodity, mRecommendBean.getMainPic(), 5);
+                        mDataBinding.price.setText("¥ " + mRecommendBean.getDisplayPrice());
+                        mDataBinding.originalPrice.setText("¥ " + mRecommendBean.getOriginalPrice());
+                        mDataBinding.titleName.setText(mRecommendBean.getTitle());
+                        mDataBinding.randomNumber.setText(RandomProbability.Companion.getRandomNumber() + "%");
+
+                    }
+                }
             }
         });
     }
 
 
-
-
     public void setFinishListener(OnFinishListener l) {
-        mOnFinishListener=l;
+        mOnFinishListener = l;
     }
+
     public interface OnFinishListener {
         /**
          * 此时可以关闭Activity了
-         *
          */
-        void onFinish( );
+        void onFinish();
     }
 }

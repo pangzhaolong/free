@@ -20,7 +20,7 @@ import com.module_lottery.R;
 import java.lang.ref.WeakReference;
 
 //生成抽奖码
-public class GenerateCodeDialog extends BaseDialog implements View.OnClickListener {
+public class GenerateCodeDialog extends BaseDialog {
     private Context context;
     private OnStateListener mOnFinishListener;
     private LotteryHandler mLotteryHandler = new LotteryHandler(this);
@@ -28,6 +28,11 @@ public class GenerateCodeDialog extends BaseDialog implements View.OnClickListen
     public GenerateCodeDialog(Context context) {
         super(context, R.style.dialogTransparent);//内容样式在这里引入
         this.context = context;
+    }
+
+    @Override
+    public int setLayout() {
+        return R.layout.generate_dialog_layout;
     }
 
     @Override
@@ -39,6 +44,11 @@ public class GenerateCodeDialog extends BaseDialog implements View.OnClickListen
         mLotteryHandler.sendMessageDelayed(mes, 3000);
     }
 
+    @Override
+    public float setSize() {
+        return 0.7f;
+    }
+
 
     @Override
     public void setOnDismissListener(@Nullable OnDismissListener listener) {
@@ -47,9 +57,6 @@ public class GenerateCodeDialog extends BaseDialog implements View.OnClickListen
 
     }
 
-    @Override
-    public void onClick(View view) {
-    }
 
     @Override
     public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
