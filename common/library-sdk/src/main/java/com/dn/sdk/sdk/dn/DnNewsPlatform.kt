@@ -1,6 +1,6 @@
 package com.dn.sdk.sdk.dn
 
-import com.dn.sdk.sdk.bean.IAdIdConfigBean
+import com.dn.sdk.sdk.bean.BaseAdIdConfigBean
 import com.dn.sdk.sdk.interfaces.loader.IRealLoader
 import com.dn.sdk.sdk.platform.IPlatform
 
@@ -11,7 +11,7 @@ import com.dn.sdk.sdk.platform.IPlatform
  * @version v1.0
  * @date 2021/10/25 17:00
  */
-class DnNewsPlatform(private val adIdConfigBean: IAdIdConfigBean) : IPlatform {
+class DnNewsPlatform(private val adIdConfigBean: BaseAdIdConfigBean) : IPlatform {
 
     private val loader = DnNewsRealLoader()
 

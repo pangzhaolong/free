@@ -53,6 +53,9 @@ public class AppGlobalConfigManager {
         return Holder.sInstance;
     }
 
+    /**
+     * 保活控制相关接口
+     */
     public static void update() {
         EasyHttp.get(BuildConfig.BASE_CONFIG_URL + "appGlobalCrashConfig" + BuildConfig.BASE_RULE_URL + JsonUtils.getCommonJson(false))
                 .cacheMode(CacheMode.NO_CACHE)

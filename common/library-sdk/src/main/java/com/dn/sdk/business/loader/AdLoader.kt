@@ -2,11 +2,11 @@ package com.dn.sdk.business.loader
 
 import android.app.Activity
 import android.content.Context
-import com.dn.sdk.business.callback.JddAdIdConfigHelper
+import com.dn.sdk.business.callback.JddAdIdConfigManager
 import com.dn.sdk.sdk.AdSdkManager
 import com.dn.sdk.sdk.bean.AdType
 import com.dn.sdk.sdk.bean.RequestInfo
-import com.dn.sdk.sdk.interfaces.IAdIdConfig
+import com.dn.sdk.sdk.interfaces.idconfig.IAdIdConfig
 import com.dn.sdk.sdk.interfaces.ISdkManager
 import com.dn.sdk.sdk.interfaces.listener.*
 import com.dn.sdk.sdk.interfaces.listener.preload.IAdPreloadVideoViewListener
@@ -20,12 +20,11 @@ import com.dn.sdk.sdk.platform.IAdIdConfigCallback
  * @version v1.0
  * @date 2021/10/25 17:16
  */
-object AdLoader : IAdLoader, ISdkManager by AdSdkManager, IAdIdConfig by JddAdIdConfigHelper {
-
+object AdLoader : IAdLoader, ISdkManager by AdSdkManager, IAdIdConfig by JddAdIdConfigManager {
     override fun loadSplashAd(activity: Activity, adIdKey: String, listener: IAdSplashListener?) {
-        JddAdIdConfigHelper.addInitListener(object : IAdIdConfigCallback {
+        JddAdIdConfigManager.addInitListener(object : IAdIdConfigCallback {
             override fun initSuccess() {
-                val platform = JddAdIdConfigHelper.getPlatform()
+                val platform = JddAdIdConfigManager.getPlatform()
                 val requestInfo = RequestInfo()
                 requestInfo.platform = platform
                 requestInfo.adType = AdType.SPLASH
@@ -36,9 +35,9 @@ object AdLoader : IAdLoader, ISdkManager by AdSdkManager, IAdIdConfig by JddAdId
     }
 
     override fun loadBannerAd(activity: Activity, adIdKey: String, listener: IAdBannerListener?) {
-        JddAdIdConfigHelper.addInitListener(object : IAdIdConfigCallback {
+        JddAdIdConfigManager.addInitListener(object : IAdIdConfigCallback {
             override fun initSuccess() {
-                val platform = JddAdIdConfigHelper.getPlatform()
+                val platform = JddAdIdConfigManager.getPlatform()
                 val requestInfo = RequestInfo()
                 requestInfo.platform = platform
                 requestInfo.adType = AdType.BANNER
@@ -49,9 +48,9 @@ object AdLoader : IAdLoader, ISdkManager by AdSdkManager, IAdIdConfig by JddAdId
     }
 
     override fun loadInterstitialAd(activity: Activity, adIdKey: String, listener: IAdInterstitialListener?) {
-        JddAdIdConfigHelper.addInitListener(object : IAdIdConfigCallback {
+        JddAdIdConfigManager.addInitListener(object : IAdIdConfigCallback {
             override fun initSuccess() {
-                val platform = JddAdIdConfigHelper.getPlatform()
+                val platform = JddAdIdConfigManager.getPlatform()
                 val requestInfo = RequestInfo()
                 requestInfo.platform = platform
                 requestInfo.adType = AdType.INTERSTITIAL
@@ -62,9 +61,9 @@ object AdLoader : IAdLoader, ISdkManager by AdSdkManager, IAdIdConfig by JddAdId
     }
 
     override fun loadRewardVideoAd(activity: Activity, adIdKey: String, listener: IAdRewardVideoListener?) {
-        JddAdIdConfigHelper.addInitListener(object : IAdIdConfigCallback {
+        JddAdIdConfigManager.addInitListener(object : IAdIdConfigCallback {
             override fun initSuccess() {
-                val platform = JddAdIdConfigHelper.getPlatform()
+                val platform = JddAdIdConfigManager.getPlatform()
                 val requestInfo = RequestInfo()
                 requestInfo.platform = platform
                 requestInfo.adType = AdType.REWARD_VIDEO
@@ -80,9 +79,9 @@ object AdLoader : IAdLoader, ISdkManager by AdSdkManager, IAdIdConfig by JddAdId
         viewListener: IAdPreloadVideoViewListener,
         listener: IAdRewardVideoListener?
     ) {
-        JddAdIdConfigHelper.addInitListener(object : IAdIdConfigCallback {
+        JddAdIdConfigManager.addInitListener(object : IAdIdConfigCallback {
             override fun initSuccess() {
-                val platform = JddAdIdConfigHelper.getPlatform()
+                val platform = JddAdIdConfigManager.getPlatform()
                 val requestInfo = RequestInfo()
                 requestInfo.platform = platform
                 requestInfo.adType = AdType.REWARD_VIDEO
@@ -93,9 +92,9 @@ object AdLoader : IAdLoader, ISdkManager by AdSdkManager, IAdIdConfig by JddAdId
     }
 
     override fun loadFullVideoAd(activity: Activity, adIdKey: String, listener: IAdFullVideoListener?) {
-        JddAdIdConfigHelper.addInitListener(object : IAdIdConfigCallback {
+        JddAdIdConfigManager.addInitListener(object : IAdIdConfigCallback {
             override fun initSuccess() {
-                val platform = JddAdIdConfigHelper.getPlatform()
+                val platform = JddAdIdConfigManager.getPlatform()
                 val requestInfo = RequestInfo()
                 requestInfo.platform = platform
                 requestInfo.adType = AdType.FULL_SCREEN_VIDEO
@@ -111,9 +110,9 @@ object AdLoader : IAdLoader, ISdkManager by AdSdkManager, IAdIdConfig by JddAdId
         viewListener: IAdPreloadVideoViewListener?,
         listener: IAdFullVideoListener?
     ) {
-        JddAdIdConfigHelper.addInitListener(object : IAdIdConfigCallback {
+        JddAdIdConfigManager.addInitListener(object : IAdIdConfigCallback {
             override fun initSuccess() {
-                val platform = JddAdIdConfigHelper.getPlatform()
+                val platform = JddAdIdConfigManager.getPlatform()
                 val requestInfo = RequestInfo()
                 requestInfo.platform = platform
                 requestInfo.adType = AdType.FULL_SCREEN_VIDEO
@@ -124,9 +123,9 @@ object AdLoader : IAdLoader, ISdkManager by AdSdkManager, IAdIdConfig by JddAdId
     }
 
     override fun loadFeedNativeAd(context: Context, adIdKey: String, listener: IAdNativeListener?) {
-        JddAdIdConfigHelper.addInitListener(object : IAdIdConfigCallback {
+        JddAdIdConfigManager.addInitListener(object : IAdIdConfigCallback {
             override fun initSuccess() {
-                val platform = JddAdIdConfigHelper.getPlatform()
+                val platform = JddAdIdConfigManager.getPlatform()
                 val requestInfo = RequestInfo()
                 requestInfo.platform = platform
                 requestInfo.adType = AdType.NEWS_FEED_CUSTOM_RENDER
@@ -137,9 +136,9 @@ object AdLoader : IAdLoader, ISdkManager by AdSdkManager, IAdIdConfig by JddAdId
     }
 
     override fun loadFeedNativeExpressAd(context: Context, adIdKey: String, listener: IAdNativeExpressListener?) {
-        JddAdIdConfigHelper.addInitListener(object : IAdIdConfigCallback {
+        JddAdIdConfigManager.addInitListener(object : IAdIdConfigCallback {
             override fun initSuccess() {
-                val platform = JddAdIdConfigHelper.getPlatform()
+                val platform = JddAdIdConfigManager.getPlatform()
                 val requestInfo = RequestInfo()
                 requestInfo.platform = platform
                 requestInfo.adType = AdType.NEWS_FEED_TEMPLATE

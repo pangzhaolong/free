@@ -211,7 +211,9 @@ public class MainActivity
         initView(mPosition);
         // 获取数美deviceId之后，调用refresh接口刷新
         CommonParams.setNetWork();
-        CommonParams.getCommonNetWork();
+
+        //此接口不需要
+//        CommonParams.getCommonNetWork();
 
         UpdateManager.getInstance().checkUpdate(this, false);
     }
