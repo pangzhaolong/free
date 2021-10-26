@@ -21,6 +21,7 @@ class GoodsDetailRepository : BaseLiveDataModel() {
 
 
     @Autowired(name = RouterActivityPath.GoodsDetail.GOODS_DETAIL_PROVIDER)
+    @JvmField
     internal var detailProvider: IDetailProvider? = null
 
     /**
