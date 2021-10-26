@@ -27,6 +27,8 @@ data class ExitDialogRecommendGoods(
     var mainPic: String = "",
     @SerializedName("original_price")
     var originalPrice: Float = 0f,
+    @SerializedName("display_price")
+    var displayPrice: Float = 0f,
     @SerializedName("total_people")
     var totalPeople: Int = 0,
     @SerializedName("id")
