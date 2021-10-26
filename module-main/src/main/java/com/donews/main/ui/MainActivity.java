@@ -152,9 +152,6 @@ public class MainActivity
                 break;
             case 2:
                 AnalysisUtils.onEventEx(this, Dot.Btn_Lottery);
-                break;
-            case 2:
-                AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
                 ImmersionBar.with(this)
                         .statusBarColor(R.color.text_red)
                         .navigationBarColor(R.color.white)
