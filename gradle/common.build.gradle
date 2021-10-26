@@ -16,5 +16,7 @@ android {
         buildConfigField("String", "HTTP_GAME_URL", "\"${rootProject.HTTP_GAME_URL}\"")
         buildConfigField("String", "APP_IDENTIFICATION", "\"${rootProject.APP_IDENTIFICATION}\"")
         buildConfigField("String", "AD_CONFIG", "\"${rootProject.AD_CONFIG}\"")
+        buildConfigField("String", "AD_ID_CONFIG", "\"${rootProject.AD_ID_CONFIG}\"")
+        buildConfigField("String", "APP_ID_GROMORE", "\"${rootProject.APP_ID_GROMORE}\"")
     }
 }

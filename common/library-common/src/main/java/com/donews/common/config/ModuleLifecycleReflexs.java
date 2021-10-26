@@ -32,5 +32,8 @@ public class ModuleLifecycleReflexs {
 
     private static final String HomeInit = "com.donews.home.application.HomeModuleInit";
 
-    public static String[] initModuleNames = {MainInit, BaseInit, HomeInit};
+    /** 广告组件库 */
+    private static final String SDKInit = "com.dn.sdk.business.application.AdSdkModuleInit";
+
+    public static String[] initModuleNames = {MainInit, BaseInit, HomeInit, SDKInit};
 }
