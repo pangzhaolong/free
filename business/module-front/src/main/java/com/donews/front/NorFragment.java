@@ -38,7 +38,6 @@ public class NorFragment extends MvvmLazyLiveDataFragment<FrontNorFragmentBindin
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mDataBinding.frontNorSrl.setEnabled(false);
         mDataBinding.frontNorLoadingLl.setVisibility(View.VISIBLE);
         mDataBinding.frontNorRv.setVisibility(View.GONE);
         mNorGoodsAdapter = new NorGoodsAdapter(this.getContext(), this);
@@ -61,6 +60,8 @@ public class NorFragment extends MvvmLazyLiveDataFragment<FrontNorFragmentBindin
             mDataBinding.frontNorRv.setVisibility(View.VISIBLE);
         });
 
+        mDataBinding.frontNorSrl.setEnableRefresh(false);
+        mDataBinding.frontNorSrl.setEnableAutoLoadMore(false);
     }
 
     @Override

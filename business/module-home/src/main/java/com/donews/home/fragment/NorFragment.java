@@ -41,7 +41,7 @@ public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mDataBinding.homeNorShowSrl.setVisibility(View.GONE);
+        mDataBinding.homeNorSrl.setVisibility(View.GONE);
         mDataBinding.homeNorLoadingLl.setVisibility(View.VISIBLE);
 
         mNorGoodsAdapter = new NorGoodsAdapter(this.getContext(), this);
@@ -60,7 +60,7 @@ public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding
 
         mViewModel.getNorGoodsData(mCategoryItem.getCid()).observe(getViewLifecycleOwner(), this::showNorGoodsBean);
 
-        mDataBinding.homeNorShowSrl.setOnRefreshListener(() -> new Handler().postDelayed(() -> mDataBinding.homeNorShowSrl.setRefreshing(false), 1000));
+//        mDataBinding.homeNorShowSrl.setOnRefreshListener(() -> new Handler().postDelayed(() -> mDataBinding.homeNorShowSrl.setRefreshing(false), 1000));
     }
 
     private void showNorGoodsBean(NorGoodsBean norGoodsBean) {
@@ -73,7 +73,7 @@ public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding
         GoodsCache.saveGoodsBean(norGoodsBean, mCategoryItem.getCid());
 
         mDataBinding.homeNorLoadingLl.setVisibility(View.GONE);
-        mDataBinding.homeNorShowSrl.setVisibility(View.VISIBLE);
+        mDataBinding.homeNorSrl.setVisibility(View.VISIBLE);
     }
 
     @Override

@@ -25,7 +25,9 @@ import com.donews.front.bean.WalletBean;
 import com.donews.front.databinding.FrontFragmentBinding;
 import com.donews.front.viewModel.FrontViewModel;
 import com.donews.front.views.TabItem;
+import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.LogUtil;
+import com.donews.utilslibrary.utils.SPUtils;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -49,34 +51,11 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
         mContext = this.getContext();
 
-        /*Glide.with(this).load("https://wx4.sinaimg.cn/orj360/95936907ly8gdi6ssvmecj20u00u0q51.jpg").into(mDataBinding.frontGiftHeadIv);
-        mDataBinding.frontGiftText.setText(Html.fromHtml(String.format(getString(R.string.front_gift_text),
-                "x9527", "iPhone13")));
-
-        mDataBinding.frontVScrollLl.startLoop();*/
-
         mFragmentAdapter = new FragmentAdapter(this);
         mDataBinding.frontVp2.setAdapter(mFragmentAdapter);
         mDataBinding.frontCategoryTl.setTabMode(TabLayout.MODE_SCROLLABLE);
 
         TabLayoutMediator tab = new TabLayoutMediator(mDataBinding.frontCategoryTl, mDataBinding.frontVp2, (tab1, position) -> {
-            /*if (position == 0) {
-                tab1.setCustomView(new TabItem(mContext));
-                TabItem tabItem = (TabItem) tab1.getCustomView();
-                assert tabItem != null;
-                tabItem.setTitle("惊喜大奖");
-                tabItem.selected();
-            } else {
-                tab1.setCustomView(new TabItem(mContext));
-                TabItem tabItem = (TabItem) tab1.getCustomView();
-                assert tabItem != null;
-                if (mLotteryCategoryBean == null) {
-                    return;
-                }
-                if (mLotteryCategoryBean.getList() == null) {
-                }
-                tabItem.setTitle(mLotteryCategoryBean.getList().get(position - 1).getName());
-            }*/
             tab1.setCustomView(new TabItem(mContext));
             TabItem tabItem = (TabItem) tab1.getCustomView();
             assert tabItem != null;
@@ -118,6 +97,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mLotteryCategoryBean = categoryBean;
             mFragmentAdapter.refreshData(categoryBean.getList());
         });
+
+        mDataBinding.frontSrl.setEnableLoadMore(false);
     }
 
 
@@ -136,6 +117,9 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         WalletBean.RpBean rpBean = walletBean.getList().get(0);
         mDataBinding.frontRpOpenFl1.setTag(rpBean);
         mDataBinding.frontRpOpenFl1.setOnClickListener(this);
+
+        int nCloseRpCounts = 0;
+
         if (rpBean.getHadLotteryTotal() == -1) {
             mDataBinding.frontRpIv1.setAlpha(0.5f);
             mDataBinding.frontRpTv1.setText(rpBean.getLotteryTotal() + "/" + rpBean.getLotteryTotal());
@@ -151,6 +135,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                 mDataBinding.frontRpIv1.setBackgroundResource(R.drawable.front_rp_wait);
             } else {
                 mDataBinding.frontRpIv1.setBackgroundResource(R.drawable.front_rp_close);
+                nCloseRpCounts += 1;
             }
         } else {
             mDataBinding.frontRpIv1.setBackgroundResource(R.drawable.front_rp_open);
@@ -173,6 +158,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                 mDataBinding.frontRpIv2.setBackgroundResource(R.drawable.front_rp_wait);
             } else {
                 mDataBinding.frontRpIv2.setBackgroundResource(R.drawable.front_rp_close);
+                nCloseRpCounts += 1;
             }
         } else {
             mDataBinding.frontRpIv2.setBackgroundResource(R.drawable.front_rp_open);
@@ -195,6 +181,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                 mDataBinding.frontRpIv3.setBackgroundResource(R.drawable.front_rp_wait);
             } else {
                 mDataBinding.frontRpIv3.setBackgroundResource(R.drawable.front_rp_close);
+                nCloseRpCounts += 1;
             }
         } else {
             mDataBinding.frontRpIv3.setBackgroundResource(R.drawable.front_rp_open);
@@ -217,6 +204,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                 mDataBinding.frontRpIv4.setBackgroundResource(R.drawable.front_rp_wait);
             } else {
                 mDataBinding.frontRpIv4.setBackgroundResource(R.drawable.front_rp_close);
+                nCloseRpCounts += 1;
             }
         } else {
             mDataBinding.frontRpIv4.setBackgroundResource(R.drawable.front_rp_open);
@@ -239,11 +227,14 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                 mDataBinding.frontRpIv5.setBackgroundResource(R.drawable.front_rp_wait);
             } else {
                 mDataBinding.frontRpIv5.setBackgroundResource(R.drawable.front_rp_close);
+                nCloseRpCounts += 1;
             }
         } else {
             mDataBinding.frontRpIv5.setBackgroundResource(R.drawable.front_rp_open);
         }
         mDataBinding.frontRpProgess.setMax(rpBean.getLotteryTotal());
+
+        SPUtils.setInformain(KeySharePreferences.CLOSE_RED_PACKAGE_COUNTS, nCloseRpCounts);
     }
 
     @Override

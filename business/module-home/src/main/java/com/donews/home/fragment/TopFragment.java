@@ -146,7 +146,7 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
         mDataBinding.homeGoodProductRv.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
         mDataBinding.homeGoodProductRv.setAdapter(mTopGoodsAdapter);
 
-        mDataBinding.homeTopShowSrl.setOnRefreshListener(() -> new Handler().postDelayed(() -> mDataBinding.homeTopShowSrl.setRefreshing(false), 1000));
+//        mDataBinding.homeTopSrl.setOnRefreshListener(() -> new Handler().postDelayed(() -> mDataBinding.homeTopShowSrl.setRefreshing(false), 1000));
 
         /*mDataBinding.homeTopBannerViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
