@@ -23,6 +23,8 @@ import com.donews.home.cache.GoodsCache;
 import com.donews.home.databinding.HomeFragmentBinding;
 import com.donews.home.viewModel.HomeViewModel;
 import com.donews.home.views.TabItem;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.UrlUtils;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -129,6 +131,8 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
         mDataBinding.homeBannerLl.setOnClickListener(v -> EventBus.getDefault().post(new NavEvent(2)));
 
         initSrl();
+
+        AnalysisUtils.onEvent(this.getActivity(), Dot.Page_SaveMoneyBuy);
     }
 
     private void initSrl() {

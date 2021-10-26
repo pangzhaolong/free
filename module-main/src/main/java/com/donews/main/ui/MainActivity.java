@@ -28,6 +28,8 @@ import com.donews.main.databinding.MainActivityMainBinding;
 import com.donews.main.utils.ExitInterceptUtils;
 import com.donews.utilslibrary.analysis.AnalysisHelp;
 import com.donews.utilslibrary.analysis.AnalysisParam;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.gyf.immersionbar.BarHide;
 import com.gyf.immersionbar.ImmersionBar;
 import com.vmadalin.easypermissions.EasyPermissions;
@@ -134,6 +136,7 @@ public class MainActivity
                         .fitsSystemWindows(true)
                         .autoDarkModeEnable(true)
                         .init();
+                AnalysisUtils.onEvent(this, Dot.Btn_Home);
                 break;
             case 1:
                 AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
@@ -143,6 +146,10 @@ public class MainActivity
                         .fitsSystemWindows(true)
                         .autoDarkModeEnable(true)
                         .init();
+                AnalysisUtils.onEvent(this, Dot.Btn_ShowTime);
+                break;
+            case 2:
+                AnalysisUtils.onEvent(this, Dot.Btn_Lottery);
                 break;
             case 3:
                 AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
@@ -152,6 +159,7 @@ public class MainActivity
                         .fitsSystemWindows(true)
                         .autoDarkModeEnable(true)
                         .init();
+                AnalysisUtils.onEvent(this, Dot.Btn_SaveMoneyBuy);
                 break;
             case 4:
                 AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
@@ -161,6 +169,7 @@ public class MainActivity
                         .fitsSystemWindows(true)
                         .autoDarkModeEnable(true)
                         .init();
+                AnalysisUtils.onEvent(this, Dot.Btn_UserCenter);
                 break;
             default:
         }

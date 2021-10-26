@@ -25,6 +25,8 @@ import com.donews.front.bean.WalletBean;
 import com.donews.front.databinding.FrontFragmentBinding;
 import com.donews.front.viewModel.FrontViewModel;
 import com.donews.front.views.TabItem;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.SPUtils;
@@ -93,6 +95,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         loadCategoryData();
 
         initSrl();
+
+        AnalysisUtils.onEvent(this.getActivity(), Dot.Page_Home);
     }
 
     private void initSrl() {
