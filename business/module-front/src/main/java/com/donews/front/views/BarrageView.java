@@ -4,14 +4,11 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.donews.front.R;
 import com.donews.front.bean.AwardBean;
 
 import java.lang.ref.WeakReference;
@@ -20,11 +17,15 @@ import java.util.List;
 
 public class BarrageView extends LinearLayout {
     private UserAwardInfoView mAwardView1;
-    private UserAwardInfoView mAwardView2;
+
 
     private final List<AwardBean> mAwardList = new ArrayList<>();
 
     private ScrollHandler mScrollHandler = null;
+
+    private float mDefaultXPos = 0;
+
+    private int mListIndex = 0;
 
     public BarrageView(Context context) {
         super(context);
@@ -33,10 +34,8 @@ public class BarrageView extends LinearLayout {
     public BarrageView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         mAwardView1 = new UserAwardInfoView(context, attrs);
-        mAwardView2 = new UserAwardInfoView(context, attrs);
 
         addView(mAwardView1);
-        addView(mAwardView2);
 
         mScrollHandler = new ScrollHandler(this);
 
@@ -46,15 +45,18 @@ public class BarrageView extends LinearLayout {
     public void refreshData() {
         initAwardList();
 
-        mAwardView1.setUserAwardInfo(mAwardList.get(0).avatar, mAwardList.get(0).name, mAwardList.get(0).award);
-        mAwardView2.setUserAwardInfo(mAwardList.get(1).avatar, mAwardList.get(1).name, mAwardList.get(1).award);
-//        mAwardView2.setTranslationX(mAwardView2.getX()+100);
-
+        if (mAwardList.size() <= 0) {
+            return;
+        }
+        AwardBean awardBean = mAwardList.get(0);
+        mAwardView1.setUserAwardInfo(awardBean.avatar, awardBean.name, awardBean.award);
+        mDefaultXPos = mAwardView1.getX();
+        mAwardView1.setTranslationX(mDefaultXPos + 900);
         startScroll();
     }
 
     public void startScroll() {
-        mScrollHandler.sendEmptyMessageDelayed(10000, 200);
+        mScrollHandler.sendEmptyMessageDelayed(10000, 50);
     }
 
     public void pauseScroll() {
@@ -66,7 +68,6 @@ public class BarrageView extends LinearLayout {
     }
 
     public void stopScroll() {
-
         if (mScrollHandler != null) {
             mScrollHandler.removeCallbacksAndMessages(null);
             mScrollHandler = null;
@@ -74,13 +75,28 @@ public class BarrageView extends LinearLayout {
     }
 
     public void scrollViews() {
-        mAwardView1.setTranslationX(mAwardView1.getX()-10);
-//        mAwardView2.setTranslationX(mAwardView2.getX()-10);
-        mScrollHandler.sendEmptyMessageDelayed(10000, 100);
+        mAwardView1.setTranslationX(mAwardView1.getX() - 10);
+        if (mAwardView1.getX() <= 40) {
+            mScrollHandler.sendEmptyMessageDelayed(10001, 2000);
+            return;
+        }
+        mScrollHandler.sendEmptyMessageDelayed(10000, 50);
+    }
+
+    public void reInitView() {
+        mListIndex++;
+        if (mListIndex < 0 || mListIndex >= mAwardList.size()) {
+            mListIndex = 0;
+        }
+
+        AwardBean awardBean = mAwardList.get(mListIndex);
+        mAwardView1.setUserAwardInfo(awardBean.avatar, awardBean.name, awardBean.award);
+        mAwardView1.setTranslationX(mDefaultXPos + 500);
+        mScrollHandler.sendEmptyMessageDelayed(10000, 50);
     }
 
     private static class ScrollHandler extends Handler {
-        private WeakReference<BarrageView> mBarrageView;
+        private final WeakReference<BarrageView> mBarrageView;
 
         public ScrollHandler(BarrageView barrageView) {
             super();
@@ -92,6 +108,8 @@ public class BarrageView extends LinearLayout {
             super.handleMessage(msg);
             if (msg.what == 10000) {
                 mBarrageView.get().scrollViews();
+            } else if (msg.what == 10001) {
+                mBarrageView.get().reInitView();
             }
         }
     }
