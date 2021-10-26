@@ -38,7 +38,7 @@ public class AnalysisUtils {
      * @param eventId   事件的id（友盟统计事件，大数据的使用相同的id)
      * @param params    上报的参数
      */
-    public static void onEvent(
+    public static void onEventEx(
             Context mActivity,
             @NonNull String eventId,
             HashMap<String, Object> params) {
@@ -49,7 +49,6 @@ public class AnalysisUtils {
             } else {
                 MobclickAgent.onEventObject(mActivity, eventId, params);
             }
-//            MobclickAgent.onEvent(mActivity, mMobName);
             //上报大数据平台带参数的
             if (params == null) {
                 AnalysisHelp.onEvent(mActivity, eventId);
@@ -69,6 +68,12 @@ public class AnalysisUtils {
                 }
             }
         }
+    }
+
+    public static void onEventEx(
+            Context mActivity,
+            @NonNull String eventId) {
+        onEventEx(mActivity, eventId, null);
     }
 
     /**

@@ -96,7 +96,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
         initSrl();
 
-        AnalysisUtils.onEvent(this.getActivity(), Dot.Page_Home);
+        AnalysisUtils.onEventEx(this.getActivity(), Dot.Page_Home);
     }
 
     private void initSrl() {

@@ -132,7 +132,7 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
 
         initSrl();
 
-        AnalysisUtils.onEvent(this.getActivity(), Dot.Page_SaveMoneyBuy);
+        AnalysisUtils.onEventEx(this.getActivity(), Dot.Page_SaveMoneyBuy);
     }
 
     private void initSrl() {
