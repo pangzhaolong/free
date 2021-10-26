@@ -19,6 +19,8 @@ import com.donews.network.callback.SimpleCallBack
 import com.donews.network.exception.ApiException
 import com.donews.utilslibrary.analysis.AnalysisParam
 import com.donews.utilslibrary.analysis.AnalysisUtils
+import com.donews.utilslibrary.utils.KeySharePreferences
+import com.donews.utilslibrary.utils.SPUtils
 import com.orhanobut.logger.Logger
 
 /**
@@ -78,14 +80,17 @@ object ExitInterceptUtils {
                 mFirstClickBackTime = System.currentTimeMillis()
             }
         } else {
-            showContinueLotteryDialog(activity)
-//            if (checkNotLottery()) {
-//                showNotLotteryDialog(activity)
-//            } else if (checkRedPacketNotOpen()) {
-//                showOpenRedPacketDialog(activity)
-//            } else {
-//                showContinueLotteryDialog(activity)
-//            }
+            when {
+                checkNotLottery() -> {
+                    showNotLotteryDialog(activity)
+                }
+                checkRedPacketNotOpen() -> {
+                    showOpenRedPacketDialog(activity)
+                }
+                else -> {
+                    showContinueLotteryDialog(activity)
+                }
+            }
         }
     }
 
@@ -95,8 +100,7 @@ object ExitInterceptUtils {
      * @return Boolean true 抽过奖,false 未抽过奖
      */
     private fun checkNotLottery(): Boolean {
-        //TODO 用户当日是否抽奖
-        return true
+        return false
     }
 
     /**
@@ -104,7 +108,11 @@ object ExitInterceptUtils {
      * @return Boolean true 当前有可以开但是没有开的红包
      */
     private fun checkRedPacketNotOpen(): Boolean {
-        return true
+        val number = SPUtils.getInformain(KeySharePreferences.CLOSE_RED_PACKAGE_COUNTS, 0);
+        if (number > 0) {
+            return true
+        }
+        return false
     }
 
 
@@ -122,7 +130,6 @@ object ExitInterceptUtils {
                 }
                 setOnSureListener {
                     disMissDialog()
-                    //TODO 跳转抽奖
                 }
                 setOnCloseListener {
                     disMissDialog()
