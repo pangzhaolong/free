@@ -24,6 +24,13 @@
                     android:host="${applicationId}"
                     android:scheme="jdd" />
             </intent-filter>
+            <!-- 友盟测试的配置 -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="um.616d1dd2ac9567566e9b97e3" />
+            </intent-filter>
         </activity>
         <!-- 沉寝式适配-->
         <meta-data
