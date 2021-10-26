@@ -52,7 +52,8 @@ public class RouterActivityPath {
         /**
          * 注销账户原因弹窗
          */
-        public static final String DIALOG_USER_CANCELLATION_WHY_DIALOG_FRAGMENT = MINE + "/UserCancellationWhyDialogFragment";
+        public static final String DIALOG_USER_CANCELLATION_WHY_DIALOG_FRAGMENT = MINE +
+                "/UserCancellationWhyDialogFragment";
 
         /**
          * 账户注销页面
@@ -114,6 +115,9 @@ public class RouterActivityPath {
         public static final String DETAIL = "/detail";
         //商品详情页
         public static final String GOODS_DETAIL = DETAIL + "/goodsDetail";
+
+        //商品详情相关的Provider
+        public static final String GOODS_DETAIL_PROVIDER = DETAIL + "/goodsDetailProvider";
     }
 
     public static class RealTime {

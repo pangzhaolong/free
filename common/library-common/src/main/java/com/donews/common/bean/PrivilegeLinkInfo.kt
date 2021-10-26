@@ -1,4 +1,4 @@
-package com.donews.detail.bean
+package com.donews.common.bean
 
 import com.donews.common.contract.BaseCustomViewModel
 import com.google.gson.annotations.SerializedName

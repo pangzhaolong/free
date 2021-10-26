@@ -1,8 +1,11 @@
 package com.donews.detail.repository
 
+import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.donews.base.model.BaseLiveDataModel
 import com.donews.detail.bean.GoodsDetailInfo
-import com.donews.detail.bean.PrivilegeLinkInfo
+import com.donews.common.bean.PrivilegeLinkInfo
+import com.donews.common.provider.IDetailProvider
+import com.donews.common.router.RouterActivityPath
 import com.donews.network.EasyHttp
 import com.donews.network.cache.model.CacheMode
 import com.donews.network.callback.SimpleCallBack
@@ -15,6 +18,10 @@ import com.donews.network.callback.SimpleCallBack
  * @date 2021/10/12 14:47
  */
 class GoodsDetailRepository : BaseLiveDataModel() {
+
+
+    @Autowired(name = RouterActivityPath.GoodsDetail.GOODS_DETAIL_PROVIDER)
+    internal var detailProvider: IDetailProvider? = null
 
     /**
      * 查询商品详情信息
