@@ -1,5 +1,9 @@
 package com.donews.common.provider
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import com.alibaba.android.arouter.facade.template.IProvider
 import com.donews.common.bean.PrivilegeLinkInfo
 import com.donews.network.callback.SimpleCallBack
@@ -22,8 +26,6 @@ interface IDetailProvider : IProvider {
      */
     fun queryPrivilegeLink(goodsId: String, couponId: String, callBack: SimpleCallBack<PrivilegeLinkInfo>): Disposable
 
+    fun goToTaoBao(context: Context, link: String)
 
-    fun gotoTaoBao(link: String) {
-
-    }
 }
