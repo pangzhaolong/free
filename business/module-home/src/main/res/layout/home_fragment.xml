@@ -152,7 +152,8 @@
                                     android:layout_height="25dp"
                                     android:layout_marginStart="10dp"
                                     android:layout_marginTop="4dp"
-                                    app:type="circle" />
+                                    app:type="circle"
+                                    tools:ignore="TooDeepLayout" />
 
                                 <org.raphets.roundimageview.RoundImageView
                                     android:id="@+id/home_banner_header_riv2"

@@ -34,6 +34,7 @@ public class BarrageView extends LinearLayout {
     public BarrageView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         mAwardView1 = new UserAwardInfoView(context, attrs);
+        mAwardView1.setVisibility(GONE);
 
         addView(mAwardView1);
 
@@ -47,6 +48,7 @@ public class BarrageView extends LinearLayout {
         if (mAwardList.size() <= 0) {
             return;
         }
+        mAwardView1.setVisibility(VISIBLE);
         AwardBean.AwardInfo awardInfo = mAwardList.get(0);
         mAwardView1.setUserAwardInfo(awardInfo.getAvatar(), awardInfo.getName(), awardInfo.getProduceName());
         mDefaultXPos = mAwardView1.getX();
