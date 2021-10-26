@@ -26,6 +26,8 @@ import com.donews.home.views.TabItem;
 import com.donews.utilslibrary.utils.UrlUtils;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -49,18 +51,13 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
         return R.layout.home_fragment;
     }
 
-
     @Override
     protected void onFragmentFirstVisible() {
         super.onFragmentFirstVisible();
         isFirst = true;
-        // 获取网路数据
         mHomeBean = mViewModel.getNetHomeData();
-
         mHomeBean.observe(this, homeBean -> {
-            // 获取数据
             if (homeBean == null) {
-                // 处理接口出错的问题
                 return;
             }
             // 处理正常的逻辑。
@@ -79,7 +76,6 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
         mFragmentAdapter = new FragmentAdapter(this);
         loadUserList();
         loadSecKilData();
-//        mDataBinding.homeCategoryVp2.setUserInputEnabled(false);
         mDataBinding.homeCategoryVp2.setAdapter(mFragmentAdapter);
         mDataBinding.homeCategoryTl.setTabMode(TabLayout.MODE_SCROLLABLE);
         TabLayoutMediator tab = new TabLayoutMediator(mDataBinding.homeCategoryTl, mDataBinding.homeCategoryVp2, (tab1, position) -> {
@@ -131,6 +127,16 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
         });
 
         mDataBinding.homeBannerLl.setOnClickListener(v -> EventBus.getDefault().post(new NavEvent(2)));
+
+        initSrl();
+    }
+
+    private void initSrl() {
+        mDataBinding.homeSrl.setOnRefreshListener(refreshLayout -> {
+            loadSecKilData();
+            loadUserList();
+            mDataBinding.homeSrl.finishRefresh();
+        });
     }
 
     private void loadSecKilData() {

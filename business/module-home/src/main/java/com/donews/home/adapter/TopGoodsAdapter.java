@@ -38,7 +38,7 @@ public class TopGoodsAdapter extends RecyclerView.Adapter<TopGoodsAdapter.GoodsV
 
     @SuppressLint("NotifyDataSetChanged")
     public void refreshData(List<TopGoodsBean.goodsInfo> list) {
-        mGoodsList.clear();
+//        mGoodsList.clear();
         mGoodsList.addAll(list);
         notifyDataSetChanged();
     }

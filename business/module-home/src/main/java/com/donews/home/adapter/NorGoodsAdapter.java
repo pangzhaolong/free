@@ -29,7 +29,7 @@ public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsV
 
     private final Context mContext;
     private final List<NorGoodsBean.goodsInfo> mGoodsList = new ArrayList<>();
-    private GoodsDetailListener mListener;
+    private final GoodsDetailListener mListener;
 
     public NorGoodsAdapter(Context context, GoodsDetailListener listener) {
         mContext = context;
@@ -38,11 +38,10 @@ public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsV
 
     @SuppressLint("NotifyDataSetChanged")
     public void refreshData(List<NorGoodsBean.goodsInfo> list) {
-        mGoodsList.clear();
+//        mGoodsList.clear();
         mGoodsList.addAll(list);
         notifyDataSetChanged();
     }
-
 
     @NonNull
     @Override
@@ -78,7 +77,7 @@ public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsV
 
         holder.priceTv.setText(gi.getActual_price() + "");
         holder.shopTv.setText(gi.getShop_name());
-        holder.giftTv.setText(gi.getCoupon_price()+"元");
+        holder.giftTv.setText(gi.getCoupon_price() + "元");
     }
 
     private SpannableString getTitleString(NorGoodsBean.goodsInfo goodsInfo) {

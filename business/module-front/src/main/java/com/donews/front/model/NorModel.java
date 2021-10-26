@@ -18,9 +18,9 @@ public class NorModel extends BaseLiveDataModel {
      *
      * @return 返回 frontBean的数据
      */
-    public MutableLiveData<NorGoodsBean> getNetData(String categoryId, String pageId) {
+    public MutableLiveData<NorGoodsBean> getNetData(String categoryId, int pageId) {
         MutableLiveData<NorGoodsBean> mutableLiveData = new MutableLiveData<>();
-        addDisposable(EasyHttp.get(FrontApi.lotteryGoodsUrl +"?category_id="+categoryId+"&page_size=20")
+        addDisposable(EasyHttp.get(FrontApi.lotteryGoodsUrl + "?category_id=" + categoryId + "&page_size=20&page_id=" + pageId++)
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<NorGoodsBean>() {
 

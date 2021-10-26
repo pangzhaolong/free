@@ -6,55 +6,45 @@
 
     </data>
 
-    <com.scwang.smart.refresh.layout.SmartRefreshLayout
-        android:id="@+id/front_nor_srl"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:ignore="MissingClass">
 
-        <FrameLayout
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#F9F9F9"
+        android:orientation="vertical">
+
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/front_nor_srl"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#F9F9F9"
+            android:layout_height="match_parent"
+            tools:ignore="MissingClass">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/front_nor_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                tools:listitem="@layout/front_goods_item_h" />
+
+            <com.scwang.smart.refresh.footer.ClassicsFooter
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+        <LinearLayout
+            android:id="@+id/front_nor_loading_ll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
             android:orientation="vertical">
 
-            <com.scwang.smart.refresh.layout.SmartRefreshLayout
-                android:id="@+id/refreshLayout"
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:ignore="MissingClass">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/front_nor_rv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    tools:listitem="@layout/front_goods_item_h" />
-
-                <com.scwang.smart.refresh.footer.ClassicsFooter
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </com.scwang.smart.refresh.layout.SmartRefreshLayout>
-
-            <LinearLayout
-                android:id="@+id/front_nor_loading_ll"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="140dp"
-                    android:gravity="center_horizontal"
-                    android:text="数据加载中..." />
-            </LinearLayout>
-        </FrameLayout>
-
-        <com.scwang.smart.refresh.footer.ClassicsFooter
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+                android:layout_height="40dp"
+                android:layout_marginTop="140dp"
+                android:gravity="center_horizontal"
+                android:text="数据加载中..." />
+        </LinearLayout>
+    </FrameLayout>
 </layout>

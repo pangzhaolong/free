@@ -30,6 +30,9 @@ import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.SPUtils;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
 @Route(path = RouterFragmentPath.Front.PAGER_FRONT)
 public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding, FrontViewModel> implements View.OnClickListener {
@@ -56,13 +59,11 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         mDataBinding.frontCategoryTl.setTabMode(TabLayout.MODE_SCROLLABLE);
 
         TabLayoutMediator tab = new TabLayoutMediator(mDataBinding.frontCategoryTl, mDataBinding.frontVp2, (tab1, position) -> {
-            tab1.setCustomView(new TabItem(mContext));
+            tab1.setCustomView(new TabItem(mContext, position));
             TabItem tabItem = (TabItem) tab1.getCustomView();
             assert tabItem != null;
-            if (mLotteryCategoryBean == null) {
+            if (mLotteryCategoryBean == null || mLotteryCategoryBean.getList() == null) {
                 return;
-            }
-            if (mLotteryCategoryBean.getList() == null) {
             }
             tabItem.setTitle(mLotteryCategoryBean.getList().get(position).getName());
         });
@@ -89,6 +90,21 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             }
         });
 
+        loadCategoryData();
+
+        initSrl();
+    }
+
+    private void initSrl() {
+        mDataBinding.frontSrl.setEnableLoadMore(false);
+        mDataBinding.frontSrl.setOnRefreshListener(refreshLayout -> {
+            loadCategoryData();
+            loadRpData();
+            mDataBinding.frontSrl.finishRefresh();
+        });
+    }
+
+    private void loadCategoryData() {
         mViewModel.getNetData().observe(getViewLifecycleOwner(), categoryBean -> {
             if (categoryBean == null) {
                 return;
@@ -97,10 +113,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mLotteryCategoryBean = categoryBean;
             mFragmentAdapter.refreshData(categoryBean.getList());
         });
-
-        mDataBinding.frontSrl.setEnableLoadMore(false);
     }
-
 
     private void loadRpData() {
         mViewModel.getRpData().observe(this.getViewLifecycleOwner(), walletBean -> {
@@ -254,6 +267,9 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     public void onDestroyView() {
         super.onDestroyView();
         mDataBinding.frontBarrageView.stopScroll();
+        if (mFragmentAdapter != null) {
+            mFragmentAdapter.clear();
+        }
     }
 
     @Override
