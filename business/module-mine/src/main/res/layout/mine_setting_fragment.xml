@@ -35,7 +35,8 @@
                 tools:ignore="MissingConstraints"
                 android:paddingTop="40dp"
                 android:paddingBottom="40dp"
-                android:paddingLeft="15dp">
+                android:paddingLeft="15dp"
+                android:visibility="gone">
 
                 <com.donews.common.views.CircleImageView
                     android:id="@+id/set_head_bg"
@@ -81,7 +82,9 @@
                         android:textColor="@color/interval_line"/>
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
-
+            <View
+                style="@style/HorizontalLine"
+                android:layout_height="10dp"/>
             <!-- 以下是菜单项目 -->
             <include
                 android:id="@+id/set_yhxy"

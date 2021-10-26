@@ -42,6 +42,13 @@ public class AppInfo {
     }
 
     /**
+     * 退出登录。清除本地登录标志
+     */
+    public static void exitWXLogin(){
+        saveWXLoginCode(null);
+    }
+
+    /**
      * 判断是否微信登录了。此才是用户登录的标志
      * @return T:表示已经登录，F:表示未登录
      */

@@ -15,62 +15,81 @@ import com.alibaba.android.arouter.launcher.ARouter;
  */
 public class RouterFragmentPath {
 
-    /** 9.9包邮的组件 */
+    /**
+     * 9.9包邮的组件
+     */
     public static class Mail {
         private static final String Mail = "/mail";
 
-        /** 包邮的页面组件Fragment */
+        /**
+         * 包邮的页面组件Fragment
+         */
         public static final String PAGE_MAIL_PACKAGE = Mail + "/mailPackageFragment";
 
     }
 
-    /** 首页组件 */
+    /**
+     * 首页组件
+     */
     public static class Home {
         private static final String HOME = "/home";
 
-        /** 首页 */
+        /**
+         * 首页
+         */
         public static final String PAGER_HOME = HOME + "/Home";
 
     }
 
-    /** 首页组件 **/
-    public static class Front
-    {
+    /**
+     * 首页组件
+     **/
+    public static class Front {
         private static final String FRONT = "/front";
 
-        /** 首页 */
+        /**
+         * 首页
+         */
         public static final String PAGER_FRONT = FRONT + "/Front";
 
     }
 
-    public static class Blank
-    {
+    public static class Blank {
         private static final String BLANK = "/blank";
 
-        /** 首页 */
+        /**
+         * 首页
+         */
         public static final String PAGER_BLANK = BLANK + "/Blank";
 
     }
 
-    public static class Face
-    {
+    public static class Face {
         private static final String FACE = "/face";
 
-        /** 首页 */
+        /**
+         * 首页
+         */
         public static final String PAGER_FACE = FACE + "/Face";
 
     }
 
-    /** 秒杀组件 */
+    /**
+     * 秒杀组件
+     */
     public static class Spike {
         private static final String SPIKE = "/spike";
 
-        /** 秒杀 */
+        /**
+         * 秒杀
+         */
         public static final String PAGER_SPIKE = SPIKE + "/Spike";
 
     }
 
-    /** 晒单页组件 */
+    /**
+     * 晒单页组件
+     */
     public static class Unboxing {
         private static final String UNBOXING = "/unboxing";
 
@@ -93,11 +112,15 @@ public class RouterFragmentPath {
     }
 
 
-    /** sdkTest */
+    /**
+     * sdkTest
+     */
     public static class TestSdk {
         private static final String TEST = "/test";
 
-        /** 首页 */
+        /**
+         * 首页
+         */
         public static final String PAGER_TEST_SDK = TEST + "/testSdk";
 
         public static final String PAGER_TEST_AD_SDK = TEST + "/adSdk";
@@ -108,11 +131,38 @@ public class RouterFragmentPath {
     public static class User {
         private static final String USER = "/user";
 
-        /** 个人中心 */
+        /**
+         * 个人中心
+         */
         public static final String PAGER_USER = USER + "/UserInfo";
 
-        /** 用户设置 */
+        /**
+         * 用户设置
+         */
         public static final String PAGER_USER_SETTING = USER + "/MineSetting";
+
+        /**
+         * 开奖详情、开奖页 的Fragment
+         */
+        public static final String PAGER_USER_OPEN_WINNING = USER + "/MineOpenWinningFragment";
+
+        /**
+         * 获取开奖的Fragment
+         *
+         * @param period     期数。如果为 0 :表示自动计算期数
+         * @param isShowBack 是否显示返回按钮，T:显示按钮，F:不显示
+         * @param isShowMore 是否显示往期的按钮，T:显示按钮，F:不显示
+         * @return 开奖的Fragment
+         */
+        public static Fragment getMineOpenWinFragment(
+                int period, boolean isShowBack, boolean isShowMore) {
+            return (Fragment) ARouter.getInstance()
+                    .build(RouterFragmentPath.User.PAGER_USER_OPEN_WINNING)
+                    .withInt("period", period)
+                    .withBoolean("isShowBack", isShowBack)
+                    .withBoolean("isShowMore", isShowMore)
+                    .navigation();
+        }
     }
 
     public static class Login {

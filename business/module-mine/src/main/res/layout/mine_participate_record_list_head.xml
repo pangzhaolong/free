@@ -21,7 +21,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" />
         <include
-            layout="@layout/incl_open_win_not_data"/>
+            layout="@layout/incl_open_win_not_data"
+            android:visibility="gone"/>
     </FrameLayout>
 
     <!-- 精选的标题 -->

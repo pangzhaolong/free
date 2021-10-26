@@ -58,7 +58,9 @@ public class MainActivity
 
     private NavigationController mNavigationController;
 
-    /** 初始选择tab */
+    /**
+     * 初始选择tab
+     */
     @Autowired(name = "position")
     int mPosition = 0;
 
@@ -144,6 +146,15 @@ public class MainActivity
                         .autoDarkModeEnable(true)
                         .init();
                 break;
+            case 2:
+                AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
+                ImmersionBar.with(this)
+                        .statusBarColor(R.color.text_red)
+                        .navigationBarColor(R.color.white)
+                        .fitsSystemWindows(true)
+                        .autoDarkModeEnable(true)
+                        .init();
+                break;
             case 3:
                 AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
                 ImmersionBar.with(this)
@@ -178,10 +189,13 @@ public class MainActivity
                         .build(RouterFragmentPath.Front.PAGER_FRONT)
                         .navigation());
         fragments.add(RouterFragmentPath.Unboxing.getUnboxingFragment());
-        fragments.add(
-                (Fragment) ARouter.getInstance()
-                        .build(RouterFragmentPath.Spike.PAGER_SPIKE)
-                        .navigation());
+//        fragments.add(
+//                (Fragment) ARouter.getInstance()
+//                        .build(RouterFragmentPath.Spike.PAGER_SPIKE)
+//                        .navigation());
+        //开奖页面
+        fragments.add(RouterFragmentPath.User.getMineOpenWinFragment(
+                0, false, true));
         fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Home.PAGER_HOME).navigation());
         fragments.add(
                 (Fragment) ARouter.getInstance()
@@ -233,7 +247,7 @@ public class MainActivity
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-            @NonNull int[] grantResults) {
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults,
                 ExitInterceptUtils.INSTANCE.getRemindDialog());

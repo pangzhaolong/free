@@ -99,7 +99,12 @@ public class MineWinningRecordActivity extends
                                 mDataBinding.mineWinRecodLayout.getRefeshLayout().autoRefresh();
                             });
                 } else if (list.isEmpty()) {
-                    mDataBinding.mineWinRecodLayout.getStateLayout().showEmpty();
+                    mDataBinding.mineWinRecodLayout.getStateLayout().showEmpty(
+                            R.layout.incl_open_win_not_data, new ViewGroup.LayoutParams(
+                                    ViewGroup.LayoutParams.MATCH_PARENT,
+                                    ViewGroup.LayoutParams.MATCH_PARENT
+                            )
+                    );
                 } else {
                     mDataBinding.mineWinRecodLayout.getStateLayout().showContent();
                 }
