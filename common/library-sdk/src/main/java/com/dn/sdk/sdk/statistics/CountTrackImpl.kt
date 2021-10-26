@@ -18,7 +18,7 @@ import com.donews.utilslibrary.analysis.AnalysisHelp
 class CountTrackImpl(private val requestInfo: RequestInfo) : ITrack {
 
     private val adType: AdType = requestInfo.adType
-    private val sdkType: SDKType = requestInfo.loader.sdkType
+    private val sdkType: SDKType = requestInfo.platform.getLoader().sdkType
     private val requestId: String
 
     init {
