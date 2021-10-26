@@ -96,9 +96,6 @@ class RemindDialog : AbstractFragmentDialog<MainExitDialogRemindBinding>(), Easy
     private fun requiresPermission() {
         if (EasyPermissions.somePermissionPermanentlyDenied(this, PAR)) {
             Toast.makeText(context, "开启提醒失败", Toast.LENGTH_SHORT).show()
-            handler.postDelayed(Runnable {
-                onCancelListener?.onCancel()
-            }, 2000)
         } else {
             EasyPermissions.requestPermissions(
                 this,

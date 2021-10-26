@@ -92,7 +92,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="@string/main_exit_price"
+            android:text="@{@string/main_exit_price(goodsBean.displayPrice)}"
             android:textColor="@color/common_e9423e"
             android:textSize="17sp"
             app:layout_constraintStart_toStartOf="@id/tv_goods_title"

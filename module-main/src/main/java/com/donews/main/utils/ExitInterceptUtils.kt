@@ -55,7 +55,6 @@ object ExitInterceptUtils {
                 override fun onSuccess(t: ExitInterceptConfig?) {
                     t?.let {
                         exitInterceptConfig = it
-                        Logger.d(it)
                     }
                 }
             })
@@ -66,7 +65,6 @@ object ExitInterceptUtils {
     }
 
     fun intercept(activity: AppCompatActivity) {
-        exitInterceptConfig.intercept = false
         if (!exitInterceptConfig.intercept) {
             val duration = System.currentTimeMillis() - mFirstClickBackTime
             if (duration < CLICK_INTERVAL) {
@@ -80,13 +78,14 @@ object ExitInterceptUtils {
                 mFirstClickBackTime = System.currentTimeMillis()
             }
         } else {
-            if (checkNotLottery()) {
-                showNotLotteryDialog(activity)
-            } else if (checkRedPacketNotOpen()) {
-                showOpenRedPacketDialog(activity)
-            } else {
-                showContinueLotteryDialog(activity)
-            }
+            showContinueLotteryDialog(activity)
+//            if (checkNotLottery()) {
+//                showNotLotteryDialog(activity)
+//            } else if (checkRedPacketNotOpen()) {
+//                showOpenRedPacketDialog(activity)
+//            } else {
+//                showContinueLotteryDialog(activity)
+//            }
         }
     }
 
@@ -97,7 +96,7 @@ object ExitInterceptUtils {
      */
     private fun checkNotLottery(): Boolean {
         //TODO 用户当日是否抽奖
-        return false
+        return true
     }
 
     /**
@@ -180,7 +179,6 @@ object ExitInterceptUtils {
                 }
                 setOnSureListener {
                     disMissDialog()
-                    //TODO 抽奖
                 }
                 setOnCloseListener {
                     disMissDialog()

@@ -8,11 +8,14 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.alibaba.android.arouter.launcher.ARouter
 import com.donews.base.fragmentdialog.AbstractFragmentDialog
 import com.donews.base.model.BaseLiveDataModel
 import com.donews.base.viewmodel.BaseLiveDataViewModel
+import com.donews.common.router.RouterFragmentPath
 import com.donews.main.R
 import com.donews.main.databinding.MainExitDialogNotLotteryBinding
+import com.donews.main.entitys.resps.ExitDialogRecommendGoods
 import com.donews.main.entitys.resps.ExitDialogRecommendGoodsResp
 import com.donews.main.entitys.resps.NotLotteryConfig
 import com.donews.main.utils.ExitInterceptUtils
@@ -52,6 +55,7 @@ class NotLotteryDialog : AbstractFragmentDialog<MainExitDialogNotLotteryBinding>
 
     private lateinit var notLotteryConfig: NotLotteryConfig
     private val handler = Handler(Looper.getMainLooper())
+    private var goodsInfo: ExitDialogRecommendGoods? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -95,7 +99,6 @@ class NotLotteryDialog : AbstractFragmentDialog<MainExitDialogNotLotteryBinding>
         val delta = max - min
         val random = Random(System.currentTimeMillis())
         val probability = min + random.nextDouble(delta)
-        Logger.d(probability * 100)
         dataBinding.probability = probability * 100
     }
 
@@ -123,6 +126,8 @@ class NotLotteryDialog : AbstractFragmentDialog<MainExitDialogNotLotteryBinding>
                                 it.totalPeople.toString()
                             }
                             dataBinding.totalPeople = peopleNumberString
+
+                            goodsInfo = it
                         }
                     }
                 }
@@ -139,6 +144,12 @@ class NotLotteryDialog : AbstractFragmentDialog<MainExitDialogNotLotteryBinding>
         fun clickLottery(view: View) {
             if (onSureListener != null) {
                 onSureListener.onSure()
+            }
+            goodsInfo?.run {
+                ARouter.getInstance()
+                    .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
+                    .withString("goods_id", goodsId)
+                    .navigation();
             }
         }
 
