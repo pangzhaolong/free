@@ -1,6 +1,6 @@
 ext {
     // true 表示测试环境，false表示正式环境
-    DEBUG = true
+    DEBUG = false
 
     //版本号，版本名称 版本号对应于版本名称，
     // 例如：1.2.1->12010;1.3.2->13020
@@ -29,28 +29,12 @@ ext {
     //用户相关接口
     API_USER_URL = API_BASE_URL + "user/"
 
+    WEB_BASE_URL = "https://recharge-web.xg.tagtic.cn/jdd/index.html#/"
 
     // 正式环境base Url
     API2_URL = "https://www.qusobook.com/"
     // 测试环境的base2 url
     API_TEST2_URL = "http://120.31.70.243:8181/"
-
-//    // 开屏广告id
-//    SPLASH_ID = "42314";
-//    // 插屏广告id
-//    INTERSTITIAL_ID = "44511";
-//    // Banner广告id
-//    BANNER_ID = "44507";
-//    // 激励视频广告Id
-//    REWARD_VIDEO_ID = "43359";
-//    // 全屏视频广告id
-//    FULL_SCREEN_VIDEO_ID = "5354";
-//    // 信息流自渲染广告id
-//    NEWS_FEED_CUSTOM_RENDER_ID = "43366";
-//    // 信息流模广告id
-//    NEWS_FEED_TEMPLATE_ID = "43362";
-//    // Draw流广告id
-//    DRAW_FEED_ID = "";
 
     // 登录的地址
     LOGIN_TEST_URL = "https://monetization.dev.tagtic.cn/"

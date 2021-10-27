@@ -5,6 +5,11 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.CycleInterpolator;
+import android.view.animation.OvershootInterpolator;
+import android.view.animation.RotateAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,6 +32,7 @@ import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.SPUtils;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.donews.front.BuildConfig;
 
 @Route(path = RouterFragmentPath.Front.PAGER_FRONT)
 public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding, FrontViewModel> implements View.OnClickListener {
@@ -91,7 +97,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         AnalysisUtils.onEventEx(this.getActivity(), Dot.Page_Home);
 
         mDataBinding.frontJddHelp.setOnClickListener(v -> {
-            ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY).withString("url", "https://recharge-web.xg.tagtic.cn/jdd/index.html#/").navigation();
+            ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY).withString("url", BuildConfig.WEB_BASE_URL).navigation();
         });
     }
 
@@ -258,6 +264,31 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         mDataBinding.frontRpProgess.setMax(rpBean.getLotteryTotal());
 
         SPUtils.setInformain(KeySharePreferences.CLOSE_RED_PACKAGE_COUNTS, nCloseRpCounts);
+
+        TranslateAnimation animation = new TranslateAnimation(0, -5, 0, 0);
+        animation.setInterpolator(new OvershootInterpolator());
+        animation.setDuration(100);
+        animation.setRepeatCount(-1);
+        animation.setRepeatMode(Animation.REVERSE);
+        mDataBinding.frontRpOpenFl1.startAnimation(animation);
+
+        Animation rotateAnimation = new RotateAnimation(0, 10, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.8f);
+        rotateAnimation.setInterpolator(new CycleInterpolator(10));
+        rotateAnimation.setRepeatCount(-1);
+        rotateAnimation.setDuration(3000);
+        mDataBinding.frontRpOpenFl2.startAnimation(rotateAnimation);
+
+        rotateAnimation = new RotateAnimation(0, 10, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        rotateAnimation.setInterpolator(new CycleInterpolator(10));
+        rotateAnimation.setRepeatCount(-1);
+        rotateAnimation.setDuration(3000);
+        mDataBinding.frontRpOpenFl3.startAnimation(rotateAnimation);
+
+        rotateAnimation = new RotateAnimation(0, 10, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.8f);
+        rotateAnimation.setInterpolator(new CycleInterpolator(10));
+        rotateAnimation.setRepeatCount(-1);
+        rotateAnimation.setDuration(3000);
+        mDataBinding.frontRpOpenFl4.startAnimation(rotateAnimation);
     }
 
     @Override
