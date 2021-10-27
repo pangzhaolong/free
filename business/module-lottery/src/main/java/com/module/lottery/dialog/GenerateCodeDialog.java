@@ -2,6 +2,7 @@ package com.module.lottery.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,11 +17,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.module_lottery.R;
+import com.module_lottery.databinding.GenerateDialogLayoutBinding;
 
 import java.lang.ref.WeakReference;
 
 //生成抽奖码
-public class GenerateCodeDialog extends BaseDialog {
+public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> {
     private Context context;
     private OnStateListener mOnFinishListener;
     private LotteryHandler mLotteryHandler = new LotteryHandler(this);
@@ -38,11 +40,36 @@ public class GenerateCodeDialog extends BaseDialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.generate_dialog_layout);
         Message mes = new Message();
         mes.what = 1;
         mLotteryHandler.sendMessageDelayed(mes, 3000);
+        initView();
+        setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                mDataBinding.lotteryText01.destroy();
+                mDataBinding.lotteryText02.destroy();
+                mDataBinding.lotteryText03.destroy();
+                mDataBinding.lotteryText04.destroy();
+                mDataBinding.lotteryText05.destroy();
+                mDataBinding.lotteryText06.destroy();
+                mDataBinding.lotteryText07.destroy();
+
+            }
+        });
     }
+
+
+    private  void initView(){
+        mDataBinding.lotteryText01.start();
+        mDataBinding.lotteryText02.start();
+        mDataBinding.lotteryText03.start();
+        mDataBinding.lotteryText04.start();
+        mDataBinding.lotteryText05.start();
+        mDataBinding.lotteryText06.start();
+        mDataBinding.lotteryText07.start();
+    }
+
 
     @Override
     public float setSize() {
@@ -53,7 +80,6 @@ public class GenerateCodeDialog extends BaseDialog {
     @Override
     public void setOnDismissListener(@Nullable OnDismissListener listener) {
         super.setOnDismissListener(listener);
-
 
     }
 

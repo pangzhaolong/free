@@ -88,7 +88,7 @@ public class CongratulationsDialog extends BaseDialog<CongratulationsDialogLayou
 
     @Override
     public float setSize() {
-        return 0.7f;
+        return 0.8f;
     }
 
 

@@ -33,13 +33,15 @@ public  abstract class BaseDialog<V extends ViewDataBinding> extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setCancelable(false);
+        setCanceledOnTouchOutside(false);
         mDataBinding= DataBindingUtil.inflate(LayoutInflater.from(getContext()),  setLayout(),null,true);
         setContentView(mDataBinding.getRoot());
         Window dialogWindow = getWindow();
         WindowManager.LayoutParams lp = dialogWindow.getAttributes();
         DisplayMetrics d = getContext().getResources().getDisplayMetrics(); // 获取屏幕宽、高用
         lp.width = (int) (d.widthPixels * setSize());
-        //lp.dimAmount=0.0f;//外围遮罩透明度0.0f-1.0f
+        lp.dimAmount=0.8f;//外围遮罩透明度0.0f-1.0f
         dialogWindow.setAttributes(lp);
         dialogWindow.setGravity(Gravity.CENTER);//内围区域底部显示
 //        //设置window背景，默认的背景会有Padding值，不能全屏。当然不一定要是透明，你可以设置其他背景，替换默认的背景即可。
