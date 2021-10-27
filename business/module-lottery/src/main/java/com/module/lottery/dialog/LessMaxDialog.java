@@ -38,7 +38,7 @@ public class LessMaxDialog extends BaseDialog<LessMaxDialogLayoutBinding> {
        if(mLotteryCodeBean!=null){
            mDataBinding.number.setText((6-mLotteryCodeBean.getCodes().size())+"");
            mDataBinding.jsonAnimation.setImageAssetsFolder("images");
-           mDataBinding.jsonAnimation.setAnimation("data.json");
+           mDataBinding.jsonAnimation.setAnimation("illustrate.json");
            mDataBinding.jsonAnimation.loop(true);
            mDataBinding.jsonAnimation.playAnimation();
 

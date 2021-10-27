@@ -7,50 +7,116 @@
     </data>
 
     <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        tools:ignore="ResourceName">
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        android:orientation="horizontal">
+        <RelativeLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_weight="8">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="摇抽奖码"
-                android:textColor="#FF3A3A"
-                android:textSize="18dp"
-                android:textStyle="bold" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="143dp"
+                android:scaleType="fitXY"
+                android:src="@mipmap/generate_code" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="55dp"
+                android:layout_marginEnd="20dp"
+                android:scaleType="fitXY"
+                android:src="@mipmap/highlight" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="55dp"
+                android:layout_marginEnd="20dp">
+
+                <com.module.lottery.view.LotteryTextView
+                    android:id="@+id/lottery_text_01"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="8"
+                    android:textColor="#C42023"
+                    android:textSize="35dp" />
+
+                <com.module.lottery.view.LotteryTextView
+                    android:id="@+id/lottery_text_02"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="8"
+                    android:textColor="#C42023"
+                    android:textSize="35dp" />
 
 
-        </LinearLayout>
+                <com.module.lottery.view.LotteryTextView
+                    android:id="@+id/lottery_text_03"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="8"
+                    android:textColor="#C42023"
+                    android:textSize="35dp" />
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="113dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="7dp"
-            android:layout_marginEnd="20dp"
-            android:background="#6125CC" />
+                <com.module.lottery.view.LotteryTextView
+                    android:id="@+id/lottery_text_04"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="8"
+                    android:textColor="#C42023"
+                    android:textSize="35dp" />
+                <com.module.lottery.view.LotteryTextView
+                    android:id="@+id/lottery_text_05"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="8"
+                    android:textColor="#C42023"
+                    android:textSize="35dp" />
+                <com.module.lottery.view.LotteryTextView
+                    android:id="@+id/lottery_text_06"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="8"
+                    android:textColor="#C42023"
+                    android:textSize="35dp" />
+                <com.module.lottery.view.LotteryTextView
+                    android:id="@+id/lottery_text_07"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="8"
+                    android:textColor="#C42023"
+                    android:textSize="35dp" />
+            </LinearLayout>
 
+        </RelativeLayout>
 
-        <TextView
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textSize="13dp"
-            android:layout_marginTop="22dp"
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="30dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="完整观看视频即可获得"
-            android:textColor="#FFFFFF" />
+            android:src="@mipmap/joystick"/>
 
 
     </LinearLayout>
+
+
 </layout>

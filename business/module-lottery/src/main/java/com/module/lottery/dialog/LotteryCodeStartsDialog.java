@@ -1,7 +1,9 @@
 package com.module.lottery.dialog;
 
+import android.animation.Animator;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -39,10 +41,57 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initView();
         Message mes = new Message();
         mes.what = 1;
         mLotteryHandler.sendMessageDelayed(mes, 3000);
+        setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                mDataBinding.lotteryText01.destroy();
+                mDataBinding.lotteryText02.destroy();
+                mDataBinding.lotteryText03.destroy();
+                mDataBinding.lotteryText04.destroy();
+            }
+        });
+
     }
+
+
+    private  void initView(){
+                mDataBinding.jsonAnimation.setImageAssetsFolder("images");
+        mDataBinding.jsonAnimation.setAnimation("joystick_01.json");
+        mDataBinding.jsonAnimation.loop(false);
+        mDataBinding.jsonAnimation.playAnimation();
+        mDataBinding.jsonAnimation.addAnimatorListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mDataBinding.lotteryText01.start();
+                mDataBinding.lotteryText02.start();
+                mDataBinding.lotteryText03.start();
+                mDataBinding.lotteryText04.start();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+
+    }
+
+
+
 
     @Override
     public float setSize() {
@@ -53,7 +102,6 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
     @Override
     public void setOnDismissListener(@Nullable OnDismissListener listener) {
         super.setOnDismissListener(listener);
-
 
     }
 

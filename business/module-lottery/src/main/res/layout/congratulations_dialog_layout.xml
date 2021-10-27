@@ -101,6 +101,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
+                    android:ellipsize="end"
+                    android:lines="1"
                     android:layout_marginTop="9dp"
                     android:layout_marginEnd="20dp"
                     android:text="心心相印抽纸24包3层纸巾婴儿卫生纸" />

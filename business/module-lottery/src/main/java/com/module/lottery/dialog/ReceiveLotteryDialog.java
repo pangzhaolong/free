@@ -74,11 +74,11 @@ public class ReceiveLotteryDialog extends BaseDialog<ReceiveDialogLayoutBinding>
     private void setQuantity() {
         if (mLotteryCodeBean != null) {
             //设置显示的数量
-            if (mLotteryCodeBean.getCodes().size() > 0 && mLotteryCodeBean.getCodes().size() < 5) {
-                mDataBinding.quantity.setText(6 - (mLotteryCodeBean.getCodes().size() + 1));
+            if (mLotteryCodeBean.getCodes().size() > 0 && mLotteryCodeBean.getCodes().size() < 6) {
+                mDataBinding.quantity.setText((6 - (mLotteryCodeBean.getCodes().size()))+"");
             }
             //抽奖码满了
-            if (mLotteryCodeBean.getCodes().size() == 5) {
+            if (mLotteryCodeBean.getCodes().size() == 6) {
             }
 
         }
