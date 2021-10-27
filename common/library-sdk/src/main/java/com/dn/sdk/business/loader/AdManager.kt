@@ -2,7 +2,7 @@ package com.dn.sdk.business.loader
 
 import android.app.Activity
 import android.view.ViewGroup
-import com.dn.sdk.business.bean.JddAdIdConfigBean
+import android.widget.LinearLayout
 import com.dn.sdk.business.callback.JddAdIdConfigManager
 import com.dn.sdk.business.constant.*
 import com.dn.sdk.sdk.AdSdkManager
@@ -17,7 +17,6 @@ import com.dn.sdk.sdk.interfaces.listener.preload.IAdPreloadVideoViewListener
 import com.dn.sdk.sdk.interfaces.loader.IAdManager
 import com.dn.sdk.sdk.platform.IAdIdConfigCallback
 import com.donews.common.utils.DensityUtils
-import com.orhanobut.logger.Logger
 
 /**
  * 广告加载实现
@@ -77,8 +76,10 @@ object AdManager : IAdManager, ISdkManager by AdSdkManager, IAdIdConfig by JddAd
                 requestInfo.userId = AdSdkManager.userId
                 requestInfo.channel = AdSdkManager.channel
                 requestInfo.oaid = AdSdkManager.oaid
-                requestInfo.width = 600
-                requestInfo.height = 900
+                val pxScreenWidth = DensityUtils.getScreenWidth()
+                val marginWidth = DensityUtils.dip2px(30f) * 2
+                requestInfo.width = DensityUtils.px2dp((pxScreenWidth - marginWidth).toFloat()).toInt()
+                requestInfo.height = 0
                 requestInfo.platform.getLoader().loadInterstitialAd(activity, requestInfo, listener)
             }
         })
@@ -178,9 +179,11 @@ object AdManager : IAdManager, ISdkManager by AdSdkManager, IAdIdConfig by JddAd
                 requestInfo.userId = AdSdkManager.userId
                 requestInfo.channel = AdSdkManager.channel
                 requestInfo.oaid = AdSdkManager.oaid
-                requestInfo.width = 600
-                requestInfo.height = 900
-                Logger.d(requestInfo);
+
+                val pxScreenWidth = DensityUtils.getScreenWidth()
+                val marginWidth = DensityUtils.dip2px(30f) * 2
+                requestInfo.width = DensityUtils.px2dp((pxScreenWidth - marginWidth).toFloat()).toInt()
+                requestInfo.height = 0
                 requestInfo.platform.getLoader().loadInterstitialAd(activity, requestInfo, listener)
             }
         })

@@ -120,20 +120,6 @@ public class MainActivity
             }
         });
         AppStatusManager.getInstance().setAppStatus(AppStatusConstant.STATUS_NORMAL);
-
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                AdManager.INSTANCE.loadInvalidInterstitialAd(MainActivity.this, new SimpleInterstListener() {
-//                    @Override
-//                    public void onError(int code, String msg) {
-//                        super.onError(code, msg);
-//                        Logger.d("code = " + code + " ,msg = " + msg);
-//                    }
-//                });
-//            }
-//        }, 5000);
-
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

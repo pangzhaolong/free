@@ -10,10 +10,10 @@ package com.dn.sdk.business.bean
 class DnAdIdConfigBean : JddBaseAdIdConfigBean() {
 
     init {
-        invalidInterstitialId = "946943378"
+        invalidInterstitialId = "946949406"
         invalidRewardVideoId = "946943379"
         splashId = "887601190"
-        interstitialId = "946943377"
+        interstitialId = "946949021"
         rewardVideoId = "946943369"
     }
 }
