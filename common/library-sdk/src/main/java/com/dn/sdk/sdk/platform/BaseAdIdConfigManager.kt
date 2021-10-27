@@ -5,6 +5,8 @@ import com.donews.network.EasyHttp
 import com.donews.network.cache.model.CacheMode
 import com.donews.network.callback.SimpleCallBack
 import com.donews.network.exception.ApiException
+import com.google.gson.Gson
+import com.orhanobut.logger.Logger
 import java.util.*
 
 /**
@@ -16,7 +18,7 @@ import java.util.*
  */
 abstract class BaseAdIdConfigManager<T> : IAdIdConfigManager<T> {
 
-    private var mInit = false
+    var mInit = false
     private val mCallbacks: MutableList<IAdIdConfigCallback> = ArrayList()
 
     var mConfigBean: T? = null
@@ -30,30 +32,19 @@ abstract class BaseAdIdConfigManager<T> : IAdIdConfigManager<T> {
         }
     }
 
-    override fun initAdIdConfig(configPath: String) {
-        EasyHttp.get(configPath)
-            .cacheMode(CacheMode.NO_CACHE)
-            .execute(object : SimpleCallBack<T>() {
-                override fun onError(e: ApiException) {
-                    mInit = true
-                    mConfigBean = getDefaultConfig()
-                    callInitListener()
-
-                }
-
-                override fun onSuccess(t: T) {
-                    mConfigBean = t ?: getDefaultConfig()
-                    mInit = true
-                    callInitListener()
-                }
-            })
-    }
 
     override fun isInitConfig(): Boolean {
         return mInit
     }
 
-    private fun callInitListener() {
+    override fun getConfig(): T {
+        if (mConfigBean == null) {
+            mConfigBean = getDefaultConfig()
+        }
+        return mConfigBean!!
+    }
+
+    fun callInitListener() {
         if (!isInitConfig()) {
             return
         }

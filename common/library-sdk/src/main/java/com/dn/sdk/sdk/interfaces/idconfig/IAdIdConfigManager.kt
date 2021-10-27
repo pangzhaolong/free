@@ -17,6 +17,9 @@ interface IAdIdConfigManager<T> : IAdIdConfig {
     /** 是否初始化完成配置 */
     fun isInitConfig(): Boolean
 
+    /** 返回当前配置 */
+    fun getConfig(): T
+
     /** 默认的配置 */
     fun getDefaultConfig(): T
 

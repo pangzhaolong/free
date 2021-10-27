@@ -159,7 +159,7 @@ public class TTAdFullVideoLoadHelper {
                 .setAdStyleType(AdSlot.TYPE_EXPRESS_AD)
                 .setTTVideoOption(videoOption)
                 .setOrientation(TTAdConstant.VERTICAL)
-                .setUserID(mRequestInfo.getUseId())
+                .setUserID(mRequestInfo.getUserId())
                 .setCustomData(mRequestInfo.getCustomData())
                 .build();
 
@@ -218,7 +218,7 @@ public class TTAdFullVideoLoadHelper {
                 .setAdStyleType(AdSlot.TYPE_EXPRESS_AD)
                 .setTTVideoOption(videoOption)
                 .setOrientation(TTAdConstant.VERTICAL)
-                .setUserID(mRequestInfo.getUseId())
+                .setUserID(mRequestInfo.getUserId())
                 .setCustomData(mRequestInfo.getCustomData())
                 .build();
 

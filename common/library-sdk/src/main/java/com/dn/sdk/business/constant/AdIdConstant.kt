@@ -17,6 +17,9 @@ const val INVALID_REWARD_VIDEO = "invalid_reward_video"
 /** 通用开屏广告id */
 const val SPLASH = "splash"
 
+/** 开屏保底 */
+const val SPLASH_MINIMUM_CODE_ID = "MinimumCodeId"
+
 /** 通用插屏广告id */
 const val INTERSTITIAL = "interstitial"
 

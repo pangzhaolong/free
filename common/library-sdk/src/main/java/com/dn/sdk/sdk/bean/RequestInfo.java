@@ -4,7 +4,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import com.dn.sdk.sdk.interfaces.loader.IRealLoader;
 import com.dn.sdk.sdk.platform.IPlatform;
 
 import java.util.HashMap;
@@ -28,11 +27,14 @@ public class RequestInfo {
     /** 广告app id */
     private String mAppId;
 
+    /** 广告位对应的key 字符串 */
+    private String mAppIdKey;
+
     /** 广告位id */
     private String mAdId;
 
-    /** 开屏广告保底代码位id */
-    private String mSplashCodeId;
+    /** 保底代码位id */
+    private String mMinimumCodeId;
 
     /** 广告展示容器 */
     private ViewGroup mContainer;
@@ -52,8 +54,7 @@ public class RequestInfo {
     private String mRewardName;
     /** 激励数量 */
     private int mRewardAmount;
-    /** 用户id */
-    private String mUseId;
+
     /** 激励视频 自定义数据 */
     private Map<String, String> mCustomData = new HashMap<>();
 
@@ -98,12 +99,20 @@ public class RequestInfo {
         this.mAdId = adId;
     }
 
-    public String getSplashCodeId() {
-        return mSplashCodeId;
+    public String getAppIdKey() {
+        return mAppIdKey;
     }
 
-    public void setSplashCodeId(String splashCodeId) {
-        this.mSplashCodeId = splashCodeId;
+    public void setAppIdKey(String appIdKey) {
+        mAppIdKey = appIdKey;
+    }
+
+    public String getMinimumCodeId() {
+        return mMinimumCodeId;
+    }
+
+    public void setMinimumCodeId(String minimumCodeId) {
+        this.mMinimumCodeId = minimumCodeId;
     }
 
     public ViewGroup getContainer() {
@@ -144,14 +153,6 @@ public class RequestInfo {
 
     public void setRewardAmount(int rewardAmount) {
         mRewardAmount = rewardAmount;
-    }
-
-    public String getUseId() {
-        return mUseId;
-    }
-
-    public void setUseId(String useId) {
-        mUseId = useId;
     }
 
     public Map<String, String> getCustomData() {
@@ -210,6 +211,7 @@ public class RequestInfo {
         this.preload = preload;
     }
 
+
     @NonNull
     @Override
     public String toString() {
@@ -218,7 +220,7 @@ public class RequestInfo {
                 ", mAdType=" + mAdType +
                 ", mAppId='" + mAppId + '\'' +
                 ", mAdId='" + mAdId + '\'' +
-                ", mSplashCodeId='" + mSplashCodeId + '\'' +
+                ", mMinimumCodeId='" + mMinimumCodeId + '\'' +
                 ", mContainer=" + mContainer +
                 ", mWidth=" + mWidth +
                 ", mHeight=" + mHeight +
@@ -226,7 +228,6 @@ public class RequestInfo {
                 ", mOrientation=" + mOrientation +
                 ", mRewardName='" + mRewardName + '\'' +
                 ", mRewardAmount=" + mRewardAmount +
-                ", mUseId='" + mUseId + '\'' +
                 ", mCustomData=" + mCustomData +
                 ", mNativeAdCount=" + mNativeAdCount +
                 ", mChannel='" + mChannel + '\'' +

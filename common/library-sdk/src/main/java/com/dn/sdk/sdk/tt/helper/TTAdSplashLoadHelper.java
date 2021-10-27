@@ -113,7 +113,7 @@ public class TTAdSplashLoadHelper {
 				.build();
 
 		TTNetworkRequestInfo ttNetworkRequestInfo = new PangleNetworkRequestInfo(
-				mRequestInfo.getAppId(), mRequestInfo.getSplashCodeId());
+				mRequestInfo.getAppId(), mRequestInfo.getMinimumCodeId());
 
 		if (mActivity instanceof AppCompatActivity) {
 			((AppCompatActivity) mActivity).getLifecycle().addObserver(new LifecycleEventObserver() {

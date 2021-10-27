@@ -144,7 +144,9 @@ public class TTAdInterstitialLoadHelper {
                 if (mListener != null) {
                     mListener.onLoad();
                 }
-                mDnInterstitialAd.showAd(mActivity);
+                if (mDnInterstitialAd.isReady()) {
+                    mDnInterstitialAd.showAd(mActivity);
+                }
             }
         });
 
