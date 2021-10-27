@@ -5,4 +5,8 @@
     <string name="raiders_name2" tools:ignore="ResourceName">开奖规则</string>
     <string name="raiders_name3" tools:ignore="ResourceName">中奖规则</string>
     <string name="raiders_name4" tools:ignore="ResourceName">领奖规则</string>
+
+    <string name="zero_dollar_draw" tools:ignore="ResourceName">0元抽奖</string>
+    <string name="continue_dollar_draw" tools:ignore="ResourceName">继续抽奖</string>
+    <string name="wait_dollar_draw" tools:ignore="ResourceName">等待开奖</string>
 </resources>

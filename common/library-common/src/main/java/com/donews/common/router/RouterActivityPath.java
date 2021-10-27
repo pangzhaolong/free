@@ -50,6 +50,25 @@ public class RouterActivityPath {
         private static final String MINE = "/mine";
 
         /**
+         * 提现记录
+         */
+        public static final String PAGER_ACTIVITY_WITHDRAWAL_RECORD = MINE + "/WithdrawalRecordActivity";
+
+        /**
+         * 提现中心
+         */
+        public static final String PAGER_ACTIVITY_WITHDRAWAL = MINE + "/WithdrawalCenterActivity";
+        /**
+         * 设置页面
+         */
+        public static final String PAGER_ACTIVITY_SETTING = MINE + "/SettingActivity";
+
+        /**
+         * 分享到哪里的选择弹窗
+         */
+        public static final String DIALOG_SHARE_TO_DIALOG_FRAGMENT = MINE + "/ShareToDialogFragment";
+
+        /**
          * 注销账户原因弹窗
          */
         public static final String DIALOG_USER_CANCELLATION_WHY_DIALOG_FRAGMENT = MINE +
@@ -59,11 +78,6 @@ public class RouterActivityPath {
          * 账户注销页面
          */
         public static final String PAGER_MINEUSER_CANCELLATION_ACTIVITY = MINE + "/MineUserCancellationActivity";
-
-        /**
-         * 设置页面
-         */
-        public static final String PAGER_ACTIVITY_SETTING = MINE + "/SettingActivity";
 
         /**
          * 参与记录

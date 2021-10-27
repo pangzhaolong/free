@@ -16,11 +16,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.module_lottery.R;
+import com.module_lottery.databinding.LotteryStartDialogLayoutBinding;
 
 import java.lang.ref.WeakReference;
 
 //抽奖码小于6个
-public class LotteryCodeStartsDialog extends BaseDialog implements View.OnClickListener {
+public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayoutBinding> {
     private Context context;
     private OnStateListener mOnFinishListener;
     private LotteryHandler mLotteryHandler = new LotteryHandler(this);
@@ -31,12 +32,21 @@ public class LotteryCodeStartsDialog extends BaseDialog implements View.OnClickL
     }
 
     @Override
+    public int setLayout() {
+        return R.layout.lottery_start_dialog_layout;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.lottery_start_dialog_layout);
         Message mes = new Message();
         mes.what = 1;
         mLotteryHandler.sendMessageDelayed(mes, 3000);
+    }
+
+    @Override
+    public float setSize() {
+        return 0.7f;
     }
 
 
@@ -47,9 +57,6 @@ public class LotteryCodeStartsDialog extends BaseDialog implements View.OnClickL
 
     }
 
-    @Override
-    public void onClick(View view) {
-    }
 
     @Override
     public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {

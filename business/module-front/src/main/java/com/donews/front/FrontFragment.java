@@ -93,7 +93,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         });
 
         loadCategoryData();
-
+        loadAwardList();
         initSrl();
 
         AnalysisUtils.onEventEx(this.getActivity(), Dot.Page_Home);
@@ -126,6 +126,15 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             }
 
             showRpData(walletBean);
+        });
+    }
+
+    private void loadAwardList() {
+        mViewModel.getAwardList().observe(getViewLifecycleOwner(), awardBean -> {
+            if (awardBean == null || awardBean.getList() == null) {
+                return;
+            }
+            mDataBinding.frontBarrageView.refreshData(awardBean.getList());
         });
     }
 
@@ -310,6 +319,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                     .withInt("type", redPacketBean.getAward().getType())
                     .withFloat("score", redPacketBean.getAward().getScore())
                     .navigation();
+            loadRpData();
         });
     }
 }

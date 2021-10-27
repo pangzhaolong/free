@@ -3,7 +3,7 @@ package com.donews.front.viewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
-import com.donews.front.bean.FrontBean;
+import com.donews.front.bean.AwardBean;
 import com.donews.front.bean.LotteryCategoryBean;
 import com.donews.front.bean.RedPacketBean;
 import com.donews.front.bean.WalletBean;
@@ -27,5 +27,9 @@ public class FrontViewModel extends BaseLiveDataViewModel<FrontModel> {
 
     public MutableLiveData<RedPacketBean> openRpData() {
         return mModel.openRpData();
+    }
+
+    public MutableLiveData<AwardBean> getAwardList() {
+        return mModel.getAwardList();
     }
 }

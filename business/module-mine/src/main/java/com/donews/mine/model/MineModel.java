@@ -8,10 +8,15 @@ import com.donews.common.contract.UserInfoBean;
 import com.donews.mine.BuildConfig;
 import com.donews.mine.bean.QueryBean;
 import com.donews.mine.Api.MineHttpApi;
+import com.donews.mine.bean.resps.CurrentOpenRecord;
+import com.donews.mine.bean.resps.CurrentServiceTime;
 import com.donews.mine.bean.resps.HistoryPeopleLottery;
 import com.donews.mine.bean.resps.HistoryPeopleLotteryDetailResp;
 import com.donews.mine.bean.resps.RecommendGoodsResp;
 import com.donews.mine.bean.resps.WinRecordResp;
+import com.donews.mine.bean.resps.WithdraWalletResp;
+import com.donews.mine.bean.resps.WithdrawConfigResp;
+import com.donews.mine.bean.resps.WithdrawRecordResp;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
@@ -19,7 +24,11 @@ import com.donews.network.exception.ApiException;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.DeviceUtils;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
@@ -33,6 +42,7 @@ import io.reactivex.disposables.Disposable;
 public class MineModel extends BaseLiveDataModel {
 
     private Disposable disposable;
+    private Calendar rightNow = Calendar.getInstance();
 
     /**
      * 请求个人参与记录的数据
@@ -131,7 +141,7 @@ public class MineModel extends BaseLiveDataModel {
      * 获取精选推荐列表数据
      *
      * @param livData 数据通知对象
-     * @param limit 获取的数据数量
+     * @param limit   获取的数据数量
      * @return
      */
     public Disposable requestRecommendGoodsList(
@@ -160,6 +170,165 @@ public class MineModel extends BaseLiveDataModel {
     }
 
     /**
+     * 获取当前最新一期的期数
+     *
+     * @param livData  数据通知对象
+     * @param isGetOna 是否获取上一期的期数
+     * @return
+     */
+    public Disposable requestCurrentPeriod(
+            MutableLiveData<Integer> livData, boolean isGetOna) {
+        Disposable disop = EasyHttp.get(BuildConfig.API_LOTTERY_URL + "v1/get-today-lottery-period")
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new SimpleCallBack<CurrentOpenRecord>() {
+                    @Override
+                    public void onError(ApiException e) {
+                        if (livData.getValue() == null) {
+                            livData.postValue(null);
+                        } else {
+                            livData.postValue(livData.getValue());
+                        }
+                    }
+
+                    @Override
+                    public void onSuccess(CurrentOpenRecord queryBean) {
+                        if (queryBean != null && queryBean.period > 0) {
+                            //因为显示的嗾使最新一期。所以获取的数据 -1
+                            if (isGetOna) {
+                                livData.postValue(queryBean.period - 1);
+                            } else {
+                                livData.postValue(queryBean.period);
+                            }
+                        } else {
+                            livData.postValue(-1);
+                        }
+                    }
+                });
+        addDisposable(disop);
+        return disop;
+    }
+
+    /**
+     * 获取服务器当前时间
+     *
+     * @param livData 数据通知对象
+     * @return
+     */
+    public Disposable requestCurrentNowTime(
+            MutableLiveData<String> livData) {
+        Disposable disop = EasyHttp.get(BuildConfig.API_LOTTERY_URL + "v1/get-now-time")
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new SimpleCallBack<CurrentServiceTime>() {
+                    @Override
+                    public void onError(ApiException e) {
+                        if (livData.getValue() == null) {
+                            livData.postValue(null);
+                        } else {
+                            livData.postValue(livData.getValue());
+                        }
+                    }
+
+                    @Override
+                    public void onSuccess(CurrentServiceTime queryBean) {
+                        if (queryBean == null || queryBean.now == null || queryBean.now.isEmpty()) {
+                            livData.postValue("");
+                        } else {
+                            livData.postValue(queryBean.now);
+                        }
+                    }
+                });
+        addDisposable(disop);
+        return disop;
+    }
+
+    /**
+     * 获取提现中心的配置
+     *
+     * @param livData 数据通知对象
+     * @return
+     */
+    public Disposable requestWithdrawCenterConfig(
+            MutableLiveData<List<WithdrawConfigResp.WithdrawListDTO>> livData) {
+        Disposable disop = EasyHttp.get(BuildConfig.API_WALLET_URL + "v1/withdraw/config")
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new SimpleCallBack<WithdrawConfigResp>() {
+                    @Override
+                    public void onError(ApiException e) {
+                        livData.postValue(null);
+                    }
+
+                    @Override
+                    public void onSuccess(WithdrawConfigResp queryBean) {
+                        if (queryBean == null || queryBean.list == null || queryBean.list.isEmpty()) {
+                            livData.postValue(new ArrayList<WithdrawConfigResp.WithdrawListDTO>());
+                        } else {
+                            livData.postValue(queryBean.list);
+                        }
+                    }
+                });
+        addDisposable(disop);
+        return disop;
+    }
+
+    /**
+     * 获取提现列表，实际上 = 积分列表
+     *
+     * @param livData 数据通知对象
+     * @return
+     */
+    public Disposable requestWithdrawRecord(
+            MutableLiveData<List<WithdrawRecordResp.RecordListDTO>> livData,
+            int offset,
+            int limit) {
+        Disposable disop = EasyHttp.get(BuildConfig.API_WALLET_URL + "v1/score")
+                .params("offset", "" + offset)
+                .params("limit", "" + limit)
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new SimpleCallBack<WithdrawRecordResp>() {
+                    @Override
+                    public void onError(ApiException e) {
+                        livData.postValue(null);
+                    }
+
+                    @Override
+                    public void onSuccess(WithdrawRecordResp queryBean) {
+                        if (queryBean == null || queryBean.list == null || queryBean.list.isEmpty()) {
+                            livData.postValue(new ArrayList<>());
+                        } else {
+                            livData.postValue(queryBean.list);
+                        }
+                    }
+                });
+        addDisposable(disop);
+        return disop;
+    }
+
+    /**
+     * 获取钱包详情数据。总额等
+     *
+     * @param livData 数据通知对象
+     * @return
+     */
+    public Disposable requestWithdraWallet(
+            MutableLiveData<WithdraWalletResp> livData) {
+        Disposable disop = EasyHttp.get(BuildConfig.API_WALLET_URL + "v1/wallet")
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new SimpleCallBack<WithdraWalletResp>() {
+                    @Override
+                    public void onError(ApiException e) {
+                        livData.postValue(null);
+                    }
+
+                    @Override
+                    public void onSuccess(WithdraWalletResp queryBean) {
+                        livData.postValue(queryBean);
+                    }
+                });
+        addDisposable(disop);
+        return disop;
+    }
+
+    /**
      * 获取金币明细
      */
     public MutableLiveData<QueryBean> getQuery() {
@@ -178,7 +347,6 @@ public class MineModel extends BaseLiveDataModel {
 
                     @Override
                     public void onSuccess(QueryBean queryBean) {
-
                         liveData.postValue(queryBean);
                     }
                 }));

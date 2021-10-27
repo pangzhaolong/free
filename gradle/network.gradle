@@ -109,6 +109,6 @@ ext {
     BUGLY_ID = "7ffc3d262a"
 
     // 微信API
-    WX_API = "wxbb53fbd69a7c545c"
+    WX_API = "wx9f4a624ca2fb66b2"
 }
 

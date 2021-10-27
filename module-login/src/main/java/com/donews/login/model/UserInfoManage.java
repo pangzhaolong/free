@@ -294,13 +294,13 @@ public class UserInfoManage {
 
                     @Override
                     public void onSuccess(UserInfoBean userInfoBean) {
-                        EventBus.getDefault().post(new UserTelBindEvent());
                         LogUtil.i(userInfoBean.toString());
                         setHttpToken(userInfoBean);
                         mutableLiveData.postValue(userInfoBean);
                         ARouteHelper.build(ServicesConfig.User.LOGIN_SUCCESS).invoke();
                         ARouteHelper.invoke(RouterActivityPath.ClassPath.WEB_VIEW_OBJ_ACTIVITY_JAVASCRIPT
                                 , "onReloadUrl");
+                        EventBus.getDefault().post(new UserTelBindEvent());
 
                     }
                 });

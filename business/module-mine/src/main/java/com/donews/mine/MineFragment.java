@@ -5,7 +5,10 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,12 +27,17 @@ import com.bumptech.glide.request.transition.Transition;
 import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.UserTelBindEvent;
 import com.donews.base.fragment.MvvmLazyLiveDataFragment;
+import com.donews.base.utils.glide.GlideUtils;
+import com.donews.common.contract.LoginHelp;
+import com.donews.common.contract.UserInfoBean;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.mine.adapters.MineFragmentAdapter;
 import com.donews.mine.bean.resps.RecommendGoodsResp;
 import com.donews.mine.databinding.MineFragmentBinding;
 import com.donews.mine.viewModel.MineViewModel;
+import com.donews.utilslibrary.utils.AppInfo;
+import com.donews.utilslibrary.utils.UrlUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -65,12 +73,12 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
 
     @Subscribe //手机号绑定成功
     public void bindTel(UserTelBindEvent event) {
-        checkTelBind();
+        updateUIData();
     }
 
     @Subscribe //用户登录状态变化
-    public void bindTel(LoginUserStatus event) {
-        checkTelBind();
+    public void loginStatusEvent(LoginUserStatus event) {
+        updateUIData();
     }
 
     @Override
@@ -91,6 +99,9 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
     @SuppressLint("WrongConstant")
     private void initView() {
         mViewModel.setDataBinDing(mDataBinding, getBaseActivity());
+        getView().findViewById(R.id.tv_userinfo_name).setOnClickListener((v) -> {
+            getView().findViewById(R.id.iv_user_logo).performClick();
+        });
         getView().findViewById(R.id.iv_user_logo).setOnClickListener((v) -> {
             //登录
             ARouter.getInstance()
@@ -101,6 +112,12 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
             //设置
             ARouter.getInstance()
                     .build(RouterActivityPath.Mine.PAGER_ACTIVITY_SETTING)
+                    .navigation();
+        });
+        getView().findViewById(R.id.mine_me_money_num_ll).setOnClickListener((v) -> {
+            //提现
+            ARouter.getInstance()
+                    .build(RouterActivityPath.Mine.PAGER_ACTIVITY_WITHDRAWAL)
                     .navigation();
         });
         getView().findViewById(R.id.rl_top_bar_bind).setOnClickListener((v) -> {
@@ -145,14 +162,67 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
             adapter.loadMoreFinish(true, false);
             mDataBinding.mineMeListLayout.getRefeshLayout().finishRefresh();
         });
+        updateUIData();
         mDataBinding.mineMeListLayout.getRefeshLayout().autoRefresh();
-
 //        mDataBinding.mineCcsView.refreshData();
+    }
+
+    //更新UI数据
+    private void updateUIData() {
+        checkLogin();
+        checkTelBind();
+        UserInfoBean uf = LoginHelp.getInstance().getUserInfoBean();
+        ImageView headIcon = getView().findViewById(R.id.iv_user_logo);
+        TextView userName = getView().findViewById(R.id.tv_userinfo_name);
+        if (uf == null ||
+                !AppInfo.checkIsWXLogin()) { //未登录
+            headIcon.setImageResource(R.drawable.mine_not_login_user_head);
+            userName.setText("立即登录");
+        } else { //已登录
+            GlideUtils.loadImageViewLoading(getActivity(), uf.getHeadImg(),
+                    headIcon, R.drawable.mine_not_login_user_head,
+                    R.drawable.mine_not_login_user_head);
+            userName.setText(uf.getUserName());
+        }
+    }
+
+    //检查登录逻辑
+    private void checkLogin() {
+        ImageView loginIcon = getView().findViewById(R.id.iv_user_logo);
+        TextView userName = getView().findViewById(R.id.tv_userinfo_name);
+        if (AppInfo.checkIsWXLogin()) {
+            loginIcon.setEnabled(false);
+            userName.setEnabled(false);
+        } else {
+            loginIcon.setEnabled(true);
+            userName.setEnabled(true);
+        }
     }
 
     //检查手机号绑定
     public void checkTelBind() {
-
+        UserInfoBean userInfo = LoginHelp.getInstance().getUserInfoBean();
+        TextView bindTv = getView().findViewById(R.id.rl_top_bar_bind);
+        if (userInfo == null) {
+            bindTv.setVisibility(View.GONE);
+            return; //未登录
+        } else {
+            if(AppInfo.checkIsWXLogin()) {
+                bindTv.setVisibility(View.VISIBLE);
+            }else{
+                //还未登录(没有实际的登录)
+                bindTv.setVisibility(View.GONE);
+            }
+        }
+        String mobile = userInfo.getMobile();
+        if (mobile != null &&
+                mobile.length() > 0) {
+            //已绑定
+            bindTv.setText("已绑定");
+            bindTv.setEnabled(false);
+        } else {
+            bindTv.setEnabled(true);
+        }
     }
 
     //下拉刷新数据

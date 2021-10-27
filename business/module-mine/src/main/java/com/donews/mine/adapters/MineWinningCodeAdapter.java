@@ -14,12 +14,12 @@ import java.util.List;
  * @author lcl
  * Date on 2021/10/18
  * Description:
- * 参与记录 的适配器
+ *
  */
 public class MineWinningCodeAdapter extends BaesLoadMoreAdapter<Object, BaseViewHolder> {
 
     public MineWinningCodeAdapter() {
-        super(R.layout.mine_winning_record_list_item);
+        super(R.layout.mine_open_win_good_list_item);
     }
 
     public MineWinningCodeAdapter(int layoutResId, @Nullable List<Object> data) {

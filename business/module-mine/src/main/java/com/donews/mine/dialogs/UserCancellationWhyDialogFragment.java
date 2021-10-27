@@ -37,7 +37,7 @@ import org.greenrobot.eventbus.EventBus;
  * @author lcl
  * Date on 2021/10/22
  * Description:
- * 绑定手机号的弹窗(弹窗方式绑定手机号)
+ * 用户注销原因的弹窗
  */
 @Route(path = RouterActivityPath.Mine.DIALOG_USER_CANCELLATION_WHY_DIALOG_FRAGMENT)
 public class UserCancellationWhyDialogFragment extends DialogFragment {

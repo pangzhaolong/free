@@ -25,8 +25,12 @@ import com.donews.mine.Api.MineHttpApi;
 import com.donews.mine.BuildConfig;
 import com.donews.mine.R;
 import com.donews.mine.databinding.MineSettingFragmentBinding;
+import com.donews.mine.dialogs.ShareToDialogFragment;
 import com.donews.mine.model.SettingModel;
 import com.donews.mine.ui.AboutActivity;
+import com.donews.share.ShareManager;
+import com.donews.share.WXHolderHelp;
+import com.donews.share.WXShareExecutor;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.utils.AppCacheUtils;
 import com.donews.utilslibrary.utils.DeviceUtils;
@@ -43,6 +47,8 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
 
     //更新UI显示的标志。可以通过监听此标志来达到更新UI的时机
     public MutableLiveData<Integer> updateUIFlg = new MutableLiveData<>(0);
+    //微信分享管理对象
+    public ShareManager shareManager = new ShareManager();
 
     //标题集合
     private List<String> itemTitles = new ArrayList() {
@@ -93,7 +99,13 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
                 }).setCancelOnClick(v -> confirmPopupWindow.hide());
             });
             put(5, (Runnable) () -> {//分享APP
-                ToastUtil.show(baseActivity, "分享APP");
+                ShareToDialogFragment df = (ShareToDialogFragment) ARouter.getInstance()
+                        .build(RouterActivityPath.Mine.DIALOG_SHARE_TO_DIALOG_FRAGMENT)
+                        .navigation();
+                df.setSelectListener(type -> {
+                    share(type);
+                });
+                df.show(baseActivity.getSupportFragmentManager());
             });
             put(6, (Runnable) () -> {//账户注销
                 ARouter.getInstance()
@@ -200,26 +212,19 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
         updateUIFlg.postValue(updateUIFlg.getValue() + 1);
     }
 
-
-//
-//    @Override
-//    public void onLoadFinish(BaseModel model, BaseCustomViewModel data) {
-//        if (data instanceof CacheBean) {
-//            viewDataBinding.setVariable(BR.cacheBean, data);
-//        } else if (data instanceof SignBean) {
-//            signBean = (SignBean) data;
-//            viewDataBinding.setVariable(BR.signBean, data);
-//        } else if (data instanceof ApplyUpdataBean) {
-//            updateLogic((ApplyUpdataBean) data);
-//        }
-//    }
-
-    public void clearCache() {
-        mModel.clearCache(baseActivity);
-    }
-
-    public void getCacheData() {
-        mModel.getCacheData(baseActivity);
+    /**
+     * 分享app
+     *
+     * @param type 1-联系人，2-朋友圈
+     */
+    private void share(int type) {
+        if(type == 1){
+            ToastUtil.showShort(baseActivity,"分享到联系人");
+        }else if(type ==2){
+            ToastUtil.showShort(baseActivity,"分享到朋友圈");
+        }else{
+            ToastUtil.showShort(baseActivity,"暂不支持此类型分享");
+        }
     }
 
 
