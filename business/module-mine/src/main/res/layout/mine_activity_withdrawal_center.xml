@@ -91,10 +91,14 @@
                     android:layout_marginRight="5dp"
                     android:layout_marginLeft="5dp">
 
-                    <ImageView
+                    <TextView
                         android:layout_width="28dp"
                         android:layout_height="28dp"
-                        android:src="@drawable/icon_weixin_image"/>
+                        android:background="@drawable/mine_withdrawal_center_q_bg"
+                        android:text="¥"
+                        android:textSize="18sp"
+                        android:gravity="center"
+                        android:textColor="@color/white"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -113,7 +117,7 @@
                         android:id="@+id/mine_draw_wx_name"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
-                        android:text="提现到微信"
+                        android:text="--"
                         android:textColor="#2C2C2C"
                         android:textSize="15sp"
                         android:gravity="center"
@@ -153,7 +157,8 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:textColor="@color/white"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:enabled="false"/>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

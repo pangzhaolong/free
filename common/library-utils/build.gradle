@@ -42,6 +42,8 @@ dependencies {
     //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
     api 'com.tencent.bugly:nativecrashreport:3.9.2'
 
+    api project(path: ':common:lib_eventbus')
+
 //    api project(':common:libs:utils-libs')
 
 }

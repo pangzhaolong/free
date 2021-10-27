@@ -36,6 +36,10 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
     public MutableLiveData<WithdraWalletResp> withdrawDatilesLivData =
             new MutableLiveData<>();
 
+    //提现的结果
+    public MutableLiveData<Boolean> withdrawLivData =
+            new MutableLiveData<>();
+
     public void setDataBinDing(ViewDataBinding dataBinding, FragmentActivity baseActivity) {
         this.viewDataBinding = dataBinding;
         this.baseActivity = baseActivity;
@@ -66,18 +70,10 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
     }
 
     /**
-     * 添加网格数据
-     *
-     * @param gridLayout
+     * 提现
      */
-    public void addGridDatas(@NonNull GridLayout gridLayout) {
-        gridLayout.removeAllViews();
-        if (withdrawDataLivData.getValue() == null) {
-            return;
-        }
-        for (int i = 0; i < withdrawDataLivData.getValue().size(); i++) {
-            getGridItemView(i, gridLayout, withdrawDataLivData.getValue().get(i));
-        }
+    public void requestWithdraw(GridLayout superLayout) {
+        mModel.requestWithdra(withdrawLivData, getGridSelectViewItem(superLayout));
     }
 
     /**
@@ -97,13 +93,31 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
     }
 
     /**
+     * 添加网格数据
+     *
+     * @param gridLayout
+     * @param submit     提交按钮
+     */
+    public void addGridDatas(@NonNull GridLayout gridLayout, TextView submit) {
+        gridLayout.removeAllViews();
+        if (withdrawDataLivData.getValue() == null) {
+            return;
+        }
+        for (int i = 0; i < withdrawDataLivData.getValue().size(); i++) {
+            getGridItemView(i, gridLayout, withdrawDataLivData.getValue().get(i), submit);
+        }
+    }
+
+    /**
      * 获取ItemView
      *
-     * @param pos  当前的数据下标
-     * @param item 当前数据
+     * @param pos    当前的数据下标
+     * @param item   当前数据
+     * @param submit 提交按钮
      * @return
      */
-    private View getGridItemView(int pos, GridLayout superLayout, WithdrawConfigResp.WithdrawListDTO item) {
+    private View getGridItemView(
+            int pos, GridLayout superLayout, WithdrawConfigResp.WithdrawListDTO item,TextView submit) {
         int notClickBgRes = R.drawable.mine_withdrawal_momy_item_enable_bg;
         int notSelectBgRes = R.drawable.ad_shape_min_bg;
         int selectBgRes = R.drawable.mine_withdrawal_momy_item_bg;
@@ -139,9 +153,11 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
                 if (!isHostSelect) {
                     v.setTag(R.id.icnl_mine_withdraw_fl, "1");
                     v.setBackgroundResource(selectBgRes);
-                }else{
+                    submit.setEnabled(true);
+                } else {
                     v.setTag(R.id.icnl_mine_withdraw_fl, "0");
                     v.setBackgroundResource(notSelectBgRes);
+                    submit.setEnabled(false);
                 }
             });
         } else {

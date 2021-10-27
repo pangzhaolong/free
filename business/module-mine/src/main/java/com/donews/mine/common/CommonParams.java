@@ -1,14 +1,14 @@
-package com.donews.main.common;
+package com.donews.mine.common;
 
 import android.text.TextUtils;
 
 import com.dn.drouter.ARouteHelper;
-import com.donews.main.BuildConfig;
 import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.PublicConfigBean;
 import com.donews.common.contract.PublicHelp;
 import com.donews.common.contract.UserInfoBean;
 import com.donews.common.services.config.ServicesConfig;
+import com.donews.mine.BuildConfig;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
@@ -21,14 +21,13 @@ import com.donews.utilslibrary.utils.LogUtil;
 import org.json.JSONObject;
 
 /**
- * <p> </p>
- * 作者： created by honeylife<br>
- * 日期： 2020/11/17 12:03<br>
- * 版本：V1.0<br>
+ * 登录相关的辅助类。因为登录模块不通畅所以采用此方式调用
  */
 public class CommonParams {
     /**
      * 调用网络登录或者刷新token
+     * 1、如果为已登录状态。则刷新token  (此登录包括:设备登录、微信登录)
+     * 2、刷新token
      */
     public static void setNetWork() {
         if (TextUtils.isEmpty(AppInfo.getToken())) {

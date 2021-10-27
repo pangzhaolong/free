@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ResourceName">
+    <string name="front_gift_text"><![CDATA[<font color="#D17500">%s抽中</font> <font color="red">%s</font>]]></string>
     <string name="mine_user_login_tv">点击登录</string>
     <string name="mine_user_code">邀请码：</string>
     <string name="mine_user_login_hint">让运动更有价值</string>

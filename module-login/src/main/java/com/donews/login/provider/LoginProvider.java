@@ -80,6 +80,20 @@ public class LoginProvider implements IProvider {
         UserInfoManage.onLoadNetUserInfo(UserInfoManage.getNetDataStr("", ""));
     }
 
+    /**
+     * 首页登录 login(微信登录)
+     * @param wxCode 微信的code
+     */
+    public void getLoginWx(String wxCode) {
+        if(wxCode == null || "".equals(wxCode)){
+            //没有微信相关登录信息。那么直接设备登录。走原始逻辑
+            getLogin();
+        }else{
+            //走微信登录
+            UserInfoManage.onLoadNetUserInfo(UserInfoManage.getNetDataStr(wxCode));
+        }
+    }
+
     public UserInfoBean getUser() {
         return mUserInfoBean;
     }

@@ -75,7 +75,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -112,8 +114,32 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:background="@drawable/ad_shape_bg"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
                 <!-- 通知、滚动区域 -->
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/mine_win_code_notify_ic"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"/>
+                <com.donews.mine.views.scrollview.BarrageView
+                    android:id="@+id/mine_win_code_scan_scroll_v"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+                <TextView
+                    android:id="@+id/mine_win_code_scan_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="查看全部"
+                    android:drawablePadding="5dp"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:layout_marginRight="5dp"
+                    android:textColor="#D17500"
+                    android:drawableEnd="@drawable/mine_win_code_notify_more"/>
             </LinearLayout>
 
             <ImageView
@@ -123,7 +149,6 @@
                 android:layout_below="@+id/mine_win_code_scan_scroll_ll"
                 android:layout_centerHorizontal="true"
                 android:padding="10dp"
-                android:rotation="180"
                 android:src="@drawable/mine_open_win_allow_down" />
         </RelativeLayout>
     </LinearLayout>
@@ -315,5 +340,24 @@
                     android:paddingRight="15dp"/>
             </LinearLayout>
         </LinearLayout>
+    </LinearLayout>
+    <!-- 热门抽奖 -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mine_win_code_win_connect_layout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="热门抽奖"
+            android:textColor="@color/text_black"
+            android:textSize="15sp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

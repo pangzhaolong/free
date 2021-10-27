@@ -28,6 +28,7 @@ import com.donews.mine.databinding.MineSettingFragmentBinding;
 import com.donews.mine.dialogs.ShareToDialogFragment;
 import com.donews.mine.model.SettingModel;
 import com.donews.mine.ui.AboutActivity;
+import com.donews.share.ShareItem;
 import com.donews.share.ShareManager;
 import com.donews.share.WXHolderHelp;
 import com.donews.share.WXShareExecutor;
@@ -218,13 +219,21 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
      * @param type 1-联系人，2-朋友圈
      */
     private void share(int type) {
-        if(type == 1){
-            ToastUtil.showShort(baseActivity,"分享到联系人");
-        }else if(type ==2){
-            ToastUtil.showShort(baseActivity,"分享到朋友圈");
-        }else{
-            ToastUtil.showShort(baseActivity,"暂不支持此类型分享");
+        ShareManager sharManager = new ShareManager();
+        ShareItem shareItem = new ShareItem();
+        shareItem.setType(ShareItem.TYPE_H5);
+        shareItem.setIcon("" + R.drawable.ic_launcher_round);
+        shareItem.setTitle("便宜又好玩,你信不?");
+        shareItem.setContent("抽奖购物两不误,商品便宜不贵、皮实耐用,奖品多多,赶紧去玩吧。先到先得");
+        shareItem.setWebUrl("https://www.so.com/?src=www&fr=none");
+        if (type == 1) {
+            shareItem.setCmd(ShareManager.SHARE_COMMAND_WX);
+        } else if (type == 2) {
+            shareItem.setCmd(ShareManager.SHARE_COMMAND_WX_FRIEND);
+        } else {
+            ToastUtil.showShort(baseActivity, "暂不支持此类型分享");
         }
+        sharManager.share(shareItem.getCmd(), shareItem, baseActivity);
     }
 
 

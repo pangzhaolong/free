@@ -6,7 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="10dp"
-    tools:ignore="MissingConstraints">
+    tools:ignore="MissingConstraints"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp">
 
     <View
         android:layout_width="match_parent"
@@ -85,20 +87,25 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/mine_par_reco_list_bot_info"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="7dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/mine_win_frm_cj_but"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:paddingBottom="8dp"
-        android:singleLine="true"
-        android:text="0元抽奖"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        app:layout_constraintTop_toBottomOf="@+id/mine_par_reco_list_count_layout" />
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/mine_par_reco_list_count_layout">
+        <TextView
+            android:id="@+id/mine_par_reco_list_bot_info"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/mine_win_frm_cj_but"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:paddingBottom="8dp"
+            android:singleLine="true"
+            android:text="0元抽奖"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

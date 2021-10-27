@@ -33,6 +33,8 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
+import retrofit2.Converter;
+import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 
 /**
@@ -89,6 +91,16 @@ public abstract class BaseBodyRequest<R extends BaseBodyRequest> extends BaseReq
     }
 
     public R upObject(@Body Object object) {
+        boolean isAddGsonFactory = false;
+        for (Converter.Factory converterFactory : converterFactories) {
+            if(converterFactory.getClass() == GsonConverterFactory.class){
+                isAddGsonFactory = true;
+                break;
+            }
+        }
+        if(!isAddGsonFactory){
+            addConverterFactory(GsonConverterFactory.create());
+        }
         this.object = object;
         return (R) this;
     }

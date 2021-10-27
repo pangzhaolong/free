@@ -13,20 +13,26 @@ import androidx.lifecycle.Observer;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.NetworkUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.dn.events.events.LoginUserStatus;
 import com.donews.base.fragment.MvvmLazyLiveDataFragment;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.UserInfoBean;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
+import com.donews.mine.common.CommonParams;
 import com.donews.mine.databinding.MineSettingFragmentBinding;
 import com.donews.mine.dialogs.ShareToDialogFragment;
 import com.donews.mine.dialogs.UserCancellationWhyDialogFragment;
 import com.donews.mine.viewModel.SettingFragmentViewModel;
 import com.donews.utilslibrary.utils.AppInfo;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 
@@ -68,13 +74,27 @@ public class MineSettingFragment extends MvvmLazyLiveDataFragment<MineSettingFra
 
     @Override
     public void onDestroy() {
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 
+    @Subscribe
+    public void loginStatus(LoginUserStatus event){
+        updateUI();
+    }
+
     private void initView() {
+        EventBus.getDefault().register(this);
         mViewModel.setDataBinDing(mDataBinding, getBaseActivity());
         mDataBinding.tvExitLogin.setOnClickListener(v -> {
-            ToastUtil.show(getBaseActivity(), "退出登录按钮");
+            if (!NetworkUtils.isAvailableByPing()) {
+                ToastUtil.show(getBaseActivity(),"请检查网络连接");
+                return;
+            }
+            AppInfo.exitLogin();
+            //切换为设备登录
+            CommonParams.setNetWork();
+            ToastUtil.show(getBaseActivity(),"退出登录成功");
         });
         updateUI();
     }

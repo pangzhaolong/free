@@ -102,6 +102,14 @@ object SplashUtils {
     }
 
     /**
+     * 登录微信(以设备号进行登录)
+     * 可通过[com.dn.events.events.LoginUserStatus]通知事件进行监听结果
+     */
+    fun loginWXChat() {
+        CommonParams.setNetWork()
+    }
+
+    /**
      * 开启登录设备通知。此方法再登录失败并且本地无可用用户信息时候使用
      *  因为所有信息和服务都需要依赖用户信息
      */

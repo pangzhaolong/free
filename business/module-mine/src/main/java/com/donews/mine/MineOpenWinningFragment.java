@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
@@ -17,6 +18,7 @@ import com.donews.common.router.RouterFragmentPath;
 import com.donews.mine.adapters.MineWinningCodeAdapter;
 import com.donews.mine.databinding.MineFragmentWinningCodeBinding;
 import com.donews.mine.viewModel.MineOpenWinningViewModel;
+import com.donews.mine.views.scrollview.BarrageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,10 +47,14 @@ public class MineOpenWinningFragment extends
     //adapter的headView(未开奖)
     private ViewGroup adapterNotOpenWinHead = null;
     MineWinningCodeAdapter adapter;
-    private List<Object> list = new ArrayList<>();
     private TextView timeHH;
     private TextView timeMM;
     private TextView timeSS;
+    private BarrageView barrageView;
+    private boolean isLoadStart = false;
+    private boolean isRefesh = false;
+    private int scrollTop0Count = 0; //是否初始加载数据
+    private boolean isInitCommData = false; //是否初始加载了数据
 
     @Override
     public int getLayoutId() {
@@ -116,7 +122,20 @@ public class MineOpenWinningFragment extends
     @Override
     public void onResume() {
         super.onResume();
+        barrageView.resumeScroll();
         onRefresh();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        barrageView.pauseScroll();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        barrageView.stopScroll();
     }
 
     private void onRefresh() {
@@ -133,12 +152,16 @@ public class MineOpenWinningFragment extends
         ARouter.getInstance().inject(this);
         mViewModel.setDataBinDing(mDataBinding, getBaseActivity());
         adapterOpenWinHead = (ViewGroup) View.inflate(getBaseActivity(), headRes, null);
+        barrageView = adapterOpenWinHead.findViewById(R.id.mine_win_code_scan_scroll_v);
         adapterNotOpenWinHead = (ViewGroup) View.inflate(getBaseActivity(), headNotOpenWinRes, null);
         timeHH = adapterNotOpenWinHead.findViewById(R.id.mine_frm_win_h);
         timeMM = adapterNotOpenWinHead.findViewById(R.id.mine_frm_win_m);
         timeSS = adapterNotOpenWinHead.findViewById(R.id.mine_frm_win_s);
         adapterOpenWinHead.findViewById(R.id.mine_win_code_sele_rules).setOnClickListener((v) -> {
             ToastUtil.show(getBaseActivity(), "中奖规则查看");
+        });
+        adapterOpenWinHead.findViewById(R.id.mine_win_code_scan_all).setOnClickListener((v) -> {
+            ToastUtil.show(getBaseActivity(), "查看全部通知");
         });
         adapter = new MineWinningCodeAdapter();
         //设置没有更多数据
@@ -154,15 +177,28 @@ public class MineOpenWinningFragment extends
         });
         mDataBinding.mainWinCodeRefresh.setOnRefreshListener(refreshLayout -> {
 //            mViewModel.loadData(period,false);
-            mViewModel.loadData(0,false);
+            isRefesh = true;
+            isLoadStart = true;
+            mViewModel.loadData(0, false);
+            if (isInitCommData) {
+                mViewModel.loadRecommendData(adapter.pageSize);
+            }
         });
-        mDataBinding.mineWinCodeList.setLayoutManager(new LinearLayoutManager(getBaseActivity()));
+        adapter.setOnLoadMoreListener((page, pageSize) -> {
+            isRefesh = false;
+            mViewModel.loadRecommendData(adapter.pageSize);
+            mDataBinding.mainWinCodeRefresh.setEnableRefresh(false);
+        });
+        mDataBinding.mineWinCodeList.setLayoutManager(new GridLayoutManager(getBaseActivity(), 2));
         mDataBinding.mineWinCodeList.setAdapter(adapter);
         setIsShowBack(isShowBack);
         mDataBinding.mainWinCodeTitleBack.setOnClickListener((v) -> {
             getBaseActivity().finish();
         });
         mViewModel.openWinPeriod.observe(this, peri -> {
+            if (!isLoadStart) {
+                return;
+            }
             if (peri != null && peri > 0) {
                 //获取服务器时间
                 updateUI(-1);
@@ -173,21 +209,23 @@ public class MineOpenWinningFragment extends
             }
         });
         mViewModel.serviceTimeLiveData.observe(this, time -> {
+            if (!isLoadStart) {
+                return;
+            }
             if (time != null && time.length() > 0) {
                 //计算服务器视图
                 mViewModel.calculateServiceTime();
             } else {
                 mDataBinding.mainWinCodeRefresh.finishRefresh();
-                ToastUtil.showShort(getBaseActivity(), "时间校验异常");
             }
         });
         //最终由此回调。显示为页面状态。此回调中才能确定页面是否开奖状态
         mViewModel.openWinCountdown.observe(this, countDown -> {
+            if (!isLoadStart) {
+                return;
+            }
             if (countDown == null) {
                 mDataBinding.mainWinCodeRefresh.finishRefresh();
-                if (BuildConfig.DEBUG) {
-                    ToastUtil.showShort(getBaseActivity(), "倒计时处理异常");
-                }
             } else {
                 if (countDown > 0) { //未开奖
                     //更新未开奖的UI
@@ -197,16 +235,50 @@ public class MineOpenWinningFragment extends
                     //强制调用。否则将会地柜调用
                     mViewModel.cancelNotOpenWinCountDownTimer();
                     mViewModel.loadData(
-                            mViewModel.openWinPeriod.getValue(),true);
+                            mViewModel.openWinPeriod.getValue(), true);
                 }
             }
         });
         mViewModel.detailLivData.observe(this, (data) -> {
+            if (!isLoadStart) {
+                return;
+            }
             mDataBinding.mainWinCodeRefresh.finishRefresh();
-            adapter.setNewData(list);
             //更新已开奖的UI
             updateUI(1);
+            if (isRefesh) {
+                if (scrollTop0Count < 2) {
+                    mDataBinding.mineWinCodeList.scrollToPosition(0);
+                }
+                scrollTop0Count++;
+            }
         });
+        mViewModel.recommendLivData.observe(this, (data) -> {
+            if (!isLoadStart) {
+                return;
+            }
+            //更新推荐数据
+            mDataBinding.mainWinCodeRefresh.setEnableRefresh(true);
+            adapter.getLoadMoreModule().setAutoLoadMore(data != null && !data.isEmpty());
+            adapter.loadMoreFinish(true, data != null && data.size() < adapter.pageSize);
+            if (data != null) {
+                if (isRefesh) {
+                    adapter.setNewData(data);
+                    scrollTop0Count++;
+                } else {
+                    adapter.addData(data);
+                }
+                if (scrollTop0Count < 2) {
+                    mDataBinding.mineWinCodeList.scrollToPosition(0);
+                }
+            }
+        });
+        mViewModel.awardLiveData.observe(this, data -> {
+            if (data != null) {
+                barrageView.refreshData(data.getList());
+            }
+        });
+        adapter.getLoadMoreModule().setAutoLoadMore(false);
         mDataBinding.mainWinCodeRefresh.autoRefresh();
     }
 
@@ -268,6 +340,10 @@ public class MineOpenWinningFragment extends
             adapterNotOpenWinHead.setVisibility(View.VISIBLE);
             addListNotOpenWinHead();
             mViewModel.updateCountDownUI(timeHH, timeMM, timeSS);
+            if (!isInitCommData) {
+                isInitCommData = true;
+                mViewModel.loadRecommendData(adapter.pageSize); //加载推荐数据
+            }
         } else if (type == 1) {
             adapterNotOpenWinHead.setVisibility(View.GONE);
             adapterOpenWinHead.setVisibility(View.VISIBLE);
@@ -277,6 +353,7 @@ public class MineOpenWinningFragment extends
             if (mViewModel.detailLivData.getValue() == null) {
                 return;
             }
+            mViewModel.loadAwardData(); //加载滚动通知
             mViewModel.uiPosResetBuild( //UI位置顺序构建
                     adapterOpenWinHead);
             mViewModel.addSelectGoods( //添加中奖商品
@@ -284,7 +361,11 @@ public class MineOpenWinningFragment extends
             mViewModel.addAddToGoods( //添加参与商品
                     adapterOpenWinHead, true);
             mViewModel.addSelectToNames( //添加中奖名单
-                    adapterOpenWinHead,true);
+                    adapterOpenWinHead, true);
+            if (!isInitCommData) {
+                isInitCommData = true;
+                mViewModel.loadRecommendData(adapter.pageSize); //加载推荐数据
+            }
         }
     }
 }

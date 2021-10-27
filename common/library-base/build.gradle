@@ -53,5 +53,4 @@ dependencies {
     api rootProject.ext.dependencies["easypermissions-ktx"]
 
     api project(path: ':common:library-utils')
-    api project(path: ':common:lib_eventbus')
 }

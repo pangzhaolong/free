@@ -98,6 +98,7 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
 
     @SuppressLint("WrongConstant")
     private void initView() {
+        mDataBinding.mineMeListLayout.getRefeshLayout().setEnableRefresh(false);
         mViewModel.setDataBinDing(mDataBinding, getBaseActivity());
         getView().findViewById(R.id.tv_userinfo_name).setOnClickListener((v) -> {
             getView().findViewById(R.id.iv_user_logo).performClick();
@@ -143,7 +144,7 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
         adapter.setOnLoadMoreListener((page, pageSize) -> {
             loadMoreListData();
         });
-        mDataBinding.mineMeListLayout.setRefeshOnListener(refreshLayout -> {
+        mDataBinding.mineFrmRefesh.setOnRefreshListener(refreshLayout -> {
             refeshListData();
         });
         mDataBinding.mineMeListLayout.attchAppBarLayout(mDataBinding.mineMeApptBar);
@@ -160,10 +161,21 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
                 adapter.setNewData(listDTOS);
             }
             adapter.loadMoreFinish(true, false);
-            mDataBinding.mineMeListLayout.getRefeshLayout().finishRefresh();
+            mDataBinding.mineFrmRefesh.finishRefresh();
         });
+        mDataBinding.mineMeListLayout.getRecyclerView()
+                .addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                        if(recyclerView.computeVerticalScrollOffset() <= 0){
+                            mDataBinding.mineFrmRefesh.setEnabled(true);
+                        }else{
+                            mDataBinding.mineFrmRefesh.setEnabled(false);
+                        }
+                    }
+                });
         updateUIData();
-        mDataBinding.mineMeListLayout.getRefeshLayout().autoRefresh();
+        mDataBinding.mineFrmRefesh.autoRefresh();
 //        mDataBinding.mineCcsView.refreshData();
     }
 
@@ -207,9 +219,9 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
             bindTv.setVisibility(View.GONE);
             return; //未登录
         } else {
-            if(AppInfo.checkIsWXLogin()) {
+            if (AppInfo.checkIsWXLogin()) {
                 bindTv.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 //还未登录(没有实际的登录)
                 bindTv.setVisibility(View.GONE);
             }

@@ -15,15 +15,19 @@ import android.widget.TextView;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.MutableLiveData;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ConvertUtils;
 import com.donews.base.utils.ToastUtil;
 import com.donews.base.utils.glide.GlideUtils;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
+import com.donews.common.router.RouterFragmentPath;
 import com.donews.mine.BuildConfig;
 import com.donews.mine.R;
+import com.donews.mine.bean.AwardBean;
 import com.donews.mine.bean.CSBean;
 import com.donews.mine.bean.emus.WinTypes;
 import com.donews.mine.bean.resps.HistoryPeopleLotteryDetailResp;
+import com.donews.mine.bean.resps.RecommendGoodsResp;
 import com.donews.mine.databinding.MineActivityWinningCodeBinding;
 import com.donews.mine.databinding.MineFragmentWinningCodeBinding;
 import com.donews.mine.model.MineModel;
@@ -43,6 +47,11 @@ import java.util.List;
 public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
     public Context mContext;
     private MineFragmentWinningCodeBinding viewDataBinding;
+
+    /**
+     * 推荐列表
+     */
+    public MutableLiveData<List<RecommendGoodsResp.ListDTO>> recommendLivData = new MutableLiveData<>();
 
     /**
      * 中奖详情的结果参数
@@ -70,11 +79,18 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
      * > 0 : 表示未开奖
      */
     public MutableLiveData<Integer> openWinCountdown = new MutableLiveData<>(null);
+    /**
+     * 滚动通知数据
+     * null = 获取错误
+     */
+    public MutableLiveData<AwardBean> awardLiveData = new MutableLiveData<>(null);
 
-    //开奖倒计时的计时器
-    private CountDownTimer openWintimer;
     //城市区块的高度
     private int cidyLlHei = 0;
+    //计时器的Handler
+    private Handler timerHandler = new Handler();
+    //计时器的任务
+    private Runnable titmeRunTask = null;
 
     public void setDataBinDing(MineFragmentWinningCodeBinding dataBinding, FragmentActivity act) {
         this.viewDataBinding = dataBinding;
@@ -103,9 +119,25 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
      * 取消未开奖的计时器
      */
     public void cancelNotOpenWinCountDownTimer() {
-        if (openWintimer != null) {
-            openWintimer.cancel();
+        if (titmeRunTask != null) {
+            timerHandler.removeCallbacks(titmeRunTask);
         }
+    }
+
+    /**
+     * 加载滚动通知列表
+     */
+    public void loadAwardData() {
+        mModel.getAwardList(awardLiveData);
+    }
+
+    /**
+     * 获取推荐列表
+     *
+     * @param limit 需要加载的数量
+     */
+    public void loadRecommendData(int limit) {
+        mModel.requestRecommendGoodsList(recommendLivData, limit);
     }
 
     /**
@@ -156,8 +188,6 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             DateFormat df = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
             //获取当前期的开奖时间
             long currentPeriodOpenTime = df.parse(openWinPeriod.getValue() + 1 + " 10:00:00").getTime();
-            //最新期数的时间。因为是早上10点开奖。所以计算到早上10点
-            long newPeriodTime = df.parse(openWinPeriod.getValue() + " 10:00:00").getTime();
             if (serviceTimeLiveData.getValue() == null) {
                 openWinCountdown.postValue(null);
                 return;
@@ -184,30 +214,33 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
                         openWinCountdown.postValue(countDownTime);
                     }
                 }
-                openWintimer = new CountDownTimer(countDownTime * 1000L, 1000) {
-                    @Override
-                    public void onTick(long millisUntilFinished) {
+                //创建任务
+                if (titmeRunTask == null) {
+                    titmeRunTask = () -> {
                         if (openWinCountdown.getValue() == null) {
                             openWinCountdown.postValue(openWinCountdown.getValue());
                         } else {
+                            if (openWinCountdown.getValue() <= 0) {
+                                openWinCountdown.postValue(0);
+                                timerHandler.removeCallbacks(titmeRunTask);
+                                return;
+                            }
+                            //递减
                             openWinCountdown.postValue(openWinCountdown.getValue() - 1);
+                            //不满足结束条件，接续添加
+                            timerHandler.postDelayed(titmeRunTask, 1000);
                         }
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        if (openWinCountdown.getValue() == null) {
-                            openWinCountdown.postValue(openWinCountdown.getValue());
-                        } else {
-                            openWinCountdown.postValue(0);
-                        }
-                    }
-                };
-                openWintimer.start();
+                    };
+                }
+                cancelNotOpenWinCountDownTimer();
+                //添加计时器，开始计时
+                timerHandler.postDelayed(titmeRunTask, 1000);
             } else {
+                cancelNotOpenWinCountDownTimer();
                 openWinCountdown.postValue(0);
             }
         } catch (Exception e) {
+            cancelNotOpenWinCountDownTimer();
             e.printStackTrace();
         }
     }
@@ -366,6 +399,10 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             but.setVisibility(View.VISIBLE);
             desc.setText("抽奖多的人\n当然容易免单呀");
             but.setOnClickListener(v -> {
+//                ARouter.getInstance()
+//                        .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
+//                        .withString("goods_id", "tb:655412572200")
+//                        .navigation();
                 ToastUtil.show(view.getContext(), "参与更多抽奖>>>");
             });
             //添加未中奖视图
@@ -431,8 +468,8 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
                     currentAddRecord.add(detailLivData.getValue().record.get(i));
                 }
                 moreLoadView.setVisibility(View.VISIBLE);
-                moreLoadView.setOnClickListener(v->{
-                    addAddToGoods(view,false);
+                moreLoadView.setOnClickListener(v -> {
+                    addAddToGoods(view, false);
                 });
             } else {
                 if (detailLivData.getValue().record != null) {
@@ -495,7 +532,7 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
      * @param view      视图对象
      * @param isInitAdd 是否初始添加，如果是则只添加3个默认，T:初始加载，F:加载更多
      */
-    public void addSelectToNames(View view,boolean isInitAdd) {
+    public void addSelectToNames(View view, boolean isInitAdd) {
         ViewGroup vGroup = view.findViewById(R.id.mine_win_code_sele_good_ll);
         ViewGroup moreLoadView = view.findViewById(R.id.mine_win_code_win_select_more);
         List<HistoryPeopleLotteryDetailResp.WinerDTO> currentAddRecord = new ArrayList<>();
@@ -507,8 +544,8 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
                     currentAddRecord.add(detailLivData.getValue().winer.get(i));
                 }
                 moreLoadView.setVisibility(View.VISIBLE);
-                moreLoadView.setOnClickListener(v->{
-                    addSelectToNames(view,false);
+                moreLoadView.setOnClickListener(v -> {
+                    addSelectToNames(view, false);
                 });
             } else {
                 if (detailLivData.getValue().record != null) {

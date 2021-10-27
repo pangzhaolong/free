@@ -6,8 +6,10 @@ import com.donews.base.model.BaseLiveDataModel;
 import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.UserInfoBean;
 import com.donews.mine.BuildConfig;
+import com.donews.mine.bean.AwardBean;
 import com.donews.mine.bean.QueryBean;
 import com.donews.mine.Api.MineHttpApi;
+import com.donews.mine.bean.reqs.WidthdrawalReq;
 import com.donews.mine.bean.resps.CurrentOpenRecord;
 import com.donews.mine.bean.resps.CurrentServiceTime;
 import com.donews.mine.bean.resps.HistoryPeopleLottery;
@@ -32,6 +34,7 @@ import java.util.Date;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * <p> </p>
@@ -43,6 +46,32 @@ public class MineModel extends BaseLiveDataModel {
 
     private Disposable disposable;
     private Calendar rightNow = Calendar.getInstance();
+
+    /**
+     * 获取最近中奖名单人数。滚动通知
+     * @param mutableLiveData 通知数据
+     * @return
+     */
+    public Disposable getAwardList(MutableLiveData<AwardBean> mutableLiveData) {
+        Disposable disposable = EasyHttp.get(BuildConfig.API_LOTTERY_URL + "v1/rotation-lottery-info")
+                .params("offset","1")
+                .params("limit","10")
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new SimpleCallBack<AwardBean>() {
+
+                    @Override
+                    public void onError(ApiException e) {
+                        mutableLiveData.postValue(null);
+                    }
+
+                    @Override
+                    public void onSuccess(AwardBean awardBean) {
+                        mutableLiveData.postValue(awardBean);
+                    }
+                });
+        addDisposable(disposable);
+        return disposable;
+    }
 
     /**
      * 请求个人参与记录的数据
@@ -138,7 +167,7 @@ public class MineModel extends BaseLiveDataModel {
     }
 
     /**
-     * 获取精选推荐列表数据
+     * 获取精选推荐列表数据(数据随机的)
      *
      * @param livData 数据通知对象
      * @param limit   获取的数据数量
@@ -322,6 +351,35 @@ public class MineModel extends BaseLiveDataModel {
                     @Override
                     public void onSuccess(WithdraWalletResp queryBean) {
                         livData.postValue(queryBean);
+                    }
+                });
+        addDisposable(disop);
+        return disop;
+    }
+
+    /**
+     * 提现
+     *
+     * @param livData 数据通知对象
+     * @return
+     */
+    public Disposable requestWithdra(
+            MutableLiveData<Boolean> livData,
+            WithdrawConfigResp.WithdrawListDTO dto) {
+        WidthdrawalReq req = new WidthdrawalReq();
+        req.id = dto.id;
+        Disposable disop = EasyHttp.post(BuildConfig.API_WALLET_URL + "v1/withdraw")
+                .upObject(req)
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new SimpleCallBack<Object>() {
+                    @Override
+                    public void onError(ApiException e) {
+                        livData.postValue(null);
+                    }
+
+                    @Override
+                    public void onSuccess(Object queryBean) {
+                        livData.postValue(true);
                     }
                 });
         addDisposable(disop);
