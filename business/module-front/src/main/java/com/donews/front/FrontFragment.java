@@ -319,6 +319,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                     .withInt("type", redPacketBean.getAward().getType())
                     .withFloat("score", redPacketBean.getAward().getScore())
                     .navigation();
+            loadRpData();
         });
     }
 }
