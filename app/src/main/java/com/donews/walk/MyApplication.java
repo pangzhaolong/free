@@ -10,6 +10,7 @@ import com.dn.events.DNEventBusUtils;
 import com.donews.base.base.BaseApplication;
 import com.donews.base.utils.CrashHandlerUtil;
 import com.donews.common.config.ModuleLifecycleConfig;
+import com.donews.jpush.JPushHelper;
 import com.donews.utilslibrary.utils.KeyConstant;
 import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.Utils;
@@ -37,6 +38,10 @@ public class MyApplication extends BaseApplication {
                 ARouter.openDebug();   // 开启调试模式(如果在InstantRun模式下运行，必须开启调试模式！线上版本需要关闭,否则有安全风险)
             }
             ARouter.init(this); // 尽可能早，推荐在Application中初始化
+
+            JPushHelper.setDebugMode(true);
+            JPushHelper.init(this);
+
             // 初始化需要初始化的组件
             ModuleLifecycleConfig.getInstance().initModuleAhead(this);
 
