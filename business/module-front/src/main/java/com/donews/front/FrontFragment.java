@@ -4,10 +4,7 @@ package com.donews.front;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.text.Html;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,7 +12,6 @@ import androidx.annotation.Nullable;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.bumptech.glide.Glide;
 import com.donews.base.fragment.MvvmLazyLiveDataFragment;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
@@ -28,13 +24,9 @@ import com.donews.front.views.TabItem;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.KeySharePreferences;
-import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.SPUtils;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.scwang.smart.refresh.layout.api.RefreshLayout;
-import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
-import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
 @Route(path = RouterFragmentPath.Front.PAGER_FRONT)
 public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding, FrontViewModel> implements View.OnClickListener {
@@ -97,12 +89,17 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         initSrl();
 
         AnalysisUtils.onEventEx(this.getActivity(), Dot.Page_Home);
+
+        mDataBinding.frontJddHelp.setOnClickListener(v -> {
+            ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY).withString("url", "https://recharge-web.xg.tagtic.cn/jdd/index.html#/").navigation();
+        });
     }
 
     private void initSrl() {
         mDataBinding.frontSrl.setEnableLoadMore(false);
         mDataBinding.frontSrl.setOnRefreshListener(refreshLayout -> {
             loadCategoryData();
+            loadAwardList();
             loadRpData();
             mDataBinding.frontSrl.finishRefresh();
         });

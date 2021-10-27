@@ -124,16 +124,16 @@
         <!--<service android:name="cn.jpush.android.service.MessagingIntentService" />-->
 
         <!-- since 3.0.9 Required SDK 核心功能 -->
-        <!--<provider
+        <provider
             android:name="cn.jpush.android.service.DataProvider"
             android:authorities="com.cdyfnts.lottery.jdd.plus.DataProvider"
             android:exported="false"
-            android:process=":pushcore" />-->
+            android:process=":pushcore" />
         <!-- since 3.1.0 Required SDK 核心功能 -->
-        <!--<provider
+        <provider
             android:name="cn.jpush.android.service.DownloadProvider"
             android:authorities="com.cdyfnts.lottery.jdd.plus.DownloadProvider"
-            android:exported="true" />-->
+            android:exported="true" />
 
         <!-- since 3.3.0 Required SDK核心功能 -->
         <activity
