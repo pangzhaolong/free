@@ -26,8 +26,11 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.dn.events.events.UserUnRegisteredEvent;
 import com.donews.base.fragmentdialog.LoadingHintDialog;
+import com.donews.base.utils.ToastUtil;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.mine.R;
+import com.donews.share.ShareItem;
+import com.donews.share.ShareManager;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -60,6 +63,7 @@ public class ShareToDialogFragment extends DialogFragment {
 
     /**
      * 设置选择监听
+     *
      * @param selectListener
      */
     public void setSelectListener(onSelectListener selectListener) {
@@ -105,18 +109,22 @@ public class ShareToDialogFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getView().findViewById(R.id.share_select_dialog_py)
-                .setOnClickListener(v->{
-                    if(selectListener != null){
+                .setOnClickListener(v -> {
+                    if (selectListener != null) {
                         selectListener.select(1);
+                        dismiss();
+                    } else {
+                        share(1);
                     }
-                    dismiss();
                 });
         getView().findViewById(R.id.share_select_dialog_quan)
-                .setOnClickListener(v->{
-                    if(selectListener != null){
-                        selectListener.select(1);
+                .setOnClickListener(v -> {
+                    if (selectListener != null) {
+                        selectListener.select(2);
+                        dismiss();
+                    } else {
+                        share(2);
                     }
-                    dismiss();
                 });
     }
 
@@ -139,5 +147,27 @@ public class ShareToDialogFragment extends DialogFragment {
         show(fragmentManager, ShareDialog_TAG);
     }
 
-
+    /**
+     * 分享app
+     *
+     * @param type 1-联系人，2-朋友圈
+     */
+    private void share(int type) {
+        ShareManager sharManager = new ShareManager();
+        ShareItem shareItem = new ShareItem();
+        shareItem.setType(ShareItem.TYPE_IMAGE);
+        shareItem.setIcon("" + R.drawable.ic_launcher_round);
+        shareItem.setTitle("0元抢华为P40~猛戳>>");
+        shareItem.setContent("不花一分钱，商品抱回家，超多大牌好物等你抽，锦鲤就是你");
+        shareItem.setWebUrl("https://recharge-web.xg.tagtic.cn/jdd/index.html#/download");
+        if (type == 1) {
+            shareItem.setCmd(ShareManager.SHARE_COMMAND_WX);
+        } else if (type == 2) {
+            shareItem.setCmd(ShareManager.SHARE_COMMAND_WX_FRIEND);
+        } else {
+            ToastUtil.showShort(getActivity(), "暂不支持此类型分享");
+        }
+        sharManager.share(shareItem.getCmd(), shareItem, getActivity());
+        dismiss();
+    }
 }

@@ -1,6 +1,7 @@
 package com.donews.mine;
 
 import android.annotation.SuppressLint;
+import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.dn.drouter.ARouteHelper;
 import com.donews.base.fragment.MvvmLazyLiveDataFragment;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.router.RouterActivityPath;
@@ -158,7 +160,11 @@ public class MineOpenWinningFragment extends
         timeMM = adapterNotOpenWinHead.findViewById(R.id.mine_frm_win_m);
         timeSS = adapterNotOpenWinHead.findViewById(R.id.mine_frm_win_s);
         adapterOpenWinHead.findViewById(R.id.mine_win_code_sele_rules).setOnClickListener((v) -> {
-            ToastUtil.show(getBaseActivity(), "中奖规则查看");
+            Bundle bundle = new Bundle();
+            bundle.putString("url",
+                    "https://recharge-web.xg.tagtic.cn/jdd/index.html#/rule");
+            bundle.putString("title", "中奖规则");
+            ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
         });
         adapterOpenWinHead.findViewById(R.id.mine_win_code_scan_all).setOnClickListener((v) -> {
             ToastUtil.show(getBaseActivity(), "查看全部通知");

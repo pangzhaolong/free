@@ -28,6 +28,7 @@ ext {
     //用户相关接口
     API_USER_URL = API_BASE_URL + "user/"
 
+    WEB_BASE_URL = "https://recharge-web.xg.tagtic.cn/jdd/index.html#/"
 
     // 正式环境base Url
     API2_URL = "https://www.qusobook.com/"

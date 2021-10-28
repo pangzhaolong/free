@@ -6,414 +6,415 @@
     <data>
 
     </data>
+
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:id="@+id/home_srl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:ignore="MissingClass">
 
-    <com.scwang.smart.refresh.header.ClassicsHeader
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:orientation="vertical">
-
-        <RelativeLayout
+        <com.scwang.smart.refresh.header.ClassicsHeader
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp">
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical">
 
             <RelativeLayout
-                android:id="@+id/home_search_rl"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_toLeftOf="@+id/home_jdd_help"
-                android:background="@drawable/home_search_bg">
+                android:layout_height="45dp"
+                android:layout_marginStart="10dp"
+                android:paddingBottom="5dp">
+
+                <RelativeLayout
+                    android:id="@+id/home_search_rl"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toStartOf="@+id/home_jdd_help"
+                    android:background="@drawable/home_search_bg">
+
+                    <ImageView
+                        android:id="@+id/home_search_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:src="@drawable/home_jdd_search" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/home_search_bar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_toEndOf="@+id/home_search_icon"
+                        android:background="@drawable/home_jdd_search_bg"
+                        android:gravity="center_vertical"
+                        android:hint="搜商品 领优惠券"
+                        android:textSize="12sp"
+                        tools:ignore="MissingConstraints" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginEnd="1dp"
+                        android:layout_marginBottom="1dp"
+                        android:background="@drawable/home_search_button_bg"
+                        android:gravity="center"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:text="搜索"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+                </RelativeLayout>
 
                 <ImageView
-                    android:id="@+id/home_search_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="10dp"
-                    android:src="@drawable/home_jdd_search" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/home_search_bar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_toEndOf="@+id/home_search_icon"
-                    android:background="@drawable/home_jdd_search_bg"
-                    android:gravity="center_vertical"
-                    android:hint="搜商品 领优惠券"
-                    android:textSize="14sp"
-                    tools:ignore="MissingConstraints" />
-
-                <TextView
+                    android:id="@+id/home_jdd_help"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginTop="1dp"
-                    android:layout_marginEnd="1dp"
-                    android:layout_marginBottom="1dp"
-                    android:background="@drawable/home_search_button_bg"
-                    android:gravity="center"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
-                    android:text="搜索"
-                    android:textColor="@color/white"
-                    android:textSize="14sp" />
+                    android:layout_marginEnd="10dp"
+                    android:paddingStart="10dp"
+                    android:src="@drawable/home_jdd_help"
+                    tools:ignore="MissingConstraints,RtlSymmetry" />
             </RelativeLayout>
 
-            <ImageView
-                android:id="@+id/home_jdd_help"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:paddingStart="10dp"
-                android:src="@drawable/home_jdd_help"
-                tools:ignore="MissingConstraints,RtlSymmetry" />
-        </RelativeLayout>
 
-
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.google.android.material.appbar.AppBarLayout
-                android:id="@+id/home_app_bar_layout"
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#F9F9F9"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
 
-                <com.google.android.material.appbar.CollapsingToolbarLayout
-                    android:id="@+id/collapsing_toolbar"
+                <com.google.android.material.appbar.AppBarLayout
+                    android:id="@+id/home_app_bar_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:expandedTitleGravity="top"
-                    app:expandedTitleMarginEnd="64dp"
-                    app:expandedTitleMarginStart="48dp"
-                    app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+                    android:layout_height="wrap_content"
+                    android:background="#F9F9F9"
+                    android:orientation="vertical">
 
-                    <LinearLayout
-                        android:id="@+id/home_banner_ll"
+                    <com.google.android.material.appbar.CollapsingToolbarLayout
+                        android:id="@+id/collapsing_toolbar"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/home_banner_bg"
-                        android:orientation="vertical">
+                        android:layout_height="match_parent"
+                        app:expandedTitleGravity="top"
+                        app:expandedTitleMarginEnd="64dp"
+                        app:expandedTitleMarginStart="48dp"
+                        app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
-                        <RelativeLayout
-                            android:id="@+id/front_rp_rl"
+                        <LinearLayout
+                            android:id="@+id/home_banner_ll"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
+                            android:layout_marginTop="20dp"
                             android:layout_marginEnd="10dp"
-                            tools:ignore="MissingConstraints">
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/home_banner_bg"
+                            android:orientation="vertical">
 
-                            <TextView
-                                android:id="@+id/front_rp_title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="24dp"
+                            <RelativeLayout
+                                android:id="@+id/front_rp_rl"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
-                                android:layout_marginTop="4dp"
-                                android:gravity="center"
-                                android:text="精选推荐"
-                                android:textColor="@color/white"
-                                android:textSize="19sp"
-                                android:textStyle="bold" />
+                                android:layout_marginEnd="10dp"
+                                tools:ignore="MissingConstraints">
 
-                            <FrameLayout
-                                android:id="@+id/home_random_users_fl"
-                                android:layout_width="wrap_content"
-                                android:layout_height="30dp"
-                                android:layout_marginEnd="20dp"
-                                android:layout_toStartOf="@+id/front_cash_get_tv">
-
-                                <org.raphets.roundimageview.RoundImageView
-                                    android:id="@+id/home_banner_header_riv1"
-                                    android:layout_width="25dp"
-                                    android:layout_height="25dp"
+                                <TextView
+                                    android:id="@+id/front_rp_title"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="24dp"
                                     android:layout_marginStart="10dp"
                                     android:layout_marginTop="4dp"
-                                    app:type="circle"
-                                    tools:ignore="TooDeepLayout" />
+                                    android:gravity="center"
+                                    android:text="精选推荐"
+                                    android:textColor="@color/white"
+                                    android:textSize="19sp"
+                                    android:textStyle="bold" />
 
-                                <org.raphets.roundimageview.RoundImageView
-                                    android:id="@+id/home_banner_header_riv2"
-                                    android:layout_width="25dp"
-                                    android:layout_height="25dp"
-                                    android:layout_marginStart="30dp"
+                                <FrameLayout
+                                    android:id="@+id/home_random_users_fl"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="30dp"
+                                    android:layout_marginEnd="20dp"
+                                    android:layout_toStartOf="@+id/front_cash_get_tv">
+
+                                    <org.raphets.roundimageview.RoundImageView
+                                        android:id="@+id/home_banner_header_riv1"
+                                        android:layout_width="25dp"
+                                        android:layout_height="25dp"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginTop="4dp"
+                                        app:type="circle"
+                                        tools:ignore="TooDeepLayout" />
+
+                                    <org.raphets.roundimageview.RoundImageView
+                                        android:id="@+id/home_banner_header_riv2"
+                                        android:layout_width="25dp"
+                                        android:layout_height="25dp"
+                                        android:layout_marginStart="30dp"
+                                        android:layout_marginTop="4dp"
+                                        app:type="circle" />
+
+                                    <org.raphets.roundimageview.RoundImageView
+                                        android:id="@+id/home_banner_header_riv3"
+                                        android:layout_width="25dp"
+                                        android:layout_height="25dp"
+                                        android:layout_marginStart="50dp"
+                                        android:layout_marginTop="4dp"
+                                        app:type="circle" />
+
+                                </FrameLayout>
+
+                                <TextView
+                                    android:id="@+id/front_cash_get_tv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="28dp"
+                                    android:layout_alignParentEnd="true"
                                     android:layout_marginTop="4dp"
-                                    app:type="circle" />
-
-                                <org.raphets.roundimageview.RoundImageView
-                                    android:id="@+id/home_banner_header_riv3"
-                                    android:layout_width="25dp"
-                                    android:layout_height="25dp"
-                                    android:layout_marginStart="50dp"
-                                    android:layout_marginTop="4dp"
-                                    app:type="circle" />
-
-                            </FrameLayout>
-
-                            <TextView
-                                android:id="@+id/front_cash_get_tv"
-                                android:layout_width="wrap_content"
-                                android:layout_height="28dp"
-                                android:layout_alignParentEnd="true"
-                                android:layout_marginTop="4dp"
-                                android:layout_marginEnd="10dp"
-                                android:drawableRight="@drawable/home_banner_go"
-                                android:gravity="center"
-                                android:text="正在疯抢中 "
-                                android:textColor="@color/white" />
-                        </RelativeLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp"
-                            android:layout_marginBottom="10dp"
-                            android:orientation="horizontal"
-                            android:weightSum="4">
+                                    android:layout_marginEnd="10dp"
+                                    android:drawableRight="@drawable/home_banner_go"
+                                    android:gravity="center"
+                                    android:text="正在疯抢中 "
+                                    android:textColor="@color/white" />
+                            </RelativeLayout>
 
                             <LinearLayout
-                                android:layout_width="0dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:orientation="vertical">
+                                android:layout_marginTop="6dp"
+                                android:layout_marginBottom="10dp"
+                                android:orientation="horizontal"
+                                android:weightSum="4">
 
-                                <FrameLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content">
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
 
-                                    <org.raphets.roundimageview.RoundImageView
-                                        android:id="@+id/home_seckil_riv1"
-                                        android:layout_width="62dp"
-                                        android:layout_height="62dp"
-                                        android:scaleType="fitXY"
-                                        app:corner_radius="5dp"
-                                        app:type="round"
-                                        tools:ignore="TooDeepLayout" />
+                                    <FrameLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content">
+
+                                        <org.raphets.roundimageview.RoundImageView
+                                            android:id="@+id/home_seckil_riv1"
+                                            android:layout_width="62dp"
+                                            android:layout_height="62dp"
+                                            android:scaleType="fitXY"
+                                            app:corner_radius="5dp"
+                                            app:type="round"
+                                            tools:ignore="TooDeepLayout" />
+
+                                        <TextView
+                                            android:id="@+id/home_seckil_tv1"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="left|bottom"
+                                            android:background="@drawable/home_banner_item_tip_bg"
+                                            android:gravity="center"
+                                            android:text="直降￥200"
+                                            android:textColor="#E9423E"
+                                            android:textSize="10sp"
+                                            tools:ignore="RtlHardcoded,SmallSp" />
+                                    </FrameLayout>
 
                                     <TextView
-                                        android:id="@+id/home_seckil_tv1"
+                                        android:id="@+id/home_seckil_price_tv1"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_gravity="left|bottom"
-                                        android:background="@drawable/home_banner_item_tip_bg"
-                                        android:gravity="center"
-                                        android:text="直降￥200"
+                                        android:layout_marginTop="6dp"
+                                        android:background="@drawable/home_banner_item_bg"
+                                        android:ellipsize="end"
+                                        android:maxLines="1"
+                                        android:paddingStart="10dp"
+                                        android:paddingEnd="10dp"
+                                        android:text="￥48"
                                         android:textColor="#E9423E"
-                                        android:textSize="10sp"
-                                        tools:ignore="RtlHardcoded,SmallSp" />
-                                </FrameLayout>
+                                        android:textSize="15sp" />
+                                </LinearLayout>
 
-                                <TextView
-                                    android:id="@+id/home_seckil_price_tv1"
-                                    android:layout_width="wrap_content"
+                                <LinearLayout
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="6dp"
-                                    android:background="@drawable/home_banner_item_bg"
-                                    android:ellipsize="end"
-                                    android:maxLines="1"
-                                    android:paddingStart="10dp"
-                                    android:paddingEnd="10dp"
-                                    android:text="￥48"
-                                    android:textColor="#E9423E"
-                                    android:textSize="15sp" />
-                            </LinearLayout>
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
 
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:orientation="vertical">
+                                    <FrameLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content">
 
-                                <FrameLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content">
+                                        <org.raphets.roundimageview.RoundImageView
+                                            android:id="@+id/home_seckil_riv2"
+                                            android:layout_width="62dp"
+                                            android:layout_height="62dp"
+                                            android:scaleType="fitXY"
+                                            app:corner_radius="5dp"
+                                            app:type="round"
+                                            tools:ignore="TooDeepLayout" />
 
-                                    <org.raphets.roundimageview.RoundImageView
-                                        android:id="@+id/home_seckil_riv2"
-                                        android:layout_width="62dp"
-                                        android:layout_height="62dp"
-                                        android:scaleType="fitXY"
-                                        app:corner_radius="5dp"
-                                        app:type="round"
-                                        tools:ignore="TooDeepLayout" />
+                                        <TextView
+                                            android:id="@+id/home_seckil_tv2"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="left|bottom"
+                                            android:background="@drawable/home_banner_item_tip_bg"
+                                            android:gravity="center"
+                                            android:text="直降￥200"
+                                            android:textColor="#E9423E"
+                                            android:textSize="10sp" />
+                                    </FrameLayout>
 
                                     <TextView
-                                        android:id="@+id/home_seckil_tv2"
+                                        android:id="@+id/home_seckil_price_tv2"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_gravity="left|bottom"
-                                        android:background="@drawable/home_banner_item_tip_bg"
-                                        android:gravity="center"
-                                        android:text="直降￥200"
+                                        android:layout_marginTop="6dp"
+                                        android:background="@drawable/home_banner_item_bg"
+                                        android:ellipsize="end"
+                                        android:maxLines="1"
+                                        android:paddingStart="10dp"
+                                        android:paddingEnd="10dp"
+                                        android:text="￥48"
                                         android:textColor="#E9423E"
-                                        android:textSize="10sp" />
-                                </FrameLayout>
+                                        android:textSize="15sp" />
+                                </LinearLayout>
 
-                                <TextView
-                                    android:id="@+id/home_seckil_price_tv2"
-                                    android:layout_width="wrap_content"
+                                <LinearLayout
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="6dp"
-                                    android:background="@drawable/home_banner_item_bg"
-                                    android:ellipsize="end"
-                                    android:maxLines="1"
-                                    android:paddingStart="10dp"
-                                    android:paddingEnd="10dp"
-                                    android:text="￥48"
-                                    android:textColor="#E9423E"
-                                    android:textSize="15sp" />
-                            </LinearLayout>
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
 
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:orientation="vertical">
+                                    <FrameLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content">
 
-                                <FrameLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content">
+                                        <org.raphets.roundimageview.RoundImageView
+                                            android:id="@+id/home_seckil_riv3"
+                                            android:layout_width="62dp"
+                                            android:layout_height="62dp"
+                                            android:scaleType="fitXY"
+                                            app:corner_radius="5dp"
+                                            app:type="round"
+                                            tools:ignore="TooDeepLayout" />
 
-                                    <org.raphets.roundimageview.RoundImageView
-                                        android:id="@+id/home_seckil_riv3"
-                                        android:layout_width="62dp"
-                                        android:layout_height="62dp"
-                                        android:scaleType="fitXY"
-                                        app:corner_radius="5dp"
-                                        app:type="round"
-                                        tools:ignore="TooDeepLayout" />
+                                        <TextView
+                                            android:id="@+id/home_seckil_tv3"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="left|bottom"
+                                            android:background="@drawable/home_banner_item_tip_bg"
+                                            android:gravity="center"
+                                            android:text="直降￥200"
+                                            android:textColor="#E9423E"
+                                            android:textSize="10sp" />
+                                    </FrameLayout>
 
                                     <TextView
-                                        android:id="@+id/home_seckil_tv3"
+                                        android:id="@+id/home_seckil_price_tv3"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_gravity="left|bottom"
-                                        android:background="@drawable/home_banner_item_tip_bg"
-                                        android:gravity="center"
-                                        android:text="直降￥200"
+                                        android:layout_marginTop="6dp"
+                                        android:background="@drawable/home_banner_item_bg"
+                                        android:ellipsize="end"
+                                        android:maxLines="1"
+                                        android:paddingStart="10dp"
+                                        android:paddingEnd="10dp"
+                                        android:text="￥48"
                                         android:textColor="#E9423E"
-                                        android:textSize="10sp" />
-                                </FrameLayout>
+                                        android:textSize="15sp" />
+                                </LinearLayout>
 
-                                <TextView
-                                    android:id="@+id/home_seckil_price_tv3"
-                                    android:layout_width="wrap_content"
+                                <LinearLayout
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="6dp"
-                                    android:background="@drawable/home_banner_item_bg"
-                                    android:ellipsize="end"
-                                    android:maxLines="1"
-                                    android:paddingStart="10dp"
-                                    android:paddingEnd="10dp"
-                                    android:text="￥48"
-                                    android:textColor="#E9423E"
-                                    android:textSize="15sp" />
-                            </LinearLayout>
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
 
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:orientation="vertical">
+                                    <FrameLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content">
 
-                                <FrameLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content">
+                                        <org.raphets.roundimageview.RoundImageView
+                                            android:id="@+id/home_seckil_riv4"
+                                            android:layout_width="62dp"
+                                            android:layout_height="62dp"
+                                            android:scaleType="fitXY"
+                                            app:corner_radius="5dp"
+                                            app:type="round"
+                                            tools:ignore="TooDeepLayout" />
 
-                                    <org.raphets.roundimageview.RoundImageView
-                                        android:id="@+id/home_seckil_riv4"
-                                        android:layout_width="62dp"
-                                        android:layout_height="62dp"
-                                        android:scaleType="fitXY"
-                                        app:corner_radius="5dp"
-                                        app:type="round"
-                                        tools:ignore="TooDeepLayout" />
+                                        <TextView
+                                            android:id="@+id/home_seckil_tv4"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="left|bottom"
+                                            android:background="@drawable/home_banner_item_tip_bg"
+                                            android:gravity="center"
+                                            android:text="直降￥200"
+                                            android:textColor="#E9423E"
+                                            android:textSize="10sp" />
+                                    </FrameLayout>
 
                                     <TextView
-                                        android:id="@+id/home_seckil_tv4"
+                                        android:id="@+id/home_seckil_price_tv4"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_gravity="left|bottom"
-                                        android:background="@drawable/home_banner_item_tip_bg"
-                                        android:gravity="center"
-                                        android:text="直降￥200"
+                                        android:layout_marginTop="6dp"
+                                        android:background="@drawable/home_banner_item_bg"
+                                        android:ellipsize="end"
+                                        android:maxLines="1"
+                                        android:paddingStart="10dp"
+                                        android:paddingEnd="10dp"
+                                        android:text="￥48"
                                         android:textColor="#E9423E"
-                                        android:textSize="10sp" />
-                                </FrameLayout>
+                                        android:textSize="15sp" />
+                                </LinearLayout>
 
-                                <TextView
-                                    android:id="@+id/home_seckil_price_tv4"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="6dp"
-                                    android:background="@drawable/home_banner_item_bg"
-                                    android:ellipsize="end"
-                                    android:maxLines="1"
-                                    android:paddingStart="10dp"
-                                    android:paddingEnd="10dp"
-                                    android:text="￥48"
-                                    android:textColor="#E9423E"
-                                    android:textSize="15sp" />
                             </LinearLayout>
-
                         </LinearLayout>
-                    </LinearLayout>
 
-                </com.google.android.material.appbar.CollapsingToolbarLayout>
+                    </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/home_category_tl"
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/home_category_tl"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_40"
+                        android:background="@color/white"
+                        app:tabIndicatorColor="@color/transparent"
+                        app:tabIndicatorHeight="0dp"
+                        app:tabSelectedTextColor="#F64A43"
+                        app:tabTextColor="#6D6D6D" />
+
+                </com.google.android.material.appbar.AppBarLayout>
+
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/home_category_vp2"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_40"
-                    android:background="@color/white"
-                    app:tabIndicatorColor="@color/transparent"
-                    app:tabIndicatorHeight="0dp"
-                    app:tabSelectedTextColor="#F64A43"
-                    app:tabTextColor="#6D6D6D" />
+                    android:layout_height="match_parent"
+                    android:background="#F9F9F9"
+                    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-            </com.google.android.material.appbar.AppBarLayout>
-
-
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/home_category_vp2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#F9F9F9"
-                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-    </LinearLayout>
+        </LinearLayout>
 
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 </layout>
