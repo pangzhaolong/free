@@ -51,6 +51,8 @@ public class NorFragment extends MvvmLazyLiveDataFragment<FrontNorFragmentBindin
         mDataBinding.frontNorRv.setLayoutManager(new LinearLayoutManager(this.getContext()));
         mDataBinding.frontNorRv.setAdapter(mNorGoodsAdapter);
 
+        mDataBinding.frontLoadingStatusTv.setOnClickListener(v -> loadNorData());
+
         NorGoodsBean norGoodsBean = GoodsCache.readGoodsBean(NorGoodsBean.class, mCategoryBean.getCategoryId());
         showNorData(norGoodsBean, true);
         loadNorData();
@@ -68,10 +70,12 @@ public class NorFragment extends MvvmLazyLiveDataFragment<FrontNorFragmentBindin
     }
 
     private void loadNorData() {
+        mDataBinding.frontLoadingStatusTv.setText("数据加载中...");
         mPageId++;
         mViewModel.getNetData(mCategoryBean.getCategoryId(), mPageId).observe(getViewLifecycleOwner(), norGoodsBean -> {
             if (norGoodsBean == null || norGoodsBean.getList() == null || norGoodsBean.getList().size() <= 0) {
                 mPageId--;
+                mDataBinding.frontLoadingStatusTv.setText("加载数据失败，点击重新加载");
                 mDataBinding.frontNorSrl.finishLoadMoreWithNoMoreData();
                 return;
             }

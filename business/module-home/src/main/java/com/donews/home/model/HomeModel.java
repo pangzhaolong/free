@@ -46,10 +46,8 @@ public class HomeModel extends BaseLiveDataModel {
         return mutableLiveData;
     }
 
-
     public MutableLiveData<SecKilBean> getSecKilData() {
         MutableLiveData<SecKilBean> mutableLiveData = new MutableLiveData<>();
-//        String roundTime = DateTimeUtils.getNow("yyyy-MM-dd HH:00:00");
         addDisposable(EasyHttp.get(HomeApi.seckiltUrl + "?&page_size=4")
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<SecKilBean>() {

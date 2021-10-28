@@ -86,4 +86,8 @@ public class HomeApi {
     public final static String seckiltUrl = BaseUrl + "/v1/ddq-goods-list";//https://lottery.dev.tagtic.cn/shop/v1/ddq-goods-list?round_time=2021-10-18%2017%3A00%3A00&page_size=2
 //    https://lottery.dev.tagtic.cn/user/v1/user-list?limit=3
     public final static String userRandomUrl = BuildConfig.API_USER_URL + "v1/user-list";
+
+    public final static String crazyListUrl = BuildConfig.BASE_URL + "v1/ranking-list";
+
+//    https://lottery.dev.tagtic.cn/shop/v1/ranking-list?rank_type=1&page_size=20&page_id=1
 }

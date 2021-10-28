@@ -11,9 +11,10 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
-import com.dn.events.events.NavEvent;
 import com.donews.base.fragment.MvvmLazyLiveDataFragment;
+import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.home.adapter.FragmentAdapter;
 import com.donews.home.bean.HomeBean;
@@ -28,10 +29,6 @@ import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.UrlUtils;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.scwang.smart.refresh.layout.api.RefreshLayout;
-import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
-
-import org.greenrobot.eventbus.EventBus;
 
 
 /**
@@ -128,7 +125,8 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
             startActivity(intent);
         });
 
-        mDataBinding.homeBannerLl.setOnClickListener(v -> EventBus.getDefault().post(new NavEvent(2)));
+        mDataBinding.homeBannerLl.setOnClickListener(v ->
+                ARouter.getInstance().build(RouterActivityPath.CrazyList.CRAZY_LIST_DETAIL).navigation());
 
         initSrl();
 

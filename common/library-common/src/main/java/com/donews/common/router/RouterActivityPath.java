@@ -157,6 +157,11 @@ public class RouterActivityPath {
         public static final String REALTIME_DETAIL = REALTIME + "/realtimeDetail";
     }
 
+    public static class CrazyList {
+        public static final String CRAZY_LIST = "/crazylist";
+        public static final String CRAZY_LIST_DETAIL = CRAZY_LIST + "/CrazyList";
+    }
+
     public static class Rp {
         public static final String RP = "/rp";
         public static final String PAGE_RP = RP + "/rp";
