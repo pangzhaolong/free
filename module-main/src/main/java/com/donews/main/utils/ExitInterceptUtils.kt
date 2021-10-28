@@ -67,30 +67,27 @@ object ExitInterceptUtils {
     }
 
     fun intercept(activity: AppCompatActivity) {
-        if (!exitInterceptConfig.intercept) {
-            val duration = System.currentTimeMillis() - mFirstClickBackTime
-            if (duration < CLICK_INTERVAL) {
-                // 程序关闭
-                AppStatusManager.getInstance().setAppStatus(AppStatusConstant.STATUS_FORCE_KILLED)
-                AnalysisUtils.onEvent(activity, AnalysisParam.SHUTDOWN)
-                AppManager.getInstance().AppExit()
-                activity.finish()
+        val duration = System.currentTimeMillis() - mFirstClickBackTime
+        if (duration < CLICK_INTERVAL) {
+            // 程序关闭
+            if (!exitInterceptConfig.intercept) {
+                exitApp(activity)
             } else {
-                Toast.makeText(activity.application, "再按一次退出！", Toast.LENGTH_SHORT).show()
-                mFirstClickBackTime = System.currentTimeMillis()
+                when {
+                    checkNotLottery() -> {
+                        showNotLotteryDialog(activity)
+                    }
+                    checkRedPacketNotOpen() -> {
+                        showOpenRedPacketDialog(activity)
+                    }
+                    else -> {
+                        showContinueLotteryDialog(activity)
+                    }
+                }
             }
         } else {
-            when {
-                checkNotLottery() -> {
-                    showNotLotteryDialog(activity)
-                }
-                checkRedPacketNotOpen() -> {
-                    showOpenRedPacketDialog(activity)
-                }
-                else -> {
-                    showContinueLotteryDialog(activity)
-                }
-            }
+            Toast.makeText(activity.application, "再按一次退出！", Toast.LENGTH_SHORT).show()
+            mFirstClickBackTime = System.currentTimeMillis()
         }
     }
 

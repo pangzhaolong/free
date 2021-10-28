@@ -8,6 +8,7 @@ import com.donews.base.base.BaseApplication;
 import com.donews.common.appconfig.AppCommonConfigUtils;
 import com.donews.common.lifecycle.SimpleApplicationObServer;
 import com.donews.common.updatedialog.UpdateReceiver;
+import com.donews.utilslibrary.utils.AppStatusUtils;
 import com.tencent.mmkv.MMKV;
 
 /**
@@ -34,6 +35,9 @@ public class CommonModuleInit implements IModuleInit {
 //        AppGlobalConfigManager.update();
 
         new SimpleApplicationObServer().register();
+        //app第一次打开时间
+        AppStatusUtils.saveAppInstallTime();
+        //app 公共配置
         AppCommonConfigUtils.INSTANCE.initConfig();
         return false;
     }
