@@ -16,7 +16,7 @@ public class RedPacketBean extends BaseCustomViewModel {
         this.award = award;
     }
 
-    public static class AwardBean {
+    public static class AwardBean extends BaseCustomViewModel{
         @SerializedName("type")
         private int type;
         @SerializedName("score")

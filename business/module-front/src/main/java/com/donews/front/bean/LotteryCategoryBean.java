@@ -18,7 +18,7 @@ public class LotteryCategoryBean extends BaseCustomViewModel {
         this.list = list;
     }
 
-    public static class categoryBean {
+    public static class categoryBean extends BaseCustomViewModel {
         @SerializedName("category_id")
         private String categoryId;
         @SerializedName("name")
