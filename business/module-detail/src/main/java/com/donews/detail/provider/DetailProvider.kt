@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.facade.model.RouteMeta
 import com.donews.common.bean.PrivilegeLinkInfo
@@ -14,6 +15,7 @@ import com.donews.detail.ui.GoodsDetailActivity
 import com.donews.network.EasyHttp
 import com.donews.network.cache.model.CacheMode
 import com.donews.network.callback.SimpleCallBack
+import com.orhanobut.logger.Logger
 import io.reactivex.disposables.Disposable
 
 /**
@@ -48,16 +50,27 @@ class DetailProvider : IDetailProvider {
 
 
     override fun goToTaoBao(context: Context, link: String) {
-        if (checkAppInstall(context, PACKAGE_TB)) {
-            val url = "taobao://" + link.split("//")[1]
-            val uri: Uri = Uri.parse(url) // 商品地址
-            val intent = Intent(Intent.ACTION_VIEW, uri)
-            context.startActivity(intent)
+        if (link.isBlank()) {
+            Logger.i("跳转淘宝:link null")
+            Toast.makeText(context, "跳转错误", Toast.LENGTH_SHORT).show()
         } else {
-            val url = link
-            val uri: Uri = Uri.parse(url) // 商品地址
-            val intent = Intent(Intent.ACTION_VIEW, uri)
-            context.startActivity(intent)
+            if (checkAppInstall(context, PACKAGE_TB)) {
+                val strings = link.split("//")
+                if (strings.isEmpty()) {
+                    Logger.i("跳转淘宝:link  split //  is null")
+                    return
+                }
+                val realLink = if (strings.size > 1) strings[1] else strings[0]
+                val url = "taobao://$realLink"
+                val uri: Uri = Uri.parse(url) // 商品地址
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                context.startActivity(intent)
+            } else {
+                val url = link
+                val uri: Uri = Uri.parse(url) // 商品地址
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                context.startActivity(intent)
+            }
         }
     }
 
