@@ -18,5 +18,6 @@ android {
         buildConfigField("String", "AD_CONFIG", "\"${rootProject.AD_CONFIG}\"")
         buildConfigField("String", "AD_ID_CONFIG", "\"${rootProject.AD_ID_CONFIG}\"")
         buildConfigField("String", "APP_ID_GROMORE", "\"${rootProject.APP_ID_GROMORE}\"")
+        buildConfigField("String", "APP_COMMON_CONFIG", "\"${rootProject.APP_COMMON_CONFIG}\"")
     }
 }

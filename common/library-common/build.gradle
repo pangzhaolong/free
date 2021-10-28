@@ -16,7 +16,6 @@ dependencies {
     api project(':common:library-base')
     api project(':common:library-network')
     api project(':common:library-drouter')
-
     api rootProject.ext.dependencies["refresh-layout-kernel"]
     api rootProject.ext.dependencies["refresh-header-classics"]
     api rootProject.ext.dependencies["refresh-footer-classics"]
