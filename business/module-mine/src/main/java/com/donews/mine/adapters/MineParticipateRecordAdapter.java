@@ -8,10 +8,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ConvertUtils;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.donews.base.utils.ToastUtil;
 import com.donews.base.utils.glide.GlideUtils;
+import com.donews.common.router.RouterFragmentPath;
 import com.donews.mine.R;
 import com.donews.mine.bean.resps.RecommendGoodsResp;
 import com.donews.mine.views.refresh.adapters.BaesLoadMoreAdapter;
@@ -60,7 +62,10 @@ public class MineParticipateRecordAdapter extends BaesLoadMoreAdapter<RecommendG
                 .setText(R.id.mine_par_reco_list_bot_info, "累计" + item.totalPeople + "人参与抽奖");
         helper.getView(R.id.mine_par_reco_list_count_goto)
                 .setOnClickListener(v -> {
-                    ToastUtil.show(v.getContext(), "个人中心->参与抽奖");
+                    ARouter.getInstance()
+                            .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
+                            .withString("goods_id",item.goodsId)
+                            .navigation();
                 });
     }
 }

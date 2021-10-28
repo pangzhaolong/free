@@ -1,5 +1,10 @@
 package com.donews.common.router;
 
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
+
+import com.alibaba.android.arouter.launcher.ARouter;
+
 /**
  * 应用模块: 组件化路由
  * <p>
@@ -47,6 +52,19 @@ public class RouterActivityPath {
     }
 
     public static class Mine {
+
+        /**
+         * 分享H5连接的分享弹窗(所有都是默认的落地页)
+         *
+         * @param activity 依赖的上下文
+         */
+        public static void goShareWxChatDialogDefaultH5(FragmentActivity activity) {
+            DialogFragment df = (DialogFragment) ARouter.getInstance()
+                    .build(RouterActivityPath.Mine.DIALOG_SHARE_TO_DIALOG_FRAGMENT)
+                    .navigation();
+            df.show(activity.getSupportFragmentManager(), "share");
+        }
+
         private static final String MINE = "/mine";
 
         /**

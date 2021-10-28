@@ -54,7 +54,6 @@ public class MineSettingFragment extends MvvmLazyLiveDataFragment<MineSettingFra
         mViewModel.updateUIFlg.observe(this, result -> {
             bindViewText();
         });
-
     }
 
     @Override

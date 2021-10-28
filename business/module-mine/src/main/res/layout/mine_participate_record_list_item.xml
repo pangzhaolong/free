@@ -12,16 +12,16 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@drawable/ad_shape_bg"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.donews.mine.views.SectionCornerMessageLayout
         android:id="@+id/mine_par_reco_list_icon_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
         android:layout_marginTop="4dp"
+        android:layout_marginRight="4dp"
         android:background="@color/white"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -38,12 +38,12 @@
         android:id="@+id/mine_par_reco_list_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="7dp"
         android:layout_marginTop="7dp"
         android:ellipsize="end"
         android:gravity="left|center_horizontal"
         android:maxLines="2"
         android:text="title"
-        android:layout_marginLeft="7dp"
         android:textColor="@color/black"
         android:textSize="15sp"
         android:textStyle="bold"
@@ -56,11 +56,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="7dp"
+        android:layout_marginRight="3dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:layout_marginRight="3dp"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="@+id/mine_par_reco_list_title"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mine_par_reco_list_title">
 
         <TextView
@@ -77,26 +77,12 @@
             android:id="@+id/mine_par_reco_list_count_old"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:includeFontPadding="false"
             android:layout_weight="1"
+            android:includeFontPadding="false"
             android:paddingLeft="3dp"
             android:text="￥10"
             android:textColor="@color/text_hint_color"
             android:textSize="13sp" />
-
-        <TextView
-            android:id="@+id/mine_par_reco_list_count_goto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:includeFontPadding="false"
-            android:background="@drawable/mine_shape_me_goto_read"
-            android:paddingLeft="8dp"
-            android:paddingTop="5dp"
-            android:paddingRight="13dp"
-            android:paddingBottom="5dp"
-            android:text="立即抢购"
-            android:textColor="@color/mine_df7b75"
-            android:textSize="14sp"/>
     </LinearLayout>
 
     <TextView
@@ -106,13 +92,37 @@
         android:layout_marginTop="7dp"
         android:ellipsize="end"
         android:gravity="left|center_horizontal"
+        android:paddingBottom="8dp"
         android:singleLine="true"
         android:text="累计5人参与抽奖"
-        android:paddingBottom="8dp"
-        android:visibility="invisible"
         android:textColor="@color/text_hint_color"
         android:textSize="13sp"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="@+id/mine_par_reco_list_title"
         app:layout_constraintRight_toRightOf="@+id/mine_par_reco_list_icon_layout"
         app:layout_constraintTop_toBottomOf="@+id/mine_par_reco_list_count_layout" />
+
+    <LinearLayout
+        android:id="@+id/mine_par_reco_list_count_goto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/mine_par_reco_list_bot_info">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/mine_win_frm_cj_but"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:paddingBottom="8dp"
+            android:singleLine="true"
+            android:text="0元抽奖"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
