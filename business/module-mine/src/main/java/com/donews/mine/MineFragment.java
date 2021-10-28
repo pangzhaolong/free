@@ -42,6 +42,7 @@ import com.donews.utilslibrary.utils.UrlUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,12 +73,12 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
         mViewModel.lifecycleOwner = this;
     }
 
-    @Subscribe //手机号绑定成功
+    @Subscribe(threadMode = ThreadMode.MAIN) //手机号绑定成功
     public void bindTel(UserTelBindEvent event) {
         updateUIData();
     }
 
-    @Subscribe //用户登录状态变化
+    @Subscribe(threadMode = ThreadMode.MAIN) //用户登录状态变化
     public void loginStatusEvent(LoginUserStatus event) {
         updateUIData();
     }

@@ -608,5 +608,12 @@ public static final int *;
 # 数美
 -keep class com.ishumei.** {*;}
 
+#EventBus
+-keepattributes *Annotation*
+-keepclassmembers class ** {
+    @org.greenrobot.eventbus.Subscribe <methods>;
+}
+-keep enum org.greenrobot.eventbus.ThreadMode { *; }
+
 
 

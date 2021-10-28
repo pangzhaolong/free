@@ -1,5 +1,6 @@
 package com.donews.unboxing.bean
 
+import com.donews.common.contract.BaseCustomViewModel
 import com.google.gson.annotations.SerializedName
 
 /**
@@ -13,4 +14,4 @@ data class UnBoxingResp(
     /** 头像 */
     @SerializedName("list")
     var data: List<UnboxingBean> = arrayListOf()
-)
+) : BaseCustomViewModel()

@@ -1,5 +1,6 @@
 package com.module.lottery.bean;
 
+import com.donews.common.contract.BaseCustomViewModel;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -8,7 +9,7 @@ import java.util.List;
 /**
  * 抽奖页面，顶部的商品信息
  */
-public class CommodityBean implements Serializable {
+public class CommodityBean extends BaseCustomViewModel {
 
 
     @SerializedName("id")

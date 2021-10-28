@@ -77,7 +77,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         return R.layout.lottery_main_layout;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
