@@ -2,6 +2,7 @@ package com.donews.common.contract;
 
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
 import androidx.databinding.library.baseAdapters.BR;
 
@@ -26,8 +27,12 @@ public class UserInfoBean extends BaseCustomViewModel {
      * token : string
      * third_party_id : string
      * is_new : true
-     * wechat_extra : {"access_token":"string","expires_in":"string","refresh_token":"string","open_id":"string","scope":"string","nick_name":"string","sex":0,"province":"string","city":"string","country":"string","headimgurl":"string","privilege":["string"],"unionid":"string"}
-     * taobao_extra : {"user_id":"string","open_sid":"string","top_access_token":"string","avatar_url":"string","havana_sso_token":"string","nick":"string","open_id":"string","top_auth_code":"string","top_expire_time":"string"}
+     * wechat_extra : {"access_token":"string","expires_in":"string","refresh_token":"string","open_id":"string",
+     * "scope":"string","nick_name":"string","sex":0,"province":"string","city":"string","country":"string",
+     * "headimgurl":"string","privilege":["string"],"unionid":"string"}
+     * taobao_extra : {"user_id":"string","open_sid":"string","top_access_token":"string","avatar_url":"string",
+     * "havana_sso_token":"string","nick":"string","open_id":"string","top_auth_code":"string",
+     * "top_expire_time":"string"}
      * mobile : string
      * isInvited :是否填写过邀请嘛
      */
@@ -56,6 +61,9 @@ public class UserInfoBean extends BaseCustomViewModel {
     // true 表示填写过邀请码，false 表示未填写过邀请码
     @SerializedName("is_invited")
     private boolean isInvited;
+    /** 注册时间 */
+    @SerializedName("created_at")
+    private String createdAt;
 
     public String getId() {
         return id;
@@ -177,6 +185,23 @@ public class UserInfoBean extends BaseCustomViewModel {
         notifyPropertyChanged(BR.inviteCode);
     }
 
+    public boolean isNew() {
+        return isNew;
+    }
+
+    public void setNew(boolean aNew) {
+        isNew = aNew;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    @NonNull
     @Override
     public String toString() {
         return "UserInfoBean{" +
@@ -192,6 +217,9 @@ public class UserInfoBean extends BaseCustomViewModel {
                 ", wechatExtra=" + wechatExtra +
                 ", taobaoExtra=" + taobaoExtra +
                 ", mobile='" + mobile + '\'' +
+                ", inviteCode='" + inviteCode + '\'' +
+                ", isInvited=" + isInvited +
+                ", createdAt='" + createdAt + '\'' +
                 '}';
     }
 

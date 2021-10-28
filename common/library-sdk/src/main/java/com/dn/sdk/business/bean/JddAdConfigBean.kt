@@ -35,12 +35,24 @@ data class JddAdConfigBean(
     var disagreePrivacyPolicyAdType: Int = 1,
 
     /** 用户连续进入app，但是无抽奖行为时,第3次退出APP后拉起广告 */
-    @SerializedName("NotLotteryExitAppTimes")
+    @SerializedName("notLotteryExitAppTimes")
     var notLotteryExitAppTimes: Int = 3,
 
     /** 用户连续进入app，但是无抽奖行为时,第3次退出APP后拉起广告类型，1插屏，2激励视频 */
-    @SerializedName("NotLotteryExitAppAdType")
+    @SerializedName("notLotteryExitAppAdType")
     var notLotteryExitAppAdType: Int = 1,
+
+    /** 每个页面第二次显示在显示插屏 */
+    @SerializedName("pageShowTimes")
+    var pageShowTimes: Int = 2,
+
+    /** 每个页面每天最多可显示插屏数量 */
+    @SerializedName("pageInterstitialShowTimes")
+    var pageInterstitialShowTimes: Int = 3,
+
+    /** 用户注册 48小时 时间过后的  开启页面插屏广告 */
+    @SerializedName("interstitialStartTime")
+    var interstitialStartTime: Int = 48,
 
     /** 当某页面持续时间未操作，则显示插屏（单位秒） */
     @SerializedName("NoOperationDuration")

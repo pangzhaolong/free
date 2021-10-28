@@ -14,6 +14,10 @@ public class AppStatusUtils {
     public static final String MMKV_NAME = "app_status";
     public static final String APP_STATE_FORCE_GROUND = "app_force_ground";
 
+    public static final String MMKV_APP_INSTALL_TIME = "app_install_time";
+    public static final String MMKV_APP_INSTALL_FLAG = "app_install_flag";
+
+
     public static boolean isForceGround() {
         MMKV mmkv = MMKV.mmkvWithID(MMKV_NAME);
         if (mmkv != null) {
@@ -30,4 +34,24 @@ public class AppStatusUtils {
         }
     }
 
+
+    public static void saveAppInstallTime() {
+        MMKV mmkv = MMKV.mmkvWithID(MMKV_NAME);
+        if (mmkv != null) {
+            boolean firstOpenApp = mmkv.decodeBool(MMKV_APP_INSTALL_FLAG, true);
+            if (firstOpenApp) {
+                mmkv.encode(MMKV_APP_INSTALL_TIME, System.currentTimeMillis());
+                mmkv.encode(MMKV_APP_INSTALL_FLAG, true);
+            }
+        }
+    }
+
+    public static long getAppInstallTime() {
+        MMKV mmkv = MMKV.mmkvWithID(MMKV_NAME);
+        if (mmkv != null) {
+            return mmkv.decodeLong(MMKV_APP_INSTALL_TIME, 0L);
+        } else {
+            return 0L;
+        }
+    }
 }

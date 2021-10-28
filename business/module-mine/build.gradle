@@ -18,4 +18,5 @@ dependencies {
     implementation('org.raphets:roundimageview:1.2.0')
     implementation 'com.classic.common:multiple-status-view:1.5.1'
     implementation project(path: ':common:library-share')
+    implementation project(':common:library-sdk')
 }
