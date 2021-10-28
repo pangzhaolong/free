@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 
 import com.donews.base.base.BaseApplication;
+import com.donews.common.appconfig.AppCommonConfigUtils;
 import com.donews.common.lifecycle.SimpleApplicationObServer;
 import com.donews.common.updatedialog.UpdateReceiver;
 import com.tencent.mmkv.MMKV;
@@ -33,6 +34,7 @@ public class CommonModuleInit implements IModuleInit {
 //        AppGlobalConfigManager.update();
 
         new SimpleApplicationObServer().register();
+        AppCommonConfigUtils.INSTANCE.initConfig();
         return false;
     }
 
