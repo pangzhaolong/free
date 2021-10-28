@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.dn.drouter.ARouteHelper;
+import com.dn.events.events.LoginLodingStartStatus;
 import com.donews.base.activity.MvvmBaseLiveDataActivity;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.router.RouterActivityPath;
@@ -21,8 +22,12 @@ import com.donews.login.databinding.LoginActivityBinding;
 import com.donews.login.viewmodel.LoginViewModel;
 import com.donews.share.ISWXSuccessCallBack;
 import com.donews.share.WXHolderHelp;
+import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.LogUtil;
 import com.gyf.immersionbar.ImmersionBar;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 /**
  * <p> </p>
@@ -50,6 +55,7 @@ public class LoginActivity extends MvvmBaseLiveDataActivity<LoginActivityBinding
 
     @Override
     public void initView() {
+        EventBus.getDefault().register(this);
         mViewModel.mActivity = this;
         mDataBinding.titleBar
                 .setTitle("登录");
@@ -57,7 +63,7 @@ public class LoginActivity extends MvvmBaseLiveDataActivity<LoginActivityBinding
         mDataBinding.rlWachatLogin.setOnClickListener(v -> onWxLogin());
         mDataBinding.rlWachatLoginFloat.setOnClickListener(v -> {
             //檢查是否勾选协议
-            ToastUtil.showShort(this,"请先同意相关协议");
+            ToastUtil.showShort(this, "请先同意相关协议");
             mDataBinding.llBotDesc.clearAnimation();
             Animation anim = AnimationUtils.loadAnimation(this, R.anim.anim_not_select);
             mDataBinding.llBotDesc.startAnimation(anim);
@@ -91,6 +97,24 @@ public class LoginActivity extends MvvmBaseLiveDataActivity<LoginActivityBinding
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
+
+    @Subscribe //用户登录状态变化
+    public void loginStatusEvent(LoginLodingStartStatus event) {
+        event.getLoginLoadingLiveData().observe(this, result -> {
+            if (result == 1 || result == 2) {
+                finish();
+            } else if (result == -1) {
+                hideLoading();
+                ToastUtil.show(this, "登录失败");
+            }
+        });
+    }
+
     private void onWxLogin() {
         WXHolderHelp.login(this);
     }
@@ -105,6 +129,7 @@ public class LoginActivity extends MvvmBaseLiveDataActivity<LoginActivityBinding
     @Override
     public void onSuccess(int state, String code) {
         LogUtil.i("state和code的值" + state + "==" + code);
+        showLoading();
         mViewModel.onWXLogin(state, code);
     }
 
@@ -112,6 +137,5 @@ public class LoginActivity extends MvvmBaseLiveDataActivity<LoginActivityBinding
     public void onFailed(String msg) {
 
     }
-
 
 }

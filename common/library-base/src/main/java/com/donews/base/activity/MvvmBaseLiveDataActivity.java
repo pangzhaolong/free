@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.donews.base.base.DataBindingVars;
+import com.donews.base.fragmentdialog.LoadingHintDialog;
 import com.donews.base.popwindow.BasePopupWindow;
 import com.donews.base.utils.ClassUtil;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
@@ -39,6 +40,7 @@ public abstract class MvvmBaseLiveDataActivity<V extends ViewDataBinding, VM ext
 
     private ViewGroup rootView;
     private ArrayList<BasePopupWindow> basePopupWindows = new ArrayList<>();
+    protected LoadingHintDialog loadingHintDialog;
 
     public final void addPDPopupWindow(BasePopupWindow basePopupWindow) {
         basePopupWindows.add(basePopupWindow);
@@ -53,6 +55,32 @@ public abstract class MvvmBaseLiveDataActivity<V extends ViewDataBinding, VM ext
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
         rootView = (FrameLayout) findViewById(android.R.id.content);
+    }
+
+    protected void showLoading(){
+        if(loadingHintDialog != null){
+            hideLoading();
+        }
+        loadingHintDialog = new LoadingHintDialog();
+        loadingHintDialog.setDismissOnBackPressed(false)
+                .setDescription("提交中...")
+                .show(getSupportFragmentManager(), "user_cancellation");
+    }
+
+    protected void showLoading(String msg){
+        if(loadingHintDialog != null){
+            hideLoading();
+        }
+        loadingHintDialog = new LoadingHintDialog();
+        loadingHintDialog.setDismissOnBackPressed(false)
+                .setDescription(msg)
+                .show(getSupportFragmentManager(), "user_cancellation");
+    }
+
+    protected void hideLoading(){
+        if(loadingHintDialog != null){
+            loadingHintDialog.disMissDialog();
+        }
     }
 
     @Override

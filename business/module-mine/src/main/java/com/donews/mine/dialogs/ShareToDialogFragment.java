@@ -155,8 +155,8 @@ public class ShareToDialogFragment extends DialogFragment {
     private void share(int type) {
         ShareManager sharManager = new ShareManager();
         ShareItem shareItem = new ShareItem();
-        shareItem.setType(ShareItem.TYPE_IMAGE);
-        shareItem.setIcon("" + R.drawable.ic_launcher_round);
+        shareItem.setType(ShareItem.TYPE_H5);
+        shareItem.setIcon("" + R.drawable.mine_share_wx_icon);
         shareItem.setTitle("0元抢华为P40~猛戳>>");
         shareItem.setContent("不花一分钱，商品抱回家，超多大牌好物等你抽，锦鲤就是你");
         shareItem.setWebUrl("https://recharge-web.xg.tagtic.cn/jdd/index.html#/download");

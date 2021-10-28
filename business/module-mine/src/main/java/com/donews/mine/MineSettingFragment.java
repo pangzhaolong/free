@@ -17,8 +17,10 @@ import com.blankj.utilcode.util.NetworkUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.dn.events.events.LoginLodingStartStatus;
 import com.dn.events.events.LoginUserStatus;
 import com.donews.base.fragment.MvvmLazyLiveDataFragment;
+import com.donews.base.fragmentdialog.LoadingHintDialog;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.UserInfoBean;
@@ -43,7 +45,8 @@ import java.io.File;
  * * 版本：V1.0<br>
  */
 @Route(path = RouterFragmentPath.User.PAGER_USER_SETTING)
-public class MineSettingFragment extends MvvmLazyLiveDataFragment<MineSettingFragmentBinding, SettingFragmentViewModel> {
+public class MineSettingFragment extends
+        MvvmLazyLiveDataFragment<MineSettingFragmentBinding, SettingFragmentViewModel> {
 
 
     @Override
@@ -78,8 +81,22 @@ public class MineSettingFragment extends MvvmLazyLiveDataFragment<MineSettingFra
     }
 
     @Subscribe
-    public void loginStatus(LoginUserStatus event){
+    public void loginStatus(LoginUserStatus event) {
         updateUI();
+    }
+
+    @Subscribe //用户登录状态变化
+    public void loginStatusEvent(LoginLodingStartStatus event) {
+        event.getLoginLoadingLiveData().observe(this, result -> {
+            if (result == 1 || result == 2) {
+                AppInfo.exitLogin();
+                //切换为设备登录
+                ToastUtil.show(getBaseActivity(), "执行成功");
+                hideLoading();
+            } else if (result == -1) {
+                ToastUtil.show(getBaseActivity(), "操作异常");
+            }
+        });
     }
 
     private void initView() {
@@ -87,13 +104,12 @@ public class MineSettingFragment extends MvvmLazyLiveDataFragment<MineSettingFra
         mViewModel.setDataBinDing(mDataBinding, getBaseActivity());
         mDataBinding.tvExitLogin.setOnClickListener(v -> {
             if (!NetworkUtils.isAvailableByPing()) {
-                ToastUtil.show(getBaseActivity(),"请检查网络连接");
+                ToastUtil.show(getBaseActivity(), "请检查网络连接");
                 return;
             }
-            AppInfo.exitLogin();
-            //切换为设备登录
-            CommonParams.setNetWork();
-            ToastUtil.show(getBaseActivity(),"退出登录成功");
+            showLoading();
+            AppInfo.exitWXLogin();
+            CommonParams.setNetWorkExitOrUnReg();
         });
         updateUI();
     }

@@ -47,6 +47,21 @@ public class CommonParams {
         }
     }
 
+    /**
+     * 调用网络退出登录
+     */
+    public static void setNetWorkExitOrUnReg() {
+        //只会重新登录
+        String wxCode = AppInfo.getWXLoginCode();
+        if(wxCode == null || "".equals(wxCode)){
+            wxCode = ""; //防止反射不知道类型。所以不设置为空
+        }
+        ARouteHelper.routeAccessServiceForResult(ServicesConfig.User.LONGING_SERVICE,
+                "getLoginWx", new Object[]{
+                        wxCode
+                });
+    }
+
 
     public static void getCommonNetWork() {
         EasyHttp.get(BuildConfig.BASE_CONFIG_URL + BuildConfig.APP_IDENTIFICATION + "-adPopupConfig" + BuildConfig.BASE_RULE_URL + JsonUtils.getCommonJson(false))

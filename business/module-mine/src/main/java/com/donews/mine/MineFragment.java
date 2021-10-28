@@ -24,6 +24,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.dn.events.events.LoginLodingStartStatus;
 import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.UserTelBindEvent;
 import com.donews.base.fragment.MvvmLazyLiveDataFragment;
@@ -167,9 +168,9 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
                 .addOnScrollListener(new RecyclerView.OnScrollListener() {
                     @Override
                     public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                        if(recyclerView.computeVerticalScrollOffset() <= 0){
+                        if (recyclerView.computeVerticalScrollOffset() <= 0) {
                             mDataBinding.mineFrmRefesh.setEnabled(true);
-                        }else{
+                        } else {
                             mDataBinding.mineFrmRefesh.setEnabled(false);
                         }
                     }

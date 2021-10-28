@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.donews.base.base.DataBindingVars;
+import com.donews.base.fragmentdialog.LoadingHintDialog;
 import com.donews.base.utils.ClassUtil;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 
@@ -42,6 +43,8 @@ public abstract class MvvmLazyLiveDataFragment<V extends ViewDataBinding, VM ext
     protected VM mViewModel;
     BehaviorSubject<Lifecycle.Event> behaviorSubject = BehaviorSubject.create();
 
+    protected LoadingHintDialog loadingHintDialog;
+
     protected String mFragmentTag = this.getClass().getSimpleName();
     protected static final String TAG = "MvvmLazyLiveDataFragment";
 
@@ -64,6 +67,31 @@ public abstract class MvvmLazyLiveDataFragment<V extends ViewDataBinding, VM ext
         super.onCreate(savedInstanceState);
     }
 
+    protected void showLoading(){
+        if(loadingHintDialog != null){
+            hideLoading();
+        }
+        loadingHintDialog = new LoadingHintDialog();
+        loadingHintDialog.setDismissOnBackPressed(false)
+                .setDescription("提交中...")
+                .show(getChildFragmentManager(), "user_cancellation");
+    }
+
+    protected void showLoading(String msg){
+        if(loadingHintDialog != null){
+            hideLoading();
+        }
+        loadingHintDialog = new LoadingHintDialog();
+        loadingHintDialog.setDismissOnBackPressed(false)
+                .setDescription(msg)
+                .show(getChildFragmentManager(), "user_cancellation");
+    }
+
+    protected void hideLoading(){
+        if(loadingHintDialog != null){
+            loadingHintDialog.disMissDialog();
+        }
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {

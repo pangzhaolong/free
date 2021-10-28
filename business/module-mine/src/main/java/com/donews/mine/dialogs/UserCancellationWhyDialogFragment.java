@@ -24,14 +24,20 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.ScreenUtils;
+import com.dn.events.events.LoginLodingStartStatus;
 import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.UserUnRegisteredEvent;
 import com.donews.base.fragmentdialog.LoadingHintDialog;
+import com.donews.base.utils.ToastUtil;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.mine.R;
+import com.donews.mine.common.CommonParams;
+import com.donews.utilslibrary.utils.AppInfo;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 /**
  * @author lcl
@@ -45,9 +51,10 @@ public class UserCancellationWhyDialogFragment extends DialogFragment {
     /**
      * 关闭的监听
      */
-    public interface OnCloseListener{
+    public interface OnCloseListener {
         /**
          * 关闭监听
+         *
          * @param isUnRegSuccess 是否注销成功,T:成功注销，F:没有注销完成
          */
         void close(boolean isUnRegSuccess);
@@ -75,18 +82,20 @@ public class UserCancellationWhyDialogFragment extends DialogFragment {
     private Handler handler = new Handler();
 
     //关闭的监听
-    private OnCloseListener closeListener ;
+    private OnCloseListener closeListener;
 
     /**
      * 设置对结果的监听。就是是否完成注销的监听
+     *
      * @param listener
      */
-    public void setCloseListener(OnCloseListener listener){
+    public void setCloseListener(OnCloseListener listener) {
         this.closeListener = listener;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
         super.onCreate(savedInstanceState);
     }
 
@@ -128,22 +137,25 @@ public class UserCancellationWhyDialogFragment extends DialogFragment {
                 dismiss();
             } else {
                 //显示为结果视图
+                if (!NetworkUtils.isAvailableByPing()) {
+                    ToastUtil.show(getActivity(), "请检查网络连接");
+                    return;
+                }
                 loadingHintDialog = new LoadingHintDialog();
                 loadingHintDialog.setDismissOnBackPressed(false)
                         .setDescription("提交中...")
                         .show(getChildFragmentManager(), "user_cancellation");
-                handler.postDelayed(() -> {
-                    submitFinish();
-                }, 1500);
+                AppInfo.exitWXLogin();
+                CommonParams.setNetWorkExitOrUnReg();
             }
         });
-        radaLL.setOnClickListener((v)->{
+        radaLL.setOnClickListener((v) -> {
             rada.setChecked(true);
         });
-        radbLL.setOnClickListener((v)->{
+        radbLL.setOnClickListener((v) -> {
             radb.setChecked(true);
         });
-        radcLL.setOnClickListener((v)->{
+        radcLL.setOnClickListener((v) -> {
             radc.setChecked(true);
         });
         rada.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -170,8 +182,21 @@ public class UserCancellationWhyDialogFragment extends DialogFragment {
         submit.setEnabled(false);
     }
 
+    @Subscribe //用户登录状态变化
+    public void loginStatusEvent(LoginLodingStartStatus event) {
+        event.getLoginLoadingLiveData().observe(this, result -> {
+            if (result == 1 || result == 2) {
+                AppInfo.exitLogin();
+                submitFinish();
+            } else if (result == -1) {
+                ToastUtil.show(getActivity(), "账户注销异常");
+            }
+        });
+    }
+
     @Override
     public void onDestroy() {
+        EventBus.getDefault().unregister(this);
         cliseDialog();
         super.onDestroy();
     }
@@ -200,11 +225,11 @@ public class UserCancellationWhyDialogFragment extends DialogFragment {
     }
 
     //关闭弹窗
-    private void cliseDialog(){
+    private void cliseDialog() {
         if (isShowResultUI) {
             EventBus.getDefault().post(new UserUnRegisteredEvent());
             closeListener.close(true);
-        }else{
+        } else {
             closeListener.close(false);
         }
     }

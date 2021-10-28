@@ -52,7 +52,11 @@ public class AppInfo {
      * @param code
      */
     public static void saveWXLoginCode(String code) {
-        SPUtils.setInformain("wxLoginCode", code);
+        if(code == null){
+            SPUtils.setInformain("wxLoginCode", "");
+        }else{
+            SPUtils.setInformain("wxLoginCode", code);
+        }
     }
 
     /**

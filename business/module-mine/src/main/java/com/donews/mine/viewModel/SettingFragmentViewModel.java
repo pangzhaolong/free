@@ -40,6 +40,8 @@ import com.donews.utilslibrary.utils.AppCacheUtils;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.DeviceUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

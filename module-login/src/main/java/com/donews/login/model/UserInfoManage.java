@@ -3,6 +3,7 @@ package com.donews.login.model;
 import androidx.lifecycle.MutableLiveData;
 
 import com.dn.drouter.ARouteHelper;
+import com.dn.events.events.LoginLodingStartStatus;
 import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.UserTelBindEvent;
 import com.donews.base.utils.GsonUtils;
@@ -315,6 +316,9 @@ public class UserInfoManage {
      * @param data 请求的参数
      */
     public static MutableLiveData<UserInfoBean> onLoadNetUserInfo(String data) {
+        MutableLiveData<Integer> eventLiveData = new MutableLiveData<>();
+        EventBus.getDefault().post(new LoginLodingStartStatus(eventLiveData));
+        eventLiveData.postValue(0);
         MutableLiveData<UserInfoBean> mutableLiveData = new MutableLiveData<UserInfoBean>();
         EasyHttp.post(LoginApi.LOGIN)
                 .upJson(data)
@@ -322,6 +326,7 @@ public class UserInfoManage {
                 .execute(new SimpleCallBack<UserInfoBean>() {
                     @Override
                     public void onError(ApiException e) {
+                        eventLiveData.postValue(-1);
                         EventBus.getDefault().post(new LoginUserStatus(-1));
                         LogUtil.i(e.getCode() + e.getMessage() + "");
                     }
@@ -330,8 +335,10 @@ public class UserInfoManage {
                     public void onSuccess(UserInfoBean userInfoBean) {
                         if (userInfoBean == null) {
                             EventBus.getDefault().post(new LoginUserStatus(0));
+                            eventLiveData.postValue(1);
                             return;
                         }
+                        eventLiveData.postValue(2);
                         setHttpToken(userInfoBean);
                         LogUtil.i(userInfoBean.toString());
                         mutableLiveData.postValue(userInfoBean);
