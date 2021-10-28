@@ -62,14 +62,33 @@ public class ReceiveLotteryDialog extends BaseDialog<ReceiveDialogLayoutBinding>
         Message mes = new Message();
         mes.what = 1;
         mLotteryHandler.sendMessageDelayed(mes, 1000);
-
+        initView();
     }
 
     @Override
     public float setSize() {
         return 0.7f;
     }
+    private  void initView(){
 
+
+
+
+        mDataBinding.jsonAnimationHand.setImageAssetsFolder("images");
+        mDataBinding.jsonAnimationHand.setAnimation("hand.json");
+        mDataBinding.jsonAnimationHand.loop(true);
+        mDataBinding.jsonAnimationHand.playAnimation();
+
+        mDataBinding.jumpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+                if (mOnFinishListener != null) {
+                    mOnFinishListener.onLottery();
+                }
+            }
+        });
+    }
 
     private void setQuantity() {
         if (mLotteryCodeBean != null) {
@@ -115,6 +134,7 @@ public class ReceiveLotteryDialog extends BaseDialog<ReceiveDialogLayoutBinding>
         void onJumpAd();
 
 
+        void onLottery();
     }
 
     private static class LotteryHandler extends Handler {

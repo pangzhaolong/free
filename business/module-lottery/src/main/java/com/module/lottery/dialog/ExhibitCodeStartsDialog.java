@@ -47,6 +47,7 @@ import org.json.JSONObject;
 import java.lang.ref.WeakReference;
 import java.util.Map;
 import java.util.MissingResourceException;
+import java.util.Random;
 
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -66,6 +67,10 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
         mGoodsId = goodsId;
         baseLiveDataModel = new BaseLiveDataModel();
         this.mLotteryCodeBean = lotteryCodeBean;
+        //延迟一秒出现关闭按钮
+        Message message = new Message();
+        message.what = 2;
+        mLotteryHandler.sendMessageDelayed(message, 1000);
     }
 
 
@@ -118,6 +123,12 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
             mDataBinding.jsonAnimation.loop(true);
             mDataBinding.jsonAnimation.playAnimation();
 
+
+            mDataBinding.jsonAnimationHand.setImageAssetsFolder("images");
+            mDataBinding.jsonAnimationHand.setAnimation("hand.json");
+            mDataBinding.jsonAnimationHand.loop(true);
+            mDataBinding.jsonAnimationHand.playAnimation();
+
         }
 
 
@@ -168,9 +179,9 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
                                     schedule = mLotteryCodeBean.getCodes().size();
                                     schedule = 50 / 5 * (schedule);
                                 } else {
-                                    schedule = 3;
+                                    schedule = 10;
                                 }
-
+//                                schedule=  generateRandomNumber(schedule);
                                 startProgressBar(schedule);
                             }
                         }
@@ -178,14 +189,23 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
         }
     }
 
+    //在特定区间产生随机数
+    @SuppressLint("LongLogTag")
+    private int generateRandomNumber(int endNumber) {
+        endNumber=endNumber+10;
+        Log.d("==============================$$$$$","endNumber "+endNumber+"");
+        Random rand = new Random();
+        int startNumber = (endNumber - 10);
+        endNumber = (endNumber - 3);
+        int number = (int) (startNumber + Math.random() * (endNumber - startNumber + 1));
+        Log.d("==============================$$$$$","startNumber "+startNumber+" endNumber "+endNumber+"");
 
-    private void generateRandomNumber() {
-
-
+        return number;
     }
 
     //进度条设置动画
     public void startProgressBar(int progress) {
+        Toast.makeText(getContext(), progress + "", Toast.LENGTH_SHORT).show();
         ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, progress);
         valueAnimator.setDuration(500);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -194,7 +214,6 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
             public void onAnimationUpdate(ValueAnimator animation) {
                 float value = (float) animation.getAnimatedValue();
                 mDataBinding.includeProgressBar.progressBar.setProgress((int) value);
-                Logger.d("========================", value + "");
             }
         });
         valueAnimator.addListener(new Animator.AnimatorListener() {
@@ -205,7 +224,10 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
 
             @Override
             public void onAnimationEnd(Animator animation) {
-
+                if (progress == 50) {
+                    mDataBinding.giftBox.setVisibility(View.GONE);
+                    mDataBinding.giftBoxOpen.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
@@ -269,12 +291,17 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
                 case 1:
                     if (reference.get() != null && reference.get().mOnFinishListener != null) {
                         if (reference.get().time > 0) {
-                            reference.get().mDataBinding.countdownHint.setText("恭喜！ 已解锁本商品最大中奖率"+"("+reference.get().time/1000+")");
-                            reference.get().time=reference.get().time-1000;
+                            reference.get().mDataBinding.countdownHint.setText("恭喜！ 已解锁本商品最大中奖率" + "(" + reference.get().time / 1000 + ")");
+                            reference.get().time = reference.get().time - 1000;
                             reference.get().automaticJump();
-                        }else{
+                        } else {
                             reference.get().mOnFinishListener.onFinish();
                         }
+                    }
+                    break;
+                case 2:
+                    if (reference.get() != null) {
+                        reference.get().mDataBinding.closure.setVisibility(View.VISIBLE);
                     }
                     break;
             }
