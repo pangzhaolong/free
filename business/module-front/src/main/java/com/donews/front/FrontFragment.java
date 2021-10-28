@@ -101,7 +101,10 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         mDataBinding.frontJddHelp.setOnClickListener(v -> {
             ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY).withString("url", BuildConfig.WEB_BASE_URL).navigation();
         });
-
+        mDataBinding.frontCashGetTv.setOnClickListener(v ->
+                ARouter.getInstance()
+                        .build(RouterActivityPath.Mine.PAGER_ACTIVITY_WITHDRAWAL)
+                        .navigation());
         if (mRotateAnimation == null) {
             mRotateAnimation = new RotateAnimation(0, 8, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.8f);
             mRotateAnimation.setInterpolator(new CycleInterpolator(2));
@@ -205,6 +208,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             } else {
 //                mDataBinding.frontRpIv2.setBackgroundResource(R.drawable.front_rp_close);
                 nCloseRpCounts += 1;
+                mDataBinding.frontRpIv2.setAlpha(0.5f);
             }
         } else {
             mDataBinding.frontRpIv2.setBackgroundResource(R.drawable.front_rp_open);
@@ -229,6 +233,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             } else {
 //                mDataBinding.frontRpIv3.setBackgroundResource(R.drawable.front_rp_close);
                 nCloseRpCounts += 1;
+                mDataBinding.frontRpIv3.setAlpha(0.5f);
             }
         } else {
             mDataBinding.frontRpIv3.setBackgroundResource(R.drawable.front_rp_open);
@@ -253,6 +258,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             } else {
 //                mDataBinding.frontRpIv4.setBackgroundResource(R.drawable.front_rp_close);
                 nCloseRpCounts += 1;
+                mDataBinding.frontRpIv4.setAlpha(0.5f);
             }
         } else {
             mDataBinding.frontRpIv4.setBackgroundResource(R.drawable.front_rp_open);
@@ -277,6 +283,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             } else {
 //                mDataBinding.frontRpIv5.setBackgroundResource(R.drawable.front_rp_close);
                 nCloseRpCounts += 1;
+                mDataBinding.frontRpIv5.setAlpha(0.5f);
             }
         } else {
             mDataBinding.frontRpIv5.setBackgroundResource(R.drawable.front_rp_open);
@@ -345,6 +352,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
         if (rpBean.getHadLotteryTotal() == -1) {
             Toast.makeText(this.getContext(), "前面还有红包未开启哦！", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         openRp();
