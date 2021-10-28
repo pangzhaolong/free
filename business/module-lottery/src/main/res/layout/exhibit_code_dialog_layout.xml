@@ -29,6 +29,7 @@
 
             <ImageView
                 android:id="@+id/closure"
+                android:visibility="invisible"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
                 android:layout_gravity="right"
@@ -70,17 +71,55 @@
                 android:textColor="#D17500"
                 android:textSize="27dp" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content">
 
-                <include
-                    android:id="@+id/include_progress_bar"
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="21dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="20dp"
+                    android:orientation="horizontal">
 
-                    layout="@layout/progress_bar_layout" />
-            </LinearLayout>
+                    <include
+                        android:id="@+id/include_progress_bar"
+                        layout="@layout/progress_bar_layout" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:orientation="vertical">
+
+
+                    <ImageView
+                        android:id="@+id/gift_box"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="2dp"
+                        android:src="@mipmap/gift_box_close" />
+
+                    <ImageView
+                        android:id="@+id/gift_box_open"
+                        android:layout_width="65dp"
+                        android:layout_height="65dp"
+                        android:src="@mipmap/gift_box_open"
+                        android:visibility="invisible" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="50dp"
+                        android:text="最大中奖率"
+                        android:textColor="#E9423E"
+                        android:textSize="10dp" />
+                </RelativeLayout>
+            </RelativeLayout>
         </LinearLayout>
 
         <RelativeLayout
@@ -89,7 +128,7 @@
             android:background="@mipmap/bottom_bg"
             android:orientation="vertical">
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/json_animation_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -106,18 +145,27 @@
                     app:lottie_autoPlay="true"
                     app:lottie_loop="true" />
 
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/jsonAnimation_hand"
+                    android:layout_width="wrap_content"
+                    android:layout_height="47dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true" />
 
-            </LinearLayout>
+            </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/hint_layout"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="44dp"
                 android:gravity="bottom"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="match_parent"

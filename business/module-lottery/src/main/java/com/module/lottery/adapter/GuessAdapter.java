@@ -20,30 +20,27 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.AnimatorRes;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
-import com.doing.spike.bean.SpikeBean;
+import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.utilslibrary.utils.UrlUtils;
 import com.module.lottery.bean.CommodityBean;
 import com.module.lottery.bean.LotteryCodeBean;
 import com.module.lottery.bean.MaylikeBean;
-import com.module.lottery.ui.RaidersActivity;
 import com.module.lottery.utils.ImageUtils;
+import com.module_lottery.BuildConfig;
+import com.module_lottery.R;
 import com.module_lottery.databinding.GuesslikeHeadLayoutBinding;
 import com.module_lottery.databinding.GuesslikeItemLayoutBinding;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 
 public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -85,7 +82,7 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (mHeaderView != null && position == TYPE_HEADER) {
             if (holder instanceof ListHolder && mCommodityBean != null) {
                 ListHolder listHolder = ((ListHolder) (holder));
-                ImageUtils.setImage(mContext,listHolder.mGuesslikeHeadBinding.guessLikeHeadImg, mCommodityBean.getMainPic(),5);
+                ImageUtils.setImage(mContext, listHolder.mGuesslikeHeadBinding.guessLikeHeadImg, mCommodityBean.getMainPic(), 5);
                 //价格
                 listHolder.mGuesslikeHeadBinding.price.setText(mCommodityBean.getDisplayPrice() + "");
                 //参考价格
@@ -96,10 +93,10 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 //初始化参与者信息
                 if (mCommodityBean.getParticipateBean() != null) {
                     if (mCommodityBean.getParticipateBean().getList().size() > 4) {
-                        ImageUtils.setImage(mContext,listHolder.mGuesslikeHeadBinding.participateAvatarOne, mCommodityBean.getParticipateBean().getList().get(0).getAvatar(),360);
-                        ImageUtils.setImage(mContext,listHolder.mGuesslikeHeadBinding.participateAvatarTwo, mCommodityBean.getParticipateBean().getList().get(1).getAvatar(),360);
-                        ImageUtils.setImage(mContext,listHolder.mGuesslikeHeadBinding.participateAvatarThree, mCommodityBean.getParticipateBean().getList().get(2).getAvatar(),360);
-                        ImageUtils.setImage(mContext,listHolder.mGuesslikeHeadBinding.participateAvatarFor, mCommodityBean.getParticipateBean().getList().get(3).getAvatar(),360);
+                        ImageUtils.setImage(mContext, listHolder.mGuesslikeHeadBinding.participateAvatarOne, mCommodityBean.getParticipateBean().getList().get(0).getAvatar(), 360);
+                        ImageUtils.setImage(mContext, listHolder.mGuesslikeHeadBinding.participateAvatarTwo, mCommodityBean.getParticipateBean().getList().get(1).getAvatar(), 360);
+                        ImageUtils.setImage(mContext, listHolder.mGuesslikeHeadBinding.participateAvatarThree, mCommodityBean.getParticipateBean().getList().get(2).getAvatar(), 360);
+                        ImageUtils.setImage(mContext, listHolder.mGuesslikeHeadBinding.participateAvatarFor, mCommodityBean.getParticipateBean().getList().get(3).getAvatar(), 360);
                     } else {
                         Log.d(TAG, "头像数量不满足");
                     }
@@ -112,8 +109,7 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 listHolder.mGuesslikeHeadBinding.raiders.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent=new Intent(mContext, RaidersActivity.class);
-                        mContext.startActivity(intent);
+                        ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY).withString("url", BuildConfig.WEB_BASE_URL + "rule").navigation();
                     }
                 });
 
@@ -130,24 +126,22 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 RequestOptions options = RequestOptions.bitmapTransform(roundedCorners);
                 Glide.with(mContext).load(imageUrl).apply(options).into(guessViewHolder.mGuesslikeItemLayoutBinding.itemImageSrc);
                 guessViewHolder.mGuesslikeItemLayoutBinding.itemTitle.setText(mCommodityBean.getGuessLikeData().get(position - 1).getTitle());
-                guessViewHolder.mGuesslikeItemLayoutBinding.itemPrice.setText("¥ "+mCommodityBean.getGuessLikeData().get(position - 1).getOriginalPrice()+"");
-                guessViewHolder.mGuesslikeItemLayoutBinding.itemPrice.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG);
-                guessViewHolder.mGuesslikeItemLayoutBinding.getRoot().setOnClickListener(new View.OnClickListener() {
+                guessViewHolder.mGuesslikeItemLayoutBinding.itemPrice.setText("¥ " + mCommodityBean.getGuessLikeData().get(position - 1).getOriginalPrice() + "");
+                guessViewHolder.mGuesslikeItemLayoutBinding.itemPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                guessViewHolder.mGuesslikeItemLayoutBinding.lottery.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         ARouter.getInstance()
-                                .build(RouterFragmentPath.Lottery.PAGER_LOTTERY).withString("goods_id", mCommodityBean.getGuessLikeData().get(position - 1).getGoodsId())
+                                .build(RouterFragmentPath.Lottery.PAGER_LOTTERY).withString("goods_id",mCommodityBean.getGuessLikeData().get(position - 1).getGoodsId()).withString("action","newAction")
                                 .navigation();
                     }
                 });
             }
-
-
         }
     }
 
 
-    private static void setImage(Context context,ImageView view, String src,int roundingRadius) {
+    private static void setImage(Context context, ImageView view, String src, int roundingRadius) {
         src = UrlUtils.formatUrlPrefix(src);
         RoundedCorners roundedCorners = new RoundedCorners(roundingRadius);
         RequestOptions options = RequestOptions.bitmapTransform(roundedCorners);
@@ -183,6 +177,11 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 LinearLayout linearLayout = (LinearLayout) guessLikeHead.lotteryContainer.getChildAt(i);
                 for (int j = 0; j < linearLayout.getChildCount(); j++) {
                     if (refer >= lotteryCodeBean.getCodes().size()) {
+                        TextView textView = (TextView) linearLayout.getChildAt(j);
+                        textView.setText("待领取");
+                        textView.setTextColor(mContext.getResources().getColor(R.color.pending));
+                        TextPaint paint = textView.getPaint();
+                        paint.setFakeBoldText(false);
                         continue;
                     } else {
                         TextView textView = (TextView) linearLayout.getChildAt(j);

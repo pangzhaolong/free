@@ -279,34 +279,39 @@
             <LinearLayout
                 android:id="@+id/raiders"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:gravity="right"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="详细"
-                    android:textColor="#E9423E"
-                    android:textSize="13dp" />
+                    android:layout_marginEnd="5dp"
+                    android:gravity="right"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="规则"
-                    android:textColor="#E9423E"
-                    android:textSize="13dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="详细"
+                        android:textColor="#E9423E"
+                        android:textSize="13dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="规则"
+                        android:textColor="#E9423E"
+                        android:textSize="13dp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="20dp"
+                    android:src="@mipmap/enter_icon" />
             </LinearLayout>
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginEnd="20dp"
-                android:src="@mipmap/enter_icon" />
-
         </LinearLayout>
 
 
@@ -358,106 +363,106 @@
                     android:id="@+id/lottery_code_one"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                   android:layout_marginStart="5dp"
+                    android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
-                    android:paddingStart="10dp"
-                    android:textColor="#A9AEB1"
+                    android:layout_weight="1"
                     android:background="@mipmap/no_lottery_code_bg"
+                    android:gravity="center"
+                    android:paddingStart="10dp"
                     android:paddingTop="5dp"
                     android:paddingEnd="10dp"
                     android:paddingBottom="5dp"
-                    android:text="待领取" />
+                    android:text="待领取"
+                    android:textColor="#A9AEB1" />
 
                 <TextView
                     android:id="@+id/lottery_code_two"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
-                    android:gravity="center"
-                    android:textColor="#A9AEB1"
+                    android:layout_weight="1"
                     android:background="@mipmap/no_lottery_code_bg"
+                    android:gravity="center"
                     android:paddingStart="10dp"
                     android:paddingTop="5dp"
                     android:paddingEnd="10dp"
                     android:paddingBottom="5dp"
-                    android:text="待领取" />
+                    android:text="待领取"
+                    android:textColor="#A9AEB1" />
 
                 <TextView
                     android:id="@+id/lottery_code_three"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
                     android:background="@mipmap/no_lottery_code_bg"
                     android:gravity="center"
                     android:paddingStart="10dp"
-                    android:textColor="#A9AEB1"
                     android:paddingTop="5dp"
                     android:paddingEnd="10dp"
                     android:paddingBottom="5dp"
-                    android:text="待领取" />
+                    android:text="待领取"
+                    android:textColor="#A9AEB1" />
             </LinearLayout>
 
 
             <LinearLayout
-                android:layout_marginTop="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/lottery_code_for"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-
                     android:layout_marginStart="5dp"
+
                     android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:background="@mipmap/no_lottery_code_bg"
                     android:gravity="center"
                     android:paddingStart="10dp"
-                    android:background="@mipmap/no_lottery_code_bg"
                     android:paddingTop="5dp"
                     android:paddingEnd="10dp"
-                    android:textColor="#A9AEB1"
                     android:paddingBottom="5dp"
-                    android:text="待领取" />
+                    android:text="待领取"
+                    android:textColor="#A9AEB1" />
 
                 <TextView
                     android:id="@+id/lottery_code_five"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
-                    android:paddingStart="10dp"
-                    android:textColor="#A9AEB1"
+                    android:layout_weight="1"
                     android:background="@mipmap/no_lottery_code_bg"
+                    android:gravity="center"
+                    android:paddingStart="10dp"
                     android:paddingTop="5dp"
                     android:paddingEnd="10dp"
                     android:paddingBottom="5dp"
-                    android:text="待领取" />
+                    android:text="待领取"
+                    android:textColor="#A9AEB1" />
 
                 <TextView
                     android:id="@+id/lottery_code_sex"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
-                    android:gravity="center"
+                    android:layout_weight="1"
                     android:background="@mipmap/no_lottery_code_bg"
+                    android:gravity="center"
                     android:paddingStart="10dp"
                     android:paddingTop="5dp"
-                    android:textColor="#A9AEB1"
                     android:paddingEnd="10dp"
                     android:paddingBottom="5dp"
-                    android:text="最大概率" />
+                    android:text="最大概率"
+                    android:textColor="#A9AEB1" />
             </LinearLayout>
 
         </LinearLayout>

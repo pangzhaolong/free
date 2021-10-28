@@ -22,6 +22,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.donews.common.provider.IDetailProvider;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
+import com.donews.utilslibrary.utils.AppInfo;
 import com.module.lottery.adapter.GuessAdapter;
 import com.module.lottery.bean.CommodityBean;
 import com.module.lottery.bean.LotteryCodeBean;
@@ -80,14 +81,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         ARouter.getInstance().inject(this);
-        mDataBinding.panicBuyingButton.post(new Runnable() {
-            @Override
-            public void run() {
-                mDataBinding.panicBuyingButton.setHeight(mDataBinding.panicBuyingButton.getWidth());
-            }
-        });
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
@@ -99,31 +93,12 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 }
             }
         });
-        mDataBinding.panicBuyingButton.setOutlineProvider(new TextureVideoViewOutlineProvider());
-        mDataBinding.panicBuyingButton.setClipToOutline(true);
-        mDataBinding.panicBuyingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mLotteryCodeBean!=null&&mLotteryCodeBean.getCodes().size()>=6){
-                    return;
-                }
-                startLottery();
-            }
-        });
-        mDataBinding.panicBuying.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mCommodityBean!=null){
-                    detailProvider.goToTaoBao(LotteryActivity.this,mCommodityBean.getItemLink());
-                }
-
-            }
-        });
         guessAdapter = new GuessAdapter(LotteryActivity.this);
         guessAdapter.getLayout(R.layout.guesslike_item_layout);
         mDataBinding.lotteryGridview.setLayoutManager(gridLayoutManager);
         mDataBinding.lotteryGridview.setAdapter(guessAdapter);
         mDataBinding.lotteryGridview.addItemDecoration(new GridSpaceItemDecoration(2));
+        initViewData();
         setHeaderView(mDataBinding.lotteryGridview);
         setObserveList();
         //加载抽奖商品详情信息
@@ -133,9 +108,60 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     }
 
 
+    private void initViewData() {
+        mDataBinding.panicBuyingButton.post(new Runnable() {
+            @Override
+            public void run() {
+                mDataBinding.panicBuyingButton.setHeight(mDataBinding.panicBuyingButton.getWidth());
+                mDataBinding.panicBuyingButtonBg.setHeight(mDataBinding.panicBuyingButtonBg.getWidth());
+            }
+        });
+        mDataBinding.panicBuyingButton.setOutlineProvider(new TextureVideoViewOutlineProvider());
+        mDataBinding.panicBuyingButton.setClipToOutline(true);
+        mDataBinding.panicBuyingButtonBg.setOutlineProvider(new TextureVideoViewOutlineProvider());
+        mDataBinding.panicBuyingButtonBg.setClipToOutline(true);
+        mDataBinding.panicBuyingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean logType = AppInfo.checkIsWXLogin();
+                if (logType) {
+                    if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() >= 6) {
+                        return;
+                    }
+                    startLottery();
+                } else {
+                    ARouter.getInstance()
+                            .build(RouterActivityPath.User.PAGER_LOGIN)
+                            .navigation();
+                }
+            }
+        });
+        mDataBinding.share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //分享
+                RouterActivityPath.Mine
+                        .goShareWxChatDialogDefaultH5(LotteryActivity.this);
+            }
+        });
+        mDataBinding.panicBuying.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mCommodityBean != null) {
+                    detailProvider.goToTaoBao(LotteryActivity.this, mCommodityBean.getItemLink());
+                }
 
-//开始抽奖
-    public void startLottery(){
+            }
+        });
+        mDataBinding.jsonAnimation.setImageAssetsFolder("images");
+        mDataBinding.jsonAnimation.setAnimation("hand.json");
+        mDataBinding.jsonAnimation.loop(true);
+        mDataBinding.jsonAnimation.playAnimation();
+    }
+
+
+    //开始抽奖
+    public void startLottery() {
         //开始抽奖
         //弹框抽奖码生成dialog
         LotteryCodeStartsDialog lotteryCodeStartsDialog = new LotteryCodeStartsDialog(LotteryActivity.this);
@@ -193,6 +219,12 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
 
             }
+
+            @Override
+            public void onLottery() {
+                //继续抽奖
+                startLottery();
+            }
         });
         receiveLottery.create();
         receiveLottery.show();
@@ -216,7 +248,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
     //展示生成的抽奖码
     private void showExhibitCodeDialog() {
-        ExhibitCodeStartsDialog exhibitCodeStartsDialog = new ExhibitCodeStartsDialog(LotteryActivity.this, mGoodsId,mLotteryCodeBean);
+        ExhibitCodeStartsDialog exhibitCodeStartsDialog = new ExhibitCodeStartsDialog(LotteryActivity.this, mGoodsId, mLotteryCodeBean);
         exhibitCodeStartsDialog.setStateListener(new ExhibitCodeStartsDialog.OnStateListener() {
             @Override
             public void onFinish() {
@@ -224,7 +256,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 //判断抽奖码的个数 跳到对于的dialog
                 //已经满足6个了
                 if (mLotteryCodeBean != null) {
-                    if (mLotteryCodeBean.getCodes().size() >=6) {
+                    if (mLotteryCodeBean.getCodes().size() >= 6) {
                         //抽奖码满足跳转到恭喜dialog
                         showCongratulationsDialog();
                     } else {
@@ -237,6 +269,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             @Override
             public void onJumpAd() {
             }
+
             @Override
             public void onLottery() {
                 //继续抽奖
@@ -297,7 +330,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             }
             guessAdapter.setCommodityBean(CommodityBean);
             guessAdapter.notifyDataSetChanged();
-            mCommodityBean=CommodityBean;
+            mCommodityBean = CommodityBean;
             //查询 猜你喜欢的数据
             //猜你喜欢
             youMayAlsoLike(mPageNumber, true);
@@ -368,18 +401,22 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         if (lotteryCodeBean != null && lotteryCodeBean.getCodes().size() == 0) {
             mDataBinding.panicBuyingButton.setText(getResources().getString(R.string.zero_dollar_draw));
             mDataBinding.defaultPrompt.setImageDrawable(getResources().getDrawable(R.mipmap.hint_content));
+            mDataBinding.panicBuyingButton.setBackgroundColor(getResources().getColor(R.color.policec_lick_red));
         }
 
 
         //当抽奖码小于6大于1的话 显示继续抽奖
         if (lotteryCodeBean != null && lotteryCodeBean.getCodes().size() > 0 && lotteryCodeBean.getCodes().size() < 6) {
             mDataBinding.panicBuyingButton.setText(getResources().getString(R.string.continue_dollar_draw));
-            mDataBinding.defaultPrompt.setImageDrawable(getResources().getDrawable(R.mipmap.hint_content));
+            mDataBinding.defaultPrompt.setImageDrawable(getResources().getDrawable(R.mipmap.try_once));
+            mDataBinding.panicBuyingButton.setBackgroundColor(getResources().getColor(R.color.policec_lick_red));
+
         }
         //当抽奖码大于等于6时显示等待开奖
         if (lotteryCodeBean != null && lotteryCodeBean.getCodes().size() >= 6) {
             mDataBinding.panicBuyingButton.setText(getResources().getString(R.string.wait_dollar_draw));
-            mDataBinding.defaultPrompt.setImageDrawable(getResources().getDrawable(R.mipmap.hint_content));
+            mDataBinding.defaultPrompt.setImageDrawable(getResources().getDrawable(R.mipmap.lottery_tips));
+            mDataBinding.panicBuyingButton.setBackgroundColor(getResources().getColor(R.color.policec_lick));
         }
     }
 
@@ -440,7 +477,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (mLotteryCodeBean == null) {
-                return false;
+                return super.onKeyDown(keyCode, event);
             }
             //判断抽奖码的数量显示对应的dialog
             if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() == 0) {
@@ -458,7 +495,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
             //当抽奖码小于6个
             if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() < 6) {
-                LessMaxDialog mLessMaxDialog = new LessMaxDialog(LotteryActivity.this,mLotteryCodeBean);
+                LessMaxDialog mLessMaxDialog = new LessMaxDialog(LotteryActivity.this, mLotteryCodeBean);
                 mLessMaxDialog.setFinishListener(new NoDrawDialog.OnFinishListener() {
                     @Override
                     public void onFinish() {
