@@ -63,5 +63,7 @@ public class Dot {
     public final static String Btn_Change1 = "Btn_Change1";
     //    立即抢购
     public final static String Btn_BuyNow = "Btn_BuyNow";
+    //    注销用户
+    public final static String Btn_unsubscribe = "Btn_unsubscribe";
 
 }

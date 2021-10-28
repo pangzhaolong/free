@@ -34,6 +34,8 @@ import com.donews.base.utils.ToastUtil;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.mine.R;
 import com.donews.mine.common.CommonParams;
+import com.donews.utilslibrary.analysis.AnalysisHelp;
+import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
 
 import org.greenrobot.eventbus.EventBus;
@@ -145,6 +147,7 @@ public class UserCancellationWhyDialogFragment extends DialogFragment {
                 loadingHintDialog.setDismissOnBackPressed(false)
                         .setDescription("提交中...")
                         .show(getChildFragmentManager(), "user_cancellation");
+                isSendUnReg = true;
                 AppInfo.exitWXLogin();
                 CommonParams.setNetWorkExitOrUnReg();
             }
@@ -182,16 +185,22 @@ public class UserCancellationWhyDialogFragment extends DialogFragment {
         submit.setEnabled(false);
     }
 
+    private boolean isSendUnReg = false;
+    private LoginLodingStartStatus event;
+
     @Subscribe //用户登录状态变化
     public void loginStatusEvent(LoginLodingStartStatus event) {
-        event.getLoginLoadingLiveData().observe(this, result -> {
-            if (result == 1 || result == 2) {
-                AppInfo.exitLogin();
-                submitFinish();
-            } else if (result == -1) {
-                ToastUtil.show(getActivity(), "账户注销异常");
-            }
-        });
+        if(isSendUnReg && this.event == null) {
+            this.event = event;
+            event.getLoginLoadingLiveData().observe(this, result -> {
+                if (result == 1 || result == 2) {
+                    AppInfo.exitLogin();
+                    submitFinish();
+                } else if (result == -1) {
+                    ToastUtil.show(getActivity(), "账户注销异常");
+                }
+            });
+        }
     }
 
     @Override
@@ -236,6 +245,7 @@ public class UserCancellationWhyDialogFragment extends DialogFragment {
 
     //提交完成
     private void submitFinish() {
+        AnalysisHelp.onEvent(getActivity(), Dot.Btn_unsubscribe);
         hideLoading();
         resultUICount = 5;
         goResultUI();
