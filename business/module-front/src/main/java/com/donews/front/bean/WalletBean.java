@@ -17,7 +17,7 @@ public class WalletBean extends BaseCustomViewModel {
         this.list = list;
     }
 
-    public static class RpBean extends BaseCustomViewModel{
+    public static class RpBean  extends BaseCustomViewModel{
         @SerializedName("lottery_total")
         private int lotteryTotal;
         @SerializedName("opened")

@@ -1,11 +1,12 @@
 package com.module.lottery.bean;
 
+import com.donews.common.contract.BaseCustomViewModel;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.List;
 
-public class ParticipateBean implements Serializable {
+public class ParticipateBean  extends BaseCustomViewModel {
 
     @SerializedName("total")
     private String total;
@@ -29,7 +30,7 @@ public class ParticipateBean implements Serializable {
     @SerializedName("list")
     private List<ListDTO> list;
 
-    public static class ListDTO implements Serializable {
+    public static class ListDTO  extends BaseCustomViewModel {
         public String getId() {
             return id;
         }

@@ -1,11 +1,12 @@
 package com.module.lottery.bean;
 
+import com.donews.common.contract.BaseCustomViewModel;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
 //抽奖次数达到上限后,推荐一个抽奖商品
-public class RecommendBean implements Serializable {
+public class RecommendBean  extends BaseCustomViewModel {
 
 
     @SerializedName("title")

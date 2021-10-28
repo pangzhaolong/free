@@ -27,7 +27,7 @@ public class RewardHistoryBean extends BaseCustomViewModel {
         this.total = total;
     }
 
-    public static class RewardBean {
+    public static class RewardBean  extends BaseCustomViewModel{
         @SerializedName("period")
         private Integer period;
         @SerializedName("code")

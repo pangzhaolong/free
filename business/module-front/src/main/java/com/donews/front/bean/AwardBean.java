@@ -18,7 +18,7 @@ public class AwardBean extends BaseCustomViewModel {
         this.list = list;
     }
 
-    public static class AwardInfo extends BaseCustomViewModel {
+    public static class AwardInfo extends BaseCustomViewModel{
         @SerializedName("name")
         private String name;
         @SerializedName("avatar")

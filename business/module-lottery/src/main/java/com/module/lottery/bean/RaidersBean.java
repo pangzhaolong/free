@@ -1,4 +1,6 @@
 package com.module.lottery.bean;
 
-public class RaidersBean {
+import com.donews.common.contract.BaseCustomViewModel;
+
+public class RaidersBean  extends BaseCustomViewModel {
 }

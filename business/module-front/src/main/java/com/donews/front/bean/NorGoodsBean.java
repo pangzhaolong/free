@@ -18,7 +18,7 @@ public class NorGoodsBean extends BaseCustomViewModel {
         this.list = list;
     }
 
-    public static class GoodsInfo extends BaseCustomViewModel{
+    public static class GoodsInfo  extends BaseCustomViewModel{
         @SerializedName("id")
         private String id;
         @SerializedName("goods_id")

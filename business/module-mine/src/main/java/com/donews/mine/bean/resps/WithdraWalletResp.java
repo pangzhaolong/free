@@ -1,5 +1,6 @@
 package com.donews.mine.bean.resps;
 
+import com.donews.common.contract.BaseCustomViewModel;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -8,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
  * Description:
  *  钱包详情。总额等
  */
-public class WithdraWalletResp {
+public class WithdraWalletResp  extends BaseCustomViewModel {
     @SerializedName("id")
     public String id;
     @SerializedName("total")

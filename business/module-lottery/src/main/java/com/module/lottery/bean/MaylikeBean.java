@@ -1,6 +1,7 @@
 package com.module.lottery.bean;
 
 
+import com.donews.common.contract.BaseCustomViewModel;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -21,7 +22,7 @@ public class MaylikeBean extends LotteryBean{
     @SerializedName("list")
     private List<ListDTO> list;
 
-    public static class ListDTO implements Serializable {
+    public static class ListDTO  extends BaseCustomViewModel {
         @SerializedName("id")
         private String id;
 

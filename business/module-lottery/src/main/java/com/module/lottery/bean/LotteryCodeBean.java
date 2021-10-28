@@ -1,11 +1,12 @@
 package com.module.lottery.bean;
 
+import com.donews.common.contract.BaseCustomViewModel;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.List;
 
-public class LotteryCodeBean implements Serializable {
+public class LotteryCodeBean  extends BaseCustomViewModel {
 
 
     public List<String> getCodes() {
