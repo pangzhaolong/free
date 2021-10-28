@@ -3,14 +3,11 @@ package com.donews.mine.ui;
 import static com.donews.common.router.RouterActivityPath.Mine.PAGER_MINE_WINNING_CODE_ACTIVITY;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -24,8 +21,6 @@ import com.donews.mine.bean.resps.HistoryPeopleLottery;
 import com.donews.mine.databinding.MineActivityParticipateRecordBinding;
 import com.donews.mine.viewModel.MineParticipateRecordViewModel;
 import com.gyf.immersionbar.ImmersionBar;
-import com.scwang.smart.refresh.layout.api.RefreshLayout;
-import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;

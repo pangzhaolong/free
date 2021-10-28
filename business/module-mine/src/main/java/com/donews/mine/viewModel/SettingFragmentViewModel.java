@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.FragmentActivity;
@@ -20,6 +21,8 @@ import com.dn.drouter.ARouteHelper;
 import com.donews.base.popwindow.ConfirmPopupWindow;
 import com.donews.base.utils.ToastUtil;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
+import com.donews.common.contract.LoginHelp;
+import com.donews.common.contract.UserInfoBean;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.mine.Api.MineHttpApi;
 import com.donews.mine.BuildConfig;
@@ -34,6 +37,7 @@ import com.donews.share.WXHolderHelp;
 import com.donews.share.WXShareExecutor;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.utils.AppCacheUtils;
+import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.DeviceUtils;
 
 import java.util.ArrayList;
@@ -100,15 +104,16 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
                 }).setCancelOnClick(v -> confirmPopupWindow.hide());
             });
             put(5, (Runnable) () -> {//分享APP
-                ShareToDialogFragment df = (ShareToDialogFragment) ARouter.getInstance()
-                        .build(RouterActivityPath.Mine.DIALOG_SHARE_TO_DIALOG_FRAGMENT)
-                        .navigation();
-                df.setSelectListener(type -> {
-                    share(type);
-                });
-                df.show(baseActivity.getSupportFragmentManager());
+                RouterActivityPath.Mine
+                        .goShareWxChatDialogDefaultH5(baseActivity);
             });
             put(6, (Runnable) () -> {//账户注销
+                UserInfoBean uf = LoginHelp.getInstance().getUserInfoBean();
+                if (uf == null ||
+                        !AppInfo.checkIsWXLogin()) { //未登录
+                    ToastUtil.show(baseActivity, "你还未登陆,请先登录!");
+                    return;
+                }
                 ARouter.getInstance()
                         .build(RouterActivityPath.Mine.PAGER_MINEUSER_CANCELLATION_ACTIVITY)
                         .navigation();
@@ -212,29 +217,5 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
         AppCacheUtils.clearAllCache(baseActivity);
         updateUIFlg.postValue(updateUIFlg.getValue() + 1);
     }
-
-    /**
-     * 分享app
-     *
-     * @param type 1-联系人，2-朋友圈
-     */
-    private void share(int type) {
-        ShareManager sharManager = new ShareManager();
-        ShareItem shareItem = new ShareItem();
-        shareItem.setType(ShareItem.TYPE_H5);
-        shareItem.setIcon("" + R.drawable.ic_launcher_round);
-        shareItem.setTitle("便宜又好玩,你信不?");
-        shareItem.setContent("抽奖购物两不误,商品便宜不贵、皮实耐用,奖品多多,赶紧去玩吧。先到先得");
-        shareItem.setWebUrl("https://www.so.com/?src=www&fr=none");
-        if (type == 1) {
-            shareItem.setCmd(ShareManager.SHARE_COMMAND_WX);
-        } else if (type == 2) {
-            shareItem.setCmd(ShareManager.SHARE_COMMAND_WX_FRIEND);
-        } else {
-            ToastUtil.showShort(baseActivity, "暂不支持此类型分享");
-        }
-        sharManager.share(shareItem.getCmd(), shareItem, baseActivity);
-    }
-
 
 }

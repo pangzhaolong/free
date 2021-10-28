@@ -82,20 +82,6 @@
             android:textColor="@color/text_red"
             android:textSize="21sp"
             android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/mine_me_list_count_goto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:includeFontPadding="false"
-            android:background="@drawable/mine_shape_me_goto_read"
-            android:paddingLeft="13dp"
-            android:paddingTop="5dp"
-            android:paddingRight="13dp"
-            android:paddingBottom="5dp"
-            android:text="立即抽奖"
-            android:textColor="@color/mine_df7b75"
-            android:textSize="14sp"/>
     </LinearLayout>
 
     <TextView
@@ -113,4 +99,27 @@
         app:layout_constraintLeft_toLeftOf="@+id/mine_me_list_title"
         app:layout_constraintRight_toRightOf="@+id/mine_me_list_icon_layout"
         app:layout_constraintTop_toBottomOf="@+id/mine_me_list_count_layout" />
+
+    <LinearLayout
+        android:id="@+id/mine_me_list_count_goto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/mine_me_list_bot_info">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/mine_win_frm_cj_but"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:paddingBottom="8dp"
+            android:singleLine="true"
+            android:text="0元抽奖"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

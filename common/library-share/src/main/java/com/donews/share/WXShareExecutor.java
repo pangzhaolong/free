@@ -70,6 +70,9 @@ public class WXShareExecutor extends ShareExecutor {
         } catch (Exception e) {
             path = shareInfo.getIcon();
         }
+        if (!TextUtils.isEmpty(shareInfo.getImageUrl())) {
+            path = shareInfo.getImageUrl();
+        }
         if (shareInfo.getType() == ShareItem.TYPE_IMAGE) {
             Glide.with(mActivity)
                     .asBitmap()
