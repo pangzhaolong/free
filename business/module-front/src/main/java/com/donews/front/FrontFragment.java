@@ -22,6 +22,7 @@ import com.donews.front.adapter.FragmentAdapter;
 import com.donews.front.bean.LotteryCategoryBean;
 import com.donews.front.bean.WalletBean;
 import com.donews.front.databinding.FrontFragmentBinding;
+import com.donews.front.dialog.ActivityRuleDialog;
 import com.donews.front.viewModel.FrontViewModel;
 import com.donews.front.views.TabItem;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
@@ -105,6 +106,12 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                 ARouter.getInstance()
                         .build(RouterActivityPath.Mine.PAGER_ACTIVITY_WITHDRAWAL)
                         .navigation());
+        mDataBinding.frontRpHelpIv.setOnClickListener(v -> {
+            ActivityRuleDialog ruleDialog = new ActivityRuleDialog(this.getContext());
+            ruleDialog.create();
+            ruleDialog.show();
+        });
+
         if (mRotateAnimation == null) {
             mRotateAnimation = new RotateAnimation(0, 8, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.8f);
             mRotateAnimation.setInterpolator(new CycleInterpolator(2));

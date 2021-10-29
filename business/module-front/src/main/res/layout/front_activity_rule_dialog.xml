@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data></data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:scrollbars="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:background="@drawable/front_cash_bg"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="红包规则"
+                android:textColor="#884900"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="参与条件："
+                android:textColor="#884900"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="本活动仅面向奖多多APP注册用户开放，其用户登录时所绑定的微信账户须通过实名认证，避免参加活动时出现异常。"
+                android:textColor="#884900"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="活动玩法及规则："
+                android:textColor="#884900"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="1、登录用户每成功获得一个抽奖码，则算为一次有效抽奖。抽奖次数达标时，相应红包即可解锁，用户点击可开启。
+\n2、红包奖励包括但不限于现金奖励，商品优惠券或其它福利。如用户获得现金奖励，以红包实际显示奖励金额为准，奖励现金将进入零钱包，满足金额即可提现。
+\n3、用户每日最多可开启5个红包，每日红包奖励均在0点统一刷新，请及时完成并领取所有奖励"
+                android:textColor="#884900"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="提现规则："
+                android:textColor="#884900"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/front_rule_dialog_html_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/front_rule_3text"
+            android:textColor="#884900"
+            android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="特别声明："
+                android:textColor="#884900"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="1、任何人通过不正当手段（包括但不限于作弊、批量注册、插件、外挂、篡改设备等方式）获得本次活动利益，收回奖励等利益，同时依照相关规则进行处理，必要时追究法律责任。如因此给用户造成损失，奖多多APP不进行任何赔偿和补偿。
+\n2、如遇不可抗力或情势变更时（包括但不限于重大灾害事件、软件受政府机关指令需要停止举办或调整的、软件遭受严重网络攻击或因系统故障需要暂停举办的），奖多多APP将依据相关法律规定主张免责。
+\n3、奖多多APP可以根据实际情况对本规则进行变动或调整，相关变动或调整将公布在页面上，并于公布时即时生效。"
+                android:textColor="#884900"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>
