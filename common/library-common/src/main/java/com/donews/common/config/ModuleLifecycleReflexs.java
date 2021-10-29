@@ -36,7 +36,7 @@ public class ModuleLifecycleReflexs {
      * 首页 缓存初始化
      */
 
-    private static final String FrontInit = "com.donews.home.application.FrontModuleInit";
+    private static final String FrontInit = "com.donews.front.application.FrontModuleInit";
 
     /**
      * 广告组件库

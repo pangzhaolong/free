@@ -16,4 +16,6 @@ public class FrontApi {
     public final static String walletRedPacketUrl = BuildConfig.API_WALLET_URL + "v1/red-packet";
 
     public final static String awardListUrl = BuildConfig.API_LOTTERY_URL + "v1/rotation-lottery-info";
+
+    public final static String commandUrl = BuildConfig.BASE_CONFIG_URL + "plus-cmdConfig" + BuildConfig.BASE_RULE_URL;
 }
