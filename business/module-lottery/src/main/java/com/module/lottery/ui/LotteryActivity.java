@@ -2,11 +2,14 @@ package com.module.lottery.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,15 +19,24 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
+import com.airbnb.lottie.LottieComposition;
+import com.airbnb.lottie.LottieOnCompositionLoadedListener;
+import com.airbnb.lottie.LottieProperty;
+import com.airbnb.lottie.model.KeyPath;
+import com.airbnb.lottie.value.LottieFrameInfo;
+import com.airbnb.lottie.value.SimpleLottieValueCallback;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.donews.common.provider.IDetailProvider;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
+import com.donews.main.dialog.NotLotteryDialog;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.module.lottery.adapter.GuessAdapter;
 import com.module.lottery.bean.CommodityBean;
+import com.module.lottery.bean.GenerateCodeBean;
 import com.module.lottery.bean.LotteryCodeBean;
 import com.module.lottery.dialog.CongratulationsDialog;
 import com.module.lottery.dialog.ExhibitCodeStartsDialog;
@@ -44,6 +56,7 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
+import java.util.List;
 import java.util.Map;
 
 import kotlin.jvm.JvmField;
@@ -68,7 +81,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     //抽奖码的对象用来拦截返回
     LotteryCodeBean mLotteryCodeBean;
 
-
+    boolean dialogShow = false;
     @Autowired(name = RouterActivityPath.GoodsDetail.GOODS_DETAIL_PROVIDER)
     IDetailProvider detailProvider;
 
@@ -108,21 +121,11 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
 
     private void initViewData() {
-        mDataBinding.panicBuyingButton.post(new Runnable() {
-            @Override
-            public void run() {
-                mDataBinding.panicBuyingButton.setHeight(mDataBinding.panicBuyingButton.getWidth());
-                mDataBinding.panicBuyingButtonBg.setHeight(mDataBinding.panicBuyingButtonBg.getWidth());
-            }
-        });
-        mDataBinding.panicBuyingButton.setOutlineProvider(new TextureVideoViewOutlineProvider());
-        mDataBinding.panicBuyingButton.setClipToOutline(true);
-        mDataBinding.panicBuyingButtonBg.setOutlineProvider(new TextureVideoViewOutlineProvider());
-        mDataBinding.panicBuyingButtonBg.setClipToOutline(true);
-        mDataBinding.panicBuyingButton.setOnClickListener(new View.OnClickListener() {
+        mDataBinding.lotteryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean logType = AppInfo.checkIsWXLogin();
+                logType = true;
                 if (logType) {
                     if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() >= 6) {
                         return;
@@ -152,10 +155,27 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
             }
         });
-        mDataBinding.jsonAnimation.setImageAssetsFolder("images");
-        mDataBinding.jsonAnimation.setAnimation("hand.json");
-        mDataBinding.jsonAnimation.loop(true);
-        mDataBinding.jsonAnimation.playAnimation();
+        //当抽奖码大于等于6时显示等待开奖
+        if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() >= 5) {
+            mDataBinding.jsonAnimation.setVisibility(View.GONE);
+            mDataBinding.jsonAnimationHalo.pauseAnimation();
+            mDataBinding.jsonAnimationHalo.setProgress(0);
+        } else {
+            //手
+            mDataBinding.jsonAnimation.setImageAssetsFolder("images");
+            mDataBinding.jsonAnimation.setAnimation("lottery_finger.json");
+            mDataBinding.jsonAnimation.loop(true);
+            mDataBinding.jsonAnimation.playAnimation();
+
+//圆
+            mDataBinding.jsonAnimationHalo.setImageAssetsFolder("images");
+            mDataBinding.jsonAnimationHalo.setAnimation("data.json");
+            mDataBinding.jsonAnimationHalo.loop(true);
+            mDataBinding.jsonAnimationHalo.playAnimation();
+
+
+        }
+
     }
 
 
@@ -184,19 +204,19 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
     //生成抽奖码的Dialog
     private void showGenerateCodeDialog() {
-        GenerateCodeDialog generateCodeDialog = new GenerateCodeDialog(LotteryActivity.this);
+        GenerateCodeDialog generateCodeDialog = new GenerateCodeDialog(LotteryActivity.this, mGoodsId);
         generateCodeDialog.setStateListener(new GenerateCodeDialog.OnStateListener() {
             @Override
             public void onFinish() {
             }
 
             @Override
-            public void onJumpAd() {
+            public void onJump(GenerateCodeBean generateCodeBean) {
                 //不跳转广告 展示生成的随机抽奖码
                 generateCodeDialog.dismiss();
                 //刷新页面
                 lotteryInfo();
-                showExhibitCodeDialog();
+                showExhibitCodeDialog(generateCodeBean);
             }
         });
         generateCodeDialog.create();
@@ -246,8 +266,8 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     }
 
     //展示生成的抽奖码
-    private void showExhibitCodeDialog() {
-        ExhibitCodeStartsDialog exhibitCodeStartsDialog = new ExhibitCodeStartsDialog(LotteryActivity.this, mGoodsId, mLotteryCodeBean);
+    private void showExhibitCodeDialog(GenerateCodeBean generateCodeBean) {
+        ExhibitCodeStartsDialog exhibitCodeStartsDialog = new ExhibitCodeStartsDialog(LotteryActivity.this, mGoodsId, mLotteryCodeBean, generateCodeBean);
         exhibitCodeStartsDialog.setStateListener(new ExhibitCodeStartsDialog.OnStateListener() {
             @Override
             public void onFinish() {
@@ -298,8 +318,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 mPageNumber++;
                 refresh = false;
                 youMayAlsoLike(mPageNumber, false);
-                Toast.makeText(getApplicationContext(), "加载更多", Toast.LENGTH_LONG).show();
-
             }
         });
 
@@ -398,24 +416,64 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
         //当抽奖码==0 显示0元抽奖
         if (lotteryCodeBean != null && lotteryCodeBean.getCodes().size() == 0) {
-            mDataBinding.panicBuyingButton.setText(getResources().getString(R.string.zero_dollar_draw));
+            mDataBinding.label02.setVisibility(View.VISIBLE);
+            mDataBinding.label01.setText(getResources().getString(R.string.zero_dollar_draw));
+            mDataBinding.label02.setText(getResources().getString(R.string.lottery_value));
             mDataBinding.defaultPrompt.setImageDrawable(getResources().getDrawable(R.mipmap.hint_content));
-            mDataBinding.panicBuyingButton.setBackgroundColor(getResources().getColor(R.color.policec_lick_red));
         }
 
 
         //当抽奖码小于6大于1的话 显示继续抽奖
         if (lotteryCodeBean != null && lotteryCodeBean.getCodes().size() > 0 && lotteryCodeBean.getCodes().size() < 6) {
-            mDataBinding.panicBuyingButton.setText(getResources().getString(R.string.continue_dollar_draw));
+            mDataBinding.label02.setVisibility(View.VISIBLE);
+            mDataBinding.label01.setText(getResources().getString(R.string.continue_value));
+            mDataBinding.label02.setText(getResources().getString(R.string.lottery_value));
             mDataBinding.defaultPrompt.setImageDrawable(getResources().getDrawable(R.mipmap.try_once));
-            mDataBinding.panicBuyingButton.setBackgroundColor(getResources().getColor(R.color.policec_lick_red));
 
         }
         //当抽奖码大于等于6时显示等待开奖
         if (lotteryCodeBean != null && lotteryCodeBean.getCodes().size() >= 6) {
-            mDataBinding.panicBuyingButton.setText(getResources().getString(R.string.wait_dollar_draw));
+            mDataBinding.label01.setText(getResources().getString(R.string.wait_dollar_draw));
+            mDataBinding.label02.setVisibility(View.GONE);
+            mDataBinding.label02.setText("");
             mDataBinding.defaultPrompt.setImageDrawable(getResources().getDrawable(R.mipmap.lottery_tips));
-            mDataBinding.panicBuyingButton.setBackgroundColor(getResources().getColor(R.color.policec_lick));
+            //
+            mDataBinding.jsonAnimation.setVisibility(View.GONE);
+            mDataBinding.jsonAnimationHalo.pauseAnimation();
+            mDataBinding.jsonAnimationHalo.setProgress(0);
+
+
+            mDataBinding.jsonAnimationHalo.setColorFilter(Color.BLUE);
+
+            LottieAnimationView mirror = mDataBinding.jsonAnimationHalo;
+            mirror.addLottieOnCompositionLoadedListener(new LottieOnCompositionLoadedListener() {
+                @SuppressLint("RestrictedApi")
+                @Override
+                public void onCompositionLoaded(LottieComposition composition) {
+//过滤所有的keypath
+                    List<KeyPath> list = mirror.resolveKeyPath(
+                            new KeyPath("**"));
+                    //通过匹配关键字的深度，来过滤需要改变颜色的keypath
+                    for (KeyPath path : list) {
+                        Log.d("mirror", path.keysToString());
+
+//通过匹配关键字的深度对深度为1 和2 的填充色进行修改
+//                        if (path.matches("btn_q", 2)||path.matches("btn_q", 1) ) {
+
+                        mirror.addValueCallback(path, LottieProperty.COLOR, new SimpleLottieValueCallback<Integer>() {
+                            @Override
+                            public Integer getValue(LottieFrameInfo<Integer> frameInfo) {
+                                return getResources().getColor(R.color.policec_lick);
+                            }
+                        });
+//                        }
+                    }
+
+
+                }
+            });
+
+//            mDataBinding.panicBuyingButton.setBackgroundColor(getResources().getColor(R.color.policec_lick));
         }
     }
 
@@ -475,11 +533,12 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (mLotteryCodeBean == null) {
+            if (mLotteryCodeBean == null || dialogShow) {
                 return super.onKeyDown(keyCode, event);
             }
             //判断抽奖码的数量显示对应的dialog
             if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() == 0) {
+                dialogShow = true;
                 NoDrawDialog mNoDrawDialog = new NoDrawDialog(LotteryActivity.this);
                 mNoDrawDialog.setFinishListener(new NoDrawDialog.OnFinishListener() {
                     @Override
@@ -494,6 +553,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
             //当抽奖码小于6个
             if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() < 6) {
+                dialogShow = true;
                 LessMaxDialog mLessMaxDialog = new LessMaxDialog(LotteryActivity.this, mLotteryCodeBean);
                 mLessMaxDialog.setFinishListener(new NoDrawDialog.OnFinishListener() {
                     @Override

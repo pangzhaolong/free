@@ -29,16 +29,12 @@
 
             <ImageView
                 android:id="@+id/closure"
-                android:visibility="invisible"
-                android:layout_width="26dp"
-                android:layout_height="26dp"
+                android:layout_width="33dp"
+                android:layout_height="33dp"
                 android:layout_gravity="right"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="20dp"
                 android:layout_marginBottom="5dp"
-                android:src="@mipmap/closure_icon"
-
-                />
+                android:src="@mipmap/top_closure"
+                android:visibility="invisible" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -63,7 +59,7 @@
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="22dp"
                 android:layout_marginEnd="25dp"
-                android:background="#FFDD9A"
+                android:background="@mipmap/winning_code_bg"
                 android:gravity="center"
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp"
@@ -78,47 +74,56 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="21dp"
                     android:layout_marginTop="30dp"
-                    android:layout_marginEnd="20dp"
                     android:orientation="horizontal">
 
                     <include
+
                         android:id="@+id/include_progress_bar"
                         layout="@layout/progress_bar_layout" />
-                </RelativeLayout>
 
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:orientation="vertical">
-
-
-                    <ImageView
-                        android:id="@+id/gift_box"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginTop="2dp"
-                        android:src="@mipmap/gift_box_close" />
-
-                    <ImageView
-                        android:id="@+id/gift_box_open"
-                        android:layout_width="65dp"
-                        android:layout_height="65dp"
-                        android:src="@mipmap/gift_box_open"
-                        android:visibility="invisible" />
-
-                    <TextView
+                    <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="50dp"
-                        android:text="最大中奖率"
-                        android:textColor="#E9423E"
-                        android:textSize="10dp" />
+                        android:layout_alignParentRight="true"
+                        android:orientation="vertical">
+
+
+                        <ImageView
+                            android:id="@+id/gift_box"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginTop="11dp"
+                            android:layout_marginEnd="10dp"
+                            android:scaleType="fitXY"
+                            android:src="@mipmap/gift_box_close" />
+
+                        <ImageView
+                            android:id="@+id/gift_box_open"
+                            android:layout_width="49dp"
+                            android:layout_height="49dp"
+                            android:layout_alignParentRight="true"
+                            android:src="@mipmap/gift_box_open"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="45dp"
+                            android:layout_marginEnd="7dp"
+                            android:text="最大中奖率"
+                            android:textColor="#E9423E"
+                            android:textSize="10dp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+
+
                 </RelativeLayout>
+
+
             </RelativeLayout>
         </LinearLayout>
 
@@ -142,16 +147,19 @@
                     android:id="@+id/jsonAnimation"
                     android:layout_width="wrap_content"
                     android:layout_height="47dp"
+                    android:scaleType="fitXY"
                     app:lottie_autoPlay="true"
                     app:lottie_loop="true" />
 
+
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/jsonAnimation_hand"
-                    android:layout_width="wrap_content"
-                    android:layout_height="47dp"
+                    android:layout_width="63dp"
+                    android:layout_height="64dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginEnd="15dp"
+                    android:scaleType="fitXY"
                     app:lottie_autoPlay="true"
                     app:lottie_loop="true" />
 

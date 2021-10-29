@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class GenerateCodeBean  extends BaseCustomViewModel {
+public class GenerateCodeBean extends BaseCustomViewModel {
 
 
     public String getCode() {

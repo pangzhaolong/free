@@ -8,16 +8,20 @@
 
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+
+        android:gravity="center"
         android:orientation="vertical"
         tools:ignore="ResourceName">
 
         <LinearLayout
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="21dp"
+            android:layout_marginEnd="20dp"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -61,7 +65,7 @@
                         android:gravity="center"
                         android:text="1"
                         android:textColor="#FD2933"
-                        android:textSize="20dp" />
+                        android:textSize="12dp" />
 
                 </LinearLayout>
 
@@ -79,7 +83,7 @@
                         android:gravity="center"
                         android:text="2"
                         android:textColor="#FD2933"
-                        android:textSize="20dp" />
+                        android:textSize="12dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -97,7 +101,7 @@
                         android:gravity="center"
                         android:text="3"
                         android:textColor="#FD2933"
-                        android:textSize="20dp" />
+                        android:textSize="12dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -114,7 +118,7 @@
                         android:gravity="center"
                         android:text="4"
                         android:textColor="#FD2933"
-                        android:textSize="20dp" />
+                        android:textSize="12dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -130,7 +134,7 @@
                         android:gravity="center"
                         android:text="5"
                         android:textColor="#FD2933"
-                        android:textSize="20dp" />
+                        android:textSize="12dp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -138,5 +142,5 @@
 
         </LinearLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 </layout>

@@ -30,15 +30,15 @@ public class GridSpaceItemDecoration extends RecyclerView.ItemDecoration {
         if (position != 0) {
             //设置右边距离
             if (column == 1) {
-                outRect.right = 15;
+                outRect.right = 25;
 
 
-                outRect.left=80;
+                outRect.left=40;
             }
             if (column == 0) {
-                outRect.left = 15;
+                outRect.left = 25;
 
-                outRect.right = 80;
+                outRect.right = 40;
             }
             outRect.top = 30; // item top
 

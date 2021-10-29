@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.List;
 
 //猜你喜欢源数据 May可能喜欢
-public class MaylikeBean extends LotteryBean{
+public class MaylikeBean extends BaseCustomViewModel {
 
 
     public List<ListDTO> getList() {

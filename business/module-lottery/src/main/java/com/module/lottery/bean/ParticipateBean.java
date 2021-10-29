@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
-public class ParticipateBean  extends BaseCustomViewModel {
+public class ParticipateBean extends BaseCustomViewModel {
 
     @SerializedName("total")
     private String total;
@@ -30,7 +30,7 @@ public class ParticipateBean  extends BaseCustomViewModel {
     @SerializedName("list")
     private List<ListDTO> list;
 
-    public static class ListDTO  extends BaseCustomViewModel {
+    public static class ListDTO implements Serializable {
         public String getId() {
             return id;
         }
