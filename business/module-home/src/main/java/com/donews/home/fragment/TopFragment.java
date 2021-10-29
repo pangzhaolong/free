@@ -3,7 +3,6 @@ package com.donews.home.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -22,18 +21,17 @@ import com.donews.home.adapter.TopGoodsAdapter;
 import com.donews.home.bean.TopGoodsBean;
 import com.donews.home.cache.GoodsCache;
 import com.donews.home.databinding.HomeFragmentTopBinding;
+import com.donews.home.decoration.GridSpaceItemDecoration;
 import com.donews.home.listener.GoodsDetailListener;
 import com.donews.home.viewModel.TopViewModel;
 import com.donews.utilslibrary.utils.LogUtil;
-import com.scwang.smart.refresh.layout.api.RefreshLayout;
-import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
-import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
 public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding, TopViewModel> implements GoodsDetailListener {
 
     private TopGoodsAdapter mTopGoodsAdapter;
 
     private int mPageId = 1;
+    private RecyclerView.ItemDecoration mItemDecoration;
 
     @Override
     public int getLayoutId() {
@@ -57,14 +55,12 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
 
         loadMoreData();
 
-        mDataBinding.homeGoodProductRv.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-                outRect.bottom = 16;
-                outRect.left = 5;
-                outRect.right = 5;
-            }
-        });
+        int nItemDecorationCount = mDataBinding.homeGoodProductRv.getItemDecorationCount();
+        for (int i = 0; i < nItemDecorationCount; i++) {
+            mDataBinding.homeGoodProductRv.removeItemDecorationAt(i);
+        }
+        mItemDecoration = new GridSpaceItemDecoration(2);
+        mDataBinding.homeGoodProductRv.addItemDecoration(mItemDecoration);
         mDataBinding.homeGoodProductRv.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
         mDataBinding.homeGoodProductRv.setAdapter(mTopGoodsAdapter);
 
@@ -109,6 +105,7 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
     public void onDestroyView() {
         super.onDestroyView();
         LogUtil.e("TopFragment onDestroyView");
+        mItemDecoration = null;
     }
 
     @Override
