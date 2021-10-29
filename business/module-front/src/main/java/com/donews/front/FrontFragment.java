@@ -32,6 +32,7 @@ import com.donews.utilslibrary.utils.SPUtils;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -312,21 +313,26 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     private final TimerTask mRotateTask = new TimerTask() {
         @Override
         public void run() {
-            mDataBinding.frontRpOpenFl5.startAnimation(mRotateAnimation);
+            FrontFragment.this.requireActivity().runOnUiThread(() -> mDataBinding.frontRpOpenFl5.startAnimation(mRotateAnimation));
         }
     };
 
     @Override
     public void onResume() {
         super.onResume();
-        mDataBinding.frontBarrageView.resumeScroll();
+        if (mDataBinding.frontBarrageView != null) {
+            mDataBinding.frontBarrageView.resumeScroll();
+        }
+
         loadRpData();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mDataBinding.frontBarrageView.pauseScroll();
+        if (mDataBinding.frontBarrageView != null) {
+            mDataBinding.frontBarrageView.pauseScroll();
+        }
     }
 
     @Override
@@ -352,7 +358,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         }
 
         if (rpBean.getOpened()) {
-            Toast.makeText(this.getContext(), "这个红包未已经开过了哦！", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.getContext(), "这个红包已经开过了哦！", Toast.LENGTH_SHORT).show();
             return;
         }
 
