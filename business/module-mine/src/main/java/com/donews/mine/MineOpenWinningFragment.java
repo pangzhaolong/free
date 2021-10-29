@@ -183,9 +183,6 @@ public class MineOpenWinningFragment extends
         });
         mDataBinding.mainWinCodeRefresh.setOnRefreshListener(refreshLayout -> {
 //            mViewModel.loadData(period,false);
-            if (mViewModel.detailLivData.getValue() == null) {
-                mDataBinding.mineWinCodeListStatus.showLoading();
-            }
             isRefesh = true;
             isLoadStart = true;
             mViewModel.loadData(0, false);
@@ -227,6 +224,14 @@ public class MineOpenWinningFragment extends
                 mViewModel.calculateServiceTime();
             } else {
                 mDataBinding.mineWinCodeListStatus.showError();
+                mDataBinding.mineWinCodeListStatus.findViewById(R.id.error_view)
+                        .setOnClickListener(v -> {
+                            mDataBinding.mainWinCodeRefresh.autoRefresh();
+                        });
+                mDataBinding.mineWinCodeListStatus.findViewById(R.id.error_view)
+                        .setOnClickListener(v -> {
+                            mDataBinding.mainWinCodeRefresh.autoRefresh();
+                        });
                 mDataBinding.mainWinCodeRefresh.finishRefresh();
             }
         });
@@ -363,7 +368,11 @@ public class MineOpenWinningFragment extends
             mViewModel.updateData( //更新其他数据
                     adapterOpenWinHead);
             if (mViewModel.detailLivData.getValue() == null) {
-                mDataBinding.mineWinCodeListStatus.showEmpty();
+                mDataBinding.mineWinCodeListStatus.showError();
+                mDataBinding.mineWinCodeListStatus.findViewById(R.id.error_view)
+                        .setOnClickListener(v -> {
+                            mDataBinding.mainWinCodeRefresh.autoRefresh();
+                        });
                 return;
             }
             mDataBinding.mineWinCodeListStatus.showContent();
