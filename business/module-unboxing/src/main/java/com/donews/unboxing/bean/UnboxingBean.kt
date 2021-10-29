@@ -51,6 +51,9 @@ data class UnboxingBean(
     /** 中奖码 */
     @SerializedName("code")
     var code: String = "",
+    /** 开奖码 */
+    @SerializedName("open_code")
+    var openCode: String = "",
     /** 点赞数 */
     @SerializedName("zan")
     var zan: Int = 0

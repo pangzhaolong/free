@@ -18,7 +18,7 @@ import com.donews.unboxing.smartrefreshlayout.interfaces.ListPagingInterface
 abstract class AbsListPagingInterface<R, T> : ListPagingInterface<R, T> {
 
     companion object {
-        const val PAGE_NUMBER_START = 0
+        const val PAGE_NUMBER_START = 1
     }
 
     final override val pageNumber: MutableLiveData<Int> = MutableLiveData()
@@ -53,7 +53,7 @@ abstract class AbsListPagingInterface<R, T> : ListPagingInterface<R, T> {
     /** 处理返回数据，并返回全部数据*/
     private fun disposeListResult(result: LoadResult<R>): LiveData<List<T>> {
         val liveData = MutableLiveData<List<T>>()
-        val refresh = pageNumber.value == 0
+        val refresh = pageNumber.value == PAGE_NUMBER_START
         val smartControl = if (refresh) refreshing else loadMore
         when (result) {
             is LoadResult.Success -> {
