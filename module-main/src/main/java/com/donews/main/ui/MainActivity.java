@@ -3,7 +3,6 @@ package com.donews.main.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,10 +12,6 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.dn.events.events.NavEvent;
-import com.dn.sdk.business.loader.AdManager;
-import com.dn.sdk.sdk.interfaces.listener.impl.SimpleInterstListener;
-import com.dn.sdk.sdk.interfaces.listener.impl.SimpleRewardVideoListener;
 import com.donews.base.activity.MvvmBaseLiveDataActivity;
 import com.donews.base.base.AppStatusConstant;
 import com.donews.base.base.AppStatusManager;
@@ -36,12 +31,7 @@ import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.gyf.immersionbar.BarHide;
 import com.gyf.immersionbar.ImmersionBar;
-import com.orhanobut.logger.Logger;
 import com.vmadalin.easypermissions.EasyPermissions;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +69,7 @@ public class MainActivity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         ScreenAutoAdapter.match(this, 375.0f);
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
+//        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -120,13 +110,6 @@ public class MainActivity
             }
         });
         AppStatusManager.getInstance().setAppStatus(AppStatusConstant.STATUS_NORMAL);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onGetMessage(NavEvent navEvent) {
-        if (navEvent.navIndex == 2) {
-            mDataBinding.cvContentView.setCurrentItem(2);
-        }
     }
 
     /**
@@ -254,7 +237,7 @@ public class MainActivity
     protected void onDestroy() {
         ImmersionBar.destroy(this, null);
         AppStatusManager.getInstance().setAppStatus(AppStatusConstant.STATUS_FORCE_KILLED);
-        EventBus.getDefault().unregister(this);
+//        EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 
