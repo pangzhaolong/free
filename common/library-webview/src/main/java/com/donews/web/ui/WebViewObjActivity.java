@@ -29,6 +29,7 @@ import com.donews.web.manager.ISFinishCallBack;
 import com.donews.web.manager.WebModel;
 import com.donews.web.manager.WebViewManager;
 import com.donews.web.viewmodel.WebViewModel;
+import com.gyf.immersionbar.ImmersionBar;
 
 @Route(path = RouterActivityPath.Web.PAGER_WEB_ACTIVITY)
 public class WebViewObjActivity extends MvvmBaseLiveDataActivity<WebViewObjActivityBinding, WebViewModel> implements ISFinishCallBack {
@@ -68,6 +69,12 @@ public class WebViewObjActivity extends MvvmBaseLiveDataActivity<WebViewObjActiv
     @Override
     public void initView() {
 
+        ImmersionBar.with(this)
+                .statusBarColor(R.color.text_red)
+                .navigationBarColor(R.color.white)
+                .fitsSystemWindows(true)
+                .autoDarkModeEnable(true)
+                .init();
         mDataBinding.progressBar.setIndeterminate(false);
         mDataBinding.progressBar.setIndeterminateDrawable(getResources().getDrawable(android.R.drawable.progress_indeterminate_horizontal));
         // progressBar
