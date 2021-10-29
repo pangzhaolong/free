@@ -97,14 +97,15 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
      *
      * @param gridLayout
      * @param submit     提交按钮
+     * @param desc       描述
      */
-    public void addGridDatas(@NonNull GridLayout gridLayout, TextView submit) {
+    public void addGridDatas(@NonNull GridLayout gridLayout, TextView submit, TextView desc) {
         gridLayout.removeAllViews();
         if (withdrawDataLivData.getValue() == null) {
             return;
         }
         for (int i = 0; i < withdrawDataLivData.getValue().size(); i++) {
-            getGridItemView(i, gridLayout, withdrawDataLivData.getValue().get(i), submit);
+            getGridItemView(i, gridLayout, withdrawDataLivData.getValue().get(i), submit, desc);
         }
     }
 
@@ -117,7 +118,10 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
      * @return
      */
     private View getGridItemView(
-            int pos, GridLayout superLayout, WithdrawConfigResp.WithdrawListDTO item,TextView submit) {
+            int pos, GridLayout superLayout,
+            WithdrawConfigResp.WithdrawListDTO item,
+            TextView submit,
+            TextView desc) {
         int notClickBgRes = R.drawable.mine_withdrawal_momy_item_enable_bg;
         int notSelectBgRes = R.drawable.ad_shape_min_bg;
         int selectBgRes = R.drawable.mine_withdrawal_momy_item_bg;
@@ -130,42 +134,39 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
         view.setLayoutParams(glp);
         view.setTag(R.id.icnl_mine_withdraw_num, item); //绑定数据
         view.setTag(R.id.icnl_mine_withdraw_fl, "0"); //设置未选中默认
-        if (item.available) {
-            view.setOnClickListener(v -> {
-                if (!item.available) {
-                    ToastUtil.showShort(v.getContext(), item.tips);
-                    return; //不可提现
+        view.setOnClickListener(v -> {
+            boolean isHostSelect = false; //是否自己被选中
+            for (int i = 0; i < superLayout.getChildCount(); i++) {
+                WithdrawConfigResp.WithdrawListDTO curItem =
+                        (WithdrawConfigResp.WithdrawListDTO) superLayout.getChildAt(i)
+                                .getTag(R.id.icnl_mine_withdraw_num);
+                if ("1".equals(superLayout.getChildAt(i).getTag(R.id.icnl_mine_withdraw_fl).toString()) &&
+                        superLayout.getChildAt(i) == v) {
+                    isHostSelect = true;
                 }
-                boolean isHostSelect = false; //是否自己被选中
-                for (int i = 0; i < superLayout.getChildCount(); i++) {
-                    WithdrawConfigResp.WithdrawListDTO curItem =
-                            (WithdrawConfigResp.WithdrawListDTO) superLayout.getChildAt(i)
-                                    .getTag(R.id.icnl_mine_withdraw_num);
-                    if (!curItem.available) {
-                        continue; //跳过不可提现部分
-                    }
-                    if ("1".equals(superLayout.getChildAt(i).getTag(R.id.icnl_mine_withdraw_fl).toString())) {
-                        isHostSelect = true;
-                    }
-                    superLayout.getChildAt(i).setTag(R.id.icnl_mine_withdraw_fl, "0");
-                    superLayout.getChildAt(i).setBackgroundResource(notSelectBgRes);
+                superLayout.getChildAt(i).setTag(R.id.icnl_mine_withdraw_fl, "0");
+                superLayout.getChildAt(i).setBackgroundResource(notSelectBgRes);
+            }
+            if (!isHostSelect) {
+                v.setTag(R.id.icnl_mine_withdraw_fl, "1");
+                v.setBackgroundResource(selectBgRes);
+            } else {
+                v.setTag(R.id.icnl_mine_withdraw_fl, "0");
+                v.setBackgroundResource(notSelectBgRes);
+            }
+            if (!item.available) {
+                desc.setText(item.tips);
+                submit.setEnabled(false);
+            } else {
+                if (item.tips == null ||
+                        "".equals(item.tips)) {
+                    desc.setText("余额可提现");
+                }else{
+                    desc.setText(item.tips);
                 }
-                if (!isHostSelect) {
-                    v.setTag(R.id.icnl_mine_withdraw_fl, "1");
-                    v.setBackgroundResource(selectBgRes);
-                    submit.setEnabled(true);
-                } else {
-                    v.setTag(R.id.icnl_mine_withdraw_fl, "0");
-                    v.setBackgroundResource(notSelectBgRes);
-                    submit.setEnabled(false);
-                }
-            });
-        } else {
-            view.setBackgroundResource(notClickBgRes);
-            view.setOnClickListener(v -> {
-                ToastUtil.showShort(v.getContext(), item.tips);
-            });
-        }
+                submit.setEnabled(true);
+            }
+        });
         //绑定数据
         TextView numTv = view.findViewById(R.id.icnl_mine_withdraw_num);
         numTv.setText("" + item.money);

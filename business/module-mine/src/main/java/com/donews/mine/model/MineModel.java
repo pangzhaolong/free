@@ -154,7 +154,11 @@ public class MineModel extends BaseLiveDataModel {
                 .execute(new SimpleCallBack<HistoryPeopleLotteryDetailResp>() {
                     @Override
                     public void onError(ApiException e) {
-                        livData.postValue(null);
+                        if(livData.getValue() == null){
+                            livData.postValue(null);
+                        }else{
+                            livData.postValue(livData.getValue());
+                        }
                     }
 
                     @Override

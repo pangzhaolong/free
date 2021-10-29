@@ -33,7 +33,7 @@
                     android:gravity="center"
                     android:text="xxxxxx期"
                     android:textColor="@color/white"
-                    android:textSize="15sp" />
+                    android:textSize="17sp" />
 
                 <ImageView
                     android:id="@+id/main_win_code_title_back"
@@ -52,16 +52,21 @@
                     android:gravity="center"
                     android:text="往期>"
                     android:textColor="@color/white"
-                    android:textSize="13sp"
+                    android:textSize="15sp"
                     android:paddingRight="17dp"
                     android:layout_gravity="right"/>
             </FrameLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/mine_win_code_list"
+            <com.classic.common.MultipleStatusView
+                android:id="@+id/mine_win_code_list_status"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1" />
+                app:errorView="@layout/incl_mul_status_error"
+                android:layout_weight="1">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/mine_win_code_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </com.classic.common.MultipleStatusView>
         </LinearLayout>
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 

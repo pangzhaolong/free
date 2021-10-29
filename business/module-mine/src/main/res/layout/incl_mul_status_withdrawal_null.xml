@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/res/android/skin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:id="@+id/empty_view"
+    tools:ignore="MissingConstraints,MissingDefaultResource,ResourceName">
+
+    <LinearLayout
+        android:id="@+id/mine_open_win_not_data_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingTop="10dp">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/mine_with_draw_not_data" />
+
+        <TextView
+            android:id="@+id/mine_open_win_not_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="20dp"
+            android:text="这里空空如也\n快去参与抽奖吧"
+            android:textColor="@color/text_hint_color"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</LinearLayout>

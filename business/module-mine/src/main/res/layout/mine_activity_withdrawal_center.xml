@@ -27,14 +27,14 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
                     android:layout_marginBottom="15dp"
                     android:background="@drawable/mine_withdraw_centent_top"
                     android:orientation="vertical"
                     android:paddingLeft="30dp"
                     android:paddingTop="20dp"
                     android:paddingRight="20dp"
-                    android:paddingBottom="30dp"
-                    android:layout_marginTop="20dp">
+                    android:paddingBottom="30dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -72,12 +72,12 @@
                         android:layout_gravity="right"
                         android:layout_marginLeft="5dp"
                         android:layout_marginTop="-10dp"
+                        android:drawableRight="@drawable/mine_withdraw_centent_top_w"
+                        android:drawablePadding="5dp"
                         android:paddingLeft="10dp"
                         android:paddingTop="5dp"
                         android:paddingRight="10dp"
                         android:paddingBottom="5dp"
-                        android:drawablePadding="5dp"
-                        android:drawableRight="@drawable/mine_withdraw_centent_top_w"
                         android:text="明细"
                         android:textColor="@color/white"
                         android:textSize="15sp" />
@@ -86,79 +86,91 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
+                    android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_marginLeft="5dp">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:background="@drawable/mine_withdrawal_center_q_bg"
-                        android:text="¥"
-                        android:textSize="18sp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/mine_tx_center_q"
                         android:gravity="center"
-                        android:textColor="@color/white"/>
+                        android:textColor="@color/white"
+                        android:textSize="13sp" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
                         android:layout_weight="1"
                         android:text="提现到微信"
                         android:textColor="#2C2C2C"
                         android:textSize="15sp"
-                        android:textStyle="bold"
-                        android:layout_marginLeft="5dp"/>
+                        android:textStyle="bold" />
 
                     <ImageView
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:src="@drawable/icon_weixin_image"/>
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/mine_tx_center_wx" />
+
                     <TextView
                         android:id="@+id/mine_draw_wx_name"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
+                        android:layout_marginLeft="5dp"
+                        android:gravity="center"
                         android:text="--"
                         android:textColor="#2C2C2C"
                         android:textSize="15sp"
-                        android:gravity="center"
-                        android:textStyle="bold"
-                        android:layout_marginLeft="5dp"/>
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <!-- 金额的网格区域 -->
-                <GridLayout
-                    android:id="@+id/mine_draw_grid"
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:layout_marginBottom="50dp"
-                    android:columnCount="3" />
+                    android:layout_marginBottom="50dp">
+                    <GridLayout
+                        android:id="@+id/mine_draw_grid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:columnCount="3" />
+
+                    <TextView
+                        android:id="@+id/mine_draw_grid_loading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="数据加载中..."/>
+                </FrameLayout>
 
                 <TextView
                     android:id="@+id/mine_draw_desc"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
                     android:layout_weight="1"
                     android:text="提现条件：需连续抽奖3天，当前连续抽奖 1 天"
                     android:textColor="@color/text_hint_color"
                     android:textSize="15sp"
-                    android:layout_marginLeft="5dp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/mine_draw_submit"
                     android:layout_width="match_parent"
                     android:layout_height="42dp"
+                    android:layout_marginLeft="5dp"
                     android:layout_marginTop="15dp"
+                    android:layout_marginRight="5dp"
                     android:layout_marginBottom="20dp"
                     android:background="@drawable/mine_un_reg_select_but"
+                    android:enabled="false"
                     android:gravity="center"
                     android:text="提现"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
                     android:textColor="@color/white"
-                    android:textSize="15sp"
-                    android:enabled="false"/>
+                    android:textSize="15sp" />
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

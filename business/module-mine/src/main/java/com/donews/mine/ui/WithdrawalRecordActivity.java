@@ -1,6 +1,7 @@
 package com.donews.mine.ui;
 
 import android.os.Bundle;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,6 +18,8 @@ import com.donews.mine.viewModel.WithdrawalRecordViewModel;
 import com.gyf.immersionbar.ImmersionBar;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
+
+import java.util.ArrayList;
 
 /**
  * 提现记录
@@ -62,7 +65,17 @@ public class WithdrawalRecordActivity extends
         });
         mViewModel.recordListLiveData.observe(this, items -> {
             if (isRefesh) {
-                adapter.setNewData(items);
+                if (items == null || items.isEmpty()) {
+                    mDataBinding.mineRefeshIclLayout.getStateLayout().showEmpty(
+                            R.layout.incl_mul_status_withdrawal_null,
+                            new ViewGroup.LayoutParams(
+                                    ViewGroup.LayoutParams.MATCH_PARENT,
+                                    ViewGroup.LayoutParams.MATCH_PARENT
+                            ));
+                    adapter.setNewData(new ArrayList<>());
+                }else{
+                    adapter.setNewData(items);
+                }
             } else {
                 adapter.addData(items);
                 adapter.loadMoreFinish(items != null, items != null && items.size() < adapter.pageSize);

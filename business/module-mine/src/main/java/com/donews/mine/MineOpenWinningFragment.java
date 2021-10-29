@@ -183,6 +183,9 @@ public class MineOpenWinningFragment extends
         });
         mDataBinding.mainWinCodeRefresh.setOnRefreshListener(refreshLayout -> {
 //            mViewModel.loadData(period,false);
+            if (mViewModel.detailLivData.getValue() == null) {
+                mDataBinding.mineWinCodeListStatus.showLoading();
+            }
             isRefesh = true;
             isLoadStart = true;
             mViewModel.loadData(0, false);
@@ -210,6 +213,7 @@ public class MineOpenWinningFragment extends
                 updateUI(-1);
                 mViewModel.getServiceTime();
             } else {
+                mDataBinding.mineWinCodeListStatus.showError();
                 mDataBinding.mainWinCodeRefresh.finishRefresh();
                 ToastUtil.showShort(getBaseActivity(), "数据获取异常");
             }
@@ -222,6 +226,7 @@ public class MineOpenWinningFragment extends
                 //计算服务器视图
                 mViewModel.calculateServiceTime();
             } else {
+                mDataBinding.mineWinCodeListStatus.showError();
                 mDataBinding.mainWinCodeRefresh.finishRefresh();
             }
         });
@@ -342,6 +347,7 @@ public class MineOpenWinningFragment extends
             return; //以下是私有部分。如果只是更新公用部分。那么直接跳过
         }
         if (type == 0) {
+            mDataBinding.mineWinCodeListStatus.showContent();
             adapterOpenWinHead.setVisibility(View.GONE);
             adapterNotOpenWinHead.setVisibility(View.VISIBLE);
             addListNotOpenWinHead();
@@ -357,8 +363,10 @@ public class MineOpenWinningFragment extends
             mViewModel.updateData( //更新其他数据
                     adapterOpenWinHead);
             if (mViewModel.detailLivData.getValue() == null) {
+                mDataBinding.mineWinCodeListStatus.showEmpty();
                 return;
             }
+            mDataBinding.mineWinCodeListStatus.showContent();
             mViewModel.loadAwardData(); //加载滚动通知
             mViewModel.uiPosResetBuild( //UI位置顺序构建
                     adapterOpenWinHead);

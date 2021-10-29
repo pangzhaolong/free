@@ -18,7 +18,7 @@
             <ImageView
                 android:id="@+id/img_main_people"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="75dp"
                 android:scaleType="fitXY"
                 android:src="@mipmap/icon_people_guide" />
 
@@ -70,7 +70,7 @@
                         android:gravity="center"
                         android:minHeight="36dp"
                         android:text="再想想"
-                        android:textColor="#5765FF"
+                        android:textColor="#F33838"
                         android:textSize="@dimen/textSize_16" />
 
                     <TextView

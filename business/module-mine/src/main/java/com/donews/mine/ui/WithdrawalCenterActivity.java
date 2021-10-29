@@ -1,6 +1,7 @@
 package com.donews.mine.ui;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -68,12 +69,15 @@ public class WithdrawalCenterActivity extends
             mViewModel.requestWithdraw(mDataBinding.mineDrawGrid);
         });
         mViewModel.withdrawDataLivData.observe(this, items -> {
-            mViewModel.addGridDatas(mDataBinding.mineDrawGrid, mDataBinding.mineDrawSubmit);
+            mViewModel.addGridDatas(mDataBinding.mineDrawGrid,
+                    mDataBinding.mineDrawSubmit,mDataBinding.mineDrawDesc);
         });
         mViewModel.withdrawDatilesLivData.observe(this, items -> {
             if (items == null) {
+                mDataBinding.mineDrawGridLoading.setText("数据加载错误");
                 ToastUtil.showShort(this, "获取数据异常,请稍后重试");
             } else {
+                mDataBinding.mineDrawGridLoading.setVisibility(View.GONE);
                 mDataBinding.mineDrawYe.setText("" + items.total);
             }
         });
