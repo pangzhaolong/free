@@ -412,7 +412,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     private void setButtonValue(LotteryCodeBean lotteryCodeBean) {
         //判断用户是否登录，未登录走登录流程
 
-
+        mDataBinding.tips.setVisibility(View.VISIBLE);
         //当抽奖码==0 显示0元抽奖
         if (lotteryCodeBean != null && lotteryCodeBean.getCodes().size() == 0) {
             mDataBinding.label02.setVisibility(View.VISIBLE);
