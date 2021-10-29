@@ -89,30 +89,22 @@
                         android:orientation="vertical">
 
 
-                        <ImageView
-                            android:id="@+id/gift_box"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginTop="11dp"
-                            android:layout_marginEnd="10dp"
-                            android:scaleType="fitXY"
-                            android:src="@mipmap/gift_box_close" />
-
-                        <ImageView
-                            android:id="@+id/gift_box_open"
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/gift_box_off"
                             android:layout_width="49dp"
                             android:layout_height="49dp"
                             android:layout_alignParentRight="true"
-                            android:src="@mipmap/gift_box_open"
-                            android:visibility="gone" />
+                            android:layout_marginTop="0dp"
+                            android:scaleType="fitXY"
+                            app:lottie_autoPlay="true"
+                            app:lottie_loop="true" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_centerHorizontal="true"
-                            android:layout_marginTop="45dp"
+                            android:layout_marginTop="43dp"
                             android:layout_marginEnd="7dp"
                             android:text="最大中奖率"
                             android:textColor="#E9423E"
