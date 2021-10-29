@@ -154,16 +154,21 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
                 v.setTag(R.id.icnl_mine_withdraw_fl, "0");
                 v.setBackgroundResource(notSelectBgRes);
             }
+            if(withdrawDatilesLivData.getValue() == null){
+                ToastUtil.showShort(baseActivity,"钱包信息获取异常");
+                submit.setEnabled(false);
+                return; //钱包信息获取异常
+            }
+            if(withdrawDatilesLivData.getValue().total < item.money){
+                desc.setText("");
+                submit.setEnabled(false);
+                return; //余额不足
+            }
             if (!item.available) {
                 desc.setText(item.tips);
                 submit.setEnabled(false);
             } else {
-                if (item.tips == null ||
-                        "".equals(item.tips)) {
-                    desc.setText("余额可提现");
-                }else{
-                    desc.setText(item.tips);
-                }
+                desc.setText("");
                 submit.setEnabled(true);
             }
         });

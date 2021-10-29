@@ -152,7 +152,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:text="提现条件：需连续抽奖3天，当前连续抽奖 1 天"
+                    android:text=""
                     android:textColor="@color/text_hint_color"
                     android:textSize="15sp"
                     android:textStyle="bold" />
