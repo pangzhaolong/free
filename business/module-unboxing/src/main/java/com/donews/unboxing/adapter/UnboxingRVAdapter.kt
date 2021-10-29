@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.donews.common.decoration.GridItemDecoration
-import com.donews.common.utils.DensityUtils
+import com.donews.utilslibrary.utils.DensityUtils
 import com.donews.unboxing.R
 import com.donews.unboxing.bean.UnboxingBean
 import com.donews.unboxing.databinding.UnboxingItemUnboxingBinding

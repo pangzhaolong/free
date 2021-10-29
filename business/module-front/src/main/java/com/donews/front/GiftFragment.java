@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.donews.base.fragment.MvvmLazyLiveDataFragment;
+import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.front.adapter.GiftGoodsAdapter;
 import com.donews.front.databinding.FrontGiftFragmentBinding;
 import com.donews.front.viewModel.GiftViewModel;

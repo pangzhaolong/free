@@ -1,4 +1,4 @@
-package com.dn.sdk.business.bean
+package com.donews.common.ad.business.bean
 
 /**
  * 穿山甲广告id

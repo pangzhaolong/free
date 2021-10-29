@@ -2,45 +2,28 @@ package com.donews.mine.viewModel;
 
 import static com.donews.common.router.RouterActivityPath.Mine.PAGER_MINE_ABOUT_ACTIVITY;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.blankj.utilcode.util.CacheDiskStaticUtils;
-import com.blankj.utilcode.util.CacheDiskUtils;
 import com.dn.drouter.ARouteHelper;
-import com.donews.base.popwindow.ConfirmPopupWindow;
+import com.donews.common.base.popwindow.ConfirmPopupWindow;
 import com.donews.base.utils.ToastUtil;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.UserInfoBean;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.mine.Api.MineHttpApi;
-import com.donews.mine.BuildConfig;
-import com.donews.mine.R;
 import com.donews.mine.databinding.MineSettingFragmentBinding;
-import com.donews.mine.dialogs.ShareToDialogFragment;
 import com.donews.mine.model.SettingModel;
-import com.donews.mine.ui.AboutActivity;
-import com.donews.share.ShareItem;
 import com.donews.share.ShareManager;
-import com.donews.share.WXHolderHelp;
-import com.donews.share.WXShareExecutor;
-import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.utils.AppCacheUtils;
 import com.donews.utilslibrary.utils.AppInfo;
-import com.donews.utilslibrary.utils.DeviceUtils;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;

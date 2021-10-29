@@ -1,4 +1,4 @@
-package com.donews.base.popwindow;
+package com.donews.common.base.popwindow;
 
 import android.content.Context;
 import android.util.Log;

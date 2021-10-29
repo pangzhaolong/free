@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 
-import com.donews.base.activity.MvvmBaseLiveDataActivity;
 import com.module.lottery.viewModel.ContactCustomerViewModel;
 import com.module_lottery.R;
 import com.module_lottery.databinding.ContactCustomerLayoutBinding;

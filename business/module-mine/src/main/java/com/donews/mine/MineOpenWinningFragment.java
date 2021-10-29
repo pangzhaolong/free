@@ -7,13 +7,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.drouter.ARouteHelper;
-import com.donews.base.fragment.MvvmLazyLiveDataFragment;
+import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
@@ -21,9 +20,6 @@ import com.donews.mine.adapters.MineWinningCodeAdapter;
 import com.donews.mine.databinding.MineFragmentWinningCodeBinding;
 import com.donews.mine.viewModel.MineOpenWinningViewModel;
 import com.donews.mine.views.scrollview.BarrageView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**

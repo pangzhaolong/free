@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.SPUtils;
-import com.donews.base.activity.MvvmBaseLiveDataActivity;
+import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.mine.R;
 import com.donews.mine.adapters.MineParticipateRecordAdapter;
@@ -23,7 +23,6 @@ import com.donews.mine.viewModel.MineParticipateRecordViewModel;
 import com.gyf.immersionbar.ImmersionBar;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 参与记录

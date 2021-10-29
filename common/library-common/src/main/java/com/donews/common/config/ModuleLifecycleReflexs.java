@@ -41,7 +41,7 @@ public class ModuleLifecycleReflexs {
     /**
      * 广告组件库
      */
-    private static final String SDKInit = "com.dn.sdk.business.application.AdSdkModuleInit";
+    private static final String SDKInit = "com.donews.common.ad.business.application.AdSdkModuleInit";
 
     public static String[] initModuleNames = {MainInit, BaseInit, HomeInit, SDKInit, FrontInit};
 }

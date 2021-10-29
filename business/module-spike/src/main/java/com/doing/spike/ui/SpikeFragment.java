@@ -9,7 +9,6 @@
 package com.doing.spike.ui;
 
 import android.annotation.SuppressLint;
-import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -30,7 +29,7 @@ import com.doing.spike.bean.SpikeBean;
 import com.doing.spike.databinding.SpikeFramentBinding;
 import com.doing.spike.util.CenterLayoutManager;
 import com.doing.spike.viewModel.SpikeViewModel;
-import com.donews.base.fragment.MvvmLazyLiveDataFragment;
+import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 

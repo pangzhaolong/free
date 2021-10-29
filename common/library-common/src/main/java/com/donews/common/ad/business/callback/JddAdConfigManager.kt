@@ -1,6 +1,6 @@
-package com.dn.sdk.business.callback
+package com.donews.common.ad.business.callback
 
-import com.dn.sdk.business.bean.JddAdConfigBean
+import com.donews.common.ad.business.bean.JddAdConfigBean
 import com.donews.network.BuildConfig
 import com.donews.network.EasyHttp
 import com.donews.network.cache.model.CacheMode

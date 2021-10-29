@@ -1,4 +1,4 @@
-package com.donews.base.activity;
+package com.donews.common.base;
 
 import android.os.Bundle;
 import android.util.SparseArray;
@@ -14,9 +14,10 @@ import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.donews.common.ad.business.monitor.PageMonitor;
 import com.donews.base.base.DataBindingVars;
 import com.donews.base.fragmentdialog.LoadingHintDialog;
-import com.donews.base.popwindow.BasePopupWindow;
+import com.donews.common.base.popwindow.BasePopupWindow;
 import com.donews.base.utils.ClassUtil;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 
@@ -89,7 +90,7 @@ public abstract class MvvmBaseLiveDataActivity<V extends ViewDataBinding, VM ext
         initViewModel();
         performDataBinding();
         initView();
-
+        new PageMonitor().attach(this);
     }
 
     private void initViewModel() {

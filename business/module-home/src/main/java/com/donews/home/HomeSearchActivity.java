@@ -13,7 +13,7 @@ import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.donews.base.activity.MvvmBaseLiveDataActivity;
+import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.home.adapter.SearchFragmentAdapter;
 import com.donews.home.adapter.SearchSugAdapter;
 import com.donews.home.bean.SearchHistory;

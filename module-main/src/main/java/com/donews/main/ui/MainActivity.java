@@ -3,7 +3,6 @@ package com.donews.main.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,10 +13,7 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.events.NavEvent;
-import com.dn.sdk.business.loader.AdManager;
-import com.dn.sdk.sdk.interfaces.listener.impl.SimpleInterstListener;
-import com.dn.sdk.sdk.interfaces.listener.impl.SimpleRewardVideoListener;
-import com.donews.base.activity.MvvmBaseLiveDataActivity;
+import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.base.base.AppStatusConstant;
 import com.donews.base.base.AppStatusManager;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
@@ -36,7 +32,6 @@ import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.gyf.immersionbar.BarHide;
 import com.gyf.immersionbar.ImmersionBar;
-import com.orhanobut.logger.Logger;
 import com.vmadalin.easypermissions.EasyPermissions;
 
 import org.greenrobot.eventbus.EventBus;

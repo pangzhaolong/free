@@ -1,13 +1,13 @@
-package com.dn.sdk.business.application
+package com.donews.common.ad.business.application
 
 import com.dn.sdk.BuildConfig
-import com.dn.sdk.business.bean.JddAdIdConfigBean
-import com.dn.sdk.business.callback.JddAdConfigManager
-import com.dn.sdk.business.loader.AdManager
+import com.donews.common.ad.business.callback.JddAdConfigManager
+import com.donews.common.ad.business.loader.AdManager
 import com.dn.sdk.sdk.AdSdkManager
 import com.donews.base.base.BaseApplication
 import com.donews.common.IModuleInit
 import com.donews.utilslibrary.utils.DeviceUtils
+import com.orhanobut.logger.Logger
 
 /**
  * 广告Sdk初始化
@@ -24,6 +24,7 @@ class AdSdkModuleInit : IModuleInit {
             AdManager.initSDK(it, BuildConfig.DEBUG, BuildConfig.APP_ID_GROMORE)
             AdSdkManager.channel = DeviceUtils.getChannelName()
         }
+        Logger.d("初始广告")
         return false
     }
 

@@ -1,11 +1,11 @@
-package com.donews.base.popwindow;
+package com.donews.common.base.popwindow;
 
 import android.content.Context;
 import android.view.View;
 
 import androidx.fragment.app.FragmentActivity;
 
-import com.donews.base.activity.MvvmBaseLiveDataActivity;
+import com.donews.common.base.MvvmBaseLiveDataActivity;
 
 
 /**

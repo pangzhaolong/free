@@ -10,14 +10,13 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 
-
 import com.dn.sdk.sdk.ErrorConstant;
 import com.dn.sdk.sdk.bean.RequestInfo;
 import com.dn.sdk.sdk.interfaces.listener.IAdBannerListener;
 import com.donews.b.main.DoNewsAdNative;
 import com.donews.b.main.info.DoNewsAD;
 import com.donews.b.start.DoNewsAdManagerHolder;
-import com.donews.common.utils.DensityUtils;
+import com.donews.utilslibrary.utils.DensityUtils;
 
 /**
  * 多牛聚合sdk banner广告加载

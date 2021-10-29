@@ -1,4 +1,4 @@
-package com.dn.sdk.business.constant
+package com.donews.common.ad.business.constant
 
 /**
  *  广告id key

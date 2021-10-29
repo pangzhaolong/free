@@ -16,7 +16,7 @@ import com.dn.sdk.sdk.interfaces.listener.IAdSplashListener;
 import com.donews.b.main.DoNewsAdNative;
 import com.donews.b.main.info.DoNewsAD;
 import com.donews.b.start.DoNewsAdManagerHolder;
-import com.donews.common.utils.DensityUtils;
+import com.donews.utilslibrary.utils.DensityUtils;
 
 /**
  * 多牛聚合 开屏加载

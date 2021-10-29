@@ -1,4 +1,4 @@
-package com.donews.base.fragment;
+package com.donews.common.base;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -18,6 +18,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.donews.common.ad.business.monitor.PageMonitor;
 import com.donews.base.base.DataBindingVars;
 import com.donews.base.fragmentdialog.LoadingHintDialog;
 import com.donews.base.utils.ClassUtil;
@@ -65,10 +66,11 @@ public abstract class MvvmLazyLiveDataFragment<V extends ViewDataBinding, VM ext
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        new PageMonitor().attach(this);
     }
 
-    protected void showLoading(){
-        if(loadingHintDialog != null){
+    protected void showLoading() {
+        if (loadingHintDialog != null) {
             hideLoading();
         }
         loadingHintDialog = new LoadingHintDialog();
@@ -77,8 +79,8 @@ public abstract class MvvmLazyLiveDataFragment<V extends ViewDataBinding, VM ext
                 .show(getChildFragmentManager(), "user_cancellation");
     }
 
-    protected void showLoading(String msg){
-        if(loadingHintDialog != null){
+    protected void showLoading(String msg) {
+        if (loadingHintDialog != null) {
             hideLoading();
         }
         loadingHintDialog = new LoadingHintDialog();
@@ -87,8 +89,8 @@ public abstract class MvvmLazyLiveDataFragment<V extends ViewDataBinding, VM ext
                 .show(getChildFragmentManager(), "user_cancellation");
     }
 
-    protected void hideLoading(){
-        if(loadingHintDialog != null){
+    protected void hideLoading() {
+        if (loadingHintDialog != null) {
             loadingHintDialog.disMissDialog();
         }
     }

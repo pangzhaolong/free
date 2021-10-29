@@ -22,7 +22,7 @@ import com.dn.admediation.csj.listener.DnTTSplashAdLoadCallback;
 import com.dn.sdk.sdk.bean.RequestInfo;
 import com.dn.sdk.sdk.interfaces.listener.IAdSplashListener;
 import com.dn.sdk.sdk.tt.utils.VideoOptionUtil;
-import com.donews.common.utils.DensityUtils;
+import com.donews.utilslibrary.utils.DensityUtils;
 
 /**
  * 开屏广告加载辅助类

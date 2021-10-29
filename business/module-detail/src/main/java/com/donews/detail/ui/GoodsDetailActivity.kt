@@ -9,9 +9,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.donews.base.activity.MvvmBaseLiveDataActivity
+import com.donews.common.base.MvvmBaseLiveDataActivity
 import com.donews.common.router.RouterActivityPath
-import com.donews.common.utils.DensityUtils
+import com.donews.utilslibrary.utils.DensityUtils
 import com.donews.detail.R
 import com.donews.detail.adapter.GoodsDetailAdapter
 import com.donews.detail.databinding.DetailActivityGoodsDetailBinding

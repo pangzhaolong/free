@@ -2,25 +2,17 @@ package com.donews.mine.ui;
 
 import android.os.Bundle;
 
-import androidx.fragment.app.DialogFragment;
-
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.dn.events.events.LoginLodingStartStatus;
-import com.donews.base.activity.MvvmBaseLiveDataActivity;
-import com.donews.base.utils.ToastUtil;
+import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.mine.R;
-import com.donews.mine.databinding.MineActivitySettingBinding;
 import com.donews.mine.databinding.MineActivityUserCancellationBinding;
 import com.donews.mine.dialogs.UserCancellationWhyDialogFragment;
-import com.donews.mine.viewModel.SettingViewModel;
 import com.donews.mine.viewModel.UserCancellationViewModel;
-import com.donews.utilslibrary.utils.AppInfo;
 import com.gyf.immersionbar.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 @Route(path = RouterActivityPath.Mine.PAGER_MINEUSER_CANCELLATION_ACTIVITY)
 public class MineUserCancellationActivity extends
