@@ -15,21 +15,6 @@
         android:paddingBottom="15dp"
         tools:ignore="MissingConstraints,ResourceName">
 
-        <!-- 盖章的标记 -->
-        <TextView
-            android:id="@+id/main_win_code_sele_item_seal"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginRight="60dp"
-            android:background="@drawable/mine_win_code_sele_item_seal0_bg"
-            android:gravity="center"
-            android:rotation="-45"
-            android:text="相似\n中奖"
-            android:textColor="@color/mine_f9cbcc"
-            android:textSize="25sp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <LinearLayout
             android:id="@+id/main_win_code_sele_item_icon_row"
             android:layout_width="match_parent"
@@ -47,24 +32,23 @@
                 <TextView
                     android:id="@+id/main_win_code_sele_item_name"
                     android:layout_width="wrap_content"
-                    android:layout_height="27dp"
+                    android:layout_height="25dp"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="18dp"
                     android:background="@drawable/mine_win_code_sele_item_name_bg"
                     android:gravity="center_vertical"
-                    android:paddingLeft="30dp"
-                    android:paddingTop="5dp"
+                    android:paddingLeft="15dp"
                     android:paddingRight="15dp"
-                    android:paddingBottom="5dp"
                     android:text="小飞鱼"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
                 <com.donews.common.views.CircleImageView
                     android:id="@+id/main_win_code_sele_item_icon"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/user_logo" />
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/user_logo"
+                    android:background="@drawable/white_quan_shape"/>
             </RelativeLayout>
 
             <TextView
@@ -81,7 +65,7 @@
         <TextView
             android:id="@+id/main_win_code_sele_wav_line"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="22dp"
             android:background="@drawable/mine_win_code_sele_item_wav_bg"
             android:layerType="software"
             app:layout_constraintLeft_toLeftOf="@+id/main_win_code_sele_item_icon_row"
@@ -98,8 +82,8 @@
             app:layout_constraintTop_toBottomOf="@+id/main_win_code_sele_wav_line">
             <org.raphets.roundimageview.RoundImageView
                 android:id="@+id/main_win_code_sele_good_icon"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
                 android:scaleType="fitXY"
                 android:src="@mipmap/ic_launcher"
                 app:type="round"
@@ -115,7 +99,6 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toRightOf="@+id/main_win_code_sele_good_icon"
                 app:layout_constraintTop_toTopOf="@+id/main_win_code_sele_good_icon"
-                android:layout_marginTop="10dp"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:maxLines="2"
@@ -126,7 +109,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="bottom"
-                android:layout_marginBottom="10dp"
                 app:layout_constraintLeft_toLeftOf="@+id/main_win_code_sele_good_name"
                 app:layout_constraintBottom_toBottomOf="@+id/main_win_code_sele_good_icon">
                 <TextView
@@ -162,6 +144,21 @@
                 app:layout_constraintTop_toBottomOf="@+id/main_win_code_sele_good_name" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
+        <!-- 盖章的标记 -->
+        <TextView
+            android:id="@+id/main_win_code_sele_item_seal"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_marginRight="109dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/mine_win_code_sele_item_seal0_bg"
+            android:gravity="center"
+            android:rotation="-25"
+            android:textStyle="bold"
+            android:text="相似\n中奖"
+            android:textColor="#E9423E"
+            android:textSize="17sp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

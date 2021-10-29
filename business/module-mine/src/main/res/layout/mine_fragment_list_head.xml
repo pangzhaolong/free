@@ -56,19 +56,30 @@
         android:gravity="center_vertical">
 
         <com.donews.common.views.CircleImageView
+            android:id="@+id/iv_user_logo_bg"
+            android:layout_width="63dp"
+            android:layout_height="63dp"
+            android:background="@drawable/white_quan_shape"
+            android:layout_marginLeft="10dp"/>
+
+        <com.donews.common.views.CircleImageView
             android:id="@+id/iv_user_logo"
             android:layout_width="56dp"
             android:layout_height="56dp"
+            android:layout_alignLeft="@+id/iv_user_logo_bg"
+            android:layout_alignTop="@+id/iv_user_logo_bg"
+            android:layout_alignRight="@+id/iv_user_logo_bg"
+            android:layout_alignBottom="@+id/iv_user_logo_bg"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:background="@drawable/mine_not_login_user_head" />
+            android:layout_margin="3.5dp"
+            android:src="@drawable/mine_not_login_user_head" />
 
         <TextView
             android:id="@+id/tv_userinfo_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="9dp"
-            android:layout_toRightOf="@+id/iv_user_logo"
+            android:layout_toRightOf="@+id/iv_user_logo_bg"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:paddingLeft="5dp"
@@ -115,9 +126,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rl_center_info"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginRight="10dp"
         android:background="@drawable/ad_shape_bg"
         android:orientation="horizontal"
         android:paddingTop="10dp"
@@ -127,7 +138,7 @@
         <RelativeLayout
             android:id="@+id/mine_me_add_reco"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="79dp"
             android:layout_weight="0.9"
             android:paddingBottom="10dp">
 
@@ -146,11 +157,11 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="3dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:text="参与记录"
                     android:textColor="@color/A666666"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"/>
             </LinearLayout>
         </RelativeLayout>
 
@@ -205,19 +216,35 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="MissingConstraints">
 
-                <TextView
-                    android:id="@+id/mine_me_money_num"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
-                    android:paddingTop="3dp"
-                    android:paddingRight="10dp"
-                    android:paddingBottom="3dp"
-                    android:text="￥0"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    app:layout_constraintRight_toRightOf="parent"
-                    tools:ignore="MissingConstraints" />
+                    android:layout_height="35dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="4dp"
+                        android:text="¥"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/mine_me_money_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:paddingLeft="2dp"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="3dp"
+                        android:textStyle="bold"
+                        android:text="0"
+                        android:textColor="@color/black"
+                        android:textSize="24sp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        tools:ignore="MissingConstraints" />
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -236,7 +263,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/ll_glod_count"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="-5dp"
+        android:layout_marginTop="-8dp"
         android:layout_marginRight="50dp"
         android:background="@drawable/cen_cash_js_bg"
         android:paddingLeft="3dp"
@@ -295,6 +322,4 @@
                 android:src="@mipmap/ic_launcher" />
         </TableRow>
     </TableLayout>
-
-
 </RelativeLayout>

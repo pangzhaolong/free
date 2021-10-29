@@ -583,7 +583,7 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             } else {
                 seal.setText(WinTypes.None.name);
             }
-            GlideUtils.loadImageView(view.getContext(), UrlUtils.formatUrlPrefix(item.avatar), headImg);
+            GlideUtils.loadImageView(view.getContext(), UrlUtils.formatHeadUrlPrefix(item.avatar), headImg);
             userName.setText(item.userName);
             winCode.setText(Html.fromHtml(
                     TextWinUtils.drawOldText(detailLivData.getValue().code, item.code)));

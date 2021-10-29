@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
+    android:layout_marginTop="5dp"
     tools:ignore="MissingConstraints">
 
     <View
@@ -22,7 +22,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        android:layout_marginTop="4dp"
         android:background="@color/white"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -40,8 +39,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="7dp"
         android:ellipsize="end"
-        android:gravity="left|center_horizontal"
+        android:gravity="left|center_vertical"
         android:maxLines="2"
+        android:minLines="2"
         android:text="title"
         android:layout_marginLeft="7dp"
         android:textColor="@color/black"
