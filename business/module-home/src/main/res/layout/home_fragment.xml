@@ -401,7 +401,9 @@
                         app:tabIndicatorColor="@color/transparent"
                         app:tabIndicatorHeight="0dp"
                         app:tabSelectedTextColor="#F64A43"
-                        app:tabTextColor="#6D6D6D" />
+                        app:tabTextColor="#6D6D6D"
+                        app:tabBackground="@color/transparent"
+                        app:tabRippleColor="@color/transparent" />
 
                 </com.google.android.material.appbar.AppBarLayout>
 

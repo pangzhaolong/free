@@ -16,6 +16,6 @@
         android:layout_height="24dp"
         android:gravity="center"
         android:text="惊喜大奖"
-        android:textColor="#3A3A3A"
+        android:textColor="#6D6D6D"
         android:textSize="16sp" />
 </FrameLayout>

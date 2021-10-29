@@ -443,8 +443,8 @@
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
                                             android:layout_marginStart="10dp"
-                                            android:layout_marginEnd="15dp"
-                                            android:orientation="horizontal" />
+                                            android:layout_marginEnd="15dp" >
+                                        </com.donews.front.views.BarrageView>
                                     </LinearLayout>
                                 </androidx.constraintlayout.widget.ConstraintLayout>
                             </LinearLayout>
@@ -457,11 +457,12 @@
                             android:layout_height="@dimen/dp_40"
                             android:layout_marginStart="10dp"
                             android:layout_marginEnd="10dp"
-                            android:background="@color/white"
                             app:tabIndicatorColor="@color/transparent"
                             app:tabIndicatorHeight="0dp"
                             app:tabSelectedTextColor="#F64A43"
-                            app:tabTextColor="#3A3A3A" />
+                            app:tabTextColor="#6D6D6D"
+                            app:tabBackground="@color/transparent"
+                            app:tabRippleColor="@color/transparent"/>
 
                     </com.google.android.material.appbar.AppBarLayout>
 

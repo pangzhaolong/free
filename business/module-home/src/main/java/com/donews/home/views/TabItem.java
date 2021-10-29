@@ -30,7 +30,7 @@ public class TabItem extends FrameLayout {
     }
 
     public void selected() {
-        mTitleTv.setTextSize(17);
+        mTitleTv.setTextSize(18);
         mTitleTv.setTextColor(Color.parseColor("#F64A43"));
         mBgView.setVisibility(VISIBLE);
         LayoutParams layoutParams = (LayoutParams) mBgView.getLayoutParams();
