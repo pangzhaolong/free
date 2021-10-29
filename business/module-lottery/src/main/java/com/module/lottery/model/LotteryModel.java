@@ -16,30 +16,29 @@ import com.module.lottery.bean.LotteryBean;
 import com.module.lottery.bean.LotteryCodeBean;
 import com.module.lottery.bean.MaylikeBean;
 import com.module.lottery.bean.ParticipateBean;
-import com.module.lottery.bean.RaidersBean;
 
 import java.util.Map;
 
 //对数据进行访问，并且通知观察者
 public class LotteryModel extends BaseLiveDataModel {
 
-    private static String LOTTERY_BASE= BuildConfig.API_LOTTERY_URL;
-   //抽奖列表猜你喜欢
-    public static String LOTTERY_GUESS_LIKE= LOTTERY_BASE+"v1/similar-goods-list";
+    private static String LOTTERY_BASE = BuildConfig.API_LOTTERY_URL;
+    //抽奖列表猜你喜欢
+    public static String LOTTERY_GUESS_LIKE = LOTTERY_BASE + "v1/similar-goods-list";
     //抽奖商品详情
-    public static String LOTTERY_GUESS_INFO= LOTTERY_BASE+"v1/goods-detail";
+    public static String LOTTERY_GUESS_INFO = LOTTERY_BASE + "v1/goods-detail";
 
     //抽奖商品参与人数
-    public static String LOTTERY_PARTICIPATE_NUM= LOTTERY_BASE+"v1/goods-history-lottery";
+    public static String LOTTERY_PARTICIPATE_NUM = LOTTERY_BASE + "v1/goods-history-lottery";
 
     //抽奖码
-    public static String LOTTERY_LOTTERY_CODE= LOTTERY_BASE+"v1/list-lottery-code";
+    public static String LOTTERY_LOTTERY_CODE = LOTTERY_BASE + "v1/list-lottery-code";
 
     //生成抽奖码
-    public static String LOTTERY_GENERATE_CODE= LOTTERY_BASE+"v1/gen-lottery-code";
+    public static String LOTTERY_GENERATE_CODE = LOTTERY_BASE + "v1/gen-lottery-code";
 
     //抽奖次数达到上限后,推荐一个抽奖商品
-    public static String LOTTERY_RECOMMEND_CODE= LOTTERY_BASE+"v1/recommend-lottery-goods";
+    public static String LOTTERY_RECOMMEND_CODE = LOTTERY_BASE + "v1/recommend-lottery-goods";
 
 
     /**
@@ -47,7 +46,7 @@ public class LotteryModel extends BaseLiveDataModel {
      *
      * @return 返回 SpikeBean
      */
-    public void getNetData(MutableLiveData<MaylikeBean> mutableLiveData, String url, Map<String , String> params) {
+    public void getNetData(MutableLiveData<MaylikeBean> mutableLiveData, String url, Map<String, String> params) {
         unDisposable();
         addDisposable(EasyHttp.get(url)
                 .cacheMode(CacheMode.NO_CACHE)
@@ -60,7 +59,7 @@ public class LotteryModel extends BaseLiveDataModel {
 
                     @Override
                     public void onSuccess(MaylikeBean maylikeBean) {
-                        if(maylikeBean!=null){
+                        if (maylikeBean != null) {
                             mutableLiveData.postValue(maylikeBean);
                         }
                     }
@@ -68,7 +67,7 @@ public class LotteryModel extends BaseLiveDataModel {
     }
 
 
-    public void getNetCommodityData(MutableLiveData<CommodityBean> mutableLiveData, String url, Map<String , String> params) {
+    public void getNetCommodityData(MutableLiveData<CommodityBean> mutableLiveData, String url, Map<String, String> params) {
         unDisposable();
         addDisposable(EasyHttp.get(url)
                 .cacheMode(CacheMode.NO_CACHE)
@@ -81,7 +80,7 @@ public class LotteryModel extends BaseLiveDataModel {
 
                     @Override
                     public void onSuccess(CommodityBean commodityBean) {
-                        if(commodityBean!=null){
+                        if (commodityBean != null) {
                             mutableLiveData.postValue(commodityBean);
                         }
                     }
@@ -89,9 +88,7 @@ public class LotteryModel extends BaseLiveDataModel {
     }
 
 
-
-
-    public void getNetParticipateData(MutableLiveData<ParticipateBean> mutableLiveData, String url, Map<String , String> params) {
+    public void getNetParticipateData(MutableLiveData<ParticipateBean> mutableLiveData, String url, Map<String, String> params) {
         unDisposable();
         addDisposable(EasyHttp.get(url)
                 .cacheMode(CacheMode.NO_CACHE)
@@ -104,7 +101,7 @@ public class LotteryModel extends BaseLiveDataModel {
 
                     @Override
                     public void onSuccess(ParticipateBean participateBean) {
-                        if(participateBean!=null){
+                        if (participateBean != null) {
                             mutableLiveData.postValue(participateBean);
                         }
                     }
@@ -112,10 +109,7 @@ public class LotteryModel extends BaseLiveDataModel {
     }
 
 
-
-
-
-    public void getNetLotteryCodeData(MutableLiveData<LotteryCodeBean> mutableLiveData, String url, Map<String , String> params) {
+    public void getNetLotteryCodeData(MutableLiveData<LotteryCodeBean> mutableLiveData, String url, Map<String, String> params) {
         unDisposable();
         addDisposable(EasyHttp.get(url)
                 .cacheMode(CacheMode.NO_CACHE)
@@ -128,7 +122,7 @@ public class LotteryModel extends BaseLiveDataModel {
 
                     @Override
                     public void onSuccess(LotteryCodeBean participateBean) {
-                        if(participateBean!=null){
+                        if (participateBean != null) {
                             mutableLiveData.postValue(participateBean);
                         }
                     }
@@ -136,35 +130,8 @@ public class LotteryModel extends BaseLiveDataModel {
     }
 
 
-
-
-    public void getRaidersData(MutableLiveData<RaidersBean> mutableLiveData, String url, Map<String , String> params) {
-        unDisposable();
-        addDisposable(EasyHttp.get(url)
-                .cacheMode(CacheMode.NO_CACHE)
-                .params(params)
-                .execute(new SimpleCallBack<RaidersBean>() {
-                    @Override
-                    public void onError(ApiException e) {
-                        mutableLiveData.postValue(null);
-                    }
-
-                    @Override
-                    public void onSuccess(RaidersBean raidersBean) {
-                        if(raidersBean!=null){
-                            mutableLiveData.postValue(raidersBean);
-                        }
-                    }
-                }));
-    }
-
-
-
-
-
-
     //获取联系客服的数据
-    public void getContactCustomerData(MutableLiveData<ContactCustomerBean> mutableLiveData, String url, Map<String , String> params) {
+    public void getContactCustomerData(MutableLiveData<ContactCustomerBean> mutableLiveData, String url, Map<String, String> params) {
         unDisposable();
         addDisposable(EasyHttp.get(url)
                 .cacheMode(CacheMode.NO_CACHE)
@@ -177,7 +144,7 @@ public class LotteryModel extends BaseLiveDataModel {
 
                     @Override
                     public void onSuccess(ContactCustomerBean raidersBean) {
-                        if(raidersBean!=null){
+                        if (raidersBean != null) {
                             mutableLiveData.postValue(raidersBean);
                         }
                     }
@@ -185,15 +152,12 @@ public class LotteryModel extends BaseLiveDataModel {
     }
 
 
-
-
-
     /**
      * 获取网路数据
      *
      * @return 返回 SpikeBean
      */
-    public void getGenerateCode(MutableLiveData<GenerateCodeBean> mutableLiveData, String url, Map<String , String> params) {
+    public void getGenerateCode(MutableLiveData<GenerateCodeBean> mutableLiveData, String url, Map<String, String> params) {
         unDisposable();
         addDisposable(EasyHttp.get(url)
                 .cacheMode(CacheMode.NO_CACHE)
@@ -206,7 +170,7 @@ public class LotteryModel extends BaseLiveDataModel {
 
                     @Override
                     public void onSuccess(GenerateCodeBean maylikeBean) {
-                        if(maylikeBean!=null){
+                        if (maylikeBean != null) {
                             mutableLiveData.postValue(maylikeBean);
                         }
                     }

@@ -2,6 +2,7 @@ package com.module.lottery.dialog;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -120,6 +121,7 @@ public class CongratulationsDialog extends BaseDialog<CongratulationsDialogLayou
                         mDataBinding.originalPrice.setText("¥ " + mRecommendBean.getOriginalPrice());
                         mDataBinding.titleName.setText(mRecommendBean.getTitle());
                         mDataBinding.randomNumber.setText(RandomProbability.Companion.getRandomNumber() + "%");
+                        mDataBinding.originalPrice.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG);
 
                     }
                 }

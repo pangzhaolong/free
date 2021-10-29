@@ -56,16 +56,17 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
     private Context context;
     private OnStateListener mOnFinishListener;
     private LotteryHandler mLotteryHandler = new LotteryHandler(this);
-    private BaseLiveDataModel baseLiveDataModel;
+
     String mGoodsId;
     LotteryCodeBean mLotteryCodeBean;
     int time = 3000;
+    GenerateCodeBean mGenerateCodeBean;
 
-    public ExhibitCodeStartsDialog(Context context, String goodsId, LotteryCodeBean lotteryCodeBean) {
+    public ExhibitCodeStartsDialog(Context context, String goodsId, LotteryCodeBean lotteryCodeBean, GenerateCodeBean generateCodeBean) {
         super(context, R.style.dialogTransparent);//内容样式在这里引入
         this.context = context;
         mGoodsId = goodsId;
-        baseLiveDataModel = new BaseLiveDataModel();
+        mGenerateCodeBean = generateCodeBean;
         this.mLotteryCodeBean = lotteryCodeBean;
         //延迟一秒出现关闭按钮
         Message message = new Message();
@@ -92,14 +93,30 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
                 }
             }
         });
-        generateLotteryCode();
+        initProgressBar();
         initView();
 
 
     }
 
 
+    private void initProgressBar() {
+        mDataBinding.setCodeBean(mGenerateCodeBean);
+        int schedule = 0;
+        //抽奖码生成成功回调
+        if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() != 0) {
+            schedule = mLotteryCodeBean.getCodes().size();
+            schedule = 50 / 5 * (schedule);
+        } else {
+            schedule = 10;
+        }
+//                                schedule=  generateRandomNumber(schedule);
+        startProgressBar(schedule);
+    }
+
     void initView() {
+
+
         if (mLotteryCodeBean.getCodes().size() >= 5) {
             mDataBinding.jsonAnimationLayout.setVisibility(View.GONE);
             mDataBinding.hintLayout.setVisibility(View.VISIBLE);
@@ -129,6 +146,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
             mDataBinding.jsonAnimationHand.loop(true);
             mDataBinding.jsonAnimationHand.playAnimation();
 
+
         }
 
 
@@ -153,59 +171,23 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
         return 0.8f;
     }
 
-    //生成抽奖码
-    public void generateLotteryCode() {
-        if (baseLiveDataModel != null && mGoodsId != null) {
-            Map<String, String> params = BaseParams.getMap();
-            params.put("goods_id", mGoodsId);
-            JSONObject json = new JSONObject(params);
-            baseLiveDataModel.unDisposable();
-            baseLiveDataModel.addDisposable(EasyHttp.post(LotteryModel.LOTTERY_GENERATE_CODE)
-                    .cacheMode(CacheMode.NO_CACHE)
-                    .upJson(json.toString())
-                    .execute(new SimpleCallBack<GenerateCodeBean>() {
-                        @Override
-                        public void onError(ApiException e) {
-                            Toast.makeText(getContext(), "抽奖码获取失败", Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onSuccess(GenerateCodeBean generateCode) {
-                            if (generateCode != null) {
-                                mDataBinding.setCodeBean(generateCode);
-                                int schedule = 0;
-                                //抽奖码生成成功回调
-                                if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() != 0) {
-                                    schedule = mLotteryCodeBean.getCodes().size();
-                                    schedule = 50 / 5 * (schedule);
-                                } else {
-                                    schedule = 10;
-                                }
-//                                schedule=  generateRandomNumber(schedule);
-                                startProgressBar(schedule);
-                            }
-                        }
-                    }));
-        }
-    }
 
     //在特定区间产生随机数
     @SuppressLint("LongLogTag")
     private int generateRandomNumber(int endNumber) {
-        endNumber=endNumber+10;
-        Log.d("==============================$$$$$","endNumber "+endNumber+"");
+        endNumber = endNumber + 10;
+        Log.d("==============================$$$$$", "endNumber " + endNumber + "");
         Random rand = new Random();
         int startNumber = (endNumber - 10);
         endNumber = (endNumber - 3);
         int number = (int) (startNumber + Math.random() * (endNumber - startNumber + 1));
-        Log.d("==============================$$$$$","startNumber "+startNumber+" endNumber "+endNumber+"");
+        Log.d("==============================$$$$$", "startNumber " + startNumber + " endNumber " + endNumber + "");
 
         return number;
     }
 
     //进度条设置动画
     public void startProgressBar(int progress) {
-        Toast.makeText(getContext(), progress + "", Toast.LENGTH_SHORT).show();
         ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, progress);
         valueAnimator.setDuration(500);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {

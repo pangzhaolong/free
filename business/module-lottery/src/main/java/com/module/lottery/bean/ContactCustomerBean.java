@@ -4,5 +4,5 @@ import com.donews.common.contract.BaseCustomViewModel;
 
 import java.io.Serializable;
 
-public class ContactCustomerBean  extends BaseCustomViewModel {
+public class ContactCustomerBean extends BaseCustomViewModel {
 }
