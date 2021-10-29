@@ -45,7 +45,7 @@ public class NorFragment extends MvvmLazyLiveDataFragment<FrontNorFragmentBindin
         mDataBinding.frontNorRv.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-                outRect.top = 12;
+                outRect.top = 16;
             }
         });
         mDataBinding.frontNorRv.setLayoutManager(new LinearLayoutManager(this.getContext()));

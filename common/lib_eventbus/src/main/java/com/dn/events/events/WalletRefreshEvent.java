@@ -1,9 +1,9 @@
 package com.dn.events.events;
 
-public class NavEvent {
+public class WalletRefreshEvent {
     public int navIndex = 0;
 
-    public NavEvent(int navIndex) {
+    public WalletRefreshEvent(int navIndex) {
         this.navIndex = navIndex;
     }
 }

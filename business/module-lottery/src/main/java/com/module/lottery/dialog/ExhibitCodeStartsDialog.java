@@ -135,16 +135,26 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
                     }
                 }
             });
+            // 增加中奖率
             mDataBinding.jsonAnimation.setImageAssetsFolder("images");
             mDataBinding.jsonAnimation.setAnimation("probability_button.json");
             mDataBinding.jsonAnimation.loop(true);
             mDataBinding.jsonAnimation.playAnimation();
 
-
+            //手
             mDataBinding.jsonAnimationHand.setImageAssetsFolder("images");
             mDataBinding.jsonAnimationHand.setAnimation("hand.json");
             mDataBinding.jsonAnimationHand.loop(true);
             mDataBinding.jsonAnimationHand.playAnimation();
+
+            //礼盒
+            mDataBinding.giftBoxOff.setImageAssetsFolder("images");
+            mDataBinding.giftBoxOff.setAnimation("gift_box_off.json");
+            mDataBinding.giftBoxOff.loop(true);
+            mDataBinding.giftBoxOff.playAnimation();
+
+
+
 
 
         }
@@ -207,8 +217,11 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
             @Override
             public void onAnimationEnd(Animator animation) {
                 if (progress == 50) {
-                    mDataBinding.giftBox.setVisibility(View.GONE);
-                    mDataBinding.giftBoxOpen.setVisibility(View.VISIBLE);
+                    //礼盒开
+                    mDataBinding.giftBoxOff.setImageAssetsFolder("images");
+                    mDataBinding.giftBoxOff.setAnimation("gift_box_open.json");
+                    mDataBinding.giftBoxOff.loop(true);
+                    mDataBinding.giftBoxOff.playAnimation();
                 }
             }
 

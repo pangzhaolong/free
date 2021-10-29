@@ -14,6 +14,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.UserTelBindEvent;
+import com.dn.events.events.WalletRefreshEvent;
 import com.donews.base.fragment.MvvmLazyLiveDataFragment;
 import com.donews.base.utils.glide.GlideUtils;
 import com.donews.common.contract.LoginHelp;
@@ -65,6 +66,13 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
     @Subscribe(threadMode = ThreadMode.MAIN) //用户登录状态变化
     public void loginStatusEvent(LoginUserStatus event) {
         updateUIData();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onGetMessage(WalletRefreshEvent navEvent) {
+        if (navEvent.navIndex == 0) {
+            mViewModel.getLoadWithdrawData();
+        }
     }
 
     @Override

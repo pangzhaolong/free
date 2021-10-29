@@ -418,7 +418,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             mDataBinding.label02.setVisibility(View.VISIBLE);
             mDataBinding.label01.setText(getResources().getString(R.string.zero_dollar_draw));
             mDataBinding.label02.setText(getResources().getString(R.string.lottery_value));
-            mDataBinding.defaultPrompt.setImageDrawable(getResources().getDrawable(R.mipmap.hint_content));
+            mDataBinding.tips.setText("观看视频，参与抽奖");
         }
 
 
@@ -427,7 +427,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             mDataBinding.label02.setVisibility(View.VISIBLE);
             mDataBinding.label01.setText(getResources().getString(R.string.continue_value));
             mDataBinding.label02.setText(getResources().getString(R.string.lottery_value));
-            mDataBinding.defaultPrompt.setImageDrawable(getResources().getDrawable(R.mipmap.try_once));
+            mDataBinding.tips.setText("多试试，万一中了呢");
 
         }
         //当抽奖码大于等于6时显示等待开奖
@@ -435,7 +435,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             mDataBinding.label01.setText(getResources().getString(R.string.wait_dollar_draw));
             mDataBinding.label02.setVisibility(View.GONE);
             mDataBinding.label02.setText("");
-            mDataBinding.defaultPrompt.setImageDrawable(getResources().getDrawable(R.mipmap.lottery_tips));
+            mDataBinding.tips.setText("明日10:00点开奖");
             //
             mDataBinding.jsonAnimation.setVisibility(View.GONE);
             mDataBinding.jsonAnimationHalo.pauseAnimation();
