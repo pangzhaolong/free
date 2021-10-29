@@ -110,12 +110,12 @@ class RemindDialog : AbstractFragmentDialog<MainExitDialogRemindBinding>(), Easy
             val time = System.currentTimeMillis() + 5 * 60 * 1000;
             CalendarUtils.addCalendarEvent(
                 it,
-                "测试日程",
-                "点击跳转>><a href=\"jdd://com.cdyf.lottery.jdd\">打开app</a><br/>".toString(),
+                "奖多多开奖提醒",
+                "打开app进行开奖",
                 time,
                 30,
                 "FREQ=DAILY;INTERVAL=1",
-                4
+                10
             )
         }
         onCancelListener?.onCancel()
