@@ -295,6 +295,9 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         } else {
             mDataBinding.frontRpIv5.setBackgroundResource(R.drawable.front_rp_open);
         }
+//        mDataBinding.frontRpProgess.setProgress(4);
+//        mDataBinding.frontRpProgressIv1.setBackgroundResource(R.drawable.front_dot_bg);
+//        mDataBinding.frontRpProgressIv2.setBackgroundResource(R.drawable.front_dot_bg);
         mDataBinding.frontRpProgess.setMax(rpBean.getLotteryTotal());
 
         SPUtils.setInformain(KeySharePreferences.CLOSE_RED_PACKAGE_COUNTS, nCloseRpCounts);

@@ -43,7 +43,7 @@ public class HomeCrazyListActivity extends MvvmBaseLiveDataActivity<HomeCrazyLis
         mDataBinding.homeCrazyGoodsRv.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-                outRect.top = 10;
+                outRect.top = 16;
             }
         });
         mDataBinding.homeCrazyGoodsRv.setAdapter(mCrazyListAdapter);

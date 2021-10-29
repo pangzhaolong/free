@@ -99,10 +99,10 @@ public class MainActivity
 
         mNavigationController = mDataBinding.bottomView.material()
                 .addItem(R.drawable.main_home_checked, "首页", checkColor)
-                .addItem(R.drawable.main_uesr_normal, "晒单", checkColor)
-                .addItem(R.drawable.main_seckill_normal, "开奖", checkColor)
+                .addItem(R.drawable.main_showtime, "晒单", checkColor)
+                .addItem(R.drawable.main_lottery, "开奖", checkColor)
                 .addItem(R.drawable.main_buy, "省钱购", checkColor)
-                .addItem(R.drawable.main_uesr_normal, "我的", checkColor)
+                .addItem(R.drawable.main_mine, "我的", checkColor)
                 .setDefaultColor(defaultColor)
                 .enableAnimateLayoutChanges()
                 .build();
