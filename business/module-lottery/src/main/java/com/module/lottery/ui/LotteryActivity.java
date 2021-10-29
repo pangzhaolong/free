@@ -125,7 +125,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             @Override
             public void onClick(View v) {
                 boolean logType = AppInfo.checkIsWXLogin();
-                logType = true;
                 if (logType) {
                     if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() >= 6) {
                         return;
