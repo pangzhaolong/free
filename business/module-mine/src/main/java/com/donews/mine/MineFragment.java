@@ -153,6 +153,12 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
         mDataBinding.mineMeListLayout.getRecyclerView().setLayoutManager(
                 new GridLayoutManager(getActivity(), 2));
         mDataBinding.mineMeListLayout.getRecyclerView().setAdapter(adapter);
+        mViewModel.withdrawDatilesLivData.observe(this, item -> {
+            if(item != null){
+                TextView tv = getView().findViewById(R.id.mine_me_money_num);
+                tv.setText(""+item.total);
+            }
+        });
         mViewModel.recommendGoodsLiveData.observe(this, listDTOS -> {
             if (isRefresh) {
                 adapter.refeshFinish();
@@ -245,6 +251,7 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
         isRefresh = true;
         adapter.refeshStart();
         mViewModel.loadRecommendGoods(25);
+        mViewModel.getLoadWithdrawData();
     }
 
     //上拉加载更多

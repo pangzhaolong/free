@@ -18,6 +18,8 @@ import com.donews.common.router.RouterActivityPath;
 import com.donews.mine.Api.MineHttpApi;
 import com.donews.mine.bean.QueryBean;
 import com.donews.mine.bean.resps.RecommendGoodsResp;
+import com.donews.mine.bean.resps.WithdraWalletResp;
+import com.donews.mine.bean.resps.WithdrawConfigResp;
 import com.donews.mine.databinding.MineFragmentBinding;
 import com.donews.mine.model.MineModel;
 import com.donews.mine.ui.InvitationCodeActivity;
@@ -43,6 +45,11 @@ public class MineViewModel extends BaseLiveDataViewModel<MineModel> {
 
     public MutableLiveData<List<RecommendGoodsResp.ListDTO>> recommendGoodsLiveData= new MutableLiveData<>();
 
+    //钱包详情
+    public MutableLiveData<WithdraWalletResp> withdrawDatilesLivData =
+            new MutableLiveData<>();
+
+
     @Override
     public MineModel createModel() {
         return new MineModel();
@@ -51,6 +58,13 @@ public class MineViewModel extends BaseLiveDataViewModel<MineModel> {
     public void setDataBinDing(MineFragmentBinding dataBinding, FragmentActivity baseActivity) {
         this.dataBinding = dataBinding;
         this.baseActivity = baseActivity;
+    }
+
+    /**
+     * 钱包详情
+     */
+    public void getLoadWithdrawData() {
+        mModel.requestWithdraWallet(withdrawDatilesLivData);
     }
 
     /**
