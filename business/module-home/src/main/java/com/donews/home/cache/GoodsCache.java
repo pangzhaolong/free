@@ -3,15 +3,11 @@ package com.donews.home.cache;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Context;
-import android.os.Environment;
-import android.util.Log;
 
-import com.donews.home.bean.BannerBean;
 import com.donews.home.bean.DataBean;
 import com.donews.home.bean.NorGoodsBean;
 import com.donews.home.bean.RealTimeBean;
 import com.donews.home.bean.SearchResultTbBean;
-import com.donews.home.bean.SearchSugBean;
 import com.donews.home.bean.SecKilBean;
 import com.donews.home.bean.TopGoodsBean;
 import com.donews.utilslibrary.utils.LogUtil;
@@ -40,11 +36,9 @@ public class GoodsCache {
         s_sec_kil_bean_path = s_base_cache_path + "/top_sec_kil_bean.dat";
         s_nor_goods_bean_path = s_base_cache_path + "/top_nor_goods_bean.dat";
         s_search_tb_bean_path = s_base_cache_path + "/search_tb_bean.dat";
-
-        Log.e("xxxxxx:", "GoodsCache init");
     }
 
-    public static <T> T readGoodsBean(Class c, String ext) {
+    public static synchronized <T> T readGoodsBean(Class c, String ext) {
         T people = null;
         ObjectInputStream ois = null;
         try {
@@ -79,7 +73,7 @@ public class GoodsCache {
         return people;
     }
 
-    public static void saveGoodsBean(Object object, String ext) {
+    public static synchronized void saveGoodsBean(Object object, String ext) {
         if (object == null) {
             return;
         }

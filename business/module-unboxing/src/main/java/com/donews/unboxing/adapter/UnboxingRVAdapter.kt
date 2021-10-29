@@ -57,14 +57,33 @@ class UnboxingRVAdapter(layoutResId: Int) : BaseQuickAdapter<UnboxingBean, BaseV
             picAdapter.setNewData(bean.images as MutableList<String>?)
 
             val codeString = bean.code
-            val builder = SpannableStringBuilder(codeString)
-            builder.setSpan(
-                ForegroundColorSpan(Color.parseColor("#2C2C2C")),
-                codeString.length - 1,
-                codeString.length,
-                Spannable.SPAN_INCLUSIVE_EXCLUSIVE
-            )
-            dataBinding.tvWinningNumber.text = builder
+            val resultCodeString = bean.openCode
+            if (codeString == resultCodeString) {
+                dataBinding.ivIcFree.setImageResource(R.drawable.unboxing_ic_win)
+                dataBinding.tvWinningNumber.text = codeString
+            } else {
+                dataBinding.ivIcFree.setImageResource(R.drawable.unboxing_ic_similarity)
+                val builder = SpannableStringBuilder(codeString)
+                if (resultCodeString.isBlank()) {
+                    builder.setSpan(
+                        ForegroundColorSpan(Color.parseColor("#2C2C2C")),
+                        codeString.length - 1,
+                        codeString.length,
+                        Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+                    )
+                } else {
+                    val length = codeString.length.coerceAtMost(resultCodeString.length)
+                    for (index in 0 until length) {
+                        if (codeString[index] != resultCodeString[index]) {
+                            builder.setSpan(
+                                ForegroundColorSpan(Color.parseColor("#2C2C2C")),
+                                index, index + 1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+                            )
+                        }
+                    }
+                    dataBinding.tvWinningNumber.text = builder
+                }
+            }
 
             val clickListener = View.OnClickListener {
                 val zan = mmkv.decodeBool(item.id.toString(), false)

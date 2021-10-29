@@ -80,16 +80,13 @@ public class  NoDrawDialog extends BaseDialog<NoDrawDialogLayoutBinding>{
 
     @Override
     public float setSize() {
-        return 0.7f;
+        return 0.8f;
     }
 
 
     @Override
     public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
-        if(mOnFinishListener!=null){
-            mOnFinishListener.onFinish();
-        }
-        return super.onKeyDown(keyCode, event);
+        return true;
     }
 
     OnFinishListener mOnFinishListener;
@@ -110,6 +107,7 @@ public class  NoDrawDialog extends BaseDialog<NoDrawDialogLayoutBinding>{
                mExitDialogRecommendData=exitDialogRecommendGoodsResp;
                ImageUtils.setImage(mContext,mDataBinding.commodity,exitDialogRecommendGoodsResp.getList().get(0).getMainPic(),5);
                mDataBinding.number.setText(exitDialogRecommendGoodsResp.getList().get(0).getTotalPeople()+"");
+               mDataBinding.title.setText(exitDialogRecommendGoodsResp.getList().get(0).getTitle());
              }
             }
         });

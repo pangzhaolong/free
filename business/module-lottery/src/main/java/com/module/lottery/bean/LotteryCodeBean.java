@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
-public class LotteryCodeBean  extends BaseCustomViewModel {
+public class LotteryCodeBean extends BaseCustomViewModel {
 
 
     public List<String> getCodes() {

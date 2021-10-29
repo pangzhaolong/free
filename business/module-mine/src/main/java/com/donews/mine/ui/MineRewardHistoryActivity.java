@@ -17,6 +17,7 @@ import com.donews.mine.adapters.MineRewarHistoryAdapter;
 import com.donews.mine.databinding.MineRewardHistoryActivityBinding;
 import com.donews.mine.listener.RewardItemClickListener;
 import com.donews.mine.viewModel.MineRewardHistoryViewModel;
+import com.gyf.immersionbar.ImmersionBar;
 
 /**
  * 往期开奖
@@ -29,6 +30,13 @@ public class MineRewardHistoryActivity extends MvvmBaseLiveDataActivity<MineRewa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ImmersionBar.with(this)
+                .statusBarColor(R.color.white)
+                .navigationBarColor(R.color.white)
+                .fitsSystemWindows(true)
+                .autoDarkModeEnable(true)
+                .init();
     }
 
     @Override

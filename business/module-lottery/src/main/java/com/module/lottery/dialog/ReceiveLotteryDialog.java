@@ -67,13 +67,9 @@ public class ReceiveLotteryDialog extends BaseDialog<ReceiveDialogLayoutBinding>
 
     @Override
     public float setSize() {
-        return 0.7f;
+        return 1.0f;
     }
     private  void initView(){
-
-
-
-
         mDataBinding.jsonAnimationHand.setImageAssetsFolder("images");
         mDataBinding.jsonAnimationHand.setAnimation("hand.json");
         mDataBinding.jsonAnimationHand.loop(true);

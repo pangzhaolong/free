@@ -33,7 +33,7 @@ public class GoodsCache {
         s_search_tb_bean_path = s_base_cache_path + "/search_tb_bean.dat";
     }
 
-    public static <T> T readGoodsBean(Class c, String ext) {
+    public static synchronized <T> T readGoodsBean(Class c, String ext) {
         T people = null;
         ObjectInputStream ois = null;
         try {
@@ -46,7 +46,8 @@ public class GoodsCache {
                 ois = new ObjectInputStream(new FileInputStream(s_real_time_bean_path + ext));
             } else if (c == SecKilBean.class) {
                 ois = new ObjectInputStream(new FileInputStream(s_sec_kil_bean_path + ext));
-            } else */if (c == NorGoodsBean.class) {
+            } else */
+            if (c == NorGoodsBean.class) {
                 ois = new ObjectInputStream(new FileInputStream(s_nor_goods_bean_path + ext));
             } /*else if (c == SearchResultTbBean.class) {
                 ois = new ObjectInputStream(new FileInputStream(s_search_tb_bean_path + ext));
@@ -68,7 +69,7 @@ public class GoodsCache {
         return people;
     }
 
-    public static void saveGoodsBean(Object object, String ext) {
+    public static synchronized void saveGoodsBean(Object object, String ext) {
         if (object == null) {
             return;
         }
@@ -84,7 +85,8 @@ public class GoodsCache {
                 fos = new ObjectOutputStream(new FileOutputStream(s_real_time_bean_path + ext));
             } else if (object instanceof SecKilBean) {
                 fos = new ObjectOutputStream(new FileOutputStream(s_sec_kil_bean_path + ext));
-            } else */if (object instanceof NorGoodsBean) {
+            } else */
+            if (object instanceof NorGoodsBean) {
                 fos = new ObjectOutputStream(new FileOutputStream(s_nor_goods_bean_path + ext));
             }/* else if (object instanceof SearchResultTbBean) {
                 fos = new ObjectOutputStream(new FileOutputStream(s_search_tb_bean_path + ext));
