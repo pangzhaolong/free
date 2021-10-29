@@ -11,11 +11,10 @@ import androidx.annotation.NonNull;
 import com.donews.front.R;
 import com.donews.front.databinding.FrontActivityRuleDialogBinding;
 
-//抽奖码小于6个
 public class ActivityRuleDialog extends BaseDialog<FrontActivityRuleDialogBinding> {
 
     public ActivityRuleDialog(Context context) {
-        super(context, R.style.dialogTransparent);//内容样式在这里引入
+        super(context, R.style.dialogTransparent);
     }
 
     @Override
@@ -37,6 +36,10 @@ public class ActivityRuleDialog extends BaseDialog<FrontActivityRuleDialogBindin
     @SuppressLint("RestrictedApi")
     void initView() {
         mDataBinding.frontRuleDialogHtmlTv.setText(Html.fromHtml(getContext().getString(R.string.front_rule_3text)));
+
+        mDataBinding.frontRuleKnownTv.setOnClickListener(v -> {
+            hide();
+        });
     }
 
     @Override

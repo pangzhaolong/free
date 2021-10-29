@@ -67,7 +67,6 @@ public class BarrageView extends FrameLayout {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-//                mExchange = !mExchange;
                 mScrollHandler.sendEmptyMessageDelayed(10000, 3000);
             }
 
@@ -118,7 +117,6 @@ public class BarrageView extends FrameLayout {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-//                mExchange = !mExchange;
                 mScrollHandler.sendEmptyMessageDelayed(10000, 3000);
             }
 
