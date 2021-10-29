@@ -2,6 +2,7 @@ package com.donews.mine.viewModel;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.text.Html;
@@ -20,6 +21,7 @@ import com.blankj.utilcode.util.ConvertUtils;
 import com.donews.base.utils.ToastUtil;
 import com.donews.base.utils.glide.GlideUtils;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
+import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.mine.BuildConfig;
 import com.donews.mine.R;
@@ -399,11 +401,10 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             but.setVisibility(View.VISIBLE);
             desc.setText("抽奖多的人\n当然容易免单呀");
             but.setOnClickListener(v -> {
-//                ARouter.getInstance()
-//                        .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
-//                        .withString("goods_id", "tb:655412572200")
-//                        .navigation();
-                ToastUtil.show(view.getContext(), "参与更多抽奖>>>");
+                //去往首页
+                ARouter.getInstance().build(RouterActivityPath.Main.PAGER_MAIN)
+                        .withInt("position", 0)
+                        .navigation();
             });
             //添加未中奖视图
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
