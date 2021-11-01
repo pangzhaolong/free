@@ -39,7 +39,7 @@ public class MineWithdrawalRecordAdapter extends BaesLoadMoreAdapter<WithdrawRec
             baseViewHolder.setText(R.id.mine_withdraw_item_num, "+" + item.score + item.unit);
         } else {
             tv.setTextColor(getContext().getResources().getColor(R.color.colorAccent));
-            baseViewHolder.setText(R.id.mine_withdraw_item_num, "-" + item.score + item.unit);
+            baseViewHolder.setText(R.id.mine_withdraw_item_num, "" + item.score + item.unit);
         }
     }
 }

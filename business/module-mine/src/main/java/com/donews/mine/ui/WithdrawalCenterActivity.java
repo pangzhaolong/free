@@ -87,9 +87,12 @@ public class WithdrawalCenterActivity extends
         });
         mViewModel.withdrawLivData.observe(this, code -> {
             hideLoad();
-            if (code == 0) {
+            if (code == 0 || code == 22102) {
+                if(code == 0){
+                    ToastUtil.showShort(this, "提现成功!");
+                }
+                mViewModel.getLoadWithdraWalletDite();
                 mViewModel.getLoadWithdrawData(); //更新配置信息
-                ToastUtil.showShort(this, "提现成功!");
                 EventBus.getDefault().post(new WalletRefreshEvent(1));
             }
         });

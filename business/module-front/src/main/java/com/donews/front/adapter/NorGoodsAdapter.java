@@ -146,10 +146,7 @@ public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsV
         }
 
         NorGoodsBean.GoodsInfo goodsInfo = mGoodsList.get(position);
-        if (goodsInfo.getLotteryStatus() == 2) {
-            Toast.makeText(v.getContext(), "等待开奖", Toast.LENGTH_SHORT).show();
-            return;
-        }
+
         mListener.onClick(position, goodsInfo.getGoodsId());
     }
 

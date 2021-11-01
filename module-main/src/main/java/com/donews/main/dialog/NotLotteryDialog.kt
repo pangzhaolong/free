@@ -23,6 +23,8 @@ import com.donews.network.EasyHttp
 import com.donews.network.cache.model.CacheMode
 import com.donews.network.callback.SimpleCallBack
 import com.donews.network.exception.ApiException
+import com.donews.utilslibrary.analysis.AnalysisUtils
+import com.donews.utilslibrary.dot.Dot
 import com.orhanobut.logger.Logger
 import io.reactivex.disposables.CompositeDisposable
 import kotlin.random.Random
@@ -138,6 +140,7 @@ class NotLotteryDialog : AbstractFragmentDialog<MainExitDialogNotLotteryBinding>
 
     inner class EventListener {
         fun clickNext(view: View) {
+            AnalysisUtils.onEventEx(context, Dot.Btn_Change1)
             requestGoodsInfo()
         }
 
@@ -145,6 +148,7 @@ class NotLotteryDialog : AbstractFragmentDialog<MainExitDialogNotLotteryBinding>
             if (onSureListener != null) {
                 onSureListener.onSure()
             }
+            AnalysisUtils.onEventEx(context, Dot.Btn_BuyNow)
             goodsInfo?.run {
                 ARouter.getInstance()
                     .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
