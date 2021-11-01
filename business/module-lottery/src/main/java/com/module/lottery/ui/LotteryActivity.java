@@ -290,6 +290,10 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     }
 
     private void finishReturn() {
+        if (mLotteryCodeBean == null || mLotteryCodeBean.getCodes() == null) {
+            return;
+        }
+
         EventBus.getDefault().post(new LotteryStatusEvent(mPosition, mGoodsId, mLotteryCodeBean.getCodes()));
     }
 
