@@ -240,7 +240,7 @@
             android:id="@+id/tv_like_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{String.valueOf(unboxingBean.zan)}"
+            android:text="@{String.valueOf(zan?unboxingBean.zan+1:unboxingBean.zan)}"
             android:textColor="#A9AEB1"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="@id/iv_ic_free"
