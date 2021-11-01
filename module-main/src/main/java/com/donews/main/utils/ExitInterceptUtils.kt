@@ -3,9 +3,14 @@ package com.donews.main.utils
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.alibaba.android.arouter.launcher.ARouter
+import com.dn.sdk.sdk.interfaces.listener.impl.SimpleInterstListener
+import com.dn.sdk.sdk.interfaces.listener.impl.SimpleRewardVideoListener
 import com.donews.base.base.AppManager
 import com.donews.base.base.AppStatusConstant
 import com.donews.base.base.AppStatusManager
+import com.donews.common.ad.business.callback.JddAdConfigManager
+import com.donews.common.ad.business.loader.AdManager
+import com.donews.common.ad.business.monitor.LotteryAdCount
 import com.donews.common.router.RouterActivityPath
 import com.donews.main.BuildConfig
 import com.donews.main.dialog.ContinueLotteryDialog
@@ -97,7 +102,7 @@ object ExitInterceptUtils {
      * @return Boolean true 抽过奖,false 未抽过奖
      */
     private fun checkNotLottery(): Boolean {
-        return false
+        return !LotteryAdCount.todayLottery()
     }
 
     /**
@@ -130,7 +135,7 @@ object ExitInterceptUtils {
                 }
                 setOnCloseListener {
                     disMissDialog()
-                    exitApp(activity)
+                    notLotteryExitApp(activity)
                 }
             }
         notLotteryDialog?.show(activity.supportFragmentManager, NotLotteryDialog::class.simpleName)
@@ -227,11 +232,102 @@ object ExitInterceptUtils {
         return BuildConfig.API_LOTTERY_URL + "v1/recommend-goods-list"
     }
 
+
+    private fun notLotteryExitApp(activity: AppCompatActivity) {
+        JddAdConfigManager.addListener {
+            val jddAdConfigBean = JddAdConfigManager.jddAdConfigBean
+            if (jddAdConfigBean.notLotteryExitAppDialogAdEnable) {
+                if (jddAdConfigBean.notLotteryExitAppDialogAdType == 1) {
+                    AdManager.loadInterstitialAd(activity, object : SimpleInterstListener() {
+                        override fun onError(code: Int, msg: String?) {
+                            super.onError(code, msg)
+                            if (jddAdConfigBean.notLotteryExitAppDialogAdMutex) {
+                                realExitApp(activity)
+                            } else {
+                                exitApp(activity)
+                            }
+                        }
+
+                        override fun onAdClosed() {
+                            super.onAdClosed()
+                            if (jddAdConfigBean.notLotteryExitAppDialogAdMutex) {
+                                realExitApp(activity)
+                            } else {
+                                exitApp(activity)
+                            }
+                        }
+                    })
+                } else {
+                    AdManager.loadRewardVideoAd(activity, object : SimpleRewardVideoListener() {
+                        override fun onError(code: Int, msg: String?) {
+                            super.onError(code, msg)
+                            if (jddAdConfigBean.notLotteryExitAppDialogAdMutex) {
+                                realExitApp(activity)
+                            } else {
+                                exitApp(activity)
+                            }
+                        }
+
+                        override fun onRewardedClosed() {
+                            super.onRewardedClosed()
+                            if (jddAdConfigBean.notLotteryExitAppDialogAdMutex) {
+                                realExitApp(activity)
+                            } else {
+                                exitApp(activity)
+                            }
+                        }
+                    })
+                }
+            } else {
+                exitApp(activity)
+            }
+        }
+    }
+
     /**
      * 退出app
      * @param activity AppCompatActivity
      */
     private fun exitApp(activity: AppCompatActivity) {
+        LotteryAdCount.exitAppWithNotLottery()
+        JddAdConfigManager.addListener {
+            val jddAdConfigBean = JddAdConfigManager.jddAdConfigBean
+            val times = LotteryAdCount.getExitAppWithNotLotteryTimes()
+            if (times >= jddAdConfigBean.notLotteryExitAppTimes) {
+                LotteryAdCount.resetExitAppWithNotLotteryTimes()
+                if (jddAdConfigBean.notLotteryExitAppAdType == 1) {
+                    AdManager.loadInterstitialAd(activity, object : SimpleInterstListener() {
+                        override fun onError(code: Int, msg: String?) {
+                            super.onError(code, msg)
+                            realExitApp(activity)
+                        }
+
+                        override fun onAdClosed() {
+                            super.onAdClosed()
+                            realExitApp(activity)
+                        }
+                    })
+                } else {
+                    AdManager.loadRewardVideoAd(activity, object : SimpleRewardVideoListener() {
+                        override fun onError(code: Int, msg: String?) {
+                            super.onError(code, msg)
+                            realExitApp(activity)
+                        }
+
+                        override fun onRewardedClosed() {
+                            super.onRewardedClosed()
+                            realExitApp(activity)
+                        }
+                    })
+                }
+
+            } else {
+                realExitApp(activity)
+            }
+        }
+    }
+
+    private fun realExitApp(activity: AppCompatActivity) {
         // 程序关闭
         AppStatusManager.getInstance().setAppStatus(AppStatusConstant.STATUS_FORCE_KILLED)
         AnalysisUtils.onEvent(activity, AnalysisParam.SHUTDOWN)

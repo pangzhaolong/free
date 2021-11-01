@@ -27,6 +27,9 @@ object LotteryAdCount {
     /** 今天抽奖次数 */
     private const val TODAY_LOTTERY_TIMES = "todayLotteryTimes"
 
+    /** 退出app但是未抽奖次数 */
+    private const val EXIT_APP_WITH_NOT_LOTTERY = "exitAppWithNotLottery"
+
     private val mmkv = MMKV.mmkvWithID("AdCount", MMKV.MULTI_PROCESS_MODE)!!
 
 
@@ -55,6 +58,36 @@ object LotteryAdCount {
             mmkv.encode(TODAY_LOTTERY_TIMES, todayLotteryTimes + 1)
         }
         mmkv.encode(NEW_LOTTERY_TIME, System.currentTimeMillis())
+        //抽奖以后重置退出app并且没有抽奖次数
+        resetExitAppWithNotLotteryTimes()
+    }
+
+    /***
+     * 退出app但是未抽奖次数
+     */
+    fun exitAppWithNotLottery() {
+        val newOpenAppTime = mmkv.decodeLong(NEW_OPEN_APP_TIME, 0L)
+        val newLotteryTime = mmkv.decodeLong(NEW_LOTTERY_TIME, 0L)
+        val exitAppWithNotLotteryTimes = mmkv.decodeInt(EXIT_APP_WITH_NOT_LOTTERY, 0)
+        if (newOpenAppTime > newLotteryTime) {
+            mmkv.encode(EXIT_APP_WITH_NOT_LOTTERY, exitAppWithNotLotteryTimes + 1)
+        }
+    }
+
+    /** 返回退出app但是没有抽奖的次数 */
+    fun getExitAppWithNotLotteryTimes(): Int {
+        return mmkv.decodeInt(EXIT_APP_WITH_NOT_LOTTERY, 0)
+    }
+
+    fun resetExitAppWithNotLotteryTimes() {
+        mmkv.encode(EXIT_APP_WITH_NOT_LOTTERY, 0)
+    }
+
+    /** 今天是否抽奖 */
+    fun todayLottery(): Boolean {
+        val newLotteryTime = mmkv.decodeLong(NEW_LOTTERY_TIME, 0L)
+        val todayLotteryTimes = mmkv.decodeInt(TODAY_LOTTERY_TIMES, 0)
+        return isToday(newLotteryTime) && todayLotteryTimes > 0
     }
 
 

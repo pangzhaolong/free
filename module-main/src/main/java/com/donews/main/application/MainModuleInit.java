@@ -19,9 +19,11 @@ import com.donews.network.cache.model.CacheMode;
 import com.donews.network.cookie.CookieManger;
 import com.donews.network.model.HttpHeaders;
 import com.donews.utilslibrary.utils.AppInfo;
+import com.donews.utilslibrary.utils.DeviceUtils;
 import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.SPUtils;
+import com.orhanobut.logger.Logger;
 
 import org.jetbrains.annotations.NotNull;
 

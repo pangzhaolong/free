@@ -62,6 +62,9 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
     private static final String TAG = "SplashActivity";
     private static final String DEAL = "main_agree_deal";
 
+    /** 请求权限code */
+    private static final int REQUEST_PERMISSIONS_CODE = 1024;
+
     //再其他页面后台太久回到前台。导师开屏页面被打开的标记
     private static final String toForeGroundKey = "toForeGround";
 
@@ -106,8 +109,6 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         } else {
             //冷启动,做app启动初始化相关
             SmSdkConfig.initData(UtilsConfig.getApplication());
-            //设备登录
-            SplashUtils.INSTANCE.loginDevice();
             //检测隐私协议
             checkDeal();
         }
@@ -212,7 +213,6 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
             @Override
             public void onError(int code, String msg) {
                 super.onError(code, msg);
-                Logger.d(msg);
                 goToMain();
             }
 
@@ -264,10 +264,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
 
 
     private void loadDisagreePrivacyPolicyAd() {
-        Logger.d("11111111111");
         JddAdConfigManager.INSTANCE.addListener(() -> {
-
-            Logger.d("22222222222");
             JddAdConfigBean configBean = JddAdConfigManager.INSTANCE.getJddAdConfigBean();
             if (configBean.getDisagreePrivacyPolicyAdEnable()) {
                 if (configBean.getDisagreePrivacyPolicyAdType() == 1) {
@@ -316,13 +313,18 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
     }
 
     private void goToMain() {
-        if (!isHotStart()) {
+        if (!mIsBackgroundToFore) {
             if (AppStatusManager.getInstance().getAppStatus() != AppStatusConstant.STATUS_NORMAL) {
                 LotteryAdCount.INSTANCE.init();
                 MainActivity.start(this);
             }
         }
         finish();
+    }
+
+    private void deviceLogin() {
+        //设备登录
+        SplashUtils.INSTANCE.loginDevice();
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -340,47 +342,24 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
             lackedPermission.add(Manifest.permission.READ_EXTERNAL_STORAGE);
         }
 
-//        if ((checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
-//            lackedPermission.add(Manifest.permission.ACCESS_FINE_LOCATION);
-//        }
-
-
         // 权限都已经有了，那么直接调用SDK
         if (lackedPermission.size() == 0) {
+            deviceLogin();
             loadClodStartAd();
         } else {
-            String reqFlg = com.blankj.utilcode.util.SPUtils.getInstance().getString("slpashPermissionRequest", "");
-            if (reqFlg.isEmpty()) {
-                // 请求所缺少的权限，在onRequestPermissionsResult中再看是否获得权限，如果获得权限就可以调用SDK，否则不要调用SDK。
-                com.blankj.utilcode.util.SPUtils.getInstance().put("slpashPermissionRequest", "1");
-                String[] requestPermissions = new String[lackedPermission.size()];
-                lackedPermission.toArray(requestPermissions);
-                requestPermissions(requestPermissions, 1024);
-            } else {
-                //已经申请过了。则直接跳过
-                loadClodStartAd();
-            }
+            String[] requestPermissions = new String[lackedPermission.size()];
+            lackedPermission.toArray(requestPermissions);
+            requestPermissions(requestPermissions, REQUEST_PERMISSIONS_CODE);
         }
-
     }
 
-    private boolean hasAllPermissionsGranted(int[] grantResults) {
-        if (grantResults == null) {
-            return true;
-        }
-        for (int grantResult : grantResults) {
-            if (grantResult == PackageManager.PERMISSION_DENIED) {
-                return false;
-            }
-        }
-        return true;
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         //修改为不需要处理拒绝的逻辑。只要回来就直接过
-        if (requestCode == 1024) {
+        if (requestCode == REQUEST_PERMISSIONS_CODE) {
+            deviceLogin();
             loadClodStartAd();
         }
 //        if (requestCode == 1024 && hasAllPermissionsGranted(grantResults)) {
@@ -393,5 +372,17 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
 //            startActivity(intent);
 //            finish();
 //        }
+    }
+
+    private boolean hasAllPermissionsGranted(int[] grantResults) {
+        if (grantResults == null) {
+            return true;
+        }
+        for (int grantResult : grantResults) {
+            if (grantResult == PackageManager.PERMISSION_DENIED) {
+                return false;
+            }
+        }
+        return true;
     }
 }
