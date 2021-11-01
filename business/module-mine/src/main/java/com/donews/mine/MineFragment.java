@@ -24,6 +24,8 @@ import com.donews.common.router.RouterFragmentPath;
 import com.donews.mine.adapters.MineFragmentAdapter;
 import com.donews.mine.databinding.MineFragmentBinding;
 import com.donews.mine.viewModel.MineViewModel;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
 
 import org.greenrobot.eventbus.EventBus;
@@ -56,6 +58,7 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
         super.onFragmentFirstVisible();
         initView();
         mViewModel.lifecycleOwner = this;
+        AnalysisUtils.onEventEx(getActivity(), Dot.Page_UserCenter);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN) //手机号绑定成功
@@ -245,6 +248,7 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
         isRefresh = true;
         adapter.refeshStart();
         mViewModel.loadRecommendGoods(25);
+        mViewModel.getLoadWithdrawData();
     }
 
     //上拉加载更多

@@ -45,6 +45,7 @@ public class MineUserCancellationActivity extends
                     .navigation();
             df.setCloseListener(isUnRegSuccess -> {
                 if (isUnRegSuccess) {
+
                     finish();
                 }
             });

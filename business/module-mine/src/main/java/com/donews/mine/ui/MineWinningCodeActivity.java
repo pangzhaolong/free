@@ -14,6 +14,8 @@ import com.donews.common.router.RouterFragmentPath;
 import com.donews.mine.R;
 import com.donews.mine.databinding.MineActivityWinningCodeBinding;
 import com.donews.mine.viewModel.MineWinningCodeViewModel;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.gyf.immersionbar.ImmersionBar;
 
 /**
@@ -40,6 +42,7 @@ public class MineWinningCodeActivity extends
                 .fitsSystemWindows(false)
                 .autoDarkModeEnable(true)
                 .init();
+        AnalysisUtils.onEventEx(this, Dot.Page_Award); //中奖页
     }
 
     @Override

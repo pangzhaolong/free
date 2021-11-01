@@ -15,6 +15,8 @@ import com.donews.common.router.RouterFragmentPath;
 import com.donews.mine.common.CommonParams;
 import com.donews.mine.databinding.MineSettingFragmentBinding;
 import com.donews.mine.viewModel.SettingFragmentViewModel;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
 
 import org.greenrobot.eventbus.EventBus;
@@ -39,6 +41,7 @@ public class MineSettingFragment extends
         mViewModel.updateUIFlg.observe(this, result -> {
             bindViewText();
         });
+        AnalysisUtils.onEventEx(getActivity(), Dot.Page_Setting);
     }
 
     @Override
@@ -89,6 +92,7 @@ public class MineSettingFragment extends
                 ToastUtil.show(getBaseActivity(), "请检查网络连接");
                 return;
             }
+            AnalysisUtils.onEventEx(getActivity(), Dot.Btn_Logout);
             showLoading();
             AppInfo.exitWXLogin();
             CommonParams.setNetWorkExitOrUnReg();

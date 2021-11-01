@@ -21,8 +21,6 @@ public class Dot {
     public final static String Page_Feedback = "Page_Feedback";
     //    关于我们
     public final static String Page_AboutUs = "Page_AboutUs";
-    //    账户注销
-    public final static String Page_AccountUnregister = "Page_AccountUnregister";
     //    中奖记录
     public final static String Page_AwardRecords = "Page_AwardRecords";
     //    参与记录

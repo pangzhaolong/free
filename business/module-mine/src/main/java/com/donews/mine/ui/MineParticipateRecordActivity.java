@@ -20,6 +20,8 @@ import com.donews.mine.adapters.MineParticipateRecordAdapter;
 import com.donews.mine.bean.resps.HistoryPeopleLottery;
 import com.donews.mine.databinding.MineActivityParticipateRecordBinding;
 import com.donews.mine.viewModel.MineParticipateRecordViewModel;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.gyf.immersionbar.ImmersionBar;
 
 import java.util.ArrayList;
@@ -54,6 +56,7 @@ public class MineParticipateRecordActivity extends
                 .autoDarkModeEnable(true)
                 .init();
         initView();
+        AnalysisUtils.onEventEx(this, Dot.Page_PartInRecords);
     }
 
     @Override
