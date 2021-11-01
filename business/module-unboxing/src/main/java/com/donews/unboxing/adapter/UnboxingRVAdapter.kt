@@ -27,7 +27,7 @@ import com.tencent.mmkv.MMKV
  */
 class UnboxingRVAdapter(layoutResId: Int) : BaseQuickAdapter<UnboxingBean, BaseViewHolder>(layoutResId) {
 
-    private val mmkv: MMKV = MMKV.mmkvWithID("unBoxingLikeData_" + AppInfo.getToken())!!
+    private var mmkv: MMKV = MMKV.mmkvWithID("unBoxingLikeData_" + AppInfo.getUserId(), MMKV.MULTI_PROCESS_MODE)!!
 
     init {
         addChildClickViewIds(R.id.btn_lottery)
@@ -86,9 +86,10 @@ class UnboxingRVAdapter(layoutResId: Int) : BaseQuickAdapter<UnboxingBean, BaseV
             }
 
             val clickListener = View.OnClickListener {
-                val zan = mmkv.decodeBool(item.id.toString(), false)
+                val key = bean.id.toString()
+                val zan = mmkv.decodeBool(key, false)
                 if (!zan) {
-                    mmkv.encode(item.id.toString(), true)
+                    mmkv.encode(key, true)
                     dataBinding.zan = true
                 } else {
                     Toast.makeText(context, "您已经点过赞了！", Toast.LENGTH_SHORT).show()
