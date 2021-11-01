@@ -21,6 +21,8 @@ import com.donews.mine.adapters.MineWinningCodeAdapter;
 import com.donews.mine.databinding.MineFragmentWinningCodeBinding;
 import com.donews.mine.viewModel.MineOpenWinningViewModel;
 import com.donews.mine.views.scrollview.BarrageView;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -152,6 +154,9 @@ public class MineOpenWinningFragment extends
     @SuppressLint("WrongConstant")
     private void initView() {
         ARouter.getInstance().inject(this);
+        if(period == 0){
+            AnalysisUtils.onEventEx(this.getActivity(), Dot.Page_Lottery); //开奖事件
+        }
         mViewModel.setDataBinDing(mDataBinding, getBaseActivity());
         adapterOpenWinHead = (ViewGroup) View.inflate(getBaseActivity(), headRes, null);
         barrageView = adapterOpenWinHead.findViewById(R.id.mine_win_code_scan_scroll_v);
@@ -165,6 +170,7 @@ public class MineOpenWinningFragment extends
                     "https://recharge-web.xg.tagtic.cn/jdd/index.html#/rule");
             bundle.putString("title", "中奖规则");
             ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
+            AnalysisUtils.onEventEx(getActivity(), Dot.Page_DetailRule);
         });
         adapterOpenWinHead.findViewById(R.id.mine_win_code_scan_all).setOnClickListener((v) -> {
             //去往晒单页

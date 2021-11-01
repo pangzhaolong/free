@@ -8,6 +8,8 @@ import com.donews.common.router.RouterActivityPath;
 import com.donews.mine.R;
 import com.donews.mine.databinding.MineActivitySettingBinding;
 import com.donews.mine.viewModel.SettingViewModel;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.gyf.immersionbar.ImmersionBar;
 
 @Route(path = RouterActivityPath.Mine.PAGER_ACTIVITY_SETTING)

@@ -17,6 +17,8 @@ import com.donews.mine.databinding.MineActivitySettingBinding;
 import com.donews.mine.databinding.MineActivityWithdrawalCenterBinding;
 import com.donews.mine.viewModel.SettingViewModel;
 import com.donews.mine.viewModel.WithdrawalCenterViewModel;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.gyf.immersionbar.ImmersionBar;
 
@@ -45,6 +47,7 @@ public class WithdrawalCenterActivity extends
                 .fitsSystemWindows(true)
                 .autoDarkModeEnable(true)
                 .init();
+        AnalysisUtils.onEventEx(this, Dot.Page_Cash);
     }
 
     public void initView() {
@@ -90,8 +93,6 @@ public class WithdrawalCenterActivity extends
                 mViewModel.getLoadWithdrawData(); //更新配置信息
                 ToastUtil.showShort(this, "提现成功!");
                 EventBus.getDefault().post(new WalletRefreshEvent(1));
-            }else if (code == 22104){
-                ToastUtil.showShort(this, "提现失败,余额不足");
             }
         });
         mViewModel.getLoadWithdraWalletDite();

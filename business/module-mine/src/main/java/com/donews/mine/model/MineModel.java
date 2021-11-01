@@ -1,5 +1,7 @@
 package com.donews.mine.model;
 
+import android.content.Context;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.model.BaseLiveDataModel;
@@ -367,11 +369,14 @@ public class MineModel extends BaseLiveDataModel {
      * 提现
      *
      * @param livData 数据通知对象
+     * @param dto
+     * @param context
      * @return
      */
     public Disposable requestWithdra(
             MutableLiveData<Integer> livData,
-            WithdrawConfigResp.WithdrawListDTO dto) {
+            WithdrawConfigResp.WithdrawListDTO dto,
+            Context context) {
         WidthdrawalReq req = new WidthdrawalReq();
         req.id = dto.id;
         Disposable disop = EasyHttp.post(BuildConfig.API_WALLET_URL + "v1/withdraw")
@@ -380,6 +385,24 @@ public class MineModel extends BaseLiveDataModel {
                 .execute(new SimpleCallBack<Object>() {
                     @Override
                     public void onError(ApiException e) {
+                        if (e.getCode() == 22101){
+                            ToastUtil.showShort(context.getApplicationContext(), "请绑定微信");
+                        }else if(e.getCode() == 22102) {
+                            ToastUtil.showShort(context.getApplicationContext(),
+                                    "审核中，预计1-3个工作日提现到账");
+                        }else if(e.getCode() == 22103) {
+                            ToastUtil.showShort(context.getApplicationContext(),
+                                    "请求重复");
+                        }else if(e.getCode() == 22104) {
+                            ToastUtil.showShort(context.getApplicationContext(),
+                                    "提现失败,余额不足");
+                        }else if(e.getCode() == 22106) {
+                            ToastUtil.showShort(context.getApplicationContext(),
+                                    "今日已提现，明日再来");
+                        }else if(e.getCode() == 22199) {
+                            ToastUtil.showShort(context.getApplicationContext(),
+                                    "暂不可提现");
+                        }
                         livData.postValue(e.getCode());
                     }
 

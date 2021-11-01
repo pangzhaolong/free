@@ -73,7 +73,7 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
      * 提现
      */
     public void requestWithdraw(GridLayout superLayout) {
-        mModel.requestWithdra(withdrawLivData, getGridSelectViewItem(superLayout));
+        mModel.requestWithdra(withdrawLivData, getGridSelectViewItem(superLayout),baseActivity);
     }
 
     /**

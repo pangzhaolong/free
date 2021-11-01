@@ -36,6 +36,7 @@ import com.donews.share.ShareManager;
 import com.donews.share.WXHolderHelp;
 import com.donews.share.WXShareExecutor;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppCacheUtils;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.DeviceUtils;
@@ -92,10 +93,12 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
                         "https://www.wjx.top/vm/YhnxHHh.aspx");
                 bundle.putString("title", "意见反馈");
                 ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
+                AnalysisUtils.onEventEx(baseActivity, Dot.Page_Feedback);
             });
             put(3, (Runnable) () -> { //关于我们
                 ARouter.getInstance().build(PAGER_MINE_ABOUT_ACTIVITY)
                         .navigation(baseActivity);
+                AnalysisUtils.onEventEx(baseActivity, Dot.Page_AboutUs);
             });
             put(4, (Runnable) () -> { //清除缓存
                 ConfirmPopupWindow confirmPopupWindow = new ConfirmPopupWindow(baseActivity);

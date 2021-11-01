@@ -31,6 +31,8 @@ import com.donews.common.router.RouterActivityPath;
 import com.donews.mine.R;
 import com.donews.share.ShareItem;
 import com.donews.share.ShareManager;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -153,6 +155,7 @@ public class ShareToDialogFragment extends DialogFragment {
      * @param type 1-联系人，2-朋友圈
      */
     private void share(int type) {
+        AnalysisUtils.onEventEx(getActivity(), Dot.Btn_Buy);
         ShareManager sharManager = new ShareManager();
         ShareItem shareItem = new ShareItem();
         shareItem.setType(ShareItem.TYPE_H5);

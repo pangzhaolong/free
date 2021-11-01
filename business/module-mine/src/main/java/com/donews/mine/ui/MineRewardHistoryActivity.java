@@ -17,6 +17,8 @@ import com.donews.mine.adapters.MineRewarHistoryAdapter;
 import com.donews.mine.databinding.MineRewardHistoryActivityBinding;
 import com.donews.mine.listener.RewardItemClickListener;
 import com.donews.mine.viewModel.MineRewardHistoryViewModel;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.gyf.immersionbar.ImmersionBar;
 
 /**
@@ -37,6 +39,7 @@ public class MineRewardHistoryActivity extends MvvmBaseLiveDataActivity<MineRewa
                 .fitsSystemWindows(true)
                 .autoDarkModeEnable(true)
                 .init();
+        AnalysisUtils.onEventEx(this, Dot.Page_LotteryHistory);
     }
 
     @Override

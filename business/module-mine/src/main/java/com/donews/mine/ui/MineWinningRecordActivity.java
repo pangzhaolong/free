@@ -20,6 +20,8 @@ import com.donews.mine.databinding.MineActivityParticipateRecordBinding;
 import com.donews.mine.databinding.MineActivityWinningRecordBinding;
 import com.donews.mine.viewModel.MineParticipateRecordViewModel;
 import com.donews.mine.viewModel.MineWinningRecordViewModel;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.gyf.immersionbar.ImmersionBar;
 
 import java.util.ArrayList;
@@ -50,6 +52,7 @@ public class MineWinningRecordActivity extends
                 .autoDarkModeEnable(true)
                 .init();
         initView();
+        AnalysisUtils.onEventEx(this, Dot.Page_AwardRecords);
     }
 
     @Override
