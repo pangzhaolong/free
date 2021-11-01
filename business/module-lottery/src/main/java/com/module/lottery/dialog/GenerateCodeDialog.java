@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.donews.base.model.BaseLiveDataModel;
+import com.donews.common.ad.business.monitor.LotteryAdCount;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
@@ -98,8 +99,8 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
                         @Override
                         public void onSuccess(GenerateCodeBean generateCode) {
                             if (generateCode != null) {
-
-                                //广告跳转
+                                //抽奖统计
+                                LotteryAdCount.INSTANCE.lotterySuccess();
                                 if(mOnFinishListener!=null){
                                     mOnFinishListener.onJump(generateCode);
                                 }
