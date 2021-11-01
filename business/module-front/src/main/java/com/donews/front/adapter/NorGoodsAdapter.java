@@ -46,6 +46,18 @@ public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsV
         notifyDataSetChanged();
     }
 
+    public void refreshItem(int position, String goodsId, int lotteryStatus) {
+        if (position < 0 || position >= mGoodsList.size()) {
+            return;
+        }
+
+        if (!mGoodsList.get(position).getGoodsId().equalsIgnoreCase(goodsId)) {
+            return;
+        }
+
+        mGoodsList.get(position).setLotteryStatus(lotteryStatus);
+    }
+
     public void clear() {
         if (mGoodsList != null) {
             mGoodsList.clear();
@@ -110,7 +122,7 @@ public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsV
             Toast.makeText(v.getContext(), "等待开奖", Toast.LENGTH_SHORT).show();
             return;
         }
-        mListener.onClick(goodsInfo.getGoodsId());
+        mListener.onClick(position, goodsInfo.getGoodsId());
     }
 
     protected static class GoodsViewHolder extends RecyclerView.ViewHolder {

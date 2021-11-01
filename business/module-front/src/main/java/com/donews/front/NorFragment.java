@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.dn.events.events.LotteryStatusEvent;
 import com.donews.base.fragment.MvvmLazyLiveDataFragment;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.front.adapter.NorGoodsAdapter;
@@ -21,6 +22,10 @@ import com.donews.front.cache.GoodsCache;
 import com.donews.front.databinding.FrontNorFragmentBinding;
 import com.donews.front.decoration.GridSpaceItemDecoration;
 import com.donews.front.viewModel.NorViewModel;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class NorFragment extends MvvmLazyLiveDataFragment<FrontNorFragmentBinding, NorViewModel> implements NorClickListener {
 
@@ -76,6 +81,8 @@ public class NorFragment extends MvvmLazyLiveDataFragment<FrontNorFragmentBindin
         loadNorData();
 
         initSrl();
+
+        EventBus.getDefault().register(this);
     }
 
     private void initSrl() {
@@ -116,10 +123,17 @@ public class NorFragment extends MvvmLazyLiveDataFragment<FrontNorFragmentBindin
     }
 
     @Override
-    public void onClick(String goodsId) {
+    public void onClick(int position, String goodsId) {
         ARouter.getInstance()
-                .build(RouterFragmentPath.Lottery.PAGER_LOTTERY).withString("goods_id", goodsId)
+                .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
+                .withInt("position", position)
+                .withString("goods_id", goodsId)
                 .navigation();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessage(LotteryStatusEvent event) {
+        mNorGoodsAdapter.refreshItem(event.position, event.goodsId, event.lotteryStatus);
     }
 
     @Override
@@ -130,5 +144,7 @@ public class NorFragment extends MvvmLazyLiveDataFragment<FrontNorFragmentBindin
         if (mNorGoodsAdapter != null) {
             mNorGoodsAdapter.clear();
         }
+
+        EventBus.getDefault().unregister(this);
     }
 }
