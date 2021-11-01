@@ -206,21 +206,26 @@ public class BarrageView extends FrameLayout {
             mScrollHandler = null;
         }
         if (mMoveAnimator1 != null) {
+            mMoveAnimator1.removeAllUpdateListeners();
             mMoveAnimator1.removeAllListeners();
             mMoveAnimator1.cancel();
             mMoveAnimator1 = null;
         }
         if (mAlphaAnimator1 != null) {
+            mAlphaAnimator1.removeAllUpdateListeners();
             mAlphaAnimator1.removeAllListeners();
             mAlphaAnimator1.cancel();
             mAlphaAnimator1 = null;
         }
         if (mMoveAnimator2 != null) {
+            mMoveAnimator2.removeAllUpdateListeners();
+            ;
             mMoveAnimator2.removeAllListeners();
             mMoveAnimator2.cancel();
             mMoveAnimator2 = null;
         }
         if (mAlphaAnimator2 != null) {
+            mAlphaAnimator2.removeAllUpdateListeners();
             mAlphaAnimator2.removeAllListeners();
             mAlphaAnimator2.cancel();
             mAlphaAnimator2 = null;

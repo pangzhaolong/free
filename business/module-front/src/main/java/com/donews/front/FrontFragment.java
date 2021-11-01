@@ -29,6 +29,7 @@ import com.donews.front.viewModel.FrontViewModel;
 import com.donews.front.views.TabItem;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
+import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.SPUtils;
 import com.google.android.material.tabs.TabLayout;
@@ -47,6 +48,9 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     private LotteryCategoryBean mLotteryCategoryBean;
 
     private Animation mRotateAnimation;
+
+    private Timer mRotateTimer = null;
+    private TimerTask mRotateTask = null;
 
     private Context mContext;
 
@@ -128,10 +132,32 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mRotateAnimation.setRepeatCount(1);
             mRotateAnimation.setDuration(400);
         }
+        startTimer();
+    }
 
+    private void startTimer() {
+        if (mRotateTask == null) {
+            mRotateTask = new TimerTask() {
+                @Override
+                public void run() {
+                    FrontFragment.this.requireActivity().runOnUiThread(() -> mDataBinding.frontRpOpenFl5.startAnimation(mRotateAnimation));
+                }
+            };
+        }
         if (mRotateTimer == null) {
             mRotateTimer = new Timer();
             mRotateTimer.schedule(mRotateTask, 2000, 5000);
+        }
+    }
+
+    private void stopTimer() {
+        if (mRotateTimer != null) {
+            mRotateTimer.cancel();
+            mRotateTimer = null;
+        }
+        if (mRotateTask != null) {
+            mRotateTask.cancel();
+            mRotateTask = null;
         }
     }
 
@@ -179,6 +205,36 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     private void showRpData(WalletBean walletBean) {
         WalletBean.RpBean rpBean = walletBean.getList().get(0);
         if (rpBean == null) {
+            return;
+        }
+
+        if (!AppInfo.checkIsWXLogin()) {
+            mDataBinding.frontRpIv1.setBackgroundResource(R.drawable.front_rp_close);
+            mDataBinding.frontRpIv2.setBackgroundResource(R.drawable.front_rp_close);
+            mDataBinding.frontRpIv3.setBackgroundResource(R.drawable.front_rp_close);
+            mDataBinding.frontRpIv4.setBackgroundResource(R.drawable.front_rp_close);
+            mDataBinding.frontRpIv5.setBackgroundResource(R.drawable.front_rp_close);
+
+            mDataBinding.frontRpOpenFl1.setOnClickListener(this);
+            mDataBinding.frontRpOpenFl2.setOnClickListener(this);
+            mDataBinding.frontRpOpenFl3.setOnClickListener(this);
+            mDataBinding.frontRpOpenFl4.setOnClickListener(this);
+            mDataBinding.frontRpOpenFl5.setOnClickListener(this);
+
+            mDataBinding.frontRpProgess.setProgress(0);
+            mDataBinding.frontRpProgess.setMax(10);
+            mDataBinding.frontRpProgressIv1.setBackgroundResource(R.drawable.front_dot_close_bg);
+            mDataBinding.frontRpProgressIv2.setBackgroundResource(R.drawable.front_dot_close_bg);
+            mDataBinding.frontRpProgressIv3.setBackgroundResource(R.drawable.front_dot_close_bg);
+            mDataBinding.frontRpProgressIv4.setBackgroundResource(R.drawable.front_dot_close_bg);
+            mDataBinding.frontRpProgressIv5.setBackgroundResource(R.drawable.front_dot_close_bg);
+
+            mDataBinding.frontRpTv1.setText("1/1");
+            mDataBinding.frontRpTv2.setText("3/3");
+            mDataBinding.frontRpTv3.setText("5/5");
+            mDataBinding.frontRpTv4.setText("7/7");
+            mDataBinding.frontRpTv5.setText("10/10");
+            startTimer();
             return;
         }
 
@@ -329,20 +385,12 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mDataBinding.frontRpIv5.setAlpha(1.0f);
             mDataBinding.frontRpIv5.setBackgroundResource(R.drawable.front_rp_open);
             mDataBinding.frontRpProgressIv5.setBackgroundResource(R.drawable.front_dot_bg);
+            stopTimer();
         }
         mDataBinding.frontRpProgess.setMax(rpBean.getLotteryTotal());
 
         SPUtils.setInformain(KeySharePreferences.CLOSE_RED_PACKAGE_COUNTS, nCloseRpCounts);
     }
-
-    private Timer mRotateTimer = null;
-    private final TimerTask mRotateTask = new TimerTask() {
-        @Override
-        public void run() {
-            FrontFragment.this.requireActivity().runOnUiThread(
-                    () -> mDataBinding.frontRpOpenFl5.startAnimation(mRotateAnimation));
-        }
-    };
 
     @Override
     public void onResume() {
@@ -369,16 +417,23 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         if (mFragmentAdapter != null) {
             mFragmentAdapter.clear();
         }
-        if (mRotateTimer != null) {
-            mRotateTimer.cancel();
+        if (mRotateAnimation != null) {
+            mRotateAnimation.cancel();
+            mRotateAnimation = null;
         }
-        if (mRotateTask != null) {
-            mRotateTask.cancel();
-        }
+
+        stopTimer();
     }
 
     @Override
     public void onClick(View v) {
+        if (!AppInfo.checkIsWXLogin()) {
+            ARouter.getInstance()
+                    .build(RouterActivityPath.User.PAGER_LOGIN)
+                    .navigation();
+            return;
+        }
+
         WalletBean.RpBean rpBean = (WalletBean.RpBean) v.getTag();
         if (rpBean == null) {
             return;
