@@ -160,9 +160,11 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
                 new GridLayoutManager(getActivity(), 2));
         mDataBinding.mineMeListLayout.getRecyclerView().setAdapter(adapter);
         mViewModel.withdrawDatilesLivData.observe(this, item -> {
+            TextView tv = getView().findViewById(R.id.mine_me_money_num);
             if (item != null) {
-                TextView tv = getView().findViewById(R.id.mine_me_money_num);
                 tv.setText("" + item.total);
+            }else{
+                tv.setText("0");
             }
         });
         mViewModel.recommendGoodsLiveData.observe(this, listDTOS -> {
