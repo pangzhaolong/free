@@ -154,6 +154,8 @@ class NotLotteryDialog : AbstractFragmentDialog<MainExitDialogNotLotteryBinding>
         }
 
         fun clickClose(view: View) {
+
+
             if (onCloseListener != null) {
                 onCloseListener.onClose()
             }

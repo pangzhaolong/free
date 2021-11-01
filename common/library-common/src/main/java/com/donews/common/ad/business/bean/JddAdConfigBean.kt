@@ -79,7 +79,18 @@ data class JddAdConfigBean(
 
     /** 用户关闭激励时，跟随出现一个全屏图文插屏。（当日激励视频播放次数) */
     @SerializedName("playRewardVideoTimes")
-    var playRewardVideoTimes: Int = 10
+    var playRewardVideoTimes: Int = 10,
+
+    /** 用户未抽奖时退出app弹出框关闭按钮点击时出现的广告开关 */
+    @SerializedName("notLotteryExitAppDialogAdEnable")
+    var notLotteryExitAppDialogAdEnable: Boolean = false,
+    /** 用户未抽奖时退出app弹出框关闭按钮点击时出现的广告 和用户连续进入app，但是无抽奖行为时,第3次退出APP后拉起广告 是否互斥 */
+    @SerializedName("notLotteryExitAppDialogAdMutex")
+    var notLotteryExitAppDialogAdMutex: Boolean = false,
+    /**  用户未抽奖时退出app弹出框关闭按钮点击时出现的广告类型 ，1插屏，2全屏视频   */
+    @SerializedName("notLotteryExitAppDialogAdType")
+    var notLotteryExitAppDialogAdType: Int = 1
+
 ) : BaseCustomViewModel(), Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readByte() != 0.toByte(),
@@ -100,6 +111,9 @@ data class JddAdConfigBean(
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
+        parcel.readInt(),
+        parcel.readByte() != 0.toByte(),
+        parcel.readByte() != 0.toByte(),
         parcel.readInt()
     ) {
     }
@@ -124,6 +138,9 @@ data class JddAdConfigBean(
         parcel.writeInt(interstitialStartTime)
         parcel.writeInt(noOperationDuration)
         parcel.writeInt(playRewardVideoTimes)
+        parcel.writeByte(if (notLotteryExitAppDialogAdEnable) 1 else 0)
+        parcel.writeByte(if (notLotteryExitAppDialogAdMutex) 1 else 0)
+        parcel.writeInt(notLotteryExitAppDialogAdType)
     }
 
     override fun describeContents(): Int {

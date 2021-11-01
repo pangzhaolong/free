@@ -69,7 +69,8 @@ public class DeviceUtils {
      */
     public static String getAndroidID() {
         try {
-            String ANDROID_ID = Settings.System.getString(UtilsConfig.getApplication().getContentResolver(), Settings.System.ANDROID_ID);
+            String ANDROID_ID = Settings.System.getString(UtilsConfig.getApplication().getContentResolver(),
+                    Settings.System.ANDROID_ID);
             return ANDROID_ID;
         } catch (Exception e) {
             e.printStackTrace();
@@ -83,7 +84,8 @@ public class DeviceUtils {
     @SuppressLint("HardwareIds")
     public static String getDeviceId() {
         try {
-            TelephonyManager tm = (TelephonyManager) UtilsConfig.getApplication().getSystemService(Context.TELEPHONY_SERVICE);
+            TelephonyManager tm = (TelephonyManager) UtilsConfig.getApplication().getSystemService(
+                    Context.TELEPHONY_SERVICE);
             String deviceId = "";
             if (tm == null)
                 return "";
@@ -221,9 +223,16 @@ public class DeviceUtils {
         return deviceId;
     }
 
-    // suuid获取
+    // suuid获取,保存在sp中，不然每次返回都是不一样的suuid
     public static String getMyUUID() {
-        return DonewsAgent.obtainSuuid(UtilsConfig.getApplication());
+        String key = "SUUID";
+        String appSuuid = SPUtils.getInformain(key, "");
+        if (TextUtils.isEmpty(appSuuid.trim())) {
+            String suuid = DonewsAgent.obtainSuuid(UtilsConfig.getApplication());
+            SPUtils.setInformain(key, suuid);
+            appSuuid = suuid;
+        }
+        return appSuuid;
     }
 
     public static String getChannelName() {
@@ -242,7 +251,6 @@ public class DeviceUtils {
     public static String getOaid() {
         return SPUtils.getInformain(KeySharePreferences.OAID, "");
     }
-
 
 
     /**
@@ -272,7 +280,8 @@ public class DeviceUtils {
     @SuppressLint("HardwareIds")
     private static String getTelId(Context context) {
         final TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(context,
+                Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
             return "";
         }
         return manager.getDeviceId();
@@ -318,7 +327,8 @@ public class DeviceUtils {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
             try {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.checkSelfPermission(context,
+                            Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
                         serial = "serial"; // 随便一个初始化
                     }
                     serial = android.os.Build.getSerial();
@@ -341,7 +351,8 @@ public class DeviceUtils {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public static int getBattery() {
         try {
-            BatteryManager batteryManager = (BatteryManager) UtilsConfig.getApplication().getSystemService(BATTERY_SERVICE);
+            BatteryManager batteryManager = (BatteryManager) UtilsConfig.getApplication().getSystemService(
+                    BATTERY_SERVICE);
             return batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
         } catch (Exception e) {
             LogUtil.e(e);

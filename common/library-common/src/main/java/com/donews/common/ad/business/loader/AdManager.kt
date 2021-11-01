@@ -15,6 +15,7 @@ import com.dn.sdk.sdk.interfaces.listener.preload.IAdPreloadVideoViewListener
 import com.dn.sdk.sdk.interfaces.loader.IAdManager
 import com.dn.sdk.sdk.platform.IAdIdConfigCallback
 import com.donews.common.ad.business.constant.*
+import com.donews.common.ad.business.proxy.JddAdRewardVideoListenerProxy
 import com.donews.utilslibrary.utils.DensityUtils
 
 /**
@@ -37,7 +38,10 @@ object AdManager : IAdManager, ISdkManager by AdSdkManager, IAdIdConfig by JddAd
                 requestInfo.userId = AdSdkManager.userId
                 requestInfo.channel = AdSdkManager.channel
                 requestInfo.oaid = AdSdkManager.oaid
-                requestInfo.platform.getLoader().loadRewardVideoAd(activity, requestInfo, listener)
+                requestInfo.platform.getLoader().loadRewardVideoAd(
+                    activity, requestInfo,
+                    JddAdRewardVideoListenerProxy(activity, listener)
+                )
             }
         })
     }
@@ -140,7 +144,10 @@ object AdManager : IAdManager, ISdkManager by AdSdkManager, IAdIdConfig by JddAd
                 requestInfo.userId = AdSdkManager.userId
                 requestInfo.channel = AdSdkManager.channel
                 requestInfo.oaid = AdSdkManager.oaid
-                requestInfo.platform.getLoader().loadRewardVideoAd(activity, requestInfo, listener)
+                requestInfo.platform.getLoader().loadRewardVideoAd(
+                    activity, requestInfo,
+                    JddAdRewardVideoListenerProxy(activity, listener)
+                )
             }
         })
     }

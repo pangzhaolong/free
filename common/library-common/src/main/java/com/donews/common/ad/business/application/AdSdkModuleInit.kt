@@ -25,7 +25,6 @@ class AdSdkModuleInit : IModuleInit {
             AdManager.initSDK(it, BuildConfig.DEBUG, BuildConfig.APP_ID_GROMORE)
             AdSdkManager.channel = DeviceUtils.getChannelName()
         }
-        Logger.d("初始广告")
         return false
     }
 
