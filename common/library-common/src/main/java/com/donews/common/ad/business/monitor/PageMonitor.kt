@@ -39,10 +39,7 @@ class PageMonitor : LifecycleObserver {
     //当前页面打开显示次数
     private var mResumeTimes = 0
 
-    private val mBlackList = arrayListOf(
-        "SplashActivity", "MainActivity", "TopFragment",
-        "NorFragment", "FrontFragment", "LotteryActivity"
-    )
+    private val mBlackList = arrayListOf<String>()
 
     private var mResume = false
 
@@ -54,7 +51,7 @@ class PageMonitor : LifecycleObserver {
     var mActivity: AppCompatActivity? = null
     var mFragment: Fragment? = null
 
-    fun attach(activity: AppCompatActivity, tag: String = activity::class.java.simpleName) {
+    fun attach(activity: AppCompatActivity, tag: String = activity.javaClass.simpleName) {
         with(activity) {
             mTag = tag
             if (!mBlackList.contains(mTag)) {
@@ -66,7 +63,12 @@ class PageMonitor : LifecycleObserver {
         }
     }
 
-    fun attach(fragment: Fragment, tag: String = fragment::class.java.simpleName) {
+    fun attach(activity: AppCompatActivity) {
+        attach(activity, activity.javaClass.simpleName)
+    }
+
+
+    fun attach(fragment: Fragment, tag: String = fragment.javaClass.simpleName) {
         with(fragment) {
             mTag = tag
             if (!mBlackList.contains(mTag)) {
@@ -80,9 +82,14 @@ class PageMonitor : LifecycleObserver {
         }
     }
 
+    fun attach(fragment: Fragment) {
+        attach(fragment, fragment.javaClass.simpleName)
+    }
+
+
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreate() {
-        Logger.d("onCreate ----$mTag")
+        mResumeTimes = 0
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)

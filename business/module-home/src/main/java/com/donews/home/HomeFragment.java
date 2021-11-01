@@ -13,6 +13,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
+import com.donews.common.ad.business.monitor.PageMonitor;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
@@ -44,6 +45,12 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
     private MutableLiveData<HomeBean> mHomeBean;
 
     private Context mContext;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        new PageMonitor().attach(this);
+    }
 
     @Override
     public int getLayoutId() {

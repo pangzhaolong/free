@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.events.WalletRefreshEvent;
+import com.donews.common.ad.business.monitor.PageMonitor;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
@@ -39,7 +40,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 @Route(path = RouterFragmentPath.Front.PAGER_FRONT)
-public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding, FrontViewModel> implements View.OnClickListener {
+public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding, FrontViewModel>
+        implements View.OnClickListener {
 
     private FragmentAdapter mFragmentAdapter;
     private LotteryCategoryBean mLotteryCategoryBean;
@@ -64,15 +66,16 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         mDataBinding.frontVp2.setAdapter(mFragmentAdapter);
         mDataBinding.frontCategoryTl.setTabMode(TabLayout.MODE_SCROLLABLE);
 
-        TabLayoutMediator tab = new TabLayoutMediator(mDataBinding.frontCategoryTl, mDataBinding.frontVp2, (tab1, position) -> {
-            tab1.setCustomView(new TabItem(mContext, position));
-            TabItem tabItem = (TabItem) tab1.getCustomView();
-            assert tabItem != null;
-            if (mLotteryCategoryBean == null || mLotteryCategoryBean.getList() == null) {
-                return;
-            }
-            tabItem.setTitle(mLotteryCategoryBean.getList().get(position).getName());
-        });
+        TabLayoutMediator tab = new TabLayoutMediator(mDataBinding.frontCategoryTl, mDataBinding.frontVp2,
+                (tab1, position) -> {
+                    tab1.setCustomView(new TabItem(mContext, position));
+                    TabItem tabItem = (TabItem) tab1.getCustomView();
+                    assert tabItem != null;
+                    if (mLotteryCategoryBean == null || mLotteryCategoryBean.getList() == null) {
+                        return;
+                    }
+                    tabItem.setTitle(mLotteryCategoryBean.getList().get(position).getName());
+                });
         tab.attach();
 
         mDataBinding.frontCategoryTl.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -104,7 +107,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
         mDataBinding.frontJddHelp.setOnClickListener(v -> {
             AnalysisUtils.onEventEx(v.getContext(), Dot.Page_WinDoc);
-            ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY).withString("url", BuildConfig.WEB_BASE_URL).navigation();
+            ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY).withString("url",
+                    BuildConfig.WEB_BASE_URL).navigation();
         });
         mDataBinding.frontCashGetTv.setOnClickListener(v ->
                 ARouter.getInstance()
@@ -117,7 +121,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         });
 
         if (mRotateAnimation == null) {
-            mRotateAnimation = new RotateAnimation(0, 8, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.8f);
+            mRotateAnimation = new RotateAnimation(0, 8, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+                    0.8f);
             mRotateAnimation.setInterpolator(new CycleInterpolator(2));
             mRotateAnimation.setRepeatMode(Animation.REVERSE);
             mRotateAnimation.setRepeatCount(1);
@@ -334,7 +339,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     private final TimerTask mRotateTask = new TimerTask() {
         @Override
         public void run() {
-            FrontFragment.this.requireActivity().runOnUiThread(() -> mDataBinding.frontRpOpenFl5.startAnimation(mRotateAnimation));
+            FrontFragment.this.requireActivity().runOnUiThread(
+                    () -> mDataBinding.frontRpOpenFl5.startAnimation(mRotateAnimation));
         }
     };
 

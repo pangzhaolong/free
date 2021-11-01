@@ -6,12 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.drouter.ARouteHelper;
+import com.donews.common.ad.business.monitor.PageMonitor;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.router.RouterActivityPath;
@@ -55,6 +57,12 @@ public class MineOpenWinningFragment extends
     private boolean isRefesh = false;
     private int scrollTop0Count = 0; //是否初始加载数据
     private boolean isInitCommData = false; //是否初始加载了数据
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        new PageMonitor().attach(this);
+    }
 
     @Override
     public int getLayoutId() {
@@ -152,7 +160,7 @@ public class MineOpenWinningFragment extends
     @SuppressLint("WrongConstant")
     private void initView() {
         ARouter.getInstance().inject(this);
-        if(period == 0){
+        if (period == 0) {
             AnalysisUtils.onEventEx(this.getActivity(), Dot.Page_Lottery); //开奖事件
         }
         mViewModel.setDataBinDing(mDataBinding, getBaseActivity());
