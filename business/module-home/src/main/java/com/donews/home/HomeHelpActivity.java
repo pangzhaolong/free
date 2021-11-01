@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.gyf.immersionbar.ImmersionBar;
 
 /**
@@ -13,7 +15,6 @@ import com.gyf.immersionbar.ImmersionBar;
  * 版本：V1.0<br>
  */
 public class HomeHelpActivity extends AppCompatActivity {
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,5 +29,7 @@ public class HomeHelpActivity extends AppCompatActivity {
                 .init();
 
         findViewById(R.id.home_help_back).setOnClickListener(v -> finish());
+
+        AnalysisUtils.onEventEx(this, Dot.Page_SaveMoneyDoc);
     }
 }

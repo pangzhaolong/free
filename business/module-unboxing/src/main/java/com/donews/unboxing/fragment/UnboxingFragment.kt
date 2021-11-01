@@ -13,6 +13,8 @@ import com.donews.unboxing.bean.UnboxingBean
 import com.donews.unboxing.databinding.UnboxingFragUnboxingBinding
 import com.donews.unboxing.smartrefreshlayout.SmartRefreshState
 import com.donews.unboxing.viewmodel.UnboxingViewModel
+import com.donews.utilslibrary.analysis.AnalysisUtils
+import com.donews.utilslibrary.dot.Dot
 
 /**
  * 晒单页 fragment
@@ -35,11 +37,14 @@ class UnboxingFragment : MvvmLazyLiveDataFragment<UnboxingFragUnboxingBinding, U
         mDataBinding.viewModel = mViewModel
 
         unboxingRVAdapter.setOnItemChildClickListener { adapter, _, position ->
+
+            AnalysisUtils.onEventEx(context, Dot.Btn_BeBlessed);
+
             val data: UnboxingBean = adapter.data[position] as UnboxingBean
             ARouter.getInstance()
-                .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
-                .withString("goods_id", data.goodsId)
-                .navigation();
+                    .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
+                    .withString("goods_id", data.goodsId)
+                    .navigation();
         }
 
         unboxingRVAdapter.setDiffCallback(object : DiffUtil.ItemCallback<UnboxingBean>() {
@@ -59,6 +64,8 @@ class UnboxingFragment : MvvmLazyLiveDataFragment<UnboxingFragUnboxingBinding, U
                 unboxingRVAdapter.setDiffNewData(data)
             })
         }
+
+        AnalysisUtils.onEventEx(context, Dot.Page_ShowTime);
     }
 
     override fun onFragmentFirstVisible() {

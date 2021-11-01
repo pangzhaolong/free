@@ -31,6 +31,8 @@ import com.donews.common.ad.business.loader.AdManager;
 import com.donews.common.provider.IDetailProvider;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.module.lottery.adapter.GuessAdapter;
 import com.module.lottery.bean.CommodityBean;
@@ -147,6 +149,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         mDataBinding.panicBuying.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                AnalysisUtils.onEventEx(LotteryActivity.this, Dot.Btn_Buy);
                 if (mCommodityBean != null) {
                     detailProvider.goToTaoBao(LotteryActivity.this, mCommodityBean.getItemLink());
                 }
@@ -179,6 +182,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
     //开始抽奖
     public void startLottery() {
+        AnalysisUtils.onEventEx(this, Dot.Btn_LotteryNow);
         //开始抽奖
         //弹框抽奖码生成dialog
         LotteryCodeStartsDialog lotteryCodeStartsDialog = new LotteryCodeStartsDialog(LotteryActivity.this);

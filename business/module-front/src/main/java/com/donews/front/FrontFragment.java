@@ -103,6 +103,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         AnalysisUtils.onEventEx(this.getActivity(), Dot.Page_Home);
 
         mDataBinding.frontJddHelp.setOnClickListener(v -> {
+            AnalysisUtils.onEventEx(v.getContext(), Dot.Page_WinDoc);
             ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY).withString("url", BuildConfig.WEB_BASE_URL).navigation();
         });
         mDataBinding.frontCashGetTv.setOnClickListener(v ->
