@@ -248,6 +248,7 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
         isRefresh = true;
         adapter.refeshStart();
         mViewModel.loadRecommendGoods(25);
+        mViewModel.getLoadWithdrawData();
     }
 
     //上拉加载更多

@@ -1,6 +1,5 @@
 package com.donews.mine.viewModel;
 
-import android.content.Context;
 import android.view.View;
 import android.widget.GridLayout;
 import android.widget.TextView;
@@ -13,14 +12,10 @@ import androidx.lifecycle.MutableLiveData;
 import com.blankj.utilcode.util.ConvertUtils;
 import com.donews.base.utils.ToastUtil;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
-import com.donews.common.contract.ApplyUpdateBean;
-import com.donews.common.contract.LoginHelp;
 import com.donews.mine.R;
 import com.donews.mine.bean.resps.WithdraWalletResp;
 import com.donews.mine.bean.resps.WithdrawConfigResp;
 import com.donews.mine.model.MineModel;
-import com.donews.mine.model.SettingModel;
-import com.donews.utilslibrary.utils.DeviceUtils;
 
 import java.util.List;
 
