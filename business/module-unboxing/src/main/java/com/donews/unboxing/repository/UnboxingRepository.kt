@@ -23,7 +23,8 @@ class UnboxingRepository : BaseLiveDataModel() {
     fun getUnboxingData(pageId: Int, pageSize: Int, callBack: SimpleCallBack<UnBoxingResp>) {
         val unboxingUrlCreator = UnboxingUrlCreator()
         val disposable = EasyHttp.get(unboxingUrlCreator.getUnboxingDataUrl())
-            .cacheMode(CacheMode.NO_CACHE)
+            .cacheMode(CacheMode.CACHEANDREMOTEDISTINCT)
+            .cacheKey("unboxingData_${pageId}_${pageSize}")
             .params("page_id", pageId.toString())
             .params("page_size", pageSize.toString())
             .execute(callBack)
