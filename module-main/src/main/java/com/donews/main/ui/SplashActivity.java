@@ -103,8 +103,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
     public void initView() {
         mIsBackgroundToFore = getIntent().getBooleanExtra(toForeGroundKey, false);
         EventBus.getDefault().register(this);
-        if (isHotStart()) {
-            //热启动广告加载
+        if (mIsBackgroundToFore) {
             loadHotStartAd();
         } else {
             //冷启动,做app启动初始化相关
@@ -345,7 +344,11 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         // 权限都已经有了，那么直接调用SDK
         if (lackedPermission.size() == 0) {
             deviceLogin();
-            loadClodStartAd();
+            if(SplashUtils.INSTANCE.isColdStart()) {
+                loadClodStartAd();
+            }else{
+                loadHotStartAd();
+            }
         } else {
             String[] requestPermissions = new String[lackedPermission.size()];
             lackedPermission.toArray(requestPermissions);
@@ -360,7 +363,11 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         //修改为不需要处理拒绝的逻辑。只要回来就直接过
         if (requestCode == REQUEST_PERMISSIONS_CODE) {
             deviceLogin();
-            loadClodStartAd();
+            if(SplashUtils.INSTANCE.isColdStart()) {
+                loadClodStartAd();
+            }else{
+                loadHotStartAd();
+            }
         }
 //        if (requestCode == 1024 && hasAllPermissionsGranted(grantResults)) {
 //            loadSplashConfig();

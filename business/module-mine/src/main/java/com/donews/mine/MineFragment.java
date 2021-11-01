@@ -1,11 +1,13 @@
 package com.donews.mine;
 
 import android.annotation.SuppressLint;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +18,7 @@ import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.UserTelBindEvent;
 import com.dn.events.events.WalletRefreshEvent;
 import com.donews.base.utils.glide.GlideUtils;
+import com.donews.common.ad.business.monitor.PageMonitor;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.UserInfoBean;
@@ -46,6 +49,12 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
 
     MineFragmentAdapter adapter;
     private boolean isRefresh = false;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        new PageMonitor().attach(this);
+    }
 
     @Override
     public int getLayoutId() {
