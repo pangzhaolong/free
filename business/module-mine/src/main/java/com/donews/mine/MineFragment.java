@@ -15,9 +15,8 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.UserTelBindEvent;
 import com.dn.events.events.WalletRefreshEvent;
-import com.donews.base.fragment.MvvmLazyLiveDataFragment;
-import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.base.utils.glide.GlideUtils;
+import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.UserInfoBean;
 import com.donews.common.router.RouterActivityPath;
@@ -73,7 +72,7 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
     public void onGetMessage(WalletRefreshEvent navEvent) {
         if (navEvent.navIndex == 0) {
             mViewModel.getLoadWithdrawData();
-        }else if(navEvent.navIndex == 1){
+        } else if (navEvent.navIndex == 1) {
             mViewModel.getLoadWithdrawData();
         }
     }
@@ -149,9 +148,9 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
                 new GridLayoutManager(getActivity(), 2));
         mDataBinding.mineMeListLayout.getRecyclerView().setAdapter(adapter);
         mViewModel.withdrawDatilesLivData.observe(this, item -> {
-            if(item != null){
+            if (item != null) {
                 TextView tv = getView().findViewById(R.id.mine_me_money_num);
-                tv.setText(""+item.total);
+                tv.setText("" + item.total);
             }
         });
         mViewModel.recommendGoodsLiveData.observe(this, listDTOS -> {

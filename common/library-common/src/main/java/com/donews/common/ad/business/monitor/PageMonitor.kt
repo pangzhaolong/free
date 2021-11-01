@@ -54,9 +54,9 @@ class PageMonitor : LifecycleObserver {
     var mActivity: AppCompatActivity? = null
     var mFragment: Fragment? = null
 
-    fun attach(activity: AppCompatActivity) {
+    fun attach(activity: AppCompatActivity, tag: String = activity::class.java.simpleName) {
         with(activity) {
-            mTag = this::class.java.simpleName
+            mTag = tag
             if (!mBlackList.contains(mTag)) {
                 lifecycle.addObserver(this@PageMonitor)
                 inject(this)
@@ -66,9 +66,9 @@ class PageMonitor : LifecycleObserver {
         }
     }
 
-    fun attach(fragment: Fragment) {
+    fun attach(fragment: Fragment, tag: String = fragment::class.java.simpleName) {
         with(fragment) {
-            mTag = this::class.java.simpleName
+            mTag = tag
             if (!mBlackList.contains(mTag)) {
                 lifecycle.addObserver(this@PageMonitor)
                 activity?.let {

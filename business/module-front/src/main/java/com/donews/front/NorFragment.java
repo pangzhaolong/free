@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.events.LotteryStatusEvent;
-import com.donews.base.fragment.MvvmLazyLiveDataFragment;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.front.adapter.NorGoodsAdapter;

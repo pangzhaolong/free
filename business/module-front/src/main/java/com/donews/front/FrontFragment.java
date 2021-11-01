@@ -15,9 +15,8 @@ import androidx.annotation.Nullable;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.dn.events.events.WalletRefreshEvent;
-import com.donews.base.fragment.MvvmLazyLiveDataFragment;
+import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.front.adapter.FragmentAdapter;
@@ -36,7 +35,6 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 

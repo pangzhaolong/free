@@ -133,7 +133,9 @@ public class MineOpenWinningFragment extends
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        barrageView.stopScroll();
+        if (barrageView != null) {
+            barrageView.stopScroll();
+        }
     }
 
     private void onRefresh() {
