@@ -29,10 +29,10 @@ dependencies {
     api 'com.meituan.android.walle:library:1.1.7'
     // 腾讯的mmkv
     api rootProject.ext.dependencies["mmkv"]
-    implementation  'com.umeng.umsdk:common:9.4.4'
-    implementation  'com.umeng.umsdk:asms:1.4.1'
+    implementation 'com.umeng.umsdk:common:9.4.4'
+    implementation 'com.umeng.umsdk:asms:1.4.1'
     //友盟分享
-    implementation  'com.umeng.umsdk:share-core:7.1.6'//分享核心库，必选
+    implementation 'com.umeng.umsdk:share-core:7.1.6'//分享核心库，必选
     //可选集成，对应产品中稳定性模块（错误捕获），
     // 该功能已经独⽴立成为新的应⽤用性能监控产品 U-APM
     implementation 'com.umeng.umsdk:apm:1.5.2'
@@ -42,8 +42,10 @@ dependencies {
     //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
     api 'com.tencent.bugly:nativecrashreport:3.9.2'
 
-    api project(path: ':common:lib_eventbus')
+    //日志库
+    api rootProject.ext.dependencies["logger"]
 
+    api project(path: ':common:lib_eventbus')
 //    api project(':common:libs:utils-libs')
 
 }

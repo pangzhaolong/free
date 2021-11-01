@@ -12,7 +12,7 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.dn.drouter.ARouteHelper;
 import com.dn.events.events.LoginLodingStartStatus;
-import com.donews.base.activity.MvvmBaseLiveDataActivity;
+import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.services.ILoginService;
@@ -22,7 +22,6 @@ import com.donews.login.databinding.LoginActivityBinding;
 import com.donews.login.viewmodel.LoginViewModel;
 import com.donews.share.ISWXSuccessCallBack;
 import com.donews.share.WXHolderHelp;
-import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.LogUtil;
 import com.gyf.immersionbar.ImmersionBar;
 

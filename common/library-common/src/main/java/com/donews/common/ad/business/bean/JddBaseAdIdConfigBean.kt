@@ -1,7 +1,7 @@
-package com.dn.sdk.business.bean
+package com.donews.common.ad.business.bean
 
-import com.dn.sdk.business.constant.*
 import com.dn.sdk.sdk.bean.BaseAdIdConfigBean
+import com.donews.common.ad.business.constant.*
 
 /**
  * 奖多多基础广告id配置类

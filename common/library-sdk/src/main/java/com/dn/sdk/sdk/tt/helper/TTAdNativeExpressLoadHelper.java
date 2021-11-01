@@ -32,8 +32,8 @@ import com.dn.sdk.sdk.bean.RequestInfo;
 import com.dn.sdk.sdk.interfaces.listener.IAdNativeExpressListener;
 import com.dn.sdk.sdk.tt.utils.UIUtils;
 import com.dn.sdk.sdk.tt.utils.VideoOptionUtil;
-import com.donews.common.utils.DensityUtils;
 import com.donews.utilslibrary.base.UtilsConfig;
+import com.donews.utilslibrary.utils.DensityUtils;
 import com.donews.utilslibrary.utils.DeviceUtils;
 
 import java.util.ArrayList;

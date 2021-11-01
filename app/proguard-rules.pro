@@ -66,7 +66,7 @@
 -keep class * extends androidx.databinding.BaseObservable{*;}
 -keep class * extends com.donews.base.viewmodel.MvmBaseViewModel{*;}
 -keep class * extends com.donews.base.viewmodel.BaseLiveDataViewModel{*;}
--keep class * extends com.donews.base.activity.MvvmBaseLiveDataActivity{*;}
+-keep class * extends com.donews.common.base.MvvmBaseLiveDataActivity{*;}
 -keep class * extends com.donews.common.contract.BaseCustomViewModel{*;}
 
 

@@ -56,6 +56,8 @@ public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsV
         }
 
         mGoodsList.get(position).setLotteryStatus(lotteryStatus);
+
+        notifyItemChanged(position, "lotteryStatus");
     }
 
     public void clear() {
@@ -75,6 +77,32 @@ public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsV
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.front_goods_item_v, parent, false);
         }
         return new GoodsViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull GoodsViewHolder holder, int position, @NonNull List<Object> payloads) {
+        super.onBindViewHolder(holder, position, payloads);
+        if (payloads.size() <= 0) {
+            return;
+        }
+        if (payloads.get(0).equals("lotteryStatus")) {
+            NorGoodsBean.GoodsInfo goodsInfo = mGoodsList.get(position);
+            if (goodsInfo == null) {
+                return;
+            }
+            switch (goodsInfo.getLotteryStatus()) {
+                case 0:
+                    holder.doTv.setText("0元抽奖");
+                    break;
+                case 1:
+                    holder.doTv.setText("继续参与");
+                    break;
+                case 2:
+                    holder.doTv.setText("等待开奖");
+                    break;
+            }
+            holder.doTv.postInvalidate();
+        }
     }
 
     @SuppressLint("SetTextI18n")

@@ -1,4 +1,4 @@
-package com.donews.base.popwindow;
+package com.donews.common.base.popwindow;
 
 
 import androidx.fragment.app.FragmentActivity;

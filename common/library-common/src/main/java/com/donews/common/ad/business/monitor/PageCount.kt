@@ -1,4 +1,4 @@
-package com.dn.sdk.business.monitor
+package com.donews.common.ad.business.monitor
 
 import com.tencent.mmkv.MMKV
 import java.text.SimpleDateFormat
@@ -13,7 +13,7 @@ import java.util.*
  */
 object PageCount {
 
-    private const val MMKV_NAME = "pageCount"
+    private const val MMKV_NAME = "AdCount"
     private val mmkv = MMKV.mmkvWithID(MMKV_NAME, MMKV.MULTI_PROCESS_MODE)
     private val mDataFormat = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA)
     private const val SPLIT = ","

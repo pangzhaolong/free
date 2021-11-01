@@ -1,7 +1,7 @@
 package com.donews.mail.ui.fragments
 
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.donews.base.fragment.MvvmLazyLiveDataFragment
+import com.donews.common.base.MvvmLazyLiveDataFragment
 import com.donews.common.router.RouterFragmentPath
 import com.donews.mail.R
 import com.donews.mail.adapter.MailPageackFragmentVPAdapter

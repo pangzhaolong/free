@@ -1,4 +1,4 @@
-package com.donews.base.popwindow;
+package com.donews.common.base.popwindow;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,8 +9,8 @@ import android.widget.FrameLayout;
 
 import androidx.fragment.app.FragmentActivity;
 
+import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.base.R;
-import com.donews.base.activity.MvvmBaseLiveDataActivity;
 import com.donews.utilslibrary.utils.DeviceUtils;
 
 
@@ -44,11 +44,13 @@ public abstract class BaseSlideBottomPopupWindow extends BasePopupWindow {
 //            layoutParams.bottomMargin =showAtView.getMeasuredHeight() + DeviceUtils.dip2px(offsetDp); ;
 //            content.setLayoutParams(layoutParams);
             FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) rootView.getLayoutParams();
-            params.bottomMargin =showAtView.getMeasuredHeight() + DeviceUtils.dip2px(offsetDp); ;
+            params.bottomMargin = showAtView.getMeasuredHeight() + DeviceUtils.dip2px(offsetDp);
+            ;
             rootView.setLayoutParams(params);
         }
         rootView.setVisibility(View.VISIBLE);
-        Animation alphaAnimation = AnimationUtils.loadAnimation(baseActivity.getApplicationContext(), R.anim.base_popup_bg_fadein);
+        Animation alphaAnimation = AnimationUtils.loadAnimation(baseActivity.getApplicationContext(),
+                R.anim.base_popup_bg_fadein);
         alphaAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -65,7 +67,8 @@ public abstract class BaseSlideBottomPopupWindow extends BasePopupWindow {
 
             }
         });
-        Animation translateAnimation = AnimationUtils.loadAnimation(baseActivity.getApplicationContext(), R.anim.base_popup_content_slidein);
+        Animation translateAnimation = AnimationUtils.loadAnimation(baseActivity.getApplicationContext(),
+                R.anim.base_popup_content_slidein);
         content.startAnimation(translateAnimation);
         bg.startAnimation(alphaAnimation);
 
@@ -73,7 +76,8 @@ public abstract class BaseSlideBottomPopupWindow extends BasePopupWindow {
 
     @Override
     protected void hideAnimation() {
-        Animation alphaAnimation = AnimationUtils.loadAnimation(baseActivity.getApplicationContext(), R.anim.base_popup_bg_fadeout);
+        Animation alphaAnimation = AnimationUtils.loadAnimation(baseActivity.getApplicationContext(),
+                R.anim.base_popup_bg_fadeout);
         alphaAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -91,7 +95,8 @@ public abstract class BaseSlideBottomPopupWindow extends BasePopupWindow {
 
             }
         });
-        Animation translateAnimation = AnimationUtils.loadAnimation(baseActivity.getApplicationContext(), R.anim.base_popup_content_slideout);
+        Animation translateAnimation = AnimationUtils.loadAnimation(baseActivity.getApplicationContext(),
+                R.anim.base_popup_content_slideout);
         content.startAnimation(translateAnimation);
         bg.startAnimation(alphaAnimation);
     }

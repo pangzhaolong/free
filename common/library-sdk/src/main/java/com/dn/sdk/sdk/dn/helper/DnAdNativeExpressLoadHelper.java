@@ -1,7 +1,6 @@
 package com.dn.sdk.sdk.dn.helper;
 
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.View;
@@ -18,7 +17,7 @@ import com.dn.sdk.sdk.interfaces.listener.IAdNativeExpressListener;
 import com.donews.b.main.DoNewsAdNative;
 import com.donews.b.main.info.DoNewsAD;
 import com.donews.b.start.DoNewsAdManagerHolder;
-import com.donews.common.utils.DensityUtils;
+import com.donews.utilslibrary.utils.DensityUtils;
 import com.donews.utilslibrary.utils.DeviceUtils;
 import com.orhanobut.logger.Logger;
 

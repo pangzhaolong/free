@@ -1,4 +1,4 @@
-package com.dn.sdk.business.bean
+package com.donews.common.ad.business.bean
 
 import com.google.gson.annotations.SerializedName
 

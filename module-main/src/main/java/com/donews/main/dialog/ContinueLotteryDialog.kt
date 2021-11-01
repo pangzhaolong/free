@@ -14,13 +14,12 @@ import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.donews.base.fragmentdialog.AbstractFragmentDialog
 import com.donews.common.router.RouterFragmentPath
-import com.donews.common.utils.DensityUtils
+import com.donews.utilslibrary.utils.DensityUtils
 import com.donews.main.R
 import com.donews.main.databinding.MainExitDialogContinueLotteryBinding
 import com.donews.main.entitys.resps.ContinueLotteryConfig
 import com.donews.main.entitys.resps.ExitDialogRecommendGoods
 import com.donews.main.entitys.resps.ExitDialogRecommendGoodsResp
-import com.donews.main.entitys.resps.NotLotteryConfig
 import com.donews.main.utils.ExitInterceptUtils
 import com.donews.network.EasyHttp
 import com.donews.network.cache.model.CacheMode

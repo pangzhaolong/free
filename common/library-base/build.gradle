@@ -47,7 +47,6 @@ dependencies {
     api rootProject.ext.dependencies["multidex"]
 
     api rootProject.ext.dependencies["rxBinding"]
-    api rootProject.ext.dependencies["logger"]
 
     api rootProject.ext.dependencies["easypermissions"]
     api rootProject.ext.dependencies["easypermissions-ktx"]

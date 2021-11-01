@@ -7,7 +7,7 @@ import android.view.View;
 
 import androidx.fragment.app.FragmentActivity;
 
-import com.donews.base.popwindow.BaseSlideBottomPopupWindow;
+import com.donews.common.base.popwindow.BaseSlideBottomPopupWindow;
 
 
 public class ShareBasePopupWindow extends BaseSlideBottomPopupWindow {

@@ -3,8 +3,14 @@ package com.donews.common.contract;
 import android.text.TextUtils;
 
 import com.donews.base.utils.GsonUtils;
+import com.donews.utilslibrary.utils.AppStatusUtils;
 import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.SPUtils;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * <p> </p>
@@ -35,9 +41,9 @@ public class LoginHelp {
 
     /**
      * 检查是否登录
-     * @return
-     *  T:未登录
-     *  F:已登录
+     *
+     * @return T:未登录
+     * F:已登录
      */
     public boolean isLogin() {
         checkUserInfoBeanSp();
@@ -58,6 +64,36 @@ public class LoginHelp {
             userInfoBean = GsonUtils.fromLocalJson(spUserInfo, UserInfoBean.class);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * 如果没有登录，用第一次打开app时间进行判断,否则使用注册时间进行判断
+     * <p>
+     * 判断用户注册时间是否大于指定时间
+     *
+     * @param time 单位小时，如48小时，这判断用户注册时间是否过去了48小时
+     * @return true 用户注册时间已经大于 time时长
+     */
+    public boolean checkUserRegisterTime(int time) {
+        long duration = time * 60 * 60 * 1000L;
+
+        if (LoginHelp.getInstance().isLogin()) {
+            long installApp = AppStatusUtils.getAppInstallTime();
+            return System.currentTimeMillis() - installApp >= duration;
+        } else {
+            try {
+                SimpleDateFormat mDataFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+                String createAt = userInfoBean.getCreatedAt();
+                Date registerDate = mDataFormat.parse(createAt);
+                if (registerDate != null) {
+                    return System.currentTimeMillis() - registerDate.getTime() >= duration;
+                }
+                return false;
+            } catch (ParseException e) {
+                e.printStackTrace();
+                return false;
+            }
         }
     }
 }
