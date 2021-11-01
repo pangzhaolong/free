@@ -22,10 +22,13 @@ import com.donews.front.cache.GoodsCache;
 import com.donews.front.databinding.FrontNorFragmentBinding;
 import com.donews.front.decoration.GridSpaceItemDecoration;
 import com.donews.front.viewModel.NorViewModel;
+import com.donews.utilslibrary.utils.LogUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
 
 public class NorFragment extends MvvmLazyLiveDataFragment<FrontNorFragmentBinding, NorViewModel> implements NorClickListener {
 
@@ -126,6 +129,7 @@ public class NorFragment extends MvvmLazyLiveDataFragment<FrontNorFragmentBindin
     public void onClick(int position, String goodsId) {
         ARouter.getInstance()
                 .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
+                .withBoolean("needLotteryEvent", true)
                 .withInt("position", position)
                 .withString("goods_id", goodsId)
                 .navigation();
@@ -133,7 +137,22 @@ public class NorFragment extends MvvmLazyLiveDataFragment<FrontNorFragmentBindin
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessage(LotteryStatusEvent event) {
-        mNorGoodsAdapter.refreshItem(event.position, event.goodsId, 0);
+        if (event.object == null) {
+            return;
+        }
+
+        List<String> list = (List<String>) event.object;
+        int lotteryStatus = 0;
+        if (list.size() <= 0) {
+            lotteryStatus = 0;
+        } else if (list.size() < 6) {
+            lotteryStatus = 1;
+        } else {
+            lotteryStatus = 2;
+        }
+        LogUtil.e("onMessage:" + lotteryStatus);
+
+        mNorGoodsAdapter.refreshItem(event.position, event.goodsId, lotteryStatus);
     }
 
     @Override

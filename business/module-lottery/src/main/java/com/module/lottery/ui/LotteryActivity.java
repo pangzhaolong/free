@@ -3,18 +3,14 @@ package com.module.lottery.ui;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,7 +29,6 @@ import com.dn.events.events.LotteryStatusEvent;
 import com.donews.common.provider.IDetailProvider;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
-import com.donews.main.dialog.NotLotteryDialog;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.module.lottery.adapter.GuessAdapter;
 import com.module.lottery.bean.CommodityBean;
@@ -48,7 +43,6 @@ import com.module.lottery.dialog.NoDrawDialog;
 import com.module.lottery.dialog.ReceiveLotteryDialog;
 import com.module.lottery.model.LotteryModel;
 import com.module.lottery.utils.GridSpaceItemDecoration;
-import com.module.lottery.view.TextureVideoViewOutlineProvider;
 import com.module.lottery.viewModel.LotteryViewModel;
 import com.module_lottery.R;
 import com.module_lottery.databinding.GuesslikeHeadLayoutBinding;
@@ -61,8 +55,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 import java.util.Map;
-
-import kotlin.jvm.JvmField;
 
 
 @Route(path = RouterFragmentPath.Lottery.PAGER_LOTTERY)
@@ -276,18 +268,16 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         mNoDrawDialog.show();
     }
 
-
-    private  void finshReturn(){
-        EventBus.getDefault().post(new LotteryStatusEvent(mPosition,mGoodsId,mLotteryCodeBean.getCodes()));
+    private void finishReturn() {
+        EventBus.getDefault().post(new LotteryStatusEvent(mPosition, mGoodsId, mLotteryCodeBean.getCodes()));
     }
-
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(mMeedLotteryEvent){
-            finshReturn();
-        }
+        /*if (mMeedLotteryEvent) {
+            finishReturn();
+        }*/
     }
 
     //展示生成的抽奖码
@@ -553,12 +543,14 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         mLotteryCodeBean = null;
     }
 
-
     @SuppressLint("ResourceType")
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (mLotteryCodeBean == null || dialogShow) {
+                if (mMeedLotteryEvent) {
+                    finishReturn();
+                }
                 return super.onKeyDown(keyCode, event);
             }
             //判断抽奖码的数量显示对应的dialog
