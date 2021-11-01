@@ -25,10 +25,8 @@ object SplashUtils {
     /** 隐私协议的退出按钮的记录报错的key */
     private val PERSION_EXIT_SP_KEY = "PERSION_EXIT_SP_KEY"
 
-    /** 开屏广告双屏配置 */
-    var splashADConfig :SplashDoubleADConfigResp? = null
     /** 是否为冷启动的标志,T:是，F:否 */
-    var isColdStart :Boolean = true
+    var isColdStart: Boolean = true
 
     //------------------------------ 以下是通知订阅方法 ------------------------------
     @Subscribe //网络状态变化监听
@@ -51,16 +49,6 @@ object SplashUtils {
     }
 
     //------------------------------ 以下是工具方法 ------------------------------
-
-    /**
-     * 获取开屏的双屏广告配置
-     */
-    fun getSplashDoubleADConfig(finish: () -> Unit = {}): Disposable {
-        return MainUrlApiHelper.getSplashDoubleScreenConfig<SplashDoubleADConfigResp?>(succ = {
-            splashADConfig = it
-        }, finish = finish)
-    }
-
     /**
      * 隐私协议中的退出应用
      * @param isReset 是否为重置

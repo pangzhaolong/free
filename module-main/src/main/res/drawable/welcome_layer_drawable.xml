@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<layer-list xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="ResourceName">
 
     <item android:drawable="@color/white" />
@@ -13,7 +13,7 @@
 
     <item
         android:id="@+id/bottom_logo"
-        android:bottom="65dp">
+        android:bottom="48dp">
         <bitmap
             android:gravity="bottom|center_horizontal"
             android:src="@mipmap/main_splash_b_icon" />

@@ -45,7 +45,8 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
             dataBinding.llGuide.setVisibility(View.GONE);
             dataBinding.llRefuseHint.setVisibility(View.VISIBLE);
         });
-        dataBinding.tvRefuseHint.setText(getString(R.string.main_str_people_guide_refuse_hint, getAppName(getContext())));
+        dataBinding.tvRefuseHint.setText(
+                getString(R.string.main_str_people_guide_refuse_hint, getAppName(getContext())));
 
         //同意协议
         dataBinding.tvAgree.setOnClickListener(v -> {
@@ -62,8 +63,10 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
 
         //退出应用
         dataBinding.tvExit.setOnClickListener(v -> {
-            Objects.requireNonNull(getActivity()).finish();
             SplashUtils.INSTANCE.savePersonExit(false);
+            if (getOnCancelListener() != null) {
+                getOnCancelListener().onCancel();
+            }
         });
 
         //查看指引
@@ -81,6 +84,12 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
         this.sureListener = sureListener;
         return this;
     }
+
+    public PersonGuideDialog setCancelListener(CancelListener cancelListener) {
+        setOnCancelListener(cancelListener);
+        return this;
+    }
+
 
     @Override
     protected boolean isUseDataBinding() {
