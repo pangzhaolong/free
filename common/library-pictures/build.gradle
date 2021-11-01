@@ -1,0 +1,33 @@
+apply from: rootProject.file('gradle/library.build.gradle')
+
+android {
+
+    defaultConfig {
+        versionCode 1
+        versionName "1.0.0"
+
+
+        //Room 配置
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += [
+                        "room.schemaLocation"  : "$projectDir/schemas".toString(),
+                        "room.incremental"     : "true",
+                        "room.expandProjection": "true"]
+            }
+        }
+    }
+
+    //统一资源前缀,规范资源引用
+    resourcePrefix "picture_"
+}
+
+dependencies {
+    //第三方依赖库
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    kapt rootProject.ext.dependencies["arouter-compiler"]
+    implementation project(':common:library-common')
+    api rootProject.ext.dependencies["photoView"]
+    api rootProject.ext.dependencies["viewpagerindicator"]
+}

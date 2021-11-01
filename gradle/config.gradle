@@ -109,5 +109,10 @@ ext {
             //权限申请框紧
             "easypermissions"              : "pub.devrel:easypermissions:3.0.0",
             "easypermissions-ktx"          : "com.vmadalin:easypermissions-ktx:1.0.0",
+
+            //photoView,图片查看
+            "photoView"                    : "com.github.chrisbanes:PhotoView:2.3.0",
+            //ViewPager指示器
+            "viewpagerindicator"           : "com.github.zhpanvip:viewpagerindicator:1.2.1",
     ]
 }

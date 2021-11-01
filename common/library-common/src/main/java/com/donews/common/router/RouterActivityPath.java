@@ -1,9 +1,14 @@
 package com.donews.common.router;
 
+import android.app.Activity;
+
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 应用模块: 组件化路由
@@ -165,5 +170,18 @@ public class RouterActivityPath {
     public static class Rp {
         public static final String RP = "/rp";
         public static final String PAGE_RP = RP + "/rp";
+    }
+
+
+    public static class Pictures {
+        public static final String PICTURE = "/picture";
+        public static final String BIG_IMAGE_ACTIVITY = PICTURE + "/BigImageActivity";
+
+        public static void toBigImageActivity(ArrayList<String> imageList, int postion) {
+            ARouter.getInstance().build(BIG_IMAGE_ACTIVITY)
+                    .withStringArrayList("imageList", imageList)
+                    .withInt("position", postion)
+                    .navigation();
+        }
     }
 }

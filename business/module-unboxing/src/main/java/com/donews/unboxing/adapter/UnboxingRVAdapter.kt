@@ -8,15 +8,18 @@ import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
+import com.alibaba.android.arouter.launcher.ARouter
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.donews.common.decoration.GridItemDecoration
+import com.donews.common.router.RouterActivityPath
 import com.donews.utilslibrary.utils.DensityUtils
 import com.donews.unboxing.R
 import com.donews.unboxing.bean.UnboxingBean
 import com.donews.unboxing.databinding.UnboxingItemUnboxingBinding
 import com.donews.utilslibrary.utils.AppInfo
 import com.tencent.mmkv.MMKV
+import java.util.ArrayList
 
 /**
  * 晒单页RecyclerView Adapter
@@ -45,6 +48,10 @@ class UnboxingRVAdapter(layoutResId: Int) : BaseQuickAdapter<UnboxingBean, BaseV
 
 
             val picAdapter = UnboxingPicAdapter(R.layout.unboxing_item_pic)
+            picAdapter.setOnItemClickListener { adapter, _, position ->
+                RouterActivityPath.Pictures.toBigImageActivity(adapter.data as ArrayList<String>?,position)
+            }
+
 
             dataBinding.rvPics.apply {
                 setHasFixedSize(true)
