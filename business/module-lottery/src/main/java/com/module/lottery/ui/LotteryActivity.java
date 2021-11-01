@@ -26,6 +26,8 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.events.LotteryStatusEvent;
+import com.dn.sdk.sdk.interfaces.listener.impl.SimpleRewardVideoListener;
+import com.donews.common.ad.business.loader.AdManager;
 import com.donews.common.provider.IDetailProvider;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
@@ -59,26 +61,20 @@ import java.util.Map;
 
 @Route(path = RouterFragmentPath.Lottery.PAGER_LOTTERY)
 public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, LotteryViewModel> {
-
     //    @Autowired(name = "goodsListDTO")
 //    SpikeBean.GoodsListDTO mGoodsListDTO;
     @Autowired(name = "goods_id")
     String mGoodsId;
-
-
     @Autowired(name = "position")
     int mPosition;
-
     @Autowired(name = "needLotteryEvent")
     boolean mMeedLotteryEvent;
-
     //    String id = "tb:655412572200";
     GuessAdapter guessAdapter;
-
     @Autowired(name = "action")
     String mAction;
     CommodityBean mCommodityBean;
-
+    boolean aAState = false;
     int mPageNumber = 1;
     boolean refresh = true;
     //抽奖码的对象用来拦截返回
@@ -194,9 +190,30 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
             @Override
             public void onJumpAd() {
-                lotteryCodeStartsDialog.dismiss();
-                //弹起生成抽奖码的dialog
-                showGenerateCodeDialog();
+                AdManager.INSTANCE.loadRewardVideoAd(LotteryActivity.this, new SimpleRewardVideoListener() {
+                    @Override
+                    public void onError(int code, String msg) {
+                        super.onError(code, msg);
+                        lotteryCodeStartsDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onRewardedClosed() {
+                        super.onRewardedClosed();
+                        lotteryCodeStartsDialog.dismiss();
+                        //有效关闭
+                        if (aAState) {
+                            //弹起生成抽奖码的dialog
+                            showGenerateCodeDialog();
+                        }
+                    }
+
+                    @Override
+                    public void onRewardVerify(boolean result) {
+                        super.onRewardVerify(result);
+                        aAState = result;
+                    }
+                });
             }
         });
         lotteryCodeStartsDialog.create();
