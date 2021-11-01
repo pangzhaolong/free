@@ -35,7 +35,8 @@ public class ActivityRuleDialog extends BaseDialog<FrontActivityRuleDialogBindin
 
     @SuppressLint("RestrictedApi")
     void initView() {
-        mDataBinding.frontRuleDialogHtmlTv.setText(Html.fromHtml(getContext().getString(R.string.front_rule_3text)));
+        mDataBinding.frontRuleDialogHtmlTv2.setText(Html.fromHtml(getContext().getString(R.string.front_rule_2text)));
+        mDataBinding.frontRuleDialogHtmlTv3.setText(Html.fromHtml(getContext().getString(R.string.front_rule_3text)));
 
         mDataBinding.frontRuleKnownTv.setOnClickListener(v -> {
             hide();
