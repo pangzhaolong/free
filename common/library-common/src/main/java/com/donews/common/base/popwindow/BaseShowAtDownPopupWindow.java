@@ -1,4 +1,4 @@
-package com.donews.base.popwindow;
+package com.donews.common.base.popwindow;
 
 import android.content.Context;
 import android.util.Log;
@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 import androidx.fragment.app.FragmentActivity;
 
 import com.donews.base.R;
-import com.donews.base.activity.MvvmBaseLiveDataActivity;
+import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.base.base.BaseApplication;
 import com.donews.utilslibrary.utils.DeviceUtils;
 
@@ -41,11 +41,14 @@ public abstract class BaseShowAtDownPopupWindow extends BasePopupWindow {
         }
 
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) content.getLayoutParams();
-        layoutParams.topMargin = showAtViewLocation[1] - rootViewLocation[1] + showAtView.getMeasuredHeight() + DeviceUtils.dip2px(offsetDp);
+        layoutParams.topMargin =
+                showAtViewLocation[1] - rootViewLocation[1] + showAtView.getMeasuredHeight() + DeviceUtils.dip2px(
+                offsetDp);
         content.setLayoutParams(layoutParams);
 
         rootView.setVisibility(View.VISIBLE);
-        Animation alphaAnimation = AnimationUtils.loadAnimation(BaseApplication.getInstance(), R.anim.base_popup_bg_fadein);
+        Animation alphaAnimation = AnimationUtils.loadAnimation(BaseApplication.getInstance(),
+                R.anim.base_popup_bg_fadein);
         alphaAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -68,7 +71,8 @@ public abstract class BaseShowAtDownPopupWindow extends BasePopupWindow {
 
     @Override
     protected void hideAnimation() {
-        Animation alphaAnimation = AnimationUtils.loadAnimation(BaseApplication.getInstance(), R.anim.base_popup_bg_fadeout);
+        Animation alphaAnimation = AnimationUtils.loadAnimation(BaseApplication.getInstance(),
+                R.anim.base_popup_bg_fadeout);
         alphaAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {

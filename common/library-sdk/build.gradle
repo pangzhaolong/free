@@ -16,5 +16,6 @@ repositories {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
-    api project(':common:library-common')
+    //使用其中的大数据
+    implementation project(path: ':common:library-utils')
 }

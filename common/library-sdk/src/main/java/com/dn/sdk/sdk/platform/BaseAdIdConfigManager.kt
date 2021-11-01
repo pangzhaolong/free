@@ -1,12 +1,6 @@
 package com.dn.sdk.sdk.platform
 
 import com.dn.sdk.sdk.interfaces.idconfig.IAdIdConfigManager
-import com.donews.network.EasyHttp
-import com.donews.network.cache.model.CacheMode
-import com.donews.network.callback.SimpleCallBack
-import com.donews.network.exception.ApiException
-import com.google.gson.Gson
-import com.orhanobut.logger.Logger
 import java.util.*
 
 /**

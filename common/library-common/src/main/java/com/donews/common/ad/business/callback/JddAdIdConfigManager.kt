@@ -1,6 +1,6 @@
-package com.dn.sdk.business.callback
+package com.donews.common.ad.business.callback
 
-import com.dn.sdk.business.bean.JddAdIdConfigBean
+import com.donews.common.ad.business.bean.JddAdIdConfigBean
 import com.dn.sdk.sdk.dn.DnNewsPlatform
 import com.dn.sdk.sdk.platform.BaseAdIdConfigManager
 import com.dn.sdk.sdk.platform.IPlatform

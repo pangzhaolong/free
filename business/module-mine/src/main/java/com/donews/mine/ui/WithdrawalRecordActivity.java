@@ -3,21 +3,16 @@ package com.donews.mine.ui;
 import android.os.Bundle;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.donews.base.activity.MvvmBaseLiveDataActivity;
+import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.mine.R;
 import com.donews.mine.adapters.MineWithdrawalRecordAdapter;
-import com.donews.mine.databinding.MineActivityWithdrawalCenterBinding;
 import com.donews.mine.databinding.MineActivityWithdrawalRecordBinding;
-import com.donews.mine.viewModel.WithdrawalCenterViewModel;
 import com.donews.mine.viewModel.WithdrawalRecordViewModel;
 import com.gyf.immersionbar.ImmersionBar;
-import com.scwang.smart.refresh.layout.api.RefreshLayout;
-import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 

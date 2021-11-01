@@ -1,18 +1,15 @@
 package com.donews.main.ui;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.donews.base.activity.MvvmBaseLiveDataActivity;
+import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.main.R;
 import com.donews.main.databinding.MainRpActivityBinding;
-import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.SoundHelp;
 import com.gyf.immersionbar.BarHide;
 import com.gyf.immersionbar.ImmersionBar;

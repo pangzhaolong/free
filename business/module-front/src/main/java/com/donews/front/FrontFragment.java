@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.dn.events.events.WalletRefreshEvent;
 import com.donews.base.fragment.MvvmLazyLiveDataFragment;
 import com.donews.common.router.RouterActivityPath;

@@ -1,4 +1,4 @@
-package com.donews.common.utils;
+package com.donews.utilslibrary.utils;
 
 import android.content.Context;
 import android.util.DisplayMetrics;

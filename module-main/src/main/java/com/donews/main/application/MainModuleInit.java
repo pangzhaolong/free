@@ -5,6 +5,8 @@ import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.donews.common.ad.business.bean.JddAdConfigBean;
+import com.donews.common.ad.business.callback.JddAdConfigManager;
 import com.donews.main.BuildConfig;
 import com.donews.main.ui.SplashActivity;
 import com.donews.base.base.BaseApplication;
@@ -86,7 +88,10 @@ public class MainModuleInit implements IModuleInit {
      * 进入前台
      */
     private void toForeGround(Activity activity) {
-        int backGroundInt = SPUtils.getInformain(KeySharePreferences.SPLASH_BACKGROUND_INTERVAL_TIME, 0);
+        JddAdConfigBean bean = JddAdConfigManager.INSTANCE.getJddAdConfigBean();
+//        int backGroundInt = SPUtils.getInformain(KeySharePreferences.SPLASH_BACKGROUND_INTERVAL_TIME,
+//                bean.getHotStartSplashInterval());
+        int backGroundInt = bean.getHotStartSplashInterval();
         if (activity instanceof SplashActivity || backGroundInt == 0) {
             return;
         }

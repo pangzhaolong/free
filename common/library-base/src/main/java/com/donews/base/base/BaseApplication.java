@@ -40,15 +40,6 @@ public class BaseApplication extends Application {
         ContextHolder.getInstance().setAppContext(this);
         UtilsConfig.init(this);
         setsDebug(BuildConfig.DEBUG);
-        FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
-                .tag("Lottery")
-                .build();
-        Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy) {
-            @Override
-            public boolean isLoggable(int priority, @Nullable String tag) {
-                return BuildConfig.DEBUG;
-            }
-        });
     }
 
     /**

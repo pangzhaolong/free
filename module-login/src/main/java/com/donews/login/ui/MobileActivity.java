@@ -12,7 +12,7 @@ import android.widget.EditText;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.donews.base.activity.MvvmBaseLiveDataActivity;
+import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.services.ILoginService;
 import com.donews.common.services.config.ServicesConfig;

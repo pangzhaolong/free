@@ -5,7 +5,7 @@ import android.view.View
 import androidx.recyclerview.widget.DiffUtil
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
-import com.donews.base.fragment.MvvmLazyLiveDataFragment
+import com.donews.common.base.MvvmLazyLiveDataFragment
 import com.donews.common.router.RouterFragmentPath
 import com.donews.unboxing.R
 import com.donews.unboxing.adapter.UnboxingRVAdapter

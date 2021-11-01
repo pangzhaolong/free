@@ -20,7 +20,7 @@ import com.dn.admediation.csj.listener.DnTTAdBannerListener;
 import com.dn.admediation.csj.listener.DnTTAdBannerLoadCallBack;
 import com.dn.sdk.sdk.bean.RequestInfo;
 import com.dn.sdk.sdk.interfaces.listener.IAdBannerListener;
-import com.donews.common.utils.DensityUtils;
+import com.donews.utilslibrary.utils.DensityUtils;
 
 /**
  * banner广告加载实现类

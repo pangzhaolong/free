@@ -5,7 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.databinding.ViewDataBinding;
 
-import com.donews.base.activity.MvvmBaseLiveDataActivity;
+import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.gyf.immersionbar.ImmersionBar;
 import com.module_lottery.R;

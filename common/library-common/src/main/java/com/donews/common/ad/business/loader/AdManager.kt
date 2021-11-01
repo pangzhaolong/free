@@ -1,10 +1,8 @@
-package com.dn.sdk.business.loader
+package com.donews.common.ad.business.loader
 
 import android.app.Activity
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import com.dn.sdk.business.callback.JddAdIdConfigManager
-import com.dn.sdk.business.constant.*
+import com.donews.common.ad.business.callback.JddAdIdConfigManager
 import com.dn.sdk.sdk.AdSdkManager
 import com.dn.sdk.sdk.bean.AdType
 import com.dn.sdk.sdk.bean.RequestInfo
@@ -16,7 +14,8 @@ import com.dn.sdk.sdk.interfaces.listener.IAdSplashListener
 import com.dn.sdk.sdk.interfaces.listener.preload.IAdPreloadVideoViewListener
 import com.dn.sdk.sdk.interfaces.loader.IAdManager
 import com.dn.sdk.sdk.platform.IAdIdConfigCallback
-import com.donews.common.utils.DensityUtils
+import com.donews.common.ad.business.constant.*
+import com.donews.utilslibrary.utils.DensityUtils
 
 /**
  * 广告加载实现

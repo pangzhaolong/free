@@ -18,5 +18,4 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     kapt rootProject.ext.dependencies["arouter-compiler"]
     implementation project(':common:library-common')
-    implementation project(':common:library-sdk')
 }

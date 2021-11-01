@@ -5,8 +5,8 @@ import com.dn.sdk.sdk.bean.AdType
 import com.dn.sdk.sdk.bean.RequestInfo
 import com.dn.sdk.sdk.bean.SDKType
 import com.dn.sdk.sdk.utils.SdkLogUtils
-import com.donews.network.down.MD5Util
 import com.donews.utilslibrary.analysis.AnalysisHelp
+import com.donews.utilslibrary.utils.MD5Util
 
 /**
  * 大数据上报事件

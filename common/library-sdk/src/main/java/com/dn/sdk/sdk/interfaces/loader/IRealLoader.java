@@ -3,6 +3,8 @@ package com.dn.sdk.sdk.interfaces.loader;
 import android.app.Activity;
 import android.content.Context;
 
+import androidx.annotation.Nullable;
+
 import com.dn.sdk.sdk.bean.RequestInfo;
 import com.dn.sdk.sdk.bean.SDKType;
 import com.dn.sdk.sdk.interfaces.listener.IAdBannerListener;
@@ -13,8 +15,6 @@ import com.dn.sdk.sdk.interfaces.listener.IAdNativeListener;
 import com.dn.sdk.sdk.interfaces.listener.IAdRewardVideoListener;
 import com.dn.sdk.sdk.interfaces.listener.IAdSplashListener;
 import com.dn.sdk.sdk.interfaces.listener.preload.IAdPreloadVideoViewListener;
-
-import javax.annotation.Nullable;
 
 
 /**

@@ -13,7 +13,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.donews.base.widget.CenterImageSpan
-import com.donews.common.utils.DensityUtils
+import com.donews.utilslibrary.utils.DensityUtils
 import com.donews.detail.R
 import com.donews.detail.bean.DetailPicInfo
 import com.donews.detail.bean.GoodsDetailInfo

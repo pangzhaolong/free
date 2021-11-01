@@ -13,6 +13,8 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.donews.base.activity.MvvmBaseLiveDataActivity;
+import com.dn.events.events.NavEvent;
+import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.base.base.AppStatusConstant;
 import com.donews.base.base.AppStatusManager;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;

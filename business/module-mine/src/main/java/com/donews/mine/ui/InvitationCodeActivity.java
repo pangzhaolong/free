@@ -5,7 +5,7 @@ import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
-import com.donews.base.activity.MvvmBaseLiveDataActivity;
+import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.mine.Api.MineHttpApi;
 import com.donews.mine.R;

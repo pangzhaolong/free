@@ -1,24 +1,17 @@
 package com.donews.mine.ui;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.donews.base.activity.MvvmBaseLiveDataActivity;
+import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.mine.R;
-import com.donews.mine.adapters.MineParticipateRecordAdapter;
 import com.donews.mine.adapters.MineWinningRecordAdapter;
 import com.donews.mine.bean.resps.WinRecordResp;
-import com.donews.mine.databinding.MineActivityParticipateRecordBinding;
 import com.donews.mine.databinding.MineActivityWinningRecordBinding;
-import com.donews.mine.viewModel.MineParticipateRecordViewModel;
 import com.donews.mine.viewModel.MineWinningRecordViewModel;
 import com.gyf.immersionbar.ImmersionBar;
 

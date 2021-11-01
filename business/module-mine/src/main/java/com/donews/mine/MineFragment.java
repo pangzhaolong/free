@@ -16,6 +16,7 @@ import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.UserTelBindEvent;
 import com.dn.events.events.WalletRefreshEvent;
 import com.donews.base.fragment.MvvmLazyLiveDataFragment;
+import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.base.utils.glide.GlideUtils;
 import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.UserInfoBean;
@@ -245,7 +246,6 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
         isRefresh = true;
         adapter.refeshStart();
         mViewModel.loadRecommendGoods(25);
-        mViewModel.getLoadWithdrawData();
     }
 
     //上拉加载更多
