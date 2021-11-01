@@ -18,7 +18,6 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.donews.common.ad.business.monitor.PageMonitor;
 import com.donews.base.base.DataBindingVars;
 import com.donews.base.fragmentdialog.LoadingHintDialog;
 import com.donews.base.utils.ClassUtil;
@@ -66,7 +65,6 @@ public abstract class MvvmLazyLiveDataFragment<V extends ViewDataBinding, VM ext
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new PageMonitor().attach(this);
     }
 
     protected void showLoading() {

@@ -14,12 +14,11 @@ import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.donews.common.ad.business.monitor.PageMonitor;
 import com.donews.base.base.DataBindingVars;
 import com.donews.base.fragmentdialog.LoadingHintDialog;
-import com.donews.common.base.popwindow.BasePopupWindow;
 import com.donews.base.utils.ClassUtil;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
+import com.donews.common.base.popwindow.BasePopupWindow;
 
 import java.util.ArrayList;
 
@@ -32,7 +31,8 @@ import java.util.ArrayList;
  * 作者： created by honeylife<br>
  * 日期：2020-01-27
  */
-public abstract class MvvmBaseLiveDataActivity<V extends ViewDataBinding, VM extends BaseLiveDataViewModel> extends AppCompatActivity {
+public abstract class MvvmBaseLiveDataActivity<V extends ViewDataBinding, VM extends BaseLiveDataViewModel>
+        extends AppCompatActivity {
 
     protected VM mViewModel;
 
@@ -58,8 +58,8 @@ public abstract class MvvmBaseLiveDataActivity<V extends ViewDataBinding, VM ext
         rootView = (FrameLayout) findViewById(android.R.id.content);
     }
 
-    protected void showLoading(){
-        if(loadingHintDialog != null){
+    protected void showLoading() {
+        if (loadingHintDialog != null) {
             hideLoading();
         }
         loadingHintDialog = new LoadingHintDialog();
@@ -68,8 +68,8 @@ public abstract class MvvmBaseLiveDataActivity<V extends ViewDataBinding, VM ext
                 .show(getSupportFragmentManager(), "user_cancellation");
     }
 
-    protected void showLoading(String msg){
-        if(loadingHintDialog != null){
+    protected void showLoading(String msg) {
+        if (loadingHintDialog != null) {
             hideLoading();
         }
         loadingHintDialog = new LoadingHintDialog();
@@ -78,8 +78,8 @@ public abstract class MvvmBaseLiveDataActivity<V extends ViewDataBinding, VM ext
                 .show(getSupportFragmentManager(), "user_cancellation");
     }
 
-    protected void hideLoading(){
-        if(loadingHintDialog != null){
+    protected void hideLoading() {
+        if (loadingHintDialog != null) {
             loadingHintDialog.disMissDialog();
         }
     }
@@ -90,7 +90,6 @@ public abstract class MvvmBaseLiveDataActivity<V extends ViewDataBinding, VM ext
         initViewModel();
         performDataBinding();
         initView();
-        new PageMonitor().attach(this);
     }
 
     private void initViewModel() {

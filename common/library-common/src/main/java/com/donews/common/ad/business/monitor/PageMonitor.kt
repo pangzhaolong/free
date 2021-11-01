@@ -36,6 +36,9 @@ class PageMonitor : LifecycleObserver {
     private val mHandler = Handler(Looper.getMainLooper())
     private val mDataFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA)
 
+    //当前页面打开显示次数
+    private var mResumeTimes = 0
+
     private val mBlackList = arrayListOf(
         "SplashActivity", "MainActivity", "TopFragment",
         "NorFragment", "FrontFragment", "LotteryActivity"
@@ -85,7 +88,9 @@ class PageMonitor : LifecycleObserver {
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun onResume() {
         mResume = true
+        mResumeTimes++
         PageCount.pageResume(mTag)
+
         resumeCheckShowAd()
     }
 
@@ -123,13 +128,16 @@ class PageMonitor : LifecycleObserver {
             //显示次数大于设置的页面最小显示次数,比如第二次显示页面才显示广告
             val resumeNumber = PageCount.getResumeNumber(mTag)
             val showAdNumber = PageCount.getAdShowNumber(mTag)
-            if (resumeNumber == jddAdConfigBean.pageShowTimes) {
-                if (showAdNumber < jddAdConfigBean.pageInterstitialShowTimes) {
-                    showAd()
-                }
-            } else {
-                if (showAdNumber < jddAdConfigBean.pageInterstitialShowTimes) {
-                    sendMessage()
+            //显示广告次数小于配置的最大次数
+            if (showAdNumber < jddAdConfigBean.pageInterstitialShowTimes) {
+                //页面显示次数必须大于配置的最小次数
+                if (resumeNumber >= jddAdConfigBean.pageShowTimes) {
+                    //第一次显示页面，直接显示广告
+                    if (mResumeTimes == 1) {
+                        showAd()
+                    } else {
+                        sendMessage()
+                    }
                 }
             }
         }
