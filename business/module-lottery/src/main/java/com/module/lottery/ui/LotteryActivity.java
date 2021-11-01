@@ -207,6 +207,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         generateCodeDialog.setStateListener(new GenerateCodeDialog.OnStateListener() {
             @Override
             public void onFinish() {
+                generateCodeDialog.dismiss();
             }
 
             @Override
@@ -554,10 +555,17 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() < 6) {
                 dialogShow = true;
                 LessMaxDialog mLessMaxDialog = new LessMaxDialog(LotteryActivity.this, mLotteryCodeBean);
-                mLessMaxDialog.setFinishListener(new NoDrawDialog.OnFinishListener() {
+                mLessMaxDialog.setFinishListener(new LessMaxDialog.OnFinishListener() {
+
                     @Override
-                    public void onFinish() {
-                        finish();
+                    public void onDismiss() {
+
+                    }
+
+                    @Override
+                    public void onAgain() {
+                        mLessMaxDialog.dismiss();
+                        startLottery();
                     }
                 });
                 mLessMaxDialog.create();

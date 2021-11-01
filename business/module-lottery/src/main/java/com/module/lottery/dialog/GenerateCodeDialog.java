@@ -88,6 +88,10 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
                     .execute(new SimpleCallBack<GenerateCodeBean>() {
                         @Override
                         public void onError(ApiException e) {
+                            //广告跳转
+                            if(mOnFinishListener!=null){
+                                mOnFinishListener.onFinish();
+                            }
                             Toast.makeText(getContext(), "抽奖码获取失败", Toast.LENGTH_SHORT).show();
                         }
 
