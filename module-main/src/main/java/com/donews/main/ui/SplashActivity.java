@@ -22,6 +22,7 @@ import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.common.ad.business.bean.JddAdConfigBean;
 import com.donews.common.ad.business.callback.JddAdConfigManager;
 import com.donews.common.ad.business.loader.AdManager;
+import com.donews.common.ad.business.monitor.LotteryAdCount;
 import com.donews.common.adapter.ScreenAutoAdapter;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.contract.LoginHelp;
@@ -317,6 +318,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
     private void goToMain() {
         if (!isHotStart()) {
             if (AppStatusManager.getInstance().getAppStatus() != AppStatusConstant.STATUS_NORMAL) {
+                LotteryAdCount.INSTANCE.init();
                 MainActivity.start(this);
             }
         }
