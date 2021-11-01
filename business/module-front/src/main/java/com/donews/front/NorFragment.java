@@ -133,7 +133,7 @@ public class NorFragment extends MvvmLazyLiveDataFragment<FrontNorFragmentBindin
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessage(LotteryStatusEvent event) {
-        mNorGoodsAdapter.refreshItem(event.position, event.goodsId, event.lotteryStatus);
+        mNorGoodsAdapter.refreshItem(event.position, event.goodsId, 0);
     }
 
     @Override
