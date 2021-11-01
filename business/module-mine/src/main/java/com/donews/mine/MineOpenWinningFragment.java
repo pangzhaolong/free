@@ -161,6 +161,7 @@ public class MineOpenWinningFragment extends
     private void initView() {
         ARouter.getInstance().inject(this);
         if (period == 0) {
+            mViewModel.isAutoPeriod = true;
             AnalysisUtils.onEventEx(this.getActivity(), Dot.Page_Lottery); //开奖事件
         }
         mViewModel.setDataBinDing(mDataBinding, getBaseActivity());

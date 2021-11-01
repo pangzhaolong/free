@@ -17,6 +17,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.UserTelBindEvent;
 import com.dn.events.events.WalletRefreshEvent;
+import com.donews.base.utils.ToastUtil;
 import com.donews.base.utils.glide.GlideUtils;
 import com.donews.common.ad.business.monitor.PageMonitor;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
@@ -77,6 +78,10 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
 
     @Subscribe(threadMode = ThreadMode.MAIN) //用户登录状态变化
     public void loginStatusEvent(LoginUserStatus event) {
+        if(event.getStatus() == 2){
+            mViewModel.withdrawDatilesLivData.postValue(null);
+        }
+        mViewModel.getLoadWithdrawData();
         updateUIData();
     }
 
@@ -125,6 +130,10 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
         });
         getView().findViewById(R.id.mine_me_money_num_ll).setOnClickListener((v) -> {
             //提现
+            if(!checkIsLogin()){
+                getView().findViewById(R.id.iv_user_logo).performClick();
+                return;
+            }
             ARouter.getInstance()
                     .build(RouterActivityPath.Mine.PAGER_ACTIVITY_WITHDRAWAL)
                     .navigation();
@@ -138,12 +147,20 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
         });
         getView().findViewById(R.id.mine_me_add_reco).setOnClickListener((v) -> {
             //参与记录
+            if(!checkIsLogin()){
+                getView().findViewById(R.id.iv_user_logo).performClick();
+                return;
+            }
             ARouter.getInstance()
                     .build(RouterActivityPath.Mine.PAGER_PARTICIPATE_RECORD)
                     .navigation();
         });
         getView().findViewById(R.id.mine_me_win_reco).setOnClickListener((v) -> {
             //中奖记录
+            if(!checkIsLogin()){
+                getView().findViewById(R.id.iv_user_logo).performClick();
+                return;
+            }
             ARouter.getInstance()
                     .build(RouterActivityPath.Mine.PAGER_WINNING_RECORD)
                     .navigation();
@@ -212,6 +229,13 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
                     R.drawable.mine_not_login_user_head);
             userName.setText(uf.getUserName());
         }
+    }
+
+    //检查是否已经登录了，T:已登录，F:未登录
+    private boolean checkIsLogin(){
+        UserInfoBean uf = LoginHelp.getInstance().getUserInfoBean();
+        return uf != null &&
+                AppInfo.checkIsWXLogin();
     }
 
     //检查登录逻辑
