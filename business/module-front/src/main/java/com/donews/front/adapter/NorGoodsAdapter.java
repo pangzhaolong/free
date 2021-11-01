@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,10 +28,15 @@ public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsV
 
     private Context mContext;
     private NorClickListener mListener;
+    private int mCols;
 
     public NorGoodsAdapter(Context context, NorClickListener listener) {
         mContext = context;
         mListener = listener;
+    }
+
+    public void setCols(int cols) {
+        mCols = cols;
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -38,6 +44,18 @@ public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsV
 //        mGoodsList.clear();
         mGoodsList.addAll(list);
         notifyDataSetChanged();
+    }
+
+    public void refreshItem(int position, String goodsId, int lotteryStatus) {
+        if (position < 0 || position >= mGoodsList.size()) {
+            return;
+        }
+
+        if (!mGoodsList.get(position).getGoodsId().equalsIgnoreCase(goodsId)) {
+            return;
+        }
+
+        mGoodsList.get(position).setLotteryStatus(lotteryStatus);
     }
 
     public void clear() {
@@ -50,9 +68,13 @@ public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsV
     @NonNull
     @Override
     public GoodsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.front_goods_item_h, parent, false);
-        final GoodsViewHolder holder = new GoodsViewHolder(view);
-        return holder;
+        View view;
+        if (mCols == 1) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.front_goods_item_h, parent, false);
+        } else {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.front_goods_item_v, parent, false);
+        }
+        return new GoodsViewHolder(view);
     }
 
     @SuppressLint("SetTextI18n")
@@ -69,7 +91,17 @@ public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsV
         holder.titleTv.setText(goodsInfo.getTitle());
         holder.priceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
         holder.priceTv.setText("￥ " + goodsInfo.getOriginalPrice());
-//        holder.doTv.setText(goodsInfo.getDoWhat());
+        switch (goodsInfo.getLotteryStatus()) {
+            case 0:
+                holder.doTv.setText("0元抽奖");
+                break;
+            case 1:
+                holder.doTv.setText("继续参与");
+                break;
+            case 2:
+                holder.doTv.setText("等待开奖");
+                break;
+        }
     }
 
 
@@ -86,14 +118,18 @@ public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsV
         }
 
         NorGoodsBean.GoodsInfo goodsInfo = mGoodsList.get(position);
-        mListener.onClick(goodsInfo.getGoodsId());
+        if (goodsInfo.getLotteryStatus() == 2) {
+            Toast.makeText(v.getContext(), "等待开奖", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        mListener.onClick(position, goodsInfo.getGoodsId());
     }
 
     protected static class GoodsViewHolder extends RecyclerView.ViewHolder {
-        private ImageView mainIv;
-        private TextView titleTv;
-        private TextView priceTv;
-        private TextView doTv;
+        private final ImageView mainIv;
+        private final TextView titleTv;
+        private final TextView priceTv;
+        private final TextView doTv;
 
         public GoodsViewHolder(@NonNull View itemView) {
             super(itemView);

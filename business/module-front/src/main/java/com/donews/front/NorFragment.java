@@ -7,10 +7,12 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.dn.events.events.LotteryStatusEvent;
 import com.donews.base.fragment.MvvmLazyLiveDataFragment;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.front.adapter.NorGoodsAdapter;
@@ -18,13 +20,19 @@ import com.donews.front.bean.LotteryCategoryBean;
 import com.donews.front.bean.NorGoodsBean;
 import com.donews.front.cache.GoodsCache;
 import com.donews.front.databinding.FrontNorFragmentBinding;
+import com.donews.front.decoration.GridSpaceItemDecoration;
 import com.donews.front.viewModel.NorViewModel;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class NorFragment extends MvvmLazyLiveDataFragment<FrontNorFragmentBinding, NorViewModel> implements NorClickListener {
 
     private NorGoodsAdapter mNorGoodsAdapter;
     LotteryCategoryBean.categoryBean mCategoryBean;
     private int mPageId = 0;
+    private RecyclerView.ItemDecoration mItemDecoration;
 
     public NorFragment(LotteryCategoryBean.categoryBean categoryBean) {
         mCategoryBean = categoryBean;
@@ -42,22 +50,39 @@ public class NorFragment extends MvvmLazyLiveDataFragment<FrontNorFragmentBindin
         mDataBinding.frontNorLoadingLl.setVisibility(View.VISIBLE);
         mDataBinding.frontNorRv.setVisibility(View.GONE);
         mNorGoodsAdapter = new NorGoodsAdapter(this.getContext(), this);
-        mDataBinding.frontNorRv.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-                outRect.top = 16;
-            }
-        });
-        mDataBinding.frontNorRv.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
+        int nItemDecorationCount = mDataBinding.frontNorRv.getItemDecorationCount();
+        for (int i = 0; i < nItemDecorationCount; i++) {
+            mDataBinding.frontNorRv.removeItemDecorationAt(i);
+        }
+
+        if (mCategoryBean.getCols() == 1) {
+            mItemDecoration = new RecyclerView.ItemDecoration() {
+                @Override
+                public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                    outRect.top = 32;
+                }
+            };
+            mDataBinding.frontNorRv.addItemDecoration(mItemDecoration);
+            mDataBinding.frontNorRv.setLayoutManager(new LinearLayoutManager(this.getContext()));
+            mNorGoodsAdapter.setCols(1);
+        } else {
+            mItemDecoration = new GridSpaceItemDecoration(2);
+            mDataBinding.frontNorRv.addItemDecoration(mItemDecoration);
+            mDataBinding.frontNorRv.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
+            mNorGoodsAdapter.setCols(2);
+        }
         mDataBinding.frontNorRv.setAdapter(mNorGoodsAdapter);
 
         mDataBinding.frontLoadingStatusTv.setOnClickListener(v -> loadNorData());
 
-        NorGoodsBean norGoodsBean = GoodsCache.readGoodsBean(NorGoodsBean.class, mCategoryBean.getCategoryId());
+        NorGoodsBean norGoodsBean = GoodsCache.readGoodsBean(NorGoodsBean.class, "home_" + mCategoryBean.getCategoryId());
         showNorData(norGoodsBean, true);
         loadNorData();
 
         initSrl();
+
+        EventBus.getDefault().register(this);
     }
 
     private void initSrl() {
@@ -81,7 +106,7 @@ public class NorFragment extends MvvmLazyLiveDataFragment<FrontNorFragmentBindin
             }
 
             showNorData(norGoodsBean, false);
-            GoodsCache.saveGoodsBean(norGoodsBean, mCategoryBean.getCategoryId());
+            GoodsCache.saveGoodsBean(norGoodsBean, "home_" + mCategoryBean.getCategoryId());
         });
     }
 
@@ -98,18 +123,28 @@ public class NorFragment extends MvvmLazyLiveDataFragment<FrontNorFragmentBindin
     }
 
     @Override
-    public void onClick(String goodsId) {
+    public void onClick(int position, String goodsId) {
         ARouter.getInstance()
-                .build(RouterFragmentPath.Lottery.PAGER_LOTTERY).withString("goods_id", goodsId)
+                .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
+                .withInt("position", position)
+                .withString("goods_id", goodsId)
                 .navigation();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessage(LotteryStatusEvent event) {
+        mNorGoodsAdapter.refreshItem(event.position, event.goodsId, event.lotteryStatus);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
 
+        mItemDecoration = null;
         if (mNorGoodsAdapter != null) {
             mNorGoodsAdapter.clear();
         }
+
+        EventBus.getDefault().unregister(this);
     }
 }

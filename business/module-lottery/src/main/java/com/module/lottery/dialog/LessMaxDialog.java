@@ -60,6 +60,20 @@ public class LessMaxDialog extends BaseDialog<LessMaxDialogLayoutBinding> {
             @Override
             public void onClick(View v) {
                 dismiss();
+                if(mOnFinishListener!=null){
+                    mOnFinishListener.onDismiss();
+                }
+
+            }
+        });
+        mDataBinding.again.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(mOnFinishListener!=null){
+                    mOnFinishListener.onAgain();
+                }
+
             }
         });
     }
@@ -69,18 +83,16 @@ public class LessMaxDialog extends BaseDialog<LessMaxDialogLayoutBinding> {
 
         return true;
     }
-    NoDrawDialog.OnFinishListener mOnFinishListener;
+    OnFinishListener mOnFinishListener;
 
 
-    public void setFinishListener(NoDrawDialog.OnFinishListener l) {
+    public void setFinishListener(OnFinishListener l) {
         mOnFinishListener=l;
     }
     public interface OnFinishListener {
-        /**
-         * 此时可以关闭Activity了
-         *
-         */
-        void onFinish( );
+        void onDismiss( );
+
+        void onAgain( );
     }
 
 

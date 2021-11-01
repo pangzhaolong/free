@@ -27,6 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:paddingBottom="5dp">
 
                 <RelativeLayout
@@ -82,8 +83,8 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="10dp"
                     android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:src="@drawable/home_jdd_help"
                     tools:ignore="MissingConstraints,RtlSymmetry" />
             </RelativeLayout>
@@ -91,7 +92,8 @@
 
             <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="#F9F9F9">
 
                 <com.google.android.material.appbar.AppBarLayout
                     android:id="@+id/home_app_bar_layout"
@@ -397,13 +399,15 @@
                         android:id="@+id/home_category_tl"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dp_40"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
                         android:background="@color/white"
+                        app:tabBackground="@color/transparent"
                         app:tabIndicatorColor="@color/transparent"
                         app:tabIndicatorHeight="0dp"
+                        app:tabRippleColor="@color/transparent"
                         app:tabSelectedTextColor="#F64A43"
-                        app:tabTextColor="#6D6D6D"
-                        app:tabBackground="@color/transparent"
-                        app:tabRippleColor="@color/transparent" />
+                        app:tabTextColor="#6D6D6D" />
 
                 </com.google.android.material.appbar.AppBarLayout>
 
@@ -412,7 +416,8 @@
                     android:id="@+id/home_category_vp2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#F9F9F9"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

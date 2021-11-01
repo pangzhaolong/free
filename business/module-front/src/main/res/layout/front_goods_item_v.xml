@@ -1,51 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="280dp"
-    android:background="@drawable/front_goods_item_bg">
+    android:layout_height="wrap_content"
+    android:background="@drawable/front_goods_item_bg"
+    android:orientation="vertical">
 
     <org.raphets.roundimageview.RoundImageView
         android:id="@+id/front_goods_item_iv"
-        android:layout_width="match_parent"
-        android:layout_height="160dp"
-        android:layout_alignParentStart="true"
-        android:layout_margin="10dp"
+        android:layout_width="168dp"
+        android:layout_height="168dp"
+        android:layout_centerHorizontal="true"
         app:corner_radius="10dp"
         app:type="round" />
 
     <TextView
         android:id="@+id/front_goods_item_des_tv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/front_goods_item_iv"
+        android:layout_height="35dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
         android:ellipsize="end"
         android:maxLines="2"
         android:text="波佐见日本进口陶瓷餐具釉下彩日式海波纹家用大餐盘"
         android:textColor="#2C2C2C"
-        android:textSize="16sp" />
+        android:textSize="13sp" />
 
-    <TextView
-        android:id="@+id/front_goods_item_price_tv"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_above="@+id/front_item_do_tv"
-        android:layout_below="@+id/front_goods_item_des_tv"
-        android:gravity="center_vertical"
-        android:maxLines="1"
-        android:text="￥1699"
-        android:textColor="#A9AEB1" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="23dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/front_goods_item_price_tv1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="参考价"
+            android:textColor="#A9AEB1"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/front_goods_item_price_tv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="￥1699"
+            android:textColor="#A9AEB1"
+            android:textSize="15sp" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/front_item_do_tv"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/front_item_do"
+        android:layout_width="153dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/front_goods_item_do"
         android:gravity="center"
+        android:paddingBottom="4dp"
+        android:layout_gravity="center_horizontal"
         android:text="0元抽奖"
         android:textColor="@color/white"
-        android:textSize="16sp"
+        android:textSize="13sp"
         android:textStyle="bold" />
-</RelativeLayout>
+</LinearLayout>

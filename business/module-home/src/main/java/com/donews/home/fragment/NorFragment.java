@@ -2,7 +2,6 @@ package com.donews.home.fragment;
 
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -19,6 +18,7 @@ import com.donews.home.bean.HomeBean;
 import com.donews.home.bean.NorGoodsBean;
 import com.donews.home.cache.GoodsCache;
 import com.donews.home.databinding.HomeFragmentNorBinding;
+import com.donews.home.decoration.GridSpaceItemDecoration;
 import com.donews.home.listener.GoodsDetailListener;
 import com.donews.home.viewModel.NorViewModel;
 import com.donews.utilslibrary.utils.LogUtil;
@@ -31,6 +31,7 @@ public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding
     private NorGoodsAdapter mNorGoodsAdapter;
 
     private int mPageId = 0;
+    private RecyclerView.ItemDecoration mItemDecoration;
 
     public NorFragment(HomeBean.CategoryItem categoryItem) {
         mCategoryItem = categoryItem;
@@ -49,19 +50,23 @@ public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding
         mDataBinding.homeNorLoadingLl.setVisibility(View.VISIBLE);
 
         mNorGoodsAdapter = new NorGoodsAdapter(this.getContext(), this);
-        mDataBinding.homeNorGoodsRv.addItemDecoration(new RecyclerView.ItemDecoration() {
+
+        int nItemDecorationCount = mDataBinding.homeNorGoodsRv.getItemDecorationCount();
+        for (int i = 0; i < nItemDecorationCount; i++) {
+            mDataBinding.homeNorGoodsRv.removeItemDecorationAt(i);
+        }
+        mItemDecoration = new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-                outRect.bottom = 10;
+                outRect.top = 32;
             }
-        });
+        };
+        mDataBinding.homeNorGoodsRv.addItemDecoration(mItemDecoration);
 
         NorGoodsBean tmpNorGoodsBean = GoodsCache.readGoodsBean(NorGoodsBean.class, mCategoryItem.getCid());
         showNorGoodsBean(tmpNorGoodsBean);
 
         loadMoreData();
-
-//        mDataBinding.
 
         mDataBinding.homeNorGoodsRv.setLayoutManager(new LinearLayoutManager(this.getContext()));
         mDataBinding.homeNorGoodsRv.setAdapter(mNorGoodsAdapter);
@@ -106,6 +111,7 @@ public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding
     public void onDestroy() {
         super.onDestroy();
         LogUtil.e("NorFragment onDestroy");
+        mItemDecoration = null;
     }
 
     @Override

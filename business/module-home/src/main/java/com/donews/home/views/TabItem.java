@@ -2,6 +2,7 @@ package com.donews.home.views;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -32,6 +33,7 @@ public class TabItem extends FrameLayout {
     public void selected() {
         mTitleTv.setTextSize(18);
         mTitleTv.setTextColor(Color.parseColor("#F64A43"));
+        mTitleTv.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         mBgView.setVisibility(VISIBLE);
         LayoutParams layoutParams = (LayoutParams) mBgView.getLayoutParams();
         layoutParams.width = mTitleTv.getWidth();
@@ -40,8 +42,8 @@ public class TabItem extends FrameLayout {
 
     public void unSelected() {
         mTitleTv.setTextSize(16);
-        mTitleTv.setTextColor(Color.parseColor("#3A3A3A"));
+        mTitleTv.setTextColor(Color.parseColor("#6D6D6D"));
+        mTitleTv.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
         mBgView.setVisibility(GONE);
     }
-
 }

@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
-                android:text="sdfsadf "
+                android:text=""
                 android:textColor="#2C2C2C"
                 android:textSize="13dp"
 

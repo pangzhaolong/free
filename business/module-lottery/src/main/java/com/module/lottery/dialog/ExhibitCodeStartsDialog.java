@@ -103,15 +103,17 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
     private void initProgressBar() {
         mDataBinding.setCodeBean(mGenerateCodeBean);
         int schedule = 0;
+        int randomValue=0;
         //抽奖码生成成功回调
         if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() != 0) {
             schedule = mLotteryCodeBean.getCodes().size();
             schedule = 50 / 5 * (schedule);
+            randomValue = generateRandomNumber();
         } else {
-            schedule = 10;
+            schedule = 7;
         }
-//                                schedule=  generateRandomNumber(schedule);
-        startProgressBar(schedule);
+
+        startProgressBar(schedule + randomValue);
     }
 
     void initView() {
@@ -154,9 +156,6 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
             mDataBinding.giftBoxOff.playAnimation();
 
 
-
-
-
         }
 
 
@@ -184,16 +183,9 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
 
     //在特定区间产生随机数
     @SuppressLint("LongLogTag")
-    private int generateRandomNumber(int endNumber) {
-        endNumber = endNumber + 10;
-        Log.d("==============================$$$$$", "endNumber " + endNumber + "");
-        Random rand = new Random();
-        int startNumber = (endNumber - 10);
-        endNumber = (endNumber - 3);
-        int number = (int) (startNumber + Math.random() * (endNumber - startNumber + 1));
-        Log.d("==============================$$$$$", "startNumber " + startNumber + " endNumber " + endNumber + "");
-
-        return number;
+    private int generateRandomNumber() {
+        int value = new Random().nextInt(3)+3;
+        return value;
     }
 
     //进度条设置动画
@@ -216,7 +208,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                if (progress == 50) {
+                if (progress >= 50) {
                     //礼盒开
                     mDataBinding.giftBoxOff.setImageAssetsFolder("images");
                     mDataBinding.giftBoxOff.setAnimation("gift_box_open.json");

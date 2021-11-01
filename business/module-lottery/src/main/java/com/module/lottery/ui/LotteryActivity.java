@@ -29,6 +29,7 @@ import com.airbnb.lottie.value.SimpleLottieValueCallback;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.dn.events.events.LotteryStatusEvent;
 import com.donews.common.provider.IDetailProvider;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
@@ -56,6 +57,8 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 import java.util.Map;
 
@@ -69,6 +72,14 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 //    SpikeBean.GoodsListDTO mGoodsListDTO;
     @Autowired(name = "goods_id")
     String mGoodsId;
+
+
+    @Autowired(name = "position")
+    int mPosition;
+
+    @Autowired(name = "needLotteryEvent")
+    boolean mMeedLotteryEvent;
+
     //    String id = "tb:655412572200";
     GuessAdapter guessAdapter;
 
@@ -207,6 +218,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         generateCodeDialog.setStateListener(new GenerateCodeDialog.OnStateListener() {
             @Override
             public void onFinish() {
+                generateCodeDialog.dismiss();
             }
 
             @Override
@@ -262,6 +274,20 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         });
         mNoDrawDialog.create();
         mNoDrawDialog.show();
+    }
+
+
+    private  void finshReturn(){
+        EventBus.getDefault().post(new LotteryStatusEvent(mPosition,mGoodsId,mLotteryCodeBean.getCodes()));
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mMeedLotteryEvent){
+            finshReturn();
+        }
     }
 
     //展示生成的抽奖码
@@ -412,7 +438,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     private void setButtonValue(LotteryCodeBean lotteryCodeBean) {
         //判断用户是否登录，未登录走登录流程
 
-
+        mDataBinding.tips.setVisibility(View.VISIBLE);
         //当抽奖码==0 显示0元抽奖
         if (lotteryCodeBean != null && lotteryCodeBean.getCodes().size() == 0) {
             mDataBinding.label02.setVisibility(View.VISIBLE);
@@ -554,10 +580,17 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() < 6) {
                 dialogShow = true;
                 LessMaxDialog mLessMaxDialog = new LessMaxDialog(LotteryActivity.this, mLotteryCodeBean);
-                mLessMaxDialog.setFinishListener(new NoDrawDialog.OnFinishListener() {
+                mLessMaxDialog.setFinishListener(new LessMaxDialog.OnFinishListener() {
+
                     @Override
-                    public void onFinish() {
-                        finish();
+                    public void onDismiss() {
+
+                    }
+
+                    @Override
+                    public void onAgain() {
+                        mLessMaxDialog.dismiss();
+                        startLottery();
                     }
                 });
                 mLessMaxDialog.create();
