@@ -66,8 +66,10 @@ class UnboxingFragment : MvvmLazyLiveDataFragment<UnboxingFragUnboxingBinding, U
         mDataBinding.rvUnboxing.adapter = unboxingRVAdapter
         mViewModel.run {
             listData.observe(this@UnboxingFragment.viewLifecycleOwner, {
-                val data = it as MutableList<UnboxingBean>?
-                unboxingRVAdapter.setDiffNewData(data)
+                if (it.isNotEmpty()) {
+                    val data = it as MutableList<UnboxingBean>?
+                    unboxingRVAdapter.setDiffNewData(data)
+                }
             })
         }
 
