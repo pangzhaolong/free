@@ -167,7 +167,10 @@ public class MineOpenWinningFragment extends
             ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
         });
         adapterOpenWinHead.findViewById(R.id.mine_win_code_scan_all).setOnClickListener((v) -> {
-            ToastUtil.show(getBaseActivity(), "查看全部通知");
+            //去往晒单页
+            ARouter.getInstance().build(RouterActivityPath.Main.PAGER_MAIN)
+                    .withInt("position", 1)
+                    .navigation();
         });
         adapter = new MineWinningCodeAdapter();
         //设置没有更多数据
@@ -185,7 +188,7 @@ public class MineOpenWinningFragment extends
 //            mViewModel.loadData(period,false);
             isRefesh = true;
             isLoadStart = true;
-            mViewModel.loadData(0, false);
+            mViewModel.loadData(period, false);
             if (isInitCommData) {
                 mViewModel.loadRecommendData(adapter.pageSize);
             }

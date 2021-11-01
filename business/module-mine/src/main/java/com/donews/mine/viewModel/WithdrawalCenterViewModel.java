@@ -37,7 +37,7 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
             new MutableLiveData<>();
 
     //提现的结果
-    public MutableLiveData<Boolean> withdrawLivData =
+    public MutableLiveData<Integer> withdrawLivData =
             new MutableLiveData<>();
 
     public void setDataBinDing(ViewDataBinding dataBinding, FragmentActivity baseActivity) {
@@ -147,19 +147,22 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
                 superLayout.getChildAt(i).setTag(R.id.icnl_mine_withdraw_fl, "0");
                 superLayout.getChildAt(i).setBackgroundResource(notSelectBgRes);
             }
+            //检查是否点击的自己
             if (!isHostSelect) {
+                submit.setEnabled(true);
                 v.setTag(R.id.icnl_mine_withdraw_fl, "1");
                 v.setBackgroundResource(selectBgRes);
             } else {
                 v.setTag(R.id.icnl_mine_withdraw_fl, "0");
                 v.setBackgroundResource(notSelectBgRes);
+                submit.setEnabled(false);
             }
-            if(withdrawDatilesLivData.getValue() == null){
-                ToastUtil.showShort(baseActivity,"钱包信息获取异常");
+            if (withdrawDatilesLivData.getValue() == null) {
+                ToastUtil.showShort(baseActivity, "钱包信息获取异常");
                 submit.setEnabled(false);
                 return; //钱包信息获取异常
             }
-            if(withdrawDatilesLivData.getValue().total < item.money){
+            if (withdrawDatilesLivData.getValue().total < item.money) {
                 desc.setText("");
                 submit.setEnabled(false);
                 return; //余额不足
@@ -169,7 +172,7 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
                 submit.setEnabled(false);
             } else {
                 desc.setText("");
-                submit.setEnabled(true);
+                submit.setEnabled(!isHostSelect);
             }
         });
         //绑定数据

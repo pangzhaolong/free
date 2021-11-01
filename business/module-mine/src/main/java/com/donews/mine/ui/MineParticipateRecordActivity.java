@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 参与记录
+ * 参与记录页面
  */
 @Route(path = RouterActivityPath.Mine.PAGER_PARTICIPATE_RECORD)
 public class MineParticipateRecordActivity extends

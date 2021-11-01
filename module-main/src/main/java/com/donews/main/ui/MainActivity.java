@@ -141,7 +141,7 @@ public class MainActivity
             case 2:
                 AnalysisUtils.onEventEx(this, Dot.Btn_Lottery);
                 ImmersionBar.with(this)
-                        .statusBarColor(R.color.text_red)
+                        .statusBarColor(R.color.red_kj)
                         .navigationBarColor(R.color.white)
                         .fitsSystemWindows(true)
                         .autoDarkModeEnable(true)

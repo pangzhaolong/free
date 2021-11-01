@@ -72,6 +72,8 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
     public void onGetMessage(WalletRefreshEvent navEvent) {
         if (navEvent.navIndex == 0) {
             mViewModel.getLoadWithdrawData();
+        }else if(navEvent.navIndex == 1){
+            mViewModel.getLoadWithdrawData();
         }
     }
 

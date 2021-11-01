@@ -22,13 +22,13 @@ public class CSSView extends LinearLayout {
     public CSSView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        mCsBeanList.add(new CSBean("北京", "20.02"));
-        mCsBeanList.add(new CSBean("上海", "20.02"));
-        mCsBeanList.add(new CSBean("广州", "20.02"));
-        mCsBeanList.add(new CSBean("杭州", "20.02"));
-        mCsBeanList.add(new CSBean("武汉", "20.02"));
-        mCsBeanList.add(new CSBean("成都", "20.02"));
-        mCsBeanList.add(new CSBean("郑州", "20.02"));
+        mCsBeanList.add(new CSBean("北京", "0"));
+        mCsBeanList.add(new CSBean("上海", "0"));
+        mCsBeanList.add(new CSBean("广州", "0"));
+        mCsBeanList.add(new CSBean("杭州", "0"));
+        mCsBeanList.add(new CSBean("武汉", "0"));
+        mCsBeanList.add(new CSBean("成都", "0"));
+        mCsBeanList.add(new CSBean("郑州", "0"));
 
         LayoutInflater.from(context).inflate(R.layout.mine_city_car_speed, this, true);
         mCcsItemViews[0] = findViewById(R.id.mine_css_item1);

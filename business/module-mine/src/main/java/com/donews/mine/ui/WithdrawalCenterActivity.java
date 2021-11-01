@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.dn.events.events.WalletRefreshEvent;
 import com.donews.base.activity.MvvmBaseLiveDataActivity;
 import com.donews.base.fragmentdialog.LoadingHintDialog;
 import com.donews.base.utils.ToastUtil;
@@ -18,6 +19,8 @@ import com.donews.mine.viewModel.SettingViewModel;
 import com.donews.mine.viewModel.WithdrawalCenterViewModel;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.gyf.immersionbar.ImmersionBar;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * 提现中心
@@ -81,11 +84,14 @@ public class WithdrawalCenterActivity extends
                 mDataBinding.mineDrawYe.setText("" + items.total);
             }
         });
-        mViewModel.withdrawLivData.observe(this, b -> {
+        mViewModel.withdrawLivData.observe(this, code -> {
             hideLoad();
-            if (b != null && b) {
+            if (code == 0) {
                 mViewModel.getLoadWithdrawData(); //更新配置信息
                 ToastUtil.showShort(this, "提现成功!");
+                EventBus.getDefault().post(new WalletRefreshEvent(1));
+            }else if (code == 22104){
+                ToastUtil.showShort(this, "提现失败,余额不足");
             }
         });
         mViewModel.getLoadWithdraWalletDite();

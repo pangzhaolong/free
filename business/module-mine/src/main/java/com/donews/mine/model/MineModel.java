@@ -3,6 +3,7 @@ package com.donews.mine.model;
 import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.model.BaseLiveDataModel;
+import com.donews.base.utils.ToastUtil;
 import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.UserInfoBean;
 import com.donews.mine.BuildConfig;
@@ -49,13 +50,14 @@ public class MineModel extends BaseLiveDataModel {
 
     /**
      * 获取最近中奖名单人数。滚动通知
+     *
      * @param mutableLiveData 通知数据
      * @return
      */
     public Disposable getAwardList(MutableLiveData<AwardBean> mutableLiveData) {
         Disposable disposable = EasyHttp.get(BuildConfig.API_LOTTERY_URL + "v1/rotation-lottery-info")
-                .params("offset","1")
-                .params("limit","10")
+                .params("offset", "1")
+                .params("limit", "10")
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<AwardBean>() {
 
@@ -154,9 +156,9 @@ public class MineModel extends BaseLiveDataModel {
                 .execute(new SimpleCallBack<HistoryPeopleLotteryDetailResp>() {
                     @Override
                     public void onError(ApiException e) {
-                        if(livData.getValue() == null){
+                        if (livData.getValue() == null) {
                             livData.postValue(null);
-                        }else{
+                        } else {
                             livData.postValue(livData.getValue());
                         }
                     }
@@ -228,7 +230,7 @@ public class MineModel extends BaseLiveDataModel {
                         if (queryBean != null && queryBean.period > 0) {
                             //因为显示的嗾使最新一期。所以获取的数据 -1
                             if (isGetOna) {
-                                livData.postValue(queryBean.period - 1);
+                                livData.postValue(dateTheDay(queryBean.period));
                             } else {
                                 livData.postValue(queryBean.period);
                             }
@@ -368,7 +370,7 @@ public class MineModel extends BaseLiveDataModel {
      * @return
      */
     public Disposable requestWithdra(
-            MutableLiveData<Boolean> livData,
+            MutableLiveData<Integer> livData,
             WithdrawConfigResp.WithdrawListDTO dto) {
         WidthdrawalReq req = new WidthdrawalReq();
         req.id = dto.id;
@@ -378,12 +380,12 @@ public class MineModel extends BaseLiveDataModel {
                 .execute(new SimpleCallBack<Object>() {
                     @Override
                     public void onError(ApiException e) {
-                        livData.postValue(null);
+                        livData.postValue(e.getCode());
                     }
 
                     @Override
                     public void onSuccess(Object queryBean) {
-                        livData.postValue(true);
+                        livData.postValue(0);
                     }
                 });
         addDisposable(disop);
@@ -415,5 +417,23 @@ public class MineModel extends BaseLiveDataModel {
         return liveData;
     }
 
+    /**
+     * 获取指定日期的上一天。数字形式。例如：20211030
+     *
+     * @param dateNum 数字形式的日子,例如：20211101
+     * @return 返回当前日期上一天的日期。数字形式。如果不存在则不返回传入日期
+     */
+    public int dateTheDay(int dateNum) {
+        String dataString = "" + dateNum;
+        DateFormat df = new SimpleDateFormat("yyyyMMdd");
+        Calendar calendar = Calendar.getInstance();
+        try {
+            calendar.setTime(df.parse(dataString));
+            calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) - 1);
+            return Integer.parseInt(df.format(calendar.getTime()));
+        } catch (Exception e) {
+            return dateNum;
+        }
+    }
 
 }

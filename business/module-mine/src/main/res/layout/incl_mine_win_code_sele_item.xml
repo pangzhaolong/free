@@ -34,10 +34,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="18dp"
+                    android:layout_marginLeft="12dp"
                     android:background="@drawable/mine_win_code_sele_item_name_bg"
                     android:gravity="center_vertical"
-                    android:paddingLeft="15dp"
+                    android:paddingLeft="18dp"
                     android:paddingRight="15dp"
                     android:text="小飞鱼"
                     android:textColor="@color/black"
@@ -47,8 +47,8 @@
                     android:id="@+id/main_win_code_sele_item_icon"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:src="@drawable/user_logo"
-                    android:background="@drawable/white_quan_shape"/>
+                    android:background="@drawable/white_quan_shape"
+                    android:src="@drawable/user_logo" />
             </RelativeLayout>
 
             <TextView

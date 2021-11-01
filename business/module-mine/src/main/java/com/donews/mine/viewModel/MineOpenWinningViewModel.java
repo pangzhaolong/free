@@ -517,7 +517,10 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
                     TextWinUtils.drawOldText(detailLivData.getValue().code, item.code)));
             goTo.setText("继续抽奖");
             goTo.setOnClickListener((v) -> {
-                ToastUtil.show(view.getContext(), "去往继续抽奖页面");
+                ARouter.getInstance()
+                        .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
+                        .withString("goods_id",item.goods.id)
+                        .navigation();
             });
             //添加视图
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -591,8 +594,12 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             GlideUtils.loadImageView(view.getContext(), UrlUtils.formatUrlPrefix(item.goods.image), goodIcon);
             goodName.setText(item.goods.title);
             goodPice.setText("" + item.goods.price);
+            goTo.setText("试试手气");
             goTo.setOnClickListener((v) -> {
-                ToastUtil.show(view.getContext(), "去往立即抢购");
+                ARouter.getInstance()
+                        .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
+                        .withString("goods_id",item.goods.id)
+                        .navigation();
             });
             //添加视图
             vGroup.addView(childView, new ViewGroup.LayoutParams(
