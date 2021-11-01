@@ -1,27 +1,20 @@
 package com.module.lottery.dialog;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.donews.common.router.RouterFragmentPath;
-import com.donews.main.entitys.resps.ExitDialogRecommendGoods;
-import com.donews.main.entitys.resps.ExitDialogRecommendGoodsResp;
-import com.donews.main.entitys.resps.ExitInterceptConfig;
-import com.donews.main.utils.ExitInterceptUtils;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.exception.ApiException;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.module.lottery.bean.RecommendBean;
 import com.module.lottery.model.LotteryModel;
 import com.module.lottery.utils.ClickDoubleUtil;
@@ -29,7 +22,6 @@ import com.module.lottery.utils.ImageUtils;
 import com.module.lottery.utils.RandomProbability;
 import com.module_lottery.R;
 import com.module_lottery.databinding.CongratulationsDialogLayoutBinding;
-import com.module_lottery.databinding.NoDrawDialogLayoutBinding;
 
 //满足6个恭喜dialog
 public class CongratulationsDialog extends BaseDialog<CongratulationsDialogLayoutBinding> {
@@ -58,6 +50,7 @@ public class CongratulationsDialog extends BaseDialog<CongratulationsDialogLayou
         mDataBinding.replace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                AnalysisUtils.onEventEx(v.getContext(), Dot.Btn_Change1);
                 if (mRecommendBean != null && ClickDoubleUtil.isFastClick()) {
                     requestGoodsInfo(mRecommendBean.getGoodsId());
                 }
@@ -67,6 +60,7 @@ public class CongratulationsDialog extends BaseDialog<CongratulationsDialogLayou
         mDataBinding.jumpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                AnalysisUtils.onEventEx(v.getContext(), Dot.Btn_LotteryNow);
                 if (mRecommendBean != null) {
                     dismiss();
                     ARouter.getInstance()
@@ -121,7 +115,7 @@ public class CongratulationsDialog extends BaseDialog<CongratulationsDialogLayou
                         mDataBinding.originalPrice.setText("¥ " + mRecommendBean.getOriginalPrice());
                         mDataBinding.titleName.setText(mRecommendBean.getTitle());
                         mDataBinding.randomNumber.setText(RandomProbability.Companion.getRandomNumber() + "%");
-                        mDataBinding.originalPrice.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG);
+                        mDataBinding.originalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
 
                     }
                 }

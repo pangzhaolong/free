@@ -51,6 +51,11 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
     private MineFragmentWinningCodeBinding viewDataBinding;
 
     /**
+     * 是否自动期数,作为是否为开奖页面的判断
+     */
+    public boolean isAutoPeriod = false;
+
+    /**
      * 推荐列表
      */
     public MutableLiveData<List<RecommendGoodsResp.ListDTO>> recommendLivData = new MutableLiveData<>();

@@ -282,7 +282,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             @Override
             public void onFinish() {
                 mNoDrawDialog.dismiss();
-
             }
         });
         mNoDrawDialog.create();
@@ -290,6 +289,9 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     }
 
     private void finishReturn() {
+        if (!mMeedLotteryEvent) {
+            return;
+        }
         if (mLotteryCodeBean == null || mLotteryCodeBean.getCodes() == null) {
             return;
         }
@@ -300,9 +302,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        /*if (mMeedLotteryEvent) {
-            finishReturn();
-        }*/
     }
 
     //展示生成的抽奖码
@@ -573,9 +572,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (mLotteryCodeBean == null || dialogShow) {
-                if (mMeedLotteryEvent) {
-                    finishReturn();
-                }
+                finishReturn();
                 return super.onKeyDown(keyCode, event);
             }
             //判断抽奖码的数量显示对应的dialog
@@ -616,6 +613,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             }
             //当抽奖码大于等于
             if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() >= 6) {
+                finishReturn();
                 return super.onKeyDown(keyCode, event);
             }
         }
