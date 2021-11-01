@@ -386,22 +386,22 @@ public class MineModel extends BaseLiveDataModel {
                     @Override
                     public void onError(ApiException e) {
                         if (e.getCode() == 22101){
-                            ToastUtil.showShort(context.getApplicationContext(), "请绑定微信");
+                            ToastUtil.showShort(context.getApplicationContext(), e.getMessage());
                         }else if(e.getCode() == 22102) {
                             ToastUtil.showShort(context.getApplicationContext(),
-                                    "审核中，预计1-3个工作日提现到账");
+                                    e.getMessage());
                         }else if(e.getCode() == 22103) {
                             ToastUtil.showShort(context.getApplicationContext(),
-                                    "请求重复");
+                                    e.getMessage());
                         }else if(e.getCode() == 22104) {
                             ToastUtil.showShort(context.getApplicationContext(),
-                                    "提现失败,余额不足");
+                                    e.getMessage());
                         }else if(e.getCode() == 22106) {
                             ToastUtil.showShort(context.getApplicationContext(),
-                                    "今日已提现，明日再来");
+                                    e.getMessage());
                         }else if(e.getCode() == 22199) {
                             ToastUtil.showShort(context.getApplicationContext(),
-                                    "暂不可提现");
+                                    e.getMessage());
                         }
                         livData.postValue(e.getCode());
                     }

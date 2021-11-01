@@ -59,6 +59,9 @@ public class MineRewardHistoryActivity extends MvvmBaseLiveDataActivity<MineRewa
                 outRect.bottom = 20;
             }
         });
+        mDataBinding.mineRewarHisBack.setOnClickListener(v->{
+            finish();
+        });
         mDataBinding.mineRewardHistoryRv.setLayoutManager(new LinearLayoutManager(this));
         mDataBinding.mineRewardHistoryRv.setAdapter(mAdapter);
         mViewModel.getHistoryData().observe(this, rewardHistoryBean -> {
