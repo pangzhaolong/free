@@ -29,6 +29,7 @@ import com.airbnb.lottie.value.SimpleLottieValueCallback;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.dn.events.events.LotteryStatusEvent;
 import com.donews.common.provider.IDetailProvider;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
@@ -56,6 +57,8 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 import java.util.Map;
 
@@ -69,6 +72,14 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 //    SpikeBean.GoodsListDTO mGoodsListDTO;
     @Autowired(name = "goods_id")
     String mGoodsId;
+
+
+    @Autowired(name = "position")
+    int mPosition;
+
+    @Autowired(name = "needLotteryEvent")
+    boolean mMeedLotteryEvent;
+
     //    String id = "tb:655412572200";
     GuessAdapter guessAdapter;
 
@@ -263,6 +274,20 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         });
         mNoDrawDialog.create();
         mNoDrawDialog.show();
+    }
+
+
+    private  void finshReturn(){
+        EventBus.getDefault().post(new LotteryStatusEvent(mPosition,mGoodsId,mLotteryCodeBean.getCodes()));
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mMeedLotteryEvent){
+            finshReturn();
+        }
     }
 
     //展示生成的抽奖码
