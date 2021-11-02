@@ -61,17 +61,13 @@ data class JddAdConfigBean(
     @SerializedName("notLotteryExitAppAdType")
     var notLotteryExitAppAdType: Int = 1,
 
-    /** 每个页面第二次显示在显示插屏 */
-    @SerializedName("pageShowTimes")
-    var pageShowTimes: Int = 2,
-
-    /** 每个页面每天最多可显示插屏数量 */
-    @SerializedName("pageInterstitialShowTimes")
-    var pageInterstitialShowTimes: Int = 3,
-
     /** 用户注册 48小时 时间过后的  开启页面插屏广告 */
     @SerializedName("interstitialStartTime")
     var interstitialStartTime: Int = 48,
+
+    /** 所有插屏广告间隔最小间隔时间 */
+    @SerializedName("interstitialDuration")
+    var interstitialDuration: Int = 30,
 
     /** 当某页面持续时间未操作，则显示插屏（单位秒） */
     @SerializedName("NoOperationDuration")
@@ -111,7 +107,6 @@ data class JddAdConfigBean(
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
-        parcel.readInt(),
         parcel.readByte() != 0.toByte(),
         parcel.readByte() != 0.toByte(),
         parcel.readInt()
@@ -133,9 +128,8 @@ data class JddAdConfigBean(
         parcel.writeInt(disagreePrivacyPolicyAdType)
         parcel.writeInt(notLotteryExitAppTimes)
         parcel.writeInt(notLotteryExitAppAdType)
-        parcel.writeInt(pageShowTimes)
-        parcel.writeInt(pageInterstitialShowTimes)
         parcel.writeInt(interstitialStartTime)
+        parcel.writeInt(interstitialDuration)
         parcel.writeInt(noOperationDuration)
         parcel.writeInt(playRewardVideoTimes)
         parcel.writeByte(if (notLotteryExitAppDialogAdEnable) 1 else 0)
