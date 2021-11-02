@@ -22,7 +22,7 @@ public class HomeHelpActivity extends AppCompatActivity {
         setContentView(R.layout.home_jdd_help);
 
         ImmersionBar.with(this)
-                .statusBarColor(R.color.home_color_bar)
+                .statusBarColor(R.color.white)
                 .navigationBarColor(R.color.white)
                 .fitsSystemWindows(true)
                 .autoDarkModeEnable(true)

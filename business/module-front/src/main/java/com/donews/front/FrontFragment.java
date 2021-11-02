@@ -112,8 +112,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
         mDataBinding.frontJddHelp.setOnClickListener(v -> {
             AnalysisUtils.onEventEx(v.getContext(), Dot.Page_WinDoc);
-            ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY).withString("url",
-                    BuildConfig.WEB_BASE_URL).navigation();
+            ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY).withString("url",BuildConfig.WEB_BASE_URL).navigation();
+//            ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY).withString("url","www.baidu.com").navigation();
         });
         mDataBinding.frontCashGetTv.setOnClickListener(v ->
                 ARouter.getInstance()
@@ -188,7 +188,38 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         });
     }
 
+    @SuppressLint("SetTextI18n")
     private void loadRpData() {
+        if (!AppInfo.checkIsWXLogin()) {
+            mDataBinding.frontRpIv1.setBackgroundResource(R.drawable.front_rp_close);
+            mDataBinding.frontRpIv2.setBackgroundResource(R.drawable.front_rp_close);
+            mDataBinding.frontRpIv3.setBackgroundResource(R.drawable.front_rp_close);
+            mDataBinding.frontRpIv4.setBackgroundResource(R.drawable.front_rp_close);
+            mDataBinding.frontRpIv5.setBackgroundResource(R.drawable.front_rp_close);
+
+            mDataBinding.frontRpOpenFl1.setOnClickListener(this);
+            mDataBinding.frontRpOpenFl2.setOnClickListener(this);
+            mDataBinding.frontRpOpenFl3.setOnClickListener(this);
+            mDataBinding.frontRpOpenFl4.setOnClickListener(this);
+            mDataBinding.frontRpOpenFl5.setOnClickListener(this);
+
+            mDataBinding.frontRpProgess.setProgress(0);
+            mDataBinding.frontRpProgess.setMax(10);
+            mDataBinding.frontRpProgressIv1.setBackgroundResource(R.drawable.front_dot_close_bg);
+            mDataBinding.frontRpProgressIv2.setBackgroundResource(R.drawable.front_dot_close_bg);
+            mDataBinding.frontRpProgressIv3.setBackgroundResource(R.drawable.front_dot_close_bg);
+            mDataBinding.frontRpProgressIv4.setBackgroundResource(R.drawable.front_dot_close_bg);
+            mDataBinding.frontRpProgressIv5.setBackgroundResource(R.drawable.front_dot_close_bg);
+
+            mDataBinding.frontRpTv1.setText("0/1");
+            mDataBinding.frontRpTv2.setText("0/3");
+            mDataBinding.frontRpTv3.setText("0/5");
+            mDataBinding.frontRpTv4.setText("0/7");
+            mDataBinding.frontRpTv5.setText("0/10");
+            startTimer();
+            return;
+        }
+
         WalletBean bean = GoodsCache.readGoodsBean(WalletBean.class, "front");
         if (bean != null && bean.getList() != null && bean.getList().size() == 5) {
             showRpData(bean);
@@ -223,36 +254,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     private void showRpData(WalletBean walletBean) {
         WalletBean.RpBean rpBean = walletBean.getList().get(0);
         if (rpBean == null) {
-            return;
-        }
-
-        if (!AppInfo.checkIsWXLogin()) {
-            mDataBinding.frontRpIv1.setBackgroundResource(R.drawable.front_rp_close);
-            mDataBinding.frontRpIv2.setBackgroundResource(R.drawable.front_rp_close);
-            mDataBinding.frontRpIv3.setBackgroundResource(R.drawable.front_rp_close);
-            mDataBinding.frontRpIv4.setBackgroundResource(R.drawable.front_rp_close);
-            mDataBinding.frontRpIv5.setBackgroundResource(R.drawable.front_rp_close);
-
-            mDataBinding.frontRpOpenFl1.setOnClickListener(this);
-            mDataBinding.frontRpOpenFl2.setOnClickListener(this);
-            mDataBinding.frontRpOpenFl3.setOnClickListener(this);
-            mDataBinding.frontRpOpenFl4.setOnClickListener(this);
-            mDataBinding.frontRpOpenFl5.setOnClickListener(this);
-
-            mDataBinding.frontRpProgess.setProgress(0);
-            mDataBinding.frontRpProgess.setMax(10);
-            mDataBinding.frontRpProgressIv1.setBackgroundResource(R.drawable.front_dot_close_bg);
-            mDataBinding.frontRpProgressIv2.setBackgroundResource(R.drawable.front_dot_close_bg);
-            mDataBinding.frontRpProgressIv3.setBackgroundResource(R.drawable.front_dot_close_bg);
-            mDataBinding.frontRpProgressIv4.setBackgroundResource(R.drawable.front_dot_close_bg);
-            mDataBinding.frontRpProgressIv5.setBackgroundResource(R.drawable.front_dot_close_bg);
-
-            mDataBinding.frontRpTv1.setText("1/1");
-            mDataBinding.frontRpTv2.setText("3/3");
-            mDataBinding.frontRpTv3.setText("5/5");
-            mDataBinding.frontRpTv4.setText("7/7");
-            mDataBinding.frontRpTv5.setText("10/10");
-            startTimer();
             return;
         }
 
@@ -297,6 +298,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         }
         if (!rpBean.getOpened()) {
             if (rpBean.getHadLotteryTotal() == -1) {
+                nCloseRpCounts += 1;
                 mDataBinding.frontRpIv2.setAlpha(0.5f);
                 mDataBinding.frontRpIv2.setBackgroundResource(R.drawable.front_rp_close);
             } else {
@@ -329,6 +331,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         }
         if (!rpBean.getOpened()) {
             if (rpBean.getHadLotteryTotal() == -1) {
+                nCloseRpCounts += 1;
                 mDataBinding.frontRpIv3.setAlpha(0.5f);
                 mDataBinding.frontRpIv3.setBackgroundResource(R.drawable.front_rp_close);
             } else {
@@ -361,6 +364,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         }
         if (!rpBean.getOpened()) {
             if (rpBean.getHadLotteryTotal() == -1) {
+                nCloseRpCounts += 1;
                 mDataBinding.frontRpIv4.setAlpha(0.5f);
                 mDataBinding.frontRpIv4.setBackgroundResource(R.drawable.front_rp_close);
             } else {
@@ -393,8 +397,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         }
         if (!rpBean.getOpened()) {
             mDataBinding.frontRpIv5.setBackgroundResource(R.drawable.front_rp_wait);
-            if (rpBean.getHadLotteryTotal() != -1 && rpBean.getHadLotteryTotal() < rpBean.getLotteryTotal()) {
-            } else {
+            if (rpBean.getHadLotteryTotal() == -1 || rpBean.getHadLotteryTotal() >= rpBean.getLotteryTotal()) {
                 nCloseRpCounts += 1;
                 mDataBinding.frontRpIv5.setAlpha(0.5f);
                 mDataBinding.frontRpProgressIv5.setBackgroundResource(R.drawable.front_dot_bg);

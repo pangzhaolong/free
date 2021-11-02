@@ -70,7 +70,7 @@ public class WebViewObjActivity extends MvvmBaseLiveDataActivity<WebViewObjActiv
     public void initView() {
 
         ImmersionBar.with(this)
-                .statusBarColor(R.color.text_red)
+                .statusBarColor(R.color.white)
                 .navigationBarColor(R.color.white)
                 .fitsSystemWindows(true)
                 .autoDarkModeEnable(true)
