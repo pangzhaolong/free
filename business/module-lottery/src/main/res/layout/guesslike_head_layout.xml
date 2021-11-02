@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
+        android:paddingTop="30dp"
         android:focusableInTouchMode="true"
         android:orientation="vertical"
         tools:context="com.module.lottery.MainActivity">
@@ -319,6 +320,7 @@
 
 
         <LinearLayout
+            android:id="@+id/lottery_code_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
