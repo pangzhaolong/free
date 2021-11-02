@@ -68,7 +68,7 @@
 -keep class * extends com.donews.base.viewmodel.BaseLiveDataViewModel{*;}
 -keep class * extends com.donews.common.base.MvvmBaseLiveDataActivity{*;}
 -keep class * extends com.donews.common.contract.BaseCustomViewModel{*;}
-
+-keep class * implements com.donews.common.IModuleInit{*;}
 
 -keep class **Listener
 -keep public class * extends com.platform.dai.webview.CommonJSInterface{ *;}

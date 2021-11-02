@@ -18,6 +18,7 @@ import com.dn.sdk.sdk.interfaces.listener.impl.SimpleSplashListener;
 import com.donews.base.base.AppStatusConstant;
 import com.donews.base.base.AppStatusManager;
 import com.donews.base.fragmentdialog.AbstractFragmentDialog;
+import com.donews.base.utils.ToastUtil;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.common.ad.business.bean.JddAdConfigBean;
 import com.donews.common.ad.business.callback.JddAdConfigManager;
@@ -34,6 +35,7 @@ import com.donews.utilslibrary.analysis.AnalysisHelp;
 import com.donews.utilslibrary.base.SmSdkConfig;
 import com.donews.utilslibrary.base.UtilsConfig;
 import com.donews.utilslibrary.utils.KeySharePreferences;
+import com.donews.utilslibrary.utils.NetworkUtils;
 import com.donews.utilslibrary.utils.SPUtils;
 import com.gyf.immersionbar.BarHide;
 import com.gyf.immersionbar.ImmersionBar;
@@ -104,7 +106,11 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         mIsBackgroundToFore = getIntent().getBooleanExtra(toForeGroundKey, false);
         EventBus.getDefault().register(this);
         if (mIsBackgroundToFore) {
-            loadHotStartAd();
+            if (NetworkUtils.isAvailableByPing()) {
+                loadHotStartAd();
+            } else {
+                goToMain();
+            }
         } else {
             //冷启动,做app启动初始化相关
             SmSdkConfig.initData(UtilsConfig.getApplication());
@@ -343,12 +349,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
 
         // 权限都已经有了，那么直接调用SDK
         if (lackedPermission.size() == 0) {
-            deviceLogin();
-            if(SplashUtils.INSTANCE.isColdStart()) {
-                loadClodStartAd();
-            }else{
-                loadHotStartAd();
-            }
+            hadPermissions();
         } else {
             String[] requestPermissions = new String[lackedPermission.size()];
             lackedPermission.toArray(requestPermissions);
@@ -362,12 +363,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         //修改为不需要处理拒绝的逻辑。只要回来就直接过
         if (requestCode == REQUEST_PERMISSIONS_CODE) {
-            deviceLogin();
-            if(SplashUtils.INSTANCE.isColdStart()) {
-                loadClodStartAd();
-            }else{
-                loadHotStartAd();
-            }
+            hadPermissions();
         }
 //        if (requestCode == 1024 && hasAllPermissionsGranted(grantResults)) {
 //            loadSplashConfig();
@@ -379,6 +375,20 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
 //            startActivity(intent);
 //            finish();
 //        }
+    }
+
+    private void hadPermissions() {
+        if (NetworkUtils.isAvailableByPing()) {
+            deviceLogin();
+            if (SplashUtils.INSTANCE.isColdStart()) {
+                loadClodStartAd();
+            } else {
+                loadHotStartAd();
+            }
+        } else {
+            ToastUtil.show(SplashActivity.this, "");
+            goToMain();
+        }
     }
 
     private boolean hasAllPermissionsGranted(int[] grantResults) {
