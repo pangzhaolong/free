@@ -99,6 +99,12 @@ class UnboxingRVAdapter(layoutResId: Int) : BaseQuickAdapter<UnboxingBean, BaseV
             }
 
             val clickListener = View.OnClickListener {
+                if (!AppInfo.checkIsWXLogin()) {
+                    ARouter.getInstance()
+                        .build(RouterActivityPath.User.PAGER_LOGIN)
+                        .navigation()
+                    return@OnClickListener
+                }
                 val key = bean.id.toString()
                 val zan = mmkv.decodeBool(key, false)
                 if (!zan) {

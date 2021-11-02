@@ -53,6 +53,7 @@
             android:layout_marginStart="9dp"
             android:text="@{unboxingBean.publishAt*1000}"
             android:textSize="10sp"
+            android:visibility="gone"
             app:layout_constraintBaseline_toBaselineOf="@id/tv_nickname"
             app:layout_constraintStart_toEndOf="@id/tv_nickname" />
 

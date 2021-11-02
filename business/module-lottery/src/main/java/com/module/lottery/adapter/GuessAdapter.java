@@ -30,6 +30,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
+import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.UrlUtils;
 import com.module.lottery.bean.CommodityBean;
 import com.module.lottery.bean.LotteryCodeBean;
@@ -102,9 +103,17 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     }
                     listHolder.mGuesslikeHeadBinding.number.setText("累计" + mCommodityBean.getParticipateBean().getTotal() + "人参与抽奖");
                 }
-                if (mCommodityBean.getLotteryCodeBean() != null) {
-                    //初始化获取的抽奖码列表
-                    initListLottery(listHolder.mGuesslikeHeadBinding, mCommodityBean.getLotteryCodeBean());
+                boolean logType = AppInfo.checkIsWXLogin();
+                if (!logType) {
+                    listHolder.mGuesslikeHeadBinding.lotteryCodeTitle.setVisibility(View.GONE);
+                    listHolder.mGuesslikeHeadBinding.lotteryContainer.setVisibility(View.GONE);
+                } else {
+                    if (mCommodityBean.getLotteryCodeBean() != null) {
+                        listHolder.mGuesslikeHeadBinding.lotteryCodeTitle.setVisibility(View.VISIBLE);
+                        listHolder.mGuesslikeHeadBinding.lotteryContainer.setVisibility(View.VISIBLE);
+                        //初始化获取的抽奖码列表
+                        initListLottery(listHolder.mGuesslikeHeadBinding, mCommodityBean.getLotteryCodeBean());
+                    }
                 }
                 listHolder.mGuesslikeHeadBinding.raiders.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -132,7 +141,7 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     @Override
                     public void onClick(View v) {
                         ARouter.getInstance()
-                                .build(RouterFragmentPath.Lottery.PAGER_LOTTERY).withString("goods_id",mCommodityBean.getGuessLikeData().get(position - 1).getGoodsId()).withString("action","newAction")
+                                .build(RouterFragmentPath.Lottery.PAGER_LOTTERY).withString("goods_id", mCommodityBean.getGuessLikeData().get(position - 1).getGoodsId()).withString("action", "newAction")
                                 .navigation();
                     }
                 });

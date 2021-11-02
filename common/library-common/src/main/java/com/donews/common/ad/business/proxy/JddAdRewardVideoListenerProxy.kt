@@ -48,7 +48,7 @@ class JddAdRewardVideoListenerProxy(
         RewardVideoCount.playRewardVideoSuccess()
         JddAdConfigManager.addListener {
             val jddAdConfigBean = JddAdConfigManager.jddAdConfigBean
-            if (jddAdConfigBean.playRewardVideoTimes < RewardVideoCount.todayPlayRewardVideoTimes()) {
+            if (jddAdConfigBean.playRewardVideoTimes <= RewardVideoCount.todayPlayRewardVideoTimes()) {
                 loadAd()
             } else {
                 listener?.onRewardedClosed()

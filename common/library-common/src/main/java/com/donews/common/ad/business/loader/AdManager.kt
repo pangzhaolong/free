@@ -15,8 +15,12 @@ import com.dn.sdk.sdk.interfaces.listener.IAdSplashListener
 import com.dn.sdk.sdk.interfaces.listener.preload.IAdPreloadVideoViewListener
 import com.dn.sdk.sdk.interfaces.loader.IAdManager
 import com.dn.sdk.sdk.platform.IAdIdConfigCallback
+import com.donews.base.utils.ToastUtil
+import com.donews.common.BuildConfig
 import com.donews.common.ad.business.constant.*
+import com.donews.common.ad.business.monitor.InterstitialAdCount
 import com.donews.common.ad.business.proxy.JddAdRewardVideoListenerProxy
+import com.donews.common.ad.business.proxy.JddInterstitialListenerProxy
 import com.donews.utilslibrary.utils.DensityUtils
 
 /**
@@ -177,25 +181,35 @@ object AdManager : IAdManager, ISdkManager by AdSdkManager, IAdIdConfig by JddAd
     }
 
     override fun loadInterstitialAd(activity: Activity, listener: IAdInterstitialListener?) {
-        JddAdIdConfigManager.addInitListener(object : IAdIdConfigCallback {
-            override fun initSuccess() {
-                val key = INTERSTITIAL
-                val requestInfo = RequestInfo()
-                requestInfo.platform = JddAdIdConfigManager.getPlatform()
-                requestInfo.adId = requestInfo.platform.getAdIdByKey(key)
-                requestInfo.appIdKey = key
-                requestInfo.adType = AdType.INTERSTITIAL
-                requestInfo.userId = AdSdkManager.userId
-                requestInfo.channel = AdSdkManager.channel
-                requestInfo.oaid = AdSdkManager.oaid
+        if (InterstitialAdCount.isCanShowInters()) {
+            //先更新一次显示时间
+            InterstitialAdCount.updateLoadAdTime()
+            JddAdIdConfigManager.addInitListener(object : IAdIdConfigCallback {
+                override fun initSuccess() {
+                    val proxyListener = JddInterstitialListenerProxy(listener)
+                    val key = INTERSTITIAL
+                    val requestInfo = RequestInfo()
+                    requestInfo.platform = JddAdIdConfigManager.getPlatform()
+                    requestInfo.adId = requestInfo.platform.getAdIdByKey(key)
+                    requestInfo.appIdKey = key
+                    requestInfo.adType = AdType.INTERSTITIAL
+                    requestInfo.userId = AdSdkManager.userId
+                    requestInfo.channel = AdSdkManager.channel
+                    requestInfo.oaid = AdSdkManager.oaid
 
-                val pxScreenWidth = DensityUtils.getScreenWidth()
-                val marginWidth = DensityUtils.dip2px(30f) * 2
-                requestInfo.width = DensityUtils.px2dp((pxScreenWidth - marginWidth).toFloat()).toInt()
-                requestInfo.height = 0
-                requestInfo.platform.getLoader().loadInterstitialAd(activity, requestInfo, listener)
-            }
-        })
+                    val pxScreenWidth = DensityUtils.getScreenWidth()
+                    val marginWidth = DensityUtils.dip2px(30f) * 2
+                    requestInfo.width = DensityUtils.px2dp((pxScreenWidth - marginWidth).toFloat()).toInt()
+                    requestInfo.height = 0
+                    requestInfo.platform.getLoader().loadInterstitialAd(activity, requestInfo, proxyListener)
+                }
+            })
+        } else {
+            listener?.onError(-1001, "显示插屏广告间隔小于配置时间")
+//            if (BuildConfig.DEBUG) {
+//                ToastUtil.showShort(activity, "显示插屏广告间隔小于配置时间")
+//            }
+        }
     }
 
 }

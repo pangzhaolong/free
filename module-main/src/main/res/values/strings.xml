@@ -28,7 +28,7 @@
     <string name="main_exit_remind_delay">稍后提示</string>
     <string name="main_exit_open_remind">开启提醒</string>
     <string name="main_exit_know">我知道了</string>
-    <string name="main_exit_continue_lottery_title">再抽%s次，中间概率可提升%s%%</string>
+    <string name="main_exit_continue_lottery_title">再抽%s次，中奖概率可提升%s%%</string>
     <string name="main_exit_remind_titl">温馨提示</string>
     <string name="main_exit_remind_msg">明日%s点开奖，记得回来看看哦。\n祝你中奖</string>
 </resources>
