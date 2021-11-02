@@ -76,5 +76,9 @@ class BigImageActivity : MvvmBaseLiveDataActivity<PictureBigImageBinding, BigIma
             override fun onPageScrollStateChanged(state: Int) {
             }
         })
+
+        mDataBinding.ivBack.setOnClickListener {
+            finish()
+        }
     }
 }
