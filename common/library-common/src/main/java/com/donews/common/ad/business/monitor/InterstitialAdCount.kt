@@ -56,12 +56,23 @@ object InterstitialAdCount {
         mmkv?.let {
             val loadTime = it.decodeLong(KEY_NEW_START_INTERSTITIAL_AD_TIME, 0L)
             val closeTime = it.decodeLong(KEY_NEW_CLOSE_INTERSTITIAL_AD_TIME, 0L)
+            val duration = JddAdConfigManager.jddAdConfigBean.interstitialDuration * 1000L
+
+            val currentTime = System.currentTimeMillis()
+
+            val loadDuration = currentTime - loadTime
+            val closeDuration = currentTime - closeTime
+
+            //防止错误时loadTime > closeTime，然后一直不显示广告
+            if (loadDuration > duration && closeDuration > duration) {
+                return true
+            }
             //证明上一个广告还未关闭
             if (loadTime > closeTime) {
                 return false
             }
-            val duration = JddAdConfigManager.jddAdConfigBean.interstitialDuration * 1000L
-            if (System.currentTimeMillis() - closeTime > duration) {
+
+            if (closeDuration > duration) {
                 return true
             }
             return false
