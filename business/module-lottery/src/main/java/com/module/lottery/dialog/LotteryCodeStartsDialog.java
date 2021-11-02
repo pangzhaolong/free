@@ -149,14 +149,6 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
     }
 
 
-    @Override
-    public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
-        if (mOnFinishListener != null) {
-            mOnFinishListener.onFinish();
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
 
     public void setStateListener(OnStateListener l) {
         mOnFinishListener = l;

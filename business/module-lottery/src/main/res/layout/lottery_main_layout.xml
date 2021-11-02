@@ -37,6 +37,14 @@
 
         </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
+        <ImageView
+            android:id="@+id/return_icon"
+            android:layout_width="35dp"
+            android:layout_marginTop="50dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="15dp"
+            android:src="@mipmap/return_icon" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="170dp"

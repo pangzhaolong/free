@@ -65,6 +65,10 @@ public class ReceiveLotteryDialog extends BaseDialog<ReceiveDialogLayoutBinding>
         initView();
     }
 
+
+
+
+
     @Override
     public float setSize() {
         return 1.0f;
@@ -108,13 +112,6 @@ public class ReceiveLotteryDialog extends BaseDialog<ReceiveDialogLayoutBinding>
 
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
-        if (mOnFinishListener != null) {
-            mOnFinishListener.onFinish();
-        }
-        return super.onKeyDown(keyCode, event);
-    }
 
 
     public void setStateListener(OnStateListener l) {

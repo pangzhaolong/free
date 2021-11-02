@@ -6,6 +6,7 @@ import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -64,14 +65,11 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
     private Context context;
     private OnStateListener mOnFinishListener;
     private LotteryHandler mLotteryHandler = new LotteryHandler(this);
-
-    String mGoodsId;
-    LotteryCodeBean mLotteryCodeBean;
-    int time = 3000;
-    GenerateCodeBean mGenerateCodeBean;
-
-    int mProgressMarginStart;
-
+    private String mGoodsId;
+    private LotteryCodeBean mLotteryCodeBean;
+    private int time = 3000;
+    private GenerateCodeBean mGenerateCodeBean;
+    private  int mProgressMarginStart;
     public ExhibitCodeStartsDialog(Context context, String goodsId, LotteryCodeBean lotteryCodeBean, GenerateCodeBean generateCodeBean) {
         super(context, R.style.dialogTransparent);//内容样式在这里引入
         this.context = context;
@@ -109,8 +107,14 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
 
         initProgressBar();
         initView();
-
-
+        setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                if (valueProbeAnimator != null) {
+                    valueProbeAnimator.cancel();
+                }
+            }
+        });
     }
 
 
@@ -292,26 +296,6 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
                 mDataBinding.includeProgressBar.progressBar.setProgress((int) value);
             }
         });
-        valueProbeAnimator.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
         valueProbeAnimator.start();
 
     }
@@ -325,13 +309,6 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
     }
 
 
-    @Override
-    public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
-        if (mOnFinishListener != null) {
-            mOnFinishListener.onFinish();
-        }
-        return super.onKeyDown(keyCode, event);
-    }
 
 
     public void setStateListener(OnStateListener l) {

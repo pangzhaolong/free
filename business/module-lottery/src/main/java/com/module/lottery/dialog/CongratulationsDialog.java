@@ -87,13 +87,6 @@ public class CongratulationsDialog extends BaseDialog<CongratulationsDialogLayou
     }
 
 
-    @Override
-    public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
-        if (mOnFinishListener != null) {
-            mOnFinishListener.onFinish();
-        }
-        return super.onKeyDown(keyCode, event);
-    }
 
     OnFinishListener mOnFinishListener;
 
