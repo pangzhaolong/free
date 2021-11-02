@@ -16,13 +16,14 @@ import androidx.annotation.Nullable;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.events.WalletRefreshEvent;
-import com.donews.common.ad.business.monitor.PageMonitor;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.front.adapter.FragmentAdapter;
+import com.donews.front.bean.AwardBean;
 import com.donews.front.bean.LotteryCategoryBean;
 import com.donews.front.bean.WalletBean;
+import com.donews.front.cache.GoodsCache;
 import com.donews.front.databinding.FrontFragmentBinding;
 import com.donews.front.dialog.ActivityRuleDialog;
 import com.donews.front.viewModel.FrontViewModel;
@@ -172,6 +173,10 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     }
 
     private void loadCategoryData() {
+        mLotteryCategoryBean = GoodsCache.readGoodsBean(LotteryCategoryBean.class, "front");
+        if (mLotteryCategoryBean != null && mLotteryCategoryBean.getList() != null) {
+            mFragmentAdapter.refreshData(mLotteryCategoryBean.getList());
+        }
         mViewModel.getNetData().observe(getViewLifecycleOwner(), categoryBean -> {
             if (categoryBean == null) {
                 return;
@@ -179,25 +184,38 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
             mLotteryCategoryBean = categoryBean;
             mFragmentAdapter.refreshData(categoryBean.getList());
+            GoodsCache.saveGoodsBean(categoryBean, "front");
         });
     }
 
     private void loadRpData() {
+        WalletBean bean = GoodsCache.readGoodsBean(WalletBean.class, "front");
+        if (bean != null && bean.getList() != null && bean.getList().size() == 5) {
+            showRpData(bean);
+        }
+
         mViewModel.getRpData().observe(this.getViewLifecycleOwner(), walletBean -> {
             if (walletBean == null || walletBean.getList() == null || walletBean.getList().size() != 5) {
                 return;
             }
 
             showRpData(walletBean);
+            GoodsCache.saveGoodsBean(walletBean, "front");
         });
     }
 
     private void loadAwardList() {
+        AwardBean bean = GoodsCache.readGoodsBean(AwardBean.class, "front");
+        if (bean != null && bean.getList() != null && bean.getList().size() == 5) {
+            mDataBinding.frontBarrageView.refreshData(bean.getList());
+        }
+
         mViewModel.getAwardList().observe(getViewLifecycleOwner(), awardBean -> {
             if (awardBean == null || awardBean.getList() == null) {
                 return;
             }
             mDataBinding.frontBarrageView.refreshData(awardBean.getList());
+            GoodsCache.saveGoodsBean(awardBean, "front");
         });
     }
 

@@ -143,7 +143,7 @@ public class MineModel extends BaseLiveDataModel {
     }
 
     /**
-     * 个人中心，往期中奖详情
+     * 个人中心，往期中奖详情(此接口需要登录)
      *
      * @param livData 通知数据
      * @param period  期数
