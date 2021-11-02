@@ -55,11 +55,15 @@ public class RequestInfo {
     /** 激励数量 */
     private int mRewardAmount;
 
+    /** 是否打开声音 */
+    private boolean openSound = false;
+
     /** 激励视频 自定义数据 */
     private Map<String, String> mCustomData = new HashMap<>();
 
     /** 信息流请求数据条数 */
     private int mNativeAdCount;
+
 
     /** 公共信息 无需手动传递 */
     private String mChannel;
@@ -211,6 +215,13 @@ public class RequestInfo {
         this.preload = preload;
     }
 
+    public boolean isOpenSound() {
+        return openSound;
+    }
+
+    public void setOpenSound(boolean openSound) {
+        this.openSound = openSound;
+    }
 
     @NonNull
     @Override
@@ -219,6 +230,7 @@ public class RequestInfo {
                 "mPlatform=" + mPlatform +
                 ", mAdType=" + mAdType +
                 ", mAppId='" + mAppId + '\'' +
+                ", mAppIdKey='" + mAppIdKey + '\'' +
                 ", mAdId='" + mAdId + '\'' +
                 ", mMinimumCodeId='" + mMinimumCodeId + '\'' +
                 ", mContainer=" + mContainer +
@@ -228,6 +240,7 @@ public class RequestInfo {
                 ", mOrientation=" + mOrientation +
                 ", mRewardName='" + mRewardName + '\'' +
                 ", mRewardAmount=" + mRewardAmount +
+                ", openSound=" + openSound +
                 ", mCustomData=" + mCustomData +
                 ", mNativeAdCount=" + mNativeAdCount +
                 ", mChannel='" + mChannel + '\'' +

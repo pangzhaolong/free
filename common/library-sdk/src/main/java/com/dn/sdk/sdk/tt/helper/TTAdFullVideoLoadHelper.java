@@ -152,7 +152,7 @@ public class TTAdFullVideoLoadHelper {
         }
 
 
-        TTVideoOption videoOption = VideoOptionUtil.getTTVideoOption();
+        TTVideoOption videoOption = VideoOptionUtil.getTTVideoOption(mRequestInfo.isOpenSound());
 
         //创建广告请求参数AdSlot,具体参数含义参考文档
         AdSlot adSlot = new AdSlot.Builder()
@@ -211,7 +211,7 @@ public class TTAdFullVideoLoadHelper {
         }
 
 
-        TTVideoOption videoOption = VideoOptionUtil.getTTVideoOption();
+        TTVideoOption videoOption = VideoOptionUtil.getTTVideoOption(mRequestInfo.isOpenSound());
 
         //创建广告请求参数AdSlot,具体参数含义参考文档
         AdSlot adSlot = new AdSlot.Builder()
