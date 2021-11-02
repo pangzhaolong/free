@@ -11,8 +11,12 @@ import com.donews.base.fragmentdialog.AbstractFragmentDialog
 import com.donews.main.R
 import com.donews.main.databinding.MainExitDialogRemindBinding
 import com.donews.main.entitys.resps.RemindConfig
+import com.donews.main.utils.ExitInterceptUtils
 import com.donews.utilslibrary.utils.CalendarUtils
+import com.orhanobut.logger.Logger
 import com.vmadalin.easypermissions.EasyPermissions
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 /**
@@ -25,7 +29,7 @@ import com.vmadalin.easypermissions.EasyPermissions
 class RemindDialog : AbstractFragmentDialog<MainExitDialogRemindBinding>(), EasyPermissions.PermissionCallbacks {
 
     companion object {
-
+        private const val CALENDAR_TITLE = "奖多多开奖提醒"
         private const val REQUEST_PER_CODE = 10001
         private const val PARAMS_CONFIG = "config"
 
@@ -107,13 +111,27 @@ class RemindDialog : AbstractFragmentDialog<MainExitDialogRemindBinding>(), Easy
 
     private fun addEvent() {
         context?.let {
-            val time = System.currentTimeMillis() + 5 * 60 * 1000;
+//            val time = System.currentTimeMillis() + 5 * 60 * 1000;
+            val format = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+            val startTimeString = ExitInterceptUtils.exitInterceptConfig.calendarRemindStartTime
+            val startDate = format.parse(startTimeString)
+
+            val calendar = Calendar.getInstance()
+            val year = calendar.get(Calendar.YEAR)
+            val month = calendar.get(Calendar.MONTH)
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
+            calendar.time = startDate!!
+            val hour = calendar.get(Calendar.HOUR_OF_DAY)
+            val m = calendar.get(Calendar.MINUTE)
+            val s = calendar.get(Calendar.SECOND)
+            calendar.set(year, month, day, hour, m, s)
+            val time = calendar.timeInMillis
             CalendarUtils.addCalendarEvent(
                 it,
-                "奖多多开奖提醒",
+                CALENDAR_TITLE,
                 "打开app进行开奖",
                 time,
-                30,
+                ExitInterceptUtils.exitInterceptConfig.calendarRemindDuration.toLong(),
                 "FREQ=DAILY;INTERVAL=1",
                 10
             )
@@ -128,6 +146,8 @@ class RemindDialog : AbstractFragmentDialog<MainExitDialogRemindBinding>(), Easy
         }
 
         fun clickClose(view: View) {
+            CalendarUtils.deleteCalendarEvent(view.context, CALENDAR_TITLE)
+            addEvent()
             onSureListener?.onSure()
         }
 
