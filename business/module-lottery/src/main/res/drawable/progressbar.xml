@@ -29,14 +29,8 @@
     </item>
 
     <item android:id="@android:id/progress">
-        <clip>
-            <shape>
-                <corners android:radius="85dip" />
-                <gradient
-                    android:endColor="#FD2933"
-                    android:startColor="#FD2933" />
-            </shape>
-        </clip>
+        <scale android:scaleWidth="100%"
+            android:drawable="@drawable/progress_bar_ct"   />
     </item>
 
 </layer-list>
