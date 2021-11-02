@@ -92,7 +92,7 @@ public class TTAdNativeExpressLoadHelper {
 		}
 
 		//视频声音控制设置
-		TTVideoOption videoOption = VideoOptionUtil.getTTVideoOption();
+		TTVideoOption videoOption = VideoOptionUtil.getTTVideoOption(mRequestInfo.isOpenSound());
 
 		AdmobNativeAdOptions admobNativeAdOptions = new AdmobNativeAdOptions();
 		admobNativeAdOptions.setAdChoicesPlacement(AdmobNativeAdOptions.ADCHOICES_TOP_RIGHT)//设置广告小标默认情况下，广告选择叠加层会显示在右上角。

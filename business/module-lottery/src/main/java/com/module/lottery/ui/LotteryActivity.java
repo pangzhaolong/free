@@ -76,7 +76,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     @Autowired(name = "action")
     String mAction;
     CommodityBean mCommodityBean;
-    boolean aAState = false;
+
     int mPageNumber = 1;
     boolean refresh = true;
     //抽奖码的对象用来拦截返回
@@ -189,35 +189,13 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         lotteryCodeStartsDialog.setStateListener(new LotteryCodeStartsDialog.OnStateListener() {
             @Override
             public void onFinish() {
-
+                lotteryCodeStartsDialog.dismiss();
             }
 
             @Override
-            public void onJumpAd() {
-                AdManager.INSTANCE.loadRewardVideoAd(LotteryActivity.this, new SimpleRewardVideoListener() {
-                    @Override
-                    public void onError(int code, String msg) {
-                        super.onError(code, msg);
-                        lotteryCodeStartsDialog.dismiss();
-                    }
-
-                    @Override
-                    public void onRewardedClosed() {
-                        super.onRewardedClosed();
-                        lotteryCodeStartsDialog.dismiss();
-                        //有效关闭
-                        if (aAState) {
-                            //弹起生成抽奖码的dialog
-                            showGenerateCodeDialog();
-                        }
-                    }
-
-                    @Override
-                    public void onRewardVerify(boolean result) {
-                        super.onRewardVerify(result);
-                        aAState = result;
-                    }
-                });
+            public void onJumpAdFinish() {
+                //弹起生成抽奖码的dialog
+                showGenerateCodeDialog();
             }
         });
         lotteryCodeStartsDialog.create();
@@ -512,7 +490,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 }
             });
 
-//            mDataBinding.panicBuyingButton.setBackgroundColor(getResources().getColor(R.color.policec_lick));
         }
     }
 

@@ -10,8 +10,7 @@
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
-    <style name="AppTheme.Start.Progess" parent="@android:style/Widget.ProgressBar.Horizontal">
-    </style>
+    <style name="AppTheme.Start.Progess" parent="@android:style/Widget.ProgressBar.Horizontal"></style>
 
     <style name="main_transparent_style" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@color/transparent</item> <!-- 背景色透明度 -->

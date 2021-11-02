@@ -58,7 +58,7 @@ public class TTAdNativeLoadHelper {
     private void load() {
         mDnTTUnifiedNativeAd = new DnTTUnifiedNativeAd(mActivity, mRequestInfo.getAdId());
         //视频声音控制设置
-        TTVideoOption videoOption = VideoOptionUtil.getTTVideoOption();
+        TTVideoOption videoOption = VideoOptionUtil.getTTVideoOption(mRequestInfo.isOpenSound());
 
         AdmobNativeAdOptions admobNativeAdOptions = new AdmobNativeAdOptions();
         admobNativeAdOptions.setAdChoicesPlacement(

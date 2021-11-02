@@ -120,7 +120,7 @@ public class TTAdInterstitialLoadHelper {
         }
 
 
-        TTVideoOption videoOption = VideoOptionUtil.getTTVideoOption();
+        TTVideoOption videoOption = VideoOptionUtil.getTTVideoOption(mRequestInfo.isOpenSound());
 
         //创建插屏广告请求参数AdSlot,具体参数含义参考文档
         AdSlot adSlot = new AdSlot.Builder()

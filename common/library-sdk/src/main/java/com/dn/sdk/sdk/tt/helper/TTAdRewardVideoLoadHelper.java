@@ -22,6 +22,7 @@ import com.dn.sdk.sdk.bean.RequestInfo;
 import com.dn.sdk.sdk.interfaces.listener.IAdRewardVideoListener;
 import com.dn.sdk.sdk.interfaces.listener.preload.IAdPreloadVideoViewListener;
 import com.dn.sdk.sdk.tt.bean.DnTTPreloadRewardVideoView;
+import com.dn.sdk.sdk.tt.utils.VideoOptionUtil;
 
 /**
  * 激励视频加载辅助类
@@ -155,10 +156,8 @@ public class TTAdRewardVideoLoadHelper {
             });
         }
 
-        TTVideoOption videoOption = new TTVideoOption.Builder()
-                .setMuted(true)//对所有SDK的激励广告生效，除需要在平台配置的SDK，如穿山甲SDK
-                .setAdmobAppVolume(0f)//配合Admob的声音大小设置[0-1]
-                .build();
+        TTVideoOption videoOption = VideoOptionUtil.getTTVideoOption(mRequestInfo.isOpenSound());
+
 
 //		Map<String, String> customData = new HashMap<>();
 //		customData.put(AdSlot.CUSTOM_DATA_KEY_PANGLE, "pangle media_extra");
@@ -231,10 +230,7 @@ public class TTAdRewardVideoLoadHelper {
             });
         }
 
-        TTVideoOption videoOption = new TTVideoOption.Builder()
-                .setMuted(true)//对所有SDK的激励广告生效，除需要在平台配置的SDK，如穿山甲SDK
-                .setAdmobAppVolume(1f)//配合Admob的声音大小设置[0-1]
-                .build();
+        TTVideoOption videoOption = VideoOptionUtil.getTTVideoOption(mRequestInfo.isOpenSound());
 
 //		Map<String, String> customData = new HashMap<>();
 //		customData.put(AdSlot.CUSTOM_DATA_KEY_PANGLE, "pangle media_extra");

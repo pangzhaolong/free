@@ -7,10 +7,10 @@ import com.bytedance.msdk.api.TTVideoOption;
 public class VideoOptionUtil {
 
 
-    public static TTVideoOption getTTVideoOption() {
+    public static TTVideoOption getTTVideoOption(boolean openSound) {
         //广点通（GDT）单独使用配置
         GDTExtraOption gdtExtraOption = new GDTExtraOption.Builder()
-                .setGDTAutoPlayMuted(true)//自动播放是否静音，默认true
+                .setGDTAutoPlayMuted(!openSound)//自动播放是否静音，默认true
                 .setGDTDetailPageMuted(false)//详情页是否静音，默认值为false，即有声播放；
                 .setGDTEnableDetailPage(true)//是否能跳转详情页，默认true
                 .setGDTEnableUserControl(false)//是否能控制是否暂停与播放，默认false

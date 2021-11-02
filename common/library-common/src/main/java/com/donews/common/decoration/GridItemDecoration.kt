@@ -15,18 +15,26 @@ class GridItemDecoration(private val spanCount: Int, val space: Int) : RecyclerV
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         super.getItemOffsets(outRect, view, parent, state)
-        val position = parent.getChildLayoutPosition(view)
-        outRect.bottom = space
-        if (position % spanCount == 0) {
-            outRect.left = 0
+
+        val childCount = parent.childCount
+
+        val totalRaw = if (childCount % spanCount == 0) {
+            childCount / spanCount
         } else {
-            outRect.left = space * (position % spanCount)
+            childCount / spanCount + 1
         }
 
-        if (position >= spanCount) {
-            outRect.top = space
+        val position = parent.getChildAdapterPosition(view)
+        val column = (position % spanCount) + 1
+
+        val raw = position / spanCount
+
+        outRect.left = (column - 1) * space / spanCount
+        outRect.right = (spanCount - column) * space / spanCount
+        if (raw == 0) {
+            outRect.top = 0
         } else {
-            outRect.top = 0;
+            outRect.top = space
         }
     }
 }

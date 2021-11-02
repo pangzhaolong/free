@@ -90,7 +90,6 @@ class JddAdRewardVideoListenerProxy(
 
             override fun onAdShow() {
                 super.onAdShow()
-                RewardVideoCount.resetTodayPlayRewardVideoTimes()
             }
 
             override fun onAdClosed() {

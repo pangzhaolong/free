@@ -49,7 +49,7 @@ class UnboxingRVAdapter(layoutResId: Int) : BaseQuickAdapter<UnboxingBean, BaseV
 
             val picAdapter = UnboxingPicAdapter(R.layout.unboxing_item_pic)
             picAdapter.setOnItemClickListener { adapter, _, position ->
-                RouterActivityPath.Pictures.toBigImageActivity(adapter.data as ArrayList<String>?,position)
+                RouterActivityPath.Pictures.toBigImageActivity(adapter.data as ArrayList<String>?, position)
             }
 
 
@@ -58,7 +58,13 @@ class UnboxingRVAdapter(layoutResId: Int) : BaseQuickAdapter<UnboxingBean, BaseV
                 isNestedScrollingEnabled = false
                 setItemViewCacheSize(10)
                 layoutManager = GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
-                addItemDecoration(GridItemDecoration(3, DensityUtils.dip2px(2f)))
+
+                val num = (0 until itemDecorationCount).reversed()
+                for (index in num) {
+                    removeItemDecorationAt(index)
+                }
+
+                addItemDecoration(GridItemDecoration(3, DensityUtils.dip2px(4f)))
                 adapter = picAdapter
             }
             picAdapter.setNewData(bean.images as MutableList<String>?)

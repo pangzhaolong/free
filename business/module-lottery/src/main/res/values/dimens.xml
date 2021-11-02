@@ -6,4 +6,9 @@
     <dimen name="lottery_constant_20">19dp</dimen>
     <dimen name="lottery_constant_100">100dp</dimen>
     <dimen name="lottery_constant_50">50dp</dimen>
+
+
+    <dimen name="margin_start">21dp</dimen>
+
+    <dimen name="margin_end">20dp</dimen>
 </resources>

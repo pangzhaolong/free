@@ -15,14 +15,21 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
+import android.view.animation.LinearInterpolator;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
@@ -45,6 +52,7 @@ import com.orhanobut.logger.Logger;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
+import java.text.DecimalFormat;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Random;
@@ -61,6 +69,8 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
     LotteryCodeBean mLotteryCodeBean;
     int time = 3000;
     GenerateCodeBean mGenerateCodeBean;
+
+    int mProgressMarginStart;
 
     public ExhibitCodeStartsDialog(Context context, String goodsId, LotteryCodeBean lotteryCodeBean, GenerateCodeBean generateCodeBean) {
         super(context, R.style.dialogTransparent);//内容样式在这里引入
@@ -93,6 +103,10 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
                 }
             }
         });
+        //读取dimen配置参数
+
+        mProgressMarginStart = getContext().getResources().getDimensionPixelSize(R.dimen.margin_start);
+
         initProgressBar();
         initView();
 
@@ -103,27 +117,27 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
     private void initProgressBar() {
         mDataBinding.setCodeBean(mGenerateCodeBean);
         int schedule = 0;
-        int randomValue=0;
+        int randomValue = 0;
         //抽奖码生成成功回调
         if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() != 0) {
             schedule = mLotteryCodeBean.getCodes().size();
-            schedule = 50 / 5 * (schedule);
-            randomValue = generateRandomNumber();
+            schedule = mDataBinding.includeProgressBar.progressBar.getMax() / 5 * (schedule);
+            if (schedule != mDataBinding.includeProgressBar.progressBar.getMax()) {
+                randomValue = generateRandomNumber();
+            } else {
+                randomValue = 0;
+            }
         } else {
-            schedule = 7;
+            schedule = 70;
         }
-
         startProgressBar(schedule + randomValue);
     }
 
     void initView() {
-
-
         if (mLotteryCodeBean.getCodes().size() >= 5) {
             mDataBinding.jsonAnimationLayout.setVisibility(View.GONE);
             mDataBinding.hintLayout.setVisibility(View.VISIBLE);
             automaticJump();
-
         } else {
             mDataBinding.jsonAnimationLayout.setVisibility(View.VISIBLE);
             mDataBinding.hintLayout.setVisibility(View.GONE);
@@ -154,11 +168,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
             mDataBinding.giftBoxOff.setAnimation("gift_box_off.json");
             mDataBinding.giftBoxOff.loop(true);
             mDataBinding.giftBoxOff.playAnimation();
-
-
         }
-
-
     }
 
 
@@ -184,12 +194,29 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
     //在特定区间产生随机数
     @SuppressLint("LongLogTag")
     private int generateRandomNumber() {
-        int value = new Random().nextInt(3)+3;
+        int value = new Random().nextInt(11) + 50;//{3    6}
         return value;
     }
 
+    private void setProgressVariety() {
+        float progressWidth = mDataBinding.includeProgressBar.progressBar.getWidth();
+        if (progressWidth != 0) {
+            float maxValue = mDataBinding.includeProgressBar.progressBar.getMax();
+            float progress = mDataBinding.includeProgressBar.progressBar.getProgress();
+            if (progress == 0) {
+                progress = 1;
+            }
+            float x = progressWidth / (maxValue / progress);
+            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mDataBinding.reminderIcon.getLayoutParams();
+            layoutParams.leftMargin = (int) x + mProgressMarginStart;
+            mDataBinding.reminderIcon.setLayoutParams(layoutParams);
+        }
+    }
+
+
     //进度条设置动画
     public void startProgressBar(int progress) {
+        //停止之前的循环动画
         ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, progress);
         valueAnimator.setDuration(500);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -197,7 +224,16 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 float value = (float) animation.getAnimatedValue();
+                //设置显示的百分比
+
+                float percentage = value / mDataBinding.includeProgressBar.progressBar.getMax() * 100;
+
+                DecimalFormat decimalFormat = new DecimalFormat(".0");//构造方法的字符格式这里如果小数不足2位,会以0补足.
+                String text = decimalFormat.format(percentage);//format 返回的是字符串
+                mDataBinding.progressReminder.setText("超过" + text + "%的用户");
                 mDataBinding.includeProgressBar.progressBar.setProgress((int) value);
+                //设置进度条上的百分比
+                setProgressVariety();
             }
         });
         valueAnimator.addListener(new Animator.AnimatorListener() {
@@ -208,12 +244,15 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                if (progress >= 50) {
+                if (progress >= mDataBinding.includeProgressBar.progressBar.getMax()) {
                     //礼盒开
                     mDataBinding.giftBoxOff.setImageAssetsFolder("images");
                     mDataBinding.giftBoxOff.setAnimation("gift_box_open.json");
                     mDataBinding.giftBoxOff.loop(true);
                     mDataBinding.giftBoxOff.playAnimation();
+                } else {
+                    //完成后执行探头动画
+                    startProbeAnimation(progress);
                 }
             }
 
@@ -228,6 +267,52 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
             }
         });
         valueAnimator.start();
+
+    }
+
+
+    ValueAnimator valueProbeAnimator;
+
+    //进度条设置动画
+    public void startProbeAnimation(int progress) {
+        if (valueProbeAnimator != null) {
+            valueProbeAnimator.cancel();
+        }
+        valueProbeAnimator = ValueAnimator.ofFloat(progress, progress - 20, progress);
+        valueProbeAnimator.setDuration(960);
+        valueProbeAnimator.setRepeatMode(ValueAnimator.RESTART);
+        valueProbeAnimator.setInterpolator(new AccelerateInterpolator());
+        valueProbeAnimator.setRepeatCount(Animation.INFINITE);
+        valueProbeAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @SuppressLint("LongLogTag")
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float value = (float) animation.getAnimatedValue();
+                //设置显示的百分比
+                mDataBinding.includeProgressBar.progressBar.setProgress((int) value);
+            }
+        });
+        valueProbeAnimator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        valueProbeAnimator.start();
 
     }
 
@@ -263,6 +348,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
 
         void onLottery();
     }
+
 
     private static class LotteryHandler extends Handler {
         private WeakReference<ExhibitCodeStartsDialog> reference;   //
