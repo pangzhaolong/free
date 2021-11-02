@@ -9,54 +9,36 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/main_splash_bg">
 
         <ImageView
             android:id="@+id/iv_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="48dp"
+            android:layout_marginBottom="37dp"
             android:contentDescription="@null"
-            android:src="@mipmap/main_splash_b_icon"
+            android:src="@drawable/main_splash_logo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <!--水平进度条 -->
-        <ProgressBar
-            android:id="@+id/splash_progress"
-            style="@style/AppTheme.Start.Progess"
-            android:layout_width="300dp"
-            android:layout_height="20dp"
-            android:layout_marginBottom="48dp"
-            android:max="100"
-            android:progressDrawable="@drawable/main_splash_progress_drawable"
+        <ImageView
+            android:id="@+id/iv_content"
+            android:layout_width="375dp"
+            android:layout_height="511.7dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/main_splash_content"
             app:layout_constraintBottom_toTopOf="@id/iv_icon"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:text="正在努力加载数据..."
-            app:layout_constraintBottom_toTopOf="@id/splash_progress"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/group_progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:constraint_referenced_ids="splash_progress,tv_progress"
-            tools:visibility="visible" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <FrameLayout
             android:id="@+id/ad_full_screen_container"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -66,9 +48,11 @@
             android:id="@+id/ad_half_screen_container"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginBottom="48dp"
+            android:layout_marginBottom="37dp"
+            android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@id/iv_icon"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.52"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

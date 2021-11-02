@@ -2,6 +2,7 @@ package com.donews.common.ad.business.loader
 
 import android.app.Activity
 import android.view.ViewGroup
+import android.view.WindowManager
 import com.donews.common.ad.business.callback.JddAdIdConfigManager
 import com.dn.sdk.sdk.AdSdkManager
 import com.dn.sdk.sdk.bean.AdType
@@ -125,8 +126,8 @@ object AdManager : IAdManager, ISdkManager by AdSdkManager, IAdIdConfig by JddAd
                 requestInfo.channel = AdSdkManager.channel
                 requestInfo.oaid = AdSdkManager.oaid
                 requestInfo.container = container
-                requestInfo.width = DensityUtils.getScreenWidth()
-                requestInfo.height = (DensityUtils.getScreenHeight() * 0.27f).toInt()
+                requestInfo.width = container.layoutParams.width
+                requestInfo.height = container.layoutParams.height
                 requestInfo.platform.getLoader().loadSplashAd(activity, requestInfo, listener)
             }
         })

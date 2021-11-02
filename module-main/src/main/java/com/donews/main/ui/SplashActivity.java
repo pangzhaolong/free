@@ -380,11 +380,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
     private void hadPermissions() {
         if (NetworkUtils.isAvailableByPing()) {
             deviceLogin();
-            if (SplashUtils.INSTANCE.isColdStart()) {
-                loadClodStartAd();
-            } else {
-                loadHotStartAd();
-            }
+            loadClodStartAd();
         } else {
             ToastUtil.show(SplashActivity.this, "");
             goToMain();

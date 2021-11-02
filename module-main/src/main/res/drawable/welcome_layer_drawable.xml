@@ -3,20 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="ResourceName">
 
-    <item android:drawable="@color/white" />
+    <item android:drawable="@drawable/main_splash_bg" />
 
     <!--<item android:bottom="96dp">
         <bitmap
             android:gravity="center|fill_horizontal"
             android:src="@mipmap/icon_welcome_content_image" />
     </item>-->
-
     <item
         android:id="@+id/bottom_logo"
-        android:bottom="48dp">
+        android:bottom="37dp">
         <bitmap
             android:gravity="bottom|center_horizontal"
-            android:src="@mipmap/main_splash_b_icon" />
+            android:src="@drawable/main_splash_logo" />
     </item>
 
 
