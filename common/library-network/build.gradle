@@ -41,5 +41,7 @@ dependencies {
 
     api rootProject.ext.dependencies["logger"]
     api rootProject.ext.dependencies["okhttpprofiler"]
+
+    compileOnly project(path: ':common:library-utils')
 }
 

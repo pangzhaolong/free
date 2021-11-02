@@ -13,6 +13,7 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.drouter.ARouteHelper;
+import com.dn.events.events.LoginUserStatus;
 import com.donews.common.ad.business.monitor.PageMonitor;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.base.utils.ToastUtil;
@@ -24,6 +25,9 @@ import com.donews.mine.viewModel.MineOpenWinningViewModel;
 import com.donews.mine.views.scrollview.BarrageView;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 
 /**
@@ -71,8 +75,19 @@ public class MineOpenWinningFragment extends
 
     @Override
     protected void onFragmentFirstVisible() {
+        EventBus.getDefault().register(this);
         super.onFragmentFirstVisible();
         initView();
+    }
+
+    @Subscribe
+    public void userLoginStatus(LoginUserStatus event) {
+        if (event.getStatus() == 1 ||
+                event.getStatus() == 2) {
+            if (mViewModel.detailLivData.getValue() != null) {
+                mDataBinding.mainWinCodeRefresh.autoRefresh();
+            }
+        }
     }
 
     /**
@@ -153,6 +168,7 @@ public class MineOpenWinningFragment extends
 
     @Override
     public void onDestroy() {
+        EventBus.getDefault().unregister(this);
         mViewModel.destroy();
         super.onDestroy();
     }

@@ -4,7 +4,9 @@ import android.content.Context;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.donews.base.model.BaseLiveDataModel;
+import com.donews.base.utils.GsonUtils;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.UserInfoBean;
@@ -281,7 +283,7 @@ public class MineModel extends BaseLiveDataModel {
     /**
      * 获取提现中心的配置
      *
-     * @param livData 数据通知对象
+     * @param livData 数据通知对象,如果为空则表示只刷新数据不通知数据
      * @return
      */
     public Disposable requestWithdrawCenterConfig(
@@ -291,15 +293,36 @@ public class MineModel extends BaseLiveDataModel {
                 .execute(new SimpleCallBack<WithdrawConfigResp>() {
                     @Override
                     public void onError(ApiException e) {
-                        livData.postValue(null);
+                        String locJson = SPUtils.getInstance().getString("withdraw_config");
+                        try {
+                            WithdrawConfigResp queryBean = GsonUtils.fromLocalJson(locJson, WithdrawConfigResp.class);
+                            if (queryBean == null || queryBean.list == null || queryBean.list.isEmpty()) {
+                                if (livData != null) {
+                                    livData.postValue(null);
+                                }
+                            } else {
+                                if (livData != null) {
+                                    livData.postValue(queryBean.list);
+                                }
+                            }
+                        } catch (Exception err) {
+                            if (livData != null) {
+                                livData.postValue(null);
+                            }
+                        }
                     }
 
                     @Override
                     public void onSuccess(WithdrawConfigResp queryBean) {
                         if (queryBean == null || queryBean.list == null || queryBean.list.isEmpty()) {
-                            livData.postValue(new ArrayList<WithdrawConfigResp.WithdrawListDTO>());
+                            if (livData != null) {
+                                livData.postValue(new ArrayList<WithdrawConfigResp.WithdrawListDTO>());
+                            }
                         } else {
-                            livData.postValue(queryBean.list);
+                            SPUtils.getInstance().put("withdraw_config", GsonUtils.toJson(queryBean));
+                            if (livData != null) {
+                                livData.postValue(queryBean.list);
+                            }
                         }
                     }
                 });
@@ -385,21 +408,21 @@ public class MineModel extends BaseLiveDataModel {
                 .execute(new SimpleCallBack<Object>() {
                     @Override
                     public void onError(ApiException e) {
-                        if (e.getCode() == 22101){
+                        if (e.getCode() == 22101) {
                             ToastUtil.showShort(context.getApplicationContext(), e.getMessage());
-                        }else if(e.getCode() == 22102) {
+                        } else if (e.getCode() == 22102) {
                             ToastUtil.showShort(context.getApplicationContext(),
                                     e.getMessage());
-                        }else if(e.getCode() == 22103) {
+                        } else if (e.getCode() == 22103) {
                             ToastUtil.showShort(context.getApplicationContext(),
                                     e.getMessage());
-                        }else if(e.getCode() == 22104) {
+                        } else if (e.getCode() == 22104) {
                             ToastUtil.showShort(context.getApplicationContext(),
                                     e.getMessage());
-                        }else if(e.getCode() == 22106) {
+                        } else if (e.getCode() == 22106) {
                             ToastUtil.showShort(context.getApplicationContext(),
                                     e.getMessage());
-                        }else if(e.getCode() == 22199) {
+                        } else if (e.getCode() == 22199) {
                             ToastUtil.showShort(context.getApplicationContext(),
                                     e.getMessage());
                         }

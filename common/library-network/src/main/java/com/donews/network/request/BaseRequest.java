@@ -17,6 +17,7 @@ package com.donews.network.request;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.donews.network.BuildConfig;
 import com.donews.network.EasyHttp;
@@ -29,6 +30,7 @@ import com.donews.network.interceptor.BaseDynamicInterceptor;
 import com.donews.network.interceptor.CacheInterceptor;
 import com.donews.network.interceptor.CacheInterceptorOffline;
 import com.donews.network.interceptor.HeadersInterceptor;
+import com.donews.network.interceptor.LoginHeaderInterceptor;
 import com.donews.network.interceptor.NoCacheInterceptor;
 import com.donews.network.model.HttpHeaders;
 import com.donews.network.model.HttpParams;
@@ -419,6 +421,8 @@ public abstract class BaseRequest<R extends BaseRequest> {
 
             //添加头  头添加放在最前面方便其他拦截器可能会用到
             newClientBuilder.addInterceptor(new HeadersInterceptor(headers));
+            //添加头  头添加放在最前面方便其他拦截器可能会用到
+            newClientBuilder.addInterceptor(new LoginHeaderInterceptor(headers));
 
             if(BuildConfig.DEBUG){
                 //添加代理调试

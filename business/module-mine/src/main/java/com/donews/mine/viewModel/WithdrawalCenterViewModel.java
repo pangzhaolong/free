@@ -10,6 +10,8 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.MutableLiveData;
 
 import com.blankj.utilcode.util.ConvertUtils;
+import com.blankj.utilcode.util.SPUtils;
+import com.donews.base.utils.GsonUtils;
 import com.donews.base.utils.ToastUtil;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.mine.R;
@@ -54,7 +56,19 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
      * 获取提现中心的配置
      */
     public void getLoadWithdrawData() {
-        mModel.requestWithdrawCenterConfig(withdrawDataLivData);
+        try {
+            String locJson = SPUtils.getInstance().getString("withdraw_config");
+            WithdrawConfigResp queryBean = GsonUtils.fromLocalJson(locJson, WithdrawConfigResp.class);
+            if (queryBean == null || queryBean.list == null || queryBean.list.isEmpty()) {
+                withdrawDataLivData.postValue(null);
+            }else{
+                withdrawDataLivData.postValue(queryBean.list);
+            }
+            //刷新一次数据(但是下次才会生效)
+            mModel.requestWithdrawCenterConfig(null);
+        } catch (Exception err) {
+            mModel.requestWithdrawCenterConfig(withdrawDataLivData);
+        }
     }
 
     /**
