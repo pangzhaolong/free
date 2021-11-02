@@ -10,4 +10,10 @@ import com.donews.common.contract.BaseCustomViewModel
  * @date 2021/10/28 11:18
  */
 class AppCommonConfig : BaseCustomViewModel() {
+
+
+    var lotteryBackBean : LotteryBackBean =
+        LotteryBackBean();
+
+
 }

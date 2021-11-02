@@ -111,6 +111,13 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         mDataBinding.lotteryGridview.setLayoutManager(gridLayoutManager);
         mDataBinding.lotteryGridview.setAdapter(guessAdapter);
         mDataBinding.lotteryGridview.addItemDecoration(new GridSpaceItemDecoration(2));
+        mDataBinding.returnIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                returnIntercept();
+            }
+        });
+
         initViewData();
         setHeaderView(mDataBinding.lotteryGridview);
         setObserveList();
@@ -189,7 +196,13 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         lotteryCodeStartsDialog.setStateListener(new LotteryCodeStartsDialog.OnStateListener() {
             @Override
             public void onFinish() {
-                lotteryCodeStartsDialog.dismiss();
+                try {
+                    if (lotteryCodeStartsDialog != null) {
+                        lotteryCodeStartsDialog.dismiss();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -544,55 +557,62 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         mLotteryCodeBean = null;
     }
 
+    private void returnIntercept() {
+        if (mLotteryCodeBean == null || dialogShow) {
+            finishReturn();
+            finish();
+            return;
+        }
+        //判断抽奖码的数量显示对应的dialog
+        if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() == 0) {
+            dialogShow = true;
+            NoDrawDialog mNoDrawDialog = new NoDrawDialog(LotteryActivity.this);
+            mNoDrawDialog.setFinishListener(new NoDrawDialog.OnFinishListener() {
+                @Override
+                public void onFinish() {
+                    finish();
+                }
+            });
+            mNoDrawDialog.create();
+            mNoDrawDialog.show();
+            return;
+        }
+
+        //当抽奖码小于6个
+        if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() < 6) {
+            dialogShow = true;
+            LessMaxDialog mLessMaxDialog = new LessMaxDialog(LotteryActivity.this, mLotteryCodeBean);
+            mLessMaxDialog.setFinishListener(new LessMaxDialog.OnFinishListener() {
+
+                @Override
+                public void onDismiss() {
+
+                }
+
+                @Override
+                public void onAgain() {
+                    mLessMaxDialog.dismiss();
+                    startLottery();
+                }
+            });
+            mLessMaxDialog.create();
+            mLessMaxDialog.show();
+            return;
+        }
+        //当抽奖码大于等于
+        if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() >= 6) {
+            finishReturn();
+            finish();
+            return;
+        }
+    }
+
+
     @SuppressLint("ResourceType")
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (mLotteryCodeBean == null || dialogShow) {
-                finishReturn();
-                return super.onKeyDown(keyCode, event);
-            }
-            //判断抽奖码的数量显示对应的dialog
-            if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() == 0) {
-                dialogShow = true;
-                NoDrawDialog mNoDrawDialog = new NoDrawDialog(LotteryActivity.this);
-                mNoDrawDialog.setFinishListener(new NoDrawDialog.OnFinishListener() {
-                    @Override
-                    public void onFinish() {
-                        finish();
-                    }
-                });
-                mNoDrawDialog.create();
-                mNoDrawDialog.show();
-                return false;
-            }
-
-            //当抽奖码小于6个
-            if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() < 6) {
-                dialogShow = true;
-                LessMaxDialog mLessMaxDialog = new LessMaxDialog(LotteryActivity.this, mLotteryCodeBean);
-                mLessMaxDialog.setFinishListener(new LessMaxDialog.OnFinishListener() {
-
-                    @Override
-                    public void onDismiss() {
-
-                    }
-
-                    @Override
-                    public void onAgain() {
-                        mLessMaxDialog.dismiss();
-                        startLottery();
-                    }
-                });
-                mLessMaxDialog.create();
-                mLessMaxDialog.show();
-                return false;
-            }
-            //当抽奖码大于等于
-            if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() >= 6) {
-                finishReturn();
-                return super.onKeyDown(keyCode, event);
-            }
+            returnIntercept();
         }
         return true;
     }

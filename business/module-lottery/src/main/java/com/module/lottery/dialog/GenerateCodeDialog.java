@@ -104,17 +104,6 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
                                 if(mOnFinishListener!=null){
                                     mOnFinishListener.onJump(generateCode);
                                 }
-//                                mDataBinding.setCodeBean(generateCode);
-//                                int schedule = 0;
-//                                //抽奖码生成成功回调
-//                                if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() != 0) {
-//                                    schedule = mLotteryCodeBean.getCodes().size();
-//                                    schedule = 50 / 5 * (schedule);
-//                                } else {
-//                                    schedule = 10;
-//                                }
-////                                schedule=  generateRandomNumber(schedule);
-//                                startProgressBar(schedule);
                             }
                         }
                     }));
@@ -147,13 +136,6 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
     }
 
 
-    @Override
-    public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
-        if (mOnFinishListener != null) {
-            mOnFinishListener.onFinish();
-        }
-        return super.onKeyDown(keyCode, event);
-    }
 
 
     public void setStateListener(OnStateListener l) {
