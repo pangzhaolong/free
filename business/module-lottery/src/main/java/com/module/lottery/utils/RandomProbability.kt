@@ -16,10 +16,8 @@ class RandomProbability {
         var lotteryBackBean: LotteryBackBean? = null
 
         fun getRandomNumber(): String {
-            if (lotteryBackBean == null) {
-                if (appCommonConfig == null) {
-                    appCommonConfig = AppCommonConfigUtils.getConfig();
-                }
+            if (appCommonConfig == null) {
+                appCommonConfig = AppCommonConfigUtils.getConfig();
             }
             lotteryBackBean = appCommonConfig!!.lotteryBackBean;
             val maxNumber = lotteryBackBean!!.maxProbability
