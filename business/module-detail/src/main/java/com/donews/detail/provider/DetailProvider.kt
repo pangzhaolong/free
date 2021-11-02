@@ -61,6 +61,7 @@ class DetailProvider : IDetailProvider {
                 val url = "taobao://$realLink"
                 val uri: Uri = Uri.parse(url) // 商品地址
                 val intent = Intent(Intent.ACTION_VIEW, uri)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
                 context.startActivity(intent)
             } else {
                 val url = link
