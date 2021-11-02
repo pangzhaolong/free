@@ -25,6 +25,7 @@ class JddInterstitialListenerProxy(val listener: IAdInterstitialListener? = null
 
     override fun onError(code: Int, msg: String?) {
         listener?.onError(code, msg)
+        InterstitialAdCount.updateCloseAdTime()
     }
 
     override fun onAdShow() {
