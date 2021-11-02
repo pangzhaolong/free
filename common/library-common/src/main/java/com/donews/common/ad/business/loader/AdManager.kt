@@ -206,9 +206,9 @@ object AdManager : IAdManager, ISdkManager by AdSdkManager, IAdIdConfig by JddAd
             })
         } else {
             listener?.onError(-1001, "显示插屏广告间隔小于配置时间")
-            if (BuildConfig.DEBUG) {
-                ToastUtil.showShort(activity, "显示插屏广告间隔小于配置时间")
-            }
+//            if (BuildConfig.DEBUG) {
+//                ToastUtil.showShort(activity, "显示插屏广告间隔小于配置时间")
+//            }
         }
     }
 
