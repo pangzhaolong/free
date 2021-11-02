@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.dn.sdk.sdk.interfaces.listener.impl.SimpleRewardVideoListener;
+import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.business.loader.AdManager;
 import com.module.lottery.ui.LotteryActivity;
 import com.module_lottery.R;
@@ -103,6 +104,12 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
                if(mOnFinishListener!=null){
                    mOnFinishListener.onFinish();
                }
+            }
+
+            @Override
+            public void onRewardAdShow() {
+                super.onRewardAdShow();
+                ToastUtil.showShort(mContext,"完整观看视频即可获得抽奖码");
             }
 
             @Override
