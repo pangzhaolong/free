@@ -55,23 +55,19 @@ object InterstitialAdCount {
     fun isCanShowInters(): Boolean {
         mmkv?.let {
             val loadTime = it.decodeLong(KEY_NEW_START_INTERSTITIAL_AD_TIME, 0L)
+            val showTime = it.decodeLong(KEY_NEW_INTERSTITIAL_AD_TIME, 0L)
             val closeTime = it.decodeLong(KEY_NEW_CLOSE_INTERSTITIAL_AD_TIME, 0L)
             val duration = JddAdConfigManager.jddAdConfigBean.interstitialDuration * 1000L
 
             val currentTime = System.currentTimeMillis()
 
-            val loadDuration = currentTime - loadTime
             val closeDuration = currentTime - closeTime
 
-            //防止错误时loadTime > closeTime，然后一直不显示广告
-            if (loadDuration > duration && closeDuration > duration) {
-                return true
-            }
-            //证明上一个广告还未关闭
+            //证明上一个广告还未关闭,或者出现错误了
             if (loadTime > closeTime) {
-                return false
+                //显示时间大于加载时间，则广告正常展示，并且未关闭，则不需要继续显示下一个广告
+                return showTime <= loadTime
             }
-
             if (closeDuration > duration) {
                 return true
             }
