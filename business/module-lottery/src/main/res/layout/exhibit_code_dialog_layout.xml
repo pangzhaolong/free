@@ -74,15 +74,50 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="11dp"
                     android:orientation="horizontal">
 
-                    <include
+                    <androidx.coordinatorlayout.widget.CoordinatorLayout
+                        android:id="@+id/coordinator_layout"
+                        android:layout_width="match_parent"
 
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/progress_reminder"
+                            android:layout_width="wrap_content"
+                            android:layout_height="16dp"
+                            android:layout_gravity="top"
+                            android:background="@mipmap/schedule_shape_bg"
+                            android:gravity="center"
+                            android:paddingStart="6dp"
+                            android:paddingEnd="6dp"
+                            android:paddingTop="2dp"
+                            android:paddingBottom="2dp"
+                            android:text="超过11%的用户"
+                            android:textColor="#FFFFFF"
+                            android:textSize="9dp"
+                            app:layout_behavior="com.module.lottery.behavior.progressBehavior" />
+
+                        <ImageView
+                            android:id="@+id/reminder_icon"
+                            android:layout_width="6dp"
+                            android:layout_height="3dp"
+                            android:layout_gravity="bottom"
+                            android:layout_marginStart="@dimen/margin_start"
+                            android:layout_marginTop="16dp"
+                            android:scaleType="fitXY"
+                            android:src="@mipmap/reminder_icon" />
+                    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+                    <include
                         android:id="@+id/include_progress_bar"
                         layout="@layout/progress_bar_layout" />
 
                     <RelativeLayout
+                        android:layout_marginTop="7dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -103,8 +138,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginTop="43dp"
+                            android:layout_marginTop="40dp"
                             android:layout_marginEnd="7dp"
                             android:text="最大中奖率"
                             android:textColor="#E9423E"

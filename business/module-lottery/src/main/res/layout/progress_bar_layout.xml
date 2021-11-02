@@ -11,8 +11,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-
+        android:layout_marginTop="6dp"
+        android:layout_below="@+id/coordinator_layout"
         android:gravity="center"
         android:orientation="vertical"
         tools:ignore="ResourceName">
@@ -20,8 +20,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="21dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginStart="@dimen/margin_start"
+            android:layout_marginEnd="@dimen/margin_end"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -35,7 +35,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
-                    android:max="50"
+                    android:max="500"
+                    android:progress="25"
                     android:progressDrawable="@drawable/progressbar" />
 
                 <ImageView

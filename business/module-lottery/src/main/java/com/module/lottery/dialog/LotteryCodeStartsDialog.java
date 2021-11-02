@@ -17,6 +17,9 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.dn.sdk.sdk.interfaces.listener.impl.SimpleRewardVideoListener;
+import com.donews.common.ad.business.loader.AdManager;
+import com.module.lottery.ui.LotteryActivity;
 import com.module_lottery.R;
 import com.module_lottery.databinding.LotteryStartDialogLayoutBinding;
 
@@ -24,13 +27,13 @@ import java.lang.ref.WeakReference;
 
 //抽奖码小于6个
 public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayoutBinding> {
-    private Context context;
+    private LotteryActivity mContext;
     private OnStateListener mOnFinishListener;
     private LotteryHandler mLotteryHandler = new LotteryHandler(this);
-
-    public LotteryCodeStartsDialog(Context context) {
+    boolean aAState = false;
+    public LotteryCodeStartsDialog(LotteryActivity context) {
         super(context, R.style.dialogTransparent);//内容样式在这里引入
-        this.context = context;
+        this.mContext = context;
     }
 
     @Override
@@ -44,7 +47,7 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
         initView();
         Message mes = new Message();
         mes.what = 1;
-        mLotteryHandler.sendMessageDelayed(mes, 3000);
+        mLotteryHandler.sendMessageDelayed(mes, 1500);
         setOnDismissListener(new OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
@@ -92,6 +95,39 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
 
 
 
+    private  void loadAd(){
+        AdManager.INSTANCE.loadRewardVideoAd(mContext, new SimpleRewardVideoListener() {
+            @Override
+            public void onError(int code, String msg) {
+                super.onError(code, msg);
+               if(mOnFinishListener!=null){
+                   mOnFinishListener.onFinish();
+               }
+            }
+
+            @Override
+            public void onRewardedClosed() {
+                super.onRewardedClosed();
+                //有效关闭
+                if (aAState) {
+                    if(mOnFinishListener!=null){
+                        mOnFinishListener.onJumpAdFinish();
+                    }
+                }
+                if(mOnFinishListener!=null){
+                    mOnFinishListener.onFinish();
+                }
+            }
+
+            @Override
+            public void onRewardVerify(boolean result) {
+                super.onRewardVerify(result);
+                aAState = result;
+            }
+        });
+
+    }
+
 
     @Override
     public float setSize() {
@@ -125,7 +161,7 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
          */
         void onFinish();
 
-        void onJumpAd();
+        void onJumpAdFinish();
 
 
     }
@@ -144,7 +180,7 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
                 case 1:
                     if (reference.get() != null && reference.get().mOnFinishListener != null) {
                         //广告跳转
-                        reference.get().mOnFinishListener.onJumpAd();
+                        reference.get().loadAd();
                     }
                     break;
             }
