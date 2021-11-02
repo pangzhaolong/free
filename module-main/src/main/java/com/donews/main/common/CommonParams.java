@@ -31,11 +31,13 @@ public class CommonParams {
      * 调用网络登录或者刷新token
      */
     public static void setNetWork() {
-        if (TextUtils.isEmpty(AppInfo.getToken())) {
+        if (TextUtils.isEmpty(AppInfo.getToken()) ||
+                !AppInfo.checkIsWXLogin()) {
+
 //            ARouteHelper.routeAccessServiceForResult(ServicesConfig.User.LONGING_SERVICE,
 //                    "getLogin", null);
             String wxCode = AppInfo.getWXLoginCode();
-            if(wxCode == null || "".equals(wxCode)){
+            if (wxCode == null || "".equals(wxCode)) {
                 wxCode = ""; //防止反射不知道类型。所以不设置为空
             }
             ARouteHelper.routeAccessServiceForResult(ServicesConfig.User.LONGING_SERVICE,

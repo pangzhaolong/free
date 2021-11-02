@@ -396,6 +396,7 @@ public class UserInfoManage {
         SPUtils.setInformain(KeySharePreferences.USER_ID, userInfoBean.getId());
         AnalysisHelp.registerUserId();
         HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.put(HttpHeaders.HEAD_PACKAGENMAE,DeviceUtils.getPackage());
         httpHeaders.put(HttpHeaders.HEAD_AUTHORIZATION, AppInfo.getToken(userInfoBean.getToken()));
         EasyHttp.getInstance().addCommonHeaders(httpHeaders);
     }

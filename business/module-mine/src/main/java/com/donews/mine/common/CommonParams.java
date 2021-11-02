@@ -30,7 +30,7 @@ public class CommonParams {
      * 2、刷新token
      */
     public static void setNetWork() {
-        if (TextUtils.isEmpty(AppInfo.getToken())) {
+        if (TextUtils.isEmpty(AppInfo.getToken()) || !AppInfo.checkIsWXLogin()) {
 //            ARouteHelper.routeAccessServiceForResult(ServicesConfig.User.LONGING_SERVICE,
 //                    "getLogin", null);
             String wxCode = AppInfo.getWXLoginCode();

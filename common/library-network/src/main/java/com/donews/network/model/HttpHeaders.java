@@ -74,6 +74,7 @@ public class HttpHeaders implements Serializable {
     public static final String HEAD_KEY_SET_COOKIE = "Set-Cookie";
     public static final String HEAD_KEY_SET_COOKIE2 = "Set-Cookie2";
     public static final String HEAD_AUTHORIZATION = "Authorization";
+    public static final String HEAD_PACKAGENMAE = "PackageName";
     public static final String TOKEN = "Token";
 
     public LinkedHashMap<String, String> headersMap;

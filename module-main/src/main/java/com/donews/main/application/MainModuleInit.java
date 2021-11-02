@@ -115,6 +115,7 @@ public class MainModuleInit implements IModuleInit {
             EasyHttp.getInstance().debug("HoneyLife", true);
         }
         HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.put(HttpHeaders.HEAD_PACKAGENMAE,DeviceUtils.getPackage());
         httpHeaders.put(HttpHeaders.HEAD_AUTHORIZATION, AppInfo.getToken(""));
         EasyHttp.getInstance()
                 .setBaseUrl(BuildConfig.BASE_CONFIG_URL)

@@ -359,8 +359,8 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             return;
         }
         contentRootView.removeAllViews();
-        if (detailLivData.getValue().record == null || detailLivData.getValue().record.isEmpty() &&
-                detailLivData.getValue().myWin == null || detailLivData.getValue().myWin.isEmpty()) {
+        if ((detailLivData.getValue().record == null || detailLivData.getValue().record.isEmpty()) &&
+                (detailLivData.getValue().myWin == null || detailLivData.getValue().myWin.isEmpty())) {
             //未参与
             winningView.setVisibility(View.VISIBLE);
             openWinView.setVisibility(View.VISIBLE);

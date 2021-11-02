@@ -14,6 +14,9 @@ import org.greenrobot.eventbus.EventBus;
  */
 public class AppInfo {
     public static String getToken(String token) {
+        if(!AppInfo.checkIsWXLogin()) {
+            return ""; //未登录。不加入token
+        }
         String tokenStr = !TextUtils.isEmpty(token) ? token : SPUtils.getInformain(KeySharePreferences.TOKEN, "");
         if (!TextUtils.isEmpty(tokenStr) && tokenStr.startsWith("Bearer")) {
             return tokenStr;
@@ -22,6 +25,9 @@ public class AppInfo {
     }
 
     public static String getToken() {
+        if(!AppInfo.checkIsWXLogin()) {
+            return ""; //未登录。不加入token
+        }
         return SPUtils.getInformain(KeySharePreferences.TOKEN, "");
     }
 
