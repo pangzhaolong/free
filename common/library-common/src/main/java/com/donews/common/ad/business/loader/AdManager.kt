@@ -145,6 +145,7 @@ object AdManager : IAdManager, ISdkManager by AdSdkManager, IAdIdConfig by JddAd
                 requestInfo.userId = AdSdkManager.userId
                 requestInfo.channel = AdSdkManager.channel
                 requestInfo.oaid = AdSdkManager.oaid
+                requestInfo.isOpenSound = true
                 requestInfo.platform.getLoader().loadRewardVideoAd(
                     activity, requestInfo,
                     JddAdRewardVideoListenerProxy(activity, listener)
@@ -165,6 +166,7 @@ object AdManager : IAdManager, ISdkManager by AdSdkManager, IAdIdConfig by JddAd
                 requestInfo.platform = JddAdIdConfigManager.getPlatform()
                 requestInfo.adId = requestInfo.platform.getAdIdByKey(key)
                 requestInfo.appIdKey = key
+                requestInfo.isOpenSound = true
                 requestInfo.adType = AdType.REWARD_VIDEO
                 requestInfo.userId = AdSdkManager.userId
                 requestInfo.channel = AdSdkManager.channel
