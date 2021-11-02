@@ -80,8 +80,9 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
     public void loginStatusEvent(LoginUserStatus event) {
         if(event.getStatus() == 2){
             mViewModel.withdrawDatilesLivData.postValue(null);
+        }else if(event.getStatus() == 1){
+            mViewModel.getLoadWithdrawData();
         }
-        mViewModel.getLoadWithdrawData();
         updateUIData();
     }
 
@@ -283,7 +284,11 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
         isRefresh = true;
         adapter.refeshStart();
         mViewModel.loadRecommendGoods(25);
-        mViewModel.getLoadWithdrawData();
+        if(checkIsLogin()) {
+            mViewModel.getLoadWithdrawData();
+        }else{
+            mViewModel.withdrawDatilesLivData.postValue(null);
+        }
     }
 
     //上拉加载更多

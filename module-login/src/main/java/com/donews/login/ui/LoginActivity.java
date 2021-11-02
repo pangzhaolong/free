@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.blankj.utilcode.util.VibrateUtils;
 import com.dn.drouter.ARouteHelper;
 import com.dn.events.events.LoginLodingStartStatus;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
@@ -52,6 +53,8 @@ public class LoginActivity extends MvvmBaseLiveDataActivity<LoginActivityBinding
                 .init();
     }
 
+    private long fastVibrateTime = 0;
+
     @Override
     public void initView() {
         EventBus.getDefault().register(this);
@@ -62,6 +65,10 @@ public class LoginActivity extends MvvmBaseLiveDataActivity<LoginActivityBinding
         mDataBinding.rlWachatLogin.setOnClickListener(v -> onWxLogin());
         mDataBinding.rlWachatLoginFloat.setOnClickListener(v -> {
             //檢查是否勾选协议
+            if (System.currentTimeMillis() - fastVibrateTime > 1500) {
+                fastVibrateTime = System.currentTimeMillis();
+                VibrateUtils.vibrate(100); //震动50毫秒
+            }
             ToastUtil.showShort(this, "请先同意相关协议");
             mDataBinding.llBotDesc.clearAnimation();
             Animation anim = AnimationUtils.loadAnimation(this, R.anim.anim_not_select);
