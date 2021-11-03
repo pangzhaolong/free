@@ -39,7 +39,7 @@ public class ActivityRuleDialog extends BaseDialog<FrontActivityRuleDialogBindin
         mDataBinding.frontRuleDialogHtmlTv3.setText(Html.fromHtml(getContext().getString(R.string.front_rule_3text)));
 
         mDataBinding.frontRuleKnownTv.setOnClickListener(v -> {
-            hide();
+            dismiss();
         });
     }
 

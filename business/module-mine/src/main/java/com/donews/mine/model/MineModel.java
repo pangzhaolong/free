@@ -376,7 +376,7 @@ public class MineModel extends BaseLiveDataModel {
                 .execute(new SimpleCallBack<WithdraWalletResp>() {
                     @Override
                     public void onError(ApiException e) {
-                        String locJson = SPUtils.getInstance().getString("withdraw_detile");
+                        String locJson = SPUtils.getInstance().getString("withdraw_detail");
                         try {
                             WithdraWalletResp queryBean = GsonUtils.fromLocalJson(locJson, WithdraWalletResp.class);
                             if (queryBean == null) {
@@ -398,7 +398,7 @@ public class MineModel extends BaseLiveDataModel {
                     @Override
                     public void onSuccess(WithdraWalletResp queryBean) {
                         if (queryBean != null) {
-                            SPUtils.getInstance().put("withdraw_detile", GsonUtils.toJson(queryBean));
+                            SPUtils.getInstance().put("withdraw_detail", GsonUtils.toJson(queryBean));
                         }
                         if (livData != null) {
                             livData.postValue(queryBean);

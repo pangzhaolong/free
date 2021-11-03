@@ -66,7 +66,7 @@ public class MineViewModel extends BaseLiveDataViewModel<MineModel> {
      * 钱包详情
      */
     public void getLoadWithdrawData() {
-        String locJson = SPUtils.getInstance().getString("withdraw_detile");
+        String locJson = SPUtils.getInstance().getString("withdraw_detail");
         try {
             WithdraWalletResp queryBean = GsonUtils.fromLocalJson(locJson, WithdraWalletResp.class);
             if (queryBean == null) {
