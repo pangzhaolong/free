@@ -372,10 +372,30 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             //已参与(参与了本期)
             winningView.setVisibility(View.VISIBLE);
             openWinView.setVisibility(View.VISIBLE);
-            myAddWinView.setVisibility(View.VISIBLE);
-            contentRootView.addView(openWinView);
-            contentRootView.addView(myAddWinView);
-            contentRootView.addView(winningView);
+            if (isAutoPeriod) {
+                //如果是开奖页。那么都不显示我参加的抽奖模块
+                myAddWinView.setVisibility(View.GONE);
+            }else{
+                myAddWinView.setVisibility(View.VISIBLE);
+            }
+            if(isAutoPeriod) {
+                //开奖页
+                contentRootView.addView(myAddWinView);
+                if (detailLivData.getValue().myWin != null && detailLivData.getValue().myWin.size() > 0) {
+                    //已中奖
+                    contentRootView.addView(openWinView);
+                    contentRootView.addView(winningView);
+                } else {
+                    //未中奖
+                    contentRootView.addView(winningView);
+                    contentRootView.addView(openWinView);
+                }
+            }else{
+                //抽奖页详情(参与记录->参与详情)
+                contentRootView.addView(openWinView);
+                contentRootView.addView(myAddWinView);
+                contentRootView.addView(winningView);
+            }
         }
     }
 
@@ -524,7 +544,7 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             goTo.setOnClickListener((v) -> {
                 ARouter.getInstance()
                         .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
-                        .withString("goods_id",item.goods.id)
+                        .withString("goods_id", item.goods.id)
                         .navigation();
             });
             //添加视图
@@ -603,7 +623,7 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             goTo.setOnClickListener((v) -> {
                 ARouter.getInstance()
                         .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
-                        .withString("goods_id",item.goods.id)
+                        .withString("goods_id", item.goods.id)
                         .navigation();
             });
             //添加视图

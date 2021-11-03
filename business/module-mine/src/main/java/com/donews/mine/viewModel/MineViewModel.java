@@ -12,6 +12,8 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.SPUtils;
+import com.donews.base.utils.GsonUtils;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.common.contract.LoginHelp;
 import com.donews.common.router.RouterActivityPath;
@@ -64,7 +66,16 @@ public class MineViewModel extends BaseLiveDataViewModel<MineModel> {
      * 钱包详情
      */
     public void getLoadWithdrawData() {
+        String locJson = SPUtils.getInstance().getString("withdraw_detile");
+        try {
+            WithdraWalletResp queryBean = GsonUtils.fromLocalJson(locJson, WithdraWalletResp.class);
+            if (queryBean == null) {
+                withdrawDatilesLivData.postValue(queryBean);
+            }
+        } catch (Exception err) {
+        }
         mModel.requestWithdraWallet(withdrawDatilesLivData);
+        mModel.requestWithdrawCenterConfig(null);
     }
 
     /**

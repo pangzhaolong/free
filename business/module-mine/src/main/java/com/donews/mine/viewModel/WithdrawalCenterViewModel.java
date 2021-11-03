@@ -2,6 +2,7 @@ package com.donews.mine.viewModel;
 
 import android.view.View;
 import android.widget.GridLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -54,18 +55,23 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
 
     /**
      * 获取提现中心的配置
+     *
+     * @param isNetLoad 是否网络加载
      */
-    public void getLoadWithdrawData() {
+    public void getLoadWithdrawData(boolean isNetLoad) {
         try {
+            if (isNetLoad) {
+                mModel.requestWithdrawCenterConfig(withdrawDataLivData);
+                return;
+            }
             String locJson = SPUtils.getInstance().getString("withdraw_config");
             WithdrawConfigResp queryBean = GsonUtils.fromLocalJson(locJson, WithdrawConfigResp.class);
-            if (queryBean == null || queryBean.list == null || queryBean.list.isEmpty()) {
-                withdrawDataLivData.postValue(null);
-            }else{
+            if (!(queryBean == null || queryBean.list == null || queryBean.list.isEmpty())) {
+                //存在缓存先加载。再更新网络
                 withdrawDataLivData.postValue(queryBean.list);
             }
             //刷新一次数据(但是下次才会生效)
-            mModel.requestWithdrawCenterConfig(null);
+            mModel.requestWithdrawCenterConfig(withdrawDataLivData);
         } catch (Exception err) {
             mModel.requestWithdrawCenterConfig(withdrawDataLivData);
         }
@@ -82,7 +88,7 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
      * 提现
      */
     public void requestWithdraw(GridLayout superLayout) {
-        mModel.requestWithdra(withdrawLivData, getGridSelectViewItem(superLayout),baseActivity);
+        mModel.requestWithdra(withdrawLivData, getGridSelectViewItem(superLayout), baseActivity);
     }
 
     /**
@@ -118,6 +124,14 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
         }
     }
 
+    /**
+     * 获取ItemView
+     *
+     * @param pos    当前的数据下标
+     * @param item   当前数据
+     * @param submit 提交按钮
+     * @return
+     */
     /**
      * 获取ItemView
      *
@@ -186,9 +200,15 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
         });
         //绑定数据
         TextView numTv = view.findViewById(R.id.icnl_mine_withdraw_num);
+        TextView newUserZx = view.findViewById(R.id.icnl_mine_withdraw_new_uf);
         numTv.setText("" + item.money);
         //添加视图
         superLayout.addView(view);
+        if (0.3 == item.money) {
+            newUserZx.setVisibility(View.VISIBLE);
+        } else {
+            newUserZx.setVisibility(View.GONE);
+        }
         return view;
     }
 }

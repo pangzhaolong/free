@@ -170,8 +170,7 @@
             android:orientation="vertical"
             android:paddingLeft="15dp"
             android:paddingTop="15dp"
-            android:paddingRight="15dp"
-            >
+            android:paddingRight="15dp">
 
             <TextView
                 android:id="@+id/mine_win_code_win_desc_name"

@@ -29,8 +29,6 @@ import org.greenrobot.eventbus.EventBus;
 public class WithdrawalCenterActivity extends
         MvvmBaseLiveDataActivity<MineActivityWithdrawalCenterBinding, WithdrawalCenterViewModel> {
 
-    private LoadingHintDialog loadingHintDialog;
-
     @Override
     protected int getLayoutId() {
         return R.layout.mine_activity_withdrawal_center;
@@ -66,18 +64,18 @@ public class WithdrawalCenterActivity extends
                     .navigation();
         });
         mDataBinding.mineDrawSubmit.setOnClickListener(v -> {
-            loadingHintDialog = new LoadingHintDialog();
-            loadingHintDialog.setDismissOnBackPressed(true)
-                    .setDescription("提交中...")
-                    .show(getSupportFragmentManager(), "withdrawal");
+            mDataBinding.mineDrawSubmit.setEnabled(false);
+            showLoading();
             mViewModel.requestWithdraw(mDataBinding.mineDrawGrid);
         });
         mViewModel.withdrawDataLivData.observe(this, items -> {
+            hideLoading();
             mViewModel.addGridDatas(mDataBinding.mineDrawGrid,
-                    mDataBinding.mineDrawSubmit,mDataBinding.mineDrawDesc);
+                    mDataBinding.mineDrawSubmit, mDataBinding.mineDrawDesc);
         });
         mViewModel.withdrawDatilesLivData.observe(this, items -> {
             if (items == null) {
+                mDataBinding.mineDrawGridLoading.setVisibility(View.GONE);
                 mDataBinding.mineDrawGridLoading.setText("数据加载错误");
                 ToastUtil.showShort(this, "获取数据异常,请稍后重试");
             } else {
@@ -86,24 +84,21 @@ public class WithdrawalCenterActivity extends
             }
         });
         mViewModel.withdrawLivData.observe(this, code -> {
-            hideLoad();
+            mDataBinding.mineDrawSubmit.setEnabled(true);
             if (code == 0 || code == 22102) {
-                if(code == 0){
+                if (code == 0) {
                     ToastUtil.showShort(this, "提现成功!");
                 }
+                showLoading("加载中");
                 mViewModel.getLoadWithdraWalletDite();
-                mViewModel.getLoadWithdrawData(); //更新配置信息
+                mViewModel.getLoadWithdrawData(true); //更新配置信息
                 EventBus.getDefault().post(new WalletRefreshEvent(1));
+            }else{
+                hideLoading();
             }
         });
         mViewModel.getLoadWithdraWalletDite();
-        mViewModel.getLoadWithdrawData();
-    }
-
-    private void hideLoad(){
-        if (loadingHintDialog != null) {
-            loadingHintDialog.disMissDialog();
-        }
+        mViewModel.getLoadWithdrawData(false);
     }
 
     @Override

@@ -70,11 +70,6 @@
             <stroke
                 android:color="#F33737"
                 android:width="1px"/>
-            <padding
-                android:bottom="5dp"
-                android:left="5dp"
-                android:right="5dp"
-                android:top="5dp" />
         </shape>
     </item>
 </layer-list>

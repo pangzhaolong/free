@@ -281,6 +281,39 @@ public class MineModel extends BaseLiveDataModel {
     }
 
     /**
+     * 获取提现列表，实际上 = 积分列表
+     *
+     * @param livData 数据通知对象
+     * @return
+     */
+    public Disposable requestWithdrawRecord(
+            MutableLiveData<List<WithdrawRecordResp.RecordListDTO>> livData,
+            int offset,
+            int limit) {
+        Disposable disop = EasyHttp.get(BuildConfig.API_WALLET_URL + "v1/score")
+                .params("offset", "" + offset)
+                .params("limit", "" + limit)
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new SimpleCallBack<WithdrawRecordResp>() {
+                    @Override
+                    public void onError(ApiException e) {
+                        livData.postValue(null);
+                    }
+
+                    @Override
+                    public void onSuccess(WithdrawRecordResp queryBean) {
+                        if (queryBean == null || queryBean.list == null || queryBean.list.isEmpty()) {
+                            livData.postValue(new ArrayList<>());
+                        } else {
+                            livData.postValue(queryBean.list);
+                        }
+                    }
+                });
+        addDisposable(disop);
+        return disop;
+    }
+
+    /**
      * 获取提现中心的配置
      *
      * @param livData 数据通知对象,如果为空则表示只刷新数据不通知数据
@@ -331,39 +364,6 @@ public class MineModel extends BaseLiveDataModel {
     }
 
     /**
-     * 获取提现列表，实际上 = 积分列表
-     *
-     * @param livData 数据通知对象
-     * @return
-     */
-    public Disposable requestWithdrawRecord(
-            MutableLiveData<List<WithdrawRecordResp.RecordListDTO>> livData,
-            int offset,
-            int limit) {
-        Disposable disop = EasyHttp.get(BuildConfig.API_WALLET_URL + "v1/score")
-                .params("offset", "" + offset)
-                .params("limit", "" + limit)
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(new SimpleCallBack<WithdrawRecordResp>() {
-                    @Override
-                    public void onError(ApiException e) {
-                        livData.postValue(null);
-                    }
-
-                    @Override
-                    public void onSuccess(WithdrawRecordResp queryBean) {
-                        if (queryBean == null || queryBean.list == null || queryBean.list.isEmpty()) {
-                            livData.postValue(new ArrayList<>());
-                        } else {
-                            livData.postValue(queryBean.list);
-                        }
-                    }
-                });
-        addDisposable(disop);
-        return disop;
-    }
-
-    /**
      * 获取钱包详情数据。总额等
      *
      * @param livData 数据通知对象
@@ -376,12 +376,33 @@ public class MineModel extends BaseLiveDataModel {
                 .execute(new SimpleCallBack<WithdraWalletResp>() {
                     @Override
                     public void onError(ApiException e) {
-                        livData.postValue(null);
+                        String locJson = SPUtils.getInstance().getString("withdraw_detile");
+                        try {
+                            WithdraWalletResp queryBean = GsonUtils.fromLocalJson(locJson, WithdraWalletResp.class);
+                            if (queryBean == null) {
+                                if (livData != null) {
+                                    livData.postValue(null);
+                                }
+                            } else {
+                                if (livData != null) {
+                                    livData.postValue(queryBean);
+                                }
+                            }
+                        } catch (Exception err) {
+                            if (livData != null) {
+                                livData.postValue(null);
+                            }
+                        }
                     }
 
                     @Override
                     public void onSuccess(WithdraWalletResp queryBean) {
-                        livData.postValue(queryBean);
+                        if (queryBean != null) {
+                            SPUtils.getInstance().put("withdraw_detile", GsonUtils.toJson(queryBean));
+                        }
+                        if (livData != null) {
+                            livData.postValue(queryBean);
+                        }
                     }
                 });
         addDisposable(disop);

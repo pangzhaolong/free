@@ -67,11 +67,6 @@
             <!-- 实心 -->
             <solid android:color="@color/white" />
             <corners android:radius="5dp" />
-            <padding
-                android:bottom="5dp"
-                android:left="5dp"
-                android:right="5dp"
-                android:top="5dp" />
         </shape>
     </item>
 </layer-list>
