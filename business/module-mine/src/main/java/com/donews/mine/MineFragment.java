@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.events.LoginUserStatus;
+import com.dn.events.events.LotteryStatusEvent;
 import com.dn.events.events.UserTelBindEvent;
 import com.dn.events.events.WalletRefreshEvent;
 import com.donews.base.utils.ToastUtil;
@@ -26,17 +27,20 @@ import com.donews.common.contract.UserInfoBean;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.mine.adapters.MineFragmentAdapter;
+import com.donews.mine.bean.resps.RecommendGoodsResp;
 import com.donews.mine.databinding.MineFragmentBinding;
 import com.donews.mine.viewModel.MineViewModel;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
+import com.donews.utilslibrary.utils.LogUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -78,9 +82,9 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
 
     @Subscribe(threadMode = ThreadMode.MAIN) //用户登录状态变化
     public void loginStatusEvent(LoginUserStatus event) {
-        if(event.getStatus() == 2){
+        if (event.getStatus() == 2) {
             mViewModel.withdrawDatilesLivData.postValue(null);
-        }else if(event.getStatus() == 1){
+        } else if (event.getStatus() == 1) {
             mViewModel.getLoadWithdrawData();
         }
         updateUIData();
@@ -93,6 +97,28 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
         } else if (navEvent.navIndex == 1) {
             mViewModel.getLoadWithdrawData();
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void lotteryStatusEvent(LotteryStatusEvent event) {
+        if (event.object == null || event.goodsId == null) {
+            return;
+        }
+        List<String> list = (List<String>) event.object;
+        int lotteryStatus = 0;
+        if (list.size() <= 0) {
+            lotteryStatus = 0;
+        } else if (list.size() < 6) {
+            lotteryStatus = 1;
+        } else {
+            lotteryStatus = 2;
+        }
+        RecommendGoodsResp.ListDTO item = adapter.getItem(event.position);
+        if (!event.goodsId.equals(item.goodsId)) {
+            return;
+        }
+        item.lotteryStatus = (lotteryStatus);
+        adapter.notifyItemChanged(event.position);
     }
 
     @Override
@@ -131,7 +157,7 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
         });
         getView().findViewById(R.id.mine_me_money_num_ll).setOnClickListener((v) -> {
             //提现
-            if(!checkIsLogin()){
+            if (!checkIsLogin()) {
                 getView().findViewById(R.id.iv_user_logo).performClick();
                 return;
             }
@@ -148,7 +174,7 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
         });
         getView().findViewById(R.id.mine_me_add_reco).setOnClickListener((v) -> {
             //参与记录
-            if(!checkIsLogin()){
+            if (!checkIsLogin()) {
                 getView().findViewById(R.id.iv_user_logo).performClick();
                 return;
             }
@@ -158,7 +184,7 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
         });
         getView().findViewById(R.id.mine_me_win_reco).setOnClickListener((v) -> {
             //中奖记录
-            if(!checkIsLogin()){
+            if (!checkIsLogin()) {
                 getView().findViewById(R.id.iv_user_logo).performClick();
                 return;
             }
@@ -181,7 +207,7 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
             TextView tv = getView().findViewById(R.id.mine_me_money_num);
             if (item != null) {
                 tv.setText("" + item.total);
-            }else{
+            } else {
                 tv.setText("0");
             }
         });
@@ -233,7 +259,7 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
     }
 
     //检查是否已经登录了，T:已登录，F:未登录
-    private boolean checkIsLogin(){
+    private boolean checkIsLogin() {
         UserInfoBean uf = LoginHelp.getInstance().getUserInfoBean();
         return uf != null &&
                 AppInfo.checkIsWXLogin();
@@ -284,9 +310,9 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
         isRefresh = true;
         adapter.refeshStart();
         mViewModel.loadRecommendGoods(25);
-        if(checkIsLogin()) {
+        if (checkIsLogin()) {
             mViewModel.getLoadWithdrawData();
-        }else{
+        } else {
             mViewModel.withdrawDatilesLivData.postValue(null);
         }
     }

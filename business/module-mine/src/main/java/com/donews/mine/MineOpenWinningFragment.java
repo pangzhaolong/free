@@ -14,12 +14,14 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.drouter.ARouteHelper;
 import com.dn.events.events.LoginUserStatus;
+import com.dn.events.events.LotteryStatusEvent;
 import com.donews.common.ad.business.monitor.PageMonitor;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.mine.adapters.MineWinningCodeAdapter;
+import com.donews.mine.bean.resps.RecommendGoodsResp;
 import com.donews.mine.databinding.MineFragmentWinningCodeBinding;
 import com.donews.mine.viewModel.MineOpenWinningViewModel;
 import com.donews.mine.views.scrollview.BarrageView;
@@ -28,6 +30,9 @@ import com.donews.utilslibrary.dot.Dot;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
 
 
 /**
@@ -88,6 +93,28 @@ public class MineOpenWinningFragment extends
                 mDataBinding.mainWinCodeRefresh.autoRefresh();
             }
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void lotteryStatusEvent(LotteryStatusEvent event) {
+        if (event.object == null || event.goodsId == null) {
+            return;
+        }
+        List<String> list = (List<String>) event.object;
+        int lotteryStatus = 0;
+        if (list.size() <= 0) {
+            lotteryStatus = 0;
+        } else if (list.size() < 6) {
+            lotteryStatus = 1;
+        } else {
+            lotteryStatus = 2;
+        }
+        RecommendGoodsResp.ListDTO item = adapter.getItem(event.position);
+        if (!event.goodsId.equals(item.goodsId)) {
+            return;
+        }
+        item.lotteryStatus = (lotteryStatus);
+        adapter.notifyItemChanged(event.position);
     }
 
     /**

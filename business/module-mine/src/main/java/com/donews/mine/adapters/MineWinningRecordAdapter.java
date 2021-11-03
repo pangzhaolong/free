@@ -1,6 +1,7 @@
 package com.donews.mine.adapters;
 
 import android.graphics.Paint;
+import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +13,18 @@ import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.ConvertUtils;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
+import com.dn.drouter.ARouteHelper;
 import com.donews.base.utils.ToastUtil;
 import com.donews.base.utils.glide.GlideUtils;
+import com.donews.common.router.RouterActivityPath;
 import com.donews.mine.R;
 import com.donews.mine.bean.emus.WinTypes;
 import com.donews.mine.bean.resps.WinRecordResp;
 import com.donews.mine.utils.TextWinUtils;
 import com.donews.mine.views.SectionCornerMessageLayout;
 import com.donews.mine.views.refresh.adapters.BaesLoadMoreAdapter;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.UrlUtils;
 
 import java.util.List;
@@ -58,6 +63,7 @@ public class MineWinningRecordAdapter extends BaesLoadMoreAdapter<WinRecordResp.
                 .setText(R.id.mine_win_item_snap_number,
                         Html.fromHtml(TextWinUtils.drawOldText(item.openCode, item.code)))
                 .setText(R.id.mine_win_item_good_name, item.goods.title)
+                .setText(R.id.mine_win_item_goto, "立即领奖")
                 .setText(R.id.mine_win_item_good_pic, "¥" + item.goods.price);
         seal.setText(WinTypes.Alike.name);
         if (WinTypes.Alike.type.equals(item.winType)) {
@@ -70,9 +76,14 @@ public class MineWinningRecordAdapter extends BaesLoadMoreAdapter<WinRecordResp.
             winType.setText("无");
             seal.setText(WinTypes.None.name);
         }
-        baseViewHolder.itemView.findViewById(R.id.mine_win_item_goto)
+        baseViewHolder.itemView
                 .setOnClickListener((v) -> {
-                    ToastUtil.show(baseViewHolder.itemView.getContext(), "中奖几率->理解抢购");
+                    AnalysisUtils.onEventEx(baseViewHolder.itemView.getContext(), Dot.Page_ContactService);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("url",
+                            "https://recharge-web.xg.tagtic.cn/jdd/index.html#/customer");
+                    bundle.putString("title", "客服");
+                    ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
                 });
     }
 

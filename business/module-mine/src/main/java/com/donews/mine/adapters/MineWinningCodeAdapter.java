@@ -16,6 +16,7 @@ import com.donews.base.utils.glide.GlideUtils;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.mine.R;
 import com.donews.mine.bean.resps.RecommendGoodsResp;
+import com.donews.mine.utils.TextWinUtils;
 import com.donews.mine.views.SectionCornerMessageLayout;
 import com.donews.mine.views.refresh.adapters.BaesLoadMoreAdapter;
 import com.donews.utilslibrary.utils.UrlUtils;
@@ -59,10 +60,16 @@ public class MineWinningCodeAdapter extends BaesLoadMoreAdapter<RecommendGoodsRe
         ImageView iv = holder.getView(R.id.mine_par_reco_list_icon);
         GlideUtils.loadImageView(
                 iv.getContext(), UrlUtils.formatUrlPrefix(item.mainPic), iv);
-        holder.getView(R.id.mine_par_reco_list_bot_info)
+        TextWinUtils.updateWinStatus(
+                holder.getView(R.id.mine_par_reco_list_bot_info),
+                item
+        );
+        holder.itemView
                 .setOnClickListener(v -> {
                     ARouter.getInstance()
                             .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
+                            .withBoolean("needLotteryEvent", true)
+                            .withInt("position", holder.getAdapterPosition())
                             .withString("goods_id", item.goodsId)
                             .navigation();
                 });

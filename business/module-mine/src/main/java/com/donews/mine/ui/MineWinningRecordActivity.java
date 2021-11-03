@@ -57,10 +57,10 @@ public class MineWinningRecordActivity extends
     public void initView() {
         adapter = new MineWinningRecordAdapter();
         adapter.setOnLoadMoreListener((page, pageSize) -> {
-            if(mViewModel.winRecordLivData.getValue() == null ||
-                    mViewModel.winRecordLivData.getValue().size() < adapter.pageSize){
+            if (mViewModel.winRecordLivData.getValue() == null ||
+                    mViewModel.winRecordLivData.getValue().size() < adapter.pageSize) {
                 adapter.loadMoreFinish(true, true);
-            }else{
+            } else {
                 isRefesh = false;
                 mViewModel.loadDataList(page, pageSize);
             }
@@ -86,7 +86,7 @@ public class MineWinningRecordActivity extends
             }
             if (isRefesh) {
                 mDataBinding.mineWinRecodLayout.setRefeshComplete();
-                adapter.loadMoreFinish(true, items.isEmpty() || items.size() < adapter.pageSize);
+                adapter.loadMoreFinish(true, items == null || items.isEmpty() || items.size() < adapter.pageSize);
                 adapter.setNewData(list);
                 if (items == null) {
                     mDataBinding.mineWinRecodLayout.getStateLayout().showError();
