@@ -13,18 +13,25 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.SPUtils;
+import com.dn.events.events.LotteryStatusEvent;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.mine.R;
 import com.donews.mine.adapters.MineParticipateRecordAdapter;
 import com.donews.mine.bean.resps.HistoryPeopleLottery;
+import com.donews.mine.bean.resps.RecommendGoodsResp;
 import com.donews.mine.databinding.MineActivityParticipateRecordBinding;
 import com.donews.mine.viewModel.MineParticipateRecordViewModel;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.gyf.immersionbar.ImmersionBar;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 参与记录页面
@@ -49,6 +56,7 @@ public class MineParticipateRecordActivity extends
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         ImmersionBar.with(this)
                 .statusBarColor(R.color.mine_f6f9fb)
                 .navigationBarColor(R.color.white)
@@ -59,10 +67,38 @@ public class MineParticipateRecordActivity extends
         AnalysisUtils.onEventEx(this, Dot.Page_PartInRecords);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void lotteryStatusEvent(LotteryStatusEvent event) {
+        if (event.object == null || event.goodsId == null) {
+            return;
+        }
+        List<String> list = (List<String>) event.object;
+        int lotteryStatus = 0;
+        if (list.size() <= 0) {
+            lotteryStatus = 0;
+        } else if (list.size() < 6) {
+            lotteryStatus = 1;
+        } else {
+            lotteryStatus = 2;
+        }
+        RecommendGoodsResp.ListDTO item = adapter.getItem(event.position);
+        if (!event.goodsId.equals(item.goodsId)) {
+            return;
+        }
+        item.lotteryStatus = (lotteryStatus);
+        adapter.notifyItemChanged(event.position);
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
         initData();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     public void initView() {

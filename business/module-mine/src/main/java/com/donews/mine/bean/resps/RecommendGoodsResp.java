@@ -31,5 +31,8 @@ public class RecommendGoodsResp extends BaseCustomViewModel {
         public String goodsId;
         @SerializedName("winning_rates")
         public float winningRates;
+        // 参与状态 0未参与抽奖 1已参与，可继续抽 2抽奖码已满
+        @SerializedName("lottery_status")
+        public int lotteryStatus;
     }
 }

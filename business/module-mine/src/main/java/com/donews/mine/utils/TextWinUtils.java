@@ -1,5 +1,9 @@
 package com.donews.mine.utils;
 
+import android.widget.TextView;
+
+import com.donews.mine.bean.resps.RecommendGoodsResp;
+
 import java.util.List;
 
 /**
@@ -34,7 +38,7 @@ public class TextWinUtils {
             for (int ci = 0; ci < winCode.length(); ci++) {
                 if (myCode.charAt(ci) == winCode.charAt(ci)) {
                     temSb.append("<font color='#ff0000'>" + myCode.charAt(ci) + "</font>");
-                }else{
+                } else {
                     temSb.append(myCode.charAt(ci));
                 }
             }
@@ -46,5 +50,22 @@ public class TextWinUtils {
             }
         }
         return sb.toString();
+    }
+
+    /**
+     * 更新抽奖状态，也就是抽奖的各种状态
+     *
+     * @param tv
+     * @param item
+     */
+    public static void updateWinStatus(
+            TextView tv, RecommendGoodsResp.ListDTO item) {
+        if (item.lotteryStatus == 1) {
+            tv.setText("继续参与");
+        } else if (item.lotteryStatus == 2) {
+            tv.setText("等待开奖");
+        } else {
+            tv.setText("0元抽奖");
+        }
     }
 }

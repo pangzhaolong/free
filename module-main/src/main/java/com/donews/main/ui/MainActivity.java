@@ -158,7 +158,7 @@ public class MainActivity
                         .fitsSystemWindows(true)
                         .autoDarkModeEnable(true)
                         .init();
-                AnalysisUtils.onEventEx(this, Dot.Btn_SaveMoneyBuy);
+                AnalysisUtils.onEventEx(this, Dot.Page_SaveMoneyBuy);
                 AnalysisUtils.onEventEx(this, Dot.Btn_SaveMoneyBuy);
                 break;
             case 4:
@@ -169,7 +169,7 @@ public class MainActivity
                         .fitsSystemWindows(true)
                         .autoDarkModeEnable(true)
                         .init();
-                AnalysisUtils.onEventEx(this, Dot.Btn_UserCenter);
+                AnalysisUtils.onEventEx(this, Dot.Page_UserCenter);
                 AnalysisUtils.onEventEx(this, Dot.Btn_UserCenter);
                 break;
             default:

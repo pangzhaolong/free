@@ -16,6 +16,7 @@ import com.donews.base.utils.glide.GlideUtils;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.mine.R;
 import com.donews.mine.bean.resps.RecommendGoodsResp;
+import com.donews.mine.utils.TextWinUtils;
 import com.donews.mine.views.refresh.adapters.BaesLoadMoreAdapter;
 import com.donews.mine.views.SectionCornerMessageLayout;
 import com.donews.utilslibrary.utils.UrlUtils;
@@ -60,11 +61,17 @@ public class MineParticipateRecordAdapter extends BaesLoadMoreAdapter<RecommendG
         helper.setText(R.id.mine_par_reco_list_title, item.title)
                 .setText(R.id.mine_par_reco_list_count_num, "¥" + item.originalPrice)
                 .setText(R.id.mine_par_reco_list_bot_info, "累计" + item.totalPeople + "人参与抽奖");
-        helper.getView(R.id.mine_par_reco_list_count_goto)
+        TextWinUtils.updateWinStatus(
+                helper.getView(R.id.mine_par_record_list_count_tv),
+                item
+        );
+        helper.itemView
                 .setOnClickListener(v -> {
                     ARouter.getInstance()
                             .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
-                            .withString("goods_id",item.goodsId)
+                            .withBoolean("needLotteryEvent", true)
+                            .withInt("position", helper.getAdapterPosition())
+                            .withString("goods_id", item.goodsId)
                             .navigation();
                 });
     }

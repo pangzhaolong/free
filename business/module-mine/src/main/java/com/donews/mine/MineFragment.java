@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.events.LoginUserStatus;
+import com.dn.events.events.LotteryStatusEvent;
 import com.dn.events.events.UserTelBindEvent;
 import com.dn.events.events.WalletRefreshEvent;
 import com.donews.base.utils.glide.GlideUtils;
@@ -25,15 +26,18 @@ import com.donews.common.contract.UserInfoBean;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.mine.adapters.MineFragmentAdapter;
+import com.donews.mine.bean.resps.RecommendGoodsResp;
 import com.donews.mine.databinding.MineFragmentBinding;
 import com.donews.mine.viewModel.MineViewModel;
 import com.donews.utilslibrary.utils.AppInfo;
+import com.donews.utilslibrary.utils.LogUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -89,6 +93,28 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
         } else if (navEvent.navIndex == 1) {
             mViewModel.getLoadWithdrawData();
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void lotteryStatusEvent(LotteryStatusEvent event) {
+        if (event.object == null || event.goodsId == null) {
+            return;
+        }
+        List<String> list = (List<String>) event.object;
+        int lotteryStatus = 0;
+        if (list.size() <= 0) {
+            lotteryStatus = 0;
+        } else if (list.size() < 6) {
+            lotteryStatus = 1;
+        } else {
+            lotteryStatus = 2;
+        }
+        RecommendGoodsResp.ListDTO item = adapter.getItem(event.position);
+        if (!event.goodsId.equals(item.goodsId)) {
+            return;
+        }
+        item.lotteryStatus = (lotteryStatus);
+        adapter.notifyItemChanged(event.position);
     }
 
     @Override

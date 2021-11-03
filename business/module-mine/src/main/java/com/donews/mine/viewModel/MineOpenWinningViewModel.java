@@ -3,6 +3,7 @@ package com.donews.mine.viewModel;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.text.Html;
@@ -18,6 +19,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ConvertUtils;
+import com.dn.drouter.ARouteHelper;
 import com.donews.base.utils.ToastUtil;
 import com.donews.base.utils.glide.GlideUtils;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
@@ -35,6 +37,8 @@ import com.donews.mine.databinding.MineFragmentWinningCodeBinding;
 import com.donews.mine.model.MineModel;
 import com.donews.mine.utils.TextWinUtils;
 import com.donews.mine.views.CSSView;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.UrlUtils;
 
 import java.text.DateFormat;
@@ -425,7 +429,7 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             TextView but = childView.findViewById(R.id.mine_open_win_not_data_but);
             but.setVisibility(View.VISIBLE);
             desc.setText("抽奖多的人\n当然容易免单呀");
-            but.setOnClickListener(v -> {
+            childView.setOnClickListener(v -> {
                 //去往首页
                 ARouter.getInstance().build(RouterActivityPath.Main.PAGER_MAIN)
                         .withInt("position", 0)
@@ -465,8 +469,13 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             code.setText(Html.fromHtml(
                     TextWinUtils.drawOldText(detailLivData.getValue().code, item.code)));
             goTo.setText("去领奖");
-            goTo.setOnClickListener((v) -> {
-                ToastUtil.show(view.getContext(), "前往去领奖页面");
+            childView.setOnClickListener((v) -> {
+                AnalysisUtils.onEventEx(mContext, Dot.Page_ContactService);
+                Bundle bundle = new Bundle();
+                bundle.putString("url",
+                        "https://recharge-web.xg.tagtic.cn/jdd/index.html#/customer");
+                bundle.putString("title", "客服");
+                ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
             });
             //添加视图
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -541,7 +550,7 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             code.setText(Html.fromHtml(
                     TextWinUtils.drawOldText(detailLivData.getValue().code, item.code)));
             goTo.setText("继续抽奖");
-            goTo.setOnClickListener((v) -> {
+            childView.setOnClickListener((v) -> {
                 ARouter.getInstance()
                         .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                         .withString("goods_id", item.goods.id)
@@ -620,7 +629,7 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             goodName.setText(item.goods.title);
             goodPice.setText("" + item.goods.price);
             goTo.setText("试试手气");
-            goTo.setOnClickListener((v) -> {
+            childView.setOnClickListener((v) -> {
                 ARouter.getInstance()
                         .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                         .withString("goods_id", item.goods.id)

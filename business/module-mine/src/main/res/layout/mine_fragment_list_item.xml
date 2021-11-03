@@ -106,6 +106,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/mine_me_list_bot_info">
         <TextView
+            android:id="@+id/mine_me_list_count_tv"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:layout_marginLeft="10dp"
