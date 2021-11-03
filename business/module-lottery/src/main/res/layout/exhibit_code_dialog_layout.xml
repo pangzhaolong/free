@@ -86,7 +86,7 @@
 
                         <TextView
                             android:id="@+id/progress_reminder"
-                            android:layout_width="wrap_content"
+                            android:layout_width="89dp"
                             android:layout_height="16dp"
                             android:layout_gravity="top"
                             android:background="@mipmap/schedule_shape_bg"
@@ -172,7 +172,7 @@
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/jsonAnimation"
                     android:layout_width="wrap_content"
-                    android:layout_height="47dp"
+                    android:layout_height="49dp"
                     android:scaleType="fitXY"
                     app:lottie_autoPlay="true"
                     app:lottie_loop="true" />

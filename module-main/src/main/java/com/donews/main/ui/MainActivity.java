@@ -126,6 +126,7 @@ public class MainActivity
                         .fitsSystemWindows(true)
                         .autoDarkModeEnable(true)
                         .init();
+                AnalysisUtils.onEventEx(this, Dot.Page_Home);
                 AnalysisUtils.onEventEx(this, Dot.Btn_Home);
                 break;
             case 1:
@@ -136,16 +137,18 @@ public class MainActivity
                         .fitsSystemWindows(true)
                         .autoDarkModeEnable(true)
                         .init();
+                AnalysisUtils.onEventEx(this, Dot.Page_ShowTime);
                 AnalysisUtils.onEventEx(this, Dot.Btn_ShowTime);
                 break;
             case 2:
-                AnalysisUtils.onEventEx(this, Dot.Btn_Lottery);
                 ImmersionBar.with(this)
                         .statusBarColor(R.color.red_kj)
                         .navigationBarColor(R.color.white)
                         .fitsSystemWindows(true)
                         .autoDarkModeEnable(true)
                         .init();
+                AnalysisUtils.onEventEx(this, Dot.Page_Lottery);
+                AnalysisUtils.onEventEx(this, Dot.Btn_Lottery);
                 break;
             case 3:
                 AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
@@ -156,6 +159,7 @@ public class MainActivity
                         .autoDarkModeEnable(true)
                         .init();
                 AnalysisUtils.onEventEx(this, Dot.Btn_SaveMoneyBuy);
+                AnalysisUtils.onEventEx(this, Dot.Btn_SaveMoneyBuy);
                 break;
             case 4:
                 AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
@@ -165,6 +169,7 @@ public class MainActivity
                         .fitsSystemWindows(true)
                         .autoDarkModeEnable(true)
                         .init();
+                AnalysisUtils.onEventEx(this, Dot.Btn_UserCenter);
                 AnalysisUtils.onEventEx(this, Dot.Btn_UserCenter);
                 break;
             default:

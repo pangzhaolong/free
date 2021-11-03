@@ -18,7 +18,6 @@ import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.LotteryStatusEvent;
 import com.dn.events.events.UserTelBindEvent;
 import com.dn.events.events.WalletRefreshEvent;
-import com.donews.base.utils.ToastUtil;
 import com.donews.base.utils.glide.GlideUtils;
 import com.donews.common.ad.business.monitor.PageMonitor;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
@@ -30,8 +29,6 @@ import com.donews.mine.adapters.MineFragmentAdapter;
 import com.donews.mine.bean.resps.RecommendGoodsResp;
 import com.donews.mine.databinding.MineFragmentBinding;
 import com.donews.mine.viewModel.MineViewModel;
-import com.donews.utilslibrary.analysis.AnalysisUtils;
-import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.LogUtil;
 
@@ -72,7 +69,6 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
         super.onFragmentFirstVisible();
         initView();
         mViewModel.lifecycleOwner = this;
-        AnalysisUtils.onEventEx(getActivity(), Dot.Page_UserCenter);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN) //手机号绑定成功

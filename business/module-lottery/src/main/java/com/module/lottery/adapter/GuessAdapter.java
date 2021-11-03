@@ -35,6 +35,7 @@ import com.donews.utilslibrary.utils.UrlUtils;
 import com.module.lottery.bean.CommodityBean;
 import com.module.lottery.bean.LotteryCodeBean;
 import com.module.lottery.bean.MaylikeBean;
+import com.module.lottery.ui.LotteryActivity;
 import com.module.lottery.utils.ImageUtils;
 import com.module_lottery.BuildConfig;
 import com.module_lottery.R;
@@ -54,10 +55,10 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
 
     private CommodityBean mCommodityBean;
-    private Context mContext;
+    private LotteryActivity mContext;
     private int mLayoutId;
 
-    public GuessAdapter(Context context) {
+    public GuessAdapter(LotteryActivity context) {
         this.mContext = context;
     }
 
@@ -77,7 +78,6 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
 
-
     @SuppressLint("RecyclerView")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
@@ -92,6 +92,16 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 listHolder.mGuesslikeHeadBinding.referPrice.setText("参考价值: " + mCommodityBean.getOriginalPrice() + "");
                 listHolder.mGuesslikeHeadBinding.title.setText(mCommodityBean.getTitle());
                 listHolder.mGuesslikeHeadBinding.cycle.setText("第" + mCommodityBean.getPeriod() + "期");
+
+                listHolder.mGuesslikeHeadBinding.lotteryContainer.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mContext != null) {
+                            mContext.startLottery();
+                        }
+                    }
+                });
+
                 //初始化参与者信息
                 if (mCommodityBean.getParticipateBean() != null) {
                     if (mCommodityBean.getParticipateBean().getList().size() > 4) {
@@ -138,7 +148,7 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 guessViewHolder.mGuesslikeItemLayoutBinding.itemTitle.setText(mCommodityBean.getGuessLikeData().get(position - 1).getTitle());
                 guessViewHolder.mGuesslikeItemLayoutBinding.itemPrice.setText("¥ " + mCommodityBean.getGuessLikeData().get(position - 1).getOriginalPrice() + "");
                 guessViewHolder.mGuesslikeItemLayoutBinding.itemPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-                guessViewHolder.mGuesslikeItemLayoutBinding.lottery.setOnClickListener(new View.OnClickListener() {
+                guessViewHolder.mGuesslikeItemLayoutBinding.itemLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         ARouter.getInstance()

@@ -109,6 +109,9 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
             @Override
             public void onRewardAdShow() {
                 super.onRewardAdShow();
+                if(mOnFinishListener!=null){
+                    mOnFinishListener.onFinish();
+                }
                 ToastUtil.showShort(mContext,"完整观看视频即可获得抽奖码");
             }
 
@@ -121,9 +124,7 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
                         mOnFinishListener.onJumpAdFinish();
                     }
                 }
-                if(mOnFinishListener!=null){
-                    mOnFinishListener.onFinish();
-                }
+
             }
 
             @Override

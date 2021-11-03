@@ -45,11 +45,11 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
         super.onViewCreated(view, savedInstanceState);
 
         mTopGoodsAdapter = new TopGoodsAdapter(this.getContext(), this);
-        LogUtil.e("TopFragment onViewCreated");
+//        LogUtil.e("TopFragment onViewCreated");
 
         TopGoodsBean goodsBean = GoodsCache.readGoodsBean(TopGoodsBean.class, "");
         if (goodsBean != null && goodsBean.getList() != null && goodsBean.getList().size() > 0) {
-            LogUtil.e("TopFragment goodsBean in :" + goodsBean);
+//            LogUtil.e("TopFragment goodsBean in :" + goodsBean);
             mTopGoodsAdapter.refreshData(goodsBean.getList());
         }
 
@@ -92,47 +92,47 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        LogUtil.e("TopFragment onAttach");
+//        LogUtil.e("TopFragment onAttach");
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LogUtil.e("TopFragment onCreate");
+//        LogUtil.e("TopFragment onCreate");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        LogUtil.e("TopFragment onDestroyView");
+//        LogUtil.e("TopFragment onDestroyView");
         mItemDecoration = null;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        LogUtil.e("TopFragment onDetach");
+//        LogUtil.e("TopFragment onDetach");
     }
 
     @Override
     public void onResume() {
         super.onResume();
         mDataBinding.homeTopBannerViewPager.startLoop();
-        LogUtil.e("TopFragment onResume");
+//        LogUtil.e("TopFragment onResume");
     }
 
     @Override
     public void onPause() {
         super.onPause();
         mDataBinding.homeTopBannerViewPager.stopLoop();
-        LogUtil.e("TopFragment onPause");
+//        LogUtil.e("TopFragment onPause");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
 
-        LogUtil.e("TopFragment onDestroy");
+//        LogUtil.e("TopFragment onDestroy");
     }
 
     @Override

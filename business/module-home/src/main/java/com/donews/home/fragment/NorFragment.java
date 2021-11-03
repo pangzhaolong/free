@@ -110,7 +110,7 @@ public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding
     @Override
     public void onDestroy() {
         super.onDestroy();
-        LogUtil.e("NorFragment onDestroy");
+//        LogUtil.e("NorFragment onDestroy");
         mItemDecoration = null;
     }
 

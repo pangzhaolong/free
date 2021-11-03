@@ -58,7 +58,7 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
         super.onCreate(savedInstanceState);
         Message mes = new Message();
         mes.what = 1;
-        mLotteryHandler.sendMessageDelayed(mes, 1500);
+        mLotteryHandler.sendMessageDelayed(mes, 800);
         initView();
         setOnDismissListener(new OnDismissListener() {
             @Override
