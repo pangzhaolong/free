@@ -97,7 +97,7 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     @Override
                     public void onClick(View v) {
                         if (mContext != null) {
-                            mContext.startLottery();
+                            mContext.luckyDrawEntrance();
                         }
                     }
                 });
