@@ -17,6 +17,7 @@ import com.donews.home.bean.RealTimeBean;
 import com.donews.home.databinding.HomeCrazyListActivityBinding;
 import com.donews.home.listener.GoodsDetailListener;
 import com.donews.home.viewModel.CrazyViewModel;
+import com.gyf.immersionbar.ImmersionBar;
 
 @Route(path = RouterActivityPath.CrazyList.CRAZY_LIST_DETAIL)
 public class HomeCrazyListActivity extends MvvmBaseLiveDataActivity<HomeCrazyListActivityBinding, CrazyViewModel> implements GoodsDetailListener {
@@ -27,6 +28,13 @@ public class HomeCrazyListActivity extends MvvmBaseLiveDataActivity<HomeCrazyLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ImmersionBar.with(this)
+                .statusBarColor(R.color.white)
+                .navigationBarColor(R.color.white)
+                .fitsSystemWindows(true)
+                .autoDarkModeEnable(true)
+                .init();
     }
 
     @Override
