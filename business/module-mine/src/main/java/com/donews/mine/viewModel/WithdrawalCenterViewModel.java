@@ -38,6 +38,9 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
     public MutableLiveData<Integer> withdrawLivData =
             new MutableLiveData<>();
 
+    //是否正在提现中
+    public boolean isWithdrawLoading = false;
+
     public void setDataBinDing(ViewDataBinding dataBinding, FragmentActivity baseActivity) {
         this.viewDataBinding = dataBinding;
         this.baseActivity = baseActivity;
@@ -88,6 +91,10 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
      * 提现
      */
     public void requestWithdraw(GridLayout superLayout) {
+        if (isWithdrawLoading) {
+            return;
+        }
+        isWithdrawLoading = true;
         mModel.requestWithdra(withdrawLivData, getGridSelectViewItem(superLayout), baseActivity);
     }
 
@@ -158,6 +165,10 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
         view.setTag(R.id.icnl_mine_withdraw_num, item); //绑定数据
         view.setTag(R.id.icnl_mine_withdraw_fl, "0"); //设置未选中默认
         view.setOnClickListener(v -> {
+            if(isWithdrawLoading){
+                ToastUtil.showShort(v.getContext(),"正在提现中,请稍后重试");
+                return;//提现中。不允许点击
+            }
             boolean isHostSelect = false; //是否自己被选中
             for (int i = 0; i < superLayout.getChildCount(); i++) {
                 WithdrawConfigResp.WithdrawListDTO curItem =

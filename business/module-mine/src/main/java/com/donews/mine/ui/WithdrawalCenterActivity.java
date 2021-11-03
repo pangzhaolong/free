@@ -84,6 +84,7 @@ public class WithdrawalCenterActivity extends
             }
         });
         mViewModel.withdrawLivData.observe(this, code -> {
+            mViewModel.isWithdrawLoading = false;
             mDataBinding.mineDrawSubmit.setEnabled(true);
             if (code == 0 || code == 22102) {
                 if (code == 0) {
