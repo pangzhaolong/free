@@ -58,7 +58,7 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private int mLayoutId;
 
     public GuessAdapter(Context context) {
-        this.mContext = context.getApplicationContext();
+        this.mContext = context;
     }
 
     @NonNull
@@ -75,6 +75,7 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public void getLayout(int layoutId) {
         this.mLayoutId = layoutId;
     }
+
 
 
     @SuppressLint("RecyclerView")
