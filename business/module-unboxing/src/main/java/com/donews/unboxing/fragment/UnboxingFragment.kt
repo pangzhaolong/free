@@ -40,12 +40,12 @@ class UnboxingFragment : MvvmLazyLiveDataFragment<UnboxingFragUnboxingBinding, U
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        AnalysisUtils.onEventEx(context, Dot.Btn_BeBlessed);
+
         mDataBinding.viewModel = mViewModel
 
         unboxingRVAdapter.setOnItemChildClickListener { adapter, _, position ->
-
-            AnalysisUtils.onEventEx(context, Dot.Btn_BeBlessed);
-
             val data: UnboxingBean = adapter.data[position] as UnboxingBean
             ARouter.getInstance()
                 .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)

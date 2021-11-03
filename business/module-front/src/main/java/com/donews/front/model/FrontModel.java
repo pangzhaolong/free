@@ -25,7 +25,8 @@ public class FrontModel extends BaseLiveDataModel {
     public MutableLiveData<LotteryCategoryBean> getNetData() {
         MutableLiveData<LotteryCategoryBean> mutableLiveData = new MutableLiveData<>();
         addDisposable(EasyHttp.get(FrontApi.lotteryCategoryUrl)
-                .cacheMode(CacheMode.NO_CACHE)
+                .cacheKey("lotteryCategoryUrl")
+                .cacheMode(CacheMode.CACHEANDREMOTEDISTINCT)
                 .execute(new SimpleCallBack<LotteryCategoryBean>() {
 
                     @Override

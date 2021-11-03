@@ -320,7 +320,7 @@
                                                     android:layout_height="3dp"
                                                     android:layout_gravity="center_vertical"
                                                     android:max="100"
-                                                    android:progress="40"
+                                                    android:progress="0"
                                                     android:progressDrawable="@drawable/front_rp_progress_bg" />
 
                                                 <LinearLayout
@@ -339,7 +339,7 @@
                                                             android:layout_width="10dp"
                                                             android:layout_height="10dp"
                                                             android:layout_gravity="center"
-                                                            android:background="@drawable/front_dot_bg" />
+                                                            android:background="@drawable/front_dot_close_bg" />
                                                     </FrameLayout>
 
                                                     <FrameLayout
@@ -352,7 +352,7 @@
                                                             android:layout_width="10dp"
                                                             android:layout_height="10dp"
                                                             android:layout_gravity="center"
-                                                            android:background="@drawable/front_dot_bg" />
+                                                            android:background="@drawable/front_dot_close_bg" />
                                                     </FrameLayout>
 
                                                     <FrameLayout
@@ -365,7 +365,7 @@
                                                             android:layout_width="10dp"
                                                             android:layout_height="10dp"
                                                             android:layout_gravity="center"
-                                                            android:background="@drawable/front_dot_bg" />
+                                                            android:background="@drawable/front_dot_close_bg" />
                                                     </FrameLayout>
 
                                                     <FrameLayout
@@ -378,7 +378,7 @@
                                                             android:layout_width="10dp"
                                                             android:layout_height="10dp"
                                                             android:layout_gravity="center"
-                                                            android:background="@drawable/front_dot_bg" />
+                                                            android:background="@drawable/front_dot_close_bg" />
                                                     </FrameLayout>
 
                                                     <FrameLayout
@@ -391,7 +391,7 @@
                                                             android:layout_width="10dp"
                                                             android:layout_height="10dp"
                                                             android:layout_gravity="center"
-                                                            android:background="@drawable/front_dot_bg" />
+                                                            android:background="@drawable/front_dot_close_bg" />
                                                     </FrameLayout>
                                                 </LinearLayout>
                                             </FrameLayout>

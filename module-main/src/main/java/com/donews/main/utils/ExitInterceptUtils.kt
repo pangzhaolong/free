@@ -42,7 +42,7 @@ object ExitInterceptUtils {
     /** 兩次返回鍵的间隔时间 */
     private const val CLICK_INTERVAL: Long = 2000L
 
-    private var exitInterceptConfig: ExitInterceptConfig = ExitInterceptConfig()
+    var exitInterceptConfig: ExitInterceptConfig = ExitInterceptConfig()
 
     private var mFirstClickBackTime: Long = 0L
 

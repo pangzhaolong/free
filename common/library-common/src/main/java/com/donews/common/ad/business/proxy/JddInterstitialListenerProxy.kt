@@ -17,15 +17,20 @@ class JddInterstitialListenerProxy(val listener: IAdInterstitialListener? = null
 
     override fun onLoadFail(code: Int, error: String?) {
         listener?.onLoadFail(code, error)
+        InterstitialAdCount.updateCloseAdTime()
+        InterstitialAdCount.closeAd()
     }
 
     override fun onLoadTimeout() {
         listener?.onLoadTimeout()
+        InterstitialAdCount.updateCloseAdTime()
+        InterstitialAdCount.closeAd()
     }
 
     override fun onError(code: Int, msg: String?) {
         listener?.onError(code, msg)
         InterstitialAdCount.updateCloseAdTime()
+        InterstitialAdCount.closeAd()
     }
 
     override fun onAdShow() {
@@ -36,6 +41,7 @@ class JddInterstitialListenerProxy(val listener: IAdInterstitialListener? = null
     override fun onAdClosed() {
         listener?.onAdClosed()
         InterstitialAdCount.updateCloseAdTime()
+        InterstitialAdCount.closeAd()
     }
 
     override fun onAdClicked() {
@@ -44,6 +50,8 @@ class JddInterstitialListenerProxy(val listener: IAdInterstitialListener? = null
 
     override fun onAdShowFail(code: Int, msg: String?) {
         listener?.onAdShowFail(code, msg)
+        InterstitialAdCount.updateCloseAdTime()
+        InterstitialAdCount.closeAd()
     }
 
     override fun onAdExposure() {
