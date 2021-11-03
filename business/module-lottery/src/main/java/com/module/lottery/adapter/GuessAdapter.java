@@ -250,11 +250,13 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
 
     public void addGuessLikeData(List<MaylikeBean.ListDTO> guessLikeData) {
-        if (mCommodityBean.getGuessLikeData() != null && guessLikeData != null) {
-            mCommodityBean.getGuessLikeData().addAll(guessLikeData);
+        if (mCommodityBean != null && guessLikeData != null) {
+            if (mCommodityBean.getGuessLikeData() == null) {
+                this.mCommodityBean.setGuessLikeData(guessLikeData);
+            } else {
+                mCommodityBean.getGuessLikeData().addAll(guessLikeData);
+            }
         }
-
-
     }
 
     @Override
