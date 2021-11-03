@@ -1,5 +1,7 @@
 package com.donews.mine.ui;
 
+import static com.donews.common.router.RouterActivityPath.Mine.PAGER_MINE_WINNING_CODE_ACTIVITY;
+
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.mine.R;
@@ -83,6 +86,8 @@ public class MineRewardHistoryActivity extends MvvmBaseLiveDataActivity<MineRewa
 
     @Override
     public void onClick(int period) {
-
+        ARouter.getInstance().build(PAGER_MINE_WINNING_CODE_ACTIVITY)
+                .withInt("period", period)
+                .navigation();
     }
 }

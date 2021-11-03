@@ -93,7 +93,7 @@ public class WebViewObjActivity extends MvvmBaseLiveDataActivity<WebViewObjActiv
         javaScriptInterface.setWebViewModel(mViewModel);
         mDataBinding.webView.addJavascriptInterface(javaScriptInterface, "android");
         mDataBinding.titleBar.setTitle(title);
-        mDataBinding.titleBar.setBackgroundColor(Color.parseColor("#E9433E"));
+
         LogUtil.d("url" + url);
         url = JsonUtils.H5url(url);
         LogUtil.d("url" + url);

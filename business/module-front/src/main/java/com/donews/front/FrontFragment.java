@@ -53,6 +53,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     private Timer mRotateTimer = null;
     private TimerTask mRotateTask = null;
 
+    ActivityRuleDialog mRuleDialog = null;
+
     private Context mContext;
 
     @Override
@@ -120,9 +122,11 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                         .build(RouterActivityPath.Mine.PAGER_ACTIVITY_WITHDRAWAL)
                         .navigation());
         mDataBinding.frontRpHelpIv.setOnClickListener(v -> {
-            ActivityRuleDialog ruleDialog = new ActivityRuleDialog(this.getContext());
-            ruleDialog.create();
-            ruleDialog.show();
+            if (mRuleDialog == null) {
+                mRuleDialog = new ActivityRuleDialog(this.getContext());
+                mRuleDialog.create();
+            }
+            mRuleDialog.show();
         });
 
         if (mRotateAnimation == null) {
@@ -441,6 +445,11 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         if (mRotateAnimation != null) {
             mRotateAnimation.cancel();
             mRotateAnimation = null;
+        }
+
+        if (mRuleDialog != null) {
+            mRuleDialog.dismiss();
+            mRuleDialog = null;
         }
 
         stopTimer();
