@@ -4,6 +4,7 @@ import com.donews.common.contract.BaseCustomViewModel;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LotteryCodeBean extends BaseCustomViewModel {
@@ -18,5 +19,5 @@ public class LotteryCodeBean extends BaseCustomViewModel {
     }
 
     @SerializedName("codes")
-    private List<String> codes;
+    private List<String> codes=new ArrayList<>();
 }

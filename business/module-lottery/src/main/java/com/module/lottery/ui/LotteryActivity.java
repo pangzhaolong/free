@@ -129,21 +129,26 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     }
 
 
+    public void luckyDrawEntrance() {
+        boolean logType = AppInfo.checkIsWXLogin();
+        if (logType) {
+            if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() >= 6) {
+                return;
+            }
+            startLottery();
+        } else {
+            ARouter.getInstance()
+                    .build(RouterActivityPath.User.PAGER_LOGIN)
+                    .navigation();
+        }
+    }
+
+
     private void initViewData() {
         mDataBinding.lotteryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean logType = AppInfo.checkIsWXLogin();
-                if (logType) {
-                    if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() >= 6) {
-                        return;
-                    }
-                    startLottery();
-                } else {
-                    ARouter.getInstance()
-                            .build(RouterActivityPath.User.PAGER_LOGIN)
-                            .navigation();
-                }
+                luckyDrawEntrance();
             }
         });
         mDataBinding.share.setOnClickListener(new View.OnClickListener() {
@@ -189,7 +194,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
 
     //开始抽奖
-    public void startLottery() {
+    private void startLottery() {
         AnalysisUtils.onEventEx(this, Dot.Btn_LotteryNow);
         //开始抽奖
         //弹框抽奖码生成dialog
@@ -231,8 +236,8 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 //不跳转广告 展示生成的随机抽奖码
                 generateCodeDialog.dismiss();
 
-                if(generateCodeBean==null){
-                    Toast.makeText(LotteryActivity.this,"生成抽奖码失败",Toast.LENGTH_SHORT).show();
+                if (generateCodeBean == null) {
+                    Toast.makeText(LotteryActivity.this, "生成抽奖码失败", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -304,6 +309,9 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
     //展示生成的抽奖码
     private void showExhibitCodeDialog(GenerateCodeBean generateCodeBean) {
+        if (mLotteryCodeBean == null) {
+            return;
+        }
         ExhibitCodeStartsDialog exhibitCodeStartsDialog = new ExhibitCodeStartsDialog(LotteryActivity.this, mGoodsId, mLotteryCodeBean, generateCodeBean);
         exhibitCodeStartsDialog.setStateListener(new ExhibitCodeStartsDialog.OnStateListener() {
             @Override
