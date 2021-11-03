@@ -102,9 +102,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
             }
         });
         //读取dimen配置参数
-
         mProgressMarginStart = getContext().getResources().getDimensionPixelSize(R.dimen.margin_start);
-
         initProgressBar();
         initView();
         setOnDismissListener(new OnDismissListener() {
@@ -127,12 +125,12 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
             schedule = mLotteryCodeBean.getCodes().size();
             schedule = mDataBinding.includeProgressBar.progressBar.getMax() / 5 * (schedule);
             if (schedule != mDataBinding.includeProgressBar.progressBar.getMax()) {
-                randomValue = generateRandomNumber();
+                randomValue = generateRandomNumber(50);
             } else {
                 randomValue = 0;
             }
         } else {
-            schedule = 70;
+            randomValue = generateRandomNumber(55);
         }
         startProgressBar(schedule + randomValue);
     }
@@ -197,8 +195,8 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
 
     //在特定区间产生随机数
     @SuppressLint("LongLogTag")
-    private int generateRandomNumber() {
-        int value = new Random().nextInt(11) + 50;//{3    6}
+    private int generateRandomNumber(int mark) {
+        int value = new Random().nextInt(11) + mark;//{3    6}
         return value;
     }
 
@@ -234,7 +232,11 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
 
                 DecimalFormat decimalFormat = new DecimalFormat(".0");//构造方法的字符格式这里如果小数不足2位,会以0补足.
                 String text = decimalFormat.format(percentage);//format 返回的是字符串
-                mDataBinding.progressReminder.setText("超过" + text + "%的用户");
+               if(value>mDataBinding.includeProgressBar.progressBar.getMax()-10){
+                   mDataBinding.progressReminder.setText("明日10点开奖");
+               }else{
+                   mDataBinding.progressReminder.setText("超过" + text + "%的用户");
+               }
                 mDataBinding.includeProgressBar.progressBar.setProgress((int) value);
                 //设置进度条上的百分比
                 setProgressVariety();
@@ -255,7 +257,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
                     mDataBinding.giftBoxOff.loop(true);
                     mDataBinding.giftBoxOff.playAnimation();
                 } else {
-                    //完成后执行探头动画
+//                    完成后执行探头动画
                     startProbeAnimation(progress);
                 }
             }

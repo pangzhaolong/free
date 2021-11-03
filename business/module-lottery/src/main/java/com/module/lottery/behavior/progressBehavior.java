@@ -42,8 +42,8 @@ public class progressBehavior extends CoordinatorLayout.Behavior {
             int centerLocal = child.getLeft() + mProgressMarginStart;
             CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) child.getLayoutParams();
             int maxValue = parent.getWidth();
-//        Logger.d("########## maxValue" +   maxValue + "  child.getRight() "+child.getRight());
-            if (offset >= centerLocal && child.getRight() < maxValue) {
+            //  Logger.d("########## maxValue" +   maxValue + "  child.getRight() "+child.getRight()+"maxValue-300 "+(maxValue-300));
+            if (offset >= centerLocal && layoutParams.leftMargin < (maxValue - child.getWidth())) {
                 layoutParams.leftMargin = offset - mProgressMarginStart;
                 child.setLayoutParams(layoutParams);
             }

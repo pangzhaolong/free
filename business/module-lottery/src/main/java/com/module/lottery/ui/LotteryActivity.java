@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -229,6 +230,12 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             public void onJump(GenerateCodeBean generateCodeBean) {
                 //不跳转广告 展示生成的随机抽奖码
                 generateCodeDialog.dismiss();
+
+                if(generateCodeBean==null){
+                    Toast.makeText(LotteryActivity.this,"生成抽奖码失败",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 //刷新页面
                 lotteryInfo();
                 showExhibitCodeDialog(generateCodeBean);
