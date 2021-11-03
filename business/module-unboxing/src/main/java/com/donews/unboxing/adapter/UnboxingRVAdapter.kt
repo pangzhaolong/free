@@ -33,7 +33,7 @@ class UnboxingRVAdapter(layoutResId: Int) : BaseQuickAdapter<UnboxingBean, BaseV
     private var mmkv: MMKV = MMKV.mmkvWithID("unBoxingLikeData_" + AppInfo.getUserId(), MMKV.MULTI_PROCESS_MODE)!!
 
     init {
-        addChildClickViewIds(R.id.btn_lottery)
+        addChildClickViewIds(R.id.cl_goods_info)
     }
 
     override fun onItemViewHolderCreated(viewHolder: BaseViewHolder, viewType: Int) {
