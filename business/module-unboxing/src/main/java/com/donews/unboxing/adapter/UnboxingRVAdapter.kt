@@ -34,6 +34,7 @@ class UnboxingRVAdapter(layoutResId: Int) : BaseQuickAdapter<UnboxingBean, BaseV
 
     init {
         addChildClickViewIds(R.id.cl_goods_info)
+        addChildClickViewIds(R.id.btn_lottery)
     }
 
     override fun onItemViewHolderCreated(viewHolder: BaseViewHolder, viewType: Int) {
