@@ -32,7 +32,8 @@ import com.donews.web.viewmodel.WebViewModel;
 import com.gyf.immersionbar.ImmersionBar;
 
 @Route(path = RouterActivityPath.Web.PAGER_WEB_ACTIVITY)
-public class WebViewObjActivity extends MvvmBaseLiveDataActivity<WebViewObjActivityBinding, WebViewModel> implements ISFinishCallBack {
+public class WebViewObjActivity extends MvvmBaseLiveDataActivity<WebViewObjActivityBinding, WebViewModel>
+        implements ISFinishCallBack {
 
     @Autowired
     String title;
@@ -56,7 +57,8 @@ public class WebViewObjActivity extends MvvmBaseLiveDataActivity<WebViewObjActiv
         mWebModel.setmOpenType(mOpenType);
         mWebModel.setmActionId(mActionId);
         webViewManager = new WebViewManager.Builder()
-                .setView(mDataBinding.webView, mDataBinding.errorView).setContext(this).setOverrideUrlLoad(false).url(url)
+                .setView(mDataBinding.webView, mDataBinding.errorView).setContext(this).setOverrideUrlLoad(false).url(
+                        url)
                 .setProgressBar(mDataBinding.progressBar).setLoadingView(mDataBinding.loadingView)
                 .setFinishCallBack(this)
                 .build();
@@ -75,8 +77,11 @@ public class WebViewObjActivity extends MvvmBaseLiveDataActivity<WebViewObjActiv
                 .fitsSystemWindows(true)
                 .autoDarkModeEnable(true)
                 .init();
+        mDataBinding.webView.getSettings().setSupportMultipleWindows(false);
+
         mDataBinding.progressBar.setIndeterminate(false);
-        mDataBinding.progressBar.setIndeterminateDrawable(getResources().getDrawable(android.R.drawable.progress_indeterminate_horizontal));
+        mDataBinding.progressBar.setIndeterminateDrawable(
+                getResources().getDrawable(android.R.drawable.progress_indeterminate_horizontal));
         // progressBar
         ClipDrawable d = new ClipDrawable(new ColorDrawable(Color.BLUE), Gravity.LEFT, ClipDrawable.HORIZONTAL);
         mDataBinding.progressBar.setProgressDrawable(d);
@@ -157,8 +162,9 @@ public class WebViewObjActivity extends MvvmBaseLiveDataActivity<WebViewObjActiv
     @Override
     public void onBackPressed() {
         if (mWebModel != null && mWebModel.isBackH5()) {
-            mDataBinding.webView.post(() -> mDataBinding.webView.loadUrl(JavaScriptMethod.setBackH5(WebViewObjActivity.this,
-                    JavaScriptMethod.BACK2)));
+            mDataBinding.webView.post(
+                    () -> mDataBinding.webView.loadUrl(JavaScriptMethod.setBackH5(WebViewObjActivity.this,
+                            JavaScriptMethod.BACK2)));
             mWebModel.setBackH5(false);
         } else {
             if (mDataBinding.webView.canGoBack()) {
