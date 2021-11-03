@@ -1,6 +1,5 @@
 package com.donews.common.ad.business.monitor
 
-import com.donews.common.ad.business.bean.JddAdConfigBean
 import com.donews.common.ad.business.callback.JddAdConfigManager
 import com.tencent.mmkv.MMKV
 import java.text.SimpleDateFormat
@@ -34,6 +33,8 @@ object InterstitialAdCount {
     /** 最近一次广告关闭时间 */
     private const val KEY_NEW_CLOSE_INTERSTITIAL_AD_TIME = "newCloseInterstitialAdTime"
 
+    private var mShowAd = false
+
     fun showInterstitialAd() {
         mmkv?.let {
             var totalNumber = it.decodeInt(KEY_TOTAL_INTERSTITIAL_AD, 0)
@@ -53,6 +54,9 @@ object InterstitialAdCount {
 
     @Synchronized
     fun isCanShowInters(): Boolean {
+        if (mShowAd) {
+            return false
+        }
         mmkv?.let {
             val loadTime = it.decodeLong(KEY_NEW_START_INTERSTITIAL_AD_TIME, 0L)
             val showTime = it.decodeLong(KEY_NEW_INTERSTITIAL_AD_TIME, 0L)
@@ -82,6 +86,14 @@ object InterstitialAdCount {
 
     fun updateCloseAdTime() {
         mmkv?.encode(KEY_NEW_CLOSE_INTERSTITIAL_AD_TIME, System.currentTimeMillis())
+    }
+
+    fun showAdStart() {
+        mShowAd = true
+    }
+
+    fun closeAd() {
+        mShowAd = false
     }
 
     /**

@@ -183,6 +183,7 @@ object AdManager : IAdManager, ISdkManager by AdSdkManager, IAdIdConfig by JddAd
     override fun loadInterstitialAd(activity: Activity, listener: IAdInterstitialListener?) {
         if (InterstitialAdCount.isCanShowInters()) {
             //先更新一次显示时间
+            InterstitialAdCount.showAdStart()
             InterstitialAdCount.updateLoadAdTime()
             JddAdIdConfigManager.addInitListener(object : IAdIdConfigCallback {
                 override fun initSuccess() {
@@ -206,9 +207,6 @@ object AdManager : IAdManager, ISdkManager by AdSdkManager, IAdIdConfig by JddAd
             })
         } else {
             listener?.onError(-1001, "显示插屏广告间隔小于配置时间")
-//            if (BuildConfig.DEBUG) {
-//                ToastUtil.showShort(activity, "显示插屏广告间隔小于配置时间")
-//            }
         }
     }
 
