@@ -32,6 +32,7 @@ import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.KeySharePreferences;
+import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.SPUtils;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -67,6 +68,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        LogUtil.e("front onViewCreated");
         mContext = this.getContext();
 
         mFragmentAdapter = new FragmentAdapter(this);
@@ -109,8 +111,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         loadCategoryData();
         loadAwardList();
         initSrl();
-
-        AnalysisUtils.onEventEx(this.getActivity(), Dot.Page_Home);
 
         mDataBinding.frontJddHelp.setOnClickListener(v -> {
             AnalysisUtils.onEventEx(v.getContext(), Dot.Page_WinDoc);

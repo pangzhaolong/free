@@ -136,8 +136,6 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
                 ARouter.getInstance().build(RouterActivityPath.CrazyList.CRAZY_LIST_DETAIL).navigation());
 
         initSrl();
-
-        AnalysisUtils.onEventEx(this.getActivity(), Dot.Page_SaveMoneyBuy);
     }
 
     private void initSrl() {
@@ -218,6 +216,10 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
         super.onResume();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
 
     @Override
     public void onDestroy() {
