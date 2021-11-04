@@ -6,6 +6,7 @@ import com.donews.network.EasyHttp
 import com.donews.network.cache.model.CacheMode
 import com.donews.network.callback.SimpleCallBack
 import com.donews.network.exception.ApiException
+import com.donews.utilslibrary.utils.withConfigParams
 import com.orhanobut.logger.Logger
 
 /**
@@ -20,7 +21,7 @@ object AppCommonConfigUtils {
     private var commonConfig = AppCommonConfig()
 
     fun initConfig() {
-        EasyHttp.get(BuildConfig.APP_COMMON_CONFIG)
+        EasyHttp.get(BuildConfig.APP_COMMON_CONFIG.withConfigParams())
             .cacheMode(CacheMode.NO_CACHE)
             .execute(object : SimpleCallBack<AppCommonConfig>() {
                 override fun onError(e: ApiException?) {

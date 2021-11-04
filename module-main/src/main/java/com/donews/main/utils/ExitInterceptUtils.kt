@@ -26,6 +26,7 @@ import com.donews.utilslibrary.analysis.AnalysisParam
 import com.donews.utilslibrary.analysis.AnalysisUtils
 import com.donews.utilslibrary.utils.KeySharePreferences
 import com.donews.utilslibrary.utils.SPUtils
+import com.donews.utilslibrary.utils.withConfigParams
 import com.orhanobut.logger.Logger
 
 /**
@@ -52,7 +53,7 @@ object ExitInterceptUtils {
     var remindDialog: RemindDialog? = null
 
     private fun getInterceptConfig() {
-        EasyHttp.get(CONFIG_URL)
+        EasyHttp.get(CONFIG_URL.withConfigParams())
             .cacheMode(CacheMode.NO_CACHE)
             .execute(object : SimpleCallBack<ExitInterceptConfig>() {
                 override fun onError(e: ApiException?) {
