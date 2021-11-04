@@ -30,7 +30,7 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
 
     private TopGoodsAdapter mTopGoodsAdapter;
 
-    private int mPageId = 1;
+    private int mPageId = 0;
     private RecyclerView.ItemDecoration mItemDecoration;
 
     @Override
@@ -44,6 +44,7 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mPageId = 0;
         mTopGoodsAdapter = new TopGoodsAdapter(this.getContext(), this);
 //        LogUtil.e("TopFragment onViewCreated");
 

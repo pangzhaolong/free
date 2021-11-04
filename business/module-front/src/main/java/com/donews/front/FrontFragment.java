@@ -56,6 +56,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
     ActivityRuleDialog mRuleDialog = null;
 
+    private int mCurSelectPosition = 0;
+
     private Context mContext;
 
     @Override
@@ -95,6 +97,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                 TabItem tabItem = (TabItem) tab.getCustomView();
                 assert tabItem != null;
                 tabItem.selected();
+                mCurSelectPosition = tab.getPosition();
             }
 
             @Override
@@ -175,8 +178,15 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             loadCategoryData();
             loadAwardList();
             loadRpData();
+            reloadNorData(mCurSelectPosition);
             mDataBinding.frontSrl.finishRefresh();
         });
+    }
+
+    private void reloadNorData(int position) {
+        if (mFragmentAdapter != null) {
+            mFragmentAdapter.reloadNorData(position);
+        }
     }
 
     private void loadCategoryData() {

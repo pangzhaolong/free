@@ -30,7 +30,7 @@ public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding
     private final HomeBean.CategoryItem mCategoryItem;
     private NorGoodsAdapter mNorGoodsAdapter;
 
-    private int mPageId = 1;
+    private int mPageId = 0;
     private RecyclerView.ItemDecoration mItemDecoration;
 
     public NorFragment(HomeBean.CategoryItem categoryItem) {
@@ -46,6 +46,7 @@ public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mPageId = 0;
         mDataBinding.homeNorSrl.setVisibility(View.GONE);
         mDataBinding.homeNorLoadingLl.setVisibility(View.VISIBLE);
 
