@@ -16,14 +16,12 @@ public class TabItem extends FrameLayout {
 
     private final TextView mTitleTv;
     private final View mBgView;
-    private int mPosition = -1;
 
-    public TabItem(@NonNull Context context, int position) {
+    public TabItem(@NonNull Context context) {
         super(context);
         LayoutInflater.from(context).inflate(R.layout.front_tab_item, this, true);
         mTitleTv = findViewById(R.id.front_tab_item_title);
         mBgView = findViewById(R.id.front_tab_item_bg);
-        mPosition = position;
     }
 
     public void setTitle(String title) {

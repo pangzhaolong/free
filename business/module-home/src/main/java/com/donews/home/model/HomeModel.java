@@ -29,7 +29,8 @@ public class HomeModel extends BaseLiveDataModel {
     public MutableLiveData<HomeBean> getNetData() {
         MutableLiveData<HomeBean> mutableLiveData = new MutableLiveData<>();
         addDisposable(EasyHttp.get(HomeApi.SuperCategory)
-                .cacheMode(CacheMode.NO_CACHE)
+                .cacheKey("home_category")
+                .cacheMode(CacheMode.CACHEANDREMOTEDISTINCT)
                 .execute(new SimpleCallBack<HomeBean>() {
 
                     @Override

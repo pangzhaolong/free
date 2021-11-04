@@ -27,6 +27,18 @@ public class FragmentAdapter extends FragmentStateAdapter {
         notifyDataSetChanged();
     }
 
+    public void clear() {
+        if (this.list != null) {
+            this.list.clear();
+            this.list = null;
+        }
+
+        if (mFragmentMap != null) {
+            mFragmentMap.clear();
+            mFragmentMap = null;
+        }
+    }
+
     public FragmentAdapter(@NonNull Fragment fragment) {
         super(fragment);
     }

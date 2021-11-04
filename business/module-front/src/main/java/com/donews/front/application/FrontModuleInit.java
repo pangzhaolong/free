@@ -1,5 +1,6 @@
 package com.donews.front.application;
 
+import android.app.Application;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -18,6 +19,7 @@ import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
+import com.donews.utilslibrary.utils.HttpConfigUtilsKt;
 
 /**
  * 应用模块: main
@@ -36,7 +38,7 @@ public class FrontModuleInit implements IModuleInit {
         GoodsCache.init(application);
         ClipboardManager clipboardManager = (ClipboardManager) application.getSystemService(Context.CLIPBOARD_SERVICE);
 
-        EasyHttp.get(FrontApi.commandUrl)
+        EasyHttp.get(HttpConfigUtilsKt.withConfigParams(FrontApi.commandUrl, true))
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<CommandBean>() {
 

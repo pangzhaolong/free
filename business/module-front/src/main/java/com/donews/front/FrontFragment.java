@@ -77,7 +77,9 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
         TabLayoutMediator tab = new TabLayoutMediator(mDataBinding.frontCategoryTl, mDataBinding.frontVp2,
                 (tab1, position) -> {
-                    tab1.setCustomView(new TabItem(mContext, position));
+                    if (tab1.getCustomView() == null) {
+                        tab1.setCustomView(new TabItem(mContext));
+                    }
                     TabItem tabItem = (TabItem) tab1.getCustomView();
                     assert tabItem != null;
                     if (mLotteryCategoryBean == null || mLotteryCategoryBean.getList() == null) {
@@ -114,7 +116,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
         mDataBinding.frontJddHelp.setOnClickListener(v -> {
             AnalysisUtils.onEventEx(v.getContext(), Dot.Page_WinDoc);
-            ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY).withString("url",BuildConfig.WEB_BASE_URL).navigation();
+            ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY).withString("url", BuildConfig.WEB_BASE_URL).navigation();
 //            ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY).withString("url","www.baidu.com").navigation();
         });
         mDataBinding.frontCashGetTv.setOnClickListener(v ->

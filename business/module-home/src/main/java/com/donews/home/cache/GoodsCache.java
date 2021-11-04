@@ -5,6 +5,7 @@ import static android.content.Context.MODE_PRIVATE;
 import android.content.Context;
 
 import com.donews.home.bean.DataBean;
+import com.donews.home.bean.HomeBean;
 import com.donews.home.bean.NorGoodsBean;
 import com.donews.home.bean.RealTimeBean;
 import com.donews.home.bean.SearchResultTbBean;
@@ -27,6 +28,7 @@ public class GoodsCache {
     private static String s_sec_kil_bean_path = "";
     private static String s_nor_goods_bean_path = "";
     private static String s_search_tb_bean_path = "";
+    private static String s_home_category_bean_path = "";
 
     public static void init(Context context) {
         s_base_cache_path = context.getDir("jdd", MODE_PRIVATE).getAbsolutePath();
@@ -36,6 +38,7 @@ public class GoodsCache {
         s_sec_kil_bean_path = s_base_cache_path + "/top_sec_kil_bean.dat";
         s_nor_goods_bean_path = s_base_cache_path + "/top_nor_goods_bean.dat";
         s_search_tb_bean_path = s_base_cache_path + "/search_tb_bean.dat";
+        s_home_category_bean_path = s_base_cache_path + "/home_category_bean.dat";
     }
 
     public static synchronized <T> T readGoodsBean(Class c, String ext) {
@@ -55,6 +58,8 @@ public class GoodsCache {
                 ois = new ObjectInputStream(new FileInputStream(s_nor_goods_bean_path + ext));
             } else if (c == SearchResultTbBean.class) {
                 ois = new ObjectInputStream(new FileInputStream(s_search_tb_bean_path + ext));
+            } else if (c == HomeBean.class) {
+                ois = new ObjectInputStream(new FileInputStream(s_home_category_bean_path + ext));
             }
             assert ois != null;
             people = (T) ois.readObject();
@@ -93,6 +98,8 @@ public class GoodsCache {
                 fos = new ObjectOutputStream(new FileOutputStream(s_nor_goods_bean_path + ext));
             } else if (object instanceof SearchResultTbBean) {
                 fos = new ObjectOutputStream(new FileOutputStream(s_search_tb_bean_path + ext));
+            } else if (object instanceof HomeBean) {
+                fos = new ObjectOutputStream(new FileOutputStream(s_home_category_bean_path + ext));
             }
             //要使用writeObject
             assert fos != null;
