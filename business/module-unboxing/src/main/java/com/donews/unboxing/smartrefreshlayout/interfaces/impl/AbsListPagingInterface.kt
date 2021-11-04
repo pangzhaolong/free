@@ -7,6 +7,7 @@ import com.donews.common.ext.copy
 import com.donews.network.result.LoadResult
 import com.donews.unboxing.smartrefreshlayout.SmartRefreshState
 import com.donews.unboxing.smartrefreshlayout.interfaces.ListPagingInterface
+import java.util.ArrayList
 
 /**
  * ListPagingInterface 实现，其余只需要实现基本方法就好
@@ -28,7 +29,7 @@ abstract class AbsListPagingInterface<R, T> : ListPagingInterface<R, T> {
         getDataByPageNumber.invoke(pageNum)
     }
 
-    override val listData: LiveData<List<T>> = loadResultData.switchMap { result ->
+    override val listData: LiveData<ArrayList<T>> = loadResultData.switchMap { result ->
         disposeListResult(result)
     }
     override val refreshing: MutableLiveData<SmartRefreshState> = MutableLiveData()
@@ -51,8 +52,8 @@ abstract class AbsListPagingInterface<R, T> : ListPagingInterface<R, T> {
     }
 
     /** 处理返回数据，并返回全部数据*/
-    private fun disposeListResult(result: LoadResult<R>): LiveData<List<T>> {
-        val liveData = MutableLiveData<List<T>>()
+    private fun disposeListResult(result: LoadResult<R>): LiveData<ArrayList<T>> {
+        val liveData = MutableLiveData<ArrayList<T>>()
         val refresh = pageNumber.value == PAGE_NUMBER_START
         val smartControl = if (refresh) refreshing else loadMore
         when (result) {
@@ -62,7 +63,7 @@ abstract class AbsListPagingInterface<R, T> : ListPagingInterface<R, T> {
                 smartControl.value = SmartRefreshState(loading = false, success = true, noMore = noMore)
             }
             is LoadResult.Error -> {
-                liveData.value = listData.value.orEmpty()
+                liveData.value = liveData.value ?: ArrayList()
                 smartControl.value = SmartRefreshState(loading = false, success = false)
             }
             LoadResult.Loading -> {
