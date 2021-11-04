@@ -30,7 +30,7 @@ public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding
     private final HomeBean.CategoryItem mCategoryItem;
     private NorGoodsAdapter mNorGoodsAdapter;
 
-    private int mPageId = 0;
+    private int mPageId = 1;
     private RecyclerView.ItemDecoration mItemDecoration;
 
     public NorFragment(HomeBean.CategoryItem categoryItem) {
@@ -99,7 +99,7 @@ public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding
 
         mDataBinding.homeNorSrl.finishLoadMore();
 
-        mNorGoodsAdapter.refreshData(norGoodsBean.getList());
+        mNorGoodsAdapter.refreshData(norGoodsBean.getList(), mPageId == 1);
 
         GoodsCache.saveGoodsBean(norGoodsBean, mCategoryItem.getCid());
 

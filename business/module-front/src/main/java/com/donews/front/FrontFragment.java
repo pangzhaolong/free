@@ -106,7 +106,9 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
+                TabItem tabItem = (TabItem) tab.getCustomView();
+                assert tabItem != null;
+                tabItem.selected();
             }
         });
 
@@ -117,7 +119,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         mDataBinding.frontJddHelp.setOnClickListener(v -> {
             AnalysisUtils.onEventEx(v.getContext(), Dot.Page_WinDoc);
             ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY).withString("url", BuildConfig.WEB_BASE_URL).navigation();
-//            ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY).withString("url","www.baidu.com").navigation();
         });
         mDataBinding.frontCashGetTv.setOnClickListener(v ->
                 ARouter.getInstance()

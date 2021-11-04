@@ -408,7 +408,6 @@
                         app:tabRippleColor="@color/transparent"
                         app:tabSelectedTextColor="#F64A43"
                         app:tabTextColor="#6D6D6D" />
-
                 </com.google.android.material.appbar.AppBarLayout>
 
 
