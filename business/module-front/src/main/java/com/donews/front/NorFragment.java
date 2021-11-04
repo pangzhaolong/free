@@ -120,7 +120,7 @@ public class NorFragment extends MvvmLazyLiveDataFragment<FrontNorFragmentBindin
             }
         }
 
-        mNorGoodsAdapter.refreshData(norGoodsBean.getList());
+        mNorGoodsAdapter.refreshData(norGoodsBean.getList(), mPageId==1);
         mDataBinding.frontNorLoadingLl.setVisibility(View.GONE);
         mDataBinding.frontNorRv.setVisibility(View.VISIBLE);
     }
