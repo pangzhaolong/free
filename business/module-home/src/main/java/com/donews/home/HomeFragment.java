@@ -168,9 +168,8 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
             mHomeBean = homeBean;
             // 处理正常的逻辑。
             if (mFragmentAdapter != null) {
-                mFragmentAdapter.refreshData(homeBean.getList());
+                mFragmentAdapter.refreshData(mHomeBean.getList());
             }
-//            mDataBinding.homeCategoryTl.setScrollPosition(0, 0-mPreSelectPosition, true);
             GoodsCache.saveGoodsBean(mHomeBean, "home");
         });
     }
