@@ -473,7 +473,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             mDataBinding.label02.setVisibility(View.VISIBLE);
             mDataBinding.label01.setText(getResources().getString(R.string.continue_value));
             mDataBinding.label02.setText(getResources().getString(R.string.lottery_value));
-            mDataBinding.tips.setText("多试试，万一中了呢");
+            mDataBinding.tips.setText("抽奖码越多，中奖概率越大");
 
         }
         //当抽奖码大于等于6时显示等待开奖
