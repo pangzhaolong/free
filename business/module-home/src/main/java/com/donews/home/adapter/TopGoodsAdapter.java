@@ -37,8 +37,10 @@ public class TopGoodsAdapter extends RecyclerView.Adapter<TopGoodsAdapter.GoodsV
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void refreshData(List<TopGoodsBean.goodsInfo> list) {
-//        mGoodsList.clear();
+    public void refreshData(List<TopGoodsBean.goodsInfo> list, boolean needClear) {
+        if (needClear) {
+            mGoodsList.clear();
+        }
         mGoodsList.addAll(list);
         notifyDataSetChanged();
     }
@@ -74,10 +76,10 @@ public class TopGoodsAdapter extends RecyclerView.Adapter<TopGoodsAdapter.GoodsV
         } else {
             holder.salesTv.setText("已售" + gi.getMonth_sales());
         }*/
-        holder.priceTv.setText("￥"+gi.getOriginal_price());
+        holder.priceTv.setText("￥" + gi.getOriginal_price());
         holder.priceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
-        holder.giftTv.setText("￥"+gi.getCoupon_price() + "元券");
-        holder.actualPriveTv.setText("￥"+gi.getActual_price());
+        holder.giftTv.setText("￥" + gi.getCoupon_price() + "元券");
+        holder.actualPriveTv.setText("￥" + gi.getActual_price());
     }
 
     private SpannableString getTitleString(TopGoodsBean.goodsInfo goodsInfo) {

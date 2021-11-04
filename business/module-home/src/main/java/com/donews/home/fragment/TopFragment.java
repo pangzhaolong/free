@@ -50,7 +50,7 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
         TopGoodsBean goodsBean = GoodsCache.readGoodsBean(TopGoodsBean.class, "");
         if (goodsBean != null && goodsBean.getList() != null && goodsBean.getList().size() > 0) {
 //            LogUtil.e("TopFragment goodsBean in :" + goodsBean);
-            mTopGoodsAdapter.refreshData(goodsBean.getList());
+            mTopGoodsAdapter.refreshData(goodsBean.getList(), true);
         }
 
         loadMoreData();
@@ -84,7 +84,7 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
                 return;
             }
             mDataBinding.homeTopSrl.finishLoadMore();
-            mTopGoodsAdapter.refreshData(topGoodsBean.getList());
+            mTopGoodsAdapter.refreshData(topGoodsBean.getList(), mPageId == 1);
             GoodsCache.saveGoodsBean(topGoodsBean, "");
         });
     }

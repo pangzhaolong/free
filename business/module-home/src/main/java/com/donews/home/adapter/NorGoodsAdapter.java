@@ -37,8 +37,10 @@ public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsV
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void refreshData(List<NorGoodsBean.goodsInfo> list) {
-//        mGoodsList.clear();
+    public void refreshData(List<NorGoodsBean.goodsInfo> list, boolean needClear) {
+        if (needClear) {
+            mGoodsList.clear();
+        }
         mGoodsList.addAll(list);
         notifyDataSetChanged();
     }
