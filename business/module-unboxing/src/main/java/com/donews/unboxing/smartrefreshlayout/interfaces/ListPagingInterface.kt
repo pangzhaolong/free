@@ -3,8 +3,8 @@ package com.donews.unboxing.smartrefreshlayout.interfaces
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.donews.network.result.LoadResult
-import com.donews.unboxing.bean.UnBoxingResp
 import com.donews.unboxing.smartrefreshlayout.SmartRefreshState
+import java.util.*
 
 /**
  * 分页请求处理接口
@@ -19,7 +19,7 @@ interface ListPagingInterface<R, T> {
     val pageNumber: MutableLiveData<Int>
 
     /** 列表数据 */
-    val listData: LiveData<List<T>>
+    val listData: LiveData<ArrayList<T>>
 
     /** 刷新状态 */
     val refreshing: MutableLiveData<SmartRefreshState>

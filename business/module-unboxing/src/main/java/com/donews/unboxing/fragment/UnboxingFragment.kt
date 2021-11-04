@@ -48,9 +48,9 @@ class UnboxingFragment : MvvmLazyLiveDataFragment<UnboxingFragUnboxingBinding, U
             AnalysisUtils.onEventEx(context, Dot.Btn_BeBlessed);
             val data: UnboxingBean = adapter.data[position] as UnboxingBean
             ARouter.getInstance()
-                    .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
-                    .withString("goods_id", data.goodsId)
-                    .navigation();
+                .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
+                .withString("goods_id", data.goodsId)
+                .navigation();
         }
 
         unboxingRVAdapter.setDiffCallback(object : DiffUtil.ItemCallback<UnboxingBean>() {
@@ -67,7 +67,7 @@ class UnboxingFragment : MvvmLazyLiveDataFragment<UnboxingFragUnboxingBinding, U
         mViewModel.run {
             listData.observe(this@UnboxingFragment.viewLifecycleOwner, {
                 if (it.isNotEmpty()) {
-                    val data = it as MutableList<UnboxingBean>?
+                    val data = it.toMutableList()
                     unboxingRVAdapter.setDiffNewData(data)
                 }
             })
