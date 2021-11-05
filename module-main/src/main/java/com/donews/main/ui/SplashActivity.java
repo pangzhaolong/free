@@ -93,11 +93,11 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
 
     @Override
     protected int getLayoutId() {
-        ScreenAutoAdapter.match(this, 375.0f);
-        ImmersionBar.with(this)
-                .hideBar(BarHide.FLAG_HIDE_BAR)
-                .statusBarDarkFont(true)
-                .init();
+//        ScreenAutoAdapter.match(this, 375.0f);
+//        ImmersionBar.with(this)
+//                .hideBar(BarHide.FLAG_HIDE_BAR)
+//                .statusBarDarkFont(true)
+//                .init();
         return R.layout.main_activity_splash;
     }
 

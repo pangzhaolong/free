@@ -122,7 +122,7 @@ public class MainActivity
             case 0:
                 ImmersionBar.with(this)
                         .statusBarColor(R.color.main_color_bar)
-                        .navigationBarColor(R.color.white)
+                        .navigationBarColor(R.color.black)
                         .fitsSystemWindows(true)
                         .autoDarkModeEnable(true)
                         .init();
@@ -133,7 +133,7 @@ public class MainActivity
                 AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
                 ImmersionBar.with(this)
                         .statusBarColor(R.color.white)
-                        .navigationBarColor(R.color.white)
+                        .navigationBarColor(R.color.black)
                         .fitsSystemWindows(true)
                         .autoDarkModeEnable(true)
                         .init();
@@ -143,7 +143,7 @@ public class MainActivity
             case 2:
                 ImmersionBar.with(this)
                         .statusBarColor(R.color.red_kj)
-                        .navigationBarColor(R.color.white)
+                        .navigationBarColor(R.color.black)
                         .fitsSystemWindows(true)
                         .autoDarkModeEnable(true)
                         .init();
@@ -154,7 +154,7 @@ public class MainActivity
                 AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
                 ImmersionBar.with(this)
                         .statusBarColor(R.color.white)
-                        .navigationBarColor(R.color.white)
+                        .navigationBarColor(R.color.black)
                         .fitsSystemWindows(true)
                         .autoDarkModeEnable(true)
                         .init();
@@ -165,7 +165,7 @@ public class MainActivity
                 AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
                 ImmersionBar.with(this)
                         .statusBarColor(R.color.text_red)
-                        .navigationBarColor(R.color.white)
+                        .navigationBarColor(R.color.black)
                         .fitsSystemWindows(true)
                         .autoDarkModeEnable(true)
                         .init();
@@ -215,8 +215,7 @@ public class MainActivity
     public void initView() {
         ImmersionBar.with(this)
                 .statusBarColor(R.color.main_color_bar)
-                .navigationBarColor(R.color.white)
-                .hideBar(BarHide.FLAG_HIDE_NAVIGATION_BAR)
+                .navigationBarColor(R.color.black)
                 .fitsSystemWindows(true)
                 .autoDarkModeEnable(true)
                 .init();
@@ -248,7 +247,7 @@ public class MainActivity
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults,
                 ExitInterceptUtils.INSTANCE.getRemindDialog());

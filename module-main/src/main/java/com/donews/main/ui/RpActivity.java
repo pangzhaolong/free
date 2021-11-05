@@ -45,10 +45,10 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
     protected int getLayoutId() {
         ImmersionBar.with(this)
                 .statusBarColor(R.color.transparent)
-                .navigationBarColor(R.color.transparent)
+                .navigationBarColor(R.color.black)
                 .fitsSystemWindows(true)
                 .autoDarkModeEnable(true)
-                .hideBar(BarHide.FLAG_HIDE_BAR)
+                .hideBar(BarHide.FLAG_HIDE_STATUS_BAR)
                 .init();
         return R.layout.main_rp_activity;
     }

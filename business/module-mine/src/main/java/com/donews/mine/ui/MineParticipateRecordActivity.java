@@ -59,7 +59,7 @@ public class MineParticipateRecordActivity extends
         EventBus.getDefault().register(this);
         ImmersionBar.with(this)
                 .statusBarColor(R.color.mine_f6f9fb)
-                .navigationBarColor(R.color.white)
+                .navigationBarColor(R.color.black)
                 .fitsSystemWindows(true)
                 .autoDarkModeEnable(true)
                 .init();

@@ -69,9 +69,8 @@ class GoodsDetailActivity : MvvmBaseLiveDataActivity<DetailActivityGoodsDetailBi
     @SuppressLint("ClickableViewAccessibility")
     override fun initView() {
         ImmersionBar.with(this)
-            .navigationBarColor(android.R.color.transparent)
+            .navigationBarColor(R.color.black)
             .statusBarColor(R.color.detail_status_bar_color)
-            .hideBar(BarHide.FLAG_HIDE_NAVIGATION_BAR)
             .autoDarkModeEnable(false)
             .fitsSystemWindows(false)
             .init()

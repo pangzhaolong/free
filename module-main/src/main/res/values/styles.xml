@@ -4,10 +4,10 @@
         <item name="android:windowBackground">@drawable/welcome_layer_drawable</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">false</item>
     </style>
 
     <style name="AppTheme.Start.Progess" parent="@android:style/Widget.ProgressBar.Horizontal"></style>

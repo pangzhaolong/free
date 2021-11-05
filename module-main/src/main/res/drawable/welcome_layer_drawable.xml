@@ -5,11 +5,12 @@
 
     <item android:drawable="@drawable/main_splash_bg" />
 
-    <!--<item android:bottom="96dp">
-        <bitmap
-            android:gravity="center|fill_horizontal"
-            android:src="@mipmap/icon_welcome_content_image" />
-    </item>-->
+    <item
+        android:bottom="40dp"
+        android:gravity="center">
+        <bitmap android:src="@drawable/main_splash_content" />
+    </item>
+
     <item
         android:id="@+id/bottom_logo"
         android:bottom="37dp">
@@ -17,6 +18,5 @@
             android:gravity="bottom|center_horizontal"
             android:src="@drawable/main_splash_logo" />
     </item>
-
 
 </layer-list>

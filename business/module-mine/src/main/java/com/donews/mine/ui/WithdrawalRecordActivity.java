@@ -36,7 +36,7 @@ public class WithdrawalRecordActivity extends
         super.onCreate(savedInstanceState);
         ImmersionBar.with(this)
                 .statusBarColor(R.color.white)
-                .navigationBarColor(R.color.white)
+                .navigationBarColor(R.color.black)
                 .fitsSystemWindows(true)
                 .autoDarkModeEnable(true)
                 .init();

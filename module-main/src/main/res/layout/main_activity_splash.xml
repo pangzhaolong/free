@@ -9,8 +9,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/main_splash_bg">
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/iv_icon"
@@ -19,16 +18,18 @@
             android:layout_marginBottom="37dp"
             android:contentDescription="@null"
             android:src="@drawable/main_splash_logo"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
             android:id="@+id/iv_content"
-            android:layout_width="375dp"
-            android:layout_height="511.7dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/main_splash_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/main_splash_content"
+            android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@id/iv_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +39,6 @@
             android:id="@+id/ad_full_screen_container"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

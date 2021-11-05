@@ -38,7 +38,7 @@ public class MineRewardHistoryActivity extends MvvmBaseLiveDataActivity<MineRewa
 
         ImmersionBar.with(this)
                 .statusBarColor(R.color.white)
-                .navigationBarColor(R.color.white)
+                .navigationBarColor(R.color.black)
                 .fitsSystemWindows(true)
                 .autoDarkModeEnable(true)
                 .init();

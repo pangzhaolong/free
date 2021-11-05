@@ -31,7 +31,7 @@ public class HomeCrazyListActivity extends MvvmBaseLiveDataActivity<HomeCrazyLis
 
         ImmersionBar.with(this)
                 .statusBarColor(R.color.white)
-                .navigationBarColor(R.color.white)
+                .navigationBarColor(R.color.black)
                 .fitsSystemWindows(true)
                 .autoDarkModeEnable(true)
                 .init();

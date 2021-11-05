@@ -20,7 +20,7 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseLiv
         super.onCreate(savedInstanceState);
         ImmersionBar.with(this)
                 .statusBarColor(R.color.transparent)
-                .navigationBarColor(R.color.white)
+                .navigationBarColor(R.color.black)
                 .fitsSystemWindows(false)
                 .autoDarkModeEnable(true)
                 .init();

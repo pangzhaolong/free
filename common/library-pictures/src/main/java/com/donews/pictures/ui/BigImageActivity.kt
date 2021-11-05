@@ -36,7 +36,8 @@ class BigImageActivity : MvvmBaseLiveDataActivity<PictureBigImageBinding, BigIma
 
     override fun getLayoutId(): Int {
         ImmersionBar.with(this)
-            .hideBar(BarHide.FLAG_HIDE_BAR)
+            .navigationBarColor(R.color.black)
+            .hideBar(BarHide.FLAG_HIDE_STATUS_BAR)
             .autoDarkModeEnable(true)
             .init()
         return R.layout.picture_big_image

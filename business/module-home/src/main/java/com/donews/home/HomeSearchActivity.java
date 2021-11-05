@@ -58,7 +58,7 @@ public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSe
     public void initView() {
         ImmersionBar.with(this)
                 .statusBarColor(R.color.home_color_bar)
-                .navigationBarColor(R.color.white)
+                .navigationBarColor(R.color.black)
                 .fitsSystemWindows(true)
                 .autoDarkModeEnable(true)
                 .init();

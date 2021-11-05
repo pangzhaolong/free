@@ -23,7 +23,7 @@ public class UserCenterActivity extends MvvmBaseLiveDataActivity<MineUserCenterB
         super.onCreate(savedInstanceState);
         ImmersionBar.with(this)
                 .statusBarColor(R.color.white)
-                .navigationBarColor(R.color.white)
+                .navigationBarColor(R.color.black)
                 .fitsSystemWindows(true)
                 .autoDarkModeEnable(true)
                 .init();

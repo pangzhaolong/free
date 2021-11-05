@@ -38,7 +38,7 @@ public class MineWinningCodeActivity extends
         super.onCreate(savedInstanceState);
         ImmersionBar.with(this)
                 .statusBarColor(R.color.transparent)
-                .navigationBarColor(R.color.white)
+                .navigationBarColor(R.color.black)
                 .fitsSystemWindows(false)
                 .autoDarkModeEnable(true)
                 .init();
