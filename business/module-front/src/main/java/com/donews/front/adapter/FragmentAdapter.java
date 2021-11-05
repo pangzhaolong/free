@@ -37,6 +37,23 @@ public class FragmentAdapter extends FragmentStateAdapter {
         return mFragmentMap.get(categoryItem.getCategoryId());
     }
 
+    public void reloadNorData(int position) {
+        if (position < 0 || position >= this.list.size()) {
+            return;
+        }
+
+        if (this.list.get(position) == null) {
+            return;
+        }
+
+        NorFragment fragment = (NorFragment) mFragmentMap.get(this.list.get(position).getCategoryId());
+        if (fragment == null) {
+            return;
+        }
+
+        fragment.reloadNorData();
+    }
+
     @NonNull
     @Override
     public Fragment createFragment(int position) {

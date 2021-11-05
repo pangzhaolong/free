@@ -46,6 +46,7 @@ public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mPageId = 0;
         mDataBinding.homeNorSrl.setVisibility(View.GONE);
         mDataBinding.homeNorLoadingLl.setVisibility(View.VISIBLE);
 
@@ -99,7 +100,7 @@ public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding
 
         mDataBinding.homeNorSrl.finishLoadMore();
 
-        mNorGoodsAdapter.refreshData(norGoodsBean.getList());
+        mNorGoodsAdapter.refreshData(norGoodsBean.getList(), mPageId == 1);
 
         GoodsCache.saveGoodsBean(norGoodsBean, mCategoryItem.getCid());
 

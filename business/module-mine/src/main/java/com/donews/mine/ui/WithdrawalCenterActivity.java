@@ -8,6 +8,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.events.WalletRefreshEvent;
 import com.donews.base.fragmentdialog.LoadingHintDialog;
 import com.donews.base.utils.ToastUtil;
+import com.donews.common.ad.business.callback.JddAdIdConfigManager;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.UserInfoBean;
@@ -64,6 +65,10 @@ public class WithdrawalCenterActivity extends
                     .navigation();
         });
         mDataBinding.mineDrawSubmit.setOnClickListener(v -> {
+            if(!JddAdIdConfigManager.INSTANCE.getConfig().getOpenAd()){
+                ToastUtil.showShort(this,"账户升级中，请稍后再试");
+                return;
+            }
             mDataBinding.mineDrawSubmit.setEnabled(false);
             showLoading();
             mViewModel.requestWithdraw(mDataBinding.mineDrawGrid);

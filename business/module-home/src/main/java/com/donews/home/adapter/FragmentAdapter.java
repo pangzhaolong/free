@@ -11,6 +11,7 @@ import com.donews.home.fragment.NorFragment;
 import com.donews.home.fragment.TopFragment;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,9 +23,30 @@ public class FragmentAdapter extends FragmentStateAdapter {
 
     @SuppressLint("NotifyDataSetChanged")
     public void refreshData(List<HomeBean.CategoryItem> list) {
-        this.list.clear();
+//        if (!equalsList(this.list, list)) {
+            this.list.clear();
+//        }
         this.list.addAll(list);
         notifyDataSetChanged();
+    }
+
+    private boolean equalsList(List<HomeBean.CategoryItem> list1, List<HomeBean.CategoryItem> list2) {
+        if ((list1 == null && list2 != null) || (list1 != null && list2 == null)) {
+            return false;
+        }
+        if (list1.size() != list2.size()) {
+            return false;
+        }
+
+        HomeBean.CategoryItem[] arr1 = list1.toArray(new HomeBean.CategoryItem[]{});
+
+        HomeBean.CategoryItem[] arr2 = list2.toArray(new HomeBean.CategoryItem[]{});
+
+        Arrays.sort(arr1);
+
+        Arrays.sort(arr1);
+
+        return Arrays.equals(arr1, arr2);
     }
 
     public void clear() {

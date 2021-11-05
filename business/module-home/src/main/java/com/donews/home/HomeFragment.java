@@ -46,7 +46,6 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
     private FragmentAdapter mFragmentAdapter;
     private HomeBean mHomeBean;
 
-    private int mPreSelectPosition = -1;
     private Context mContext;
 
     @Override
@@ -64,11 +63,7 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
     protected void onFragmentFirstVisible() {
         super.onFragmentFirstVisible();
         isFirst = true;
-        mHomeBean = GoodsCache.readGoodsBean(HomeBean.class, "home");
-        if (mHomeBean != null && mHomeBean.getList() != null && mFragmentAdapter != null) {
-            mFragmentAdapter.refreshData(mHomeBean.getList());
-        }
-        loadCategory();
+
     }
 
     @Override
@@ -76,12 +71,9 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
         super.onViewCreated(view, savedInstanceState);
 
         mContext = this.getContext();
-
         mFragmentAdapter = new FragmentAdapter(this);
-        loadUserList();
-        loadSecKilData();
         mDataBinding.homeCategoryVp2.setAdapter(mFragmentAdapter);
-        mDataBinding.homeCategoryTl.setTabMode(TabLayout.MODE_AUTO);
+        mDataBinding.homeCategoryTl.setTabMode(TabLayout.MODE_SCROLLABLE);
         TabLayoutMediator tab = new TabLayoutMediator(mDataBinding.homeCategoryTl, mDataBinding.homeCategoryVp2, (tab1, position) -> {
             if (position == 0) {
                 if (tab1.getCustomView() == null) {
@@ -90,22 +82,12 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
                 TabItem tabItem = (TabItem) tab1.getCustomView();
                 assert tabItem != null;
                 tabItem.setTitle("精品");
-                /*if (mPreSelectPosition <= 0) {
-                    tabItem.selected();
-                } else {
-                    tabItem.unSelected();
-                }*/
             } else {
                 if (tab1.getCustomView() == null) {
                     tab1.setCustomView(new TabItem(mContext));
                 }
                 TabItem tabItem = (TabItem) tab1.getCustomView();
                 assert tabItem != null;
-                /*if (mPreSelectPosition == position) {
-                    tabItem.selected();
-                } else {
-                    tabItem.unSelected();
-                }*/
                 if (mHomeBean == null || mHomeBean.getList() == null) {
                     return;
                 }
@@ -120,7 +102,6 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
                 TabItem tabItem = (TabItem) tab.getCustomView();
                 assert tabItem != null;
                 tabItem.selected();
-                mPreSelectPosition = tab.getPosition();
             }
 
             @Override
@@ -135,7 +116,6 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
                 TabItem tabItem = (TabItem) tab.getCustomView();
                 assert tabItem != null;
                 tabItem.selected();
-                mPreSelectPosition = tab.getPosition();
             }
         });
         mDataBinding.homeSearchRl.setOnClickListener(v -> {
@@ -151,6 +131,10 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
                 ARouter.getInstance().build(RouterActivityPath.CrazyList.CRAZY_LIST_DETAIL).navigation());
 
         initSrl();
+
+        loadCategory();
+        loadUserList();
+        loadSecKilData();
     }
 
     private void initSrl() {
@@ -173,6 +157,10 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
     }
 
     private void loadCategory() {
+        mHomeBean = GoodsCache.readGoodsBean(HomeBean.class, "home");
+        if (mHomeBean != null && mHomeBean.getList() != null && mFragmentAdapter != null) {
+            mFragmentAdapter.refreshData(mHomeBean.getList());
+        }
         mViewModel.getNetHomeData().observe(getViewLifecycleOwner(), homeBean -> {
             if (homeBean == null) {
                 return;
@@ -180,9 +168,8 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
             mHomeBean = homeBean;
             // 处理正常的逻辑。
             if (mFragmentAdapter != null) {
-                mFragmentAdapter.refreshData(homeBean.getList());
+                mFragmentAdapter.refreshData(mHomeBean.getList());
             }
-//            mDataBinding.homeCategoryTl.setScrollPosition(0, 0-mPreSelectPosition, true);
             GoodsCache.saveGoodsBean(mHomeBean, "home");
         });
     }

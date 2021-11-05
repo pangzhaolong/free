@@ -30,7 +30,7 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
 
     private TopGoodsAdapter mTopGoodsAdapter;
 
-    private int mPageId = 1;
+    private int mPageId = 0;
     private RecyclerView.ItemDecoration mItemDecoration;
 
     @Override
@@ -44,13 +44,14 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mPageId = 0;
         mTopGoodsAdapter = new TopGoodsAdapter(this.getContext(), this);
 //        LogUtil.e("TopFragment onViewCreated");
 
         TopGoodsBean goodsBean = GoodsCache.readGoodsBean(TopGoodsBean.class, "");
         if (goodsBean != null && goodsBean.getList() != null && goodsBean.getList().size() > 0) {
 //            LogUtil.e("TopFragment goodsBean in :" + goodsBean);
-            mTopGoodsAdapter.refreshData(goodsBean.getList());
+            mTopGoodsAdapter.refreshData(goodsBean.getList(), true);
         }
 
         loadMoreData();
@@ -84,7 +85,7 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
                 return;
             }
             mDataBinding.homeTopSrl.finishLoadMore();
-            mTopGoodsAdapter.refreshData(topGoodsBean.getList());
+            mTopGoodsAdapter.refreshData(topGoodsBean.getList(), mPageId == 1);
             GoodsCache.saveGoodsBean(topGoodsBean, "");
         });
     }

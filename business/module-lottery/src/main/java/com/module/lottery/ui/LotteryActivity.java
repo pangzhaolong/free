@@ -1,5 +1,7 @@
 package com.module.lottery.ui;
 
+import static com.module.lottery.utils.DateManager.HIN_VALUE;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
@@ -28,6 +30,8 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.events.LotteryStatusEvent;
 import com.dn.sdk.sdk.interfaces.listener.impl.SimpleRewardVideoListener;
+import com.donews.base.utils.ToastUtil;
+import com.donews.common.ad.business.callback.JddAdIdConfigManager;
 import com.donews.common.ad.business.loader.AdManager;
 import com.donews.common.provider.IDetailProvider;
 import com.donews.common.router.RouterActivityPath;
@@ -47,6 +51,7 @@ import com.module.lottery.dialog.LotteryCodeStartsDialog;
 import com.module.lottery.dialog.NoDrawDialog;
 import com.module.lottery.dialog.ReceiveLotteryDialog;
 import com.module.lottery.model.LotteryModel;
+import com.module.lottery.utils.DateManager;
 import com.module.lottery.utils.GridSpaceItemDecoration;
 import com.module.lottery.viewModel.LotteryViewModel;
 import com.module_lottery.R;
@@ -77,7 +82,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     @Autowired(name = "action")
     String mAction;
     CommodityBean mCommodityBean;
-
+    DateManager mDateManager;
     int mPageNumber = 1;
     boolean refresh = true;
     //抽奖码的对象用来拦截返回
@@ -118,7 +123,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 returnIntercept();
             }
         });
-
+        mDateManager = new DateManager(this);
         initViewData();
         setHeaderView(mDataBinding.lotteryGridview);
         setObserveList();
@@ -196,29 +201,42 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     //开始抽奖
     private void startLottery() {
         AnalysisUtils.onEventEx(this, Dot.Btn_LotteryNow);
-        //开始抽奖
-        //弹框抽奖码生成dialog
-        LotteryCodeStartsDialog lotteryCodeStartsDialog = new LotteryCodeStartsDialog(LotteryActivity.this);
-        lotteryCodeStartsDialog.setStateListener(new LotteryCodeStartsDialog.OnStateListener() {
-            @Override
-            public void onFinish() {
-                try {
-                    if (lotteryCodeStartsDialog != null) {
-                        lotteryCodeStartsDialog.dismiss();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+        //判断是否打开了视频广告
+        boolean isOpenAd = JddAdIdConfigManager.INSTANCE.getConfig().getOpenAd();
+        if (isOpenAd) {
 
-            @Override
-            public void onJumpAdFinish() {
-                //弹起生成抽奖码的dialog
+            //开始抽奖
+            //弹框抽奖码生成dialog
+            LotteryCodeStartsDialog lotteryCodeStartsDialog = new LotteryCodeStartsDialog(LotteryActivity.this);
+            lotteryCodeStartsDialog.setStateListener(new LotteryCodeStartsDialog.OnStateListener() {
+                @Override
+                public void onFinish() {
+                    try {
+                        if (lotteryCodeStartsDialog != null) {
+                            lotteryCodeStartsDialog.dismiss();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onJumpAdFinish() {
+                    //弹起生成抽奖码的dialog
+                    showGenerateCodeDialog();
+                }
+            });
+            lotteryCodeStartsDialog.create();
+            lotteryCodeStartsDialog.show();
+        } else {
+            //判断是否支持抽奖
+            boolean state = mDateManager.ifPlayAd(24);
+            if (state) {
                 showGenerateCodeDialog();
+            } else {
+                ToastUtil.showShort(this, HIN_VALUE);
             }
-        });
-        lotteryCodeStartsDialog.create();
-        lotteryCodeStartsDialog.show();
+        }
     }
 
 
