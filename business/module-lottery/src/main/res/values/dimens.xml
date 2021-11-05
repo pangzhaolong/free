@@ -3,12 +3,20 @@
 
     <dimen name="lottery_head_high">370dp</dimen>
     <dimen name="lottery_constant_10">10dp</dimen>
+    <dimen name="lottery_constant_15">15dp</dimen>
+    <dimen name="lottery_constant_8">8dp</dimen>
     <dimen name="lottery_constant_20">19dp</dimen>
+    <dimen name="lottery_constant_16">16dp</dimen>
     <dimen name="lottery_constant_100">100dp</dimen>
+    <dimen name="lottery_constant_328">328dp</dimen>
+
     <dimen name="lottery_constant_50">50dp</dimen>
 
 
     <dimen name="margin_start">21dp</dimen>
 
     <dimen name="margin_end">20dp</dimen>
+
+    <dimen name="merchant_icon_w">20dp</dimen>
+    <dimen name="merchant_icon_h">20dp</dimen>
 </resources>

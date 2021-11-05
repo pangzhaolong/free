@@ -30,11 +30,18 @@ public class ReceiveLotteryDialog extends BaseDialog<ReceiveDialogLayoutBinding>
     private LotteryHandler mLotteryHandler = new LotteryHandler(this);
     private LotteryCodeBean mLotteryCodeBean;
 
-    public ReceiveLotteryDialog(Context context, LotteryCodeBean lotteryCodeBean) {
+    private boolean mIfQuit;
+
+
+    public ReceiveLotteryDialog(Context context, LotteryCodeBean lotteryCodeBean,boolean ifQuit) {
         super(context, R.style.dialogTransparent);//内容样式在这里引入
         this.context = context;
+        this.mIfQuit=ifQuit;
         this.mLotteryCodeBean = lotteryCodeBean;
     }
+
+
+
 
 
     @Override
@@ -74,6 +81,13 @@ public class ReceiveLotteryDialog extends BaseDialog<ReceiveDialogLayoutBinding>
         return 1.0f;
     }
     private  void initView(){
+        if(mIfQuit){
+            mDataBinding.titleForward.setText(getContext().getResources().getString(R.string.return_receive_title_forward));
+            mDataBinding.titleRear.setText(getContext().getResources().getString(R.string.return_receive_title_rear));
+            mDataBinding.subtitle.setText(getContext().getResources().getString(R.string.return_receive_subtitle));
+            mDataBinding.playIcon.setVisibility(View.GONE);
+            mDataBinding.buttonText.setText(getContext().getResources().getString(R.string.return_receive_button_text));
+        }
         mDataBinding.jsonAnimationHand.setImageAssetsFolder("images");
         mDataBinding.jsonAnimationHand.setAnimation("hand.json");
         mDataBinding.jsonAnimationHand.loop(true);

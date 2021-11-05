@@ -1,5 +1,7 @@
 package com.module.lottery.ui;
 
+import static com.module.lottery.dialog.ReturnInterceptDialog.TYPE_1;
+import static com.module.lottery.dialog.ReturnInterceptDialog.TYPE_2;
 import static com.module.lottery.utils.DateManager.HIN_VALUE;
 
 import android.annotation.SuppressLint;
@@ -29,10 +31,8 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.events.LotteryStatusEvent;
-import com.dn.sdk.sdk.interfaces.listener.impl.SimpleRewardVideoListener;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.business.callback.JddAdIdConfigManager;
-import com.donews.common.ad.business.loader.AdManager;
 import com.donews.common.provider.IDetailProvider;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
@@ -46,9 +46,8 @@ import com.module.lottery.bean.LotteryCodeBean;
 import com.module.lottery.dialog.CongratulationsDialog;
 import com.module.lottery.dialog.ExhibitCodeStartsDialog;
 import com.module.lottery.dialog.GenerateCodeDialog;
-import com.module.lottery.dialog.LessMaxDialog;
 import com.module.lottery.dialog.LotteryCodeStartsDialog;
-import com.module.lottery.dialog.NoDrawDialog;
+import com.module.lottery.dialog.ReturnInterceptDialog;
 import com.module.lottery.dialog.ReceiveLotteryDialog;
 import com.module.lottery.model.LotteryModel;
 import com.module.lottery.utils.DateManager;
@@ -123,6 +122,12 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 returnIntercept();
             }
         });
+        mDataBinding.maskingLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDataBinding.maskingLayout.setVisibility(View.GONE);
+            }
+        });
         mDateManager = new DateManager(this);
         initViewData();
         setHeaderView(mDataBinding.lotteryGridview);
@@ -192,6 +197,18 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             mDataBinding.jsonAnimationHalo.loop(true);
             mDataBinding.jsonAnimationHalo.playAnimation();
 
+
+            mDataBinding.maskingButton.setImageAssetsFolder("images");
+            mDataBinding.maskingButton.setAnimation("data.json");
+            mDataBinding.maskingButton.loop(true);
+            mDataBinding.maskingButton.playAnimation();
+
+
+            //手
+            mDataBinding.maskingHand.setImageAssetsFolder("images");
+            mDataBinding.maskingHand.setAnimation("lottery_finger.json");
+            mDataBinding.maskingHand.loop(true);
+            mDataBinding.maskingHand.playAnimation();
 
         }
 
@@ -271,28 +288,29 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
 
     //提示还差多少个抽奖码Dialog
-    private void showReceiveLotteryDialog() {
-        ReceiveLotteryDialog receiveLottery = new ReceiveLotteryDialog(LotteryActivity.this, mLotteryCodeBean);
-        receiveLottery.setStateListener(new ReceiveLotteryDialog.OnStateListener() {
-            @Override
-            public void onFinish() {
-            }
+    private void showReceiveLotteryDialog(boolean ifQuit) {
+        if(mLotteryCodeBean!=null){
+            ReceiveLotteryDialog receiveLottery = new ReceiveLotteryDialog(LotteryActivity.this, mLotteryCodeBean,ifQuit);
+            receiveLottery.setStateListener(new ReceiveLotteryDialog.OnStateListener() {
+                @Override
+                public void onFinish() {
+                }
 
-            @Override
-            public void onJumpAd() {
+                @Override
+                public void onJumpAd() {
 
 
-            }
+                }
 
-            @Override
-            public void onLottery() {
-                //继续抽奖
-                startLottery();
-            }
-        });
-        receiveLottery.create();
-        receiveLottery.show();
-
+                @Override
+                public void onLottery() {
+                    //继续抽奖
+                    startLottery();
+                }
+            });
+            receiveLottery.create();
+            receiveLottery.show();
+        }
     }
 
 
@@ -343,7 +361,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                         showCongratulationsDialog();
                     } else {
                         //显示立刻领取的dialog
-                        showReceiveLotteryDialog();
+                        showReceiveLotteryDialog(false);
                     }
                 }
             }
@@ -590,54 +608,63 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         mLotteryCodeBean = null;
     }
 
+
+    private void showReturnDialog(int type) {
+        dialogShow = true;
+        ReturnInterceptDialog mReturnInterceptDialog = new ReturnInterceptDialog(LotteryActivity.this, type);
+        mReturnInterceptDialog.setFinishListener(new ReturnInterceptDialog.OnFinishListener() {
+            @Override
+            public void onDismiss() {
+                mReturnInterceptDialog.dismiss();
+            }
+
+            @Override
+            public void onDismissAd() {
+                luckyDrawEntrance();
+            }
+        });
+        mReturnInterceptDialog.create();
+        mReturnInterceptDialog.show();
+        return;
+    }
+
+
     private void returnIntercept() {
         if (mLotteryCodeBean == null || dialogShow) {
             finishReturn();
             finish();
             return;
         }
-        //判断抽奖码的数量显示对应的dialog
-        if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() == 0) {
-            dialogShow = true;
-            NoDrawDialog mNoDrawDialog = new NoDrawDialog(LotteryActivity.this);
-            mNoDrawDialog.setFinishListener(new NoDrawDialog.OnFinishListener() {
-                @Override
-                public void onFinish() {
-                    finish();
-                }
-            });
-            mNoDrawDialog.create();
-            mNoDrawDialog.show();
+        boolean logType = AppInfo.checkIsWXLogin();
+        if (logType) {
+            //当抽奖码小于6个 登录有抽奖
+            if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() < 6 && mLotteryCodeBean.getCodes().size() > 0) {
+                dialogShow = true;
+                //显示立刻领取的dialog
+                showReceiveLotteryDialog(true);
+                return;
+            }
+            if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() == 0) {
+                //登录未抽奖
+                showReturnDialog(TYPE_1);
+                return;
+            }
+
+            //当抽奖码大于等于
+            if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() >= 6) {
+                finishReturn();
+                finish();
+                return;
+            }
+            return;
+        } else {
+            //未登录
+            //判断抽奖码的数量显示对应的dialog
+            showReturnDialog(TYPE_2);
             return;
         }
 
-        //当抽奖码小于6个
-        if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() < 6) {
-            dialogShow = true;
-            LessMaxDialog mLessMaxDialog = new LessMaxDialog(LotteryActivity.this, mLotteryCodeBean);
-            mLessMaxDialog.setFinishListener(new LessMaxDialog.OnFinishListener() {
 
-                @Override
-                public void onDismiss() {
-
-                }
-
-                @Override
-                public void onAgain() {
-                    mLessMaxDialog.dismiss();
-                    startLottery();
-                }
-            });
-            mLessMaxDialog.create();
-            mLessMaxDialog.show();
-            return;
-        }
-        //当抽奖码大于等于
-        if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() >= 6) {
-            finishReturn();
-            finish();
-            return;
-        }
     }
 
 

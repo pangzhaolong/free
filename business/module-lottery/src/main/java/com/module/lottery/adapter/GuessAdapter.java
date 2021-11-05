@@ -11,6 +11,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextPaint;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +25,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -37,10 +41,14 @@ import com.module.lottery.bean.LotteryCodeBean;
 import com.module.lottery.bean.MaylikeBean;
 import com.module.lottery.ui.LotteryActivity;
 import com.module.lottery.utils.ImageUtils;
+import com.module.lottery.utils.ScrollLinearLayoutManager;
+import com.module.lottery.utils.TopLinearSmoothScroller;
+import com.module.lottery.utils.VerticalImageSpan;
 import com.module_lottery.BuildConfig;
 import com.module_lottery.R;
 import com.module_lottery.databinding.GuesslikeHeadLayoutBinding;
 import com.module_lottery.databinding.GuesslikeItemLayoutBinding;
+import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
@@ -52,7 +60,7 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public static final int TYPE_FOOTER = 1;  //说明是带有Footer的
     public static final int TYPE_NORMAL = 2;  //说明是不带有header和footer的
     private GuesslikeHeadLayoutBinding mHeaderView;
-
+    ScrollListAdapter mScrollListAdapter;
 
     private CommodityBean mCommodityBean;
     private LotteryActivity mContext;
@@ -77,6 +85,10 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         this.mLayoutId = layoutId;
     }
 
+    @Override
+    public void onViewDetachedFromWindow(@NonNull RecyclerView.ViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+    }
 
     @SuppressLint("RecyclerView")
     @Override
@@ -88,7 +100,6 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 //价格
                 listHolder.mGuesslikeHeadBinding.price.setText(mCommodityBean.getDisplayPrice() + "");
                 //参考价格
-                listHolder.mGuesslikeHeadBinding.referPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG); //中划线
                 listHolder.mGuesslikeHeadBinding.referPrice.setText("参考价值: " + mCommodityBean.getOriginalPrice() + "");
                 listHolder.mGuesslikeHeadBinding.title.setText(mCommodityBean.getTitle());
                 listHolder.mGuesslikeHeadBinding.cycle.setText("第" + mCommodityBean.getPeriod() + "期");
@@ -101,6 +112,12 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                         }
                     }
                 });
+                //设置中奖参与人数的滚动列表
+                mScrollListAdapter = new ScrollListAdapter(mContext);
+                listHolder.mGuesslikeHeadBinding.scrollList.setLayoutManager(new ScrollLinearLayoutManager(mContext));
+                listHolder.mGuesslikeHeadBinding.scrollList.setAdapter(mScrollListAdapter);
+                listHolder.mGuesslikeHeadBinding.scrollList.setAutomaticScroll(true);
+                listHolder.mGuesslikeHeadBinding.scrollList.start();
 
                 //初始化参与者信息
                 if (mCommodityBean.getParticipateBean() != null) {
@@ -112,7 +129,7 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     } else {
                         Log.d(TAG, "头像数量不满足");
                     }
-                    listHolder.mGuesslikeHeadBinding.number.setText("累计" + mCommodityBean.getParticipateBean().getTotal() + "人参与抽奖");
+                    listHolder.mGuesslikeHeadBinding.number.setText(mCommodityBean.getParticipateBean().getTotal());
                 }
                 boolean logType = AppInfo.checkIsWXLogin();
                 if (!logType) {
@@ -145,7 +162,7 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
                 RequestOptions options = RequestOptions.bitmapTransform(roundedCorners);
                 Glide.with(mContext).load(imageUrl).apply(options).into(guessViewHolder.mGuesslikeItemLayoutBinding.itemImageSrc);
-                guessViewHolder.mGuesslikeItemLayoutBinding.itemTitle.setText(mCommodityBean.getGuessLikeData().get(position - 1).getTitle());
+                setTextImage(guessViewHolder.mGuesslikeItemLayoutBinding.itemTitle, mCommodityBean.getGuessLikeData().get(position - 1).getTitle() + "");
                 guessViewHolder.mGuesslikeItemLayoutBinding.itemPrice.setText("¥ " + mCommodityBean.getGuessLikeData().get(position - 1).getOriginalPrice() + "");
                 guessViewHolder.mGuesslikeItemLayoutBinding.itemPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
                 guessViewHolder.mGuesslikeItemLayoutBinding.itemLayout.setOnClickListener(new View.OnClickListener() {
@@ -157,6 +174,19 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     }
                 });
             }
+        }
+    }
+
+
+    private void setTextImage(TextView textView, String value) {
+        if ((textView != null) && (mContext != null)) {
+            int w = mContext.getResources().getDimensionPixelOffset(R.dimen.merchant_icon_w);
+            int h = mContext.getResources().getDimensionPixelOffset(R.dimen.merchant_icon_h);
+            SpannableString spannableString = new SpannableString("  "+value);
+            Drawable drawable = mContext.getResources().getDrawable(R.mipmap.taobao_icon);
+            drawable.setBounds(0, 0, w, h);
+            spannableString.setSpan(new VerticalImageSpan(drawable), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textView.setText(spannableString);
         }
     }
 
@@ -280,5 +310,6 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public void setCommodityBean(CommodityBean mCommodityBean) {
         this.mCommodityBean = mCommodityBean;
     }
+
 
 }
