@@ -2,6 +2,7 @@ package com.donews.mine;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,6 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.BarUtils;
+import com.blankj.utilcode.util.ScreenUtils;
 import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.LotteryStatusEvent;
 import com.dn.events.events.UserTelBindEvent;
@@ -31,6 +35,7 @@ import com.donews.mine.databinding.MineFragmentBinding;
 import com.donews.mine.viewModel.MineViewModel;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.LogUtil;
+import com.google.android.material.appbar.AppBarLayout;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -232,6 +237,7 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
                 });
         updateUIData();
         mDataBinding.mineFrmRefesh.autoRefresh();
+        scrollFloatBar();
 //        mDataBinding.mineCcsView.refreshData();
     }
 
@@ -317,5 +323,48 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
     private void loadMoreListData() {
         isRefresh = false;
         mViewModel.loadRecommendGoods(adapter.getData().size() + 15);
+    }
+
+    int topBaseLinePx = 0;
+    int topFloatBaseHei = 0;
+    int appBarHei = 0;
+
+    //滚动悬浮标题处理
+    private void scrollFloatBar() {
+        //处理滑动精选标题遮挡问题
+        int statusHei = BarUtils.getStatusBarHeight();
+        mDataBinding.mineMeApptBar.addOnOffsetChangedListener((appBarLayout1, verticalOffset) -> {
+            if (appBarHei == 0) {
+                appBarHei = mDataBinding.mineMeApptBar.getHeight();
+                topFloatBaseHei = mDataBinding.mineMeSelectBar.getPaddingTop();
+                topBaseLinePx = (appBarHei - mDataBinding.mineMeSelectBar.getHeight() - statusHei);
+            }
+            if (appBarHei == 0 || topFloatBaseHei == 0 || topBaseLinePx == 0) {
+                return;
+            }
+            if (verticalOffset < -(topBaseLinePx)) {
+                //需要改变了
+                mDataBinding.mineMeSelectBar.setPadding(
+                        0,
+                        topFloatBaseHei + Math.abs(topBaseLinePx + verticalOffset),
+                        0,
+                        mDataBinding.mineMeSelectBar.getPaddingBottom());
+            } else {
+                //还没有到位置
+                if (mDataBinding.mineMeSelectBar.getPaddingTop() > topFloatBaseHei) {
+                    mDataBinding.mineMeSelectBar.setPadding(
+                            0,
+                            topFloatBaseHei - Math.abs(verticalOffset + topBaseLinePx),
+                            0,
+                            mDataBinding.mineMeSelectBar.getPaddingBottom());
+                } else if (mDataBinding.mineMeSelectBar.getPaddingTop() < topFloatBaseHei) {
+                    mDataBinding.mineMeSelectBar.setPadding(
+                            0,
+                            topFloatBaseHei,
+                            0,
+                            mDataBinding.mineMeSelectBar.getPaddingBottom());
+                }
+            }
+        });
     }
 }

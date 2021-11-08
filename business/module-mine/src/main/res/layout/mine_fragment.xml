@@ -29,7 +29,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:elevation="0dp">
-
                 <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -39,6 +38,10 @@
                     <include layout="@layout/mine_fragment_list_head" />
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
 
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="-20dp"/>
                 <!--
                    layout_collapseMode="pin" 表示不跟随内移动
                    精选的title

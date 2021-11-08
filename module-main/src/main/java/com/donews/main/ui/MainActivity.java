@@ -69,6 +69,12 @@ public class MainActivity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         ScreenAutoAdapter.match(this, 375.0f);
         super.onCreate(savedInstanceState);
+        ImmersionBar.with(this)
+                .statusBarColor(R.color.transparent)
+                .navigationBarColor(R.color.black)
+                .fitsSystemWindows(false)
+                .autoDarkModeEnable(true)
+                .init();
 //        EventBus.getDefault().register(this);
     }
 
@@ -120,55 +126,55 @@ public class MainActivity
     private void toggleStatusBar(int position) {
         switch (position) {
             case 0:
-                ImmersionBar.with(this)
-                        .statusBarColor(R.color.main_color_bar)
-                        .navigationBarColor(R.color.black)
-                        .fitsSystemWindows(true)
-                        .autoDarkModeEnable(true)
-                        .init();
+//                ImmersionBar.with(this)
+//                        .statusBarColor(R.color.main_color_bar)
+//                        .navigationBarColor(R.color.black)
+//                        .fitsSystemWindows(true)
+//                        .autoDarkModeEnable(true)
+//                        .init();
                 AnalysisUtils.onEventEx(this, Dot.Page_Home);
                 AnalysisUtils.onEventEx(this, Dot.Btn_Home);
                 break;
             case 1:
                 AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
-                ImmersionBar.with(this)
-                        .statusBarColor(R.color.white)
-                        .navigationBarColor(R.color.black)
-                        .fitsSystemWindows(true)
-                        .autoDarkModeEnable(true)
-                        .init();
+//                ImmersionBar.with(this)
+//                        .statusBarColor(R.color.white)
+//                        .navigationBarColor(R.color.black)
+//                        .fitsSystemWindows(true)
+//                        .autoDarkModeEnable(true)
+//                        .init();
                 AnalysisUtils.onEventEx(this, Dot.Page_ShowTime);
                 AnalysisUtils.onEventEx(this, Dot.Btn_ShowTime);
                 break;
             case 2:
-                ImmersionBar.with(this)
-                        .statusBarColor(R.color.red_kj)
-                        .navigationBarColor(R.color.black)
-                        .fitsSystemWindows(true)
-                        .autoDarkModeEnable(true)
-                        .init();
+//                ImmersionBar.with(this)
+//                        .statusBarColor(R.color.red_kj)
+//                        .navigationBarColor(R.color.black)
+//                        .fitsSystemWindows(true)
+//                        .autoDarkModeEnable(true)
+//                        .init();
                 AnalysisUtils.onEventEx(this, Dot.Page_Lottery);
                 AnalysisUtils.onEventEx(this, Dot.Btn_Lottery);
                 break;
             case 3:
                 AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
-                ImmersionBar.with(this)
-                        .statusBarColor(R.color.white)
-                        .navigationBarColor(R.color.black)
-                        .fitsSystemWindows(true)
-                        .autoDarkModeEnable(true)
-                        .init();
+//                ImmersionBar.with(this)
+//                        .statusBarColor(R.color.white)
+//                        .navigationBarColor(R.color.black)
+//                        .fitsSystemWindows(true)
+//                        .autoDarkModeEnable(true)
+//                        .init();
                 AnalysisUtils.onEventEx(this, Dot.Page_SaveMoneyBuy);
                 AnalysisUtils.onEventEx(this, Dot.Btn_SaveMoneyBuy);
                 break;
             case 4:
                 AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
-                ImmersionBar.with(this)
-                        .statusBarColor(R.color.text_red)
-                        .navigationBarColor(R.color.black)
-                        .fitsSystemWindows(true)
-                        .autoDarkModeEnable(true)
-                        .init();
+//                ImmersionBar.with(this)
+//                        .statusBarColor(R.color.text_red)
+//                        .navigationBarColor(R.color.black)
+//                        .fitsSystemWindows(true)
+//                        .autoDarkModeEnable(true)
+//                        .init();
                 AnalysisUtils.onEventEx(this, Dot.Page_UserCenter);
                 AnalysisUtils.onEventEx(this, Dot.Btn_UserCenter);
                 break;

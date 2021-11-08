@@ -11,7 +11,7 @@
     <ImageView
         android:id="@+id/mine_me_top_bt_bg"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="210dp"
         android:background="@drawable/mine_me_top_bg"
         skin:enable="true" />
 
@@ -20,7 +20,7 @@
         android:id="@+id/rl_top_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:paddingTop="45dp"
         android:gravity="right|center_vertical"
         android:orientation="horizontal">
 
@@ -28,6 +28,7 @@
             android:id="@+id/rl_top_bar_bind"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
             android:background="@drawable/mine_me_bind_tel_shape"
             android:paddingLeft="15dp"
             android:paddingTop="6dp"
@@ -35,8 +36,7 @@
             android:paddingBottom="6dp"
             android:text="请绑定手机号"
             android:textColor="@color/white"
-            android:textSize="12sp"
-            android:layout_marginRight="10dp"/>
+            android:textSize="12sp" />
 
         <ImageView
             android:id="@+id/rl_top_bar_seting"
