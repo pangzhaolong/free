@@ -251,3 +251,4 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
     }
 
 }
+
