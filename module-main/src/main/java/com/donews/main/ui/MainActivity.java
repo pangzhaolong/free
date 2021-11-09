@@ -2,6 +2,7 @@ package com.donews.main.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.common.updatedialog.UpdateManager;
+import com.donews.common.updatedialog.UpdateReceiver;
 import com.donews.main.R;
 import com.donews.main.adapter.MainPageAdapter;
 import com.donews.main.common.CommonParams;
@@ -29,8 +31,8 @@ import com.donews.utilslibrary.analysis.AnalysisHelp;
 import com.donews.utilslibrary.analysis.AnalysisParam;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
-import com.gyf.immersionbar.BarHide;
 import com.gyf.immersionbar.ImmersionBar;
+import com.orhanobut.logger.Logger;
 import com.vmadalin.easypermissions.EasyPermissions;
 
 import java.util.ArrayList;
@@ -230,10 +232,17 @@ public class MainActivity
         // 获取数美deviceId之后，调用refresh接口刷新
         CommonParams.setNetWork();
 
-        //此接口不需要
-//        CommonParams.getCommonNetWork();
+        checkAppUpdate();
+    }
 
+    /** 检测更新 */
+    private void checkAppUpdate() {
         UpdateManager.getInstance().checkUpdate(this, false);
+        //定时检查更新
+        UpdateReceiver updateReceiver = new UpdateReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_TIME_TICK);
+        getApplication().registerReceiver(updateReceiver, intentFilter);
     }
 
     @Override

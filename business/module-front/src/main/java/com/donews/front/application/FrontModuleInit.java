@@ -36,7 +36,6 @@ public class FrontModuleInit implements IModuleInit {
     @Override
     public boolean onInitAhead(BaseApplication application) {
         GoodsCache.init(application);
-        ClipboardManager clipboardManager = (ClipboardManager) application.getSystemService(Context.CLIPBOARD_SERVICE);
 
         EasyHttp.get(HttpConfigUtilsKt.withConfigParams(FrontApi.commandUrl, true))
                 .cacheMode(CacheMode.NO_CACHE)
@@ -48,6 +47,8 @@ public class FrontModuleInit implements IModuleInit {
 
                     @Override
                     public void onSuccess(CommandBean commandBean) {
+                        ClipboardManager clipboardManager = (ClipboardManager) application.getSystemService(
+                                Context.CLIPBOARD_SERVICE);
                         ClipData clipData = ClipData.newPlainText(null, commandBean.getCommand());
                         clipboardManager.setPrimaryClip(clipData);
                     }
@@ -55,7 +56,6 @@ public class FrontModuleInit implements IModuleInit {
 
         requestWithdraWallet();
         requestWithdrawCenterConfig();
-
         return false;
     }
 

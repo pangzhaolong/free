@@ -141,7 +141,6 @@ public class UpdateManager {
         //定时任务状态，非强制更新一天出现一次弹窗
         if (!DateTimeUtils.isSameDay(System.currentTimeMillis(),
                 SPUtils.getLongInformain(TIMED_TASK_UP_UPDATE_TIME, 0))) {
-
             UpdateActivityDialog.showUpdateDialog(context, updateBean);
             SPUtils.setInformain(TIMED_TASK_UP_UPDATE_TIME, System.currentTimeMillis());
         }
