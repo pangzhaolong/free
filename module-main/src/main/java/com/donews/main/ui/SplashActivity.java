@@ -312,13 +312,13 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
 
     private void goToMain() {
         stopProgressAnim();
-        if (!mIsBackgroundToFore) {
-            if (AppStatusManager.getInstance().getAppStatus() != AppStatusConstant.STATUS_NORMAL) {
-                LotteryAdCount.INSTANCE.init();
-                MainActivity.start(this);
-            }
-        }
-        finish();
+//        if (!mIsBackgroundToFore) {
+//            if (AppStatusManager.getInstance().getAppStatus() != AppStatusConstant.STATUS_NORMAL) {
+//                LotteryAdCount.INSTANCE.init();
+//                MainActivity.start(this);
+//            }
+//        }
+//        finish();
     }
 
     private void deviceLogin() {

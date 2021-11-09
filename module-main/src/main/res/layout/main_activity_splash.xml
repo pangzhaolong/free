@@ -18,7 +18,7 @@
             android:layout_marginBottom="37dp"
             android:contentDescription="@null"
             android:src="@drawable/main_splash_logo"
-            android:visibility="visible"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -48,7 +48,7 @@
             android:id="@+id/tv_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="48dp"
+            android:layout_marginBottom="8dp"
             android:text="百万商品加载中..."
             android:textColor="#A9AeB1"
             android:textSize="13sp"
@@ -72,9 +72,9 @@
             android:id="@+id/group_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
+            app:constraint_referenced_ids="pb_progress,tv_msg"
             app:layout_constraintEnd_toEndOf="parent"
-            app:constraint_referenced_ids="pb_progress,tv_msg"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
         <FrameLayout
             android:id="@+id/ad_full_screen_container"
