@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.CycleInterpolator;
 import android.view.animation.RotateAnimation;
@@ -15,6 +16,7 @@ import androidx.annotation.Nullable;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.BarUtils;
 import com.dn.events.events.WalletRefreshEvent;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.common.router.RouterActivityPath;
@@ -63,6 +65,29 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     @Override
     public int getLayoutId() {
         return R.layout.front_fragment;
+    }
+
+    @Override
+    protected void onFragmentFirstVisible() {
+        super.onFragmentFirstVisible();
+        //调整顶部背景距离
+        ViewGroup.LayoutParams lp = mDataBinding.frontTitleBgTop.getLayoutParams();
+        lp.height = lp.height + BarUtils.getStatusBarHeight();
+        mDataBinding.frontTitleBgTop.setLayoutParams(lp);
+        //显示顶部距离,达到侵入式状态栏
+        mDataBinding.frontTitleRl.setPadding(
+                mDataBinding.frontTitleRl.getPaddingLeft(),
+                mDataBinding.frontTitleRl.getPaddingTop() + BarUtils.getStatusBarHeight(),
+                mDataBinding.frontTitleRl.getPaddingRight(),
+                mDataBinding.frontTitleRl.getPaddingBottom()
+        );
+        //调整底部内容距离顶部的距离
+        mDataBinding.frontJddBotContent.setPadding(
+                mDataBinding.frontJddBotContent.getPaddingLeft(),
+                mDataBinding.frontJddBotContent.getPaddingTop() + BarUtils.getStatusBarHeight(),
+                mDataBinding.frontJddBotContent.getPaddingRight(),
+                mDataBinding.frontJddBotContent.getPaddingBottom()
+        );
     }
 
     @SuppressLint("StringFormatMatches")

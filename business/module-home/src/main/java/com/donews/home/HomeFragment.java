@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,6 +13,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.BarUtils;
 import com.bumptech.glide.Glide;
 import com.donews.common.ad.business.monitor.PageMonitor;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
@@ -63,7 +65,16 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
     protected void onFragmentFirstVisible() {
         super.onFragmentFirstVisible();
         isFirst = true;
-
+        //显示顶部距离,达到侵入式状态栏
+        ViewGroup.LayoutParams lp = mDataBinding.homeSearchLayout.getLayoutParams();
+        lp.height = lp.height + BarUtils.getStatusBarHeight();
+        mDataBinding.homeSearchLayout.setLayoutParams(lp);
+        mDataBinding.homeSearchLayout.setPadding(
+                mDataBinding.homeSearchLayout.getPaddingLeft(),
+                mDataBinding.homeSearchLayout.getPaddingTop() + BarUtils.getStatusBarHeight(),
+                mDataBinding.homeSearchLayout.getPaddingRight(),
+                mDataBinding.homeSearchLayout.getPaddingBottom()
+        );
     }
 
     @Override

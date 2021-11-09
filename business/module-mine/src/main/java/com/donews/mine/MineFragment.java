@@ -337,7 +337,7 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
             if (appBarHei == 0) {
                 appBarHei = mDataBinding.mineMeApptBar.getHeight();
                 topFloatBaseHei = mDataBinding.mineMeSelectBar.getPaddingTop();
-                topBaseLinePx = (appBarHei - mDataBinding.mineMeSelectBar.getHeight() - statusHei);
+                topBaseLinePx = (appBarHei - (mDataBinding.mineMeSelectBar.getHeight() - topFloatBaseHei) - statusHei);
             }
             if (appBarHei == 0 || topFloatBaseHei == 0 || topBaseLinePx == 0) {
                 return;

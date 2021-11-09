@@ -5,6 +5,7 @@ import android.view.View
 import androidx.recyclerview.widget.DiffUtil
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
+import com.blankj.utilcode.util.BarUtils
 import com.donews.common.ad.business.monitor.PageMonitor
 import com.donews.common.base.MvvmLazyLiveDataFragment
 import com.donews.common.router.RouterFragmentPath
@@ -25,7 +26,8 @@ import com.donews.utilslibrary.dot.Dot
  * @date 2021/10/20 17:43
  */
 @Route(path = RouterFragmentPath.Unboxing.PAGER_UNBOXING_FRAGMENT)
-class UnboxingFragment : MvvmLazyLiveDataFragment<UnboxingFragUnboxingBinding, UnboxingViewModel>() {
+class UnboxingFragment :
+    MvvmLazyLiveDataFragment<UnboxingFragUnboxingBinding, UnboxingViewModel>() {
 
     private val unboxingRVAdapter = UnboxingRVAdapter(R.layout.unboxing_item_unboxing)
 
@@ -78,5 +80,15 @@ class UnboxingFragment : MvvmLazyLiveDataFragment<UnboxingFragUnboxingBinding, U
         super.onFragmentFirstVisible()
         //加载数据
         mViewModel.refreshing.value = SmartRefreshState(true)
+        //显示顶部距离,达到侵入式状态栏
+        val lp = mDataBinding.tvTitle.layoutParams
+        lp.height = lp.height + BarUtils.getStatusBarHeight()
+        mDataBinding.tvTitle.layoutParams = lp
+        mDataBinding.tvTitle.setPadding(
+            mDataBinding.tvTitle.paddingLeft,
+            mDataBinding.tvTitle.paddingTop + BarUtils.getStatusBarHeight(),
+            mDataBinding.tvTitle.paddingRight,
+            mDataBinding.tvTitle.paddingBottom
+        )
     }
 }

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.BarUtils;
 import com.dn.drouter.ARouteHelper;
 import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.LotteryStatusEvent;
@@ -206,6 +207,15 @@ public class MineOpenWinningFragment extends
         if (period == 0) {
             mViewModel.isAutoPeriod = true;
             AnalysisUtils.onEventEx(this.getActivity(), Dot.Page_Lottery); //开奖事件
+        }
+        if (mViewModel.isAutoPeriod) {
+            //显示顶部距离,达到侵入式状态栏
+            mDataBinding.mainWinCodeTitleLayout.setPadding(
+                    mDataBinding.mainWinCodeTitleLayout.getPaddingLeft(),
+                    mDataBinding.mainWinCodeTitleLayout.getPaddingTop() + BarUtils.getStatusBarHeight(),
+                    mDataBinding.mainWinCodeTitleLayout.getPaddingRight(),
+                    mDataBinding.mainWinCodeTitleLayout.getPaddingBottom()
+            );
         }
         mViewModel.setDataBinDing(mDataBinding, getBaseActivity());
         adapterOpenWinHead = (ViewGroup) View.inflate(getBaseActivity(), headRes, null);

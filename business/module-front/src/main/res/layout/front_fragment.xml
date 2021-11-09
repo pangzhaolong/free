@@ -22,18 +22,22 @@
             android:layout_height="match_parent"
             android:background="#FFF9F9F9">
 
-            <View
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:background="@drawable/front_title_bg"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="MissingConstraints" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <View
+                    android:id="@+id/front_title_bg_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:background="@drawable/front_title_bg"
+                    tools:ignore="MissingConstraints" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="80dp"
-                android:background="@drawable/front_title_bg_bottom" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/front_title_bg_bottom" />
+            </LinearLayout>
 
             <RelativeLayout
                 android:id="@+id/front_title_rl"
@@ -89,6 +93,7 @@
             </RelativeLayout>
 
             <LinearLayout
+                android:id="@+id/front_jdd_bot_content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="70dp"
