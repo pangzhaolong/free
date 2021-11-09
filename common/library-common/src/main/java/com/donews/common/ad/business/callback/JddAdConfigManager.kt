@@ -52,7 +52,6 @@ object JddAdConfigManager {
                         jddAdConfigBean = this
                         mmkv.encode(KEY_JDD_AD_CONFIG, jddAdConfigBean)
                     }
-                    Logger.d(t)
                     callListener()
                 }
             })

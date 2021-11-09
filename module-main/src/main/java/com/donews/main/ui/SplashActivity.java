@@ -93,11 +93,6 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
 
     @Override
     protected int getLayoutId() {
-//        ScreenAutoAdapter.match(this, 375.0f);
-//        ImmersionBar.with(this)
-//                .hideBar(BarHide.FLAG_HIDE_BAR)
-//                .statusBarDarkFont(true)
-//                .init();
         return R.layout.main_activity_splash;
     }
 
@@ -139,11 +134,6 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         SplashUtils.INSTANCE.setColdStart(false);
         EventBus.getDefault().unregister(this);
         super.onDestroy();
-    }
-
-    @Override
-    public void finish() {
-        super.finish();
     }
 
     /**

@@ -58,7 +58,6 @@ class PageMonitor : LifecycleObserver {
                 lifecycle.addObserver(this@PageMonitor)
                 inject(this)
                 mActivity = this
-                Logger.d("attach ---- $mTag")
             }
         }
     }
@@ -77,7 +76,6 @@ class PageMonitor : LifecycleObserver {
                     inject(it)
                 }
                 mFragment = this
-                Logger.d("attach ---- $mTag")
             }
         }
     }

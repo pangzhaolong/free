@@ -29,7 +29,6 @@ object AppCommonConfigUtils {
                 }
 
                 override fun onSuccess(t: AppCommonConfig?) {
-                    Logger.d(t)
                     t?.let {
                         commonConfig = it
                     }
