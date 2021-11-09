@@ -2,8 +2,6 @@ package com.donews.walk;
 
 import android.content.Context;
 import android.os.Build;
-import android.os.Looper;
-import android.os.MessageQueue;
 
 import androidx.multidex.MultiDex;
 
@@ -17,7 +15,6 @@ import com.donews.utilslibrary.utils.KeyConstant;
 import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.Utils;
 import com.donews.web.base.WebConfig;
-import com.orhanobut.logger.Logger;
 import com.tencent.bugly.crashreport.CrashReport;
 
 import java.lang.reflect.Field;

@@ -3,20 +3,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="ResourceName">
 
-    <item android:drawable="@drawable/main_splash_bg" />
+    <item android:drawable="@color/black">
 
-    <item
-        android:bottom="40dp"
-        android:gravity="center">
-        <bitmap android:src="@drawable/main_splash_content" />
     </item>
 
-    <item
-        android:id="@+id/bottom_logo"
-        android:bottom="37dp">
+    <item>
         <bitmap
-            android:gravity="bottom|center_horizontal"
-            android:src="@drawable/main_splash_logo" />
+            android:gravity="center"
+            android:scaleType="matrix"
+            android:src="@drawable/main_splash_bg_v2" />
     </item>
+
+    <!--    <item>-->
+    <!--        <bitmap-->
+    <!--            android:gravity="center"-->
+    <!--            android:src="@drawable/main_splash_content" />-->
+    <!--    </item>-->
+
+    <!--    <item-->
+    <!--        android:id="@+id/bottom_logo"-->
+    <!--        android:bottom="37dp">-->
+    <!--        <bitmap-->
+    <!--            android:gravity="bottom|center_horizontal"-->
+    <!--            android:scaleType="fitCenter"-->
+    <!--            android:src="@drawable/main_splash_logo" />-->
+    <!--    </item>-->
 
 </layer-list>

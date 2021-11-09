@@ -1,6 +1,6 @@
 <resources>
     <!--StartActivity Style 冷启动效果-->
-    <style name="AppTheme.Start" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="main_AppTheme.Start" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/welcome_layer_drawable</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
@@ -10,7 +10,7 @@
         <item name="android:windowDrawsSystemBarBackgrounds">false</item>
     </style>
 
-    <style name="AppTheme.Start.Progess" parent="@android:style/Widget.ProgressBar.Horizontal"></style>
+    <style name="main_AppTheme.Start.Progress" parent="@android:style/Widget.ProgressBar.Horizontal" />
 
     <style name="main_transparent_style" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@color/transparent</item> <!-- 背景色透明度 -->
