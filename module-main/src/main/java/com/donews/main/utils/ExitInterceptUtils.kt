@@ -38,7 +38,8 @@ import com.orhanobut.logger.Logger
  */
 object ExitInterceptUtils {
 
-    private const val CONFIG_URL = BuildConfig.BASE_CONFIG_URL + "jdd-interceptExitConfig" + BuildConfig.BASE_RULE_URL
+    private const val CONFIG_URL =
+        BuildConfig.BASE_CONFIG_URL + BuildConfig.APP_IDENTIFICATION + "-interceptExitConfig" + BuildConfig.BASE_RULE_URL
 
     /** 兩次返回鍵的间隔时间 */
     private const val CLICK_INTERVAL: Long = 2000L
