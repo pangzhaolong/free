@@ -1,4 +1,4 @@
-package com.donews.middle.bean.fh;
+package com.donews.middle.bean.home;
 
 import com.donews.common.contract.BaseCustomViewModel;
 import com.donews.middle.bean.home.HomeGridCategoryBean;

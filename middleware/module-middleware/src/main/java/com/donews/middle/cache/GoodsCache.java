@@ -5,7 +5,7 @@ import static android.content.Context.MODE_PRIVATE;
 import android.content.Context;
 
 import com.donews.middle.bean.WalletBean;
-import com.donews.middle.bean.fh.HomeDataBean;
+import com.donews.middle.bean.home.HomeDataBean;
 import com.donews.middle.bean.front.AwardBean;
 import com.donews.middle.bean.front.LotteryCategoryBean;
 import com.donews.middle.bean.front.LotteryGoodsBean;

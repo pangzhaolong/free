@@ -19,4 +19,5 @@ dependencies {
     implementation 'com.classic.common:multiple-status-view:1.5.1'
     implementation project(path: ':common:library-share')
     implementation project(':common:library-sdk')
+    implementation project(':middleware:module-middleware')
 }

@@ -19,6 +19,7 @@ dependencies {
     api project(':common:library-common')
     implementation project(':common:library-sdk')
     implementation project(':common:lib_eventbus')
+    implementation project(':middleware:module-middleware')
     api 'me.majiajie:pager-bottom-tab-strip:2.3.0X'
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

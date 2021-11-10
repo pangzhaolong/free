@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.home.model.TopModel;
-import com.donews.middle.bean.fh.HomeDataBean;
+import com.donews.middle.bean.home.HomeDataBean;
 import com.donews.middle.bean.home.HomeGoodsBean;
 import com.donews.middle.bean.home.RealTimeBean;
 import com.donews.middle.bean.home.SecKilBean;

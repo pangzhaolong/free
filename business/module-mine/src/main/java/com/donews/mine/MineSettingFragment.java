@@ -7,11 +7,12 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.dn.events.events.LoginLodingStartStatus;
 import com.dn.events.events.LoginUserStatus;
-import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.base.utils.ToastUtil;
+import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.UserInfoBean;
 import com.donews.common.router.RouterFragmentPath;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.mine.common.CommonParams;
 import com.donews.mine.databinding.MineSettingFragmentBinding;
 import com.donews.mine.viewModel.SettingFragmentViewModel;
@@ -98,6 +99,13 @@ public class MineSettingFragment extends
             CommonParams.setNetWorkExitOrUnReg();
         });
         updateUI();
+
+        if (ABSwitch.Ins().getABBean().isOpenAB()) {
+            mDataBinding.mineSettingTitle.setVisibility(View.VISIBLE);
+            mDataBinding.tvExitLogin.setVisibility(View.GONE);
+            mDataBinding.setZxzh.setVisibility(View.GONE);
+            mDataBinding.setFxapp.setVisibility(View.GONE);
+        }
     }
 
     //更新UI
