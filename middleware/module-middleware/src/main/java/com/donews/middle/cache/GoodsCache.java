@@ -4,12 +4,12 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Context;
 
-import com.donews.middle.bean.front.AwardBean;
+import com.donews.middle.bean.WalletBean;
 import com.donews.middle.bean.fh.HomeDataBean;
-import com.donews.middle.bean.home.HomeCategoryBean;
+import com.donews.middle.bean.front.AwardBean;
 import com.donews.middle.bean.front.LotteryCategoryBean;
 import com.donews.middle.bean.front.LotteryGoodsBean;
-import com.donews.middle.bean.WalletBean;
+import com.donews.middle.bean.home.HomeCategoryBean;
 import com.donews.middle.bean.home.HomeGoodsBean;
 import com.donews.middle.bean.home.RealTimeBean;
 import com.donews.middle.bean.home.SearchResultTbBean;
@@ -50,8 +50,6 @@ public class GoodsCache {
                 ois = new ObjectInputStream(new FileInputStream(path));
             } else if (c == SecKilBean.class) {
                 ois = new ObjectInputStream(new FileInputStream(path));
-            } else if (c == LotteryGoodsBean.class) {
-                ois = new ObjectInputStream(new FileInputStream(path));
             } else if (c == SearchResultTbBean.class) {
                 ois = new ObjectInputStream(new FileInputStream(path));
             } else if (c == HomeCategoryBean.class) {
@@ -82,8 +80,6 @@ public class GoodsCache {
         try {
             if (object instanceof LotteryCategoryBean) {
                 fos = new ObjectOutputStream(new FileOutputStream(s_base_cache_path + LotteryCategoryBean.class.getName() + "_" + ext + ".dat"));
-            } else if (object instanceof LotteryGoodsBean) {
-                fos = new ObjectOutputStream(new FileOutputStream(s_base_cache_path + LotteryGoodsBean.class.getName() + "_" + ext + ".dat"));
             } else if (object instanceof AwardBean) {
                 fos = new ObjectOutputStream(new FileOutputStream(s_base_cache_path + AwardBean.class.getName() + "_" + ext + ".dat"));
             } else if (object instanceof WalletBean) {
