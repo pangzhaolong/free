@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.MutableLiveData;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -20,20 +19,16 @@ import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.home.adapter.FragmentAdapter;
-import com.donews.home.bean.HomeBean;
-import com.donews.home.bean.SecKilBean;
-import com.donews.home.bean.UserBean;
-import com.donews.home.cache.GoodsCache;
 import com.donews.home.databinding.HomeFragmentBinding;
 import com.donews.home.viewModel.HomeViewModel;
-import com.donews.home.views.TabItem;
-import com.donews.utilslibrary.analysis.AnalysisUtils;
-import com.donews.utilslibrary.dot.Dot;
+import com.donews.middle.bean.home.HomeCategoryBean;
+import com.donews.middle.bean.home.SecKilBean;
+import com.donews.middle.bean.home.UserBean;
+import com.donews.middle.cache.GoodsCache;
+import com.donews.middle.views.TabItem;
 import com.donews.utilslibrary.utils.UrlUtils;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-
-import java.util.Objects;
 
 
 /**
@@ -46,7 +41,7 @@ import java.util.Objects;
 public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, HomeViewModel> {
     boolean isFirst = false;
     private FragmentAdapter mFragmentAdapter;
-    private HomeBean mHomeBean;
+    private HomeCategoryBean mHomeBean;
 
     private Context mContext;
 
@@ -168,7 +163,7 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
     }
 
     private void loadCategory() {
-        mHomeBean = GoodsCache.readGoodsBean(HomeBean.class, "home");
+        mHomeBean = GoodsCache.readGoodsBean(HomeCategoryBean.class, "home");
         if (mHomeBean != null && mHomeBean.getList() != null && mFragmentAdapter != null) {
             mFragmentAdapter.refreshData(mHomeBean.getList());
         }

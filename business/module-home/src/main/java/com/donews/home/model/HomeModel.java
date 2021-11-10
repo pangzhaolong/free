@@ -4,9 +4,9 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.model.BaseLiveDataModel;
 import com.donews.home.api.HomeApi;
-import com.donews.home.bean.HomeBean;
-import com.donews.home.bean.SecKilBean;
-import com.donews.home.bean.UserBean;
+import com.donews.middle.bean.home.HomeCategoryBean;
+import com.donews.middle.bean.home.SecKilBean;
+import com.donews.middle.bean.home.UserBean;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
@@ -26,12 +26,12 @@ public class HomeModel extends BaseLiveDataModel {
      *
      * @return 返回 homeBean的数据
      */
-    public MutableLiveData<HomeBean> getNetData() {
-        MutableLiveData<HomeBean> mutableLiveData = new MutableLiveData<>();
+    public MutableLiveData<HomeCategoryBean> getNetData() {
+        MutableLiveData<HomeCategoryBean> mutableLiveData = new MutableLiveData<>();
         addDisposable(EasyHttp.get(HomeApi.SuperCategory)
                 .cacheKey("home_category")
                 .cacheMode(CacheMode.CACHEANDREMOTEDISTINCT)
-                .execute(new SimpleCallBack<HomeBean>() {
+                .execute(new SimpleCallBack<HomeCategoryBean>() {
 
                     @Override
                     public void onError(ApiException e) {
@@ -39,7 +39,7 @@ public class HomeModel extends BaseLiveDataModel {
                     }
 
                     @Override
-                    public void onSuccess(HomeBean homeBean) {
+                    public void onSuccess(HomeCategoryBean homeBean) {
                         mutableLiveData.postValue(homeBean);
                     }
                 }));
@@ -69,7 +69,6 @@ public class HomeModel extends BaseLiveDataModel {
 
     public MutableLiveData<UserBean> getUserList() {
         MutableLiveData<UserBean> mutableLiveData = new MutableLiveData<>();
-//        String roundTime = DateTimeUtils.getNow("yyyy-MM-dd HH:00:00");
         addDisposable(EasyHttp.get(HomeApi.userRandomUrl + "?limit=3")
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<UserBean>() {

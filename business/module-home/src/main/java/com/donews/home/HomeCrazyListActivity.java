@@ -13,10 +13,10 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.home.adapter.CrazyListAdapter;
-import com.donews.home.bean.RealTimeBean;
 import com.donews.home.databinding.HomeCrazyListActivityBinding;
 import com.donews.home.listener.GoodsDetailListener;
 import com.donews.home.viewModel.CrazyViewModel;
+import com.donews.middle.bean.home.RealTimeBean;
 import com.gyf.immersionbar.ImmersionBar;
 
 @Route(path = RouterActivityPath.CrazyList.CRAZY_LIST_DETAIL)

@@ -438,13 +438,12 @@
                                         app:layout_constraintTop_toTopOf="parent"
                                         tools:ignore="MissingConstraints">
 
-                                        <com.donews.front.views.BarrageView
+                                        <com.donews.middle.views.BarrageView
                                             android:id="@+id/front_barrage_view"
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
                                             android:layout_marginStart="10dp"
-                                            android:layout_marginEnd="15dp" >
-                                        </com.donews.front.views.BarrageView>
+                                            android:layout_marginEnd="15dp" />
                                     </LinearLayout>
                                 </androidx.constraintlayout.widget.ConstraintLayout>
                             </LinearLayout>

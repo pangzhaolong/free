@@ -4,8 +4,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.model.BaseLiveDataModel;
 import com.donews.home.api.HomeApi;
-import com.donews.home.bean.HomeBean;
-import com.donews.home.bean.NorGoodsBean;
+import com.donews.middle.bean.front.LotteryGoodsBean;
+import com.donews.middle.bean.home.HomeGoodsBean;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
@@ -25,11 +25,11 @@ public class NorModel extends BaseLiveDataModel {
      *
      * @return 返回 homeBean的数据
      */
-    public MutableLiveData<NorGoodsBean> getNorGoodsData(String cids, int pageId) {
-        MutableLiveData<NorGoodsBean> mutableLiveData = new MutableLiveData<>();
+    public MutableLiveData<HomeGoodsBean> getNorGoodsData(String cids, int pageId) {
+        MutableLiveData<HomeGoodsBean> mutableLiveData = new MutableLiveData<>();
         addDisposable(EasyHttp.get(HomeApi.goodsList + "?cids=" + cids + "&page_size=20&page_id=" + pageId)
                 .cacheMode(CacheMode.NO_CACHE)
-                .execute(new SimpleCallBack<NorGoodsBean>() {
+                .execute(new SimpleCallBack<HomeGoodsBean>() {
 
                     @Override
                     public void onError(ApiException e) {
@@ -37,8 +37,8 @@ public class NorModel extends BaseLiveDataModel {
                     }
 
                     @Override
-                    public void onSuccess(NorGoodsBean norGoodsBean) {
-                        mutableLiveData.postValue(norGoodsBean);
+                    public void onSuccess(HomeGoodsBean homeGoodsBean) {
+                        mutableLiveData.postValue(homeGoodsBean);
                     }
                 }));
 

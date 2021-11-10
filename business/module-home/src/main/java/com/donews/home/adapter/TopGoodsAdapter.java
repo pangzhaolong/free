@@ -18,8 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.donews.base.widget.CenterImageSpan;
 import com.donews.home.R;
-import com.donews.home.bean.TopGoodsBean;
 import com.donews.home.listener.GoodsDetailListener;
+import com.donews.middle.bean.home.HomeGoodsBean;
 import com.donews.utilslibrary.utils.UrlUtils;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ import java.util.List;
 public class TopGoodsAdapter extends RecyclerView.Adapter<TopGoodsAdapter.GoodsViewHolder> implements View.OnClickListener {
 
     private final Context mContext;
-    private final List<TopGoodsBean.goodsInfo> mGoodsList = new ArrayList<>();
+    private final List<HomeGoodsBean.goodsInfo> mGoodsList = new ArrayList<>();
     private GoodsDetailListener mListener;
 
     public TopGoodsAdapter(Context context, GoodsDetailListener listener) {
@@ -37,7 +37,7 @@ public class TopGoodsAdapter extends RecyclerView.Adapter<TopGoodsAdapter.GoodsV
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void refreshData(List<TopGoodsBean.goodsInfo> list, boolean needClear) {
+    public void refreshData(List<HomeGoodsBean.goodsInfo> list, boolean needClear) {
         if (needClear) {
             mGoodsList.clear();
         }
@@ -58,7 +58,7 @@ public class TopGoodsAdapter extends RecyclerView.Adapter<TopGoodsAdapter.GoodsV
     @Override
     public void onBindViewHolder(@NonNull GoodsViewHolder holder, int position) {
 
-        TopGoodsBean.goodsInfo gi = mGoodsList.get(position);
+        HomeGoodsBean.goodsInfo gi = mGoodsList.get(position);
         if (gi == null) {
             return;
         }
@@ -82,7 +82,7 @@ public class TopGoodsAdapter extends RecyclerView.Adapter<TopGoodsAdapter.GoodsV
         holder.actualPriveTv.setText("￥" + gi.getActual_price());
     }
 
-    private SpannableString getTitleString(TopGoodsBean.goodsInfo goodsInfo) {
+    private SpannableString getTitleString(HomeGoodsBean.goodsInfo goodsInfo) {
         String span = "d ";
         int resId = R.drawable.home_logo_tm;
         switch (goodsInfo.getShop_type()) {
@@ -117,7 +117,7 @@ public class TopGoodsAdapter extends RecyclerView.Adapter<TopGoodsAdapter.GoodsV
 
     @Override
     public void onClick(View v) {
-        TopGoodsBean.goodsInfo gi = (TopGoodsBean.goodsInfo) v.getTag();
+        HomeGoodsBean.goodsInfo gi = (HomeGoodsBean.goodsInfo) v.getTag();
 
         mListener.onClick(gi.getId(), gi.getGoods_id());
     }

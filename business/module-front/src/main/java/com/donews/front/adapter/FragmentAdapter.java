@@ -6,8 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.donews.front.NorFragment;
-import com.donews.front.bean.LotteryCategoryBean;
+import com.donews.front.FrontGoodsFragment;
+import com.donews.middle.bean.front.LotteryCategoryBean;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +32,7 @@ public class FragmentAdapter extends FragmentStateAdapter {
 
     private Fragment mkFragment(LotteryCategoryBean.categoryBean categoryItem) {
         if (mFragmentMap.get(categoryItem.getCategoryId()) == null) {
-            mFragmentMap.put(categoryItem.getCategoryId(), new NorFragment(categoryItem));
+            mFragmentMap.put(categoryItem.getCategoryId(), new FrontGoodsFragment(categoryItem));
         }
         return mFragmentMap.get(categoryItem.getCategoryId());
     }
@@ -46,7 +46,7 @@ public class FragmentAdapter extends FragmentStateAdapter {
             return;
         }
 
-        NorFragment fragment = (NorFragment) mFragmentMap.get(this.list.get(position).getCategoryId());
+        FrontGoodsFragment fragment = (FrontGoodsFragment) mFragmentMap.get(this.list.get(position).getCategoryId());
         if (fragment == null) {
             return;
         }

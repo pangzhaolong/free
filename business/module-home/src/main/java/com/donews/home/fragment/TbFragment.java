@@ -18,14 +18,14 @@ import com.donews.home.R;
 import com.donews.home.adapter.SearchFindAdapter;
 import com.donews.home.adapter.SearchHistoryAdapter;
 import com.donews.home.adapter.SearchSugTbAdapter;
-import com.donews.home.bean.SearchHistory;
-import com.donews.home.bean.SearchResultTbBean;
-import com.donews.home.bean.TmpSearchHistory;
-import com.donews.home.cache.GoodsCache;
 import com.donews.home.databinding.HomeFragmentSearchTbBinding;
 import com.donews.home.listener.GoodsDetailListener;
 import com.donews.home.listener.SearchHistoryListener;
 import com.donews.home.viewModel.TbViewModel;
+import com.donews.middle.bean.home.SearchHistory;
+import com.donews.middle.bean.home.SearchResultTbBean;
+import com.donews.middle.bean.home.TmpSearchHistory;
+import com.donews.middle.cache.GoodsCache;
 
 import java.util.ArrayList;
 import java.util.List;

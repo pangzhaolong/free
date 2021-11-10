@@ -21,21 +21,14 @@ public class ModuleLifecycleReflexs {
     private static final String MainInit = "com.donews.main.application.MainModuleInit";
 
     /**
-     * home 缓存初始化
-     */
-
-    private static final String HomeInit = "com.donews.home.application.HomeModuleInit";
-
-    /**
-     * 首页 缓存初始化
-     */
-
-    private static final String FrontInit = "com.donews.front.application.FrontModuleInit";
-
-    /**
      * 广告组件库
      */
     private static final String SDKInit = "com.donews.common.ad.business.application.AdSdkModuleInit";
 
-    public static String[] initModuleNames = {MainInit, BaseInit, SDKInit, HomeInit, FrontInit};
+    /**
+     * 中间件
+     */
+    private static final String MiddleInit = "com.donews.middle.application.MiddleModuleInit";
+
+    public static String[] initModuleNames = {MainInit, BaseInit, SDKInit, MiddleInit};
 }

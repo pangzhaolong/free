@@ -6,9 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.donews.home.bean.HomeBean;
 import com.donews.home.fragment.NorFragment;
 import com.donews.home.fragment.TopFragment;
+import com.donews.middle.bean.home.HomeCategoryBean;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,11 +18,11 @@ import java.util.Map;
 
 public class FragmentAdapter extends FragmentStateAdapter {
 
-    private List<HomeBean.CategoryItem> list = new ArrayList<>();
+    private List<HomeCategoryBean.CategoryItem> list = new ArrayList<>();
     private Map<String, Fragment> mFragmentMap = new HashMap<>();
 
     @SuppressLint("NotifyDataSetChanged")
-    public void refreshData(List<HomeBean.CategoryItem> list) {
+    public void refreshData(List<HomeCategoryBean.CategoryItem> list) {
 //        if (!equalsList(this.list, list)) {
             this.list.clear();
 //        }
@@ -30,7 +30,7 @@ public class FragmentAdapter extends FragmentStateAdapter {
         notifyDataSetChanged();
     }
 
-    private boolean equalsList(List<HomeBean.CategoryItem> list1, List<HomeBean.CategoryItem> list2) {
+    private boolean equalsList(List<HomeCategoryBean.CategoryItem> list1, List<HomeCategoryBean.CategoryItem> list2) {
         if ((list1 == null && list2 != null) || (list1 != null && list2 == null)) {
             return false;
         }
@@ -38,9 +38,9 @@ public class FragmentAdapter extends FragmentStateAdapter {
             return false;
         }
 
-        HomeBean.CategoryItem[] arr1 = list1.toArray(new HomeBean.CategoryItem[]{});
+        HomeCategoryBean.CategoryItem[] arr1 = list1.toArray(new HomeCategoryBean.CategoryItem[]{});
 
-        HomeBean.CategoryItem[] arr2 = list2.toArray(new HomeBean.CategoryItem[]{});
+        HomeCategoryBean.CategoryItem[] arr2 = list2.toArray(new HomeCategoryBean.CategoryItem[]{});
 
         Arrays.sort(arr1);
 
@@ -65,7 +65,7 @@ public class FragmentAdapter extends FragmentStateAdapter {
         super(fragment);
     }
 
-    private Fragment mkFragment(HomeBean.CategoryItem categoryItem) {
+    private Fragment mkFragment(HomeCategoryBean.CategoryItem categoryItem) {
         if (categoryItem == null) {
             if (mFragmentMap.get(null) == null) {
                 mFragmentMap.put(null, new TopFragment());

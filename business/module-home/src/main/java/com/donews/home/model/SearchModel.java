@@ -4,9 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.model.BaseLiveDataModel;
 import com.donews.home.api.HomeApi;
-import com.donews.home.bean.DataBean;
-import com.donews.home.bean.SearchSugBean;
-import com.donews.home.bean.TopGoodsBean;
+import com.donews.middle.bean.home.SearchSugBean;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
@@ -28,7 +26,6 @@ public class SearchModel extends BaseLiveDataModel {
      */
     public MutableLiveData<SearchSugBean> getSearchData(String search) {
         MutableLiveData<SearchSugBean> mutableLiveData = new MutableLiveData<>();
-//        https://lottery.dev.tagtic.cn/shop/v1/search-suggestion?key_words=%E5%93%88%E5%93%88&type=1
         EasyHttp.get(HomeApi.searchSugUrl + "?key_words=" + search)
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<SearchSugBean>() {

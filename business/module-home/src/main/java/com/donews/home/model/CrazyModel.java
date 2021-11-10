@@ -4,8 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.model.BaseLiveDataModel;
 import com.donews.home.api.HomeApi;
-import com.donews.home.bean.RealTimeBean;
-import com.donews.home.bean.SecKilBean;
+import com.donews.middle.bean.home.RealTimeBean;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;

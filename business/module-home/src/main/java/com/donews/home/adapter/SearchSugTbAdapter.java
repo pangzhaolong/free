@@ -17,9 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.donews.base.widget.CenterImageSpan;
 import com.donews.home.R;
-import com.donews.home.bean.NorGoodsBean;
-import com.donews.home.bean.SearchResultTbBean;
 import com.donews.home.listener.GoodsDetailListener;
+import com.donews.middle.bean.home.SearchResultTbBean;
 
 import java.util.ArrayList;
 import java.util.List;

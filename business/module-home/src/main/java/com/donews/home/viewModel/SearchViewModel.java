@@ -3,11 +3,8 @@ package com.donews.home.viewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
-import com.donews.home.bean.DataBean;
-import com.donews.home.bean.SearchSugBean;
-import com.donews.home.bean.TopGoodsBean;
 import com.donews.home.model.SearchModel;
-import com.donews.home.model.TopModel;
+import com.donews.middle.bean.home.SearchSugBean;
 
 /**
  * <p> </p>

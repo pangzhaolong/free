@@ -4,11 +4,10 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.model.BaseLiveDataModel;
 import com.donews.front.api.FrontApi;
-import com.donews.front.bean.AwardBean;
-import com.donews.front.bean.FrontBean;
-import com.donews.front.bean.LotteryCategoryBean;
-import com.donews.front.bean.RedPacketBean;
-import com.donews.front.bean.WalletBean;
+import com.donews.middle.bean.WalletBean;
+import com.donews.middle.bean.front.AwardBean;
+import com.donews.middle.bean.front.LotteryCategoryBean;
+import com.donews.middle.bean.front.RedPacketBean;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
