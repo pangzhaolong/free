@@ -1,4 +1,4 @@
-package com.donews.walk;
+package com.donews.jdd;
 
 import android.content.Context;
 import android.os.Build;
@@ -31,7 +31,6 @@ public class MyApplication extends BaseApplication {
     public void onCreate() {
         super.onCreate();
         if (Utils.getMainProcess(this)) {
-
             if (LogUtil.allow) {           // 这两行必须写在init之前，否则这些配置在init过程中将无效
                 ARouter.openLog();     // 打印日志
                 ARouter.openDebug();   // 开启调试模式(如果在InstantRun模式下运行，必须开启调试模式！线上版本需要关闭,否则有安全风险)
@@ -45,7 +44,7 @@ public class MyApplication extends BaseApplication {
             // 集成bugly
             CrashReport.initCrashReport(getApplicationContext(), KeyConstant.getBuglyId(), BuildConfig.DEBUG);
             //极光推送
-            JPushHelper.setDebugMode(true);
+            JPushHelper.setDebugMode(BuildConfig.DEBUG);
             JPushHelper.init(this);
 
             DNEventBusUtils.INSTANCE.init(MyApplication.this);
