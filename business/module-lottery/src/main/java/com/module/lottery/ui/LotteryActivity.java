@@ -155,7 +155,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
 
     private void initViewData() {
-        mDataBinding.lotteryButton.setOnClickListener(new View.OnClickListener() {
+        mDataBinding.jsonAnimationRound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 luckyDrawEntrance();
@@ -182,13 +182,17 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         //当抽奖码大于等于6时显示等待开奖
         if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() >= 5) {
             mDataBinding.jsonAnimation.setVisibility(View.GONE);
-            mDataBinding.jsonAnimationHalo.pauseAnimation();
-            mDataBinding.jsonAnimationHalo.setProgress(0);
+            mDataBinding.jsonAnimationRound.pauseAnimation();
+            mDataBinding.jsonAnimationRound.setProgress(0);
         } else {
             //设置动画
+            //小手
             initLottie(mDataBinding.jsonAnimation, "lottery_finger.json");
-            initLottie(mDataBinding.jsonAnimationHalo, "data.json");
-            initLottie(mDataBinding.maskingButton, "data.json");
+            //圆
+            initLottie(mDataBinding.jsonAnimationRound, "lottery_round.json");
+            //圆 新手引导遮罩层
+            initLottie(mDataBinding.maskingButton, "lottery_round.json");
+            //小手 新手引导遮罩层
             initLottie(mDataBinding.maskingHand, "lottery_finger.json");
         }
 
@@ -518,13 +522,13 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             mDataBinding.tips.setText("明日10:00点开奖");
             //
             mDataBinding.jsonAnimation.setVisibility(View.GONE);
-            mDataBinding.jsonAnimationHalo.pauseAnimation();
-            mDataBinding.jsonAnimationHalo.setProgress(0);
+            mDataBinding.jsonAnimationRound.pauseAnimation();
+            mDataBinding.jsonAnimationRound.setProgress(0);
 
 
-            mDataBinding.jsonAnimationHalo.setColorFilter(Color.BLUE);
+            mDataBinding.jsonAnimationRound.setColorFilter(Color.BLUE);
 
-            LottieAnimationView mirror = mDataBinding.jsonAnimationHalo;
+            LottieAnimationView mirror = mDataBinding.jsonAnimationRound;
             mirror.addLottieOnCompositionLoadedListener(new LottieOnCompositionLoadedListener() {
                 @SuppressLint("RestrictedApi")
                 @Override
@@ -636,13 +640,19 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
 
     private void returnIntercept() {
-        if (mLotteryCodeBean == null || dialogShow) {
-            finishReturn();
-            finish();
-            return;
-        }
         boolean logType = AppInfo.checkIsWXLogin();
-        if (logType) {
+        if (!logType && !dialogShow) {
+            //未登录
+            //判断抽奖码的数量显示对应的dialog
+            showReturnDialog(TYPE_2);
+            dialogShow = true;
+            return;
+        } else {
+            if (mLotteryCodeBean == null || dialogShow) {
+                finishReturn();
+                finish();
+                return;
+            }
             //当抽奖码小于6个 登录有抽奖
             if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() < 6 && mLotteryCodeBean.getCodes().size() > 0) {
                 dialogShow = true;
@@ -662,12 +672,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 finish();
                 return;
             }
-            return;
-        } else {
-            //未登录
-            //判断抽奖码的数量显示对应的dialog
-            showReturnDialog(TYPE_2);
-            return;
         }
 
 

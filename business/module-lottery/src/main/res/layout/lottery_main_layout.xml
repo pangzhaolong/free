@@ -52,11 +52,52 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="170dp"
+                android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:background="@drawable/linear_background"
                 android:gravity="center">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="68dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:orientation="horizontal">
 
+                    <LinearLayout
+
+                        android:id="@+id/share"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/lottery_constant_50"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_marginEnd="15dp"
+                            android:layout_width="47dp"
+                            android:layout_height="47dp"
+                            android:gravity="center"
+                            android:src="@mipmap/share_icon" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/lottery_constant_50"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:layout_marginStart="15dp"
+                            android:id="@+id/panic_buying"
+                            android:layout_width="47dp"
+                            android:layout_height="47dp"
+                            android:gravity="center"
+                            android:src="@mipmap/buy_icon" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -94,15 +135,15 @@
                     </LinearLayout>
 
                     <RelativeLayout
-                        android:id="@+id/lottery_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        >
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
                         <com.airbnb.lottie.LottieAnimationView
-                            android:id="@+id/jsonAnimation_halo"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:id="@+id/jsonAnimation_round"
+                            android:layout_width="143dp"
+                            android:layout_height="143dp"
+                            android:layout_centerHorizontal="true"
+                            android:scaleType="fitXY"
                             app:lottie_autoPlay="true"
                             app:lottie_loop="true" />
 
@@ -138,64 +179,16 @@
                     </RelativeLayout>
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="bottom"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:id="@+id/share"
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/lottery_constant_50"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginBottom="50dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="47dp"
-                            android:layout_height="47dp"
-                            android:gravity="center"
-                            android:src="@mipmap/share_icon" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/lottery_constant_50"
-                        android:layout_marginEnd="15dp"
-                        android:layout_marginBottom="50dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <ImageView
-
-                            android:id="@+id/panic_buying"
-                            android:layout_width="47dp"
-                            android:layout_height="47dp"
-                            android:gravity="center"
-                            android:src="@mipmap/buy_icon" />
-                    </LinearLayout>
 
 
-                </LinearLayout>
-
-
+                <!--小手-->
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/jsonAnimation"
-                    android:layout_width="49dp"
-                    android:layout_height="51dp"
+                    android:layout_width="57dp"
+                    android:layout_height="58dp"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginStart="78dp"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginStart="75dp"
+                    android:layout_marginBottom="35dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -205,7 +198,7 @@
 
 
         </RelativeLayout>
-
+        <!--  下面是新手引导遮罩层-->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/masking_layout"
             android:layout_width="match_parent"
@@ -216,8 +209,8 @@
 
             <RelativeLayout
                 android:id="@+id/button_layout"
-                android:layout_width="116dp"
-                android:layout_height="116dp"
+                android:layout_width="143dp"
+                android:layout_height="143dp"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -226,8 +219,9 @@
 
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/masking_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="143dp"
+                    android:scaleType="fitXY"
+                    android:layout_height="143dp"
                     app:lottie_autoPlay="true"
                     app:lottie_loop="true" />
 
@@ -273,11 +267,11 @@
 
             <ImageView
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
-                android:scaleType="fitXY"
                 android:layout_marginBottom="7dp"
-                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
                 android:src="@mipmap/process_guidance"
                 app:layout_constraintBottom_toTopOf="@+id/arrowIcon"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -286,11 +280,11 @@
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/masking_hand"
-                android:layout_width="49dp"
-                android:layout_height="51dp"
+                android:layout_width="57dp"
+                android:layout_height="58dp"
                 android:layout_alignParentBottom="true"
-                android:layout_marginStart="78dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginStart="75dp"
+                android:layout_marginBottom="35dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
