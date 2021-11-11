@@ -2,7 +2,9 @@ package com.donews.main.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,6 +14,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.donews.base.base.AppManager;
 import com.donews.base.base.AppStatusConstant;
 import com.donews.base.base.AppStatusManager;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
@@ -20,17 +23,19 @@ import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.common.updatedialog.UpdateManager;
+import com.donews.common.updatedialog.UpdateReceiver;
 import com.donews.main.R;
 import com.donews.main.adapter.MainPageAdapter;
 import com.donews.main.common.CommonParams;
 import com.donews.main.databinding.MainActivityMainBinding;
 import com.donews.main.utils.ExitInterceptUtils;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.utilslibrary.analysis.AnalysisHelp;
 import com.donews.utilslibrary.analysis.AnalysisParam;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
-import com.gyf.immersionbar.BarHide;
 import com.gyf.immersionbar.ImmersionBar;
+import com.orhanobut.logger.Logger;
 import com.vmadalin.easypermissions.EasyPermissions;
 
 import java.util.ArrayList;
@@ -55,6 +60,7 @@ public class MainActivity
 
     private NavigationController mNavigationController;
 
+    private long mFirstClickBackTime = 0;
     /**
      * 初始选择tab
      */
@@ -186,28 +192,21 @@ public class MainActivity
         fragments = new ArrayList<>();
         //通过ARouter 获取其他组件提供的fragment
 
-//        Fragment userFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.User.PAGER_USER_SETTING)
-//        .navigation();
+        if (ABSwitch.Ins().getABBean().isOpenAB()) {
+            fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Home.PAGER_HOME).navigation());
+            fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Spike.PAGER_SPIKE).navigation());
+            fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.User.PAGER_USER_SETTING).navigation());
+        } else {
+            fragments.add((Fragment) ARouter.getInstance()
+                    .build(RouterFragmentPath.Front.PAGER_FRONT)
+                    .navigation());
+            fragments.add(RouterFragmentPath.Unboxing.getUnboxingFragment());
+            fragments.add(RouterFragmentPath.User.getMineOpenWinFragment(0, false, true));
+            fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Home.PAGER_HOME).navigation());
+            fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.User.PAGER_USER).navigation());
+        }
 
-        fragments.add(
-                (Fragment) ARouter.getInstance()
-                        .build(RouterFragmentPath.Front.PAGER_FRONT)
-                        .navigation());
-        fragments.add(RouterFragmentPath.Unboxing.getUnboxingFragment());
-//        fragments.add(
-//                (Fragment) ARouter.getInstance()
-//                        .build(RouterFragmentPath.Spike.PAGER_SPIKE)
-//                        .navigation());
-        //开奖页面
-        fragments.add(RouterFragmentPath.User.getMineOpenWinFragment(
-                0, false, true));
-        fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Home.PAGER_HOME).navigation());
-        fragments.add(
-                (Fragment) ARouter.getInstance()
-                        .build(RouterFragmentPath.User.PAGER_USER)
-                        .navigation());
-        adapter = new MainPageAdapter(getSupportFragmentManager(),
-                FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        adapter = new MainPageAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         adapter.setData(fragments);
     }
 
@@ -219,8 +218,12 @@ public class MainActivity
 
     @Override
     public void initView() {
+        int statusBarColor = R.color.main_color_bar;
+        if (ABSwitch.Ins().getABBean().isOpenAB()) {
+            statusBarColor = R.color.white;
+        }
         ImmersionBar.with(this)
-                .statusBarColor(R.color.main_color_bar)
+                .statusBarColor(statusBarColor)
                 .navigationBarColor(R.color.black)
                 .fitsSystemWindows(true)
                 .autoDarkModeEnable(true)
@@ -230,17 +233,36 @@ public class MainActivity
         // 获取数美deviceId之后，调用refresh接口刷新
         CommonParams.setNetWork();
 
-        //此接口不需要
-//        CommonParams.getCommonNetWork();
+        checkAppUpdate();
+    }
 
+    /** 检测更新 */
+    private void checkAppUpdate() {
         UpdateManager.getInstance().checkUpdate(this, false);
+        //定时检查更新
+        UpdateReceiver updateReceiver = new UpdateReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_TIME_TICK);
+        getApplication().registerReceiver(updateReceiver, intentFilter);
     }
 
     @Override
     public void onBackPressed() {
-        ExitInterceptUtils.INSTANCE.intercept(this);
-
-//        ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP).navigation();
+        if (!ABSwitch.Ins().getABBean().isOpenAB()) {
+            ExitInterceptUtils.INSTANCE.intercept(this);
+        } else {
+            long duration = System.currentTimeMillis() - mFirstClickBackTime;
+            if (duration < 2000) {
+                // 程序关闭
+                AppStatusManager.getInstance().setAppStatus(AppStatusConstant.STATUS_FORCE_KILLED);
+                AnalysisUtils.onEvent(this, AnalysisParam.SHUTDOWN);
+                AppManager.getInstance().AppExit();
+                finish();
+            } else {
+                Toast.makeText(this, "再按一次退出！", Toast.LENGTH_SHORT).show();
+                mFirstClickBackTime = System.currentTimeMillis();
+            }
+        }
     }
 
     @Override

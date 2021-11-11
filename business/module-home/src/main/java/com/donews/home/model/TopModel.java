@@ -1,21 +1,17 @@
 package com.donews.home.model;
 
-import android.os.SystemClock;
-
 import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.model.BaseLiveDataModel;
-import com.donews.home.BuildConfig;
 import com.donews.home.api.HomeApi;
-import com.donews.home.bean.DataBean;
-import com.donews.home.bean.RealTimeBean;
-import com.donews.home.bean.SecKilBean;
-import com.donews.home.bean.TopGoodsBean;
+import com.donews.middle.bean.home.HomeDataBean;
+import com.donews.middle.bean.home.HomeGoodsBean;
+import com.donews.middle.bean.home.RealTimeBean;
+import com.donews.middle.bean.home.SecKilBean;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
-import com.donews.utilslibrary.utils.DateTimeUtils;
 
 /**
  * <p> </p>
@@ -31,12 +27,12 @@ public class TopModel extends BaseLiveDataModel {
      *
      * @return 返回 homeBean的数据
      */
-    public MutableLiveData<DataBean> getNetData() {
-        MutableLiveData<DataBean> mutableLiveData = new MutableLiveData<>();
+    public MutableLiveData<HomeDataBean> getNetData() {
+        MutableLiveData<HomeDataBean> mutableLiveData = new MutableLiveData<>();
 
         EasyHttp.get(HomeApi.TopBannerUrl)
                 .cacheMode(CacheMode.NO_CACHE)
-                .execute(new SimpleCallBack<DataBean>() {
+                .execute(new SimpleCallBack<HomeDataBean>() {
 
                     @Override
                     public void onError(ApiException e) {
@@ -44,20 +40,20 @@ public class TopModel extends BaseLiveDataModel {
                     }
 
                     @Override
-                    public void onSuccess(DataBean dataBean) {
-                        mutableLiveData.postValue(dataBean);
+                    public void onSuccess(HomeDataBean homeDataBean) {
+                        mutableLiveData.postValue(homeDataBean);
                     }
                 });
 
         return mutableLiveData;
     }
 
-    public MutableLiveData<TopGoodsBean> getTopGoodsData(int pageId) {
-        MutableLiveData<TopGoodsBean> mutableLiveData = new MutableLiveData<>();
+    public MutableLiveData<HomeGoodsBean> getTopGoodsData(int pageId) {
+        MutableLiveData<HomeGoodsBean> mutableLiveData = new MutableLiveData<>();
 
         EasyHttp.get(HomeApi.goodsList + "?page_size=20&page_id=" + pageId)
                 .cacheMode(CacheMode.NO_CACHE)
-                .execute(new SimpleCallBack<TopGoodsBean>() {
+                .execute(new SimpleCallBack<HomeGoodsBean>() {
 
                     @Override
                     public void onError(ApiException e) {
@@ -65,8 +61,8 @@ public class TopModel extends BaseLiveDataModel {
                     }
 
                     @Override
-                    public void onSuccess(TopGoodsBean dataBean) {
-                        mutableLiveData.postValue(dataBean);
+                    public void onSuccess(HomeGoodsBean homeGoodsBean) {
+                        mutableLiveData.postValue(homeGoodsBean);
                     }
                 });
 
@@ -96,7 +92,6 @@ public class TopModel extends BaseLiveDataModel {
 
     public MutableLiveData<SecKilBean> getSecKilData() {
         MutableLiveData<SecKilBean> mutableLiveData = new MutableLiveData<>();
-//        String roundTime = DateTimeUtils.getNow("yyyy-MM-dd HH:00:00");
         EasyHttp.get(HomeApi.seckiltUrl + "?&page_size=2")
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<SecKilBean>() {

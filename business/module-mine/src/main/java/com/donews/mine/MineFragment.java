@@ -117,12 +117,16 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
         } else {
             lotteryStatus = 2;
         }
-        RecommendGoodsResp.ListDTO item = adapter.getItem(event.position);
-        if (!event.goodsId.equals(item.goodsId)) {
-            return;
+        if (adapter != null) {
+            RecommendGoodsResp.ListDTO item = adapter.getItem(event.position);
+            if (item != null) {
+                if (!event.goodsId.equals(item.goodsId)) {
+                    return;
+                }
+                item.lotteryStatus = (lotteryStatus);
+                adapter.notifyItemChanged(event.position);
+            }
         }
-        item.lotteryStatus = (lotteryStatus);
-        adapter.notifyItemChanged(event.position);
     }
 
     @Override

@@ -3,10 +3,8 @@ package com.donews.front.viewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
-import com.donews.front.bean.FrontBean;
-import com.donews.front.bean.NorGoodsBean;
-import com.donews.front.model.GiftModel;
 import com.donews.front.model.NorModel;
+import com.donews.middle.bean.front.LotteryGoodsBean;
 
 public class NorViewModel extends BaseLiveDataViewModel<NorModel> {
 
@@ -16,7 +14,7 @@ public class NorViewModel extends BaseLiveDataViewModel<NorModel> {
     }
 
 
-    public MutableLiveData<NorGoodsBean> getNetData(String categoryId, int pageId) {
+    public MutableLiveData<LotteryGoodsBean> getNetData(String categoryId, int pageId) {
         return mModel.getNetData(categoryId, pageId);
     }
 }

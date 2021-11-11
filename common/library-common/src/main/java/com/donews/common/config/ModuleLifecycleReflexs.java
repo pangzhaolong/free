@@ -18,30 +18,17 @@ public class ModuleLifecycleReflexs {
     /**
      * main组件库
      */
-    private static final String MainInit =
-            "com.donews.main.application.MainModuleInit";
-
-    /**
-     * 用户组件初始化
-     */
-    private static final String UserInit = "com.donews.user.UserModuleInit";
-
-    /**
-     * home 缓存初始化
-     */
-
-    private static final String HomeInit = "com.donews.home.application.HomeModuleInit";
-
-    /**
-     * 首页 缓存初始化
-     */
-
-    private static final String FrontInit = "com.donews.front.application.FrontModuleInit";
+    private static final String MainInit = "com.donews.main.application.MainModuleInit";
 
     /**
      * 广告组件库
      */
     private static final String SDKInit = "com.donews.common.ad.business.application.AdSdkModuleInit";
 
-    public static String[] initModuleNames = {MainInit, BaseInit, HomeInit, SDKInit, FrontInit};
+    /**
+     * 中间件
+     */
+    private static final String MiddleInit = "com.donews.middle.application.MiddleModuleInit";
+
+    public static String[] initModuleNames = {MainInit, BaseInit, SDKInit, MiddleInit};
 }

@@ -14,26 +14,24 @@ import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.home.R;
 import com.donews.home.adapter.NorGoodsAdapter;
-import com.donews.home.bean.HomeBean;
-import com.donews.home.bean.NorGoodsBean;
-import com.donews.home.cache.GoodsCache;
 import com.donews.home.databinding.HomeFragmentNorBinding;
-import com.donews.home.decoration.GridSpaceItemDecoration;
 import com.donews.home.listener.GoodsDetailListener;
 import com.donews.home.viewModel.NorViewModel;
-import com.donews.utilslibrary.utils.LogUtil;
+import com.donews.middle.bean.home.HomeGoodsBean;
+import com.donews.middle.bean.home.HomeCategoryBean;
+import com.donews.middle.cache.GoodsCache;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 
 public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding, NorViewModel> implements GoodsDetailListener {
 
-    private final HomeBean.CategoryItem mCategoryItem;
+    private final HomeCategoryBean.CategoryItem mCategoryItem;
     private NorGoodsAdapter mNorGoodsAdapter;
 
     private int mPageId = 0;
     private RecyclerView.ItemDecoration mItemDecoration;
 
-    public NorFragment(HomeBean.CategoryItem categoryItem) {
+    public NorFragment(HomeCategoryBean.CategoryItem categoryItem) {
         mCategoryItem = categoryItem;
     }
 
@@ -64,8 +62,8 @@ public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding
         };
         mDataBinding.homeNorGoodsRv.addItemDecoration(mItemDecoration);
 
-        NorGoodsBean tmpNorGoodsBean = GoodsCache.readGoodsBean(NorGoodsBean.class, mCategoryItem.getCid());
-        showNorGoodsBean(tmpNorGoodsBean);
+        HomeGoodsBean tmpHomeGoodsBean = GoodsCache.readGoodsBean(HomeGoodsBean.class, mCategoryItem.getCid());
+        showNorGoodsBean(tmpHomeGoodsBean);
 
         loadMoreData();
 
@@ -91,8 +89,8 @@ public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding
         mViewModel.getNorGoodsData(mCategoryItem.getCid(), mPageId).observe(getViewLifecycleOwner(), this::showNorGoodsBean);
     }
 
-    private void showNorGoodsBean(NorGoodsBean norGoodsBean) {
-        if (norGoodsBean == null || norGoodsBean.getList() == null || norGoodsBean.getList().size() <= 0) {
+    private void showNorGoodsBean(HomeGoodsBean homeGoodsBean) {
+        if (homeGoodsBean == null || homeGoodsBean.getList() == null || homeGoodsBean.getList().size() <= 0) {
             mDataBinding.homeNorSrl.finishLoadMoreWithNoMoreData();
             mPageId--;
             return;
@@ -100,9 +98,9 @@ public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding
 
         mDataBinding.homeNorSrl.finishLoadMore();
 
-        mNorGoodsAdapter.refreshData(norGoodsBean.getList(), mPageId == 1);
+        mNorGoodsAdapter.refreshData(homeGoodsBean.getList(), mPageId == 1);
 
-        GoodsCache.saveGoodsBean(norGoodsBean, mCategoryItem.getCid());
+        GoodsCache.saveGoodsBean(homeGoodsBean, mCategoryItem.getCid());
 
         mDataBinding.homeNorLoadingLl.setVisibility(View.GONE);
         mDataBinding.homeNorSrl.setVisibility(View.VISIBLE);
@@ -111,7 +109,6 @@ public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        LogUtil.e("NorFragment onDestroy");
         mItemDecoration = null;
     }
 

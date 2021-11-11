@@ -1,6 +1,7 @@
 package com.donews.main.ui;
 
 import android.Manifest;
+import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
@@ -64,12 +65,6 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
     private static final String TAG = "SplashActivity";
     private static final String DEAL = "main_agree_deal";
 
-    /** 请求权限code */
-    private static final int REQUEST_PERMISSIONS_CODE = 1024;
-
-    //再其他页面后台太久回到前台。导师开屏页面被打开的标记
-    private static final String toForeGroundKey = "toForeGround";
-
     /**
      * 后台切回前台的进入启动页
      *
@@ -84,12 +79,19 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         act.startActivity(intent);
     }
 
+
+    /** 请求权限code */
+    private static final int REQUEST_PERMISSIONS_CODE = 1024;
+
+    //再其他页面后台太久回到前台。导师开屏页面被打开的标记
+    private static final String toForeGroundKey = "toForeGround";
+
     //启动页正常的等待时间
-    public static final long SPLASH_WAIT_TIME = 3 * 1000;
+    public static final long PROGRESS_DURATION = 5 * 1000;
     //是否为后台到前台。即:是有后台唤醒到前台并非正常启动流程，T:唤醒，F:正常的启动逻辑
     private boolean mIsBackgroundToFore = false;
 
-    private boolean mStartLoadAd = false;
+    private ValueAnimator mLoadAdAnimator;
 
     @Override
     protected int getLayoutId() {
@@ -131,7 +133,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
     @Override
     protected void onDestroy() {
         //设置为之后启动为非冷启动模式
-        SplashUtils.INSTANCE.setColdStart(false);
+//        SplashUtils.INSTANCE.setColdStart(false);
         EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
@@ -165,6 +167,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
 
     /** 加载热启动广告 */
     private void loadHotStartAd() {
+        startProgressAnim();
         JddAdConfigManager.INSTANCE.addListener(() -> {
             JddAdConfigBean configBean = JddAdConfigManager.INSTANCE.getJddAdConfigBean();
             if (configBean.getHotStartAdEnable()) {
@@ -183,6 +186,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
 
     /** 加载冷启动广告 */
     private void loadClodStartAd() {
+        startProgressAnim();
         JddAdConfigManager.INSTANCE.addListener(() -> {
             JddAdConfigBean configBean = JddAdConfigManager.INSTANCE.getJddAdConfigBean();
             //如果为唤醒模式、非冷启动。则不显示进度条,热启动
@@ -217,6 +221,11 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
             }
 
             @Override
+            public void onAdShow() {
+                super.onAdShow();
+            }
+
+            @Override
             public void onAdShowFail(int code, String error) {
                 super.onAdShowFail(code, error);
                 Logger.d(error);
@@ -239,12 +248,6 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         }
     }
 
-
-    //热启动
-    private boolean isHotStart() {
-        return mIsBackgroundToFore || !SplashUtils.INSTANCE.isColdStart();
-    }
-
     //半屏显示广告
     private void setHalfScreen() {
         mDataBinding.adHalfScreenContainer.setVisibility(View.VISIBLE);
@@ -257,8 +260,8 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         mDataBinding.adHalfScreenContainer.setVisibility(View.GONE);
     }
 
-
     private void loadDisagreePrivacyPolicyAd() {
+        startProgressAnim();
         JddAdConfigManager.INSTANCE.addListener(() -> {
             JddAdConfigBean configBean = JddAdConfigManager.INSTANCE.getJddAdConfigBean();
             if (configBean.getDisagreePrivacyPolicyAdEnable()) {
@@ -308,6 +311,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
     }
 
     private void goToMain() {
+        stopProgressAnim();
         if (!mIsBackgroundToFore) {
             if (AppStatusManager.getInstance().getAppStatus() != AppStatusConstant.STATUS_NORMAL) {
                 LotteryAdCount.INSTANCE.init();
@@ -387,5 +391,38 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
             }
         }
         return true;
+    }
+
+
+    private void startProgressAnim() {
+        if (mLoadAdAnimator != null) {
+            mLoadAdAnimator.cancel();
+        }
+        if (mDataBinding != null) {
+            mDataBinding.pbProgress.setProgress(0);
+        }
+
+        mLoadAdAnimator = ValueAnimator.ofInt(0, 100);
+        mLoadAdAnimator.setDuration(PROGRESS_DURATION);
+        mLoadAdAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int progress = (int) animation.getAnimatedValue();
+                if (mDataBinding != null) {
+                    if (mDataBinding.groupProgress.getVisibility() != View.VISIBLE) {
+                        mDataBinding.groupProgress.setVisibility(View.VISIBLE);
+                    }
+                    mDataBinding.pbProgress.setProgress(progress);
+                }
+            }
+        });
+        mLoadAdAnimator.start();
+    }
+
+    private void stopProgressAnim() {
+        if (mLoadAdAnimator != null && mLoadAdAnimator.isRunning()) {
+            mLoadAdAnimator.cancel();
+        }
+        mLoadAdAnimator = null;
     }
 }

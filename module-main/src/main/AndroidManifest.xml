@@ -10,7 +10,7 @@
             android:name="com.donews.main.ui.SplashActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Start">
+            android:theme="@style/main_AppTheme.Start">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

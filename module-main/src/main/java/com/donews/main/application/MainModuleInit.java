@@ -45,13 +45,12 @@ public class MainModuleInit implements IModuleInit {
 
         @Override
         public void onActivityCreated(@NotNull Activity activity, Bundle savedInstanceState) {
-//            setExcludeFromRecentsActivity();
+
         }
 
         @Override
         public void onActivityStarted(@NotNull Activity activity) {
             if (appCount <= 0) {
-//                    LogUtil.i("switchad", "app程序进入前台" + appCount);
                 toForeGround(activity);
             }
             appCount++;
@@ -91,8 +90,6 @@ public class MainModuleInit implements IModuleInit {
      */
     private void toForeGround(Activity activity) {
         JddAdConfigBean bean = JddAdConfigManager.INSTANCE.getJddAdConfigBean();
-//        int backGroundInt = SPUtils.getInformain(KeySharePreferences.SPLASH_BACKGROUND_INTERVAL_TIME,
-//                bean.getHotStartSplashInterval());
         int backGroundInt = bean.getHotStartSplashInterval();
         if (activity instanceof SplashActivity || backGroundInt == 0) {
             return;
@@ -103,7 +100,6 @@ public class MainModuleInit implements IModuleInit {
         LogUtil.d("toForeGround: seconds:" + seconds);
         if (seconds > backGroundInt) {
             SplashActivity.toForeGround(activity);
-//            activity.startActivity(new Intent(activity, SplashActivity.class));
         }
     }
 
@@ -115,7 +111,7 @@ public class MainModuleInit implements IModuleInit {
             EasyHttp.getInstance().debug("HoneyLife", true);
         }
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.put(HttpHeaders.HEAD_PACKAGENMAE,DeviceUtils.getPackage());
+        httpHeaders.put(HttpHeaders.HEAD_PACKAGENMAE, DeviceUtils.getPackage());
         httpHeaders.put(HttpHeaders.HEAD_AUTHORIZATION, AppInfo.getToken(""));
         EasyHttp.getInstance()
                 .setBaseUrl(BuildConfig.BASE_CONFIG_URL)

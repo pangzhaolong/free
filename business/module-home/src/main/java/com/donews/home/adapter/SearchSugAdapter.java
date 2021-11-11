@@ -11,21 +11,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.donews.home.R;
-import com.donews.home.bean.SearchSugBean;
 import com.donews.home.listener.SearchSugClickListener;
+import com.donews.middle.bean.home.SearchSugBean;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SearchSugAdapter extends RecyclerView.Adapter<SearchSugAdapter.SugViewHolder> implements View.OnClickListener {
 
-    private final Context mContext;
     private final List<SearchSugBean.SugItem> mGoodsList = new ArrayList<>();
 
     private SearchSugClickListener mListener;
 
     public SearchSugAdapter(Context context, SearchSugClickListener listener) {
-        mContext = context;
         mListener = listener;
     }
 

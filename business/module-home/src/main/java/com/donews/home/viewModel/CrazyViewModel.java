@@ -3,10 +3,8 @@ package com.donews.home.viewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
-import com.donews.home.bean.RealTimeBean;
-import com.donews.home.bean.SecKilBean;
 import com.donews.home.model.CrazyModel;
-import com.donews.home.model.RealTimeModel;
+import com.donews.middle.bean.home.RealTimeBean;
 
 /**
  * <p> </p>

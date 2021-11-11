@@ -3,10 +3,10 @@ package com.donews.home.viewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
-import com.donews.home.bean.HomeBean;
-import com.donews.home.bean.SecKilBean;
-import com.donews.home.bean.UserBean;
 import com.donews.home.model.HomeModel;
+import com.donews.middle.bean.home.HomeCategoryBean;
+import com.donews.middle.bean.home.SecKilBean;
+import com.donews.middle.bean.home.UserBean;
 
 /**
  * <p> </p>
@@ -22,7 +22,7 @@ public class HomeViewModel extends BaseLiveDataViewModel<HomeModel> {
     }
 
 
-    public MutableLiveData<HomeBean> getNetHomeData() {
+    public MutableLiveData<HomeCategoryBean> getNetHomeData() {
         return mModel.getNetData();
     }
 

@@ -29,6 +29,7 @@
             android:orientation="vertical">
             <!-- title项目 -->
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/mine_setting_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/text_red"

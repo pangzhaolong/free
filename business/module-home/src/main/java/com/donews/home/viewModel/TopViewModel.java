@@ -3,11 +3,11 @@ package com.donews.home.viewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
-import com.donews.home.bean.DataBean;
-import com.donews.home.bean.RealTimeBean;
-import com.donews.home.bean.SecKilBean;
-import com.donews.home.bean.TopGoodsBean;
 import com.donews.home.model.TopModel;
+import com.donews.middle.bean.home.HomeDataBean;
+import com.donews.middle.bean.home.HomeGoodsBean;
+import com.donews.middle.bean.home.RealTimeBean;
+import com.donews.middle.bean.home.SecKilBean;
 
 /**
  * <p> </p>
@@ -23,11 +23,11 @@ public class TopViewModel extends BaseLiveDataViewModel<TopModel> {
     }
 
 
-    public MutableLiveData<DataBean> getTopBannerData() {
+    public MutableLiveData<HomeDataBean> getTopBannerData() {
         return mModel.getNetData();
     }
 
-    public MutableLiveData<TopGoodsBean> getTopGoodsData(int pageId) {
+    public MutableLiveData<HomeGoodsBean> getTopGoodsData(int pageId) {
         return mModel.getTopGoodsData(pageId);
     }
 

@@ -17,9 +17,12 @@ public class AppStatusUtils {
     public static final String MMKV_APP_INSTALL_TIME = "app_install_time";
     public static final String MMKV_APP_INSTALL_FLAG = "app_install_flag";
 
+    private static MMKV mmkv = MMKV.mmkvWithID(MMKV_NAME, MMKV.MULTI_PROCESS_MODE);
 
     public static boolean isForceGround() {
-        MMKV mmkv = MMKV.mmkvWithID(MMKV_NAME);
+        if (mmkv == null) {
+            mmkv = MMKV.mmkvWithID(MMKV_NAME, MMKV.MULTI_PROCESS_MODE);
+        }
         if (mmkv != null) {
             return mmkv.decodeBool(APP_STATE_FORCE_GROUND, false);
         } else {
@@ -28,7 +31,9 @@ public class AppStatusUtils {
     }
 
     public static void setAppForceGround(boolean forceGround) {
-        MMKV mmkv = MMKV.mmkvWithID(MMKV_NAME);
+        if (mmkv == null) {
+            mmkv = MMKV.mmkvWithID(MMKV_NAME, MMKV.MULTI_PROCESS_MODE);
+        }
         if (mmkv != null) {
             mmkv.encode(APP_STATE_FORCE_GROUND, forceGround);
         }
@@ -36,7 +41,9 @@ public class AppStatusUtils {
 
 
     public static void saveAppInstallTime() {
-        MMKV mmkv = MMKV.mmkvWithID(MMKV_NAME);
+        if (mmkv == null) {
+            mmkv = MMKV.mmkvWithID(MMKV_NAME, MMKV.MULTI_PROCESS_MODE);
+        }
         if (mmkv != null) {
             boolean firstOpenApp = mmkv.decodeBool(MMKV_APP_INSTALL_FLAG, true);
             if (firstOpenApp) {
@@ -46,8 +53,11 @@ public class AppStatusUtils {
         }
     }
 
+
     public static long getAppInstallTime() {
-        MMKV mmkv = MMKV.mmkvWithID(MMKV_NAME);
+        if (mmkv == null) {
+            mmkv = MMKV.mmkvWithID(MMKV_NAME, MMKV.MULTI_PROCESS_MODE);
+        }
         if (mmkv != null) {
             return mmkv.decodeLong(MMKV_APP_INSTALL_TIME, 0L);
         } else {

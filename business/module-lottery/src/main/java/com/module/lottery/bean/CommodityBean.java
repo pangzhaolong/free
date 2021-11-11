@@ -32,6 +32,13 @@ public class CommodityBean extends BaseCustomViewModel {
     private LotteryCodeBean lotteryCodeBean;
 
     private List<MaylikeBean.ListDTO> guessLikeData;
+    private List<String> pics;
+    public List<String> getPics() {
+        return pics;
+    }
+    public void setPics(List<String> pics) {
+        this.pics = pics;
+    }
 
     public LotteryCodeBean getLotteryCodeBean() {
         return lotteryCodeBean;

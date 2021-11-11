@@ -25,14 +25,6 @@ public class CommonModuleInit implements IModuleInit {
     public boolean onInitAhead(BaseApplication application) {
 
         MMKV.initialize(application);
-        //定时检查更新
-        UpdateReceiver updateReceiver = new UpdateReceiver();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Intent.ACTION_TIME_TICK);
-        application.registerReceiver(updateReceiver, intentFilter);
-
-        //更新app维度数据
-//        AppGlobalConfigManager.update();
 
         new SimpleApplicationObServer().register();
         //app第一次打开时间

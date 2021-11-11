@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/scroll_shape"
+        android:orientation="horizontal"
+        tools:ignore="ResourceName">
+
+        <ImageView
+            android:id="@+id/head"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:paddingStart="8dp"
+            android:id="@+id/text"
+            android:textColor="#FFE2850D"
+            android:textSize="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center_vertical"
+            android:paddingEnd="15dp"
+            android:text="**** 已获得3个抽奖码" />
+
+    </LinearLayout>
+</layout>

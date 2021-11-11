@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.donews.home.R;
-import com.donews.home.bean.SearchHistory;
 import com.donews.home.listener.SearchHistoryListener;
 
 import java.util.ArrayList;

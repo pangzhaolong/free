@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.donews.home.R;
-import com.donews.home.bean.SpecialCategoryBean;
+import com.donews.middle.bean.home.HomeGridCategoryBean;
 import com.donews.utilslibrary.utils.UrlUtils;
 
 import java.util.ArrayList;
@@ -18,13 +18,13 @@ import java.util.List;
 public class GridAdapter extends BaseAdapter {
 
     private final Context mContext;
-    private List<SpecialCategoryBean> mSpelCategoryList = new ArrayList<>();
+    private List<HomeGridCategoryBean> mSpelCategoryList = new ArrayList<>();
 
     public GridAdapter(Context context) {
         mContext = context;
     }
 
-    public void refreshData(List<SpecialCategoryBean> list) {
+    public void refreshData(List<HomeGridCategoryBean> list) {
         mSpelCategoryList.clear();
         mSpelCategoryList.addAll(list);
         notifyDataSetChanged();

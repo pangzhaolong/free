@@ -1,17 +1,14 @@
 package com.donews.home.adapter;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.donews.home.bean.HomeBean;
-import com.donews.home.fragment.NorFragment;
 import com.donews.home.fragment.TbFragment;
-import com.donews.home.fragment.TopFragment;
+import com.donews.middle.bean.home.HomeCategoryBean;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,11 +17,11 @@ import java.util.Map;
 
 public class SearchFragmentAdapter extends FragmentStateAdapter {
 
-    private final List<HomeBean.CategoryItem> list = new ArrayList<>();
+    private final List<HomeCategoryBean.CategoryItem> list = new ArrayList<>();
     private final Map<Integer, Fragment> mFragmentMap = new HashMap<>();
 
     @SuppressLint("NotifyDataSetChanged")
-    public void refreshData(List<HomeBean.CategoryItem> list) {
+    public void refreshData(List<HomeCategoryBean.CategoryItem> list) {
         this.list.clear();
         this.list.addAll(list);
         notifyDataSetChanged();
