@@ -225,6 +225,7 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     //初始化详情页面顶部的ViewPager
     private void initViewPager(ListHolder listHolder) {
         if ((mCommodityBean != null) && (mCommodityBean.getPics() != null) && (mCommodityBean.getPics().size() > 0)) {
+            flag=0;
             //将imageView图片资源存在集合中
             List list = new ArrayList<ImageView>();
             for (int i = 0; i < mCommodityBean.getPics().size(); i++) {
