@@ -22,7 +22,10 @@ import java.util.Map;
 //对数据进行访问，并且通知观察者
 public class LotteryModel extends BaseLiveDataModel {
 
-    private static String LOTTERY_BASE = BuildConfig.API_LOTTERY_URL;
+    private static String LOTTERY_BASE="https://lottery.dev.tagtic.cn/lottery/";
+
+
+//    private static String LOTTERY_BASE = BuildConfig.API_LOTTERY_URL;
     //抽奖列表猜你喜欢
     public static String LOTTERY_GUESS_LIKE = LOTTERY_BASE + "v1/similar-goods-list";
     //抽奖商品详情

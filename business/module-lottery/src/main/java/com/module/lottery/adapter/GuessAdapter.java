@@ -16,6 +16,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
@@ -50,21 +52,21 @@ import com.module_lottery.databinding.GuesslikeHeadLayoutBinding;
 import com.module_lottery.databinding.GuesslikeItemLayoutBinding;
 import com.orhanobut.logger.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
     public static final String TAG = "GuessAdapter";
     public static final int TYPE_HEADER = 0;  //说明是带有Header的
     public static final int TYPE_FOOTER = 1;  //说明是带有Footer的
     public static final int TYPE_NORMAL = 2;  //说明是不带有header和footer的
     private GuesslikeHeadLayoutBinding mHeaderView;
-    ScrollListAdapter mScrollListAdapter;
-
+    public ScrollListAdapter mScrollListAdapter;
     private CommodityBean mCommodityBean;
     private LotteryActivity mContext;
     private int mLayoutId;
+    private int flag = 0;
 
     public GuessAdapter(LotteryActivity context) {
         this.mContext = context;
@@ -90,19 +92,20 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         super.onViewDetachedFromWindow(holder);
     }
 
+
     @SuppressLint("RecyclerView")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (mHeaderView != null && position == TYPE_HEADER) {
             if (holder instanceof ListHolder && mCommodityBean != null) {
                 ListHolder listHolder = ((ListHolder) (holder));
-                ImageUtils.setImage(mContext, listHolder.mGuesslikeHeadBinding.guessLikeHeadImg, mCommodityBean.getMainPic(), 5);
                 //价格
                 listHolder.mGuesslikeHeadBinding.price.setText(mCommodityBean.getDisplayPrice() + "");
                 //参考价格
                 listHolder.mGuesslikeHeadBinding.referPrice.setText("参考价值: " + mCommodityBean.getOriginalPrice() + "");
                 listHolder.mGuesslikeHeadBinding.title.setText(mCommodityBean.getTitle());
                 listHolder.mGuesslikeHeadBinding.cycle.setText("第" + mCommodityBean.getPeriod() + "期");
+                initViewPager(listHolder);
 
                 listHolder.mGuesslikeHeadBinding.lotteryContainer.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -182,7 +185,7 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if ((textView != null) && (mContext != null)) {
             int w = mContext.getResources().getDimensionPixelOffset(R.dimen.merchant_icon_w);
             int h = mContext.getResources().getDimensionPixelOffset(R.dimen.merchant_icon_h);
-            SpannableString spannableString = new SpannableString("  "+value);
+            SpannableString spannableString = new SpannableString("  " + value);
             Drawable drawable = mContext.getResources().getDrawable(R.mipmap.taobao_icon);
             drawable.setBounds(0, 0, w, h);
             spannableString.setSpan(new VerticalImageSpan(drawable), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -219,7 +222,65 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
+    //初始化详情页面顶部的ViewPager
+    private void initViewPager(ListHolder listHolder) {
+        if ((mCommodityBean != null) && (mCommodityBean.getPics() != null) && (mCommodityBean.getPics().size() > 0)) {
+            //将imageView图片资源存在集合中
+            List list = new ArrayList<ImageView>();
+            for (int i = 0; i < mCommodityBean.getPics().size(); i++) {
+                ImageView imageView = new ImageView(mContext);
+                imageView.setTag(mCommodityBean.getPics().get(i));
+                list.add(imageView);
+            }
+            ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter();
+            if (list != null && list.size() > 0) {
+                viewPagerAdapter.setDataList(list);
+                listHolder.mGuesslikeHeadBinding.headPager.setAdapter(viewPagerAdapter);
+                listHolder.mGuesslikeHeadBinding.pointLayout.removeAllViews();
+                //动态创建小点点
+                for (int i = 0; i < mCommodityBean.getPics().size(); i++) {
+                    LinearLayout view = (LinearLayout) LayoutInflater.from(mContext).inflate(R.layout.point_layout, null);
+                    listHolder.mGuesslikeHeadBinding.pointLayout.addView(view);
+                }
+                //默认第一张 所有第一个点点为红色
+                View view = listHolder.mGuesslikeHeadBinding.pointLayout.getChildAt(0);
+                if (view != null && view instanceof LinearLayout) {
+                    ((LinearLayout) (view)).getChildAt(0).setSelected(true);
+                }
+                listHolder.mGuesslikeHeadBinding.headPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                    @Override
+                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+                    }
+
+                    @Override
+                    public void onPageSelected(int position) {
+                        try {
+                            View childView = listHolder.mGuesslikeHeadBinding.pointLayout.getChildAt(position);
+                            View selectView = listHolder.mGuesslikeHeadBinding.pointLayout.getChildAt(flag);
+                            if (childView != null && childView instanceof LinearLayout) {
+                                ((LinearLayout) (selectView)).getChildAt(0).setSelected(false);
+                                ((LinearLayout) (childView)).getChildAt(0).setSelected(true);
+                            }
+                            flag = position;//存一下坐标(表示上一次点击时候的坐标)
+
+                        } catch (Exception e) {
+                            Logger.d(e + "");
+                        }
+
+                    }
+
+                    @Override
+                    public void onPageScrollStateChanged(int state) {
+
+                    }
+                });
+
+            }
+        }
+    }
+
+    //初始化抽奖码
     public void initListLottery(GuesslikeHeadLayoutBinding guessLikeHead, LotteryCodeBean lotteryCodeBean) {
         if (guessLikeHead != null) {
             int refer = 0;
@@ -249,7 +310,7 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-
+    //设置item的,类型
     @Override
     public int getItemViewType(int position) {
         if (mHeaderView == null) {
@@ -266,11 +327,13 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         return TYPE_NORMAL;
     }
 
+    //设置顶部VIew
     public void setHeaderView(GuesslikeHeadLayoutBinding headerView) {
         mHeaderView = headerView;
         notifyItemInserted(0);
     }
 
+    //刷新设置底部商品数据来源
     public void setGuessLikeData(List<MaylikeBean.ListDTO> guessLikeData) {
         if (mCommodityBean.getGuessLikeData() != null) {
             mCommodityBean.getGuessLikeData().clear();
@@ -278,7 +341,7 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         this.mCommodityBean.setGuessLikeData(guessLikeData);
     }
 
-
+    //上拉加载设置底部商品数据来源
     public void addGuessLikeData(List<MaylikeBean.ListDTO> guessLikeData) {
         if (mCommodityBean != null && guessLikeData != null) {
             if (mCommodityBean.getGuessLikeData() == null) {
@@ -289,6 +352,7 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
+    //设置列表的个数，商品详情页面整体是个listView
     @Override
     public int getItemCount() {
         if (mCommodityBean != null && mCommodityBean.getGuessLikeData() != null) {
