@@ -68,6 +68,11 @@ public class LotteryRecyclerView extends RecyclerView {
         }
     }
 
+
+
+
+
+
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();

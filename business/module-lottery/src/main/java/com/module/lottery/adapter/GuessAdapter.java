@@ -41,6 +41,7 @@ import com.donews.utilslibrary.utils.UrlUtils;
 import com.module.lottery.bean.CommodityBean;
 import com.module.lottery.bean.LotteryCodeBean;
 import com.module.lottery.bean.MaylikeBean;
+import com.module.lottery.bean.WinLotteryBean;
 import com.module.lottery.ui.LotteryActivity;
 import com.module.lottery.utils.ImageUtils;
 import com.module.lottery.utils.ScrollLinearLayoutManager;
@@ -121,7 +122,6 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 listHolder.mGuesslikeHeadBinding.scrollList.setAdapter(mScrollListAdapter);
                 listHolder.mGuesslikeHeadBinding.scrollList.setAutomaticScroll(true);
                 listHolder.mGuesslikeHeadBinding.scrollList.start();
-
                 //初始化参与者信息
                 if (mCommodityBean.getParticipateBean() != null) {
                     if (mCommodityBean.getParticipateBean().getList().size() > 4) {
@@ -181,6 +181,14 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
 
+    public void setScrollListData(WinLotteryBean winLotteryBean) {
+        if (mScrollListAdapter != null && winLotteryBean != null) {
+            mScrollListAdapter.setList(winLotteryBean.getList());
+            mScrollListAdapter.notifyDataSetChanged();
+        }
+    }
+
+
     private void setTextImage(TextView textView, String value) {
         if ((textView != null) && (mContext != null)) {
             int w = mContext.getResources().getDimensionPixelOffset(R.dimen.merchant_icon_w);
@@ -225,7 +233,7 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     //初始化详情页面顶部的ViewPager
     private void initViewPager(ListHolder listHolder) {
         if ((mCommodityBean != null) && (mCommodityBean.getPics() != null) && (mCommodityBean.getPics().size() > 0)) {
-            flag=0;
+            flag = 0;
             //将imageView图片资源存在集合中
             List list = new ArrayList<ImageView>();
             for (int i = 0; i < mCommodityBean.getPics().size(); i++) {

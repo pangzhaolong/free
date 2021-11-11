@@ -13,6 +13,7 @@ import androidx.databinding.Observable;
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.module.lottery.bean.WinLotteryBean;
 import com.module.lottery.dialog.ExhibitCodeStartsDialog;
 import com.module.lottery.ui.LotteryActivity;
 import com.module.lottery.utils.ImageUtils;
@@ -25,21 +26,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ScrollListAdapter extends BaseAdapter<ScrollListAdapter.ScrollListHolder, ScrollItemLayoutBinding> {
-    private List<String> name = new ArrayList<>();
-    private Context mContext;
-    ScrollListAdapter(Context context) {
-        name.add("1");
-        name.add("2");
-        name.add("3");
-        name.add("4");
-        name.add("5");
-        this.mContext = context;
 
+    private List<WinLotteryBean.ListDTO> list = new ArrayList<>();
+
+    private Context mContext;
+
+    ScrollListAdapter(Context context) {
+        this.mContext = context;
     }
 
 
-
-    private  ScrollListAdapter() {
+    private ScrollListAdapter() {
     }
 
     @Override
@@ -54,16 +51,14 @@ public class ScrollListAdapter extends BaseAdapter<ScrollListAdapter.ScrollListH
 
     @Override
     public void onBindViewHolder(@NonNull ScrollListHolder holder, int position) {
-
-        ImageUtils.setImage(mContext, holder.mScrollItemLayout.head, "https://img2.baidu.com/it/u=1915681330,636879278&fm=26&fmt=auto", 360);
-
-        holder.mScrollItemLayout.text.setText("天空之城 已获得" + name.get(position % name.size()) + "个抽奖码");
+        holder.mScrollItemLayout.text.setText(list.get(position % list.size()).getMessage() + "");
+        ImageUtils.setImage(mContext, holder.mScrollItemLayout.head, list.get(position % list.size()).getAvatar() + "", 360);
     }
 
 
     @Override
     public int getItemCount() {
-        return Integer.MAX_VALUE;
+        return list == null || list.size() == 0 ? 0 : Integer.MAX_VALUE;
     }
 
 
@@ -88,5 +83,20 @@ public class ScrollListAdapter extends BaseAdapter<ScrollListAdapter.ScrollListH
         }
     }
 
+    public List<WinLotteryBean.ListDTO> getList() {
+        return list;
+    }
+
+    public void setList(List<WinLotteryBean.ListDTO> list) {
+        this.list = list;
+    }
+
+    public Context getContext() {
+        return mContext;
+    }
+
+    public void setContext(Context mContext) {
+        this.mContext = mContext;
+    }
 
 }

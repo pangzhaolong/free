@@ -1,65 +1,26 @@
 package com.module.lottery.dialog;
 
 import android.animation.Animator;
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.LinearInterpolator;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
-
-import com.donews.base.model.BaseLiveDataModel;
-import com.donews.network.EasyHttp;
-import com.donews.network.cache.model.CacheMode;
-import com.donews.network.callback.SimpleCallBack;
-import com.donews.network.exception.ApiException;
-import com.module.lottery.bean.ContactCustomerBean;
 import com.module.lottery.bean.GenerateCodeBean;
 import com.module.lottery.bean.LotteryCodeBean;
-import com.module.lottery.model.LotteryModel;
-import com.module.lottery.ui.BaseParams;
-import com.module.lottery.viewModel.ExecuteLotteryViewModel;
 import com.module_lottery.R;
 import com.module_lottery.databinding.ExhibitCodeDialogLayoutBinding;
-import com.orhanobut.logger.Logger;
-
-import org.json.JSONObject;
-
 import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
-import java.util.Map;
-import java.util.MissingResourceException;
 import java.util.Random;
-
-import retrofit2.converter.gson.GsonConverterFactory;
-
 //展示生成的抽奖码
 public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutBinding> {
     private Context context;

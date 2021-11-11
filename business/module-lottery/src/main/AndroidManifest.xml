@@ -7,14 +7,6 @@
             android:name="com.module.lottery.ui.LotteryActivity"
             android:exported="true"/>
 
-
-        <activity
-            android:name="com.module.lottery.ui.ContactCustomerActivity"
-            android:exported="true"/>
-
-
-
-
     </application>
 
 </manifest>

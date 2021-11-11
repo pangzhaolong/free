@@ -43,6 +43,7 @@ import com.module.lottery.adapter.GuessAdapter;
 import com.module.lottery.bean.CommodityBean;
 import com.module.lottery.bean.GenerateCodeBean;
 import com.module.lottery.bean.LotteryCodeBean;
+import com.module.lottery.bean.WinLotteryBean;
 import com.module.lottery.dialog.CongratulationsDialog;
 import com.module.lottery.dialog.ExhibitCodeStartsDialog;
 import com.module.lottery.dialog.GenerateCodeDialog;
@@ -71,25 +72,24 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     //    @Autowired(name = "goodsListDTO")
 //    SpikeBean.GoodsListDTO mGoodsListDTO;
     @Autowired(name = "goods_id")
-    String mGoodsId;
+    public String mGoodsId;
     @Autowired(name = "position")
     int mPosition;
     @Autowired(name = "needLotteryEvent")
-    boolean mMeedLotteryEvent;
+    public boolean mMeedLotteryEvent;
     //    String id = "tb:655412572200";
-    GuessAdapter guessAdapter;
+    public GuessAdapter guessAdapter;
     @Autowired(name = "action")
-    String mAction;
-    CommodityBean mCommodityBean;
-    DateManager mDateManager;
-    int mPageNumber = 1;
-    boolean refresh = true;
+    public String mAction;
+    private CommodityBean mCommodityBean;
+    private DateManager mDateManager;
+    private int mPageNumber = 1;
+    private boolean refresh = true;
     //抽奖码的对象用来拦截返回
-    LotteryCodeBean mLotteryCodeBean;
-
-    boolean dialogShow = false;
+    private LotteryCodeBean mLotteryCodeBean;
+    private boolean dialogShow = false;
     @Autowired(name = RouterActivityPath.GoodsDetail.GOODS_DETAIL_PROVIDER)
-    IDetailProvider detailProvider;
+    public IDetailProvider detailProvider;
 
     @Override
     protected int getLayoutId() {
@@ -185,33 +185,23 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             mDataBinding.jsonAnimationHalo.pauseAnimation();
             mDataBinding.jsonAnimationHalo.setProgress(0);
         } else {
-            //手
-            mDataBinding.jsonAnimation.setImageAssetsFolder("images");
-            mDataBinding.jsonAnimation.setAnimation("lottery_finger.json");
-            mDataBinding.jsonAnimation.loop(true);
-            mDataBinding.jsonAnimation.playAnimation();
-
-//圆
-            mDataBinding.jsonAnimationHalo.setImageAssetsFolder("images");
-            mDataBinding.jsonAnimationHalo.setAnimation("data.json");
-            mDataBinding.jsonAnimationHalo.loop(true);
-            mDataBinding.jsonAnimationHalo.playAnimation();
-
-
-            mDataBinding.maskingButton.setImageAssetsFolder("images");
-            mDataBinding.maskingButton.setAnimation("data.json");
-            mDataBinding.maskingButton.loop(true);
-            mDataBinding.maskingButton.playAnimation();
-
-
-            //手
-            mDataBinding.maskingHand.setImageAssetsFolder("images");
-            mDataBinding.maskingHand.setAnimation("lottery_finger.json");
-            mDataBinding.maskingHand.loop(true);
-            mDataBinding.maskingHand.playAnimation();
-
+            //设置动画
+            initLottie(mDataBinding.jsonAnimation, "lottery_finger.json");
+            initLottie(mDataBinding.jsonAnimationHalo, "data.json");
+            initLottie(mDataBinding.maskingButton, "data.json");
+            initLottie(mDataBinding.maskingHand, "lottery_finger.json");
         }
 
+    }
+
+
+    private void initLottie(LottieAnimationView view, String json) {
+        if (view != null) {
+            view.setImageAssetsFolder("images");
+            view.setAnimation(json);
+            view.loop(true);
+            view.playAnimation();
+        }
     }
 
 
@@ -289,8 +279,8 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
     //提示还差多少个抽奖码Dialog
     private void showReceiveLotteryDialog(boolean ifQuit) {
-        if(mLotteryCodeBean!=null){
-            ReceiveLotteryDialog receiveLottery = new ReceiveLotteryDialog(LotteryActivity.this, mLotteryCodeBean,ifQuit);
+        if (mLotteryCodeBean != null) {
+            ReceiveLotteryDialog receiveLottery = new ReceiveLotteryDialog(LotteryActivity.this, mLotteryCodeBean, ifQuit);
             receiveLottery.setStateListener(new ReceiveLotteryDialog.OnStateListener() {
                 @Override
                 public void onFinish() {
@@ -435,7 +425,8 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             requestParticipateNumber();
             //抽奖码
             requestLotteryCode(CommodityBean.getPeriod());
-
+            //请求该商品参与的人数用来viewPager 滚动
+            winLotteryInfo();
 
         });
         //观察可能喜欢的数据
@@ -486,6 +477,13 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 guessAdapter.notifyDataSetChanged();
             }
         });
+//观察商品中奖人数集合
+        mViewModel.getWinLotteryBean().observe(this, winLotteryBean -> {
+            if (winLotteryBean != null) {
+                guessAdapter.setScrollListData(winLotteryBean);
+            }
+        });
+
 
     }
 
@@ -599,6 +597,14 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     private void setHeaderView(RecyclerView view) {
         GuesslikeHeadLayoutBinding guesslikeHeadLayoutBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.guesslike_head_layout, view, false);
         guessAdapter.setHeaderView(guesslikeHeadLayoutBinding);
+    }
+
+
+    //加载抽奖商品详情中奖列表人员信息
+    public void winLotteryInfo() {
+        Map<String, String> params = BaseParams.getMap();
+        params.put("goods_id", mGoodsId);
+        mViewModel.getWinLotteryList(LotteryModel.LOTTERY_WIN_LOTTERY, params);
     }
 
 

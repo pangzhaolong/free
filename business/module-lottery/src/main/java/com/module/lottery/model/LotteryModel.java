@@ -16,6 +16,7 @@ import com.module.lottery.bean.LotteryBean;
 import com.module.lottery.bean.LotteryCodeBean;
 import com.module.lottery.bean.MaylikeBean;
 import com.module.lottery.bean.ParticipateBean;
+import com.module.lottery.bean.WinLotteryBean;
 
 import java.util.Map;
 
@@ -43,6 +44,10 @@ public class LotteryModel extends BaseLiveDataModel {
     //抽奖次数达到上限后,推荐一个抽奖商品
     public static String LOTTERY_RECOMMEND_CODE = LOTTERY_BASE + "v1/recommend-lottery-goods";
 
+
+
+    //获取抽奖中奖人员列表
+    public static String LOTTERY_WIN_LOTTERY = LOTTERY_BASE + "v1/rand-lottery-info";
 
     /**
      * 获取网路数据
@@ -175,6 +180,34 @@ public class LotteryModel extends BaseLiveDataModel {
                     public void onSuccess(GenerateCodeBean maylikeBean) {
                         if (maylikeBean != null) {
                             mutableLiveData.postValue(maylikeBean);
+                        }
+                    }
+                }));
+    }
+
+
+
+
+    /**
+     * 查询中奖人员列表
+     *
+     * @return 返回 SpikeBean
+     */
+    public void getWinLotteryList(MutableLiveData<WinLotteryBean> mutableLiveData, String url, Map<String, String> params) {
+        unDisposable();
+        addDisposable(EasyHttp.get(url)
+                .cacheMode(CacheMode.NO_CACHE)
+                .params(params)
+                .execute(new SimpleCallBack<WinLotteryBean>() {
+                    @Override
+                    public void onError(ApiException e) {
+                        mutableLiveData.postValue(null);
+                    }
+
+                    @Override
+                    public void onSuccess(WinLotteryBean winLotteryBean) {
+                        if (winLotteryBean != null) {
+                            mutableLiveData.postValue(winLotteryBean);
                         }
                     }
                 }));
