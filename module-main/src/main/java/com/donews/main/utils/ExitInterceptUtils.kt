@@ -24,6 +24,7 @@ import com.donews.network.callback.SimpleCallBack
 import com.donews.network.exception.ApiException
 import com.donews.utilslibrary.analysis.AnalysisParam
 import com.donews.utilslibrary.analysis.AnalysisUtils
+import com.donews.utilslibrary.utils.AppInfo
 import com.donews.utilslibrary.utils.KeySharePreferences
 import com.donews.utilslibrary.utils.SPUtils
 import com.donews.utilslibrary.utils.withConfigParams
@@ -38,7 +39,8 @@ import com.orhanobut.logger.Logger
  */
 object ExitInterceptUtils {
 
-    private const val CONFIG_URL = BuildConfig.BASE_CONFIG_URL + "jdd-interceptExitConfig" + BuildConfig.BASE_RULE_URL
+    private const val CONFIG_URL =
+        BuildConfig.BASE_CONFIG_URL + "jdd-interceptExitConfig" + BuildConfig.BASE_RULE_URL
 
     /** 兩次返回鍵的间隔时间 */
     private const val CLICK_INTERVAL: Long = 2000L
@@ -79,11 +81,17 @@ object ExitInterceptUtils {
             if (!exitInterceptConfig.intercept) {
                 exitApp(activity)
             } else {
+                if (!checkUserIsLogin()) {
+                    //用户未登录
+
+                    return
+                }
+                //已登录用户
                 when {
-                    checkNotLottery() -> {
+                    checkNotLottery() -> { //判断当日是否抽奖
                         showNotLotteryDialog(activity)
                     }
-                    checkRedPacketNotOpen() -> {
+                    checkRedPacketNotOpen() -> { //判断是否还有红包未开启
                         showOpenRedPacketDialog(activity)
                     }
                     else -> {
@@ -97,6 +105,14 @@ object ExitInterceptUtils {
         }
     }
 
+
+    /**
+     * 判断用户是否已登录
+     * @return Boolean T 已登录,F 未登录
+     */
+    private fun checkUserIsLogin(): Boolean {
+        return AppInfo.checkIsWXLogin()
+    }
 
     /**
      * 判断用户当日是否抽奖
@@ -150,27 +166,31 @@ object ExitInterceptUtils {
         if (openRedPacketDialog != null && openRedPacketDialog!!.dialog != null && openRedPacketDialog!!.dialog!!.isShowing) {
             return
         }
-        openRedPacketDialog = OpenRedPacketDialog.newInstance(exitInterceptConfig.openRedPacketConfig)
-            .apply {
-                setOnDismissListener {
-                    openRedPacketDialog = null
+        openRedPacketDialog =
+            OpenRedPacketDialog.newInstance(exitInterceptConfig.openRedPacketConfig)
+                .apply {
+                    setOnDismissListener {
+                        openRedPacketDialog = null
+                    }
+                    setOnSureListener {
+                        disMissDialog()
+                        ARouter.getInstance().build(RouterActivityPath.Main.PAGER_MAIN)
+                            .withInt("position", 0)
+                            .navigation()
+                    }
+                    setOnCancelListener {
+                        disMissDialog()
+                        showRemindDialog(activity)
+                    }
+                    setOnCloseListener {
+                        disMissDialog()
+                        showRemindDialog(activity)
+                    }
                 }
-                setOnSureListener {
-                    disMissDialog()
-                    ARouter.getInstance().build(RouterActivityPath.Main.PAGER_MAIN)
-                        .withInt("position", 0)
-                        .navigation()
-                }
-                setOnCancelListener {
-                    disMissDialog()
-                    showRemindDialog(activity)
-                }
-                setOnCloseListener {
-                    disMissDialog()
-                    showRemindDialog(activity)
-                }
-            }
-        openRedPacketDialog?.show(activity.supportFragmentManager, OpenRedPacketDialog::class.simpleName)
+        openRedPacketDialog?.show(
+            activity.supportFragmentManager,
+            OpenRedPacketDialog::class.simpleName
+        )
     }
 
 
@@ -182,20 +202,24 @@ object ExitInterceptUtils {
         if (continueLotteryDialog != null && continueLotteryDialog!!.dialog != null && continueLotteryDialog!!.dialog!!.isShowing) {
             return
         }
-        continueLotteryDialog = ContinueLotteryDialog.newInstance(exitInterceptConfig.continueLotteryConfig)
-            .apply {
-                setOnDismissListener {
-                    continueLotteryDialog = null
+        continueLotteryDialog =
+            ContinueLotteryDialog.newInstance(exitInterceptConfig.continueLotteryConfig)
+                .apply {
+                    setOnDismissListener {
+                        continueLotteryDialog = null
+                    }
+                    setOnSureListener {
+                        disMissDialog()
+                    }
+                    setOnCloseListener {
+                        disMissDialog()
+                        showRemindDialog(activity)
+                    }
                 }
-                setOnSureListener {
-                    disMissDialog()
-                }
-                setOnCloseListener {
-                    disMissDialog()
-                    showRemindDialog(activity)
-                }
-            }
-        continueLotteryDialog?.show(activity.supportFragmentManager, ContinueLotteryDialog::class.simpleName)
+        continueLotteryDialog?.show(
+            activity.supportFragmentManager,
+            ContinueLotteryDialog::class.simpleName
+        )
     }
 
 

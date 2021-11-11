@@ -30,6 +30,11 @@ public class RouterActivityPath {
          * 主页面
          */
         public static final String PAGER_MAIN = MAIN + "/Main";
+
+        /**
+         * 引导页
+         */
+        public static final String PAGER_GUIDE_ACTIVITY = MAIN + "/GuideActivity";
     }
 
     public static class User {

@@ -311,7 +311,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         if (!mIsBackgroundToFore) {
             if (AppStatusManager.getInstance().getAppStatus() != AppStatusConstant.STATUS_NORMAL) {
                 LotteryAdCount.INSTANCE.init();
-                MainActivity.start(this);
+                GuideActivity.start(this);
             }
         }
         finish();

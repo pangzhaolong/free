@@ -23,6 +23,7 @@ import com.dn.drouter.ARouteHelper;
 import com.donews.base.utils.ToastUtil;
 import com.donews.base.utils.glide.GlideUtils;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
+import com.donews.common.contract.LoginHelp;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.mine.BuildConfig;
@@ -39,6 +40,7 @@ import com.donews.mine.utils.TextWinUtils;
 import com.donews.mine.views.CSSView;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
+import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.UrlUtils;
 
 import java.text.DateFormat;
@@ -349,8 +351,11 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
 
     /**
      * 根据不同的状态。构建UI的位置顺序
+     *
+     * @param view     顶部区域的HeadView
+     * @param loginBut 页面上的登录按钮
      */
-    public void uiPosResetBuild(View view) {
+    public void uiPosResetBuild(View view, LinearLayout loginBut) {
         //内容视图的根布局
         LinearLayout contentRootView = view.findViewById(R.id.mine_win_code_win_connect_layout);
         //中奖信息(开奖)模块视图
@@ -363,43 +368,43 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             return;
         }
         contentRootView.removeAllViews();
-        if ((detailLivData.getValue().record == null || detailLivData.getValue().record.isEmpty()) &&
-                (detailLivData.getValue().myWin == null || detailLivData.getValue().myWin.isEmpty())) {
-            //未参与
+        if (!AppInfo.checkIsWXLogin()) {
+            //只显示中奖模块
+            loginBut.setOnClickListener(v -> {
+                ARouter.getInstance()
+                        .build(RouterActivityPath.User.PAGER_LOGIN)
+                        .navigation();
+            });
+            if (!isAutoPeriod) {
+                loginBut.setVisibility(View.VISIBLE);
+            }
             winningView.setVisibility(View.VISIBLE);
-            openWinView.setVisibility(View.VISIBLE);
+            openWinView.setVisibility(View.GONE);
             myAddWinView.setVisibility(View.GONE);
             contentRootView.addView(winningView);
             contentRootView.addView(openWinView);
             contentRootView.addView(myAddWinView);
+            return; //未登录
+        }
+        //已登录状态
+        loginBut.setVisibility(View.GONE);
+        if ((detailLivData.getValue().record == null || detailLivData.getValue().record.isEmpty()) &&
+                (detailLivData.getValue().myWin == null || detailLivData.getValue().myWin.isEmpty())) {
+            //未参与(显示中奖模块、我的参与模块)
+            winningView.setVisibility(View.VISIBLE);
+            myAddWinView.setVisibility(View.VISIBLE);
+            openWinView.setVisibility(View.GONE);
+            contentRootView.addView(winningView);
+            contentRootView.addView(myAddWinView);
+            contentRootView.addView(openWinView);
         } else {
-            //已参与(参与了本期)
+            //已参与(显示所有，顺序为：我的中奖 -> 我的参与 -> )
             winningView.setVisibility(View.VISIBLE);
             openWinView.setVisibility(View.VISIBLE);
-            if (isAutoPeriod) {
-                //如果是开奖页。那么都不显示我参加的抽奖模块
-                myAddWinView.setVisibility(View.GONE);
-            }else{
-                myAddWinView.setVisibility(View.VISIBLE);
-            }
-            if(isAutoPeriod) {
-                //开奖页
-                contentRootView.addView(myAddWinView);
-                if (detailLivData.getValue().myWin != null && detailLivData.getValue().myWin.size() > 0) {
-                    //已中奖
-                    contentRootView.addView(openWinView);
-                    contentRootView.addView(winningView);
-                } else {
-                    //未中奖
-                    contentRootView.addView(winningView);
-                    contentRootView.addView(openWinView);
-                }
-            }else{
-                //抽奖页详情(参与记录->参与详情)
-                contentRootView.addView(openWinView);
-                contentRootView.addView(myAddWinView);
-                contentRootView.addView(winningView);
-            }
+            myAddWinView.setVisibility(View.VISIBLE);
+            contentRootView.addView(openWinView);
+            contentRootView.addView(myAddWinView);
+            contentRootView.addView(winningView);
         }
     }
 
@@ -417,29 +422,14 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
                 detailLivData.getValue().myWin.isEmpty()) {
             if (detailLivData.getValue().record.isEmpty() &&
                     detailLivData.getValue().myWin.isEmpty()) {
-                //未参与
-                statusName.setText("很抱歉,本期你未参与");
-            } else {
-                //已参与(参与了本期)
-                statusName.setText("很遗憾,你未中奖");
+                //未参与，不显示中奖模块
+                return;
             }
-            View childView = View.inflate(view.getContext(), R.layout.incl_open_win_not_data, null);
-            LinearLayout rootV = childView.findViewById(R.id.mine_open_win_not_data_ll);
-            TextView desc = childView.findViewById(R.id.mine_open_win_not_data);
-            TextView but = childView.findViewById(R.id.mine_open_win_not_data_but);
-            but.setVisibility(View.VISIBLE);
-            desc.setText("抽奖多的人\n当然容易免单呀");
-            childView.setOnClickListener(v -> {
-                //去往首页
-                ARouter.getInstance().build(RouterActivityPath.Main.PAGER_MAIN)
-                        .withInt("position", 0)
-                        .navigation();
-            });
-            //添加未中奖视图
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-            vGroup.addView(childView, lp);
+            //已参与(参与了本期,但是未中奖)
+            statusName.setText("很遗憾,你本次未中奖");
+            //添加未中奖的容器
+            View childView = getNotDataWindView(false, "", "坚持抽奖,总会中的");
+            vGroup.addView(childView);
             return;
         }
         statusName.setText("恭喜你,获得大奖");
@@ -494,8 +484,10 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
     public void addAddToGoods(View view, boolean isInitAdd) {
         ViewGroup vGroup = view.findViewById(R.id.mine_win_code_win_add_good_ll);
         ViewGroup moreLoadView = view.findViewById(R.id.mine_win_code_win_add_good_more);
+        TextView nameTvNum = view.findViewById(R.id.mine_win_code_add_num);
         List<HistoryPeopleLotteryDetailResp.WinerDTO> currentAddRecord = new ArrayList<>();
-        int initLoadSize = 4;
+
+        int initLoadSize = 3;
         if (isInitAdd) {
             if (detailLivData.getValue().record != null &&
                     detailLivData.getValue().record.size() > initLoadSize) {
@@ -521,6 +513,18 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             }
             moreLoadView.setVisibility(View.GONE);
         }
+        //更新标题跟无数据视图
+        if (detailLivData.getValue().record.isEmpty() &&
+                detailLivData.getValue().myWin.isEmpty()) {
+            //未参与
+            nameTvNum.setText("0");
+            View childView = getNotDataWindView(
+                    true, "立即抽奖", "你本期未参与抽奖");
+            vGroup.addView(childView);
+        } else {
+            //已参与(参与了本期)
+            nameTvNum.setText("" + detailLivData.getValue().record.size());
+        }
         if (detailLivData.getValue().record == null ||
                 detailLivData.getValue().record.isEmpty()) {
             return;
@@ -535,6 +539,7 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             TextView picre = childView.findViewById(R.id.mine_win_item_good_pic);
             TextView code = childView.findViewById(R.id.mine_win_item_snap_number);
             TextView goTo = childView.findViewById(R.id.mine_win_item_goto);
+            TextView more = childView.findViewById(R.id.mine_win_item_snap_number_more);
             //开始绑定数据
             if (WinTypes.Alike.type.equals(item.winType)) {
                 seal.setText(WinTypes.Alike.name);
@@ -550,6 +555,16 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             code.setText(Html.fromHtml(
                     TextWinUtils.drawOldText(detailLivData.getValue().code, item.code)));
             goTo.setText("继续抽奖");
+            code.setMaxLines(1); //默认一行
+            if(item.code.size() > 3){
+                more.setVisibility(View.VISIBLE);
+            }else{
+                more.setVisibility(View.GONE);
+            }
+            more.setOnClickListener(v -> {
+                more.setVisibility(View.GONE);
+                code.setMaxLines(3);
+            });
             childView.setOnClickListener((v) -> {
                 ARouter.getInstance()
                         .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
@@ -639,5 +654,40 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             vGroup.addView(childView, new ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         }
+    }
+
+    /**
+     * 获取没有数据的视图
+     *
+     * @param isShowBut 是否显示按钮
+     * @param butText   按钮的显示文字
+     * @param descText  描述文本
+     * @return
+     */
+    private View getNotDataWindView(
+            boolean isShowBut, String butText, String descText) {
+        View childView = View.inflate(mContext, R.layout.incl_open_win_not_data, null);
+        LinearLayout rootV = childView.findViewById(R.id.mine_open_win_not_data_ll);
+        TextView desc = childView.findViewById(R.id.mine_open_win_not_data);
+        TextView but = childView.findViewById(R.id.mine_open_win_not_data_but);
+        desc.setText(descText);
+        but.setVisibility(View.GONE);
+        if (isShowBut) {
+            but.setVisibility(View.VISIBLE);
+            if (butText != null && !butText.isEmpty()) {
+                but.setText(butText);
+            }
+            childView.setOnClickListener(v -> {
+                //去往首页
+                ARouter.getInstance().build(RouterActivityPath.Main.PAGER_MAIN)
+                        .withInt("position", 0)
+                        .navigation();
+            });
+        }
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        childView.setLayoutParams(lp);
+        return childView;
     }
 }

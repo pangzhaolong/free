@@ -161,7 +161,7 @@
                     android:layout_marginTop="5dp"
                     android:text="参与记录"
                     android:textColor="@color/A666666"
-                    android:textSize="12sp"/>
+                    android:textSize="12sp" />
             </LinearLayout>
         </RelativeLayout>
 
@@ -238,10 +238,10 @@
                         android:paddingLeft="2dp"
                         android:paddingTop="3dp"
                         android:paddingBottom="3dp"
-                        android:textStyle="bold"
                         android:text="0"
                         android:textColor="@color/black"
                         android:textSize="24sp"
+                        android:textStyle="bold"
                         app:layout_constraintRight_toRightOf="parent"
                         tools:ignore="MissingConstraints" />
                 </LinearLayout>
@@ -277,49 +277,13 @@
         tools:ignore="MissingConstraints" />
 
     <!-- 运营位 -->
-    <TableLayout
+    <com.donews.mine.views.operating.MineOperatingPosView
+        android:id="@+id/mine_me_k_operating"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:layout_below="@+id/ll_glod_count"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
-        android:layout_marginRight="16dp"
-        android:background="@drawable/ad_shape_bg"
-        android:visibility="gone"
-        tools:ignore="UselessParent">
-
-        <TableRow>
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="80dp"
-                android:layout_weight="1"
-                android:scaleType="fitXY"
-                android:src="@mipmap/ic_launcher" />
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="80dp"
-                android:layout_weight="1"
-                android:scaleType="fitXY"
-                android:src="@mipmap/ic_launcher" />
-        </TableRow>
-
-        <TableRow>
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="80dp"
-                android:layout_weight="1"
-                android:scaleType="fitXY"
-                android:src="@mipmap/ic_launcher" />
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="80dp"
-                android:layout_weight="1"
-                android:scaleType="fitXY"
-                android:src="@mipmap/ic_launcher" />
-        </TableRow>
-    </TableLayout>
+        android:layout_marginRight="10dp"
+        android:background="@drawable/ad_shape_bg" />
 </RelativeLayout>

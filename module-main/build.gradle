@@ -11,6 +11,7 @@ android {
 }
 
 dependencies {
+    implementation project(path: ':common:library-share')
     //组件中依赖阿里路由编译框架
     kapt rootProject.ext.dependencies["arouter-compiler"]
     kapt rootProject.ext.dependencies["glide-compiler"]
@@ -19,6 +20,8 @@ dependencies {
     api project(':common:library-common')
     implementation project(':common:library-sdk')
     implementation project(':common:lib_eventbus')
+    implementation 'com.airbnb.android:lottie:3.4.0'
+
     api 'me.majiajie:pager-bottom-tab-strip:2.3.0X'
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

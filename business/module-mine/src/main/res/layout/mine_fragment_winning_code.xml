@@ -24,7 +24,8 @@
                 android:id="@+id/main_win_code_title_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/mine_me_open_top_bg">
+                android:background="@drawable/mine_me_open_top_bg"
+                android:fitsSystemWindows="true">
 
                 <TextView
                     android:id="@+id/main_win_code_title_name"
@@ -32,7 +33,7 @@
                     android:layout_height="56dp"
                     android:gravity="center"
                     android:textColor="@color/white"
-                    android:textSize="17sp" />
+                    android:textSize="19sp" />
 
                 <ImageView
                     android:id="@+id/main_win_code_title_back"
@@ -48,24 +49,48 @@
                     android:id="@+id/main_win_code_title_right"
                     android:layout_width="wrap_content"
                     android:layout_height="56dp"
+                    android:layout_gravity="right"
                     android:gravity="center"
+                    android:paddingRight="17dp"
                     android:text="往期>"
                     android:textColor="@color/white"
-                    android:textSize="15sp"
-                    android:paddingRight="17dp"
-                    android:layout_gravity="right"/>
+                    android:textSize="15sp" />
             </FrameLayout>
+
             <com.classic.common.MultipleStatusView
                 android:id="@+id/mine_win_code_list_status"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:errorView="@layout/incl_mul_status_error"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                app:errorView="@layout/incl_mul_status_error">
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/mine_win_code_list"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent" />
             </com.classic.common.MultipleStatusView>
+
+            <LinearLayout
+                android:id="@+id/ll_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="1"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="57dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="18dp"
+                    android:layout_weight="0.82"
+                    android:background="@drawable/wachat_login_bg"
+                    android:gravity="center"
+                    android:text="立即登录抽奖"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp" />
+            </LinearLayout>
         </LinearLayout>
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 

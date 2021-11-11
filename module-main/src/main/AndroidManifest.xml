@@ -3,6 +3,8 @@
     package="com.donews.main">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application>
         <activity
             android:name="com.donews.main.ui.SplashActivity"
@@ -27,8 +29,10 @@
             <!-- 友盟测试的配置 -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="um.616d1dd2ac9567566e9b97e3" />
             </intent-filter>
         </activity>
@@ -48,6 +52,10 @@
 
         <activity
             android:name="com.donews.main.ui.MainActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.GuideActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity

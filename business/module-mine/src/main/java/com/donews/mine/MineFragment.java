@@ -22,6 +22,7 @@ import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.LotteryStatusEvent;
 import com.dn.events.events.UserTelBindEvent;
 import com.dn.events.events.WalletRefreshEvent;
+import com.donews.base.utils.ToastUtil;
 import com.donews.base.utils.glide.GlideUtils;
 import com.donews.common.ad.business.monitor.PageMonitor;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
@@ -33,6 +34,7 @@ import com.donews.mine.adapters.MineFragmentAdapter;
 import com.donews.mine.bean.resps.RecommendGoodsResp;
 import com.donews.mine.databinding.MineFragmentBinding;
 import com.donews.mine.viewModel.MineViewModel;
+import com.donews.mine.views.operating.MineOperatingPosView;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.LogUtil;
 import com.google.android.material.appbar.AppBarLayout;
@@ -42,6 +44,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -235,6 +238,16 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
                         }
                     }
                 });
+        //模拟设置运营位
+        MineOperatingPosView vpOperation = getView().findViewById(R.id.mine_me_k_operating);
+        vpOperation.setItemClick((view,item)->{
+            ToastUtil.show(getActivity(),"this click ->"+item);
+        });
+        List<Object> list = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            list.add("--"+i);
+        }
+        vpOperation.setDatas(list);
         updateUIData();
         mDataBinding.mineFrmRefesh.autoRefresh();
         scrollFloatBar();

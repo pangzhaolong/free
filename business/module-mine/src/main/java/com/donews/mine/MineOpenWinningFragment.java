@@ -208,15 +208,6 @@ public class MineOpenWinningFragment extends
             mViewModel.isAutoPeriod = true;
             AnalysisUtils.onEventEx(this.getActivity(), Dot.Page_Lottery); //开奖事件
         }
-        if (mViewModel.isAutoPeriod) {
-            //显示顶部距离,达到侵入式状态栏
-            mDataBinding.mainWinCodeTitleLayout.setPadding(
-                    mDataBinding.mainWinCodeTitleLayout.getPaddingLeft(),
-                    mDataBinding.mainWinCodeTitleLayout.getPaddingTop() + BarUtils.getStatusBarHeight(),
-                    mDataBinding.mainWinCodeTitleLayout.getPaddingRight(),
-                    mDataBinding.mainWinCodeTitleLayout.getPaddingBottom()
-            );
-        }
         mViewModel.setDataBinDing(mDataBinding, getBaseActivity());
         adapterOpenWinHead = (ViewGroup) View.inflate(getBaseActivity(), headRes, null);
         barrageView = adapterOpenWinHead.findViewById(R.id.mine_win_code_scan_scroll_v);
@@ -363,6 +354,16 @@ public class MineOpenWinningFragment extends
                 barrageView.refreshData(data.getList());
             }
         });
+        if (mViewModel.isAutoPeriod) {
+            //显示顶部距离,达到侵入式状态栏
+            mDataBinding.mainWinCodeTitleLayout.setFitsSystemWindows(false);
+            mDataBinding.mainWinCodeTitleLayout.setPadding(
+                    mDataBinding.mainWinCodeTitleLayout.getPaddingLeft(),
+                    mDataBinding.mainWinCodeTitleLayout.getPaddingTop() + BarUtils.getStatusBarHeight(),
+                    mDataBinding.mainWinCodeTitleLayout.getPaddingRight(),
+                    mDataBinding.mainWinCodeTitleLayout.getPaddingBottom()
+            );
+        }
         adapter.getLoadMoreModule().setAutoLoadMore(false);
         mDataBinding.mainWinCodeRefresh.autoRefresh();
     }
@@ -447,7 +448,7 @@ public class MineOpenWinningFragment extends
             mDataBinding.mineWinCodeListStatus.showContent();
             mViewModel.loadAwardData(); //加载滚动通知
             mViewModel.uiPosResetBuild( //UI位置顺序构建
-                    adapterOpenWinHead);
+                    adapterOpenWinHead,mDataBinding.llLogin);
             mViewModel.addSelectGoods( //添加中奖商品
                     adapterOpenWinHead);
             mViewModel.addAddToGoods( //添加参与商品
