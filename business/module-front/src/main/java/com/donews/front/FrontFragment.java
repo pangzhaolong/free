@@ -3,12 +3,18 @@ package com.donews.front;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.CycleInterpolator;
 import android.view.animation.RotateAnimation;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,11 +36,9 @@ import com.donews.middle.bean.front.AwardBean;
 import com.donews.middle.bean.front.LotteryCategoryBean;
 import com.donews.middle.cache.GoodsCache;
 import com.donews.middle.views.TabItem;
-import com.donews.utilslibrary.analysis.AnalysisUtils;
-import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
+import com.donews.utilslibrary.utils.DensityUtils;
 import com.donews.utilslibrary.utils.KeySharePreferences;
-import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.SPUtils;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -71,23 +75,23 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     protected void onFragmentFirstVisible() {
         super.onFragmentFirstVisible();
         //调整顶部背景距离
-        ViewGroup.LayoutParams lp = mDataBinding.frontTitleBgTop.getLayoutParams();
+/*        ViewGroup.LayoutParams lp = mDataBinding.frontJddBotContent.getLayoutParams();
         lp.height = lp.height + BarUtils.getStatusBarHeight();
-        mDataBinding.frontTitleBgTop.setLayoutParams(lp);
+        mDataBinding.frontJddBotContent.setLayoutParams(lp);
         //显示顶部距离,达到侵入式状态栏
-        mDataBinding.frontTitleRl.setPadding(
-                mDataBinding.frontTitleRl.getPaddingLeft(),
-                mDataBinding.frontTitleRl.getPaddingTop() + BarUtils.getStatusBarHeight(),
-                mDataBinding.frontTitleRl.getPaddingRight(),
-                mDataBinding.frontTitleRl.getPaddingBottom()
-        );
-        //调整底部内容距离顶部的距离
         mDataBinding.frontJddBotContent.setPadding(
                 mDataBinding.frontJddBotContent.getPaddingLeft(),
                 mDataBinding.frontJddBotContent.getPaddingTop() + BarUtils.getStatusBarHeight(),
                 mDataBinding.frontJddBotContent.getPaddingRight(),
                 mDataBinding.frontJddBotContent.getPaddingBottom()
-        );
+        );*/
+        //调整底部内容距离顶部的距离
+/*        mDataBinding.frontJddBotContent.setPadding(
+                mDataBinding.frontJddBotContent.getPaddingLeft(),
+                mDataBinding.frontJddBotContent.getPaddingTop() + BarUtils.getStatusBarHeight(),
+                mDataBinding.frontJddBotContent.getPaddingRight(),
+                mDataBinding.frontJddBotContent.getPaddingBottom()
+        );*/
     }
 
     @SuppressLint("StringFormatMatches")
@@ -95,7 +99,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        LogUtil.e("front onViewCreated");
+//        LogUtil.e("front onViewCreated");
         mContext = this.getContext();
 
         mFragmentAdapter = new FragmentAdapter(this);
@@ -144,10 +148,10 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         loadAwardList();
         initSrl();
 
-        mDataBinding.frontJddHelp.setOnClickListener(v -> {
-            AnalysisUtils.onEventEx(v.getContext(), Dot.Page_WinDoc);
-            ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY).withString("url", BuildConfig.WEB_BASE_URL).navigation();
-        });
+        mDataBinding.frontLotteryGotoLl.setOnClickListener(v -> ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY)
+                .withString("title", "中奖攻略")
+                .withString("url", BuildConfig.WEB_BASE_URL)
+                .navigation());
         mDataBinding.frontCashGetTv.setOnClickListener(v ->
                 ARouter.getInstance()
                         .build(RouterActivityPath.Mine.PAGER_ACTIVITY_WITHDRAWAL)
@@ -169,6 +173,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mRotateAnimation.setDuration(400);
         }
         startTimer();
+
+        scrollFloatBar();
     }
 
     private void startTimer() {
@@ -233,11 +239,11 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     @SuppressLint("SetTextI18n")
     private void loadRpData() {
         if (!AppInfo.checkIsWXLogin()) {
-            mDataBinding.frontRpIv1.setBackgroundResource(R.drawable.front_rp_close);
-            mDataBinding.frontRpIv2.setBackgroundResource(R.drawable.front_rp_close);
-            mDataBinding.frontRpIv3.setBackgroundResource(R.drawable.front_rp_close);
-            mDataBinding.frontRpIv4.setBackgroundResource(R.drawable.front_rp_close);
-            mDataBinding.frontRpIv5.setBackgroundResource(R.drawable.front_rp_close);
+            mDataBinding.frontRpIv1.setBackgroundResource(R.drawable.front_rp_wait);
+            mDataBinding.frontRpIv2.setBackgroundResource(R.drawable.front_rp_wait);
+            mDataBinding.frontRpIv3.setBackgroundResource(R.drawable.front_rp_wait);
+            mDataBinding.frontRpIv4.setBackgroundResource(R.drawable.front_rp_wait);
+            mDataBinding.frontRpIv5.setBackgroundResource(R.drawable.front_rp_gold);
 
             mDataBinding.frontRpOpenFl1.setOnClickListener(this);
             mDataBinding.frontRpOpenFl2.setOnClickListener(this);
@@ -245,19 +251,24 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mDataBinding.frontRpOpenFl4.setOnClickListener(this);
             mDataBinding.frontRpOpenFl5.setOnClickListener(this);
 
-            mDataBinding.frontRpProgess.setProgress(0);
-            mDataBinding.frontRpProgess.setMax(10);
-            mDataBinding.frontRpProgressIv1.setBackgroundResource(R.drawable.front_dot_close_bg);
-            mDataBinding.frontRpProgressIv2.setBackgroundResource(R.drawable.front_dot_close_bg);
-            mDataBinding.frontRpProgressIv3.setBackgroundResource(R.drawable.front_dot_close_bg);
-            mDataBinding.frontRpProgressIv4.setBackgroundResource(R.drawable.front_dot_close_bg);
-            mDataBinding.frontRpProgressIv5.setBackgroundResource(R.drawable.front_dot_close_bg);
-
-            mDataBinding.frontRpTv1.setText("0/1");
-            mDataBinding.frontRpTv2.setText("0/3");
-            mDataBinding.frontRpTv3.setText("0/5");
-            mDataBinding.frontRpTv4.setText("0/7");
-            mDataBinding.frontRpTv5.setText("0/10");
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mDataBinding.frontRpTv1.getLayoutParams();
+            params.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+            params.bottomMargin = DensityUtils.dp2px(6);
+            mDataBinding.frontRpTv1.setLayoutParams(params);
+            mDataBinding.frontRpTv2.setLayoutParams(params);
+            mDataBinding.frontRpTv3.setLayoutParams(params);
+            mDataBinding.frontRpTv4.setLayoutParams(params);
+            mDataBinding.frontRpTv5.setLayoutParams(params);
+            int color = Color.parseColor("#FFF3D3");
+            mDataBinding.frontRpTv1.setTextColor(color);
+            mDataBinding.frontRpTv2.setTextColor(color);
+            mDataBinding.frontRpTv3.setTextColor(color);
+            mDataBinding.frontRpTv4.setTextColor(color);
+            mDataBinding.frontRpTv1.setText("抽奖1次");
+            mDataBinding.frontRpTv2.setText("抽奖3次");
+            mDataBinding.frontRpTv3.setText("抽奖5次");
+            mDataBinding.frontRpTv4.setText("抽奖7次");
+            mDataBinding.frontRpTv5.setText("抽奖10次");
             startTimer();
             return;
         }
@@ -293,164 +304,77 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     }
 
     @SuppressLint("SetTextI18n")
+    private void changeRpStatus(WalletBean.RpBean rpBean,
+                                int topColor, int bottomColor, FrameLayout fl, TextView tv, ImageView iv) {
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) tv.getLayoutParams();
+        fl.setTag(rpBean);
+        fl.setOnClickListener(this);
+        if (rpBean.getOpened()) {
+            iv.setAlpha(1.0f);
+            iv.setBackgroundResource(R.drawable.front_rp_oen);
+            tv.setText("已开启");
+            params.gravity = Gravity.CENTER;
+            params.bottomMargin = DensityUtils.dp2px(10);
+            tv.setLayoutParams(params);
+            tv.setTextColor(topColor);
+        } else {
+            params.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+            params.bottomMargin = DensityUtils.dp2px(6);
+            tv.setLayoutParams(params);
+            tv.setTextColor(bottomColor);
+            if (rpBean.getHadLotteryTotal() == -1 || rpBean.getHadLotteryTotal() >= rpBean.getLotteryTotal()) {
+                nCloseRpCounts += 1;
+                iv.setAlpha(0.5f);
+                tv.setText("待开启");
+                iv.setBackgroundResource(R.drawable.front_rp_ready);
+            } else if (rpBean.getHadLotteryTotal() < rpBean.getLotteryTotal()) {
+                tv.setText("抽奖" + rpBean.getLotteryTotal() + "次");
+                iv.setBackgroundResource(R.drawable.front_rp_wait);
+            }
+        }
+    }
+
+    int nCloseRpCounts = 0;
+
+    @SuppressLint("SetTextI18n")
     private void showRpData(WalletBean walletBean) {
         WalletBean.RpBean rpBean = walletBean.getList().get(0);
         if (rpBean == null) {
             return;
         }
 
-        mDataBinding.frontRpOpenFl1.setTag(rpBean);
-        mDataBinding.frontRpOpenFl1.setOnClickListener(this);
-        int nCloseRpCounts = 0;
-
-        if (rpBean.getHadLotteryTotal() == -1) {
-            mDataBinding.frontRpIv1.setAlpha(0.5f);
-            mDataBinding.frontRpTv1.setText(rpBean.getLotteryTotal() + "/" + rpBean.getLotteryTotal());
-            mDataBinding.frontRpProgess.setProgress(rpBean.getLotteryTotal());
-            mDataBinding.frontRpProgressIv1.setBackgroundResource(R.drawable.front_dot_bg);
-        } else {
-            mDataBinding.frontRpTv1.setText(rpBean.getHadLotteryTotal() + "/" + rpBean.getLotteryTotal());
-            mDataBinding.frontRpProgess.setProgress(rpBean.getHadLotteryTotal());
-            mDataBinding.frontRpProgressIv1.setBackgroundResource(R.drawable.front_dot_close_bg);
-        }
-        if (!rpBean.getOpened()) {
-            mDataBinding.frontRpIv1.setBackgroundResource(R.drawable.front_rp_close);
-            if (rpBean.getHadLotteryTotal() < rpBean.getLotteryTotal()) {
-            } else {
-                nCloseRpCounts += 1;
-                mDataBinding.frontRpProgressIv1.setBackgroundResource(R.drawable.front_dot_bg);
-            }
-        } else {
-            mDataBinding.frontRpIv1.setAlpha(1.0f);
-            mDataBinding.frontRpIv1.setBackgroundResource(R.drawable.front_rp_open);
-            mDataBinding.frontRpProgressIv1.setBackgroundResource(R.drawable.front_dot_bg);
-        }
+        int topColor = Color.parseColor("#764D38");
+        int bottomColor = Color.parseColor("#FFF3D3");
+        changeRpStatus(rpBean, topColor, bottomColor
+                , mDataBinding.frontRpOpenFl1, mDataBinding.frontRpTv1, mDataBinding.frontRpIv1);
         rpBean = walletBean.getList().get(1);
-        mDataBinding.frontRpOpenFl2.setTag(rpBean);
-        mDataBinding.frontRpOpenFl2.setOnClickListener(this);
-        if (rpBean.getHadLotteryTotal() == -1) {
-            mDataBinding.frontRpIv2.setAlpha(0.5f);
-            mDataBinding.frontRpTv2.setText(rpBean.getLotteryTotal() + "/" + rpBean.getLotteryTotal());
-            mDataBinding.frontRpProgess.setProgress(rpBean.getLotteryTotal());
-            mDataBinding.frontRpProgressIv2.setBackgroundResource(R.drawable.front_dot_bg);
-        } else {
-            mDataBinding.frontRpTv2.setText(rpBean.getHadLotteryTotal() + "/" + rpBean.getLotteryTotal());
-            mDataBinding.frontRpProgess.setProgress(rpBean.getHadLotteryTotal());
-            mDataBinding.frontRpProgressIv2.setBackgroundResource(R.drawable.front_dot_close_bg);
-        }
-        if (!rpBean.getOpened()) {
-            if (rpBean.getHadLotteryTotal() == -1) {
-                nCloseRpCounts += 1;
-                mDataBinding.frontRpIv2.setAlpha(0.5f);
-                mDataBinding.frontRpIv2.setBackgroundResource(R.drawable.front_rp_close);
-            } else {
-                if (rpBean.getHadLotteryTotal() < rpBean.getLotteryTotal()) {
-                    mDataBinding.frontRpIv2.setAlpha(0.5f);
-                    mDataBinding.frontRpIv2.setBackgroundResource(R.drawable.front_rp_close);
-                } else {
-                    mDataBinding.frontRpIv2.setAlpha(1.0f);
-                    nCloseRpCounts += 1;
-                    mDataBinding.frontRpProgressIv2.setBackgroundResource(R.drawable.front_dot_bg);
-                }
-            }
-        } else {
-            mDataBinding.frontRpIv2.setAlpha(1.0f);
-            mDataBinding.frontRpIv2.setBackgroundResource(R.drawable.front_rp_open);
-            mDataBinding.frontRpProgressIv2.setBackgroundResource(R.drawable.front_dot_bg);
-        }
+        changeRpStatus(rpBean, topColor, bottomColor
+                , mDataBinding.frontRpOpenFl2, mDataBinding.frontRpTv2, mDataBinding.frontRpIv2);
         rpBean = walletBean.getList().get(2);
-        mDataBinding.frontRpOpenFl3.setTag(rpBean);
-        mDataBinding.frontRpOpenFl3.setOnClickListener(this);
-        if (rpBean.getHadLotteryTotal() == -1) {
-            mDataBinding.frontRpIv3.setAlpha(0.5f);
-            mDataBinding.frontRpTv3.setText(rpBean.getLotteryTotal() + "/" + rpBean.getLotteryTotal());
-            mDataBinding.frontRpProgess.setProgress(rpBean.getLotteryTotal());
-            mDataBinding.frontRpProgressIv3.setBackgroundResource(R.drawable.front_dot_bg);
-        } else {
-            mDataBinding.frontRpTv3.setText(rpBean.getHadLotteryTotal() + "/" + rpBean.getLotteryTotal());
-            mDataBinding.frontRpProgess.setProgress(rpBean.getHadLotteryTotal());
-            mDataBinding.frontRpProgressIv3.setBackgroundResource(R.drawable.front_dot_close_bg);
-        }
-        if (!rpBean.getOpened()) {
-            if (rpBean.getHadLotteryTotal() == -1) {
-                nCloseRpCounts += 1;
-                mDataBinding.frontRpIv3.setAlpha(0.5f);
-                mDataBinding.frontRpIv3.setBackgroundResource(R.drawable.front_rp_close);
-            } else {
-                if (rpBean.getHadLotteryTotal() < rpBean.getLotteryTotal()) {
-                    mDataBinding.frontRpIv3.setAlpha(0.5f);
-                    mDataBinding.frontRpIv3.setBackgroundResource(R.drawable.front_rp_close);
-                } else {
-                    mDataBinding.frontRpIv3.setAlpha(1.0f);
-                    nCloseRpCounts += 1;
-                    mDataBinding.frontRpProgressIv3.setBackgroundResource(R.drawable.front_dot_bg);
-                }
-            }
-        } else {
-            mDataBinding.frontRpIv3.setAlpha(1.0f);
-            mDataBinding.frontRpIv3.setBackgroundResource(R.drawable.front_rp_open);
-            mDataBinding.frontRpProgressIv3.setBackgroundResource(R.drawable.front_dot_bg);
-        }
+        changeRpStatus(rpBean, topColor, bottomColor
+                , mDataBinding.frontRpOpenFl3, mDataBinding.frontRpTv3, mDataBinding.frontRpIv3);
         rpBean = walletBean.getList().get(3);
-        mDataBinding.frontRpOpenFl4.setTag(rpBean);
-        mDataBinding.frontRpOpenFl4.setOnClickListener(this);
-        if (rpBean.getHadLotteryTotal() == -1) {
-            mDataBinding.frontRpIv4.setAlpha(0.5f);
-            mDataBinding.frontRpTv4.setText(rpBean.getLotteryTotal() + "/" + rpBean.getLotteryTotal());
-            mDataBinding.frontRpProgess.setProgress(rpBean.getLotteryTotal());
-            mDataBinding.frontRpProgressIv4.setBackgroundResource(R.drawable.front_dot_bg);
-        } else {
-            mDataBinding.frontRpTv4.setText(rpBean.getHadLotteryTotal() + "/" + rpBean.getLotteryTotal());
-            mDataBinding.frontRpProgess.setProgress(rpBean.getHadLotteryTotal());
-            mDataBinding.frontRpProgressIv4.setBackgroundResource(R.drawable.front_dot_close_bg);
-        }
-        if (!rpBean.getOpened()) {
-            if (rpBean.getHadLotteryTotal() == -1) {
-                nCloseRpCounts += 1;
-                mDataBinding.frontRpIv4.setAlpha(0.5f);
-                mDataBinding.frontRpIv4.setBackgroundResource(R.drawable.front_rp_close);
-            } else {
-                if (rpBean.getHadLotteryTotal() < rpBean.getLotteryTotal()) {
-                    mDataBinding.frontRpIv4.setAlpha(0.5f);
-                    mDataBinding.frontRpIv4.setBackgroundResource(R.drawable.front_rp_close);
-                } else {
-                    mDataBinding.frontRpIv4.setAlpha(1.0f);
-                    nCloseRpCounts += 1;
-                    mDataBinding.frontRpProgressIv4.setBackgroundResource(R.drawable.front_dot_bg);
-                }
-            }
-        } else {
-            mDataBinding.frontRpIv4.setAlpha(1.0f);
-            mDataBinding.frontRpIv4.setBackgroundResource(R.drawable.front_rp_open);
-            mDataBinding.frontRpProgressIv4.setBackgroundResource(R.drawable.front_dot_bg);
-        }
+        changeRpStatus(rpBean, topColor, bottomColor
+                , mDataBinding.frontRpOpenFl4, mDataBinding.frontRpTv4, mDataBinding.frontRpIv4);
+
         rpBean = walletBean.getList().get(4);
         mDataBinding.frontRpOpenFl5.setTag(rpBean);
         mDataBinding.frontRpOpenFl5.setOnClickListener(this);
-        if (rpBean.getHadLotteryTotal() == -1) {
-            mDataBinding.frontRpIv5.setAlpha(0.5f);
-            mDataBinding.frontRpTv5.setText(rpBean.getLotteryTotal() + "/" + rpBean.getLotteryTotal());
-            mDataBinding.frontRpProgess.setProgress(rpBean.getLotteryTotal());
-            mDataBinding.frontRpProgressIv5.setBackgroundResource(R.drawable.front_dot_bg);
+        if (rpBean.getOpened()) {
+            stopTimer();
+            mDataBinding.frontRpIv5.setAlpha(1.0f);
+            mDataBinding.frontRpTv5.setText("已开启");
         } else {
-            mDataBinding.frontRpTv5.setText(rpBean.getHadLotteryTotal() + "/" + rpBean.getLotteryTotal());
-            mDataBinding.frontRpProgess.setProgress(rpBean.getHadLotteryTotal());
-            mDataBinding.frontRpProgressIv5.setBackgroundResource(R.drawable.front_dot_close_bg);
-        }
-        if (!rpBean.getOpened()) {
-            mDataBinding.frontRpIv5.setBackgroundResource(R.drawable.front_rp_wait);
             if (rpBean.getHadLotteryTotal() == -1 || rpBean.getHadLotteryTotal() >= rpBean.getLotteryTotal()) {
                 nCloseRpCounts += 1;
                 mDataBinding.frontRpIv5.setAlpha(0.5f);
-                mDataBinding.frontRpProgressIv5.setBackgroundResource(R.drawable.front_dot_bg);
+                mDataBinding.frontRpTv5.setText("待开启");
+            } else if (rpBean.getHadLotteryTotal() < rpBean.getLotteryTotal()) {
+                mDataBinding.frontRpTv5.setText("抽奖" + rpBean.getLotteryTotal() + "次");
             }
-        } else {
-            mDataBinding.frontRpIv5.setAlpha(1.0f);
-            mDataBinding.frontRpIv5.setBackgroundResource(R.drawable.front_rp_open);
-            mDataBinding.frontRpProgressIv5.setBackgroundResource(R.drawable.front_dot_bg);
-            stopTimer();
         }
-        mDataBinding.frontRpProgess.setMax(rpBean.getLotteryTotal());
+
+        mDataBinding.frontFloatingBtn.setProgress(rpBean.getHadLotteryTotal());
 
         SPUtils.setInformain(KeySharePreferences.CLOSE_RED_PACKAGE_COUNTS, nCloseRpCounts);
     }
@@ -537,6 +461,49 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                     .navigation();
             loadRpData();
             EventBus.getDefault().post(new WalletRefreshEvent(0));
+        });
+    }
+
+    int topBaseLinePx = 0;
+    int topFloatBaseHei = 0;
+    int appBarHei = 0;
+
+    //滚动悬浮标题处理
+    private void scrollFloatBar() {
+        //处理滑动精选标题遮挡问题
+        int statusHei = BarUtils.getStatusBarHeight();
+        mDataBinding.frontAppBarLayout.addOnOffsetChangedListener((appBarLayout1, verticalOffset) -> {
+            if (appBarHei == 0) {
+                appBarHei = mDataBinding.frontAppBarLayout.getHeight();
+                topFloatBaseHei = mDataBinding.frontCategoryTl.getPaddingTop();
+                topBaseLinePx = (appBarHei - (mDataBinding.frontCategoryTl.getHeight() - topFloatBaseHei) - statusHei);
+            }
+            if (appBarHei == 0 || /*topFloatBaseHei == 0 ||*/ topBaseLinePx == 0) {
+                return;
+            }
+            if (verticalOffset < -(topBaseLinePx)) {
+                //需要改变了
+                mDataBinding.frontCategoryTl.setPadding(
+                        0,
+                        topFloatBaseHei + Math.abs(topBaseLinePx + verticalOffset),
+                        0,
+                        mDataBinding.frontCategoryTl.getPaddingBottom());
+            } else {
+                //还没有到位置
+                if (mDataBinding.frontCategoryTl.getPaddingTop() > topFloatBaseHei) {
+                    mDataBinding.frontCategoryTl.setPadding(
+                            0,
+                            topFloatBaseHei - Math.abs(verticalOffset + topBaseLinePx),
+                            0,
+                            mDataBinding.frontCategoryTl.getPaddingBottom());
+                } else if (mDataBinding.frontCategoryTl.getPaddingTop() < topFloatBaseHei) {
+                    mDataBinding.frontCategoryTl.setPadding(
+                            0,
+                            topFloatBaseHei,
+                            0,
+                            mDataBinding.frontCategoryTl.getPaddingBottom());
+                }
+            }
         });
     }
 }

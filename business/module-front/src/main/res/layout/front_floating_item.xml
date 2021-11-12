@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:cpbv="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/front_floating_fl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/front_floating_bg">
+
+        <com.donews.front.views.CircleProgressBarView
+            android:id="@+id/front_floating_progress"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            app:circleBgColor="@color/transparent"
+            app:progressColor="#FFCE31"
+            cpbv:circleBgStrokeWidth="2dp"
+            cpbv:isDrawCenterProgressText="false"
+            cpbv:progressStrokeWidth="1dp" />
+
+        <ImageView
+            android:layout_width="29dp"
+            android:layout_height="33dp"
+            android:layout_gravity="center"
+            android:src="@drawable/front_floating_rp" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/front_floating_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/front_floating_text_bg"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:text="0/10"
+        android:textColor="@color/white"
+        android:textSize="12sp" />
+</LinearLayout>

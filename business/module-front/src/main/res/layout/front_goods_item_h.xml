@@ -41,6 +41,13 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:scaleType="centerInside"
+                android:src="@drawable/front_goods_item_money" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
@@ -67,7 +74,7 @@
             android:layout_height="37dp"
             android:layout_marginStart="6dp"
             android:layout_marginTop="6dp"
-            android:background="@drawable/front_goods_item_do"
+            android:background="@drawable/front_goods_item_dowhat"
             android:gravity="center"
             android:paddingBottom="4dp"
             android:text="0元抽奖"

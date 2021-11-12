@@ -17,462 +17,456 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <FrameLayout
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#FFF9F9F9">
+            android:layout_height="match_parent">
 
-            <LinearLayout
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/front_app_bar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <View
-                    android:id="@+id/front_title_bg_top"
-                    android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:background="@drawable/front_title_bg"
-                    tools:ignore="MissingConstraints" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@drawable/front_title_bg_bottom" />
-            </LinearLayout>
-
-            <RelativeLayout
-                android:id="@+id/front_title_rl"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                tools:ignore="MissingConstraints">
-
-                <ImageView
-                    android:id="@+id/home_jdd_logo_iv"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="10dp"
-                    android:src="@drawable/front_logo"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="MissingConstraints" />
-
-                <ImageView
-                    android:id="@+id/home_jdd_title_iv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@+id/home_jdd_logo_iv"
-                    android:src="@drawable/front_title"
-                    tools:ignore="MissingConstraints" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/home_jdd_tips_atv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/home_jdd_title_iv"
-                    android:layout_marginStart="10dp"
-                    android:layout_toRightOf="@+id/home_jdd_logo_iv"
-                    android:text="奖品免费拿，购物超省钱"
-                    android:textColor="#FFC8C6"
-                    android:textSize="16sp"
-                    tools:ignore="MissingConstraints" />
-
-                <ImageView
-                    android:id="@+id/front_jdd_help"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:padding="8dp"
-                    android:src="@drawable/front_help"
-                    tools:ignore="MissingConstraints" />
-            </RelativeLayout>
-
-            <LinearLayout
-                android:id="@+id/front_jdd_bot_content"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="70dp"
+                android:background="#F9F9F9"
                 android:orientation="vertical">
 
-                <androidx.coordinatorlayout.widget.CoordinatorLayout
+                <com.google.android.material.appbar.CollapsingToolbarLayout
+                    android:id="@+id/collapsing_toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    app:expandedTitleGravity="top"
+                    app:expandedTitleMarginEnd="64dp"
+                    app:expandedTitleMarginStart="48dp"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
-                    <com.google.android.material.appbar.AppBarLayout
-                        android:id="@+id/front_app_bar_layout"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#F9F9F9"
+                        android:layout_marginBottom="10dp"
                         android:orientation="vertical">
 
-                        <com.google.android.material.appbar.CollapsingToolbarLayout
-                            android:id="@+id/collapsing_toolbar"
+                        <RelativeLayout
+                            android:id="@+id/front_rp_rl"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            app:expandedTitleGravity="top"
-                            app:expandedTitleMarginEnd="64dp"
-                            app:expandedTitleMarginStart="48dp"
-                            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/front_title"
+                            android:paddingTop="40dp"
+                            tools:ignore="MissingConstraints">
+
+                            <TextView
+                                android:id="@+id/front_rp_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="24dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="4dp"
+                                android:gravity="center"
+                                android:text="抽奖开红包"
+                                android:textColor="#FFEEB9
+"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:id="@+id/front_rp_help_iv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="24dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="4dp"
+                                android:layout_toRightOf="@+id/front_rp_title"
+                                android:src="@drawable/front_rp_help" />
+
+                            <TextView
+                                android:id="@+id/front_cash_get_tv"
+                                android:layout_width="70dp"
+                                android:layout_height="28dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginEnd="10dp"
+                                android:background="@drawable/front_getmoney_bg"
+                                android:gravity="center"
+                                android:text="提现"
+                                android:textColor="#FFFFFF"
+                                android:textSize="13sp" />
+
+
+                            <LinearLayout
+                                android:id="@+id/front_rp_ll"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/front_cash_get_tv"
+                                android:layout_marginTop="10dp"
+                                android:gravity="bottom"
+                                android:padding="5dp"
+                                android:weightSum="5">
+
+                                <FrameLayout
+                                    android:id="@+id/front_rp_open_fl1"
+                                    android:layout_width="0dp"
+                                    android:layout_height="85dp"
+                                    android:layout_weight="1">
+
+                                    <ImageView
+                                        android:id="@+id/front_rp_iv1"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="bottom|center_horizontal"
+                                        android:background="@drawable/front_rp_oen" />
+
+                                    <TextView
+                                        android:id="@+id/front_rp_tv1"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginBottom="10dp"
+                                        android:gravity="center"
+                                        android:text="已开启"
+                                        android:textColor="#764D38"
+                                        android:textSize="12sp" />
+                                </FrameLayout>
+
+                                <FrameLayout
+                                    android:id="@+id/front_rp_open_fl2"
+                                    android:layout_width="0dp"
+                                    android:layout_height="85dp"
+                                    android:layout_weight="1">
+
+                                    <ImageView
+                                        android:id="@+id/front_rp_iv2"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="bottom|center_horizontal"
+                                        android:background="@drawable/front_rp_oen" />
+
+                                    <TextView
+                                        android:id="@+id/front_rp_tv2"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginBottom="10dp"
+                                        android:gravity="center"
+                                        android:text="已开启"
+                                        android:textColor="#764D38"
+                                        android:textSize="12sp" />
+                                </FrameLayout>
+
+                                <FrameLayout
+                                    android:id="@+id/front_rp_open_fl3"
+                                    android:layout_width="0dp"
+                                    android:layout_height="85dp"
+                                    android:layout_weight="1">
+
+                                    <ImageView
+                                        android:id="@+id/front_rp_iv3"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="bottom|center_horizontal"
+                                        android:background="@drawable/front_rp_ready" />
+
+                                    <TextView
+                                        android:id="@+id/front_rp_tv3"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_horizontal|bottom"
+                                        android:layout_marginBottom="6dp"
+                                        android:gravity="center"
+                                        android:text="待开启"
+                                        android:textColor="#FFF3D3"
+                                        android:textSize="12sp" />
+                                </FrameLayout>
+
+                                <FrameLayout
+                                    android:id="@+id/front_rp_open_fl4"
+                                    android:layout_width="0dp"
+                                    android:layout_height="85dp"
+                                    android:layout_weight="1">
+
+                                    <ImageView
+                                        android:id="@+id/front_rp_iv4"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="bottom|center_horizontal"
+                                        android:background="@drawable/front_rp_wait" />
+
+                                    <TextView
+                                        android:id="@+id/front_rp_tv4"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_horizontal|bottom"
+                                        android:layout_marginBottom="6dp"
+                                        android:gravity="center"
+                                        android:text="抽奖7次"
+                                        android:textColor="#FFF3D3"
+                                        android:textSize="12sp" />
+                                </FrameLayout>
+
+                                <FrameLayout
+                                    android:id="@+id/front_rp_open_fl5"
+                                    android:layout_width="0dp"
+                                    android:layout_height="85dp"
+                                    android:layout_weight="1">
+
+                                    <ImageView
+                                        android:id="@+id/front_rp_iv5"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="bottom|center_horizontal"
+                                        android:background="@drawable/front_rp_gold" />
+
+                                    <ImageView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="right"
+                                        android:src="@drawable/front_rp_gold_money" />
+
+                                    <TextView
+                                        android:id="@+id/front_rp_tv5"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_horizontal|bottom"
+                                        android:layout_marginBottom="6dp"
+                                        android:gravity="center"
+                                        android:text="抽奖10次"
+                                        android:textColor="#B9511B"
+                                        android:textSize="12sp" />
+                                </FrameLayout>
+                            </LinearLayout>
+
+                        </RelativeLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="104dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:background="@drawable/front_lottery_bg"
+                            android:paddingTop="14dp">
+
+                            <LinearLayout
+                                android:id="@+id/front_lottery_cup_ll"
+                                android:layout_width="wrap_content"
+                                android:layout_height="22dp"
+                                android:gravity="center"
+                                android:orientation="horizontal"
+                                tools:ignore="MissingConstraints">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="20dp"
+                                    android:src="@drawable/front_lottery_cup" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="10dp"
+                                    android:gravity="center"
+                                    android:text="20211019期 10点开奖"
+                                    android:textColor="#AC623C"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/front_lottery_goto_ll"
+                                android:layout_width="wrap_content"
+                                android:layout_height="22dp"
+                                android:gravity="center"
+                                android:orientation="horizontal"
+                                app:layout_constraintRight_toRightOf="parent"
+                                tools:ignore="MissingConstraints">
+
+                                <TextView
+                                    android:id="@+id/front_lottery_goto_tv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="4dp"
+                                    android:text="中奖攻略"
+                                    android:textColor="#AC623C"
+                                    android:textSize="15sp" />
+
+                                <ImageView
+                                    android:id="@+id/front_lottery_goto_iv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="10dp"
+                                    android:src="@drawable/front_lottery_goto" />
+
+                            </LinearLayout>
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="10dp"
-                                android:orientation="vertical">
+                                android:gravity="center"
+                                android:orientation="horizontal"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/front_lottery_cup_ll"
+                                tools:ignore="MissingConstraints">
 
-                                <FrameLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content">
+                                <TextView
+                                    android:id="@+id/front_lottery_num_tv1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginEnd="3dp"
+                                    android:background="@drawable/front_rp_num_unknown"
+                                    android:gravity="center"
+                                    android:text="\?"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="20sp" />
 
-                                    <ImageView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:background="@drawable/front_banner_bg" />
+                                <TextView
+                                    android:id="@+id/front_lottery_num_tv2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="3dp"
+                                    android:layout_marginEnd="3dp"
+                                    android:background="@drawable/front_rp_num_unknown"
+                                    android:gravity="center"
+                                    android:text="\?"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="20sp" />
 
-                                    <RelativeLayout
-                                        android:id="@+id/front_rp_rl"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="160dp"
-                                        android:layout_marginStart="10dp"
-                                        android:layout_marginEnd="10dp"
-                                        android:background="@drawable/front_cash_bg"
-                                        tools:ignore="MissingConstraints">
+                                <TextView
+                                    android:id="@+id/front_lottery_num_tv3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="3dp"
+                                    android:layout_marginEnd="3dp"
+                                    android:background="@drawable/front_rp_num_unknown"
+                                    android:gravity="center"
+                                    android:text="\?"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="20sp" />
 
-                                        <TextView
-                                            android:id="@+id/front_rp_title"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="24dp"
-                                            android:layout_marginStart="10dp"
-                                            android:layout_marginTop="4dp"
-                                            android:gravity="center"
-                                            android:text="抽奖开红包"
-                                            android:textColor="#2c2c2c"
-                                            android:textSize="15sp"
-                                            android:textStyle="bold" />
+                                <TextView
+                                    android:id="@+id/front_lottery_num_tv4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="3dp"
+                                    android:layout_marginEnd="3dp"
+                                    android:background="@drawable/front_rp_num_unknown"
+                                    android:gravity="center"
+                                    android:text="\?"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="20sp" />
 
-                                        <ImageView
-                                            android:id="@+id/front_rp_help_iv"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="24dp"
-                                            android:layout_marginStart="10dp"
-                                            android:layout_marginTop="4dp"
-                                            android:layout_toRightOf="@+id/front_rp_title"
-                                            android:src="@drawable/front_rp_help" />
+                                <TextView
+                                    android:id="@+id/front_lottery_num_tv5"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="3dp"
+                                    android:layout_marginEnd="3dp"
+                                    android:background="@drawable/front_rp_num_unknown"
+                                    android:gravity="center"
+                                    android:text="\?"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="20sp" />
 
-                                        <TextView
-                                            android:id="@+id/front_cash_get_tv"
-                                            android:layout_width="70dp"
-                                            android:layout_height="28dp"
-                                            android:layout_alignParentRight="true"
-                                            android:layout_marginTop="4dp"
-                                            android:layout_marginEnd="10dp"
-                                            android:background="@drawable/front_rp_get_cash_bg"
-                                            android:gravity="center"
-                                            android:text="提现"
-                                            android:textColor="#ED4944" />
+                                <TextView
+                                    android:id="@+id/front_lottery_num_tv6"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="3dp"
+                                    android:layout_marginEnd="3dp"
+                                    android:background="@drawable/front_rp_num_unknown"
+                                    android:gravity="center"
+                                    android:text="\?"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="20sp" />
 
-                                        <LinearLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:layout_below="@+id/front_cash_get_tv"
-                                            android:layout_marginTop="6dp"
-                                            android:layout_marginBottom="10dp"
-                                            android:background="@drawable/front_cash_rp_bg"
-                                            android:orientation="vertical">
-
-                                            <LinearLayout
-                                                android:id="@+id/front_rp_ll"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginTop="10dp"
-                                                android:paddingTop="5dp"
-                                                android:paddingBottom="5dp"
-                                                android:weightSum="5">
-
-                                                <FrameLayout
-                                                    android:id="@+id/front_rp_open_fl1"
-                                                    android:layout_width="0dp"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_weight="1">
-
-                                                    <ImageView
-                                                        android:id="@+id/front_rp_iv1"
-                                                        android:layout_width="wrap_content"
-                                                        android:layout_height="wrap_content"
-                                                        android:layout_gravity="center"
-                                                        android:background="@drawable/front_rp_open" />
-
-                                                    <TextView
-                                                        android:id="@+id/front_rp_tv1"
-                                                        android:layout_width="wrap_content"
-                                                        android:layout_height="wrap_content"
-                                                        android:layout_gravity="center_horizontal|bottom"
-                                                        android:layout_marginBottom="6dp"
-                                                        android:gravity="center"
-                                                        android:textColor="@color/white" />
-                                                </FrameLayout>
-
-                                                <FrameLayout
-                                                    android:id="@+id/front_rp_open_fl2"
-                                                    android:layout_width="0dp"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_weight="1">
-
-                                                    <ImageView
-                                                        android:id="@+id/front_rp_iv2"
-                                                        android:layout_width="wrap_content"
-                                                        android:layout_height="wrap_content"
-                                                        android:layout_gravity="center"
-                                                        android:background="@drawable/front_rp_open" />
-
-                                                    <TextView
-                                                        android:id="@+id/front_rp_tv2"
-                                                        android:layout_width="wrap_content"
-                                                        android:layout_height="wrap_content"
-                                                        android:layout_gravity="center_horizontal|bottom"
-                                                        android:layout_marginBottom="6dp"
-                                                        android:gravity="center"
-                                                        android:textColor="@color/white" />
-                                                </FrameLayout>
-
-                                                <FrameLayout
-                                                    android:id="@+id/front_rp_open_fl3"
-                                                    android:layout_width="0dp"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_weight="1">
-
-                                                    <ImageView
-                                                        android:id="@+id/front_rp_iv3"
-                                                        android:layout_width="wrap_content"
-                                                        android:layout_height="wrap_content"
-                                                        android:layout_gravity="center"
-                                                        android:background="@drawable/front_rp_open" />
-
-                                                    <TextView
-                                                        android:id="@+id/front_rp_tv3"
-                                                        android:layout_width="wrap_content"
-                                                        android:layout_height="wrap_content"
-                                                        android:layout_gravity="center_horizontal|bottom"
-                                                        android:layout_marginBottom="6dp"
-                                                        android:gravity="center"
-                                                        android:textColor="@color/white" />
-                                                </FrameLayout>
-
-                                                <FrameLayout
-                                                    android:id="@+id/front_rp_open_fl4"
-                                                    android:layout_width="0dp"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_weight="1">
-
-                                                    <ImageView
-                                                        android:id="@+id/front_rp_iv4"
-                                                        android:layout_width="wrap_content"
-                                                        android:layout_height="wrap_content"
-                                                        android:layout_gravity="center"
-                                                        android:background="@drawable/front_rp_close" />
-
-                                                    <TextView
-                                                        android:id="@+id/front_rp_tv4"
-                                                        android:layout_width="wrap_content"
-                                                        android:layout_height="wrap_content"
-                                                        android:layout_gravity="center_horizontal|bottom"
-                                                        android:layout_marginBottom="6dp"
-                                                        android:gravity="center"
-                                                        android:textColor="@color/white" />
-                                                </FrameLayout>
-
-                                                <FrameLayout
-                                                    android:id="@+id/front_rp_open_fl5"
-                                                    android:layout_width="0dp"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_weight="1">
-
-                                                    <ImageView
-                                                        android:id="@+id/front_rp_iv5"
-                                                        android:layout_width="wrap_content"
-                                                        android:layout_height="wrap_content"
-                                                        android:layout_gravity="center"
-                                                        android:background="@drawable/front_rp_wait" />
-
-                                                    <TextView
-                                                        android:id="@+id/front_rp_tv5"
-                                                        android:layout_width="wrap_content"
-                                                        android:layout_height="wrap_content"
-                                                        android:layout_gravity="center_horizontal|bottom"
-                                                        android:layout_marginBottom="6dp"
-                                                        android:gravity="center"
-                                                        android:textColor="@color/white" />
-                                                </FrameLayout>
-                                            </LinearLayout>
-
-                                            <FrameLayout
-                                                android:layout_width="match_parent"
-                                                android:layout_height="10dp"
-                                                android:layout_marginStart="10dp"
-                                                android:layout_marginTop="6dp"
-                                                android:layout_marginEnd="10dp"
-                                                android:layout_marginBottom="20dp">
-
-                                                <ProgressBar
-                                                    android:id="@+id/front_rp_progess"
-                                                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                                                    android:layout_width="match_parent"
-                                                    android:layout_height="3dp"
-                                                    android:layout_gravity="center_vertical"
-                                                    android:max="100"
-                                                    android:progress="0"
-                                                    android:progressDrawable="@drawable/front_rp_progress_bg" />
-
-                                                <LinearLayout
-                                                    android:layout_width="match_parent"
-                                                    android:layout_height="wrap_content"
-                                                    android:orientation="horizontal"
-                                                    android:weightSum="5">
-
-                                                    <FrameLayout
-                                                        android:layout_width="0dp"
-                                                        android:layout_height="10dp"
-                                                        android:layout_weight="1">
-
-                                                        <View
-                                                            android:id="@+id/front_rp_progress_iv1"
-                                                            android:layout_width="10dp"
-                                                            android:layout_height="10dp"
-                                                            android:layout_gravity="center"
-                                                            android:background="@drawable/front_dot_close_bg" />
-                                                    </FrameLayout>
-
-                                                    <FrameLayout
-                                                        android:layout_width="0dp"
-                                                        android:layout_height="10dp"
-                                                        android:layout_weight="1">
-
-                                                        <View
-                                                            android:id="@+id/front_rp_progress_iv2"
-                                                            android:layout_width="10dp"
-                                                            android:layout_height="10dp"
-                                                            android:layout_gravity="center"
-                                                            android:background="@drawable/front_dot_close_bg" />
-                                                    </FrameLayout>
-
-                                                    <FrameLayout
-                                                        android:layout_width="0dp"
-                                                        android:layout_height="10dp"
-                                                        android:layout_weight="1">
-
-                                                        <View
-                                                            android:id="@+id/front_rp_progress_iv3"
-                                                            android:layout_width="10dp"
-                                                            android:layout_height="10dp"
-                                                            android:layout_gravity="center"
-                                                            android:background="@drawable/front_dot_close_bg" />
-                                                    </FrameLayout>
-
-                                                    <FrameLayout
-                                                        android:layout_width="0dp"
-                                                        android:layout_height="10dp"
-                                                        android:layout_weight="1">
-
-                                                        <View
-                                                            android:id="@+id/front_rp_progress_iv4"
-                                                            android:layout_width="10dp"
-                                                            android:layout_height="10dp"
-                                                            android:layout_gravity="center"
-                                                            android:background="@drawable/front_dot_close_bg" />
-                                                    </FrameLayout>
-
-                                                    <FrameLayout
-                                                        android:layout_width="0dp"
-                                                        android:layout_height="10dp"
-                                                        android:layout_weight="1">
-
-                                                        <View
-                                                            android:id="@+id/front_rp_progress_iv5"
-                                                            android:layout_width="10dp"
-                                                            android:layout_height="10dp"
-                                                            android:layout_gravity="center"
-                                                            android:background="@drawable/front_dot_close_bg" />
-                                                    </FrameLayout>
-                                                </LinearLayout>
-                                            </FrameLayout>
-                                        </LinearLayout>
-                                    </RelativeLayout>
-                                </FrameLayout>
-
-                                <androidx.constraintlayout.widget.ConstraintLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="40dp"
-                                    android:layout_marginStart="10dp"
-                                    android:layout_marginTop="8dp"
-                                    android:layout_marginEnd="10dp"
-                                    android:background="@drawable/front_gift_bg">
-
-                                    <TextView
-                                        android:id="@+id/front_award_tip"
-                                        android:layout_width="80dp"
-                                        android:layout_height="match_parent"
-                                        android:layout_marginStart="10dp"
-                                        android:gravity="center"
-                                        android:text="中奖公示"
-                                        android:textColor="@color/white"
-                                        android:textSize="16sp"
-                                        android:textStyle="bold"
-                                        app:layout_constraintTop_toTopOf="parent"
-                                        tools:ignore="MissingConstraints" />
-
-                                    <LinearLayout
-                                        android:layout_width="270dp"
-                                        android:layout_height="30dp"
-                                        android:layout_gravity="center_vertical"
-                                        android:layout_marginEnd="10dp"
-                                        android:background="@drawable/front_gift_info_bg"
-                                        android:orientation="horizontal"
-                                        app:layout_constraintBottom_toBottomOf="parent"
-                                        app:layout_constraintLeft_toRightOf="@+id/front_award_tip"
-                                        app:layout_constraintRight_toRightOf="parent"
-                                        app:layout_constraintTop_toTopOf="parent"
-                                        tools:ignore="MissingConstraints">
-
-                                        <com.donews.middle.views.BarrageView
-                                            android:id="@+id/front_barrage_view"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
-                                            android:layout_marginStart="10dp"
-                                            android:layout_marginEnd="15dp" />
-                                    </LinearLayout>
-                                </androidx.constraintlayout.widget.ConstraintLayout>
+                                <TextView
+                                    android:id="@+id/front_lottery_num_tv7"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="3dp"
+                                    android:background="@drawable/front_rp_num_unknown"
+                                    android:gravity="center"
+                                    android:text="\?"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="20sp" />
                             </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-                        <com.google.android.material.tabs.TabLayout
-                            android:id="@+id/front_category_tl"
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/dp_40"
+                            android:layout_height="40dp"
                             android:layout_marginStart="10dp"
+                            android:layout_marginTop="8dp"
                             android:layout_marginEnd="10dp"
-                            app:tabIndicatorColor="@color/transparent"
-                            app:tabIndicatorHeight="0dp"
-                            app:tabSelectedTextColor="#F64A43"
-                            app:tabTextColor="#6D6D6D"
-                            app:tabBackground="@color/transparent"
-                            app:tabRippleColor="@color/transparent"/>
+                            android:background="@drawable/front_gift_bg"
+                            android:visibility="gone">
 
-                    </com.google.android.material.appbar.AppBarLayout>
+                            <TextView
+                                android:id="@+id/front_award_tip"
+                                android:layout_width="80dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="10dp"
+                                android:gravity="center"
+                                android:text="中奖公示"
+                                android:textColor="@color/white"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:ignore="MissingConstraints" />
 
-                    <androidx.viewpager2.widget.ViewPager2
-                        android:id="@+id/front_vp2"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
-                </androidx.coordinatorlayout.widget.CoordinatorLayout>
-            </LinearLayout>
-        </FrameLayout>
+                            <LinearLayout
+                                android:layout_width="270dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginEnd="10dp"
+                                android:background="@drawable/front_gift_info_bg"
+                                android:orientation="horizontal"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toRightOf="@+id/front_award_tip"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:ignore="MissingConstraints">
+
+                                <com.donews.middle.views.BarrageView
+                                    android:id="@+id/front_barrage_view"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_marginEnd="15dp" />
+                            </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
+
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/front_category_tl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="35dp"
+                    app:tabBackground="@color/transparent"
+                    app:tabIndicatorColor="@color/transparent"
+                    app:tabIndicatorHeight="0dp"
+                    app:tabRippleColor="@color/transparent"
+                    app:tabSelectedTextColor="#F64A43"
+                    app:tabTextColor="#6D6D6D" />
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/front_vp2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+
+            <com.donews.front.views.FrontFloatingBtn
+                android:id="@+id/front_floating_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="100dp" />
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 </layout>
