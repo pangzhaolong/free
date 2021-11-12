@@ -309,16 +309,24 @@ public class UserInfoManage {
         return mutableLiveData;
     }
 
+    public static MutableLiveData<UserInfoBean> onLoadNetUserInfo(String data) {
+        return onLoadNetUserInfo(data, null);
+    }
 
     /**
      * 登录的接口
      *
      * @param data 请求的参数
+     * @param tag  本次请求的标记(通知为了区分目标源),如果为空则表示不需要
      */
-    public static MutableLiveData<UserInfoBean> onLoadNetUserInfo(String data) {
-        MutableLiveData<Integer> eventLiveData = new MutableLiveData<>();
-        EventBus.getDefault().post(new LoginLodingStartStatus(eventLiveData));
-        eventLiveData.postValue(0);
+    public static MutableLiveData<UserInfoBean> onLoadNetUserInfo(String data, String tag) {
+        LoginLodingStartStatus eventLoadIngStatus;
+        if (tag == null || tag.isEmpty()) {
+            eventLoadIngStatus = new LoginLodingStartStatus();
+        } else {
+            eventLoadIngStatus = new LoginLodingStartStatus(tag);
+        }
+        EventBus.getDefault().post(eventLoadIngStatus);
         MutableLiveData<UserInfoBean> mutableLiveData = new MutableLiveData<UserInfoBean>();
         EasyHttp.post(LoginApi.LOGIN)
                 .upJson(data)
@@ -326,7 +334,7 @@ public class UserInfoManage {
                 .execute(new SimpleCallBack<UserInfoBean>() {
                     @Override
                     public void onError(ApiException e) {
-                        eventLiveData.postValue(-1);
+                        eventLoadIngStatus.getLoginLoadingLiveData().postValue(-1);
                         EventBus.getDefault().post(new LoginUserStatus(-1));
                         LogUtil.i(e.getCode() + e.getMessage() + "");
                     }
@@ -335,10 +343,10 @@ public class UserInfoManage {
                     public void onSuccess(UserInfoBean userInfoBean) {
                         if (userInfoBean == null) {
                             EventBus.getDefault().post(new LoginUserStatus(0));
-                            eventLiveData.postValue(1);
+                            eventLoadIngStatus.getLoginLoadingLiveData().postValue(1);
                             return;
                         }
-                        eventLiveData.postValue(2);
+                        eventLoadIngStatus.getLoginLoadingLiveData().postValue(2);
                         setHttpToken(userInfoBean);
                         LogUtil.i(userInfoBean.toString());
                         mutableLiveData.postValue(userInfoBean);
@@ -396,7 +404,7 @@ public class UserInfoManage {
         SPUtils.setInformain(KeySharePreferences.USER_ID, userInfoBean.getId());
         AnalysisHelp.registerUserId();
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.put(HttpHeaders.HEAD_PACKAGENMAE,DeviceUtils.getPackage());
+        httpHeaders.put(HttpHeaders.HEAD_PACKAGENMAE, DeviceUtils.getPackage());
         httpHeaders.put(HttpHeaders.HEAD_AUTHORIZATION, AppInfo.getToken(userInfoBean.getToken()));
         EasyHttp.getInstance().addCommonHeaders(httpHeaders);
     }

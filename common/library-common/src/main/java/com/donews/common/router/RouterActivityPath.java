@@ -6,6 +6,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.donews.common.router.providers.IARouterLoginProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +59,25 @@ public class RouterActivityPath {
          * 绑定手机
          */
         public static final String PAGER_BIND_PHONE = USER + "/bindphone";
+    }
 
+    public static class LoginProvider {
+
+        private static final String LOGIN_PROVIDER = "/loginProvider";
+
+        /**
+         * 登录功能对外提供的内容者路径
+         */
+        public static final String PROVIDER_LOGIN = LOGIN_PROVIDER + "/RouterLoginProvider";
+
+        /**
+         * 获取登录功能提供者
+         * @return
+         */
+        public static IARouterLoginProvider getLoginProvider(){
+            return (IARouterLoginProvider) ARouter.getInstance().build(PROVIDER_LOGIN)
+                    .navigation();
+        }
     }
 
     public static class Mine {

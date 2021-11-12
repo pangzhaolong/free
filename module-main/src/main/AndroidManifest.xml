@@ -56,7 +56,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.GuideActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.RpActivity"
