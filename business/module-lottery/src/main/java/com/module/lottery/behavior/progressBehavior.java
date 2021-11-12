@@ -22,7 +22,7 @@ public class progressBehavior extends CoordinatorLayout.Behavior {
     public progressBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
         //读取dimen配置参数
-        mProgressMarginStart = context.getResources().getDimensionPixelSize(R.dimen.margin_start);
+        mProgressMarginStart = context.getResources().getDimensionPixelSize(R.dimen.lottery_constant_13);
 
 
     }

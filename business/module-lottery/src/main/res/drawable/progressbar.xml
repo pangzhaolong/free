@@ -9,9 +9,9 @@
             <corners android:radius="85dip" />
             <!--梯度-->
             <gradient
-                android:centerColor="#FFE7E6"
-                android:endColor="#FFE7E6"
-                android:startColor="#FFE7E6" />
+                android:centerColor="#D21D26"
+                android:endColor="#D21D26"
+                android:startColor="#D21D26" />
         </shape>
     </item>
 

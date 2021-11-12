@@ -63,7 +63,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
             }
         });
         //读取dimen配置参数
-        mProgressMarginStart = getContext().getResources().getDimensionPixelSize(R.dimen.margin_start);
+        mProgressMarginStart = getContext().getResources().getDimensionPixelSize(R.dimen.lottery_constant_13);
         initProgressBar();
         initView();
         setOnDismissListener(new OnDismissListener() {

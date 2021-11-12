@@ -9,9 +9,12 @@
     </data>
 
     <RelativeLayout
+        android:background="#E9423E"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
+        android:layout_marginStart="@dimen/margin_start"
+        android:layout_marginEnd="@dimen/margin_end"
         android:layout_below="@+id/coordinator_layout"
         android:gravity="center"
         android:orientation="vertical"
@@ -20,30 +23,108 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_start"
-            android:layout_marginEnd="@dimen/margin_end"
+
             android:orientation="vertical">
 
             <RelativeLayout
-
                 android:layout_width="match_parent"
-                android:layout_height="11dp">
+                android:layout_height="wrap_content">
 
                 <ProgressBar
+                    android:layout_marginStart="2dp"
+                    android:layout_marginTop="5.5dp"
                     android:id="@+id/progress_bar"
                     style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="7dp"
                     android:layout_centerVertical="true"
                     android:max="500"
                     android:progress="25"
                     android:progressDrawable="@drawable/progressbar" />
 
-                <ImageView
+                <LinearLayout
+
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/progress_bar_bg" />
+                    android:layout_height="18dp"
+                    android:layout_centerVertical="true"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="18dp"
+                        android:layout_weight="6"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:scaleType="fitXY"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:src="@mipmap/exhibit_round"
+                         />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="18dp"
+                        android:layout_weight="6"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:scaleType="fitXY"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:src="@mipmap/exhibit_round"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="18dp"
+                        android:layout_weight="6"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:scaleType="fitXY"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:src="@mipmap/exhibit_round"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="18dp"
+                        android:layout_weight="6"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:scaleType="fitXY"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:src="@mipmap/exhibit_round"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="18dp"
+                        android:layout_weight="6"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:scaleType="fitXY"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:src="@mipmap/exhibit_round"
+                            />
+
+                    </LinearLayout>
+
+                </LinearLayout>
 
             </RelativeLayout>
 
@@ -60,13 +141,14 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:layout_marginStart="5dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:gravity="center"
                         android:text="1"
-                        android:textColor="#FD2933"
-                        android:textSize="12dp" />
+                        android:textColor="#FFF3C9"
+                        android:textSize="13dp" />
 
                 </LinearLayout>
 
@@ -78,13 +160,14 @@
 
 
                     <TextView
+                        android:layout_marginStart="5dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:gravity="center"
                         android:text="2"
-                        android:textColor="#FD2933"
-                        android:textSize="12dp" />
+                        android:textColor="#FFF3C9"
+                        android:textSize="13dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -95,14 +178,14 @@
 
 
                     <TextView
-
+                        android:layout_marginStart="5dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:gravity="center"
                         android:text="3"
-                        android:textColor="#FD2933"
-                        android:textSize="12dp" />
+                        android:textColor="#FFF3C9"
+                        android:textSize="13dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -113,29 +196,31 @@
 
 
                     <TextView
+                        android:layout_marginStart="5dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:gravity="center"
                         android:text="4"
-                        android:textColor="#FD2933"
-                        android:textSize="12dp" />
+                        android:textColor="#FFF3C9"
+                        android:textSize="13dp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="6.3"
+                    android:layout_weight="6"
                     android:orientation="horizontal">
 
                     <TextView
+                        android:layout_marginStart="5dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:gravity="center"
                         android:text="5"
-                        android:textColor="#FD2933"
-                        android:textSize="12dp" />
+                        android:textColor="#FFF3C9"
+                        android:textSize="13dp" />
                 </LinearLayout>
 
             </LinearLayout>
