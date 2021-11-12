@@ -45,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
-            android:background="@drawable/home_goods_item_gift_big_bg"
+            android:background="@drawable/home_search_item_price_bg"
             android:gravity="center"
             android:paddingStart="4dp"
             android:paddingEnd="4dp"
@@ -53,16 +53,32 @@
             android:textColor="#F33838"
             android:textSize="12sp" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/home_top_goods_item_price_atv"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:gravity="center_vertical|left"
-            android:text="￥1699"
-            android:textColor="#A9AEB1"
-            android:textSize="15sp"
-            tools:ignore="RtlHardcoded" />
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="4dp"
+                android:layout_gravity="center"
+                android:paddingBottom="4dp"
+                android:src="@drawable/middle_item_money" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/home_top_goods_item_price_atv"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|left"
+                android:text="￥1699"
+                android:textColor="#A9AEB1"
+                android:textSize="15sp"
+                tools:ignore="RtlHardcoded" />
+        </LinearLayout>
     </RelativeLayout>
 
     <RelativeLayout

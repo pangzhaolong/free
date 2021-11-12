@@ -2,6 +2,7 @@ package com.donews.home.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
 import android.view.LayoutInflater;
@@ -70,6 +71,8 @@ public class CrazyListAdapter extends RecyclerView.Adapter<CrazyListAdapter.Craz
 
         holder.priceTv.setText("￥" + gi.getActualPrice());
         holder.giftTv.setText("￥" + gi.getCouponPrice() + "元券");
+        holder.originalPriceTv.setText(gi.getOriginalPrice() + "");
+        holder.originalPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
     }
 
     private SpannableString getTitleString(RealTimeBean.goodsInfo goodsInfo) {
@@ -107,6 +110,7 @@ public class CrazyListAdapter extends RecyclerView.Adapter<CrazyListAdapter.Craz
         private final TextView desTv;
         private final TextView priceTv;
         private final TextView giftTv;
+        private final TextView originalPriceTv;
 
         public CrazyListViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -115,6 +119,7 @@ public class CrazyListAdapter extends RecyclerView.Adapter<CrazyListAdapter.Craz
             desTv = itemView.findViewById(R.id.home_crazy_goods_item_des);
             priceTv = itemView.findViewById(R.id.home_crazy_goods_item_price);
             giftTv = itemView.findViewById(R.id.home_crzay_goods_item_gift_atv);
+            originalPriceTv = itemView.findViewById(R.id.home_crazy_item_price);
         }
     }
 }

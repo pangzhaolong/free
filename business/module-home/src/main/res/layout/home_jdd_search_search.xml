@@ -29,25 +29,29 @@
                 android:id="@+id/home_search_edit"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginStart="10dp"
+                android:layout_marginEnd="15dp"
                 android:layout_toStartOf="@+id/home_search_do"
                 android:layout_toEndOf="@+id/home_search_back"
-                android:background="@null"
+                android:background="@drawable/home_search_bg"
+                android:drawableLeft="@drawable/home_jdd_search"
                 android:gravity="center_vertical"
-                android:hint="支持搜索淘宝/京东/拼多多优惠"
+                android:hint="搜商品 领优惠券"
                 android:inputType="text"
                 android:lines="1"
                 android:maxLines="1"
+                android:paddingStart="16dp"
                 android:textCursorDrawable="@drawable/home_search_edit_cursor_color" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/home_search_do"
                 android:layout_width="80dp"
                 android:layout_height="40dp"
+                android:layout_marginEnd="10dp"
                 android:layout_alignParentEnd="true"
+                android:background="@drawable/home_search_button_bg"
                 android:gravity="center"
                 android:text="搜索"
-                android:textColor="@color/black" />
+                android:textColor="@color/white" />
         </RelativeLayout>
 
         <FrameLayout
@@ -64,8 +68,8 @@
                     android:id="@+id/home_search_platform_tl"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
-                    app:tabIndicatorColor="#E9423E"
-                    app:tabIndicatorFullWidth="false" />
+                    app:tabIndicatorFullWidth="false"
+                    app:tabIndicatorHeight="0dp" />
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/home_search_platform_vp2"

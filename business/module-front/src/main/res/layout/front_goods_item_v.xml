@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:scaleType="centerInside"
-            android:src="@drawable/front_goods_item_money"/>
+            android:src="@drawable/middle_item_money"/>
         <TextView
             android:id="@+id/front_goods_item_price_tv1"
             android:layout_width="wrap_content"

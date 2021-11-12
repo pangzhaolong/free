@@ -21,7 +21,8 @@ import com.donews.home.listener.SearchSugClickListener;
 import com.donews.home.viewModel.SearchViewModel;
 import com.donews.middle.bean.home.SearchHistory;
 import com.donews.middle.bean.home.TmpSearchHistory;
-import com.donews.utilslibrary.utils.LogUtil;
+import com.donews.middle.views.TabItem;
+import com.donews.middle.views.TabItemEx;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.gyf.immersionbar.ImmersionBar;
@@ -43,8 +44,13 @@ public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ImmersionBar.with(this)
+                .statusBarColor(R.color.white)
+                .navigationBarColor(R.color.black)
+                .fitsSystemWindows(true)
+                .autoDarkModeEnable(true)
+                .init();
 
-        mContext = this;
         SearchHistory.Ins().read();
     }
 
@@ -56,22 +62,45 @@ public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSe
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void initView() {
-        ImmersionBar.with(this)
-                .statusBarColor(R.color.home_color_bar)
-                .navigationBarColor(R.color.black)
-                .fitsSystemWindows(true)
-                .autoDarkModeEnable(true)
-                .init();
+        mContext = this;
 
         mSearchFragmentAdapter = new SearchFragmentAdapter(this);
         mDataBinding.homeSearchPlatformVp2.setAdapter(mSearchFragmentAdapter);
         mDataBinding.homeSearchPlatformTl.setTabMode(TabLayout.MODE_SCROLLABLE);
         TabLayoutMediator tab = new TabLayoutMediator(mDataBinding.homeSearchPlatformTl, mDataBinding.homeSearchPlatformVp2, (tab1, position) -> {
+            if (tab1.getCustomView() == null) {
+                tab1.setCustomView(new TabItemEx(mContext));
+            }
+            TabItemEx itemEx = (TabItemEx) tab1.getCustomView();
+            itemEx.init(position);
             if (position == 0) {
-                tab1.setText("淘宝");
+                itemEx.selected();
             }
         });
         tab.attach();
+
+        mDataBinding.homeSearchPlatformTl.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                TabItemEx tabItem = (TabItemEx) tab.getCustomView();
+                assert tabItem != null;
+                tabItem.selected();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                TabItemEx tabItem = (TabItemEx) tab.getCustomView();
+                assert tabItem != null;
+                tabItem.unSelected();
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                TabItemEx tabItem = (TabItemEx) tab.getCustomView();
+                assert tabItem != null;
+                tabItem.selected();
+            }
+        });
         mDataBinding.homeSearchBack.setOnClickListener(v -> onBackPressedEx());
         mDataBinding.homeSearchEdit.addTextChangedListener(new TextWatcher() {
             @Override
@@ -91,7 +120,6 @@ public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSe
                     mDataBinding.homeSearchPlatformLl.setVisibility(View.VISIBLE);
                     return;
                 }
-                LogUtil.e("xxxxxxx: " + s);
                 search(s.toString());
             }
         });
