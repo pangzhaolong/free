@@ -27,7 +27,7 @@ import java.util.List;
 
 public class ScrollListAdapter extends BaseAdapter<ScrollListAdapter.ScrollListHolder, ScrollItemLayoutBinding> {
 
-    private List<WinLotteryBean.ListDTO> list = new ArrayList<>();
+    private List<WinLotteryBean.ListDTO> mList = new ArrayList<>();
 
     private Context mContext;
 
@@ -51,14 +51,14 @@ public class ScrollListAdapter extends BaseAdapter<ScrollListAdapter.ScrollListH
 
     @Override
     public void onBindViewHolder(@NonNull ScrollListHolder holder, int position) {
-        holder.mScrollItemLayout.text.setText(list.get(position % list.size()).getMessage() + "");
-        ImageUtils.setImage(mContext, holder.mScrollItemLayout.head, list.get(position % list.size()).getAvatar() + "", 360);
+        holder.mScrollItemLayout.text.setText(mList.get(position % mList.size()).getMessage() + "");
+        ImageUtils.setImage(mContext, holder.mScrollItemLayout.head, mList.get(position % mList.size()).getAvatar() + "", 360);
     }
 
 
     @Override
     public int getItemCount() {
-        return list == null || list.size() == 0 ? 0 : Integer.MAX_VALUE;
+        return mList == null || mList.size() == 0 ? 0 : Integer.MAX_VALUE;
     }
 
 
@@ -84,11 +84,11 @@ public class ScrollListAdapter extends BaseAdapter<ScrollListAdapter.ScrollListH
     }
 
     public List<WinLotteryBean.ListDTO> getList() {
-        return list;
+        return mList;
     }
 
     public void setList(List<WinLotteryBean.ListDTO> list) {
-        this.list = list;
+        this.mList = list;
     }
 
     public Context getContext() {

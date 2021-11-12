@@ -63,11 +63,11 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public static final int TYPE_FOOTER = 1;  //说明是带有Footer的
     public static final int TYPE_NORMAL = 2;  //说明是不带有header和footer的
     private GuesslikeHeadLayoutBinding mHeaderView;
-    public ScrollListAdapter mScrollListAdapter;
     private CommodityBean mCommodityBean;
     private LotteryActivity mContext;
     private int mLayoutId;
     private int flag = 0;
+    ScrollListAdapter mScrollListAdapter;
 
     public GuessAdapter(LotteryActivity context) {
         this.mContext = context;
@@ -117,7 +117,9 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     }
                 });
                 //设置中奖参与人数的滚动列表
-                mScrollListAdapter = new ScrollListAdapter(mContext);
+                if(mScrollListAdapter==null){
+                    mScrollListAdapter = new ScrollListAdapter(mContext);
+                }
                 listHolder.mGuesslikeHeadBinding.scrollList.setLayoutManager(new ScrollLinearLayoutManager(mContext));
                 listHolder.mGuesslikeHeadBinding.scrollList.setAdapter(mScrollListAdapter);
                 listHolder.mGuesslikeHeadBinding.scrollList.setAutomaticScroll(true);
