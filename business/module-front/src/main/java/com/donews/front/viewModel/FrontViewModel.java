@@ -7,6 +7,8 @@ import com.donews.front.model.FrontModel;
 import com.donews.middle.bean.WalletBean;
 import com.donews.middle.bean.front.AwardBean;
 import com.donews.middle.bean.front.LotteryCategoryBean;
+import com.donews.middle.bean.front.LotteryDetailBean;
+import com.donews.middle.bean.front.LotteryOpenRecord;
 import com.donews.middle.bean.front.RedPacketBean;
 
 public class FrontViewModel extends BaseLiveDataViewModel<FrontModel> {
@@ -31,5 +33,13 @@ public class FrontViewModel extends BaseLiveDataViewModel<FrontModel> {
 
     public MutableLiveData<AwardBean> getAwardList() {
         return mModel.getAwardList();
+    }
+
+    public MutableLiveData<LotteryOpenRecord> getLotteryPeriod() {
+        return mModel.getLotteryPeriod();
+    }
+
+    public MutableLiveData<LotteryDetailBean> getLotteryDetail(int period) {
+        return mModel.getLotteryDetail(period);
     }
 }

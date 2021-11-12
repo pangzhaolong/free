@@ -7,6 +7,8 @@ import com.donews.front.api.FrontApi;
 import com.donews.middle.bean.WalletBean;
 import com.donews.middle.bean.front.AwardBean;
 import com.donews.middle.bean.front.LotteryCategoryBean;
+import com.donews.middle.bean.front.LotteryDetailBean;
+import com.donews.middle.bean.front.LotteryOpenRecord;
 import com.donews.middle.bean.front.RedPacketBean;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
@@ -96,6 +98,46 @@ public class FrontModel extends BaseLiveDataModel {
                     @Override
                     public void onSuccess(AwardBean awardBean) {
                         mutableLiveData.postValue(awardBean);
+                    }
+                }));
+
+        return mutableLiveData;
+    }
+
+    public MutableLiveData<LotteryOpenRecord> getLotteryPeriod() {
+        MutableLiveData<LotteryOpenRecord> mutableLiveData = new MutableLiveData<>();
+        addDisposable(EasyHttp.get(FrontApi.lotteryRecordUrl)
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new SimpleCallBack<LotteryOpenRecord>() {
+
+                    @Override
+                    public void onError(ApiException e) {
+                        mutableLiveData.postValue(null);
+                    }
+
+                    @Override
+                    public void onSuccess(LotteryOpenRecord lotteryOpenRecord) {
+                        mutableLiveData.postValue(lotteryOpenRecord);
+                    }
+                }));
+
+        return mutableLiveData;
+    }
+
+    public MutableLiveData<LotteryDetailBean> getLotteryDetail(int period) {
+        MutableLiveData<LotteryDetailBean> mutableLiveData = new MutableLiveData<>();
+        addDisposable(EasyHttp.get(FrontApi.lotteryDetailUrl + "?period=" + period)
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new SimpleCallBack<LotteryDetailBean>() {
+
+                    @Override
+                    public void onError(ApiException e) {
+                        mutableLiveData.postValue(null);
+                    }
+
+                    @Override
+                    public void onSuccess(LotteryDetailBean lotteryOpenRecord) {
+                        mutableLiveData.postValue(lotteryOpenRecord);
                     }
                 }));
 

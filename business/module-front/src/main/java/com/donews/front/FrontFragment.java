@@ -39,6 +39,7 @@ import com.donews.middle.views.TabItem;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.DensityUtils;
 import com.donews.utilslibrary.utils.KeySharePreferences;
+import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.SPUtils;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -74,24 +75,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     @Override
     protected void onFragmentFirstVisible() {
         super.onFragmentFirstVisible();
-        //调整顶部背景距离
-/*        ViewGroup.LayoutParams lp = mDataBinding.frontJddBotContent.getLayoutParams();
-        lp.height = lp.height + BarUtils.getStatusBarHeight();
-        mDataBinding.frontJddBotContent.setLayoutParams(lp);
-        //显示顶部距离,达到侵入式状态栏
-        mDataBinding.frontJddBotContent.setPadding(
-                mDataBinding.frontJddBotContent.getPaddingLeft(),
-                mDataBinding.frontJddBotContent.getPaddingTop() + BarUtils.getStatusBarHeight(),
-                mDataBinding.frontJddBotContent.getPaddingRight(),
-                mDataBinding.frontJddBotContent.getPaddingBottom()
-        );*/
-        //调整底部内容距离顶部的距离
-/*        mDataBinding.frontJddBotContent.setPadding(
-                mDataBinding.frontJddBotContent.getPaddingLeft(),
-                mDataBinding.frontJddBotContent.getPaddingTop() + BarUtils.getStatusBarHeight(),
-                mDataBinding.frontJddBotContent.getPaddingRight(),
-                mDataBinding.frontJddBotContent.getPaddingBottom()
-        );*/
     }
 
     @SuppressLint("StringFormatMatches")
@@ -99,7 +82,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        LogUtil.e("front onViewCreated");
         mContext = this.getContext();
 
         mFragmentAdapter = new FragmentAdapter(this);
@@ -145,7 +127,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         });
 
         loadCategoryData();
-        loadAwardList();
+        loadLotteryRecord();
+//        loadAwardList();
         initSrl();
 
         mDataBinding.frontLotteryGotoLl.setOnClickListener(v -> ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY)
@@ -207,8 +190,9 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         mDataBinding.frontSrl.setEnableLoadMore(false);
         mDataBinding.frontSrl.setOnRefreshListener(refreshLayout -> {
             loadCategoryData();
-            loadAwardList();
+//            loadAwardList();
             loadRpData();
+            loadLotteryRecord();
             reloadNorData(mCurSelectPosition);
             mDataBinding.frontSrl.finishRefresh();
         });
@@ -234,6 +218,45 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mFragmentAdapter.refreshData(categoryBean.getList());
             GoodsCache.saveGoodsBean(categoryBean, "front");
         });
+    }
+
+    private void loadLotteryRecord() {
+        mViewModel.getLotteryPeriod().observe(this.getViewLifecycleOwner(), lotteryOpenRecord -> {
+            if (lotteryOpenRecord == null) {
+                return;
+            }
+            showLotteryDate(lotteryOpenRecord.getPeriod());
+            LogUtil.e("record:" + lotteryOpenRecord.getPeriod());
+            loadLotteryDetail(lotteryOpenRecord.getPeriod());
+        });
+    }
+
+    private void loadLotteryDetail(int period) {
+        mViewModel.getLotteryDetail(period - 1).observe(getViewLifecycleOwner(), lotteryDetailBean -> {
+            if (lotteryDetailBean == null) {
+                LogUtil.e("record1: detail1:");
+                return;
+            }
+            LogUtil.e("record:" + lotteryDetailBean.getPeriod() + " detail:" + lotteryDetailBean.getCode());
+            showLotteryCode(lotteryDetailBean.getCode());
+        });
+    }
+
+    private void showLotteryDate(int period) {
+        mDataBinding.frontLotteryDate.setText(String.format(getString(R.string.front_lottery_date), period - 1));
+    }
+
+    private void showLotteryCode(String code) {
+        if (code.length() < 7) {
+            return;
+        }
+        mDataBinding.frontLotteryNumTv1.setText(code.substring(0, 1));
+        mDataBinding.frontLotteryNumTv2.setText(code.substring(1, 2));
+        mDataBinding.frontLotteryNumTv3.setText(code.substring(2, 3));
+        mDataBinding.frontLotteryNumTv4.setText(code.substring(3, 4));
+        mDataBinding.frontLotteryNumTv5.setText(code.substring(4, 5));
+        mDataBinding.frontLotteryNumTv6.setText(code.substring(5, 6));
+        mDataBinding.frontLotteryNumTv7.setText(code.substring(6, 7));
     }
 
     @SuppressLint("SetTextI18n")

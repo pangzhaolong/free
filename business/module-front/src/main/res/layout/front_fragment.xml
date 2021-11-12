@@ -255,11 +255,12 @@
                                     android:src="@drawable/front_lottery_cup" />
 
                                 <TextView
+                                    android:id="@+id/front_lottery_date"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="10dp"
                                     android:gravity="center"
-                                    android:text="20211019期 10点开奖"
+                                    android:text="10点开奖"
                                     android:textColor="#AC623C"
                                     android:textSize="15sp"
                                     android:textStyle="bold" />
