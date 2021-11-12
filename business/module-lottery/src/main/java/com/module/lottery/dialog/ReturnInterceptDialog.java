@@ -1,46 +1,56 @@
 package com.module.lottery.dialog;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 
-import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.VibrateUtils;
+import com.donews.base.utils.ToastUtil;
+import com.dn.drouter.ARouteHelper;
+import com.dn.events.events.LoginUserStatus;
 import com.donews.common.router.RouterActivityPath;
-import com.donews.common.router.RouterFragmentPath;
-import com.donews.main.entitys.resps.ExitDialogRecommendGoodsResp;
-import com.donews.main.utils.ExitInterceptUtils;
-import com.donews.network.EasyHttp;
-import com.donews.network.cache.model.CacheMode;
-import com.donews.network.exception.ApiException;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
+import com.donews.utilslibrary.utils.AppInfo;
 import com.module.lottery.utils.ClickDoubleUtil;
-import com.module.lottery.utils.ImageUtils;
 import com.module_lottery.R;
-import com.module_lottery.databinding.NoDrawDialogLayoutBinding;
+import com.module_lottery.databinding.InterceptDialogLayoutBinding;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.lang.ref.WeakReference;
 
 //抽奖页返回拦截dialog
-public class ReturnInterceptDialog extends BaseDialog<NoDrawDialogLayoutBinding> {
+public class ReturnInterceptDialog extends BaseDialog<InterceptDialogLayoutBinding> implements DialogInterface.OnDismissListener, View.OnClickListener {
     public static int TYPE_1 = 1;
     public static int TYPE_2 = 2;
     private Context mContext;
     private int limitNumber = 1;
     private int mType = -1;// 1 表示登录 2 表示未登录
+    private LotteryHandler mLotteryHandler;
+    private long fastVibrateTime = 0;
 
     public ReturnInterceptDialog(Context context, int type) {
         super(context, R.style.dialogTransparent);//内容样式在这里引入
         this.mContext = context;
+        mLotteryHandler = new LotteryHandler(this);
         this.mType = type;
     }
 
     @Override
     public int setLayout() {
-        return R.layout.no_draw_dialog_layout;
+        return R.layout.intercept_dialog_layout;
     }
 
 
@@ -57,51 +67,95 @@ public class ReturnInterceptDialog extends BaseDialog<NoDrawDialogLayoutBinding>
         });
 
         initView();
+        EventBus.getDefault().register(this);
+        setOnDismissListener(this);
+        //延迟一秒出现关闭按钮
+        Message message = new Message();
+        message.what = 1;
+        mLotteryHandler.sendMessageDelayed(message, 1000);
+
+
+    }
+
+
+    @Subscribe
+    public void WeChatLoginEvent(LoginUserStatus loginUserStatus) {
+        if (loginUserStatus.getStatus() == 1 && AppInfo.checkIsWXLogin()) {
+            immediatelySnappedUp();
+            dismiss();
+        }
+    }
+
+
+    //立即抢购
+    private void immediatelySnappedUp() {
+        AnalysisUtils.onEventEx(mContext, Dot.Btn_LotteryNow);
+        if (ClickDoubleUtil.isFastClick()) {
+            if (mOnFinishListener != null) {
+                mOnFinishListener.onDismiss();
+                mOnFinishListener.onDismissAd();
+            }
+        }
+
     }
 
     // 1 表示未登录 2 表示登录未抽奖
     private void initView() {
         if (mType == TYPE_1) {
             //登录时
-            LinearLayout.LayoutParams rootLayout= (LinearLayout.LayoutParams)  mDataBinding.returnRootLayout.getLayoutParams();
-            rootLayout.height=getContext().getResources().getDimensionPixelOffset(R.dimen.lottery_constant_328);
+            LinearLayout.LayoutParams rootLayout = (LinearLayout.LayoutParams) mDataBinding.returnRootLayout.getLayoutParams();
+            rootLayout.height = getContext().getResources().getDimensionPixelOffset(R.dimen.lottery_constant_328);
             mDataBinding.returnRootLayout.setLayoutParams(rootLayout);
             mDataBinding.title.setText(getContext().getResources().getString(R.string.return_intercept_title));
             mDataBinding.hintTitle.setText(getContext().getResources().getString(R.string.return_intercept_hint));
             mDataBinding.hint.setVisibility(View.GONE);
             mDataBinding.withdrawHint.setText(getContext().getResources().getString(R.string.return_intercept_withdraw));
             mDataBinding.jumpButton.setText(getContext().getResources().getString(R.string.return_intercept_button));
-            LinearLayout.LayoutParams layoutParams= (LinearLayout.LayoutParams) mDataBinding.withdrawHintLayout.getLayoutParams();
-            layoutParams.bottomMargin=getContext().getResources().getDimensionPixelOffset(R.dimen.lottery_constant_15);
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mDataBinding.withdrawHintLayout.getLayoutParams();
+            layoutParams.bottomMargin = getContext().getResources().getDimensionPixelOffset(R.dimen.lottery_constant_15);
             mDataBinding.withdrawHintLayout.setLayoutParams(layoutParams);
-
+            mDataBinding.protocolLayout.setVisibility(View.GONE);
         } else if (mType == TYPE_2) {
             //未登录时
+            boolean protocol = getSharedPreferences().getBoolean("protocol", false);
+            mDataBinding.checkBox.setChecked(protocol);
             mDataBinding.title.setText(getContext().getResources().getString(R.string.return_intercept_title));
             mDataBinding.hintTitle.setText(getContext().getResources().getString(R.string.return_intercept_hint_no));
             mDataBinding.hint.setVisibility(View.VISIBLE);
             mDataBinding.withdrawHint.setText(getContext().getResources().getString(R.string.return_intercept_withdraw_no));
             mDataBinding.jumpButton.setText(getContext().getResources().getString(R.string.return_intercept_button_no));
+            mDataBinding.protocolLayout.setVisibility(View.VISIBLE);
+            mDataBinding.userProtocol.setOnClickListener(this);
+            mDataBinding.privacyProtocol.setOnClickListener(this);
         }
-
         mDataBinding.jumpButton.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("MissingPermission")
             @Override
             public void onClick(View v) {
                 //登录时
                 if (mType == TYPE_1) {
-                    AnalysisUtils.onEventEx(v.getContext(), Dot.Btn_LotteryNow);
-                    if (ClickDoubleUtil.isFastClick()) {
-                        if (mOnFinishListener != null) {
-                            mOnFinishListener.onDismiss();
-                            mOnFinishListener.onDismissAd();
-                        }
-                    }
+                    immediatelySnappedUp();
                 }
                 //未登录时
                 if (mType == TYPE_2) {
-                    ARouter.getInstance()
-                            .build(RouterActivityPath.User.PAGER_LOGIN)
-                            .navigation();
+                    //判断是否同意了隐私协议
+                    if (mDataBinding.checkBox.isChecked()) {
+                        //存储状态
+                        getEditor().putBoolean("protocol", true).commit();
+                        RouterActivityPath.LoginProvider.getLoginProvider()
+                                .loginWX(null);
+                    } else {
+                        //檢查是否勾选协议
+                        if (System.currentTimeMillis() - fastVibrateTime > 1500) {
+                            fastVibrateTime = System.currentTimeMillis();
+                            VibrateUtils.vibrate(100); //震动50毫秒
+                        }
+                        ToastUtil.showShort(mContext, "请先同意相关协议");
+
+                        mDataBinding.protocolLayout.clearAnimation();
+                        Animation anim = AnimationUtils.loadAnimation(mContext, R.anim.anim_not_select);
+                        mDataBinding.protocolLayout.startAnimation(anim);
+                    }
                 }
             }
         });
@@ -132,6 +186,39 @@ public class ReturnInterceptDialog extends BaseDialog<NoDrawDialogLayoutBinding>
         mOnFinishListener = l;
     }
 
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        if (mLotteryHandler != null) {
+            mLotteryHandler.removeMessages(0);
+            mLotteryHandler.removeMessages(1);
+            mLotteryHandler.removeCallbacksAndMessages(null);
+            mLotteryHandler = null;
+        }
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        //用户协议
+        if (v.getId() == R.id.user_protocol) {
+            Bundle bundle = new Bundle();
+            bundle.putString("url",
+                    "http://ad-static-xg.tagtic.cn/wangzhuan/file/9e5f7a06cbf80a2186e3e34a70f0c360.html");
+            bundle.putString("title", "用户协议");
+            ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
+        }
+
+        //隐私政策
+        if (v.getId() == R.id.privacy_protocol) {
+
+            Bundle bundle = new Bundle();
+            bundle.putString("url",
+                    "http://ad-static-xg.tagtic.cn/wangzhuan/file/b7f18dcb857e80eab353cfb99c3f042e.html");
+            bundle.putString("title", "隐私政策");
+            ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
+        }
+    }
+
     public interface OnFinishListener {
         /**
          * 此时可以关闭Activity了
@@ -141,4 +228,26 @@ public class ReturnInterceptDialog extends BaseDialog<NoDrawDialogLayoutBinding>
         void onDismissAd();
 
     }
+
+    private static class LotteryHandler extends Handler {
+        private WeakReference<ReturnInterceptDialog> reference;   //
+
+        LotteryHandler(ReturnInterceptDialog context) {
+            reference = new WeakReference(context);
+        }
+
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 1:
+                    if (reference.get() != null) {
+                        reference.get().mDataBinding.closure.setVisibility(View.VISIBLE);
+                    }
+                    break;
+            }
+        }
+    }
+
+
 }

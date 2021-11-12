@@ -140,10 +140,12 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 if (!logType) {
                     listHolder.mGuesslikeHeadBinding.lotteryCodeTitle.setVisibility(View.GONE);
                     listHolder.mGuesslikeHeadBinding.lotteryContainer.setVisibility(View.GONE);
+                    listHolder.mGuesslikeHeadBinding.barLayout.setVisibility(View.GONE);
                 } else {
                     if (mCommodityBean.getLotteryCodeBean() != null) {
                         listHolder.mGuesslikeHeadBinding.lotteryCodeTitle.setVisibility(View.VISIBLE);
                         listHolder.mGuesslikeHeadBinding.lotteryContainer.setVisibility(View.VISIBLE);
+                        listHolder.mGuesslikeHeadBinding.barLayout.setVisibility(View.VISIBLE);
                         //初始化获取的抽奖码列表
                         initListLottery(listHolder.mGuesslikeHeadBinding, mCommodityBean.getLotteryCodeBean());
                     }
