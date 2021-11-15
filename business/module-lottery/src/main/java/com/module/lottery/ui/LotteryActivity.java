@@ -425,7 +425,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             //加载抽奖商品详情信息
             lotteryInfo();
         }
-
     }
 
     public void setObserveList() {

@@ -134,7 +134,20 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
         });
 
         mDataBinding.homeBannerLl.setOnClickListener(v ->
-                ARouter.getInstance().build(RouterActivityPath.CrazyList.CRAZY_LIST_DETAIL).navigation());
+                ARouter.getInstance().build(RouterActivityPath.Home.CRAZY_LIST_DETAIL).navigation());
+
+        mDataBinding.homeTitleTb.setOnClickListener(v -> ARouter.getInstance().build(RouterActivityPath.Home.Welfare_Activity)
+                .withString("from", "tb")
+                .navigation());
+        mDataBinding.homeTitlePdd.setOnClickListener(v -> ARouter.getInstance().build(RouterActivityPath.Home.Welfare_Activity)
+                .withString("from", "pdd")
+                .navigation());
+        mDataBinding.homeTitleJd.setOnClickListener(v -> ARouter.getInstance().build(RouterActivityPath.Home.Welfare_Activity)
+                .withString("from", "jd")
+                .navigation());
+        mDataBinding.homeTitleElm.setOnClickListener(v -> {
+
+        });
 
         initSrl();
 

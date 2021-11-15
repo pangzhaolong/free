@@ -8,25 +8,33 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.home.adapter.CrazyListAdapter;
 import com.donews.home.databinding.HomeCrazyListActivityBinding;
+import com.donews.home.databinding.HomeWelfareActivityBinding;
 import com.donews.home.listener.GoodsDetailListener;
 import com.donews.home.viewModel.CrazyViewModel;
+import com.donews.home.viewModel.WelfareViewModel;
 import com.donews.middle.bean.home.RealTimeBean;
 import com.gyf.immersionbar.ImmersionBar;
 
-@Route(path = RouterActivityPath.Home.CRAZY_LIST_DETAIL)
-public class HomeCrazyListActivity extends MvvmBaseLiveDataActivity<HomeCrazyListActivityBinding, CrazyViewModel> implements GoodsDetailListener {
+@Route(path = RouterActivityPath.Home.Welfare_Activity)
+public class HomeWelfareActivity extends MvvmBaseLiveDataActivity<HomeWelfareActivityBinding, WelfareViewModel> implements GoodsDetailListener {
 
     private CrazyListAdapter mCrazyListAdapter;
     private int mPageId = 1;
 
+    @Autowired
+    String from;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ARouter.getInstance().inject(this);
+
         super.onCreate(savedInstanceState);
 
         ImmersionBar.with(this)
@@ -35,33 +43,41 @@ public class HomeCrazyListActivity extends MvvmBaseLiveDataActivity<HomeCrazyLis
                 .fitsSystemWindows(true)
                 .autoDarkModeEnable(true)
                 .init();
+
+        if (from.equalsIgnoreCase("tb")) {
+            mDataBinding.homeWelfareLogo.setImageResource(R.drawable.home_logo_tb);
+        } else if (from.equalsIgnoreCase("pdd")) {
+            mDataBinding.homeWelfareLogo.setImageResource(R.drawable.home_logo_pdd);
+        } else if (from.equalsIgnoreCase("jd")) {
+            mDataBinding.homeWelfareLogo.setImageResource(R.drawable.home_logo_jd);
+        }
     }
 
     @Override
     protected int getLayoutId() {
-        return R.layout.home_crazy_list_activity;
+        return R.layout.home_welfare_activity;
     }
 
     @Override
     public void initView() {
         mDataBinding.homeCrazyLoadingStatusTv.setVisibility(View.VISIBLE);
-        mDataBinding.homeCrazyGoodsRv.setVisibility(View.GONE);
+        mDataBinding.homeWelfareGoodsRv.setVisibility(View.GONE);
         mCrazyListAdapter = new CrazyListAdapter(this, this);
-        mDataBinding.homeCrazyGoodsRv.setLayoutManager(new LinearLayoutManager(this));
-        mDataBinding.homeCrazyGoodsRv.addItemDecoration(new RecyclerView.ItemDecoration() {
+        mDataBinding.homeWelfareGoodsRv.setLayoutManager(new LinearLayoutManager(this));
+        mDataBinding.homeWelfareGoodsRv.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
                 outRect.top = 16;
             }
         });
-        mDataBinding.homeCrazyGoodsRv.setAdapter(mCrazyListAdapter);
+        mDataBinding.homeWelfareGoodsRv.setAdapter(mCrazyListAdapter);
 
         loadRefreshList();
 
-        mDataBinding.homeCrazySrl.setOnRefreshListener(refreshLayout -> loadRefreshList());
+        mDataBinding.homeCrazySrl.setEnableRefresh(false);
         mDataBinding.homeCrazySrl.setOnLoadMoreListener(refreshLayout -> loadMoreList());
 
-        mDataBinding.homeCrazyBack.setOnClickListener(v -> finish());
+        mDataBinding.homeWelfareBack.setOnClickListener(v -> finish());
     }
 
     private void loadRefreshList() {
@@ -91,7 +107,7 @@ public class HomeCrazyListActivity extends MvvmBaseLiveDataActivity<HomeCrazyLis
     private void showCrazyData(RealTimeBean realTimeBean, boolean isAdd) {
         mCrazyListAdapter.refreshData(realTimeBean.getList(), isAdd);
 
-        mDataBinding.homeCrazyGoodsRv.setVisibility(View.VISIBLE);
+        mDataBinding.homeWelfareGoodsRv.setVisibility(View.VISIBLE);
         mDataBinding.homeCrazyLoadingStatusTv.setVisibility(View.GONE);
         mDataBinding.homeCrazySrl.finishRefresh();
         mDataBinding.homeCrazySrl.finishLoadMore();
@@ -103,5 +119,10 @@ public class HomeCrazyListActivity extends MvvmBaseLiveDataActivity<HomeCrazyLis
                 .withString("params_id", id)
                 .withString("params_goods_id", goodsId)
                 .navigation();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

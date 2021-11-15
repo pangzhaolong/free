@@ -1,7 +1,5 @@
 package com.donews.common.router;
 
-import android.app.Activity;
-
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 
@@ -9,7 +7,6 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.donews.common.router.providers.IARouterLoginProvider;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 应用模块: 组件化路由
@@ -186,9 +183,10 @@ public class RouterActivityPath {
         public static final String REALTIME_DETAIL = REALTIME + "/realtimeDetail";
     }
 
-    public static class CrazyList {
-        public static final String CRAZY_LIST = "/crazylist";
-        public static final String CRAZY_LIST_DETAIL = CRAZY_LIST + "/CrazyList";
+    public static class Home {
+        public static final String Home = "/home";
+        public static final String CRAZY_LIST_DETAIL = Home + "/CrazyList";
+        public static final String Welfare_Activity = Home + "/WelfareActivity";
     }
 
     public static class Rp {

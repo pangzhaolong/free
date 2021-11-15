@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.majiajie.pagerbottomtabstrip.NavigationController;
+import me.majiajie.pagerbottomtabstrip.PageNavigationView;
 import me.majiajie.pagerbottomtabstrip.listener.SimpleTabItemSelectedListener;
 
 /**
@@ -99,15 +100,27 @@ public class MainActivity
         int checkColor = getResources().getColor(R.color.common_btn_color_sec);
         int defaultColor = getResources().getColor(R.color.common_AEAEAE);
 
-        mNavigationController = mDataBinding.bottomView.material()
-                .addItem(R.drawable.main_home_checked, "首页", checkColor)
-                .addItem(R.drawable.main_showtime, "晒单", checkColor)
-                .addItem(R.drawable.main_lottery, "开奖", checkColor)
-                .addItem(R.drawable.main_buy, "省钱购", checkColor)
-                .addItem(R.drawable.main_mine, "我的", checkColor)
-                .setDefaultColor(defaultColor)
-                .enableAnimateLayoutChanges()
-                .build();
+        if (!ABSwitch.Ins().getABBean().isOpenAB()) {
+            mNavigationController = mDataBinding.bottomView.material()
+                    .addItem(R.drawable.main_home_checked, "首页", checkColor)
+                    .addItem(R.drawable.main_showtime, "晒单", checkColor)
+                    .addItem(R.drawable.main_lottery, "开奖", checkColor)
+                    .addItem(R.drawable.main_buy, "省钱购", checkColor)
+                    .addItem(R.drawable.main_mine, "我的", checkColor)
+                    .setDefaultColor(defaultColor)
+                    .enableAnimateLayoutChanges()
+                    .build();
+        } else {
+            PageNavigationView.MaterialBuilder materialBuilder = mDataBinding.bottomView.material();
+            materialBuilder
+                    .addItem(R.drawable.main_home_checked, "首页", checkColor);
+            materialBuilder.addItem(R.drawable.main_lottery, "马上抢", checkColor);
+            mNavigationController = materialBuilder
+                    .addItem(R.drawable.main_mine, "设置", checkColor)
+                    .setDefaultColor(defaultColor)
+                    .enableAnimateLayoutChanges()
+                    .build();
+        }
         mNavigationController.showBottomLayout();
         mDataBinding.cvContentView.setOffscreenPageLimit(4);
         mDataBinding.cvContentView.setAdapter(adapter);

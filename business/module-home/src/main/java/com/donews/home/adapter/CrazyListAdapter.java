@@ -48,7 +48,7 @@ public class CrazyListAdapter extends RecyclerView.Adapter<CrazyListAdapter.Craz
     @NonNull
     @Override
     public CrazyListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_fragent_crazy_goods_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_fragment_crazy_goods_item, parent, false);
         final CrazyListViewHolder holder = new CrazyListViewHolder(view);
         return holder;
     }

@@ -49,7 +49,7 @@ public class TopGoodsAdapter extends RecyclerView.Adapter<TopGoodsAdapter.GoodsV
     @NonNull
     @Override
     public GoodsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_fragent_top_goods_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_fragment_top_goods_item, parent, false);
         final GoodsViewHolder holder = new GoodsViewHolder(view);
         return holder;
     }

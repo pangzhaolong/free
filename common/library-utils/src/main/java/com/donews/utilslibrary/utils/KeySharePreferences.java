@@ -37,4 +37,6 @@ public class KeySharePreferences {
     public final static String APP_GLOBAL_CRASH_CONFIG = "app_global_crash_config";
 
     public final static String CLOSE_RED_PACKAGE_COUNTS = "close_red_package_counts";
+
+    public final static String STEPS_TO_GOLD_RED_PACKAGE_COUNTS = "steps_to_gold_red_package_counts";
 }

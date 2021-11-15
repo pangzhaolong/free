@@ -400,6 +400,11 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         mDataBinding.frontFloatingBtn.setProgress(rpBean.getHadLotteryTotal());
 
         SPUtils.setInformain(KeySharePreferences.CLOSE_RED_PACKAGE_COUNTS, nCloseRpCounts);
+        if (rpBean.getHadLotteryTotal() == -1) {
+            SPUtils.setInformain(KeySharePreferences.STEPS_TO_GOLD_RED_PACKAGE_COUNTS, 0);
+        } else {
+            SPUtils.setInformain(KeySharePreferences.STEPS_TO_GOLD_RED_PACKAGE_COUNTS, rpBean.getLotteryTotal() - rpBean.getHadLotteryTotal());
+        }
     }
 
     @Override
