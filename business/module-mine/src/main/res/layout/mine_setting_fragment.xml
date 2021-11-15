@@ -133,7 +133,11 @@
             <include
                 android:id="@+id/set_zxzh"
                 layout="@layout/mine_setting_fragment_item"/>
-
+            <View
+                style="@style/HorizontalLine"/>
+            <include
+                android:id="@+id/set_message_switch"
+                layout="@layout/mine_setting_push_item"/>
             <TextView
                 android:id="@+id/tv_exit_login"
                 android:layout_width="match_parent"

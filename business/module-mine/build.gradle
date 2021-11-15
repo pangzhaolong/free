@@ -14,6 +14,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version" 
     api project(':common:library-common')
+    implementation project(':common:library-jpush')
     kapt rootProject.ext.dependencies["arouter-compiler"]
     implementation('org.raphets:roundimageview:1.2.0')
     implementation 'com.classic.common:multiple-status-view:1.5.1'

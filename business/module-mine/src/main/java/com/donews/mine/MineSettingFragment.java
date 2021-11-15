@@ -1,6 +1,8 @@
 package com.donews.mine;
 
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -12,6 +14,7 @@ import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.UserInfoBean;
 import com.donews.common.router.RouterFragmentPath;
+import com.donews.jpush.utils.JPushSwitch;
 import com.donews.middle.abswitch.ABSwitch;
 import com.donews.mine.common.CommonParams;
 import com.donews.mine.databinding.MineSettingFragmentBinding;
@@ -22,7 +25,6 @@ import com.donews.utilslibrary.utils.AppInfo;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-
 
 /**
  * 作者： created by lcl<br>
@@ -129,9 +131,28 @@ public class MineSettingFragment extends
             if (item.getTag() == null || item.getTag().toString().isEmpty()) {
                 continue;
             }
+            Switch swControl = item.findViewById(R.id.sw_control);
             TextView tvTitle = item.findViewById(R.id.tv_name);
             TextView tvDesc = item.findViewById(R.id.tv_right_desc);
             tvTitle.setText(mViewModel.getItemTitleName(itemViewCount));
+            if (swControl != null) {
+                boolean type = JPushSwitch.getSwitchType(getContext());
+                swControl.setChecked(!type);
+                swControl.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if (isChecked) {
+                            ToastUtil.show(getContext(), "消息通知已开启");
+                            JPushSwitch.resumePush(getContext());
+                        } else {
+                            ToastUtil.show(getContext(), "消息通知已关闭");
+                            JPushSwitch.stopPush(getContext());
+                        }
+                    }
+                });
+
+            }
+
             tvDesc.setText(mViewModel.getItemDescText(itemViewCount));
             mViewModel.addItemClick(item, itemViewCount);
             itemViewCount++;

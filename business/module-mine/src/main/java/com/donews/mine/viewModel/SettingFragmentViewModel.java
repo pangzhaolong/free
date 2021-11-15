@@ -68,6 +68,7 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
             add("清除缓存");
             add("分享App");
             add("账户注销");
+            add("消息通知");
         }
     };
     //点击监听
