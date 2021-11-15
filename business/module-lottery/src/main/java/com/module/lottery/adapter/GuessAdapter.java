@@ -236,7 +236,10 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     //初始化详情页面顶部的ViewPager
     private void initViewPager(ListHolder listHolder) {
-        if ((mCommodityBean != null) && (mCommodityBean.getPics() != null) && (mCommodityBean.getPics().size() > 0)) {
+        if ((mCommodityBean != null) && (mCommodityBean.getPics() != null) ) {
+            if(mCommodityBean.getPics().size()==0){
+                mCommodityBean.getPics().add(mCommodityBean.getMainPic());
+            }
             flag = 0;
             //将imageView图片资源存在集合中
             List list = new ArrayList<ImageView>();
@@ -251,43 +254,46 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 listHolder.mGuesslikeHeadBinding.headPager.setAdapter(viewPagerAdapter);
                 listHolder.mGuesslikeHeadBinding.pointLayout.removeAllViews();
                 //动态创建小点点
-                for (int i = 0; i < mCommodityBean.getPics().size(); i++) {
-                    LinearLayout view = (LinearLayout) LayoutInflater.from(mContext).inflate(R.layout.point_layout, null);
-                    listHolder.mGuesslikeHeadBinding.pointLayout.addView(view);
-                }
-                //默认第一张 所有第一个点点为红色
-                View view = listHolder.mGuesslikeHeadBinding.pointLayout.getChildAt(0);
-                if (view != null && view instanceof LinearLayout) {
-                    ((LinearLayout) (view)).getChildAt(0).setSelected(true);
-                }
-                listHolder.mGuesslikeHeadBinding.headPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                    @Override
-                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+                if( list.size() >1){
+                    for (int i = 0; i < mCommodityBean.getPics().size(); i++) {
+                        LinearLayout view = (LinearLayout) LayoutInflater.from(mContext).inflate(R.layout.point_layout, null);
+                        listHolder.mGuesslikeHeadBinding.pointLayout.addView(view);
                     }
+                    //默认第一张 所有第一个点点为红色
+                    View view = listHolder.mGuesslikeHeadBinding.pointLayout.getChildAt(0);
+                    if (view != null && view instanceof LinearLayout) {
+                        ((LinearLayout) (view)).getChildAt(0).setSelected(true);
+                    }
+                    listHolder.mGuesslikeHeadBinding.headPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                        @Override
+                        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-                    @Override
-                    public void onPageSelected(int position) {
-                        try {
-                            View childView = listHolder.mGuesslikeHeadBinding.pointLayout.getChildAt(position);
-                            View selectView = listHolder.mGuesslikeHeadBinding.pointLayout.getChildAt(flag);
-                            if (childView != null && childView instanceof LinearLayout) {
-                                ((LinearLayout) (selectView)).getChildAt(0).setSelected(false);
-                                ((LinearLayout) (childView)).getChildAt(0).setSelected(true);
-                            }
-                            flag = position;//存一下坐标(表示上一次点击时候的坐标)
-
-                        } catch (Exception e) {
-                            Logger.d(e + "");
                         }
 
-                    }
+                        @Override
+                        public void onPageSelected(int position) {
+                            try {
+                                View childView = listHolder.mGuesslikeHeadBinding.pointLayout.getChildAt(position);
+                                View selectView = listHolder.mGuesslikeHeadBinding.pointLayout.getChildAt(flag);
+                                if (childView != null && childView instanceof LinearLayout) {
+                                    ((LinearLayout) (selectView)).getChildAt(0).setSelected(false);
+                                    ((LinearLayout) (childView)).getChildAt(0).setSelected(true);
+                                }
+                                flag = position;//存一下坐标(表示上一次点击时候的坐标)
 
-                    @Override
-                    public void onPageScrollStateChanged(int state) {
+                            } catch (Exception e) {
+                                Logger.d(e + "");
+                            }
 
-                    }
-                });
+                        }
+
+                        @Override
+                        public void onPageScrollStateChanged(int state) {
+
+                        }
+                    });
+                }
+
 
             }
         }
