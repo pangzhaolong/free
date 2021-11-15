@@ -26,6 +26,7 @@
 
 
         <LinearLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="356dp"
             android:layout_marginTop="63dp"
@@ -108,7 +109,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-                            android:layout_marginTop="14dp"
+                            android:layout_marginTop="16dp"
                             android:orientation="vertical">
 
 
@@ -126,11 +127,11 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
-                                android:layout_marginTop="50dp"
+                                android:layout_marginTop="48dp"
                                 android:layout_marginEnd="7dp"
                                 android:text="最大中奖率"
                                 android:textColor="#FFF3C9"
-                                android:textSize="12dp"
+                                android:textSize="11dp"
                                 android:textStyle="bold" />
                         </RelativeLayout>
 
@@ -184,11 +185,10 @@
                     android:id="@+id/hint_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="44dp"
+                    android:layout_marginTop="59dp"
                     android:gravity="bottom"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    >
 
                     <TextView
                         android:layout_width="match_parent"
@@ -262,6 +262,24 @@
                 />
 
         </LinearLayout>
+
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="拿6个抽奖码，赢最高中奖率"
+            android:textSize="13dp"
+            android:layout_marginTop="17dp"
+            app:layout_constraintTop_toBottomOf="@+id/container"
+            android:textColor="#D6D6D6"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:ignore="MissingConstraints" />
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

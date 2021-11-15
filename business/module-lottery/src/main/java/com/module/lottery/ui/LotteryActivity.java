@@ -6,6 +6,7 @@ import static com.module.lottery.utils.DateManager.HIN_VALUE;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -69,10 +70,14 @@ import java.util.Map;
 
 @Route(path = RouterFragmentPath.Lottery.PAGER_LOTTERY)
 public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, LotteryViewModel> {
-    //    @Autowired(name = "goodsListDTO")
-//    SpikeBean.GoodsListDTO mGoodsListDTO;
+    private static final String LOTTERY_ACTIVITY = "LOTTERY_ACTIVITY";
+    private static final String FIRST_SHOW = "first_show";
     @Autowired(name = "goods_id")
     public String mGoodsId;
+    private SharedPreferences mSharedPreferences;
+    // 是否自动开始抽奖 true 进入页面自动开始 false
+    @Autowired(name = "start_lottery")
+    public boolean mStart_lottery = false;
     @Autowired(name = "position")
     int mPosition;
     @Autowired(name = "needLotteryEvent")
@@ -99,6 +104,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mSharedPreferences = this.getSharedPreferences(LOTTERY_ACTIVITY, 0);
         ARouter.getInstance().inject(this);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -136,6 +142,11 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         lotteryInfo();
         //设置下拉，和上拉的监听
         setSmartRefresh();
+        if (mStart_lottery) {
+            //自动开始抽奖
+            luckyDrawEntrance();
+            mStart_lottery = false;
+        }
     }
 
 
@@ -190,12 +201,18 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             initLottie(mDataBinding.jsonAnimation, "lottery_finger.json");
             //圆
             initLottie(mDataBinding.jsonAnimationRound, "lottery_round.json");
-            //圆 新手引导遮罩层
-            initLottie(mDataBinding.maskingButton, "lottery_round.json");
-            //小手 新手引导遮罩层
-            initLottie(mDataBinding.maskingHand, "lottery_finger.json");
+            boolean first_show = mSharedPreferences.getBoolean(FIRST_SHOW, true);
+            if (first_show) {
+                mSharedPreferences.edit().putBoolean(FIRST_SHOW,false).commit();
+                mDataBinding.maskingLayout.setVisibility(View.VISIBLE);
+                //圆 新手引导遮罩层
+                initLottie(mDataBinding.maskingButton, "lottery_round.json");
+                //小手 新手引导遮罩层
+                initLottie(mDataBinding.maskingHand, "lottery_finger.json");
+            } else {
+                mDataBinding.maskingLayout.setVisibility(View.GONE);
+            }
         }
-
     }
 
 

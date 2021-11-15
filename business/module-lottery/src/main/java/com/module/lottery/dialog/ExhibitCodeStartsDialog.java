@@ -11,16 +11,21 @@ import android.os.Message;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import com.module.lottery.bean.GenerateCodeBean;
 import com.module.lottery.bean.LotteryCodeBean;
 import com.module_lottery.R;
 import com.module_lottery.databinding.ExhibitCodeDialogLayoutBinding;
+import com.orhanobut.logger.Logger;
+
 import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
 import java.util.Random;
+
 //展示生成的抽奖码
 public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutBinding> {
     private Context context;
@@ -30,7 +35,9 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
     private LotteryCodeBean mLotteryCodeBean;
     private int time = 3000;
     private GenerateCodeBean mGenerateCodeBean;
-    private  int mProgressMarginStart;
+    private ValueAnimator valueProbeAnimator;
+    private int mProgressMarginStart;
+
     public ExhibitCodeStartsDialog(Context context, String goodsId, LotteryCodeBean lotteryCodeBean, GenerateCodeBean generateCodeBean) {
         super(context, R.style.dialogTransparent);//内容样式在这里引入
         this.context = context;
@@ -86,7 +93,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
             schedule = mLotteryCodeBean.getCodes().size();
             schedule = mDataBinding.includeProgressBar.progressBar.getMax() / 5 * (schedule);
             if (schedule != mDataBinding.includeProgressBar.progressBar.getMax()) {
-                randomValue = generateRandomNumber(50);
+                randomValue = generateRandomNumber(60);
             } else {
                 randomValue = 0;
             }
@@ -179,6 +186,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
 
     //进度条设置动画
     public void startProgressBar(int progress) {
+        Logger.d("================== progress "+progress);
         //停止之前的循环动画
         ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, progress);
         valueAnimator.setDuration(500);
@@ -188,16 +196,16 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
             public void onAnimationUpdate(ValueAnimator animation) {
                 float value = (float) animation.getAnimatedValue();
                 //设置显示的百分比
-
+                showProgressBarIcon(value);
                 float percentage = value / mDataBinding.includeProgressBar.progressBar.getMax() * 100;
 
-                DecimalFormat decimalFormat = new DecimalFormat(".0");//构造方法的字符格式这里如果小数不足2位,会以0补足.
-                String text = decimalFormat.format(percentage);//format 返回的是字符串
-               if(value>mDataBinding.includeProgressBar.progressBar.getMax()-10){
-                   mDataBinding.progressReminder.setText("明日10点开奖");
-               }else{
-                   mDataBinding.progressReminder.setText("超过" + text + "%的用户");
-               }
+//                DecimalFormat decimalFormat = new DecimalFormat("");//构造方法的字符格式这里如果小数不足2位,会以0补足.
+//                String text = decimalFormat.format(percentage);//format 返回的是字符串
+                if (value > mDataBinding.includeProgressBar.progressBar.getMax() - 10) {
+                    mDataBinding.progressReminder.setText("明日10点开奖");
+                } else {
+                    mDataBinding.progressReminder.setText("超过" + (int)percentage + "%的用户");
+                }
                 mDataBinding.includeProgressBar.progressBar.setProgress((int) value);
                 //设置进度条上的百分比
                 setProgressVariety();
@@ -238,7 +246,35 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
     }
 
 
-    ValueAnimator valueProbeAnimator;
+    //设置显示在进度条上的icon
+    private void showProgressBarIcon(float schedule) {
+        if (schedule > 0 && schedule < 100) {
+            mDataBinding.includeProgressBar.round01.setImageDrawable(getContext().getResources().getDrawable(R.mipmap.hook_icon));
+        }
+        if (schedule >100 && schedule < 200) {
+            mDataBinding.includeProgressBar.round01.setImageDrawable(getContext().getResources().getDrawable(R.mipmap.hook_icon));
+            mDataBinding.includeProgressBar.round02.setImageDrawable(getContext().getResources().getDrawable(R.mipmap.hook_icon));
+        }
+        if (schedule >200 && schedule < 300) {
+            mDataBinding.includeProgressBar.round01.setImageDrawable(getContext().getResources().getDrawable(R.mipmap.hook_icon));
+            mDataBinding.includeProgressBar.round02.setImageDrawable(getContext().getResources().getDrawable(R.mipmap.hook_icon));
+            mDataBinding.includeProgressBar.round03.setImageDrawable(getContext().getResources().getDrawable(R.mipmap.hook_icon));
+        }
+        if (schedule >300 && schedule < 400) {
+            mDataBinding.includeProgressBar.round01.setImageDrawable(getContext().getResources().getDrawable(R.mipmap.hook_icon));
+            mDataBinding.includeProgressBar.round02.setImageDrawable(getContext().getResources().getDrawable(R.mipmap.hook_icon));
+            mDataBinding.includeProgressBar.round03.setImageDrawable(getContext().getResources().getDrawable(R.mipmap.hook_icon));
+            mDataBinding.includeProgressBar.round04.setImageDrawable(getContext().getResources().getDrawable(R.mipmap.hook_icon));
+        }
+        if (schedule >400 ) {
+            mDataBinding.includeProgressBar.round01.setImageDrawable(getContext().getResources().getDrawable(R.mipmap.hook_icon));
+            mDataBinding.includeProgressBar.round02.setImageDrawable(getContext().getResources().getDrawable(R.mipmap.hook_icon));
+            mDataBinding.includeProgressBar.round03.setImageDrawable(getContext().getResources().getDrawable(R.mipmap.hook_icon));
+            mDataBinding.includeProgressBar.round04.setImageDrawable(getContext().getResources().getDrawable(R.mipmap.hook_icon));
+            mDataBinding.includeProgressBar.round05.setImageDrawable(getContext().getResources().getDrawable(R.mipmap.hook_icon));
+        }
+    }
+
 
     //进度条设置动画
     public void startProbeAnimation(int progress) {
@@ -270,8 +306,6 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
 
 
     }
-
-
 
 
     public void setStateListener(OnStateListener l) {
