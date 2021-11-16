@@ -19,63 +19,63 @@ import com.bumptech.glide.Glide;
 import com.donews.base.widget.CenterImageSpan;
 import com.donews.home.R;
 import com.donews.home.listener.GoodsDetailListener;
-import com.donews.middle.bean.home.PerfectGoodsBean;
-import com.donews.middle.bean.home.RealTimeBean;
+import com.donews.middle.bean.home.GoodsListBean;
+import com.donews.middle.bean.home.HomeGoodsBean;
 import com.donews.utilslibrary.utils.UrlUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PerfectGoodsAdapter extends RecyclerView.Adapter<PerfectGoodsAdapter.CrazyListViewHolder> implements View.OnClickListener {
+public class BuysGoodsAdapter extends RecyclerView.Adapter<BuysGoodsAdapter.BuysViewHolder> implements View.OnClickListener {
 
     private final Context mContext;
-    private final List<PerfectGoodsBean.GoodsInfo> mGoodsList = new ArrayList<>();
-    private final GoodsDetailListener mListener;
+    private final List<GoodsListBean.GoodsInfo> mGoodsList = new ArrayList<>();
+    private GoodsDetailListener mListener;
 
-    public PerfectGoodsAdapter(Context context, GoodsDetailListener listener) {
+    public BuysGoodsAdapter(Context context, GoodsDetailListener listener) {
         mContext = context;
         mListener = listener;
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void refreshData(List<PerfectGoodsBean.GoodsInfo> list, boolean isAdd) {
-        if (!isAdd) {
+    public void refreshData(List<GoodsListBean.GoodsInfo> list, boolean needClear) {
+        if (needClear) {
             mGoodsList.clear();
         }
         mGoodsList.addAll(list);
         notifyDataSetChanged();
     }
 
+
     @NonNull
     @Override
-    public CrazyListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_fragment_crazy_goods_item, parent, false);
-        final CrazyListViewHolder holder = new CrazyListViewHolder(view);
+    public BuysViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_search_buys_item, parent, false);
+        final BuysViewHolder holder = new BuysViewHolder(view);
         return holder;
     }
 
-    @SuppressLint({"SetTextI18n", "DefaultLocale"})
+    @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull CrazyListViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BuysViewHolder holder, int position) {
 
-        PerfectGoodsBean.GoodsInfo gi = mGoodsList.get(position);
+        GoodsListBean.GoodsInfo gi = mGoodsList.get(position);
         if (gi == null) {
             return;
         }
 
         holder.itemView.setTag(gi);
         holder.itemView.setOnClickListener(this::onClick);
-
         Glide.with(mContext).load(UrlUtils.formatUrlPrefix(gi.getMainPic())).into(holder.picIv);
         holder.desTv.setText(getTitleString(gi));
 
-        holder.priceTv.setText(String.format("￥%.1f", gi.getActualPrice()));
+        holder.priceTv.setText("￥" + gi.getOriginalPrice());
+        holder.priceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
         holder.giftTv.setText("￥" + gi.getCouponPrice() + "元券");
-        holder.originalPriceTv.setText(gi.getOriginalPrice() + "");
-        holder.originalPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
+        holder.actualPriceTv.setText("￥" + gi.getActualPrice());
     }
 
-    private SpannableString getTitleString(PerfectGoodsBean.GoodsInfo goodsInfo) {
+    private SpannableString getTitleString(GoodsListBean.GoodsInfo goodsInfo) {
         String span = "d ";
         int resId = R.drawable.home_logo_tb;
         switch (goodsInfo.getSrc()) {
@@ -87,6 +87,8 @@ public class PerfectGoodsAdapter extends RecyclerView.Adapter<PerfectGoodsAdapte
                 break;
             case 3:
                 resId = R.drawable.home_logo_jd;
+                break;
+            case 4:
                 break;
         }
         SpannableString spannableString = new SpannableString(span + goodsInfo.getTitle());
@@ -110,27 +112,27 @@ public class PerfectGoodsAdapter extends RecyclerView.Adapter<PerfectGoodsAdapte
 
     @Override
     public void onClick(View v) {
-        RealTimeBean.goodsInfo gi = (RealTimeBean.goodsInfo) v.getTag();
+        HomeGoodsBean.goodsInfo gi = (HomeGoodsBean.goodsInfo) v.getTag();
 
-        mListener.onClick(gi.getId(), gi.getGoodsId());
+        mListener.onClick(gi.getId(), gi.getGoods_id());
     }
 
-    public static class CrazyListViewHolder extends RecyclerView.ViewHolder {
+    public static class BuysViewHolder extends RecyclerView.ViewHolder {
 
         private final ImageView picIv;
         private final TextView desTv;
         private final TextView priceTv;
+        private final TextView actualPriceTv;
         private final TextView giftTv;
-        private final TextView originalPriceTv;
 
-        public CrazyListViewHolder(@NonNull View itemView) {
+        public BuysViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            picIv = itemView.findViewById(R.id.home_crazy_goods_item_pic_iv);
-            desTv = itemView.findViewById(R.id.home_crazy_goods_item_des);
-            priceTv = itemView.findViewById(R.id.home_crazy_goods_item_price);
-            giftTv = itemView.findViewById(R.id.home_crzay_goods_item_gift_atv);
-            originalPriceTv = itemView.findViewById(R.id.home_crazy_item_price);
+            picIv = itemView.findViewById(R.id.home_top_goods_item_iv);
+            desTv = itemView.findViewById(R.id.home_top_goods_item_des);
+            priceTv = itemView.findViewById(R.id.home_top_goods_item_price_atv);
+            actualPriceTv = itemView.findViewById(R.id.home_top_goods_item_price);
+            giftTv = itemView.findViewById(R.id.home_top_goods_item_gift_atv);
         }
     }
 }

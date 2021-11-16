@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class PerfectGoodsBean extends BaseCustomViewModel {
+public class GoodsListBean extends BaseCustomViewModel {
 
     @SerializedName("list")
     private List<GoodsInfo> list;
@@ -18,7 +18,7 @@ public class PerfectGoodsBean extends BaseCustomViewModel {
         this.list = list;
     }
 
-    public static class GoodsInfo extends BaseCustomViewModel{
+    public static class GoodsInfo extends BaseCustomViewModel {
         @SerializedName("goods_id")
         private String goodsId;
         @SerializedName("title")

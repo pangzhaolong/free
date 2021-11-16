@@ -3,6 +3,7 @@ package com.donews.home;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import com.donews.home.databinding.HomeFragmentBinding;
 import com.donews.home.viewModel.HomeViewModel;
 import com.donews.middle.bean.home.HomeCategoryBean;
 import com.donews.middle.bean.home.SecKilBean;
+import com.donews.middle.bean.home.TopIconsBean;
 import com.donews.middle.bean.home.UserBean;
 import com.donews.middle.cache.GoodsCache;
 import com.donews.middle.views.TabItem;
@@ -135,7 +137,6 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
 
         mDataBinding.homeBannerLl.setOnClickListener(v ->
                 ARouter.getInstance().build(RouterActivityPath.Home.CRAZY_LIST_DETAIL).navigation());
-
         mDataBinding.homeTitleTb.setOnClickListener(v -> ARouter.getInstance().build(RouterActivityPath.Home.Welfare_Activity)
                 .withString("from", "tb")
                 .navigation());
@@ -146,14 +147,17 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
                 .withString("from", "jd")
                 .navigation());
         mDataBinding.homeTitleElm.setOnClickListener(v -> {
-
+            Uri uri = Uri.parse("https://s.click.ele.me/PvxZeeu");
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
         });
-
         initSrl();
 
         loadCategory();
         loadUserList();
         loadSecKilData();
+
+        loadTopIcons();
     }
 
     private void initSrl() {
@@ -161,7 +165,17 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
             loadCategory();
             loadSecKilData();
             loadUserList();
+            loadTopIcons();
             mDataBinding.homeSrl.finishRefresh();
+        });
+    }
+
+    private void loadTopIcons() {
+        mViewModel.getTopIcons().observe(this.getViewLifecycleOwner(), topIconsBean -> {
+            if (topIconsBean == null || topIconsBean.getItems() == null || topIconsBean.getItems().size() <= 0) {
+                return;
+            }
+            showTopIcons(topIconsBean);
         });
     }
 
@@ -245,6 +259,54 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
                 Glide.with(this).load(UrlUtils.formatUrlPrefix(userInfo.getAvatar())).into(mDataBinding.homeBannerHeaderRiv3);
             }
         });
+    }
+
+    private void showTopIcons(TopIconsBean topIconsBean) {
+        if (!topIconsBean.getFlag()) {
+            mDataBinding.homeTopIconLl.setVisibility(View.GONE);
+            return;
+        }
+        if (topIconsBean.getItems().size() < 4) {
+            return;
+        }
+
+        TopIconsBean.Icon icon = topIconsBean.getItems().get(0);
+        Glide.with(this).load(UrlUtils.formatUrlPrefix(icon.getIcon())).into(mDataBinding.homeTopIconIv1);
+        mDataBinding.homeTopIconTv1.setText(icon.getName());
+        mDataBinding.homeTitleTb.setTag(icon);
+        icon = topIconsBean.getItems().get(1);
+        Glide.with(this).load(UrlUtils.formatUrlPrefix(icon.getIcon())).into(mDataBinding.homeTopIconIv2);
+        mDataBinding.homeTopIconTv2.setText(icon.getName());
+        mDataBinding.homeTitlePdd.setTag(icon);
+        icon = topIconsBean.getItems().get(2);
+        Glide.with(this).load(UrlUtils.formatUrlPrefix(icon.getIcon())).into(mDataBinding.homeTopIconIv3);
+        mDataBinding.homeTopIconTv3.setText(icon.getName());
+        mDataBinding.homeTitleJd.setTag(icon);
+        icon = topIconsBean.getItems().get(3);
+        Glide.with(this).load(UrlUtils.formatUrlPrefix(icon.getIcon())).into(mDataBinding.homeTopIconIv4);
+        mDataBinding.homeTopIconTv4.setText(icon.getName());
+        mDataBinding.homeTitleElm.setTag(icon);
+
+        mDataBinding.homeTitleTb.setOnClickListener(v -> gotoOther(v.getTag()));
+        mDataBinding.homeTitlePdd.setOnClickListener(v -> gotoOther(v.getTag()));
+        mDataBinding.homeTitleJd.setOnClickListener(v -> gotoOther(v.getTag()));
+        mDataBinding.homeTitleElm.setOnClickListener(v -> gotoOther(v.getTag()));
+    }
+
+    private void gotoOther(Object tag) {
+        TopIconsBean.Icon icon = (TopIconsBean.Icon) tag;
+        if (icon == null) {
+            return;
+        }
+        if (icon.getInner() == 1) {
+            ARouter.getInstance().build(RouterActivityPath.Home.Welfare_Activity)
+                    .withString("from", icon.getType())
+                    .navigation();
+        } else {
+            Uri uri = Uri.parse(icon.getUrl());
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        }
     }
 
 

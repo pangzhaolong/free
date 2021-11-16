@@ -53,7 +53,7 @@ public class CrazyListAdapter extends RecyclerView.Adapter<CrazyListAdapter.Craz
         return holder;
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
     @Override
     public void onBindViewHolder(@NonNull CrazyListViewHolder holder, int position) {
 
@@ -68,7 +68,7 @@ public class CrazyListAdapter extends RecyclerView.Adapter<CrazyListAdapter.Craz
         Glide.with(mContext).load(UrlUtils.formatUrlPrefix(gi.getMainPic())).into(holder.picIv);
         holder.desTv.setText(getTitleString(gi));
 
-        holder.priceTv.setText("￥" + gi.getActualPrice());
+        holder.priceTv.setText(String.format("￥%.1f", gi.getActualPrice()));
         holder.giftTv.setText("￥" + gi.getCouponPrice() + "元券");
         holder.originalPriceTv.setText(gi.getOriginalPrice() + "");
         holder.originalPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);

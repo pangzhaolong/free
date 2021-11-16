@@ -35,7 +35,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
             android:layout_marginTop="4dp"
             tools:ignore="MissingConstraints">
 
@@ -61,11 +61,12 @@
 
             <RelativeLayout
                 android:id="@+id/home_crazy_item_actprice_rl"
-                android:layout_width="133dp"
+                android:layout_width="140dp"
                 android:layout_height="28dp"
                 android:layout_alignParentBottom="true"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/home_top_item_price_bg">
+                android:background="@drawable/home_top_item_price_bg"
+                android:minWidth="140dp">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/home_crazy_goods_item_price"
@@ -98,23 +99,28 @@
                 android:background="@drawable/home_crzay_item_gift_big_bg"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <TextView
                     android:id="@+id/home_crzay_goods_item_gift_atv"
-                    android:layout_width="60dp"
-                    android:layout_height="23dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="￥50元券"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:text="￥50000元券"
                     android:textColor="#F33838"
                     android:textSize="12sp" />
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
                     android:background="@drawable/home_crazy_item_gift_bg"
                     android:gravity="center"
                     android:text="领取"
                     android:textColor="@color/white"
-                    android:textSize="8sp" />
+                    android:textSize="10sp" />
             </LinearLayout>
 
         </RelativeLayout>

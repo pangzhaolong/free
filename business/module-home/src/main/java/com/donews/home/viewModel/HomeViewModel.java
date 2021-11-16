@@ -6,6 +6,7 @@ import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.home.model.HomeModel;
 import com.donews.middle.bean.home.HomeCategoryBean;
 import com.donews.middle.bean.home.SecKilBean;
+import com.donews.middle.bean.home.TopIconsBean;
 import com.donews.middle.bean.home.UserBean;
 
 /**
@@ -32,5 +33,9 @@ public class HomeViewModel extends BaseLiveDataViewModel<HomeModel> {
 
     public MutableLiveData<UserBean> getUserList() {
         return mModel.getUserList();
+    }
+
+    public MutableLiveData<TopIconsBean> getTopIcons() {
+        return mModel.getTopIcons();
     }
 }
