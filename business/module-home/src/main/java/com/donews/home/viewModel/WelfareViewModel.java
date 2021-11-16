@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.home.model.CrazyModel;
 import com.donews.home.model.WelfareModel;
+import com.donews.middle.bean.home.PerfectGoodsBean;
 import com.donews.middle.bean.home.RealTimeBean;
 
 /**
@@ -20,7 +21,7 @@ public class WelfareViewModel extends BaseLiveDataViewModel<WelfareModel> {
         return new WelfareModel();
     }
 
-    public MutableLiveData<RealTimeBean> getCrazyListData(int pageId) {
-        return mModel.getRealTimeData(pageId);
+    public MutableLiveData<PerfectGoodsBean> getPerfectGoodsData(String from, int pageId) {
+        return mModel.getPerfectGoodsData(from, pageId);
     }
 }

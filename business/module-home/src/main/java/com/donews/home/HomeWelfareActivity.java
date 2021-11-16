@@ -14,18 +14,17 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.home.adapter.CrazyListAdapter;
-import com.donews.home.databinding.HomeCrazyListActivityBinding;
+import com.donews.home.adapter.PerfectGoodsAdapter;
 import com.donews.home.databinding.HomeWelfareActivityBinding;
 import com.donews.home.listener.GoodsDetailListener;
-import com.donews.home.viewModel.CrazyViewModel;
 import com.donews.home.viewModel.WelfareViewModel;
-import com.donews.middle.bean.home.RealTimeBean;
+import com.donews.middle.bean.home.PerfectGoodsBean;
 import com.gyf.immersionbar.ImmersionBar;
 
 @Route(path = RouterActivityPath.Home.Welfare_Activity)
 public class HomeWelfareActivity extends MvvmBaseLiveDataActivity<HomeWelfareActivityBinding, WelfareViewModel> implements GoodsDetailListener {
 
-    private CrazyListAdapter mCrazyListAdapter;
+    private PerfectGoodsAdapter mPerfectGoodsAdapter;
     private int mPageId = 1;
 
     @Autowired
@@ -62,7 +61,7 @@ public class HomeWelfareActivity extends MvvmBaseLiveDataActivity<HomeWelfareAct
     public void initView() {
         mDataBinding.homeCrazyLoadingStatusTv.setVisibility(View.VISIBLE);
         mDataBinding.homeWelfareGoodsRv.setVisibility(View.GONE);
-        mCrazyListAdapter = new CrazyListAdapter(this, this);
+        mPerfectGoodsAdapter = new PerfectGoodsAdapter(this, this);
         mDataBinding.homeWelfareGoodsRv.setLayoutManager(new LinearLayoutManager(this));
         mDataBinding.homeWelfareGoodsRv.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
@@ -70,7 +69,7 @@ public class HomeWelfareActivity extends MvvmBaseLiveDataActivity<HomeWelfareAct
                 outRect.top = 16;
             }
         });
-        mDataBinding.homeWelfareGoodsRv.setAdapter(mCrazyListAdapter);
+        mDataBinding.homeWelfareGoodsRv.setAdapter(mPerfectGoodsAdapter);
 
         loadRefreshList();
 
@@ -81,31 +80,31 @@ public class HomeWelfareActivity extends MvvmBaseLiveDataActivity<HomeWelfareAct
     }
 
     private void loadRefreshList() {
-        mViewModel.getCrazyListData(1).observe(this, realTimeBean -> {
-            if (realTimeBean == null || realTimeBean.getList() == null || realTimeBean.getList().size() <= 0) {
+        mViewModel.getPerfectGoodsData(from, 1).observe(this, perfectGoodsBean -> {
+            if (perfectGoodsBean == null || perfectGoodsBean.getList() == null || perfectGoodsBean.getList().size() <= 0) {
                 mDataBinding.homeCrazyLoadingStatusTv.setText("数据加载失败，点击重试.");
                 mDataBinding.homeCrazySrl.finishRefresh();
                 return;
             }
-            showCrazyData(realTimeBean, false);
+            showCrazyData(perfectGoodsBean, false);
         });
     }
 
     private void loadMoreList() {
         mPageId++;
-        mViewModel.getCrazyListData(mPageId).observe(this, realTimeBean -> {
-            if (realTimeBean == null || realTimeBean.getList() == null || realTimeBean.getList().size() <= 0) {
+        mViewModel.getPerfectGoodsData(from, mPageId).observe(this, perfectGoodsBean -> {
+            if (perfectGoodsBean == null || perfectGoodsBean.getList() == null || perfectGoodsBean.getList().size() <= 0) {
                 mPageId--;
                 mDataBinding.homeCrazyLoadingStatusTv.setText("数据加载失败，点击重试.");
                 mDataBinding.homeCrazySrl.finishRefresh();
                 return;
             }
-            showCrazyData(realTimeBean, true);
+            showCrazyData(perfectGoodsBean, true);
         });
     }
 
-    private void showCrazyData(RealTimeBean realTimeBean, boolean isAdd) {
-        mCrazyListAdapter.refreshData(realTimeBean.getList(), isAdd);
+    private void showCrazyData(PerfectGoodsBean perfectGoodsBean, boolean isAdd) {
+        mPerfectGoodsAdapter.refreshData(perfectGoodsBean.getList(), isAdd);
 
         mDataBinding.homeWelfareGoodsRv.setVisibility(View.VISIBLE);
         mDataBinding.homeCrazyLoadingStatusTv.setVisibility(View.GONE);

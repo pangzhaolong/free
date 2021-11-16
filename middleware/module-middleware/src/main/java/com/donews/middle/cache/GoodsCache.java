@@ -4,6 +4,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Context;
 
+import com.donews.middle.bean.HighValueGoodsBean;
 import com.donews.middle.bean.WalletBean;
 import com.donews.middle.bean.home.HomeDataBean;
 import com.donews.middle.bean.front.AwardBean;
@@ -54,6 +55,8 @@ public class GoodsCache {
                 ois = new ObjectInputStream(new FileInputStream(path));
             } else if (c == HomeCategoryBean.class) {
                 ois = new ObjectInputStream(new FileInputStream(path));
+            } else if (c == HighValueGoodsBean.class) {
+                ois = new ObjectInputStream(new FileInputStream(path));
             }
             assert ois != null;
             people = (T) ois.readObject();
@@ -98,6 +101,8 @@ public class GoodsCache {
                 fos = new ObjectOutputStream(new FileOutputStream(s_base_cache_path + SearchResultTbBean.class.getName() + "_" + ext + ".dat"));
             } else if (object instanceof HomeCategoryBean) {
                 fos = new ObjectOutputStream(new FileOutputStream(s_base_cache_path + HomeCategoryBean.class.getName() + "_" + ext + ".dat"));
+            } else if (object instanceof HighValueGoodsBean) {
+                fos = new ObjectOutputStream(new FileOutputStream(s_base_cache_path + HighValueGoodsBean.class.getName() + "_" + ext + ".dat"));
             }
             //要使用writeObject
             assert fos != null;

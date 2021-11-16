@@ -33,5 +33,8 @@ public class HomeApi {
 
     public final static String crazyListUrl = BuildConfig.BASE_URL + "v1/ranking-list";
 
+
+    public final static String perfectGoodsListUrl = BuildConfig.BASE_URL + "v2/recommend-goods-list";
+
 //    https://lottery.dev.tagtic.cn/shop/v1/ranking-list?rank_type=1&page_size=20&page_id=1
 }

@@ -16,6 +16,7 @@ import com.donews.middle.bean.WithdraWalletResp;
 import com.donews.middle.bean.WithdrawConfigResp;
 import com.donews.middle.bean.globle.CommandBean;
 import com.donews.middle.cache.GoodsCache;
+import com.donews.middle.request.RequestUtil;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
@@ -42,6 +43,8 @@ public class MiddleModuleInit implements IModuleInit {
         requestCommand(application);
         requestWithdraWallet();
         requestWithdrawCenterConfig();
+        RequestUtil.requestHighValueGoodsInfo();
+
         return false;
     }
 
@@ -94,7 +97,7 @@ public class MiddleModuleInit implements IModuleInit {
      *
      * @return
      */
-    public void requestWithdrawCenterConfig() {
+    private void requestWithdrawCenterConfig() {
         EasyHttp.get(BuildConfig.API_WALLET_URL + "v1/withdraw/config")
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<WithdrawConfigResp>() {

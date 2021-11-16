@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.model.BaseLiveDataModel;
 import com.donews.home.api.HomeApi;
-import com.donews.middle.bean.home.RealTimeBean;
+import com.donews.middle.bean.home.PerfectGoodsBean;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
@@ -24,11 +24,20 @@ public class WelfareModel extends BaseLiveDataModel {
      *
      * @return 返回 homeBean的数据
      */
-    public MutableLiveData<RealTimeBean> getRealTimeData(int pageId) {
-        MutableLiveData<RealTimeBean> mutableLiveData = new MutableLiveData<>();
-        EasyHttp.get(HomeApi.crazyListUrl + "?rank_type=1&page_size=20&page_id="+pageId)
+    public MutableLiveData<PerfectGoodsBean> getPerfectGoodsData(String from, int pageId) {
+        int src = 1;
+        if (from.equalsIgnoreCase("tb")) {
+            src = 1;
+        } else if (from.equalsIgnoreCase("pdd")) {
+            src = 2;
+        } else if (from.equalsIgnoreCase("jd")) {
+            src = 3;
+        }
+
+        MutableLiveData<PerfectGoodsBean> mutableLiveData = new MutableLiveData<>();
+        EasyHttp.get(HomeApi.perfectGoodsListUrl + "?page_size=20&page_id=" + pageId + "&src=" + src)
                 .cacheMode(CacheMode.NO_CACHE)
-                .execute(new SimpleCallBack<RealTimeBean>() {
+                .execute(new SimpleCallBack<PerfectGoodsBean>() {
 
                     @Override
                     public void onError(ApiException e) {
@@ -36,8 +45,8 @@ public class WelfareModel extends BaseLiveDataModel {
                     }
 
                     @Override
-                    public void onSuccess(RealTimeBean realTimeBean) {
-                        mutableLiveData.postValue(realTimeBean);
+                    public void onSuccess(PerfectGoodsBean perfectGoodsBean) {
+                        mutableLiveData.postValue(perfectGoodsBean);
                     }
                 });
 

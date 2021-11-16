@@ -19,25 +19,26 @@ import com.bumptech.glide.Glide;
 import com.donews.base.widget.CenterImageSpan;
 import com.donews.home.R;
 import com.donews.home.listener.GoodsDetailListener;
+import com.donews.middle.bean.home.PerfectGoodsBean;
 import com.donews.middle.bean.home.RealTimeBean;
 import com.donews.utilslibrary.utils.UrlUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CrazyListAdapter extends RecyclerView.Adapter<CrazyListAdapter.CrazyListViewHolder> implements View.OnClickListener {
+public class PerfectGoodsAdapter extends RecyclerView.Adapter<PerfectGoodsAdapter.CrazyListViewHolder> implements View.OnClickListener {
 
     private final Context mContext;
-    private final List<RealTimeBean.goodsInfo> mGoodsList = new ArrayList<>();
+    private final List<PerfectGoodsBean.GoodsInfo> mGoodsList = new ArrayList<>();
     private final GoodsDetailListener mListener;
 
-    public CrazyListAdapter(Context context, GoodsDetailListener listener) {
+    public PerfectGoodsAdapter(Context context, GoodsDetailListener listener) {
         mContext = context;
         mListener = listener;
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void refreshData(List<RealTimeBean.goodsInfo> list, boolean isAdd) {
+    public void refreshData(List<PerfectGoodsBean.GoodsInfo> list, boolean isAdd) {
         if (!isAdd) {
             mGoodsList.clear();
         }
@@ -57,7 +58,7 @@ public class CrazyListAdapter extends RecyclerView.Adapter<CrazyListAdapter.Craz
     @Override
     public void onBindViewHolder(@NonNull CrazyListViewHolder holder, int position) {
 
-        RealTimeBean.goodsInfo gi = mGoodsList.get(position);
+        PerfectGoodsBean.GoodsInfo gi = mGoodsList.get(position);
         if (gi == null) {
             return;
         }
@@ -74,10 +75,21 @@ public class CrazyListAdapter extends RecyclerView.Adapter<CrazyListAdapter.Craz
         holder.originalPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
     }
 
-    private SpannableString getTitleString(RealTimeBean.goodsInfo goodsInfo) {
+    private SpannableString getTitleString(PerfectGoodsBean.GoodsInfo goodsInfo) {
         String span = "d ";
-        int resId = goodsInfo.getShopType() == 1 ? R.drawable.home_logo_tm : R.drawable.home_logo_tb;
-        SpannableString spannableString = new SpannableString(span + goodsInfo.getDtitle());
+        int resId = R.drawable.home_logo_tb;
+        switch (goodsInfo.getSrc()) {
+            case 1:
+                resId = R.drawable.home_logo_tb;
+                break;
+            case 2:
+                resId = R.drawable.home_logo_pdd;
+                break;
+            case 3:
+                resId = R.drawable.home_logo_jd;
+                break;
+        }
+        SpannableString spannableString = new SpannableString(span + goodsInfo.getTitle());
 
         Drawable drawable = ContextCompat.getDrawable(mContext, resId);
         if (drawable != null) {
@@ -122,28 +134,3 @@ public class CrazyListAdapter extends RecyclerView.Adapter<CrazyListAdapter.Craz
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
