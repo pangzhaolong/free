@@ -11,16 +11,23 @@ import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.donews.common.base.MvvmBaseLiveDataActivity;
+import com.donews.home.adapter.BuysGoodsAdapter;
+import com.donews.home.adapter.SearchFindAdapter;
 import com.donews.home.adapter.SearchFragmentAdapter;
+import com.donews.home.adapter.SearchHistoryAdapter;
 import com.donews.home.adapter.SearchSugAdapter;
 import com.donews.home.databinding.HomeJddSearchSearchBinding;
+import com.donews.home.listener.GoodsDetailListener;
+import com.donews.home.listener.SearchHistoryListener;
 import com.donews.home.listener.SearchSugClickListener;
 import com.donews.home.viewModel.SearchViewModel;
 import com.donews.middle.bean.home.SearchHistory;
 import com.donews.middle.bean.home.TmpSearchHistory;
+import com.donews.middle.decoration.GridSpaceItemDecoration;
 import com.donews.middle.views.TabItem;
 import com.donews.middle.views.TabItemEx;
 import com.google.android.material.tabs.TabLayout;
@@ -33,10 +40,13 @@ import com.gyf.immersionbar.ImmersionBar;
  * 日期： 2021/10/13 14:13<br>
  * 版本：V1.0<br>
  */
-public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSearchBinding, SearchViewModel> implements SearchSugClickListener {
+public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSearchBinding, SearchViewModel> implements SearchSugClickListener
+        , GoodsDetailListener, SearchHistoryListener {
 
     private SearchFragmentAdapter mSearchFragmentAdapter;
     private SearchSugAdapter mSearchSugAdapter;
+    private BuysGoodsAdapter mBuysGoodsAdapter;
+    private SearchHistoryAdapter mSearchHistoryAdapter;
     private Context mContext;
 
     private String mPreKeyWord = "";
@@ -59,7 +69,6 @@ public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSe
         return R.layout.home_jdd_search_search;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void initView() {
         mContext = this;
@@ -124,6 +133,7 @@ public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSe
             }
         });
 
+
         mSearchSugAdapter = new SearchSugAdapter(this, this);
         mDataBinding.homeSearchSuggestionRv.setLayoutManager(new LinearLayoutManager(this));
         mDataBinding.homeSearchSuggestionRv.setAdapter(mSearchSugAdapter);
@@ -136,8 +146,53 @@ public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSe
 
             mDataBinding.homeSearchSuggestionRv.setVisibility(View.GONE);
             mDataBinding.homeSearchPlatformLl.setVisibility(View.VISIBLE);
-            mSearchFragmentAdapter.search(mDataBinding.homeSearchEdit.getText().toString());
-//            search(mDataBinding.homeSearchEdit.getText().toString());
+//            mSearchFragmentAdapter.search(mDataBinding.homeSearchEdit.getText().toString());
+        });
+
+        //搜索历史
+        if (SearchHistory.Ins().getList().size() <= 0) {
+            mDataBinding.homeSearchHistoryTl.setVisibility(View.GONE);
+        } else {
+            mDataBinding.homeSearchHistoryTl.setVisibility(View.VISIBLE);
+        }
+        mSearchHistoryAdapter = new SearchHistoryAdapter(this, this);
+        GridLayoutManager manager = new GridLayoutManager(this, 40);
+        manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                if (position<0 || position >= SearchHistory.Ins().getList().size()) {
+                    return 0;
+                }
+                String strText = SearchHistory.Ins().getList().get(position);
+                int strLen = strText.getBytes().length;
+                if (strLen >= 40) {
+                    return 40;
+                }
+
+                return strText.getBytes().length;
+            }
+        });
+
+        mDataBinding.homeSearchHistoryRv.setLayoutManager(manager);
+        mDataBinding.homeSearchHistoryRv.setAdapter(mSearchHistoryAdapter);
+        mSearchHistoryAdapter.refreshData(SearchHistory.Ins().getList());
+
+        //大家都在买
+        mBuysGoodsAdapter = new BuysGoodsAdapter(this, this);
+        mDataBinding.homeSearchBuysRv.setLayoutManager(new GridLayoutManager(this, 2));
+        mDataBinding.homeSearchBuysRv.addItemDecoration(new GridSpaceItemDecoration(2));
+        mDataBinding.homeSearchBuysRv.setAdapter(mBuysGoodsAdapter);
+
+        loadBuysData();
+    }
+
+    private void loadBuysData() {
+        mViewModel.getBuysData(1).observe(this, goodsListBean -> {
+            if (goodsListBean == null || goodsListBean.getList() == null || goodsListBean.getList().size() <= 0) {
+                return;
+            }
+
+            mBuysGoodsAdapter.refreshData(goodsListBean.getList(), true);
         });
     }
 
@@ -151,13 +206,28 @@ public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSe
                 mDataBinding.homeSearchSuggestionRv.setVisibility(View.GONE);
                 mDataBinding.homeSearchPlatformLl.setVisibility(View.VISIBLE);
             } else {
+                mDataBinding.homeSearchBuysLl.setVisibility(View.GONE);
                 mDataBinding.homeSearchSuggestionRv.setVisibility(View.VISIBLE);
                 mDataBinding.homeSearchPlatformLl.setVisibility(View.GONE);
             }
             mSearchSugAdapter.refreshData(searchSugBean.getList());
+            mDataBinding.homeSearchFragmentsLl.setVisibility(View.VISIBLE);
+            mDataBinding.homeSearchHistoryTl.setVisibility(View.GONE);
         });
 
         mPreKeyWord = strKeyWord;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //搜索历史
+        if (SearchHistory.Ins().getList().size() <= 0) {
+            mDataBinding.homeSearchHistoryTl.setVisibility(View.GONE);
+        } else {
+            mDataBinding.homeSearchHistoryTl.setVisibility(View.VISIBLE);
+            mSearchHistoryAdapter.refreshData(SearchHistory.Ins().getList());
+        }
     }
 
     @Override
@@ -204,5 +274,10 @@ public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSe
         SearchHistory.Ins().write(SearchHistory.Ins().toString());
         SearchHistory.Ins().clear();
         TmpSearchHistory.Ins().clear();
+    }
+
+    @Override
+    public void onClick(String id, String goodsId) {
+
     }
 }

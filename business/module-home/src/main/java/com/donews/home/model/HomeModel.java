@@ -6,6 +6,7 @@ import com.donews.base.model.BaseLiveDataModel;
 import com.donews.home.api.HomeApi;
 import com.donews.middle.bean.home.HomeCategoryBean;
 import com.donews.middle.bean.home.SecKilBean;
+import com.donews.middle.bean.home.TopIconsBean;
 import com.donews.middle.bean.home.UserBean;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
@@ -81,6 +82,26 @@ public class HomeModel extends BaseLiveDataModel {
                     @Override
                     public void onSuccess(UserBean userBean) {
                         mutableLiveData.postValue(userBean);
+                    }
+                }));
+
+        return mutableLiveData;
+    }
+
+    public MutableLiveData<TopIconsBean> getTopIcons() {
+        MutableLiveData<TopIconsBean> mutableLiveData = new MutableLiveData<>();
+        addDisposable(EasyHttp.get(HomeApi.topIconsUrl)
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new SimpleCallBack<TopIconsBean>() {
+
+                    @Override
+                    public void onError(ApiException e) {
+                        mutableLiveData.postValue(null);
+                    }
+
+                    @Override
+                    public void onSuccess(TopIconsBean topIconsBean) {
+                        mutableLiveData.postValue(topIconsBean);
                     }
                 }));
 

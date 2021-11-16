@@ -28,6 +28,7 @@
             android:textSize="18sp" />
 
         <ImageView
+            android:id="@+id/middle_tab_item_line"
             android:layout_width="match_parent"
             android:layout_height="4dp"
             android:layout_marginStart="1dp"

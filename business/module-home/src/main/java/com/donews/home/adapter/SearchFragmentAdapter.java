@@ -17,15 +17,7 @@ import java.util.Map;
 
 public class SearchFragmentAdapter extends FragmentStateAdapter {
 
-    private final List<HomeCategoryBean.CategoryItem> list = new ArrayList<>();
     private final Map<Integer, Fragment> mFragmentMap = new HashMap<>();
-
-    @SuppressLint("NotifyDataSetChanged")
-    public void refreshData(List<HomeCategoryBean.CategoryItem> list) {
-        this.list.clear();
-        this.list.addAll(list);
-        notifyDataSetChanged();
-    }
 
     public void search(String keyWord) {
         ((TbFragment) mFragmentMap.get(0)).search(keyWord);
@@ -59,10 +51,6 @@ public class SearchFragmentAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        if (this.list == null || this.list.size() == 0) {
-            return 1;
-        } else {
-            return this.list.size() + 1;
-        }
+        return 3;
     }
 }

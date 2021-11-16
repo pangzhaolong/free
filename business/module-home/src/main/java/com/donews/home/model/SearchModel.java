@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.model.BaseLiveDataModel;
 import com.donews.home.api.HomeApi;
+import com.donews.middle.bean.home.GoodsListBean;
 import com.donews.middle.bean.home.SearchSugBean;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
@@ -43,4 +44,25 @@ public class SearchModel extends BaseLiveDataModel {
 
         return mutableLiveData;
     }
+
+    public MutableLiveData<GoodsListBean> getBuysData(int pageId) {
+        MutableLiveData<GoodsListBean> mutableLiveData = new MutableLiveData<>();
+        EasyHttp.get(HomeApi.goodsListUrl + "?page_size=20&page_id=" + pageId)
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new SimpleCallBack<GoodsListBean>() {
+
+                    @Override
+                    public void onError(ApiException e) {
+                        mutableLiveData.postValue(null);
+                    }
+
+                    @Override
+                    public void onSuccess(GoodsListBean goodsListBean) {
+                        mutableLiveData.postValue(goodsListBean);
+                    }
+                });
+
+        return mutableLiveData;
+    }
+
 }

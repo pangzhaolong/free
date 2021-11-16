@@ -30,12 +30,7 @@ import com.donews.middle.cache.GoodsCache;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBinding, TbViewModel> implements GoodsDetailListener, SearchHistoryListener {
-
-    private final List<String> mSearchFindList = new ArrayList<>();
-
-    private SearchHistoryAdapter mSearchHistoryAdapter;
-    private SearchFindAdapter mSearchFindAdapter;
+public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBinding, TbViewModel> implements GoodsDetailListener {
 
     private SearchSugTbAdapter mSearchSugTbAdapter;
 
@@ -106,68 +101,6 @@ public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBin
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mSearchFindList.add("面膜");
-        mSearchFindList.add("洗面奶");
-        mSearchFindList.add("洗衣液");
-        mSearchFindList.add("口红");
-        mSearchFindList.add("螺蛳粉");
-        mSearchFindList.add("洗发水");
-        mSearchFindList.add("眼影");
-        mSearchFindList.add("口罩");
-        mSearchFindList.add("坚果");
-        mSearchFindList.add("连衣裙");
-
-        mSearchFindAdapter = new SearchFindAdapter(this.getContext(), this);
-        GridLayoutManager manager = new GridLayoutManager(this.getContext(), 40);
-        manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int position) {
-                String strText = mSearchFindList.get(position);
-                int strLen = strText.getBytes().length;
-                if (strLen >= 40) {
-                    return 40;
-                }
-
-                return strText.getBytes().length;
-            }
-        });
-
-        mDataBinding.homeSearchFindRv.setLayoutManager(manager);
-        mDataBinding.homeSearchFindRv.setAdapter(mSearchFindAdapter);
-        mSearchFindAdapter.refreshData(mSearchFindList);
-
-        if (SearchHistory.Ins().getList().size() <= 0) {
-            mDataBinding.homeSearchHistoryTl.setVisibility(View.GONE);
-        } else {
-            mDataBinding.homeSearchHistoryTl.setVisibility(View.VISIBLE);
-        }
-
-        mSearchHistoryAdapter = new SearchHistoryAdapter(this.getContext(), this);
-        manager = new GridLayoutManager(this.getContext(), 40);
-        manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int position) {
-                String strText = SearchHistory.Ins().getList().get(position);
-                int strLen = strText.getBytes().length;
-                if (strLen >= 40) {
-                    return 40;
-                }
-
-                return strText.getBytes().length;
-            }
-        });
-
-        mDataBinding.homeSearchHistoryRv.setLayoutManager(manager);
-        mDataBinding.homeSearchHistoryRv.setAdapter(mSearchHistoryAdapter);
-        mSearchHistoryAdapter.refreshData(SearchHistory.Ins().getList());
-
-        mDataBinding.homeSearchHistoryCleanTv.setOnClickListener(v -> {
-            mDataBinding.homeSearchHistoryTl.setVisibility(View.GONE);
-            SearchHistory.Ins().write("");
-            SearchHistory.Ins().getList().clear();
-            mSearchHistoryAdapter.refreshData(SearchHistory.Ins().getList());
-        });
-
         mSearchSugTbAdapter = new SearchSugTbAdapter(this.getContext(), this);
         mDataBinding.homeSearchTbGoodsRv.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
@@ -182,8 +115,6 @@ public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBin
     @Override
     public void onResume() {
         super.onResume();
-
-        mSearchHistoryAdapter.refreshData(SearchHistory.Ins().getList());
     }
 
     @Override
@@ -197,10 +128,5 @@ public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBin
                 .withString("params_id", id)
                 .withString("params_goods_id", goodsId)
                 .navigation();
-    }
-
-    @Override
-    public void onClick(String keyWord) {
-        search(keyWord);
     }
 }

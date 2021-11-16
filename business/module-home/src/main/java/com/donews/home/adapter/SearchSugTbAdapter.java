@@ -2,6 +2,7 @@ package com.donews.home.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
 import android.view.LayoutInflater;
@@ -48,9 +49,9 @@ public class SearchSugTbAdapter extends RecyclerView.Adapter<SearchSugTbAdapter.
         return holder;
     }
 
+    @SuppressLint({"DefaultLocale", "SetTextI18n"})
     @Override
     public void onBindViewHolder(@NonNull ResultViewHolder holder, int position) {
-
         SearchResultTbBean.goodsInfo gi = mGoodsList.get(position);
         if (gi == null) {
             return;
@@ -61,18 +62,11 @@ public class SearchSugTbAdapter extends RecyclerView.Adapter<SearchSugTbAdapter.
 
         Glide.with(mContext).load(gi.getMainPic()).into(holder.picIv);
         holder.desTv.setText(getTitleString(gi));
-        float sales = gi.getMonthSales();
-        if (sales >= 10000) {
-            sales /= 10000;
-            String strSales = String.format("%.1f", sales);
-            holder.salesTv.setText("已售" + strSales + "万");
-        } else {
-            holder.salesTv.setText("已售" + gi.getMonthSales());
-        }
 
         holder.priceTv.setText(gi.getActualPrice() + "");
-        holder.shopTv.setText(gi.getShopName());
         holder.giftTv.setText(gi.getCouponPrice() + "元");
+        holder.originalPriceTv.setText(String.format("%.1f", gi.getOriginalPrice()));
+        holder.originalPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
     }
 
 
@@ -111,19 +105,17 @@ public class SearchSugTbAdapter extends RecyclerView.Adapter<SearchSugTbAdapter.
         private final TextView desTv;
         private final TextView priceTv;
         private final TextView giftTv;
-        private final TextView salesTv;
-        private final TextView shopTv;
+        private final TextView originalPriceTv;
 
 
         public ResultViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            picIv = itemView.findViewById(R.id.home_search_goods_item_pic_iv);
-            desTv = itemView.findViewById(R.id.home_search_goods_item_des);
-            priceTv = itemView.findViewById(R.id.home_search_goods_item_price_atv);
-            giftTv = itemView.findViewById(R.id.home_search_goods_item_gift_atv);
-            salesTv = itemView.findViewById(R.id.home_search_goods_item_sales);
-            shopTv = itemView.findViewById(R.id.home_search_goods_item_shop_atv);
+            picIv = itemView.findViewById(R.id.home_crazy_goods_item_pic_iv);
+            desTv = itemView.findViewById(R.id.home_crazy_goods_item_des);
+            priceTv = itemView.findViewById(R.id.home_crazy_goods_item_price);
+            giftTv = itemView.findViewById(R.id.home_crzay_goods_item_gift_atv);
+            originalPriceTv = itemView.findViewById(R.id.home_crazy_item_price);
         }
     }
 }

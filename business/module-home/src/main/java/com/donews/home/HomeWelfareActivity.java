@@ -86,7 +86,7 @@ public class HomeWelfareActivity extends MvvmBaseLiveDataActivity<HomeWelfareAct
                 mDataBinding.homeCrazySrl.finishRefresh();
                 return;
             }
-            showCrazyData(perfectGoodsBean, false);
+            showPerfectGoodsData(perfectGoodsBean, false);
         });
     }
 
@@ -99,11 +99,11 @@ public class HomeWelfareActivity extends MvvmBaseLiveDataActivity<HomeWelfareAct
                 mDataBinding.homeCrazySrl.finishRefresh();
                 return;
             }
-            showCrazyData(perfectGoodsBean, true);
+            showPerfectGoodsData(perfectGoodsBean, true);
         });
     }
 
-    private void showCrazyData(PerfectGoodsBean perfectGoodsBean, boolean isAdd) {
+    private void showPerfectGoodsData(PerfectGoodsBean perfectGoodsBean, boolean isAdd) {
         mPerfectGoodsAdapter.refreshData(perfectGoodsBean.getList(), isAdd);
 
         mDataBinding.homeWelfareGoodsRv.setVisibility(View.VISIBLE);
