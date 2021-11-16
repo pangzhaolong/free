@@ -115,6 +115,6 @@ ext {
             //ViewPager指示器
             "viewpagerindicator"           : "com.github.zhpanvip:viewpagerindicator:1.2.1",
 
-            "lottie"                       : "com.airbnb.android:lottie:3.4.0",
+            "lottie"                       : "com.airbnb.android:lottie:4.2.1",
     ]
 }

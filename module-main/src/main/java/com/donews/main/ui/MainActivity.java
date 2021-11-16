@@ -99,7 +99,7 @@ public class MainActivity
     private void initView(int position) {
         ARouter.getInstance().inject(this);
         int checkColor = getResources().getColor(R.color.common_btn_color_sec);
-        int defaultColor = getResources().getColor(R.color.common_AEAEAE);
+        int defaultColor = getResources().getColor(R.color.common_D5D5D5);
 
         if (!ABSwitch.Ins().getABBean().isOpenAB()) {
             MainBottomTanItem homeItem = new MainBottomTanItem(this);

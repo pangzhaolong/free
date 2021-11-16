@@ -20,7 +20,6 @@ dependencies {
     implementation project(':common:library-sdk')
     implementation project(':common:lib_eventbus')
     implementation project(':middleware:module-middleware')
-    implementation 'com.airbnb.android:lottie:3.4.0'
 
     api 'me.majiajie:pager-bottom-tab-strip:2.3.0X'
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
