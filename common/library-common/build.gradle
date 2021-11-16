@@ -19,6 +19,8 @@ dependencies {
 
     api project(':common:library-sdk')
 
+    api rootProject.ext.dependencies["lottie"]
+
     api rootProject.ext.dependencies["refresh-layout-kernel"]
     api rootProject.ext.dependencies["refresh-header-classics"]
     api rootProject.ext.dependencies["refresh-footer-classics"]

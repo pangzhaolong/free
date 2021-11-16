@@ -29,6 +29,7 @@ import com.donews.main.adapter.MainPageAdapter;
 import com.donews.main.common.CommonParams;
 import com.donews.main.databinding.MainActivityMainBinding;
 import com.donews.main.utils.ExitInterceptUtils;
+import com.donews.main.views.MainBottomTanItem;
 import com.donews.middle.abswitch.ABSwitch;
 import com.donews.utilslibrary.analysis.AnalysisHelp;
 import com.donews.utilslibrary.analysis.AnalysisParam;
@@ -101,25 +102,70 @@ public class MainActivity
         int defaultColor = getResources().getColor(R.color.common_AEAEAE);
 
         if (!ABSwitch.Ins().getABBean().isOpenAB()) {
-            mNavigationController = mDataBinding.bottomView.material()
-                    .addItem(R.drawable.main_home_checked, "首页", checkColor)
-                    .addItem(R.drawable.main_showtime, "晒单", checkColor)
-                    .addItem(R.drawable.main_lottery, "开奖", checkColor)
-                    .addItem(R.drawable.main_buy, "省钱购", checkColor)
-                    .addItem(R.drawable.main_mine, "我的", checkColor)
-                    .setDefaultColor(defaultColor)
+            MainBottomTanItem homeItem = new MainBottomTanItem(this);
+            homeItem.initialization("首页", R.drawable.main_home_checked, defaultColor, checkColor,
+                    "main_bottom_tab_home.json");
+
+            MainBottomTanItem showTimeItem = new MainBottomTanItem(this);
+            showTimeItem.initialization("晒单", R.drawable.main_showtime, defaultColor, checkColor,
+                    "main_bottom_tab_shaidan.json");
+
+            MainBottomTanItem lotteryItem = new MainBottomTanItem(this);
+            lotteryItem.initialization("开奖", R.drawable.main_lottery, defaultColor, checkColor,
+                    "main_bottom_tab_kaijiang.json");
+
+            MainBottomTanItem buyItem = new MainBottomTanItem(this);
+            buyItem.initialization("省钱购", R.drawable.main_buy, defaultColor, checkColor,
+                    "main_bottom_tab_shengqiangou.json");
+
+            MainBottomTanItem mineItem = new MainBottomTanItem(this);
+            mineItem.initialization("我的", R.drawable.main_mine, defaultColor, checkColor, "main_bottom_tab_me.json");
+
+            mNavigationController = mDataBinding.bottomView.custom()
+                    .addItem(homeItem)
+                    .addItem(showTimeItem)
+                    .addItem(lotteryItem)
+                    .addItem(buyItem)
+                    .addItem(mineItem)
                     .enableAnimateLayoutChanges()
                     .build();
+
+//            mNavigationController = mDataBinding.bottomView.material()
+//                    .addItem(R.drawable.main_home_checked, "首页", checkColor)
+//                    .addItem(R.drawable.main_showtime, "晒单", checkColor)
+//                    .addItem(R.drawable.main_lottery, "开奖", checkColor)
+//                    .addItem(R.drawable.main_buy, "省钱购", checkColor)
+//                    .addItem(R.drawable.main_mine, "我的", checkColor)
+//                    .setDefaultColor(defaultColor)
+//                    .enableAnimateLayoutChanges()
+//                    .build();
         } else {
-            PageNavigationView.MaterialBuilder materialBuilder = mDataBinding.bottomView.material();
-            materialBuilder
-                    .addItem(R.drawable.main_home_checked, "首页", checkColor);
-            materialBuilder.addItem(R.drawable.main_lottery, "马上抢", checkColor);
-            mNavigationController = materialBuilder
-                    .addItem(R.drawable.main_mine, "设置", checkColor)
-                    .setDefaultColor(defaultColor)
+
+            MainBottomTanItem homeItem = new MainBottomTanItem(this);
+            homeItem.initialization("首页", R.drawable.main_home_checked, defaultColor, checkColor,
+                    "main_bottom_tab_home.json");
+            MainBottomTanItem lotteryItem = new MainBottomTanItem(this);
+            lotteryItem.initialization("马上抢", R.drawable.main_lottery, defaultColor, checkColor,
+                    "main_bottom_tab_kaijiang.json");
+
+            MainBottomTanItem mineItem = new MainBottomTanItem(this);
+            mineItem.initialization("设置", R.drawable.main_mine, defaultColor, checkColor, "main_bottom_tab_me.json");
+
+            mNavigationController = mDataBinding.bottomView.custom()
+                    .addItem(homeItem)
+                    .addItem(lotteryItem)
+                    .addItem(mineItem)
                     .enableAnimateLayoutChanges()
                     .build();
+
+
+//            PageNavigationView.MaterialBuilder materialBuilder = mDataBinding.bottomView.material();
+//            materialBuilder.addItem(R.drawable.main_home_checked, "首页", checkColor);
+//            materialBuilder.addItem(R.drawable.main_lottery, "马上抢", checkColor);
+//            mNavigationController = materialBuilder.addItem(R.drawable.main_mine, "设置", checkColor)
+//                    .setDefaultColor(defaultColor)
+//                    .enableAnimateLayoutChanges()
+//                    .build();
         }
         mNavigationController.showBottomLayout();
         mDataBinding.cvContentView.setOffscreenPageLimit(4);
@@ -208,7 +254,8 @@ public class MainActivity
         if (ABSwitch.Ins().getABBean().isOpenAB()) {
             fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Home.PAGER_HOME).navigation());
             fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Spike.PAGER_SPIKE).navigation());
-            fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.User.PAGER_USER_SETTING).navigation());
+            fragments.add(
+                    (Fragment) ARouter.getInstance().build(RouterFragmentPath.User.PAGER_USER_SETTING).navigation());
         } else {
             fragments.add((Fragment) ARouter.getInstance()
                     .build(RouterFragmentPath.Front.PAGER_FRONT)
@@ -219,7 +266,8 @@ public class MainActivity
             fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.User.PAGER_USER).navigation());
         }
 
-        adapter = new MainPageAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        adapter = new MainPageAdapter(getSupportFragmentManager(),
+                FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         adapter.setData(fragments);
     }
 

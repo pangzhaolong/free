@@ -114,5 +114,7 @@ ext {
             "photoView"                    : "com.github.chrisbanes:PhotoView:2.3.0",
             //ViewPager指示器
             "viewpagerindicator"           : "com.github.zhpanvip:viewpagerindicator:1.2.1",
+
+            "lottie"                       : "com.airbnb.android:lottie:3.4.0",
     ]
 }
