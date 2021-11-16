@@ -15,13 +15,16 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.dn.sdk.sdk.interfaces.listener.impl.SimpleRewardVideoListener;
 import com.donews.base.base.AppManager;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.business.loader.AdManager;
+import com.donews.middle.abswitch.ABSwitch;
 import com.module.lottery.ui.LotteryActivity;
 import com.module_lottery.R;
 import com.module_lottery.databinding.LotteryStartDialogLayoutBinding;
@@ -115,11 +118,13 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
                 try {
                     Activity activity = AppManager.getInstance().getTopActivity();
                     if (activity != null) {
-                        View view = LayoutInflater.from(mContext).inflate(R.layout.pop_ups_layout, null);
-                        View decorView = activity.getWindow().getDecorView();
-                        FrameLayout contentParent =
-                                (FrameLayout) decorView.findViewById(android.R.id.content);
-                        contentParent.addView(view);
+                        if (ABSwitch.Ins().isOpenVideoToast()) {
+                            View view = LayoutInflater.from(mContext).inflate(R.layout.pop_ups_layout, null);
+                            View decorView = activity.getWindow().getDecorView();
+                            FrameLayout contentParent =
+                                    (FrameLayout) decorView.findViewById(android.R.id.content);
+                            contentParent.addView(view);
+                        }
                     } else {
                         ToastUtil.showShort(mContext, "完整观看视频即可获得抽奖码");
                     }
@@ -146,23 +151,23 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
             @Override
             public void onRewardVerify(boolean result) {
                 super.onRewardVerify(result);
-                try {
-                    Activity activity = AppManager.getInstance().getTopActivity();
-                    if (activity != null) {
-                        View decorView = activity.getWindow().getDecorView();
-                        FrameLayout contentParent =
-                                (FrameLayout) decorView.findViewById(android.R.id.content);
-                        ConstraintLayout toastLayout = contentParent.findViewById(R.id.toast_layout);
-                        if (toastLayout != null) {
-                            contentParent.removeView(toastLayout);
+                if (ABSwitch.Ins().isOpenVideoToast()) {
+                    try {
+                        Activity activity = AppManager.getInstance().getTopActivity();
+                        if (activity != null) {
+                            View decorView = activity.getWindow().getDecorView();
+                            FrameLayout contentParent =
+                                    (FrameLayout) decorView.findViewById(android.R.id.content);
+                            ConstraintLayout toastLayout = contentParent.findViewById(R.id.toast_layout);
+                            if (toastLayout != null) {
+                                contentParent.removeView(toastLayout);
+                            }
                         }
+                    } catch (Exception e) {
+                        Logger.e("" + e.getMessage());
                     }
-                } catch (Exception e) {
-                    Logger.e("" + e.getMessage());
-
                 }
                 aAState = result;
-
             }
         });
 

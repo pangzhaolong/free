@@ -2,6 +2,8 @@ package com.donews.home;
 
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -77,6 +79,25 @@ public class HomeWelfareActivity extends MvvmBaseLiveDataActivity<HomeWelfareAct
         mDataBinding.homeCrazySrl.setOnLoadMoreListener(refreshLayout -> loadMoreList());
 
         mDataBinding.homeWelfareBack.setOnClickListener(v -> finish());
+
+        mDataBinding.homeWelfareEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().equalsIgnoreCase("")) {
+                    return;
+                }
+            }
+        });
     }
 
     private void loadRefreshList() {

@@ -129,6 +129,7 @@
                                 android:layout_gravity="center"
                                 android:layout_marginTop="10dp"
                                 android:gravity="center"
+                                android:background="@color/white"
                                 android:orientation="horizontal"
                                 android:weightSum="4">
 

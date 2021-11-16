@@ -101,7 +101,7 @@ public class MainActivity
         int checkColor = getResources().getColor(R.color.common_btn_color_sec);
         int defaultColor = getResources().getColor(R.color.common_D5D5D5);
 
-        if (!ABSwitch.Ins().getABBean().isOpenAB()) {
+        if (!ABSwitch.Ins().isOpenAB()) {
             MainBottomTanItem homeItem = new MainBottomTanItem(this);
             homeItem.initialization("首页", R.drawable.main_home_checked, defaultColor, checkColor,
                     "main_bottom_tab_home.json");
@@ -251,7 +251,7 @@ public class MainActivity
         fragments = new ArrayList<>();
         //通过ARouter 获取其他组件提供的fragment
 
-        if (ABSwitch.Ins().getABBean().isOpenAB()) {
+        if (ABSwitch.Ins().isOpenAB()) {
             fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Home.PAGER_HOME).navigation());
             fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Spike.PAGER_SPIKE).navigation());
             fragments.add(
@@ -280,7 +280,7 @@ public class MainActivity
     @Override
     public void initView() {
         int statusBarColor = R.color.main_color_bar;
-        if (ABSwitch.Ins().getABBean().isOpenAB()) {
+        if (ABSwitch.Ins().isOpenAB()) {
             statusBarColor = R.color.white;
         }
         ImmersionBar.with(this)
@@ -297,7 +297,9 @@ public class MainActivity
         checkAppUpdate();
     }
 
-    /** 检测更新 */
+    /**
+     * 检测更新
+     */
     private void checkAppUpdate() {
         UpdateManager.getInstance().checkUpdate(this, false);
         //定时检查更新
@@ -309,7 +311,7 @@ public class MainActivity
 
     @Override
     public void onBackPressed() {
-        if (!ABSwitch.Ins().getABBean().isOpenAB()) {
+        if (!ABSwitch.Ins().isOpenAB()) {
             ExitInterceptUtils.INSTANCE.intercept(this);
         } else {
             long duration = System.currentTimeMillis() - mFirstClickBackTime;
@@ -336,7 +338,7 @@ public class MainActivity
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-            @NonNull int[] grantResults) {
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults,
                 ExitInterceptUtils.INSTANCE.getRemindDialog());

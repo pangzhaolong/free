@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.donews.base.widget.CenterImageSpan;
 import com.donews.home.R;
 import com.donews.home.listener.GoodsDetailListener;
+import com.donews.middle.bean.home.SearchGoodsBeanV2;
 import com.donews.middle.bean.home.SearchResultTbBean;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import java.util.List;
 
 public class SearchSugTbAdapter extends RecyclerView.Adapter<SearchSugTbAdapter.ResultViewHolder> implements View.OnClickListener {
     private final Context mContext;
-    private final List<SearchResultTbBean.goodsInfo> mGoodsList = new ArrayList<>();
+    private List<SearchGoodsBeanV2.GoodsInfo> mGoodsList = new ArrayList<>();
     private GoodsDetailListener mListener;
 
     public SearchSugTbAdapter(Context context, GoodsDetailListener listener) {
@@ -35,8 +36,10 @@ public class SearchSugTbAdapter extends RecyclerView.Adapter<SearchSugTbAdapter.
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void refreshData(List<SearchResultTbBean.goodsInfo> list) {
-        mGoodsList.clear();
+    public void refreshData(List<SearchGoodsBeanV2.GoodsInfo> list, boolean needClear) {
+        if (needClear) {
+            mGoodsList.clear();
+        }
         mGoodsList.addAll(list);
         notifyDataSetChanged();
     }
@@ -52,7 +55,7 @@ public class SearchSugTbAdapter extends RecyclerView.Adapter<SearchSugTbAdapter.
     @SuppressLint({"DefaultLocale", "SetTextI18n"})
     @Override
     public void onBindViewHolder(@NonNull ResultViewHolder holder, int position) {
-        SearchResultTbBean.goodsInfo gi = mGoodsList.get(position);
+        SearchGoodsBeanV2.GoodsInfo gi = mGoodsList.get(position);
         if (gi == null) {
             return;
         }
@@ -69,11 +72,23 @@ public class SearchSugTbAdapter extends RecyclerView.Adapter<SearchSugTbAdapter.
         holder.originalPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
     }
 
-
-    private SpannableString getTitleString(SearchResultTbBean.goodsInfo goodsInfo) {
+    private SpannableString getTitleString(SearchGoodsBeanV2.GoodsInfo goodsInfo) {
         String span = "d ";
-        int resId = goodsInfo.getShopType() == 1 ? R.drawable.home_logo_tm : R.drawable.home_logo_tb;
-        SpannableString spannableString = new SpannableString(span + goodsInfo.getDtitle());
+        int resId = R.drawable.home_logo_tb;
+        switch (goodsInfo.getSrc()) {
+            case 1:
+                resId = R.drawable.home_logo_tb;
+                break;
+            case 2:
+                resId = R.drawable.home_logo_pdd;
+                break;
+            case 3:
+                resId = R.drawable.home_logo_jd;
+                break;
+            case 4:
+                break;
+        }
+        SpannableString spannableString = new SpannableString(span + goodsInfo.getTitle());
 
         Drawable drawable = ContextCompat.getDrawable(mContext, resId);
         if (drawable != null) {
@@ -90,6 +105,13 @@ public class SearchSugTbAdapter extends RecyclerView.Adapter<SearchSugTbAdapter.
     @Override
     public int getItemCount() {
         return mGoodsList.size();
+    }
+
+    public void clear() {
+        if (mGoodsList != null) {
+            mGoodsList.clear();
+            mGoodsList = null;
+        }
     }
 
     @Override

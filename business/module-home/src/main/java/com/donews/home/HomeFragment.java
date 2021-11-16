@@ -32,6 +32,9 @@ import com.donews.utilslibrary.utils.UrlUtils;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 /**
  * <p> </p>
@@ -46,6 +49,10 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
     private HomeCategoryBean mHomeBean;
 
     private Context mContext;
+
+    private Timer mLoadUserAndLoadSecKilTimer = null;
+    private TimerTask mLoadUserListTask = null;
+    private TimerTask mLoadSecKilTask = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -309,15 +316,56 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
         }
     }
 
+    private void startTimer() {
+        if (mLoadUserListTask == null) {
+            mLoadUserListTask = new TimerTask() {
+                @Override
+                public void run() {
+                    HomeFragment.this.requireActivity().runOnUiThread(() -> loadUserList());
+                }
+            };
+        }
+        if (mLoadSecKilTask == null) {
+            mLoadSecKilTask = new TimerTask() {
+                @Override
+                public void run() {
+                    HomeFragment.this.requireActivity().runOnUiThread(() -> loadSecKilData());
+                }
+            };
+        }
+        if (mLoadUserAndLoadSecKilTimer == null) {
+            mLoadUserAndLoadSecKilTimer = new Timer();
+            mLoadUserAndLoadSecKilTimer.schedule(mLoadUserListTask, 5 * 1000, 5 * 1000);
+            mLoadUserAndLoadSecKilTimer.schedule(mLoadSecKilTask, 5 * 1000, 15 * 1000);
+        }
+    }
+
+    private void stopTimer() {
+        if (mLoadUserAndLoadSecKilTimer != null) {
+            mLoadUserAndLoadSecKilTimer.cancel();
+            mLoadUserAndLoadSecKilTimer = null;
+        }
+        if (mLoadUserListTask != null) {
+            mLoadUserListTask.cancel();
+            mLoadUserListTask = null;
+        }
+        if (mLoadSecKilTask != null) {
+            mLoadSecKilTask.cancel();
+            mLoadSecKilTask = null;
+        }
+    }
 
     @Override
     public void onResume() {
         super.onResume();
+        startTimer();
     }
 
     @Override
     public void onPause() {
         super.onPause();
+
+        stopTimer();
     }
 
     @Override

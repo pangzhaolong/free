@@ -37,8 +37,10 @@ public class HomeApi {
     public final static String perfectGoodsListUrl = BuildConfig.BASE_URL + "v2/recommend-goods-list";
 
     public final static String goodsListUrl = BuildConfig.BASE_URL + "v2/goods-list";
-
     public final static String topIconsUrl = BuildConfig.BASE_URL + "v2/top-icons";
+    public final static String searchGoodsListUrl = BuildConfig.BASE_URL + "v2/search-goods-list?page_id=%d&page_size=20&key_words=%s&src=%d";
+
+    //https://lottery.dev.tagtic.cn/shop/v2/search-goods-list?page_id=1&page_size=20&key_words=%E6%B5%8B%E6%B8%A9&src=1
 //https://lottery.dev.tagtic.cn/shop/v2/goods-list?page_id=1&page_size=20
 //    https://lottery.dev.tagtic.cn/shop/v1/ranking-list?rank_type=1&page_size=20&page_id=1
 }

@@ -15,6 +15,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:background="@color/white"
             android:orientation="horizontal"
             tools:ignore="MissingConstraints">
 
@@ -40,7 +41,8 @@
                 android:lines="1"
                 android:maxLines="1"
                 android:paddingStart="16dp"
-                android:textCursorDrawable="@drawable/home_search_edit_cursor_color" />
+                android:textCursorDrawable="@drawable/home_search_edit_cursor_color"
+                android:textSize="13sp" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/home_search_do"
@@ -136,14 +138,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
+
                     <com.google.android.material.tabs.TabLayout
                         android:id="@+id/home_search_platform_tl"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
-                        app:tabIndicatorFullWidth="false"
-                        app:tabIndicatorHeight="0dp"
                         app:tabBackground="@color/transparent"
                         app:tabIndicatorColor="@color/transparent"
+                        app:tabIndicatorFullWidth="false"
+                        app:tabIndicatorHeight="0dp"
                         app:tabRippleColor="@color/transparent" />
 
                     <androidx.viewpager2.widget.ViewPager2
