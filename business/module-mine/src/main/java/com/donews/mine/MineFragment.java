@@ -129,16 +129,10 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
         }
     }
 
-    int count = 0;
-
     @Override
     public void onResume() {
-        onRefresh();
-        count++;
-        if (count < 10) {
-            setYYW();
-        }
         super.onResume();
+        onRefresh();
     }
 
     private void onRefresh() {
@@ -250,7 +244,7 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
                 });
         updateUIData();
         mDataBinding.mineFrmRefesh.autoRefresh();
-//        setYYW();
+        setYYW();
         scrollFloatBar();
 //        mDataBinding.mineCcsView.refreshData();
     }
@@ -265,16 +259,9 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
                 add(R.drawable.main_yyw);
                 add(R.drawable.main_yyw);
                 add(R.drawable.main_yyw);
-                add(R.drawable.main_yyw);
-                add(R.drawable.main_yyw);
-                add(R.drawable.main_yyw);
-                add(R.drawable.main_yyw);
-                add(R.drawable.main_yyw);
-                add(R.drawable.main_yyw);
-                add(R.drawable.main_yyw);
             }
         };
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < imgs.size(); i++) {
             final int pos = i;
             list.add(new MineOperatingPosView.IOperatingData() {
                 @Override
