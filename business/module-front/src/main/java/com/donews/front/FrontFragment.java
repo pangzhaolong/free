@@ -411,7 +411,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         if (rpBean.getOpened()) {
             stopTimer();
             mDataBinding.frontRpIv5.setAlpha(1.0f);
-            mDataBinding.frontRpTv5.setText("已开启");
+            mDataBinding.frontRpTv5.setText("明日再来");
         } else {
             if (rpBean.getHadLotteryTotal() == -1 || rpBean.getHadLotteryTotal() >= rpBean.getLotteryTotal()) {
                 nCloseRpCounts += 1;

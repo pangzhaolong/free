@@ -120,6 +120,20 @@
                                         android:text="已开启"
                                         android:textColor="#764D38"
                                         android:textSize="12sp" />
+
+
+                                    <TextView
+                                        android:id="@+id/tomorrow_01"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_horizontal|bottom"
+                                        android:layout_marginBottom="6dp"
+                                        android:gravity="center"
+                                        android:text="明日再来"
+                                        android:textColor="#FFF3D3"
+                                        android:textSize="12sp" />
+
+
                                 </FrameLayout>
 
                                 <FrameLayout
@@ -145,6 +159,19 @@
                                         android:text="已开启"
                                         android:textColor="#764D38"
                                         android:textSize="12sp" />
+
+                                    <TextView
+                                        android:id="@+id/tomorrow_02"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_horizontal|bottom"
+                                        android:layout_marginBottom="6dp"
+                                        android:gravity="center"
+                                        android:text="明日再来"
+                                        android:textColor="#FFF3D3"
+                                        android:textSize="12sp" />
+
+
                                 </FrameLayout>
 
                                 <FrameLayout
@@ -160,14 +187,26 @@
                                         android:layout_gravity="bottom|center_horizontal"
                                         android:background="@drawable/front_rp_ready" />
 
+
                                     <TextView
                                         android:id="@+id/front_rp_tv3"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginBottom="10dp"
+                                        android:gravity="center"
+                                        android:text="已开启"
+                                        android:textColor="#764D38"
+                                        android:textSize="12sp" />
+
+                                    <TextView
+                                        android:id="@+id/tomorrow_03"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center_horizontal|bottom"
                                         android:layout_marginBottom="6dp"
                                         android:gravity="center"
-                                        android:text="待开启"
+                                        android:text="明日再来"
                                         android:textColor="#FFF3D3"
                                         android:textSize="12sp" />
                                 </FrameLayout>
@@ -185,14 +224,27 @@
                                         android:layout_gravity="bottom|center_horizontal"
                                         android:background="@drawable/front_rp_wait" />
 
+
                                     <TextView
                                         android:id="@+id/front_rp_tv4"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginBottom="10dp"
+                                        android:gravity="center"
+                                        android:text="已开启"
+                                        android:textColor="#764D38"
+                                        android:textSize="12sp" />
+
+
+                                    <TextView
+                                        android:id="@+id/tomorrow_04"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center_horizontal|bottom"
                                         android:layout_marginBottom="6dp"
                                         android:gravity="center"
-                                        android:text="抽奖7次"
+                                        android:text="明日再来"
                                         android:textColor="#FFF3D3"
                                         android:textSize="12sp" />
                                 </FrameLayout>
