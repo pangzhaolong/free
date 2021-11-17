@@ -155,7 +155,7 @@
                     android:layout_width="342dp"
                     android:layout_height="78dp"
                     android:layout_marginStart="34dp"
-                    android:layout_marginTop="59dp"
+                    android:layout_marginTop="62dp"
                     android:layout_marginEnd="34dp"
                     android:gravity="center"
                     android:orientation="horizontal">
@@ -185,7 +185,7 @@
                     android:id="@+id/hint_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="59dp"
+                    android:layout_marginTop="62dp"
                     android:gravity="bottom"
                     android:orientation="vertical"
                     >
@@ -222,6 +222,7 @@
             android:gravity="center"
             android:text="恭喜获得抽奖码"
             android:textSize="19dp"
+            android:textColor="#764D38"
             android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
