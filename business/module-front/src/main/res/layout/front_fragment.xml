@@ -210,12 +210,43 @@
                                         android:layout_gravity="bottom|center_horizontal"
                                         android:background="@drawable/front_rp_gold" />
 
-                                    <ImageView
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:paddingStart="5dp"
+                                        android:layout_gravity="center_horizontal"
+                                        android:orientation="horizontal">
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="13dp"
+                                            android:text="8.8"
+                                            android:textColor="#AC623C"
+                                            android:textSize="15sp" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="13dp"
+                                            android:text="元"
+                                            android:textColor="#AC623C"
+                                            android:textSize="13sp" />
+
+                                    </LinearLayout>
+
+                                    <TextView
                                         android:id="@+id/front_rp_gold_88"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="right"
-                                        android:src="@drawable/front_rp_gold_money" />
+                                        android:background="@drawable/red_envelope_bg"
+                                        android:paddingStart="4dp"
+                                        android:paddingTop="2dp"
+                                        android:paddingEnd="5dp"
+                                        android:paddingBottom="2dp"
+                                        android:text="最高"
+                                        android:textColor="#FFFFFF"
+                                        android:textSize="10dp" />
 
                                     <TextView
                                         android:id="@+id/front_rp_tv5"
@@ -461,13 +492,13 @@
                 android:layout_height="match_parent"
                 app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
-<!--            <com.donews.common.views.FrontFloatingBtn-->
-<!--                android:id="@+id/front_floating_btn"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_gravity="bottom|end"-->
-<!--                android:layout_marginEnd="15dp"-->
-<!--                android:layout_marginBottom="100dp" />-->
+            <!--            <com.donews.common.views.FrontFloatingBtn-->
+            <!--                android:id="@+id/front_floating_btn"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_gravity="bottom|end"-->
+            <!--                android:layout_marginEnd="15dp"-->
+            <!--                android:layout_marginBottom="100dp" />-->
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
