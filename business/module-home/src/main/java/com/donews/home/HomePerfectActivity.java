@@ -14,13 +14,15 @@ import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.home.adapter.CrazyListAdapter;
 import com.donews.home.databinding.HomeCrazyListActivityBinding;
-import com.donews.home.listener.GoodsDetailListener;
+import com.donews.home.listener.GoodsClickListener;
 import com.donews.home.viewModel.CrazyViewModel;
+import com.donews.middle.bean.home.HomeGoodsBean;
 import com.donews.middle.bean.home.RealTimeBean;
+import com.donews.middle.go.GotoUtil;
 import com.gyf.immersionbar.ImmersionBar;
 
 @Route(path = RouterActivityPath.Home.CRAZY_LIST_DETAIL)
-public class HomeCrazyListActivity extends MvvmBaseLiveDataActivity<HomeCrazyListActivityBinding, CrazyViewModel> implements GoodsDetailListener {
+public class HomePerfectActivity extends MvvmBaseLiveDataActivity<HomeCrazyListActivityBinding, CrazyViewModel> implements GoodsClickListener {
 
     private CrazyListAdapter mCrazyListAdapter;
     private int mPageId = 1;
@@ -65,7 +67,7 @@ public class HomeCrazyListActivity extends MvvmBaseLiveDataActivity<HomeCrazyLis
     }
 
     private void loadRefreshList() {
-        mViewModel.getCrazyListData(1).observe(this, realTimeBean -> {
+        mViewModel.getCrazyListData(1, "1").observe(this, realTimeBean -> {
             if (realTimeBean == null || realTimeBean.getList() == null || realTimeBean.getList().size() <= 0) {
                 mDataBinding.homeCrazyLoadingStatusTv.setText("数据加载失败，点击重试.");
                 mDataBinding.homeCrazySrl.finishRefresh();
@@ -77,18 +79,18 @@ public class HomeCrazyListActivity extends MvvmBaseLiveDataActivity<HomeCrazyLis
 
     private void loadMoreList() {
         mPageId++;
-        mViewModel.getCrazyListData(mPageId).observe(this, realTimeBean -> {
-            if (realTimeBean == null || realTimeBean.getList() == null || realTimeBean.getList().size() <= 0) {
+        mViewModel.getCrazyListData(mPageId, "1").observe(this, homeGoodsBean -> {
+            if (homeGoodsBean == null || homeGoodsBean.getList() == null || homeGoodsBean.getList().size() <= 0) {
                 mPageId--;
                 mDataBinding.homeCrazyLoadingStatusTv.setText("数据加载失败，点击重试.");
                 mDataBinding.homeCrazySrl.finishRefresh();
                 return;
             }
-            showCrazyData(realTimeBean, true);
+            showCrazyData(homeGoodsBean, true);
         });
     }
 
-    private void showCrazyData(RealTimeBean realTimeBean, boolean isAdd) {
+    private void showCrazyData(HomeGoodsBean realTimeBean, boolean isAdd) {
         mCrazyListAdapter.refreshData(realTimeBean.getList(), isAdd);
 
         mDataBinding.homeCrazyGoodsRv.setVisibility(View.VISIBLE);
@@ -98,10 +100,7 @@ public class HomeCrazyListActivity extends MvvmBaseLiveDataActivity<HomeCrazyLis
     }
 
     @Override
-    public void onClick(String id, String goodsId) {
-        ARouter.getInstance().build(RouterActivityPath.GoodsDetail.GOODS_DETAIL)
-                .withString("params_id", id)
-                .withString("params_goods_id", goodsId)
-                .navigation();
+    public void onClick(String goodsId, String materialId, String searchId, int src) {
+        GotoUtil.requestPrivilegeLinkBean(this, goodsId, materialId, searchId, src);
     }
 }

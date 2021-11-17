@@ -19,13 +19,13 @@ import com.donews.common.router.RouterActivityPath;
 import com.donews.home.R;
 import com.donews.home.adapter.TopGoodsAdapter;
 import com.donews.home.databinding.HomeFragmentTopBinding;
-import com.donews.home.listener.GoodsDetailListener;
+import com.donews.home.listener.GoodsClickListener;
 import com.donews.home.viewModel.TopViewModel;
 import com.donews.middle.bean.home.HomeGoodsBean;
 import com.donews.middle.cache.GoodsCache;
 import com.donews.middle.decoration.GridSpaceItemDecoration;
 
-public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding, TopViewModel> implements GoodsDetailListener {
+public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding, TopViewModel> implements GoodsClickListener {
 
     private TopGoodsAdapter mTopGoodsAdapter;
 
@@ -131,15 +131,18 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
     @Override
     public void onDestroy() {
         super.onDestroy();
-
-//        LogUtil.e("TopFragment onDestroy");
     }
 
-    @Override
+/*    @Override
     public void onClick(String id, String goodsId) {
         ARouter.getInstance().build(RouterActivityPath.GoodsDetail.GOODS_DETAIL)
                 .withString("params_id", id)
                 .withString("params_goods_id", goodsId)
                 .navigation();
+    }*/
+
+    @Override
+    public void onClick(String goodsId, String materialId, String searchId, int src) {
+
     }
 }

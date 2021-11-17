@@ -3,10 +3,9 @@ package com.donews.home.viewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
-import com.donews.home.model.CrazyModel;
 import com.donews.home.model.WelfareModel;
-import com.donews.middle.bean.home.PerfectGoodsBean;
-import com.donews.middle.bean.home.RealTimeBean;
+import com.donews.middle.bean.home.HomeGoodsBean;
+import com.donews.middle.bean.home.SearchSugBean;
 
 /**
  * <p> </p>
@@ -21,7 +20,15 @@ public class WelfareViewModel extends BaseLiveDataViewModel<WelfareModel> {
         return new WelfareModel();
     }
 
-    public MutableLiveData<PerfectGoodsBean> getPerfectGoodsData(String from, int pageId) {
+    public MutableLiveData<HomeGoodsBean> getPerfectGoodsData(String from, int pageId) {
         return mModel.getPerfectGoodsData(from, pageId);
+    }
+
+    public MutableLiveData<SearchSugBean> getSearchData(String keyWord) {
+        return mModel.getSearchData(keyWord);
+    }
+
+    public MutableLiveData<HomeGoodsBean> getSearchListData(int pageId, String keyWord, int src) {
+        return mModel.getSearchListData(pageId, keyWord, src);
     }
 }

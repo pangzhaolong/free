@@ -1,10 +1,13 @@
 package com.donews.home.model;
 
+import android.annotation.SuppressLint;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.model.BaseLiveDataModel;
 import com.donews.home.api.HomeApi;
 import com.donews.middle.bean.front.LotteryGoodsBean;
+import com.donews.middle.bean.home.HomeCategoryBean;
 import com.donews.middle.bean.home.HomeGoodsBean;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
@@ -25,9 +28,10 @@ public class NorModel extends BaseLiveDataModel {
      *
      * @return 返回 homeBean的数据
      */
+    @SuppressLint("DefaultLocale")
     public MutableLiveData<HomeGoodsBean> getNorGoodsData(String cids, int pageId) {
         MutableLiveData<HomeGoodsBean> mutableLiveData = new MutableLiveData<>();
-        addDisposable(EasyHttp.get(HomeApi.goodsList + "?cids=" + cids + "&page_size=20&page_id=" + pageId)
+        addDisposable(EasyHttp.get(String.format(HomeApi.homeGoodsListUrl, pageId, cids))
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<HomeGoodsBean>() {
 

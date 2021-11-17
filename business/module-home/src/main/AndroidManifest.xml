@@ -15,7 +15,7 @@
             android:exported="true"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".HomeCrazyListActivity"
+            android:name=".HomePerfectActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity

@@ -18,9 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.donews.base.widget.CenterImageSpan;
 import com.donews.home.R;
-import com.donews.home.listener.GoodsDetailListener;
-import com.donews.middle.bean.home.PerfectGoodsBean;
-import com.donews.middle.bean.home.RealTimeBean;
+import com.donews.home.listener.GoodsClickListener;
+import com.donews.middle.bean.home.HomeGoodsBean;
 import com.donews.utilslibrary.utils.UrlUtils;
 
 import java.util.ArrayList;
@@ -29,16 +28,16 @@ import java.util.List;
 public class PerfectGoodsAdapter extends RecyclerView.Adapter<PerfectGoodsAdapter.CrazyListViewHolder> implements View.OnClickListener {
 
     private final Context mContext;
-    private final List<PerfectGoodsBean.GoodsInfo> mGoodsList = new ArrayList<>();
-    private final GoodsDetailListener mListener;
+    private final List<HomeGoodsBean.GoodsInfo> mGoodsList = new ArrayList<>();
+    private final GoodsClickListener mListener;
 
-    public PerfectGoodsAdapter(Context context, GoodsDetailListener listener) {
+    public PerfectGoodsAdapter(Context context, GoodsClickListener listener) {
         mContext = context;
         mListener = listener;
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void refreshData(List<PerfectGoodsBean.GoodsInfo> list, boolean isAdd) {
+    public void refreshData(List<HomeGoodsBean.GoodsInfo> list, boolean isAdd) {
         if (!isAdd) {
             mGoodsList.clear();
         }
@@ -49,7 +48,7 @@ public class PerfectGoodsAdapter extends RecyclerView.Adapter<PerfectGoodsAdapte
     @NonNull
     @Override
     public CrazyListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_fragment_crazy_goods_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_perfect_item, parent, false);
         final CrazyListViewHolder holder = new CrazyListViewHolder(view);
         return holder;
     }
@@ -57,8 +56,7 @@ public class PerfectGoodsAdapter extends RecyclerView.Adapter<PerfectGoodsAdapte
     @SuppressLint({"SetTextI18n", "DefaultLocale"})
     @Override
     public void onBindViewHolder(@NonNull CrazyListViewHolder holder, int position) {
-
-        PerfectGoodsBean.GoodsInfo gi = mGoodsList.get(position);
+        HomeGoodsBean.GoodsInfo gi = mGoodsList.get(position);
         if (gi == null) {
             return;
         }
@@ -75,7 +73,7 @@ public class PerfectGoodsAdapter extends RecyclerView.Adapter<PerfectGoodsAdapte
         holder.originalPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
     }
 
-    private SpannableString getTitleString(PerfectGoodsBean.GoodsInfo goodsInfo) {
+    private SpannableString getTitleString(HomeGoodsBean.GoodsInfo goodsInfo) {
         String span = "d ";
         int resId = R.drawable.home_logo_tb;
         switch (goodsInfo.getSrc()) {
@@ -110,9 +108,9 @@ public class PerfectGoodsAdapter extends RecyclerView.Adapter<PerfectGoodsAdapte
 
     @Override
     public void onClick(View v) {
-        RealTimeBean.goodsInfo gi = (RealTimeBean.goodsInfo) v.getTag();
+        HomeGoodsBean.GoodsInfo gi = (HomeGoodsBean.GoodsInfo) v.getTag();
 
-        mListener.onClick(gi.getId(), gi.getGoodsId());
+        mListener.onClick(gi.getGoodsId(), gi.getMaterialId(), gi.getSearchId(), gi.getSrc());
     }
 
     public static class CrazyListViewHolder extends RecyclerView.ViewHolder {

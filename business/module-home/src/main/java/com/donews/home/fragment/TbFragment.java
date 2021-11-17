@@ -10,25 +10,29 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
-import com.donews.common.router.RouterActivityPath;
 import com.donews.home.R;
 import com.donews.home.adapter.SearchSugTbAdapter;
 import com.donews.home.databinding.HomeFragmentSearchTbBinding;
-import com.donews.home.listener.GoodsDetailListener;
+import com.donews.home.listener.GoodsClickListener;
 import com.donews.home.viewModel.TbViewModel;
-import com.donews.middle.bean.home.SearchGoodsBeanV2;
+import com.donews.middle.bean.home.HomeGoodsBean;
 import com.donews.middle.bean.home.SearchHistory;
 import com.donews.middle.bean.home.TmpSearchHistory;
 import com.donews.middle.cache.GoodsCache;
+import com.donews.middle.go.GotoUtil;
 
-public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBinding, TbViewModel> implements GoodsDetailListener {
+public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBinding, TbViewModel> implements GoodsClickListener {
 
     private SearchSugTbAdapter mSearchSugTbAdapter;
 
     private int mPosition = 0;
     private FragmentStatus mFragmentStatus = new FragmentStatus();
+
+    @Override
+    public void onClick(String goodsId, String materialId, String searchId, int src) {
+        GotoUtil.requestPrivilegeLinkBean(this.getContext(), goodsId, materialId, searchId, src);
+    }
 
     private static class FragmentStatus {
         public int pageId = 1;
@@ -57,8 +61,8 @@ public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBin
         mFragmentStatus.pageId = 1;
         SearchHistory.Ins().setCurKeyWord(keyWord);
 
-        SearchGoodsBeanV2 searchResultTbBean = GoodsCache.readGoodsBean(SearchGoodsBeanV2.class, SearchHistory.Ins().getCurKeyWord() + mPosition);
-        showSearchTbBean(searchResultTbBean);
+        HomeGoodsBean homeGoodsBean = GoodsCache.readGoodsBean(HomeGoodsBean.class, SearchHistory.Ins().getCurKeyWord() + mPosition);
+        showSearchTbBean(homeGoodsBean);
 
         loadSearchData();
     }
@@ -66,22 +70,23 @@ public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBin
     private void loadSearchData() {
         mFragmentStatus.firstLoaded = true;
         mFragmentStatus.pageId += 1;
-        mViewModel.getSearchResultData(SearchHistory.Ins().getCurKeyWord(), mFragmentStatus.pageId, mPosition + 1).observe(getViewLifecycleOwner(), this::showSearchTbBean);
+        mViewModel.getSearchResultData(SearchHistory.Ins().getCurKeyWord(), mFragmentStatus.pageId, mPosition + 1)
+                .observe(getViewLifecycleOwner(), this::showSearchTbBean);
     }
 
-    private void showSearchTbBean(SearchGoodsBeanV2 searchResultTbBean) {
+    private void showSearchTbBean(HomeGoodsBean homeGoodsBean) {
         mDataBinding.homeSearchTbSrl.finishLoadMore();
-        mDataBinding.homeSearchTbSrl.setVisibility(View.VISIBLE);
-        mDataBinding.homeSearchLoadingLl.setVisibility(View.GONE);
-        if (searchResultTbBean == null || searchResultTbBean.getList() == null || searchResultTbBean.getList().size() <= 0) {
-
+        if (homeGoodsBean == null || homeGoodsBean.getList() == null || homeGoodsBean.getList().size() <= 0) {
             mFragmentStatus.pageId -= 1;
             return;
         }
 
-        mSearchSugTbAdapter.refreshData(searchResultTbBean.getList(), mFragmentStatus.pageId == 1);
+        mDataBinding.homeSearchTbSrl.setVisibility(View.VISIBLE);
+        mDataBinding.homeSearchLoadingLl.setVisibility(View.GONE);
+
+        mSearchSugTbAdapter.refreshData(homeGoodsBean.getList(), mFragmentStatus.pageId == 1);
         if (mFragmentStatus.pageId == 1) {
-            GoodsCache.saveGoodsBean(searchResultTbBean, SearchHistory.Ins().getCurKeyWord() + mPosition);
+            GoodsCache.saveGoodsBean(homeGoodsBean, SearchHistory.Ins().getCurKeyWord() + mPosition);
         }
     }
 
@@ -89,8 +94,8 @@ public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBin
         mDataBinding.homeSearchLoadingLl.setVisibility(View.VISIBLE);
         mDataBinding.homeSearchTbSrl.setVisibility(View.GONE);
 
-        SearchGoodsBeanV2 searchGoodsBeanV2 = GoodsCache.readGoodsBean(SearchGoodsBeanV2.class, keyWord + mPosition);
-        showSearchTbBean(searchGoodsBeanV2);
+        HomeGoodsBean homeGoodsBean = GoodsCache.readGoodsBean(HomeGoodsBean.class, keyWord + mPosition);
+        showSearchTbBean(homeGoodsBean);
     }
 
     @Override
@@ -129,13 +134,5 @@ public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBin
         super.onDestroy();
 
         mFragmentStatus = null;
-    }
-
-    @Override
-    public void onClick(String id, String goodsId) {
-        ARouter.getInstance().build(RouterActivityPath.GoodsDetail.GOODS_DETAIL)
-                .withString("params_id", id)
-                .withString("params_goods_id", goodsId)
-                .navigation();
     }
 }

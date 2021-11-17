@@ -18,7 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.donews.base.widget.CenterImageSpan;
 import com.donews.home.R;
-import com.donews.home.listener.GoodsDetailListener;
+import com.donews.home.listener.GoodsClickListener;
+import com.donews.middle.bean.home.HomeGoodsBean;
 import com.donews.middle.bean.home.RealTimeBean;
 import com.donews.utilslibrary.utils.UrlUtils;
 
@@ -28,16 +29,16 @@ import java.util.List;
 public class CrazyListAdapter extends RecyclerView.Adapter<CrazyListAdapter.CrazyListViewHolder> implements View.OnClickListener {
 
     private final Context mContext;
-    private final List<RealTimeBean.goodsInfo> mGoodsList = new ArrayList<>();
-    private final GoodsDetailListener mListener;
+    private final List<HomeGoodsBean.GoodsInfo> mGoodsList = new ArrayList<>();
+    private final GoodsClickListener mListener;
 
-    public CrazyListAdapter(Context context, GoodsDetailListener listener) {
+    public CrazyListAdapter(Context context, GoodsClickListener listener) {
         mContext = context;
         mListener = listener;
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void refreshData(List<RealTimeBean.goodsInfo> list, boolean isAdd) {
+    public void refreshData(List<HomeGoodsBean.GoodsInfo> list, boolean isAdd) {
         if (!isAdd) {
             mGoodsList.clear();
         }
@@ -48,7 +49,7 @@ public class CrazyListAdapter extends RecyclerView.Adapter<CrazyListAdapter.Craz
     @NonNull
     @Override
     public CrazyListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_fragment_crazy_goods_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_perfect_item, parent, false);
         final CrazyListViewHolder holder = new CrazyListViewHolder(view);
         return holder;
     }
@@ -57,7 +58,7 @@ public class CrazyListAdapter extends RecyclerView.Adapter<CrazyListAdapter.Craz
     @Override
     public void onBindViewHolder(@NonNull CrazyListViewHolder holder, int position) {
 
-        RealTimeBean.goodsInfo gi = mGoodsList.get(position);
+        HomeGoodsBean.GoodsInfo gi = mGoodsList.get(position);
         if (gi == null) {
             return;
         }
@@ -74,10 +75,21 @@ public class CrazyListAdapter extends RecyclerView.Adapter<CrazyListAdapter.Craz
         holder.originalPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
     }
 
-    private SpannableString getTitleString(RealTimeBean.goodsInfo goodsInfo) {
+    private SpannableString getTitleString(HomeGoodsBean.GoodsInfo goodsInfo) {
         String span = "d ";
-        int resId = goodsInfo.getShopType() == 1 ? R.drawable.home_logo_tm : R.drawable.home_logo_tb;
-        SpannableString spannableString = new SpannableString(span + goodsInfo.getDtitle());
+        int resId = R.drawable.home_logo_tb;
+        switch (goodsInfo.getSrc()) {
+            case 1:
+                resId = R.drawable.home_logo_tb;
+                break;
+            case 2:
+                resId = R.drawable.home_logo_pdd;
+                break;
+            case 3:
+                resId = R.drawable.home_logo_jd;
+                break;
+        }
+        SpannableString spannableString = new SpannableString(span + goodsInfo.getTitle());
 
         Drawable drawable = ContextCompat.getDrawable(mContext, resId);
         if (drawable != null) {
@@ -98,9 +110,9 @@ public class CrazyListAdapter extends RecyclerView.Adapter<CrazyListAdapter.Craz
 
     @Override
     public void onClick(View v) {
-        RealTimeBean.goodsInfo gi = (RealTimeBean.goodsInfo) v.getTag();
+        HomeGoodsBean.GoodsInfo gi = (HomeGoodsBean.GoodsInfo) v.getTag();
 
-        mListener.onClick(gi.getId(), gi.getGoodsId());
+        mListener.onClick(gi.getGoodsId(), gi.getMaterialId(), gi.getSearchId(), gi.getSrc());
     }
 
     public static class CrazyListViewHolder extends RecyclerView.ViewHolder {

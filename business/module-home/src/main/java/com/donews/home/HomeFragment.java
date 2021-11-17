@@ -23,6 +23,7 @@ import com.donews.home.adapter.FragmentAdapter;
 import com.donews.home.databinding.HomeFragmentBinding;
 import com.donews.home.viewModel.HomeViewModel;
 import com.donews.middle.bean.home.HomeCategoryBean;
+import com.donews.middle.bean.home.RealTimeBean;
 import com.donews.middle.bean.home.SecKilBean;
 import com.donews.middle.bean.home.TopIconsBean;
 import com.donews.middle.bean.home.UserBean;
@@ -90,24 +91,24 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
         mDataBinding.homeCategoryVp2.setAdapter(mFragmentAdapter);
         mDataBinding.homeCategoryTl.setTabMode(TabLayout.MODE_SCROLLABLE);
         TabLayoutMediator tab = new TabLayoutMediator(mDataBinding.homeCategoryTl, mDataBinding.homeCategoryVp2, (tab1, position) -> {
-            if (position == 0) {
+            /*if (position == 0) {
                 if (tab1.getCustomView() == null) {
                     tab1.setCustomView(new TabItem(mContext));
                 }
                 TabItem tabItem = (TabItem) tab1.getCustomView();
                 assert tabItem != null;
                 tabItem.setTitle("精品");
-            } else {
-                if (tab1.getCustomView() == null) {
-                    tab1.setCustomView(new TabItem(mContext));
-                }
-                TabItem tabItem = (TabItem) tab1.getCustomView();
-                assert tabItem != null;
-                if (mHomeBean == null || mHomeBean.getList() == null) {
-                    return;
-                }
-                tabItem.setTitle(mHomeBean.getList().get(position - 1).getCname());
+            } else {*/
+            if (tab1.getCustomView() == null) {
+                tab1.setCustomView(new TabItem(mContext));
             }
+            TabItem tabItem = (TabItem) tab1.getCustomView();
+            assert tabItem != null;
+            if (mHomeBean == null || mHomeBean.getList() == null) {
+                return;
+            }
+            tabItem.setTitle(mHomeBean.getList().get(position).getCname());
+            /*}*/
         });
         tab.attach();
 
@@ -135,6 +136,7 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
         });
         mDataBinding.homeSearchRl.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), HomeSearchActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
         });
         mDataBinding.homeJddHelp.setOnClickListener(v -> {
@@ -162,7 +164,8 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
 
         loadCategory();
         loadUserList();
-        loadSecKilData();
+//        loadSecKilData();
+        loadRankListData();
 
         loadTopIcons();
     }
@@ -170,7 +173,8 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
     private void initSrl() {
         mDataBinding.homeSrl.setOnRefreshListener(refreshLayout -> {
             loadCategory();
-            loadSecKilData();
+//            loadSecKilData();
+            loadRankListData();
             loadUserList();
             loadTopIcons();
             mDataBinding.homeSrl.finishRefresh();
@@ -186,7 +190,22 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
         });
     }
 
-    private void loadSecKilData() {
+    private int mPageId = 1;
+    private void loadRankListData() {
+        RealTimeBean realTimeBean = GoodsCache.readGoodsBean(RealTimeBean.class, "home_banner");
+        showRankListBean(realTimeBean);
+        mPageId++;
+        mViewModel.getRankListData(mPageId).observe(this.getViewLifecycleOwner(), realTimeBean1 -> {
+            if (realTimeBean1 == null) {
+                mPageId = 1;
+                return;
+            }
+            showRankListBean(realTimeBean1);
+            GoodsCache.saveGoodsBean(realTimeBean1, "home_banner");
+        });
+    }
+
+    /*private void loadSecKilData() {
         SecKilBean tmpSecKilBean = GoodsCache.readGoodsBean(SecKilBean.class, "home_banner");
         showSecKilBean(tmpSecKilBean);
 
@@ -194,14 +213,14 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
             showSecKilBean(secKilBean);
             GoodsCache.saveGoodsBean(secKilBean, "home_banner");
         });
-    }
+    }*/
 
     private void loadCategory() {
-        mHomeBean = GoodsCache.readGoodsBean(HomeCategoryBean.class, "home");
+        mHomeBean = GoodsCache.readGoodsBean(HomeCategoryBean.class, "home_category");
         if (mHomeBean != null && mHomeBean.getList() != null && mFragmentAdapter != null) {
             mFragmentAdapter.refreshData(mHomeBean.getList());
         }
-        mViewModel.getNetHomeData().observe(getViewLifecycleOwner(), homeBean -> {
+        mViewModel.getHomeCategoryBean().observe(getViewLifecycleOwner(), homeBean -> {
             if (homeBean == null) {
                 return;
             }
@@ -210,7 +229,7 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
             if (mFragmentAdapter != null) {
                 mFragmentAdapter.refreshData(mHomeBean.getList());
             }
-            GoodsCache.saveGoodsBean(mHomeBean, "home");
+            GoodsCache.saveGoodsBean(mHomeBean, "home_category");
         });
     }
 
@@ -242,6 +261,38 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
             goodsInfo = secKilBean.getGoodsList().get(3);
             Glide.with(this).load(UrlUtils.formatUrlPrefix(goodsInfo.getMainPic())).into(mDataBinding.homeSeckilRiv4);
             mDataBinding.homeSeckilTv4.setText("直降" + goodsInfo.getDiscounts());
+            mDataBinding.homeSeckilPriceTv4.setText("￥" + goodsInfo.getActualPrice());
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void showRankListBean(RealTimeBean realTimeBean) {
+        if (realTimeBean == null || realTimeBean.getList() == null || realTimeBean.getList().size() <= 0
+                || realTimeBean.getList().size() < 2) {
+            mDataBinding.homeBannerLl.setVisibility(View.GONE);
+            return;
+        }
+
+        mDataBinding.homeBannerLl.setVisibility(View.VISIBLE);
+
+        RealTimeBean.goodsInfo goodsInfo = realTimeBean.getList().get(0);
+        Glide.with(this).load(UrlUtils.formatUrlPrefix(goodsInfo.getMainPic())).into(mDataBinding.homeSeckilRiv1);
+        mDataBinding.homeSeckilTv1.setText("直降" + goodsInfo.getCouponPrice());
+        mDataBinding.homeSeckilPriceTv1.setText("￥" + goodsInfo.getActualPrice());
+        goodsInfo = realTimeBean.getList().get(1);
+        Glide.with(this).load(UrlUtils.formatUrlPrefix(goodsInfo.getMainPic())).into(mDataBinding.homeSeckilRiv2);
+        mDataBinding.homeSeckilTv2.setText("直降" + goodsInfo.getCouponPrice());
+        mDataBinding.homeSeckilPriceTv2.setText("￥" + goodsInfo.getActualPrice());
+        if (realTimeBean.getList().size() > 2) {
+            goodsInfo = realTimeBean.getList().get(2);
+            Glide.with(this).load(UrlUtils.formatUrlPrefix(goodsInfo.getMainPic())).into(mDataBinding.homeSeckilRiv3);
+            mDataBinding.homeSeckilTv3.setText("直降" + goodsInfo.getCouponPrice());
+            mDataBinding.homeSeckilPriceTv3.setText("￥" + goodsInfo.getActualPrice());
+        }
+        if (realTimeBean.getList().size() > 3) {
+            goodsInfo = realTimeBean.getList().get(3);
+            Glide.with(this).load(UrlUtils.formatUrlPrefix(goodsInfo.getMainPic())).into(mDataBinding.homeSeckilRiv4);
+            mDataBinding.homeSeckilTv4.setText("直降" + goodsInfo.getCouponPrice());
             mDataBinding.homeSeckilPriceTv4.setText("￥" + goodsInfo.getActualPrice());
         }
     }
@@ -329,7 +380,8 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
             mLoadSecKilTask = new TimerTask() {
                 @Override
                 public void run() {
-                    HomeFragment.this.requireActivity().runOnUiThread(() -> loadSecKilData());
+                    HomeFragment.this.requireActivity().runOnUiThread(() -> loadRankListData());
+//                    HomeFragment.this.requireActivity().runOnUiThread(() -> loadSecKilData());
                 }
             };
         }

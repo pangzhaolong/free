@@ -3,7 +3,9 @@ package com.donews.home.model;
 import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.model.BaseLiveDataModel;
+import com.donews.home.BuildConfig;
 import com.donews.home.api.HomeApi;
+import com.donews.middle.bean.home.HomeGoodsBean;
 import com.donews.middle.bean.home.RealTimeBean;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
@@ -24,11 +26,11 @@ public class CrazyModel extends BaseLiveDataModel {
      *
      * @return 返回 homeBean的数据
      */
-    public MutableLiveData<RealTimeBean> getRealTimeData(int pageId) {
-        MutableLiveData<RealTimeBean> mutableLiveData = new MutableLiveData<>();
-        EasyHttp.get(HomeApi.crazyListUrl + "?rank_type=1&page_size=20&page_id="+pageId)
+    public MutableLiveData<HomeGoodsBean> getRealTimeData(int pageId, String src) {
+        MutableLiveData<HomeGoodsBean> mutableLiveData = new MutableLiveData<>();
+        EasyHttp.get(String.format(HomeApi.perfectGoodsListUrl, 20, pageId, src))
                 .cacheMode(CacheMode.NO_CACHE)
-                .execute(new SimpleCallBack<RealTimeBean>() {
+                .execute(new SimpleCallBack<HomeGoodsBean>() {
 
                     @Override
                     public void onError(ApiException e) {
@@ -36,8 +38,8 @@ public class CrazyModel extends BaseLiveDataModel {
                     }
 
                     @Override
-                    public void onSuccess(RealTimeBean realTimeBean) {
-                        mutableLiveData.postValue(realTimeBean);
+                    public void onSuccess(HomeGoodsBean homeGoodsBean) {
+                        mutableLiveData.postValue(homeGoodsBean);
                     }
                 });
 

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.home.model.HomeModel;
 import com.donews.middle.bean.home.HomeCategoryBean;
+import com.donews.middle.bean.home.RealTimeBean;
 import com.donews.middle.bean.home.SecKilBean;
 import com.donews.middle.bean.home.TopIconsBean;
 import com.donews.middle.bean.home.UserBean;
@@ -23,9 +24,15 @@ public class HomeViewModel extends BaseLiveDataViewModel<HomeModel> {
     }
 
 
-    public MutableLiveData<HomeCategoryBean> getNetHomeData() {
-        return mModel.getNetData();
+    public MutableLiveData<HomeCategoryBean> getHomeCategoryBean() {
+        return mModel.getHomeCategoryBean();
     }
+
+
+    public MutableLiveData<RealTimeBean> getRankListData(int pageId) {
+        return mModel.getRankListData(pageId);
+    }
+
 
     public MutableLiveData<SecKilBean> getSecKilData() {
         return mModel.getSecKilData();

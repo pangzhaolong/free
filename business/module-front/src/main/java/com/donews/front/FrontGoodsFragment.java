@@ -157,8 +157,6 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
         } else {
             lotteryStatus = 2;
         }
-//        LogUtil.e("onMessage:" + lotteryStatus);
-
         mNorGoodsAdapter.refreshItem(event.position, event.goodsId, lotteryStatus);
     }
 

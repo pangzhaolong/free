@@ -23,30 +23,9 @@ public class FragmentAdapter extends FragmentStateAdapter {
 
     @SuppressLint("NotifyDataSetChanged")
     public void refreshData(List<HomeCategoryBean.CategoryItem> list) {
-//        if (!equalsList(this.list, list)) {
-            this.list.clear();
-//        }
+        this.list.clear();
         this.list.addAll(list);
         notifyDataSetChanged();
-    }
-
-    private boolean equalsList(List<HomeCategoryBean.CategoryItem> list1, List<HomeCategoryBean.CategoryItem> list2) {
-        if ((list1 == null && list2 != null) || (list1 != null && list2 == null)) {
-            return false;
-        }
-        if (list1.size() != list2.size()) {
-            return false;
-        }
-
-        HomeCategoryBean.CategoryItem[] arr1 = list1.toArray(new HomeCategoryBean.CategoryItem[]{});
-
-        HomeCategoryBean.CategoryItem[] arr2 = list2.toArray(new HomeCategoryBean.CategoryItem[]{});
-
-        Arrays.sort(arr1);
-
-        Arrays.sort(arr1);
-
-        return Arrays.equals(arr1, arr2);
     }
 
     public void clear() {
@@ -66,35 +45,37 @@ public class FragmentAdapter extends FragmentStateAdapter {
     }
 
     private Fragment mkFragment(HomeCategoryBean.CategoryItem categoryItem) {
-        if (categoryItem == null) {
+        /*if (categoryItem == null) {
             if (mFragmentMap.get(null) == null) {
                 mFragmentMap.put(null, new TopFragment());
             }
             return mFragmentMap.get(null);
-        } else {
-            if (mFragmentMap.get(categoryItem.getCid()) == null) {
-                mFragmentMap.put(categoryItem.getCid(), new NorFragment(categoryItem));
-            }
-            return mFragmentMap.get(categoryItem.getCid());
+        } else {*/
+        if (mFragmentMap.get(categoryItem.getCid()) == null) {
+            mFragmentMap.put(categoryItem.getCid(), new NorFragment(categoryItem));
         }
+        return mFragmentMap.get(categoryItem.getCid());
+        /*}*/
     }
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        if (position == 0) {
+        /*if (position == 0) {
             return mkFragment(null);
         } else {
             return mkFragment(this.list.get(position - 1));
-        }
+        }*/
+        return mkFragment(this.list.get(position));
     }
 
     @Override
     public int getItemCount() {
-        if (this.list == null || this.list.size() == 0) {
+        /*if (this.list == null || this.list.size() == 0) {
             return 1;
         } else {
             return this.list.size() + 1;
-        }
+        }*/
+        return this.list.size();
     }
 }

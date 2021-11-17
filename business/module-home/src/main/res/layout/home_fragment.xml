@@ -27,14 +27,13 @@
                 android:id="@+id/home_search_layout"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
                 android:paddingBottom="5dp">
 
                 <RelativeLayout
                     android:id="@+id/home_search_rl"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
                     android:layout_toStartOf="@+id/home_jdd_help"
                     android:background="@drawable/home_search_bg">
 
@@ -44,6 +43,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
                         android:src="@drawable/home_jdd_search" />
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -85,9 +85,11 @@
                     android:layout_alignTop="@+id/home_search_rl"
                     android:layout_alignBottom="@+id/home_search_rl"
                     android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="10dp"
                     android:drawableTop="@drawable/home_jdd_help"
                     android:gravity="center"
                     android:paddingStart="10dp"
+                    android:paddingTop="6dp"
                     android:paddingEnd="10dp"
                     android:text="教程"
                     android:textColor="#A9AEB1"
@@ -95,17 +97,15 @@
                     tools:ignore="MissingConstraints,RtlSymmetry" />
             </RelativeLayout>
 
-
             <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#F9F9F9">
+                android:layout_height="match_parent">
 
                 <com.google.android.material.appbar.AppBarLayout
                     android:id="@+id/home_app_bar_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#F9F9F9"
+                    android:background="@color/white"
                     android:orientation="vertical">
 
                     <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -128,8 +128,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_marginTop="10dp"
-                                android:gravity="center"
                                 android:background="@color/white"
+                                android:gravity="center"
                                 android:orientation="horizontal"
                                 android:weightSum="4">
 
@@ -535,9 +535,7 @@
                         android:id="@+id/home_category_tl"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dp_40"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:background="@color/white"
+                        android:background="#F9F9F9"
                         app:tabBackground="@color/transparent"
                         app:tabIndicatorColor="@color/transparent"
                         app:tabIndicatorHeight="0dp"
@@ -551,8 +549,9 @@
                     android:id="@+id/home_category_vp2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
+                    android:background="#F9F9F9"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

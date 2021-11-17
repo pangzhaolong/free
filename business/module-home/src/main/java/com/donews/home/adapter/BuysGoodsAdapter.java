@@ -18,8 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.donews.base.widget.CenterImageSpan;
 import com.donews.home.R;
-import com.donews.home.listener.GoodsDetailListener;
-import com.donews.middle.bean.home.GoodsListBean;
+import com.donews.home.listener.GoodsClickListener;
 import com.donews.middle.bean.home.HomeGoodsBean;
 import com.donews.utilslibrary.utils.UrlUtils;
 
@@ -29,16 +28,16 @@ import java.util.List;
 public class BuysGoodsAdapter extends RecyclerView.Adapter<BuysGoodsAdapter.BuysViewHolder> implements View.OnClickListener {
 
     private final Context mContext;
-    private final List<GoodsListBean.GoodsInfo> mGoodsList = new ArrayList<>();
-    private GoodsDetailListener mListener;
+    private final List<HomeGoodsBean.GoodsInfo> mGoodsList = new ArrayList<>();
+    private GoodsClickListener mListener;
 
-    public BuysGoodsAdapter(Context context, GoodsDetailListener listener) {
+    public BuysGoodsAdapter(Context context, GoodsClickListener listener) {
         mContext = context;
         mListener = listener;
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void refreshData(List<GoodsListBean.GoodsInfo> list, boolean needClear) {
+    public void refreshData(List<HomeGoodsBean.GoodsInfo> list, boolean needClear) {
         if (needClear) {
             mGoodsList.clear();
         }
@@ -59,7 +58,7 @@ public class BuysGoodsAdapter extends RecyclerView.Adapter<BuysGoodsAdapter.Buys
     @Override
     public void onBindViewHolder(@NonNull BuysViewHolder holder, int position) {
 
-        GoodsListBean.GoodsInfo gi = mGoodsList.get(position);
+        HomeGoodsBean.GoodsInfo gi = mGoodsList.get(position);
         if (gi == null) {
             return;
         }
@@ -75,7 +74,7 @@ public class BuysGoodsAdapter extends RecyclerView.Adapter<BuysGoodsAdapter.Buys
         holder.actualPriceTv.setText("￥" + gi.getActualPrice());
     }
 
-    private SpannableString getTitleString(GoodsListBean.GoodsInfo goodsInfo) {
+    private SpannableString getTitleString(HomeGoodsBean.GoodsInfo goodsInfo) {
         String span = "d ";
         int resId = R.drawable.home_logo_tb;
         switch (goodsInfo.getSrc()) {
@@ -112,9 +111,9 @@ public class BuysGoodsAdapter extends RecyclerView.Adapter<BuysGoodsAdapter.Buys
 
     @Override
     public void onClick(View v) {
-        HomeGoodsBean.goodsInfo gi = (HomeGoodsBean.goodsInfo) v.getTag();
+        HomeGoodsBean.GoodsInfo gi = (HomeGoodsBean.GoodsInfo) v.getTag();
 
-        mListener.onClick(gi.getId(), gi.getGoods_id());
+        mListener.onClick(gi.getGoodsId(), gi.getMaterialId(), gi.getSearchId(), gi.getSrc());
     }
 
     public static class BuysViewHolder extends RecyclerView.ViewHolder {

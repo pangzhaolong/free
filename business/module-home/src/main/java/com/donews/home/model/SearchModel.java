@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.model.BaseLiveDataModel;
 import com.donews.home.api.HomeApi;
-import com.donews.middle.bean.home.GoodsListBean;
+import com.donews.middle.bean.home.HomeGoodsBean;
 import com.donews.middle.bean.home.SearchSugBean;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
@@ -27,7 +27,7 @@ public class SearchModel extends BaseLiveDataModel {
      */
     public MutableLiveData<SearchSugBean> getSearchData(String search) {
         MutableLiveData<SearchSugBean> mutableLiveData = new MutableLiveData<>();
-        EasyHttp.get(HomeApi.searchSugUrl + "?key_words=" + search)
+        EasyHttp.get(String.format(HomeApi.searchSugUrl, search))
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<SearchSugBean>() {
 
@@ -45,11 +45,11 @@ public class SearchModel extends BaseLiveDataModel {
         return mutableLiveData;
     }
 
-    public MutableLiveData<GoodsListBean> getBuysData(int pageId) {
-        MutableLiveData<GoodsListBean> mutableLiveData = new MutableLiveData<>();
+    public MutableLiveData<HomeGoodsBean> getBuysData(int pageId) {
+        MutableLiveData<HomeGoodsBean> mutableLiveData = new MutableLiveData<>();
         EasyHttp.get(HomeApi.goodsListUrl + "?page_size=20&page_id=" + pageId)
                 .cacheMode(CacheMode.NO_CACHE)
-                .execute(new SimpleCallBack<GoodsListBean>() {
+                .execute(new SimpleCallBack<HomeGoodsBean>() {
 
                     @Override
                     public void onError(ApiException e) {
@@ -57,8 +57,8 @@ public class SearchModel extends BaseLiveDataModel {
                     }
 
                     @Override
-                    public void onSuccess(GoodsListBean goodsListBean) {
-                        mutableLiveData.postValue(goodsListBean);
+                    public void onSuccess(HomeGoodsBean homeGoodsBean) {
+                        mutableLiveData.postValue(homeGoodsBean);
                     }
                 });
 

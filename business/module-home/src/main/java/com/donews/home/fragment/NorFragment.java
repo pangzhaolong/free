@@ -1,12 +1,11 @@
 package com.donews.home.fragment;
 
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -15,15 +14,15 @@ import com.donews.common.router.RouterActivityPath;
 import com.donews.home.R;
 import com.donews.home.adapter.NorGoodsAdapter;
 import com.donews.home.databinding.HomeFragmentNorBinding;
-import com.donews.home.listener.GoodsDetailListener;
+import com.donews.home.listener.GoodsClickListener;
 import com.donews.home.viewModel.NorViewModel;
 import com.donews.middle.bean.home.HomeGoodsBean;
 import com.donews.middle.bean.home.HomeCategoryBean;
 import com.donews.middle.cache.GoodsCache;
-import com.scwang.smart.refresh.layout.api.RefreshLayout;
-import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
+import com.donews.middle.decoration.GridSpaceItemDecoration;
+import com.donews.middle.go.GotoUtil;
 
-public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding, NorViewModel> implements GoodsDetailListener {
+public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding, NorViewModel> implements GoodsClickListener {
 
     private final HomeCategoryBean.CategoryItem mCategoryItem;
     private NorGoodsAdapter mNorGoodsAdapter;
@@ -54,49 +53,41 @@ public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding
         for (int i = 0; i < nItemDecorationCount; i++) {
             mDataBinding.homeNorGoodsRv.removeItemDecorationAt(i);
         }
-        mItemDecoration = new RecyclerView.ItemDecoration() {
-            @Override
-            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-                outRect.top = 32;
-            }
-        };
+        mItemDecoration = new GridSpaceItemDecoration(2);
         mDataBinding.homeNorGoodsRv.addItemDecoration(mItemDecoration);
+        mDataBinding.homeNorGoodsRv.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
+        mDataBinding.homeNorGoodsRv.setAdapter(mNorGoodsAdapter);
 
         HomeGoodsBean tmpHomeGoodsBean = GoodsCache.readGoodsBean(HomeGoodsBean.class, mCategoryItem.getCid());
         showNorGoodsBean(tmpHomeGoodsBean);
 
         loadMoreData();
-
-        mDataBinding.homeNorGoodsRv.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        mDataBinding.homeNorGoodsRv.setAdapter(mNorGoodsAdapter);
-
         initSrl();
     }
 
     private void initSrl() {
         mDataBinding.homeNorSrl.setEnableRefresh(false);
         mDataBinding.homeNorSrl.setEnableAutoLoadMore(false);
-        mDataBinding.homeNorSrl.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                loadMoreData();
-            }
-        });
+        mDataBinding.homeNorSrl.setOnLoadMoreListener(refreshLayout -> loadMoreData());
     }
 
     private void loadMoreData() {
         mPageId++;
-        mViewModel.getNorGoodsData(mCategoryItem.getCid(), mPageId).observe(getViewLifecycleOwner(), this::showNorGoodsBean);
+        mViewModel.getNorGoodsData(mCategoryItem.getCid(), mPageId).observe(getViewLifecycleOwner(), homeGoodsBean -> {
+            mDataBinding.homeNorSrl.finishLoadMore();
+
+            if (homeGoodsBean == null || homeGoodsBean.getList() == null || homeGoodsBean.getList().size() <= 0) {
+                mPageId--;
+                return;
+            }
+            showNorGoodsBean(homeGoodsBean);
+        });
     }
 
     private void showNorGoodsBean(HomeGoodsBean homeGoodsBean) {
         if (homeGoodsBean == null || homeGoodsBean.getList() == null || homeGoodsBean.getList().size() <= 0) {
-            mDataBinding.homeNorSrl.finishLoadMoreWithNoMoreData();
-            mPageId--;
             return;
         }
-
-        mDataBinding.homeNorSrl.finishLoadMore();
 
         mNorGoodsAdapter.refreshData(homeGoodsBean.getList(), mPageId == 1);
 
@@ -113,10 +104,7 @@ public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding
     }
 
     @Override
-    public void onClick(String id, String goodsId) {
-        ARouter.getInstance().build(RouterActivityPath.GoodsDetail.GOODS_DETAIL)
-                .withString("params_id", id)
-                .withString("params_goods_id", goodsId)
-                .navigation();
+    public void onClick(String goodsId, String materialId, String searchId, int src) {
+        GotoUtil.requestPrivilegeLinkBean(this.getContext(), goodsId, materialId, searchId, src);
     }
 }

@@ -18,25 +18,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.donews.base.widget.CenterImageSpan;
 import com.donews.home.R;
-import com.donews.home.listener.GoodsDetailListener;
-import com.donews.middle.bean.home.SearchGoodsBeanV2;
-import com.donews.middle.bean.home.SearchResultTbBean;
+import com.donews.home.listener.GoodsClickListener;
+import com.donews.middle.bean.home.HomeGoodsBean;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SearchSugTbAdapter extends RecyclerView.Adapter<SearchSugTbAdapter.ResultViewHolder> implements View.OnClickListener {
     private final Context mContext;
-    private List<SearchGoodsBeanV2.GoodsInfo> mGoodsList = new ArrayList<>();
-    private GoodsDetailListener mListener;
+    private List<HomeGoodsBean.GoodsInfo> mGoodsList = new ArrayList<>();
+    private GoodsClickListener mListener;
 
-    public SearchSugTbAdapter(Context context, GoodsDetailListener listener) {
+    public SearchSugTbAdapter(Context context, GoodsClickListener listener) {
         mContext = context;
         mListener = listener;
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void refreshData(List<SearchGoodsBeanV2.GoodsInfo> list, boolean needClear) {
+    public void refreshData(List<HomeGoodsBean.GoodsInfo> list, boolean needClear) {
         if (needClear) {
             mGoodsList.clear();
         }
@@ -47,7 +46,7 @@ public class SearchSugTbAdapter extends RecyclerView.Adapter<SearchSugTbAdapter.
     @NonNull
     @Override
     public ResultViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_search_result_tb_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_perfect_item, parent, false);
         final ResultViewHolder holder = new ResultViewHolder(view);
         return holder;
     }
@@ -55,7 +54,7 @@ public class SearchSugTbAdapter extends RecyclerView.Adapter<SearchSugTbAdapter.
     @SuppressLint({"DefaultLocale", "SetTextI18n"})
     @Override
     public void onBindViewHolder(@NonNull ResultViewHolder holder, int position) {
-        SearchGoodsBeanV2.GoodsInfo gi = mGoodsList.get(position);
+        HomeGoodsBean.GoodsInfo gi = mGoodsList.get(position);
         if (gi == null) {
             return;
         }
@@ -72,7 +71,7 @@ public class SearchSugTbAdapter extends RecyclerView.Adapter<SearchSugTbAdapter.
         holder.originalPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
     }
 
-    private SpannableString getTitleString(SearchGoodsBeanV2.GoodsInfo goodsInfo) {
+    private SpannableString getTitleString(HomeGoodsBean.GoodsInfo goodsInfo) {
         String span = "d ";
         int resId = R.drawable.home_logo_tb;
         switch (goodsInfo.getSrc()) {
@@ -116,9 +115,9 @@ public class SearchSugTbAdapter extends RecyclerView.Adapter<SearchSugTbAdapter.
 
     @Override
     public void onClick(View v) {
-        SearchResultTbBean.goodsInfo gi = (SearchResultTbBean.goodsInfo) v.getTag();
+        HomeGoodsBean.GoodsInfo gi = (HomeGoodsBean.GoodsInfo) v.getTag();
 
-        mListener.onClick(gi.getId(), gi.getGoodsId());
+        mListener.onClick(gi.getGoodsId(), gi.getMaterialId(), gi.getSearchId(), gi.getSrc());
     }
 
     public static class ResultViewHolder extends RecyclerView.ViewHolder {

@@ -1,5 +1,6 @@
 package com.donews.home.listener;
 
-public interface SearchSugClickListener {
+public interface SearchListener {
+
     void onClick(String keyWord);
 }

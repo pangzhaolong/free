@@ -1,7 +1,5 @@
 package com.donews.middle.bean.home;
 
-import androidx.annotation.NonNull;
-
 import com.donews.common.contract.BaseCustomViewModel;
 import com.google.gson.annotations.SerializedName;
 
@@ -11,105 +9,48 @@ public class HomeGoodsBean extends BaseCustomViewModel {
 
 
     @SerializedName("list")
-    private List<goodsInfo> list;
-    @SerializedName("page_id")
-    private String page_id;
+    private List<GoodsInfo> list;
 
-    public List<goodsInfo> getList() {
+    public List<GoodsInfo> getList() {
         return list;
     }
 
-    public void setList(List<goodsInfo> list) {
+    public void setList(List<GoodsInfo> list) {
         this.list = list;
     }
 
-    public String getPage_id() {
-        return page_id;
-    }
-
-    public void setPage_id(String page_id) {
-        this.page_id = page_id;
-    }
-
-    @NonNull
-    @Override
-    public String toString() {
-        return "TopGoodsBean{" +
-                "list=" + list +
-                ", pageId='" + page_id + '\'' +
-                '}';
-    }
-
-    public static class goodsInfo extends BaseCustomViewModel{
-        @SerializedName("id")
-        private String id;
+    public static class GoodsInfo {
         @SerializedName("goods_id")
-        private String goods_id;
-        @SerializedName("item_link")
-        private String item_link;
+        private String goodsId;
         @SerializedName("title")
         private String title;
-        @SerializedName("dtitle")
-        private String dtitle;
-        @SerializedName("desc")
-        private String desc;
-        @SerializedName("cid")
-        private String cid;
-        @SerializedName("subcid")
-        private List<String> subcid;
-        @SerializedName("tbcid")
-        private String tbcid;
-        @SerializedName("main_pic")
-        private String main_pic;
-        @SerializedName("marketing_main_pic")
-        private String marketing_main_pic;
+        @SerializedName("sales")
+        private Integer sales;
         @SerializedName("original_price")
-        private float original_price;
+        private float originalPrice;
         @SerializedName("actual_price")
-        private float actual_price;
-        @SerializedName("discounts")
-        private float discounts;
-        @SerializedName("coupon_link")
-        private String coupon_link;
+        private float actualPrice;
         @SerializedName("coupon_price")
-        private float coupon_price;
-        @SerializedName("month_sales")
-        private int month_sales;
-        @SerializedName("brand_id")
-        private String brand_id;
-        @SerializedName("brand_name")
-        private String brand_name;
-        @SerializedName("shop_type")
-        private int shop_type;
-        @SerializedName("haitao")
-        private int haitao;
-        @SerializedName("seller_id")
-        private String seller_id;
+        private float couponPrice;
+        @SerializedName("src")
+        private Integer src;
         @SerializedName("shop_name")
-        private String shop_name;
+        private String shopName;
+        @SerializedName("shop_type")
+        private Integer shopType;
+        @SerializedName("main_pic")
+        private String mainPic;
+        @SerializedName("search_id")
+        private String searchId;
+        @SerializedName("material_id")
+        private String materialId;
 
-        public String getId() {
-            return id;
+        public String getGoodsId() {
+            return goodsId;
         }
 
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getGoods_id() {
-            return goods_id;
-        }
-
-        public void setGoods_id(String goods_id) {
-            this.goods_id = goods_id;
-        }
-
-        public String getItem_link() {
-            return item_link;
-        }
-
-        public void setItem_link(String item_link) {
-            this.item_link = item_link;
+        public void setGoodsId(String goodsId) {
+            this.goodsId = goodsId;
         }
 
         public String getTitle() {
@@ -120,156 +61,84 @@ public class HomeGoodsBean extends BaseCustomViewModel {
             this.title = title;
         }
 
-        public String getDtitle() {
-            return dtitle;
+        public Integer getSales() {
+            return sales;
         }
 
-        public void setDtitle(String dtitle) {
-            this.dtitle = dtitle;
+        public void setSales(Integer sales) {
+            this.sales = sales;
         }
 
-        public String getDesc() {
-            return desc;
+        public float getOriginalPrice() {
+            return originalPrice;
         }
 
-        public void setDesc(String desc) {
-            this.desc = desc;
+        public void setOriginalPrice(float originalPrice) {
+            this.originalPrice = originalPrice;
         }
 
-        public String getCid() {
-            return cid;
+        public float getActualPrice() {
+            return actualPrice;
         }
 
-        public void setCid(String cid) {
-            this.cid = cid;
+        public void setActualPrice(float actualPrice) {
+            this.actualPrice = actualPrice;
         }
 
-        public List<String> getSubcid() {
-            return subcid;
+        public float getCouponPrice() {
+            return couponPrice;
         }
 
-        public void setSubcid(List<String> subcid) {
-            this.subcid = subcid;
+        public void setCouponPrice(float couponPrice) {
+            this.couponPrice = couponPrice;
         }
 
-        public String getTbcid() {
-            return tbcid;
+        public Integer getSrc() {
+            return src;
         }
 
-        public void setTbcid(String tbcid) {
-            this.tbcid = tbcid;
+        public void setSrc(Integer src) {
+            this.src = src;
         }
 
-        public String getMain_pic() {
-            return main_pic;
+        public String getShopName() {
+            return shopName;
         }
 
-        public void setMain_pic(String main_pic) {
-            this.main_pic = main_pic;
+        public void setShopName(String shopName) {
+            this.shopName = shopName;
         }
 
-        public String getMarketing_main_pic() {
-            return marketing_main_pic;
+        public Integer getShopType() {
+            return shopType;
         }
 
-        public void setMarketing_main_pic(String marketing_main_pic) {
-            this.marketing_main_pic = marketing_main_pic;
+        public void setShopType(Integer shopType) {
+            this.shopType = shopType;
         }
 
-        public float getOriginal_price() {
-            return original_price;
+        public String getMainPic() {
+            return mainPic;
         }
 
-        public void setOriginal_price(float original_price) {
-            this.original_price = original_price;
+        public void setMainPic(String mainPic) {
+            this.mainPic = mainPic;
         }
 
-        public float getActual_price() {
-            return actual_price;
+        public String getSearchId() {
+            return searchId;
         }
 
-        public void setActual_price(float actual_price) {
-            this.actual_price = actual_price;
+        public void setSearchId(String searchId) {
+            this.searchId = searchId;
         }
 
-        public float getDiscounts() {
-            return discounts;
+        public String getMaterialId() {
+            return materialId;
         }
 
-        public void setDiscounts(float discounts) {
-            this.discounts = discounts;
-        }
-
-        public String getCoupon_link() {
-            return coupon_link;
-        }
-
-        public void setCoupon_link(String coupon_link) {
-            this.coupon_link = coupon_link;
-        }
-
-        public float getCoupon_price() {
-            return coupon_price;
-        }
-
-        public void setCoupon_price(float coupon_price) {
-            this.coupon_price = coupon_price;
-        }
-
-        public int getMonth_sales() {
-            return month_sales;
-        }
-
-        public void setMonth_sales(int month_sales) {
-            this.month_sales = month_sales;
-        }
-
-        public String getBrand_id() {
-            return brand_id;
-        }
-
-        public void setBrand_id(String brand_id) {
-            this.brand_id = brand_id;
-        }
-
-        public String getBrand_name() {
-            return brand_name;
-        }
-
-        public void setBrand_name(String brand_name) {
-            this.brand_name = brand_name;
-        }
-
-        public int getShop_type() {
-            return shop_type;
-        }
-
-        public void setShop_type(int shop_type) {
-            this.shop_type = shop_type;
-        }
-
-        public int getHaitao() {
-            return haitao;
-        }
-
-        public void setHaitao(int haitao) {
-            this.haitao = haitao;
-        }
-
-        public String getSeller_id() {
-            return seller_id;
-        }
-
-        public void setSeller_id(String seller_id) {
-            this.seller_id = seller_id;
-        }
-
-        public String getShop_name() {
-            return shop_name;
-        }
-
-        public void setShop_name(String shop_name) {
-            this.shop_name = shop_name;
+        public void setMaterialId(String materialId) {
+            this.materialId = materialId;
         }
     }
 }

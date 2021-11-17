@@ -1,5 +1,7 @@
 package com.donews.home.model;
 
+import android.annotation.SuppressLint;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.model.BaseLiveDataModel;
@@ -48,10 +50,11 @@ public class TopModel extends BaseLiveDataModel {
         return mutableLiveData;
     }
 
+    @SuppressLint("DefaultLocale")
     public MutableLiveData<HomeGoodsBean> getTopGoodsData(int pageId) {
         MutableLiveData<HomeGoodsBean> mutableLiveData = new MutableLiveData<>();
 
-        EasyHttp.get(HomeApi.goodsList + "?page_size=20&page_id=" + pageId)
+        EasyHttp.get(String.format(HomeApi.homeGoodsListUrl, pageId, "6"))
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<HomeGoodsBean>() {
 

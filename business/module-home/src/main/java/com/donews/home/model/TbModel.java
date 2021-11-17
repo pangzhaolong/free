@@ -6,8 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.model.BaseLiveDataModel;
 import com.donews.home.api.HomeApi;
-import com.donews.middle.bean.home.SearchGoodsBeanV2;
-import com.donews.middle.bean.home.SearchResultTbBean;
+import com.donews.middle.bean.home.HomeGoodsBean;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
@@ -28,12 +27,12 @@ public class TbModel extends BaseLiveDataModel {
      * @return 返回 homeBean的数据
      */
     @SuppressLint("DefaultLocale")
-    public MutableLiveData<SearchGoodsBeanV2> getSearchResultData(String keyWord, int pageId, int src) {
-        MutableLiveData<SearchGoodsBeanV2> mutableLiveData = new MutableLiveData<>();
+    public MutableLiveData<HomeGoodsBean> getSearchResultData(String keyWord, int pageId, int src) {
+        MutableLiveData<HomeGoodsBean> mutableLiveData = new MutableLiveData<>();
 
         EasyHttp.get(String.format(HomeApi.searchGoodsListUrl, pageId, keyWord, src))
                 .cacheMode(CacheMode.NO_CACHE)
-                .execute(new SimpleCallBack<SearchGoodsBeanV2>() {
+                .execute(new SimpleCallBack<HomeGoodsBean>() {
 
                     @Override
                     public void onError(ApiException e) {
@@ -41,8 +40,8 @@ public class TbModel extends BaseLiveDataModel {
                     }
 
                     @Override
-                    public void onSuccess(SearchGoodsBeanV2 searchGoodsBeanV2) {
-                        mutableLiveData.postValue(searchGoodsBeanV2);
+                    public void onSuccess(HomeGoodsBean homeGoodsBean) {
+                        mutableLiveData.postValue(homeGoodsBean);
                     }
                 });
 

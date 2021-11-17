@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.donews.home.R;
-import com.donews.home.listener.SearchHistoryListener;
+import com.donews.home.listener.SearchListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +21,9 @@ public class SearchFindAdapter extends RecyclerView.Adapter<SearchFindAdapter.Fi
     private final Context mContext;
     private final List<String> mGoodsList = new ArrayList<>();
 
-    private SearchHistoryListener mListener;
+    private SearchListener mListener;
 
-    public SearchFindAdapter(Context context, SearchHistoryListener listener) {
+    public SearchFindAdapter(Context context, SearchListener listener) {
         mContext = context;
         mListener = listener;
     }

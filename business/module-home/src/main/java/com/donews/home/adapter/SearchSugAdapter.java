@@ -1,7 +1,6 @@
 package com.donews.home.adapter;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.donews.home.R;
-import com.donews.home.listener.SearchSugClickListener;
+import com.donews.home.listener.SearchListener;
 import com.donews.middle.bean.home.SearchSugBean;
 
 import java.util.ArrayList;
@@ -21,9 +20,9 @@ public class SearchSugAdapter extends RecyclerView.Adapter<SearchSugAdapter.SugV
 
     private final List<SearchSugBean.SugItem> mGoodsList = new ArrayList<>();
 
-    private SearchSugClickListener mListener;
+    private SearchListener mListener;
 
-    public SearchSugAdapter(SearchSugClickListener listener) {
+    public SearchSugAdapter(SearchListener listener) {
         mListener = listener;
     }
 

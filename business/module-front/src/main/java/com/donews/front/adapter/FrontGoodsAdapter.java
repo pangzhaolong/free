@@ -132,7 +132,6 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
         }
     }
 
-
     @Override
     public int getItemCount() {
         return mGoodsList.size();

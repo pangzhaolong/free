@@ -1,7 +1,6 @@
 package com.donews.home.adapter;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.donews.home.R;
-import com.donews.home.listener.SearchHistoryListener;
+import com.donews.home.listener.SearchListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +19,9 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
 
     private final List<String> mGoodsList = new ArrayList<>();
 
-    private final SearchHistoryListener mListener;
+    private final SearchListener mListener;
 
-    public SearchHistoryAdapter(SearchHistoryListener listener) {
+    public SearchHistoryAdapter(SearchListener listener) {
         mListener = listener;
     }
 

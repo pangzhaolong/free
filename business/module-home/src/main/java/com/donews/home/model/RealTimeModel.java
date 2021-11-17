@@ -26,7 +26,7 @@ public class RealTimeModel extends BaseLiveDataModel {
      */
     public MutableLiveData<RealTimeBean> getRealTimeData(String search) {
         MutableLiveData<RealTimeBean> mutableLiveData = new MutableLiveData<>();
-        EasyHttp.get(HomeApi.searchSugUrl + "?key_words=" + search)
+        EasyHttp.get(String.format(HomeApi.searchSugUrl, search))
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<RealTimeBean>() {
 
