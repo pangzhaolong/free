@@ -123,11 +123,13 @@
                             android:orientation="vertical">
 
                             <LinearLayout
+                                android:id="@+id/home_top_icon_ll"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_marginTop="10dp"
                                 android:gravity="center"
+                                android:background="@color/white"
                                 android:orientation="horizontal"
                                 android:weightSum="4">
 
@@ -141,11 +143,13 @@
                                     android:orientation="vertical">
 
                                     <ImageView
+                                        android:id="@+id/home_top_icon_iv1"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:src="@drawable/home_title_tb" />
 
                                     <TextView
+                                        android:id="@+id/home_top_icon_tv1"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center"
@@ -167,11 +171,13 @@
                                     android:orientation="vertical">
 
                                     <ImageView
+                                        android:id="@+id/home_top_icon_iv2"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:src="@drawable/home_title_pdd" />
 
                                     <TextView
+                                        android:id="@+id/home_top_icon_tv2"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center"
@@ -193,11 +199,13 @@
                                     android:orientation="vertical">
 
                                     <ImageView
+                                        android:id="@+id/home_top_icon_iv3"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:src="@drawable/home_title_jd" />
 
                                     <TextView
+                                        android:id="@+id/home_top_icon_tv3"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center"
@@ -219,11 +227,13 @@
                                     android:orientation="vertical">
 
                                     <ImageView
+                                        android:id="@+id/home_top_icon_iv4"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:src="@drawable/home_title_elm" />
 
                                     <TextView
+                                        android:id="@+id/home_top_icon_tv4"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center"

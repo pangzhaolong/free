@@ -18,7 +18,7 @@ public class PerfectGoodsBean extends BaseCustomViewModel {
         this.list = list;
     }
 
-    public static class GoodsInfo {
+    public static class GoodsInfo extends BaseCustomViewModel{
         @SerializedName("goods_id")
         private String goodsId;
         @SerializedName("title")
@@ -26,11 +26,11 @@ public class PerfectGoodsBean extends BaseCustomViewModel {
         @SerializedName("sales")
         private Integer sales;
         @SerializedName("original_price")
-        private Integer originalPrice;
+        private float originalPrice;
         @SerializedName("actual_price")
-        private Integer actualPrice;
+        private float actualPrice;
         @SerializedName("coupon_price")
-        private Integer couponPrice;
+        private float couponPrice;
         @SerializedName("src")
         private Integer src;
         @SerializedName("shop_name")
@@ -68,27 +68,27 @@ public class PerfectGoodsBean extends BaseCustomViewModel {
             this.sales = sales;
         }
 
-        public Integer getOriginalPrice() {
+        public float getOriginalPrice() {
             return originalPrice;
         }
 
-        public void setOriginalPrice(Integer originalPrice) {
+        public void setOriginalPrice(float originalPrice) {
             this.originalPrice = originalPrice;
         }
 
-        public Integer getActualPrice() {
+        public float getActualPrice() {
             return actualPrice;
         }
 
-        public void setActualPrice(Integer actualPrice) {
+        public void setActualPrice(float actualPrice) {
             this.actualPrice = actualPrice;
         }
 
-        public Integer getCouponPrice() {
+        public float getCouponPrice() {
             return couponPrice;
         }
 
-        public void setCouponPrice(Integer couponPrice) {
+        public void setCouponPrice(float couponPrice) {
             this.couponPrice = couponPrice;
         }
 

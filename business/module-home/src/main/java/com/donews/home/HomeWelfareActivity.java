@@ -2,6 +2,8 @@ package com.donews.home;
 
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -77,6 +79,25 @@ public class HomeWelfareActivity extends MvvmBaseLiveDataActivity<HomeWelfareAct
         mDataBinding.homeCrazySrl.setOnLoadMoreListener(refreshLayout -> loadMoreList());
 
         mDataBinding.homeWelfareBack.setOnClickListener(v -> finish());
+
+        mDataBinding.homeWelfareEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().equalsIgnoreCase("")) {
+                    return;
+                }
+            }
+        });
     }
 
     private void loadRefreshList() {
@@ -86,7 +107,7 @@ public class HomeWelfareActivity extends MvvmBaseLiveDataActivity<HomeWelfareAct
                 mDataBinding.homeCrazySrl.finishRefresh();
                 return;
             }
-            showCrazyData(perfectGoodsBean, false);
+            showPerfectGoodsData(perfectGoodsBean, false);
         });
     }
 
@@ -99,11 +120,11 @@ public class HomeWelfareActivity extends MvvmBaseLiveDataActivity<HomeWelfareAct
                 mDataBinding.homeCrazySrl.finishRefresh();
                 return;
             }
-            showCrazyData(perfectGoodsBean, true);
+            showPerfectGoodsData(perfectGoodsBean, true);
         });
     }
 
-    private void showCrazyData(PerfectGoodsBean perfectGoodsBean, boolean isAdd) {
+    private void showPerfectGoodsData(PerfectGoodsBean perfectGoodsBean, boolean isAdd) {
         mPerfectGoodsAdapter.refreshData(perfectGoodsBean.getList(), isAdd);
 
         mDataBinding.homeWelfareGoodsRv.setVisibility(View.VISIBLE);

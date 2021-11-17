@@ -23,7 +23,7 @@ public class SearchSugAdapter extends RecyclerView.Adapter<SearchSugAdapter.SugV
 
     private SearchSugClickListener mListener;
 
-    public SearchSugAdapter(Context context, SearchSugClickListener listener) {
+    public SearchSugAdapter(SearchSugClickListener listener) {
         mListener = listener;
     }
 

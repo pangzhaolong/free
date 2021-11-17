@@ -15,7 +15,7 @@
         android:layout_gravity="center"
         android:background="@drawable/front_floating_bg">
 
-        <com.donews.front.views.CircleProgressBarView
+        <com.donews.common.views.CircleProgressBarView
             android:id="@+id/front_floating_progress"
             android:layout_width="50dp"
             android:layout_height="50dp"

@@ -1,28 +1,34 @@
+/**
+ * <p> </p>
+ * 作者： created by hegai<br>
+ * 日期： 2021/11/16<br>
+ * 版本：V1.0<br>
+ */
 package com.module.lottery.dialog;
 
 import android.animation.Animator;
-import android.app.Dialog;
-import android.content.Context;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.DisplayMetrics;
-import android.view.Gravity;
-import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.dn.sdk.sdk.interfaces.listener.impl.SimpleRewardVideoListener;
+import com.donews.base.base.AppManager;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.business.loader.AdManager;
+import com.donews.middle.abswitch.ABSwitch;
 import com.module.lottery.ui.LotteryActivity;
 import com.module_lottery.R;
 import com.module_lottery.databinding.LotteryStartDialogLayoutBinding;
+import com.orhanobut.logger.Logger;
 
 import java.lang.ref.WeakReference;
 
@@ -32,6 +38,7 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
     private OnStateListener mOnFinishListener;
     private LotteryHandler mLotteryHandler = new LotteryHandler(this);
     boolean aAState = false;
+
     public LotteryCodeStartsDialog(LotteryActivity context) {
         super(context, R.style.dialogTransparent);//内容样式在这里引入
         this.mContext = context;
@@ -62,8 +69,8 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
     }
 
 
-    private  void initView(){
-                mDataBinding.jsonAnimation.setImageAssetsFolder("images");
+    private void initView() {
+        mDataBinding.jsonAnimation.setImageAssetsFolder("images");
         mDataBinding.jsonAnimation.setAnimation("joystick_01.json");
         mDataBinding.jsonAnimation.loop(false);
         mDataBinding.jsonAnimation.playAnimation();
@@ -95,24 +102,39 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
     }
 
 
-
-    private  void loadAd(){
+    private void loadAd() {
         AdManager.INSTANCE.loadRewardVideoAd(mContext, new SimpleRewardVideoListener() {
             @Override
             public void onError(int code, String msg) {
                 super.onError(code, msg);
-               if(mOnFinishListener!=null){
-                   mOnFinishListener.onFinish();
-               }
+                if (mOnFinishListener != null) {
+                    mOnFinishListener.onFinish();
+                }
             }
 
             @Override
             public void onRewardAdShow() {
                 super.onRewardAdShow();
-                if(mOnFinishListener!=null){
+                try {
+                    Activity activity = AppManager.getInstance().getTopActivity();
+                    if (activity != null) {
+                        if (ABSwitch.Ins().isOpenVideoToast()) {
+                            View view = LayoutInflater.from(mContext).inflate(R.layout.pop_ups_layout, null);
+                            View decorView = activity.getWindow().getDecorView();
+                            FrameLayout contentParent =
+                                    (FrameLayout) decorView.findViewById(android.R.id.content);
+                            contentParent.addView(view);
+                        }
+                    } else {
+                        ToastUtil.showShort(mContext, "完整观看视频即可获得抽奖码");
+                    }
+                } catch (Exception e) {
+                    Logger.e("" + e.getMessage());
+                    ToastUtil.showShort(mContext, "完整观看视频即可获得抽奖码");
+                }
+                if (mOnFinishListener != null) {
                     mOnFinishListener.onFinish();
                 }
-                ToastUtil.showShort(mContext,"完整观看视频即可获得抽奖码");
             }
 
             @Override
@@ -120,16 +142,31 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
                 super.onRewardedClosed();
                 //有效关闭
                 if (aAState) {
-                    if(mOnFinishListener!=null){
+                    if (mOnFinishListener != null) {
                         mOnFinishListener.onJumpAdFinish();
                     }
                 }
-
             }
 
             @Override
             public void onRewardVerify(boolean result) {
                 super.onRewardVerify(result);
+                if (ABSwitch.Ins().isOpenVideoToast()) {
+                    try {
+                        Activity activity = AppManager.getInstance().getTopActivity();
+                        if (activity != null) {
+                            View decorView = activity.getWindow().getDecorView();
+                            FrameLayout contentParent =
+                                    (FrameLayout) decorView.findViewById(android.R.id.content);
+                            ConstraintLayout toastLayout = contentParent.findViewById(R.id.toast_layout);
+                            if (toastLayout != null) {
+                                contentParent.removeView(toastLayout);
+                            }
+                        }
+                    } catch (Exception e) {
+                        Logger.e("" + e.getMessage());
+                    }
+                }
                 aAState = result;
             }
         });
@@ -148,7 +185,6 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
         super.setOnDismissListener(listener);
 
     }
-
 
 
     public void setStateListener(OnStateListener l) {

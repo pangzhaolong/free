@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="280dp"
+    android:background="@drawable/home_goods_item_bg"
+    android:paddingBottom="10dp">
+
+    <org.raphets.roundimageview.RoundImageView
+        android:id="@+id/home_top_goods_item_iv"
+        android:layout_width="168dp"
+        android:layout_height="168dp"
+        android:layout_centerHorizontal="true"
+        android:scaleType="centerInside"
+        app:leftTop_corner_radius="10dp"
+        app:rightTop_corner_radius="10dp"
+        app:type="round" />
+
+    <TextView
+        android:id="@+id/home_top_goods_item_des"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/home_top_goods_item_iv"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="5dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="【返20元猫超卡】 防嗮衣长袖运动外套"
+        android:textColor="#2c2c2c"
+        android:textSize="16sp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_above="@+id/home_top_goods_item_bottom"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/home_top_goods_item_gift_atv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:background="@drawable/home_search_item_price_bg"
+            android:gravity="center"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:text="￥%s 元券"
+            android:textColor="#F33838"
+            android:textSize="12sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:src="@drawable/middle_item_money" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/home_top_goods_item_price_atv"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|left"
+                android:text="￥1699"
+                android:textColor="#A9AEB1"
+                android:textSize="15sp"
+                tools:ignore="RtlHardcoded" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/home_top_goods_item_bottom"
+        android:layout_width="140dp"
+        android:layout_height="28dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/home_top_item_price_bg">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/home_top_goods_item_price"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="12dp"
+            android:gravity="center_vertical"
+            android:text="￥5344"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="12dp"
+            android:gravity="center_vertical"
+            android:text="抢购价"
+            android:textColor="#F53E3C"
+            android:textSize="11sp" />
+    </RelativeLayout>
+</RelativeLayout>

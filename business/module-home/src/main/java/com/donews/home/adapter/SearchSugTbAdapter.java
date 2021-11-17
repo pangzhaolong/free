@@ -2,6 +2,7 @@ package com.donews.home.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.donews.base.widget.CenterImageSpan;
 import com.donews.home.R;
 import com.donews.home.listener.GoodsDetailListener;
+import com.donews.middle.bean.home.SearchGoodsBeanV2;
 import com.donews.middle.bean.home.SearchResultTbBean;
 
 import java.util.ArrayList;
@@ -25,7 +27,7 @@ import java.util.List;
 
 public class SearchSugTbAdapter extends RecyclerView.Adapter<SearchSugTbAdapter.ResultViewHolder> implements View.OnClickListener {
     private final Context mContext;
-    private final List<SearchResultTbBean.goodsInfo> mGoodsList = new ArrayList<>();
+    private List<SearchGoodsBeanV2.GoodsInfo> mGoodsList = new ArrayList<>();
     private GoodsDetailListener mListener;
 
     public SearchSugTbAdapter(Context context, GoodsDetailListener listener) {
@@ -34,8 +36,10 @@ public class SearchSugTbAdapter extends RecyclerView.Adapter<SearchSugTbAdapter.
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void refreshData(List<SearchResultTbBean.goodsInfo> list) {
-        mGoodsList.clear();
+    public void refreshData(List<SearchGoodsBeanV2.GoodsInfo> list, boolean needClear) {
+        if (needClear) {
+            mGoodsList.clear();
+        }
         mGoodsList.addAll(list);
         notifyDataSetChanged();
     }
@@ -48,10 +52,10 @@ public class SearchSugTbAdapter extends RecyclerView.Adapter<SearchSugTbAdapter.
         return holder;
     }
 
+    @SuppressLint({"DefaultLocale", "SetTextI18n"})
     @Override
     public void onBindViewHolder(@NonNull ResultViewHolder holder, int position) {
-
-        SearchResultTbBean.goodsInfo gi = mGoodsList.get(position);
+        SearchGoodsBeanV2.GoodsInfo gi = mGoodsList.get(position);
         if (gi == null) {
             return;
         }
@@ -61,25 +65,30 @@ public class SearchSugTbAdapter extends RecyclerView.Adapter<SearchSugTbAdapter.
 
         Glide.with(mContext).load(gi.getMainPic()).into(holder.picIv);
         holder.desTv.setText(getTitleString(gi));
-        float sales = gi.getMonthSales();
-        if (sales >= 10000) {
-            sales /= 10000;
-            String strSales = String.format("%.1f", sales);
-            holder.salesTv.setText("已售" + strSales + "万");
-        } else {
-            holder.salesTv.setText("已售" + gi.getMonthSales());
-        }
 
         holder.priceTv.setText(gi.getActualPrice() + "");
-        holder.shopTv.setText(gi.getShopName());
         holder.giftTv.setText(gi.getCouponPrice() + "元");
+        holder.originalPriceTv.setText(String.format("%.1f", gi.getOriginalPrice()));
+        holder.originalPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
     }
 
-
-    private SpannableString getTitleString(SearchResultTbBean.goodsInfo goodsInfo) {
+    private SpannableString getTitleString(SearchGoodsBeanV2.GoodsInfo goodsInfo) {
         String span = "d ";
-        int resId = goodsInfo.getShopType() == 1 ? R.drawable.home_logo_tm : R.drawable.home_logo_tb;
-        SpannableString spannableString = new SpannableString(span + goodsInfo.getDtitle());
+        int resId = R.drawable.home_logo_tb;
+        switch (goodsInfo.getSrc()) {
+            case 1:
+                resId = R.drawable.home_logo_tb;
+                break;
+            case 2:
+                resId = R.drawable.home_logo_pdd;
+                break;
+            case 3:
+                resId = R.drawable.home_logo_jd;
+                break;
+            case 4:
+                break;
+        }
+        SpannableString spannableString = new SpannableString(span + goodsInfo.getTitle());
 
         Drawable drawable = ContextCompat.getDrawable(mContext, resId);
         if (drawable != null) {
@@ -98,6 +107,13 @@ public class SearchSugTbAdapter extends RecyclerView.Adapter<SearchSugTbAdapter.
         return mGoodsList.size();
     }
 
+    public void clear() {
+        if (mGoodsList != null) {
+            mGoodsList.clear();
+            mGoodsList = null;
+        }
+    }
+
     @Override
     public void onClick(View v) {
         SearchResultTbBean.goodsInfo gi = (SearchResultTbBean.goodsInfo) v.getTag();
@@ -111,19 +127,17 @@ public class SearchSugTbAdapter extends RecyclerView.Adapter<SearchSugTbAdapter.
         private final TextView desTv;
         private final TextView priceTv;
         private final TextView giftTv;
-        private final TextView salesTv;
-        private final TextView shopTv;
+        private final TextView originalPriceTv;
 
 
         public ResultViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            picIv = itemView.findViewById(R.id.home_search_goods_item_pic_iv);
-            desTv = itemView.findViewById(R.id.home_search_goods_item_des);
-            priceTv = itemView.findViewById(R.id.home_search_goods_item_price_atv);
-            giftTv = itemView.findViewById(R.id.home_search_goods_item_gift_atv);
-            salesTv = itemView.findViewById(R.id.home_search_goods_item_sales);
-            shopTv = itemView.findViewById(R.id.home_search_goods_item_shop_atv);
+            picIv = itemView.findViewById(R.id.home_crazy_goods_item_pic_iv);
+            desTv = itemView.findViewById(R.id.home_crazy_goods_item_des);
+            priceTv = itemView.findViewById(R.id.home_crazy_goods_item_price);
+            giftTv = itemView.findViewById(R.id.home_crzay_goods_item_gift_atv);
+            originalPriceTv = itemView.findViewById(R.id.home_crazy_item_price);
         }
     }
 }

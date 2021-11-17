@@ -4,6 +4,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.home.model.SearchModel;
+import com.donews.middle.bean.home.GoodsListBean;
+import com.donews.middle.bean.home.PerfectGoodsBean;
 import com.donews.middle.bean.home.SearchSugBean;
 
 /**
@@ -21,5 +23,9 @@ public class SearchViewModel extends BaseLiveDataViewModel<SearchModel> {
 
     public MutableLiveData<SearchSugBean> getSearchData(String search) {
         return mModel.getSearchData(search);
+    }
+
+    public MutableLiveData<GoodsListBean> getBuysData(int pageId) {
+        return mModel.getBuysData(pageId);
     }
 }

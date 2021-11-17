@@ -112,7 +112,20 @@ public class AppManager
             }
         }
     }
-    
+
+
+    /**
+     * 结束指定类名的Activity
+     */
+    public Activity getTopActivity() {
+        if (activityStack != null && activityStack.size() > 0) {
+
+            return activityStack.get(activityStack.size() - 1);
+        }
+        return null;
+    }
+
+
     /**
      * 结束所有Activity
      */

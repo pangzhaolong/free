@@ -10,7 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.CycleInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
+import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -57,6 +59,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     private LotteryCategoryBean mLotteryCategoryBean;
 
     private Animation mRotateAnimation;
+    private Animation mScaleAnimation;
 
     private Timer mRotateTimer = null;
     private TimerTask mRotateTask = null;
@@ -148,12 +151,19 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         });
 
         if (mRotateAnimation == null) {
-            mRotateAnimation = new RotateAnimation(0, 8, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
-                    0.8f);
+            mRotateAnimation = new RotateAnimation(0, 8, Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF,
+                    1f);
             mRotateAnimation.setInterpolator(new CycleInterpolator(2));
             mRotateAnimation.setRepeatMode(Animation.REVERSE);
             mRotateAnimation.setRepeatCount(1);
             mRotateAnimation.setDuration(400);
+        }
+        if (mScaleAnimation == null) {
+            mScaleAnimation = new ScaleAnimation(1.0f, 0.9f, 1.0f, 0.9f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            mScaleAnimation.setInterpolator(new LinearInterpolator());
+            mScaleAnimation.setRepeatMode(Animation.REVERSE);
+            mScaleAnimation.setRepeatCount(Animation.INFINITE);
+            mScaleAnimation.setDuration(2000);
         }
         startTimer();
 
@@ -165,7 +175,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mRotateTask = new TimerTask() {
                 @Override
                 public void run() {
-                    FrontFragment.this.requireActivity().runOnUiThread(() -> mDataBinding.frontRpOpenFl5.startAnimation(mRotateAnimation));
+                    FrontFragment.this.requireActivity().runOnUiThread(() -> mDataBinding.frontRpGold88.startAnimation(mRotateAnimation));
                 }
             };
         }
@@ -340,6 +350,9 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             params.bottomMargin = DensityUtils.dp2px(10);
             tv.setLayoutParams(params);
             tv.setTextColor(topColor);
+            if (fl.getAnimation() != null) {
+                fl.clearAnimation();
+            }
         } else {
             params.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
             params.bottomMargin = DensityUtils.dp2px(6);
@@ -350,6 +363,9 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                 iv.setAlpha(0.5f);
                 tv.setText("待开启");
                 iv.setBackgroundResource(R.drawable.front_rp_ready);
+                if (fl.getAnimation() == null) {
+                    fl.startAnimation(mScaleAnimation);
+                }
             } else if (rpBean.getHadLotteryTotal() < rpBean.getLotteryTotal()) {
                 tv.setText("抽奖" + rpBean.getLotteryTotal() + "次");
                 iv.setBackgroundResource(R.drawable.front_rp_wait);
@@ -397,7 +413,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             }
         }
 
-        mDataBinding.frontFloatingBtn.setProgress(rpBean.getHadLotteryTotal());
+//        mDataBinding.frontFloatingBtn.setProgress(rpBean.getHadLotteryTotal());
 
         SPUtils.setInformain(KeySharePreferences.CLOSE_RED_PACKAGE_COUNTS, nCloseRpCounts);
         if (rpBean.getHadLotteryTotal() == -1) {

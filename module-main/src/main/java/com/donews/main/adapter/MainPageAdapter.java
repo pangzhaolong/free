@@ -29,6 +29,8 @@ public class MainPageAdapter extends FragmentPagerAdapter {
         }
         fragments.addAll(data);
         notifyDataSetChanged();
+
+
     }
     @NonNull
     @Override

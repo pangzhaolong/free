@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <attr name="progressColor" format="color|reference" />
+
     <!--圆弧进度条-->
     <declare-styleable name="CommonCircleProgressBar">
         <attr name="common_radius" format="dimension" />
         <attr name="common_strokeWidth" format="dimension" />
         <attr name="common_ringColor" format="color" />
         <attr name="common_strokeBgColor" format="color" />
-        <attr name="common_progress" format="integer"/>
+        <attr name="common_progress" format="integer" />
     </declare-styleable>
 
 
-
     <declare-styleable name="ProgressScaleView">
-
         <attr name="progressMax" format="integer" />
         <!--进度条padding-->
         <attr name="proPadding" format="dimension" />
@@ -29,12 +30,20 @@
         <attr name="scaleFontColor" format="color|reference" />
         <!--刻度比，一刻度表示多少值，默认1:1-->
         <attr name="scaleThan" format="integer" />
-
-
         <attr name="proBackgroundColor" format="color|reference" />
         <attr name="progressDefaultColor" format="color|reference" />
-        <attr name="progressColor" format="color|reference" />
+        <attr name="progressColor" />
+    </declare-styleable>
 
 
+    <declare-styleable name="CircleProgressBarView">
+        <attr name="circleBgStrokeWidth" format="dimension" />
+        <attr name="progressStrokeWidth" format="dimension" />
+        <attr name="circleBgColor" format="color" />
+        <attr name="progressColor" />
+        <attr name="circleAnimationDuration" format="integer" />
+        <attr name="isDrawCenterProgressText" format="boolean" />
+        <attr name="centerProgressTextColor" format="color" />
+        <attr name="centerProgressTextSize" format="dimension" />
     </declare-styleable>
 </resources>

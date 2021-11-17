@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.home.model.TbModel;
+import com.donews.middle.bean.home.SearchGoodsBeanV2;
 import com.donews.middle.bean.home.SearchResultTbBean;
 
 /**
@@ -20,8 +21,8 @@ public class TbViewModel extends BaseLiveDataViewModel<TbModel> {
     }
 
 
-    public MutableLiveData<SearchResultTbBean> getSearchResultData(String keyWord) {
-        return mModel.getSearchResultData(keyWord);
+    public MutableLiveData<SearchGoodsBeanV2> getSearchResultData(String keyWord, int pageId, int src) {
+        return mModel.getSearchResultData(keyWord, pageId, src);
     }
 
 }

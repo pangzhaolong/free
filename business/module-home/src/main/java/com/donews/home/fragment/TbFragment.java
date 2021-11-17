@@ -7,7 +7,6 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,37 +14,37 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.home.R;
-import com.donews.home.adapter.SearchFindAdapter;
-import com.donews.home.adapter.SearchHistoryAdapter;
 import com.donews.home.adapter.SearchSugTbAdapter;
 import com.donews.home.databinding.HomeFragmentSearchTbBinding;
 import com.donews.home.listener.GoodsDetailListener;
-import com.donews.home.listener.SearchHistoryListener;
 import com.donews.home.viewModel.TbViewModel;
+import com.donews.middle.bean.home.SearchGoodsBeanV2;
 import com.donews.middle.bean.home.SearchHistory;
-import com.donews.middle.bean.home.SearchResultTbBean;
 import com.donews.middle.bean.home.TmpSearchHistory;
 import com.donews.middle.cache.GoodsCache;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBinding, TbViewModel> implements GoodsDetailListener, SearchHistoryListener {
-
-    private final List<String> mSearchFindList = new ArrayList<>();
-
-    private SearchHistoryAdapter mSearchHistoryAdapter;
-    private SearchFindAdapter mSearchFindAdapter;
+public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBinding, TbViewModel> implements GoodsDetailListener {
 
     private SearchSugTbAdapter mSearchSugTbAdapter;
 
-    private String mCurKeyWord = "";
+    private int mPosition = 0;
+    private FragmentStatus mFragmentStatus = new FragmentStatus();
+
+    private static class FragmentStatus {
+        public int pageId = 1;
+        public boolean firstLoaded = false;
+    }
+
+    public TbFragment(int position) {
+        mPosition = position;
+    }
 
     public void search(String keyWord) {
-
+        if (keyWord == null || keyWord.equalsIgnoreCase("")) {
+            return;
+        }
         mDataBinding.homeSearchLoadingLl.setVisibility(View.VISIBLE);
-        mDataBinding.homeSearchTbTipsLl.setVisibility(View.GONE);
-        mDataBinding.homeSearchTbGoodsRv.setVisibility(View.GONE);
+        mDataBinding.homeSearchTbSrl.setVisibility(View.GONE);
 
         if (!SearchHistory.Ins().getList().contains(keyWord)) {
             SearchHistory.Ins().addHistory(keyWord);
@@ -55,46 +54,43 @@ public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBin
             TmpSearchHistory.Ins().getList().add(keyWord);
         }
 
-        mCurKeyWord = keyWord;
+        mFragmentStatus.pageId = 1;
+        SearchHistory.Ins().setCurKeyWord(keyWord);
 
-        SearchResultTbBean searchResultTbBean = GoodsCache.readGoodsBean(SearchResultTbBean.class, mCurKeyWord);
-        showSearchTbBean(searchResultTbBean, true);
+        SearchGoodsBeanV2 searchResultTbBean = GoodsCache.readGoodsBean(SearchGoodsBeanV2.class, SearchHistory.Ins().getCurKeyWord() + mPosition);
+        showSearchTbBean(searchResultTbBean);
 
-        mViewModel.getSearchResultData(keyWord).observe(getViewLifecycleOwner(), resultTbBean -> {
-            showSearchTbBean(resultTbBean, true);
-        });
+        loadSearchData();
     }
 
-    private void showSearchTbBean(SearchResultTbBean searchResultTbBean, boolean needSave) {
-        if (searchResultTbBean == null || searchResultTbBean.getList().size() <= 0) {
-            mDataBinding.homeSearchTbTipsLl.setVisibility(View.VISIBLE);
-            mDataBinding.homeSearchTbGoodsRv.setVisibility(View.GONE);
-            mDataBinding.homeSearchLoadingLl.setVisibility(View.GONE);
+    private void loadSearchData() {
+        mFragmentStatus.firstLoaded = true;
+        mFragmentStatus.pageId += 1;
+        mViewModel.getSearchResultData(SearchHistory.Ins().getCurKeyWord(), mFragmentStatus.pageId, mPosition + 1).observe(getViewLifecycleOwner(), this::showSearchTbBean);
+    }
+
+    private void showSearchTbBean(SearchGoodsBeanV2 searchResultTbBean) {
+        mDataBinding.homeSearchTbSrl.finishLoadMore();
+        mDataBinding.homeSearchTbSrl.setVisibility(View.VISIBLE);
+        mDataBinding.homeSearchLoadingLl.setVisibility(View.GONE);
+        if (searchResultTbBean == null || searchResultTbBean.getList() == null || searchResultTbBean.getList().size() <= 0) {
+
+            mFragmentStatus.pageId -= 1;
             return;
         }
 
-        mSearchSugTbAdapter.refreshData(searchResultTbBean.getList());
-
-        mDataBinding.homeSearchTbGoodsRv.setVisibility(View.VISIBLE);
-        mDataBinding.homeSearchLoadingLl.setVisibility(View.GONE);
-        mDataBinding.homeSearchTbTipsLl.setVisibility(View.GONE);
-
-        GoodsCache.saveGoodsBean(searchResultTbBean, mCurKeyWord);
+        mSearchSugTbAdapter.refreshData(searchResultTbBean.getList(), mFragmentStatus.pageId == 1);
+        if (mFragmentStatus.pageId == 1) {
+            GoodsCache.saveGoodsBean(searchResultTbBean, SearchHistory.Ins().getCurKeyWord() + mPosition);
+        }
     }
 
     public void showHistorySearchData(String keyWord) {
         mDataBinding.homeSearchLoadingLl.setVisibility(View.VISIBLE);
-        mDataBinding.homeSearchTbTipsLl.setVisibility(View.GONE);
-        mDataBinding.homeSearchTbGoodsRv.setVisibility(View.GONE);
+        mDataBinding.homeSearchTbSrl.setVisibility(View.GONE);
 
-        SearchResultTbBean searchResultTbBean = GoodsCache.readGoodsBean(SearchResultTbBean.class, keyWord);
-        showSearchTbBean(searchResultTbBean, false);
-    }
-
-    public void showDefaultLayout() {
-        mDataBinding.homeSearchTbTipsLl.setVisibility(View.VISIBLE);
-        mDataBinding.homeSearchTbGoodsRv.setVisibility(View.GONE);
-        mDataBinding.homeSearchLoadingLl.setVisibility(View.GONE);
+        SearchGoodsBeanV2 searchGoodsBeanV2 = GoodsCache.readGoodsBean(SearchGoodsBeanV2.class, keyWord + mPosition);
+        showSearchTbBean(searchGoodsBeanV2);
     }
 
     @Override
@@ -106,68 +102,6 @@ public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBin
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mSearchFindList.add("面膜");
-        mSearchFindList.add("洗面奶");
-        mSearchFindList.add("洗衣液");
-        mSearchFindList.add("口红");
-        mSearchFindList.add("螺蛳粉");
-        mSearchFindList.add("洗发水");
-        mSearchFindList.add("眼影");
-        mSearchFindList.add("口罩");
-        mSearchFindList.add("坚果");
-        mSearchFindList.add("连衣裙");
-
-        mSearchFindAdapter = new SearchFindAdapter(this.getContext(), this);
-        GridLayoutManager manager = new GridLayoutManager(this.getContext(), 40);
-        manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int position) {
-                String strText = mSearchFindList.get(position);
-                int strLen = strText.getBytes().length;
-                if (strLen >= 40) {
-                    return 40;
-                }
-
-                return strText.getBytes().length;
-            }
-        });
-
-        mDataBinding.homeSearchFindRv.setLayoutManager(manager);
-        mDataBinding.homeSearchFindRv.setAdapter(mSearchFindAdapter);
-        mSearchFindAdapter.refreshData(mSearchFindList);
-
-        if (SearchHistory.Ins().getList().size() <= 0) {
-            mDataBinding.homeSearchHistoryTl.setVisibility(View.GONE);
-        } else {
-            mDataBinding.homeSearchHistoryTl.setVisibility(View.VISIBLE);
-        }
-
-        mSearchHistoryAdapter = new SearchHistoryAdapter(this.getContext(), this);
-        manager = new GridLayoutManager(this.getContext(), 40);
-        manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int position) {
-                String strText = SearchHistory.Ins().getList().get(position);
-                int strLen = strText.getBytes().length;
-                if (strLen >= 40) {
-                    return 40;
-                }
-
-                return strText.getBytes().length;
-            }
-        });
-
-        mDataBinding.homeSearchHistoryRv.setLayoutManager(manager);
-        mDataBinding.homeSearchHistoryRv.setAdapter(mSearchHistoryAdapter);
-        mSearchHistoryAdapter.refreshData(SearchHistory.Ins().getList());
-
-        mDataBinding.homeSearchHistoryCleanTv.setOnClickListener(v -> {
-            mDataBinding.homeSearchHistoryTl.setVisibility(View.GONE);
-            SearchHistory.Ins().write("");
-            SearchHistory.Ins().getList().clear();
-            mSearchHistoryAdapter.refreshData(SearchHistory.Ins().getList());
-        });
-
         mSearchSugTbAdapter = new SearchSugTbAdapter(this.getContext(), this);
         mDataBinding.homeSearchTbGoodsRv.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
@@ -177,18 +111,24 @@ public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBin
         });
         mDataBinding.homeSearchTbGoodsRv.setLayoutManager(new LinearLayoutManager(this.getContext()));
         mDataBinding.homeSearchTbGoodsRv.setAdapter(mSearchSugTbAdapter);
+
+        mDataBinding.homeSearchTbSrl.setEnableRefresh(false);
+        mDataBinding.homeSearchTbSrl.setOnLoadMoreListener(refreshLayout -> loadSearchData());
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-        mSearchHistoryAdapter.refreshData(SearchHistory.Ins().getList());
+        if (!mFragmentStatus.firstLoaded) {
+            search(SearchHistory.Ins().getCurKeyWord());
+        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+        mFragmentStatus = null;
     }
 
     @Override
@@ -197,10 +137,5 @@ public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBin
                 .withString("params_id", id)
                 .withString("params_goods_id", goodsId)
                 .navigation();
-    }
-
-    @Override
-    public void onClick(String keyWord) {
-        search(keyWord);
     }
 }

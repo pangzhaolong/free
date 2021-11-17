@@ -102,7 +102,7 @@ public class MineSettingFragment extends
         });
         updateUI();
 
-        if (ABSwitch.Ins().getABBean().isOpenAB()) {
+        if (ABSwitch.Ins().isOpenAB()) {
             mDataBinding.mineSettingTitle.setVisibility(View.VISIBLE);
             mDataBinding.tvExitLogin.setVisibility(View.GONE);
             mDataBinding.setZxzh.setVisibility(View.GONE);

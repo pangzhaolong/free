@@ -10,6 +10,10 @@ import java.util.List;
 
 public class SearchHistory {
 
+    private final List<String> mHistoryList = new ArrayList<>();
+
+    private String mCurKeyWord;
+
     public static SearchHistory Ins() {
         return Instance.searchHistory;
     }
@@ -18,7 +22,6 @@ public class SearchHistory {
         public static SearchHistory searchHistory = new SearchHistory();
     }
 
-    private final List<String> mHistoryList = new ArrayList<>();
 
     private SearchHistory() {
         read();
@@ -26,6 +29,14 @@ public class SearchHistory {
 
     public List<String> getList() {
         return mHistoryList;
+    }
+
+    public void setCurKeyWord(String keyWord) {
+        mCurKeyWord = keyWord;
+    }
+
+    public String getCurKeyWord() {
+        return mCurKeyWord;
     }
 
     public void addHistory(String history) {

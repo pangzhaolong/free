@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="140dp"
-    android:background="@color/white"
+    android:layout_height="wrap_content"
+    android:background="@drawable/home_crazy_item_bg"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:padding="5dp">
 
     <ImageView
-        android:id="@+id/home_search_goods_item_pic_iv"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:id="@+id/home_crazy_goods_item_pic_iv"
+        android:layout_width="93dp"
+        android:layout_height="93dp"
+        android:background="@color/A999999"
         android:scaleType="center"
         tools:ignore="MissingConstraints" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/home_search_goods_item_des"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/home_crazy_goods_item_des"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
             android:ellipsize="end"
             android:maxLines="2"
             android:text="【拍四件】 二阳花椒锅巴零食小吃"
@@ -34,113 +34,97 @@
             tools:ignore="MissingConstraints" />
 
         <RelativeLayout
-            android:id="@+id/home_top_goods_item_price"
             android:layout_width="match_parent"
-            android:layout_height="26dp"
-            android:layout_below="@+id/home_search_goods_item_des"
+            android:layout_height="56dp"
             android:layout_marginTop="4dp"
-            android:orientation="horizontal"
             tools:ignore="MissingConstraints">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/home_search_goods_item_price_tip_atv"
+            <TextView
+                android:id="@+id/home_crazy_item_price_tip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:text="劵后"
-                tools:ignore="MissingConstraints" />
+                android:layout_above="@+id/home_crazy_item_actprice_rl"
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/home_search_goods_item_price_atv"
+                android:text="原价:"
+                android:textColor="#A9AEB1"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/home_crazy_item_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/home_search_goods_item_price_tip_atv"
-                android:text="￥6.92"
-                android:textColor="#F33838"
-                tools:ignore="MissingConstraints" />
+                android:layout_above="@+id/home_crazy_item_actprice_rl"
+                android:layout_toRightOf="@+id/home_crazy_item_price_tip"
+                android:text="￥1699"
+                android:textColor="#A9AEB1"
+                android:textSize="12sp" />
 
+            <RelativeLayout
+                android:id="@+id/home_crazy_item_actprice_rl"
+                android:layout_width="140dp"
+                android:layout_height="28dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/home_top_item_price_bg"
+                android:minWidth="140dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/home_crazy_goods_item_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="12dp"
+                    android:gravity="center_vertical"
+                    android:text="￥5344"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="13dp"
+                    android:gravity="center_vertical"
+                    android:text="抢购价"
+                    android:textColor="#F53E3C"
+                    android:textSize="11sp" />
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/home_goods_item_gift_big_bg"
-                android:orientation="horizontal">
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="13dp"
+                android:background="@drawable/home_crzay_item_gift_big_bg"
+                android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="30dp"
-                    android:layout_height="match_parent"
+                <TextView
+                    android:id="@+id/home_crzay_goods_item_gift_atv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="券"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:text="￥50000元券"
                     android:textColor="#F33838"
                     android:textSize="12sp" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/home_search_goods_item_gift_atv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/home_goods_item_gift_bg"
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:background="@drawable/home_crazy_item_gift_bg"
                     android:gravity="center"
-                    android:text="10元"
+                    android:text="领取"
                     android:textColor="@color/white"
-                    android:textSize="12sp" />
+                    android:textSize="10sp" />
             </LinearLayout>
 
         </RelativeLayout>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/home_search_goods_item_sales"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="已售8.7万"
-            tools:ignore="MissingConstraints" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/home_search_goods_item_shop_atv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="二阳旗舰店"
-                tools:ignore="MissingConstraints" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/home_search_goods_item_goshop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:text="进店>"
-                android:textColor="@color/black"
-                tools:ignore="MissingConstraints" />
-        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -211,6 +211,7 @@
                                         android:background="@drawable/front_rp_gold" />
 
                                     <ImageView
+                                        android:id="@+id/front_rp_gold_88"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="right"
@@ -460,13 +461,13 @@
                 android:layout_height="match_parent"
                 app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
-            <com.donews.front.views.FrontFloatingBtn
-                android:id="@+id/front_floating_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_marginEnd="15dp"
-                android:layout_marginBottom="100dp" />
+<!--            <com.donews.common.views.FrontFloatingBtn-->
+<!--                android:id="@+id/front_floating_btn"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="bottom|end"-->
+<!--                android:layout_marginEnd="15dp"-->
+<!--                android:layout_marginBottom="100dp" />-->
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>

@@ -18,13 +18,11 @@ import java.util.List;
 
 public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdapter.HistoryViewHolder> implements View.OnClickListener {
 
-    private final Context mContext;
     private final List<String> mGoodsList = new ArrayList<>();
 
-    private SearchHistoryListener mListener;
+    private final SearchHistoryListener mListener;
 
-    public SearchHistoryAdapter(Context context, SearchHistoryListener listener) {
-        mContext = context;
+    public SearchHistoryAdapter(SearchHistoryListener listener) {
         mListener = listener;
     }
 
