@@ -19,7 +19,7 @@ public class HomeGoodsBean extends BaseCustomViewModel {
         this.list = list;
     }
 
-    public static class GoodsInfo {
+    public static class GoodsInfo extends BaseCustomViewModel{
         @SerializedName("goods_id")
         private String goodsId;
         @SerializedName("title")

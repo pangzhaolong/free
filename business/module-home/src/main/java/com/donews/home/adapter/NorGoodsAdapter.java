@@ -56,7 +56,6 @@ public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsV
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull NorGoodsAdapter.GoodsViewHolder holder, int position) {
-
         HomeGoodsBean.GoodsInfo gi = mGoodsList.get(position);
         if (gi == null) {
             return;
