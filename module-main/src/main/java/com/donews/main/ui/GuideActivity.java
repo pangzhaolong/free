@@ -151,6 +151,11 @@ public class GuideActivity
         mDataBinding.guideCententAnim.setAnimation("main_guid_data.json");
         mDataBinding.guideCententAnim.loop(true);
         mDataBinding.guideCententAnim.playAnimation();
+        //手指动画
+        mDataBinding.guideFingerAnim.setImageAssetsFolder("images");
+        mDataBinding.guideFingerAnim.setAnimation("lottery_finger.json");
+        mDataBinding.guideFingerAnim.loop(true);
+        mDataBinding.guideFingerAnim.playAnimation();
     }
 
     @Override

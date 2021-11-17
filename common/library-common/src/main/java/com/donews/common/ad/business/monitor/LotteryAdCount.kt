@@ -90,6 +90,13 @@ object LotteryAdCount {
         return isToday(newLotteryTime) && todayLotteryTimes > 0
     }
 
+    /**
+     * 获取今日参与抽奖的次数
+     * @return Int
+     */
+    fun getTodayLotteryCount():Int{
+        return mmkv.decodeInt(TODAY_LOTTERY_TIMES, 0)
+    }
 
     /**
      * 判断是否为今天

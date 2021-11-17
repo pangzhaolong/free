@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ResourceName">
     <string name="main_name">module-main</string>
     <string name="main_str_people_guide_explain">
         欢迎来到%1$s！\n\n
@@ -30,5 +30,13 @@
     <string name="main_exit_know">我知道了</string>
     <string name="main_exit_continue_lottery_title">再抽%s次，中奖概率可提升%s%%</string>
     <string name="main_exit_remind_titl">温馨提示</string>
-    <string name="main_exit_remind_msg">明日%s点开奖，记得回来看看哦。\n祝你中奖</string>
+    <string name="main_exit_remind_msg">明日%s点开奖</string>
+
+    <string name="return_intercept_title">参与抽奖，立即获得</string>
+    <string name="return_intercept_withdraw" tools:ignore="ResourceName">抽奖开红包, 可提现至</string>
+    <string name="return_intercept_hint">最高</string>
+    <string name="return_intercept_button_no" tools:ignore="ResourceName">立即登录抢购</string>
+    <string name="return_intercept_button" tools:ignore="ResourceName">立即抢购</string>
+    <string name="return_intercept_hint_no" tools:ignore="ResourceName">新人专享</string>
+    <string name="return_intercept_withdraw_no" tools:ignore="ResourceName">可提现至</string>
 </resources>

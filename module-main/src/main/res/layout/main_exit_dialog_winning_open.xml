@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="eventListener"
+            type="com.donews.main.dialog.ExitWinningDialog.EventListener" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_window_top_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_window_top"
+                    android:layout_width="247dp"
+                    android:layout_height="273dp"
+                    android:layout_marginTop="120dp"
+                    android:layout_marginLeft="40dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:background="@drawable/dialog_main_exit_red_bg"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+                <ImageView
+                    android:id="@+id/iv_title_bg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    app:layout_constraintLeft_toLeftOf="@+id/iv_window_top"
+                    app:layout_constraintRight_toRightOf="@+id/iv_window_top"
+                    android:src="@drawable/main_exit_dialog_winning_t_bg"
+                    app:layout_constraintTop_toTopOf="@+id/iv_window_top"
+                    android:layout_marginTop="-40dp"/>
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="恭喜选中超值大奖"
+                    android:textSize="16sp"
+                    android:textColor="#764D38"
+                    android:layout_marginBottom="18dp"
+                    app:layout_constraintLeft_toLeftOf="@+id/iv_title_bg"
+                    app:layout_constraintTop_toTopOf="@+id/iv_title_bg"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_title_bg"
+                    app:layout_constraintRight_toRightOf="@+id/iv_title_bg"/>
+
+                <ImageView
+                    android:id="@+id/iv_title_jb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="76dp"
+                    app:layout_constraintLeft_toLeftOf="@+id/iv_window_top"
+                    app:layout_constraintRight_toRightOf="@+id/iv_window_top"
+                    android:src="@drawable/main_exit_dialog_winning_t_jb"
+                    app:layout_constraintBottom_toTopOf="@+id/iv_title_bg"
+                    android:layout_marginBottom="-13dp"/>
+
+                <ImageView
+                    android:id="@+id/iv_icon"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_marginTop="41dp"
+                    android:background="@drawable/ad_shape_bg"
+                    app:layout_constraintLeft_toLeftOf="@+id/iv_window_top"
+                    app:layout_constraintRight_toRightOf="@+id/iv_window_top"
+                    app:layout_constraintTop_toTopOf="@+id/iv_window_top" />
+
+                <ImageView
+                    android:id="@+id/iv_icon_by"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_marginRight="-10dp"
+                    android:layout_marginBottom="-10dp"
+                    android:background="@drawable/main_exit_dialog_winning_by"
+                    app:layout_constraintRight_toRightOf="@+id/iv_icon"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_icon" />
+
+                <TextView
+                    android:id="@+id/tv_goods_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:maxLines="2"
+                    android:text="title"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:layout_marginTop="17dp"
+                    app:layout_constraintLeft_toLeftOf="@+id/iv_window_top"
+                    app:layout_constraintRight_toRightOf="@+id/iv_window_top"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_icon" />
+
+                <ImageView
+                    android:id="@+id/iv_yh_r"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/main_exit_dialog_winning_yh_r"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_window_top"
+                    app:layout_constraintTop_toTopOf="@+id/iv_window_top"/>
+                <ImageView
+                    android:id="@+id/iv_yh_lt"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="-20dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/main_exit_dialog_winning_yh_lt"
+                    app:layout_constraintLeft_toLeftOf="@+id/iv_title_bg"
+                    app:layout_constraintTop_toTopOf="@+id/iv_title_bg"/>
+
+                <ImageView
+                    android:id="@+id/iv_yh_lb"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginRight="-22.5dp"
+                    app:layout_constraintRight_toLeftOf="@+id/iv_window_top"
+                    android:src="@drawable/main_exit_dialog_winning_yh_lb"
+                    app:layout_constraintTop_toTopOf="@+id/iv_window_top"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_window_top" />
+
+                <!-- 关闭按钮 -->
+                <ImageView
+                    android:id="@+id/iv_close"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginBottom="23dp"
+                    android:onClick="@{eventListener::clickIvClose}"
+                    android:src="@drawable/common_close"
+                    app:layout_constraintRight_toRightOf="@id/iv_window_top"
+                    app:layout_constraintTop_toTopOf="@+id/iv_title_jb"
+                    android:visibility="invisible" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_but"
+                android:layout_width="247dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/main_bg_guide_but"
+                android:gravity="center"
+                android:onClick="@{eventListener::clickOpenPacket}"
+                android:orientation="horizontal"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cl_window_top_layout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="41dp"
+                    android:layout_marginRight="41dp"
+                    android:paddingTop="11dp"
+                    android:paddingBottom="11dp"
+                    android:text="免费领取"
+                    android:textColor="#D82D2A"
+                    android:textSize="19sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_but_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="@+id/cl_window_top_layout"
+                app:layout_constraintRight_toRightOf="@+id/cl_window_top_layout"
+                app:layout_constraintTop_toBottomOf="@+id/ll_but">
+
+                <!-- 稍后按钮 -->
+                <TextView
+                    android:id="@+id/tv_failure"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="19dp"
+                    android:onClick="@{eventListener::onLaterListener}"
+                    android:text=""
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    tools:visibility="visible" />
+            </LinearLayout>
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/masking_hand"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintRight_toRightOf="@+id/ll_but"
+                app:layout_constraintTop_toTopOf="@+id/ll_but"
+                app:lottie_loop="true"
+                tools:ignore="MissingConstraints" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</layout>

@@ -6,42 +6,30 @@
     <data>
 
         <variable
-            name="redPacketNumber"
-            type="Integer" />
-
-        <variable
             name="eventListener"
-            type="com.donews.main.dialog.OpenRedPacketDialog.EventListener" />
+            type="com.donews.main.dialog.RedPacketAllOpenDialog.EventListener" />
     </data>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="23dp"
+            android:onClick="@{eventListener::clickIvClose}"
+            android:src="@drawable/common_close"
+            android:visibility="invisible"
+            android:layout_gravity="right"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:ignore="MissingConstraints">
-
-            <ImageView
-                android:id="@+id/iv_close"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:onClick="@{eventListener::clickIvClose}"
-                android:src="@drawable/common_close"
-                android:visibility="invisible"
-                app:layout_constraintRight_toRightOf="parent" />
-
-            <ImageView
-                android:id="@+id/cl_window_top_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="23dp"
-                android:src="@drawable/dialog_main_exit_hb_title"
-                app:layout_constraintTop_toBottomOf="@+id/iv_close" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_window_top_layout"
@@ -50,83 +38,73 @@
                 android:layout_marginTop="16dp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cl_window_top_title">
+                app:layout_constraintStart_toStartOf="parent">
 
                 <ImageView
                     android:id="@+id/iv_window_top"
-                    android:layout_width="217dp"
-                    android:layout_height="249dp"
-                    android:layout_marginLeft="81dp"
-                    android:layout_marginRight="81dp"
-                    android:background="@drawable/dialog_main_exit_hb"
+                    android:layout_width="243dp"
+                    android:layout_height="273dp"
+                    android:background="@drawable/main_exit_dialog_open_all_bg"
                     app:layout_constraintBottom_toBottomOf="parent" />
 
                 <LinearLayout
-                    android:id="@+id/price_ll"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:orientation="horizontal"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
+                    android:layout_marginBottom="25dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/main_exit_dialog_progress_bar">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="¥"
+                        android:text="预计中奖概率"
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
-
+                        android:textSize="16sp"/>
                     <TextView
-                        android:id="@+id/tv_price_num"
+                        android:id="@+id/tv_zjgl_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="25%"
                         android:layout_marginLeft="5dp"
-                        android:text="8.8"
                         android:textColor="@color/white"
-                        android:textSize="39sp" />
+                        android:textSize="29sp"/>
                 </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="-10dp"
-                    android:layout_marginBottom="-10dp"
-                    android:background="@drawable/cen_cash_js_bg"
-                    android:paddingLeft="5dp"
-                    android:paddingTop="2dp"
-                    android:paddingRight="5dp"
-                    android:paddingBottom="2dp"
-                    android:text="最高"
-                    android:textColor="#E9423E"
-                    android:textSize="12sp"
-                    app:layout_constraintBottom_toTopOf="@+id/price_ll"
-                    app:layout_constraintLeft_toRightOf="@+id/price_ll" />
+                <ProgressBar
+                    android:id="@+id/main_exit_dialog_progress_bar"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="0dp"
+                    android:layout_height="8dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="26dp"
+                    android:layout_marginRight="26dp"
+                    android:max="100"
+                    android:progress="0"
+                    android:progressDrawable="@drawable/main_exit_dialog_progressbar"
+                    app:layout_constraintBottom_toBottomOf="@+id/main_exit_q_float"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/main_exit_q_float" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:id="@+id/main_exit_q_float"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="45dp"
-                    android:orientation="horizontal"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="20dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent">
 
                     <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/dialog_main_exit_hb_flg" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:text="可提现至微信"
-                        android:textColor="@color/white"
-                        android:textSize="15sp" />
+                        android:id="@+id/main_exit_q_iv"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/main_exit_dialog_open_all_qq" />
                 </LinearLayout>
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -158,22 +136,23 @@
                         android:layout_marginRight="41dp"
                         android:paddingTop="11dp"
                         android:paddingBottom="11dp"
-                        android:text="立即领取"
+                        android:text="继续抽奖"
                         android:textColor="#D82D2A"
                         android:textSize="19sp" />
                 </LinearLayout>
 
-                <!-- 几点失效 -->
+                <!-- 稍后按钮 -->
                 <TextView
                     android:id="@+id/tv_failure"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
-                    android:onClick="@{eventListener::clickLater}"
-                    android:text="稍后再来"
+                    android:text="明早10点开奖"
                     android:textColor="@color/white"
+                    android:onClick="@{eventListener::onLaterListener}"
                     android:textSize="15sp"
-                    android:visibility="invisible" />
+                    android:visibility="invisible"
+                    tools:visibility="visible" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>

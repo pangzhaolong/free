@@ -48,6 +48,7 @@ public abstract class AbstractFragmentDialog<T extends ViewDataBinding> extends 
     private SureListener mOnSureListener;
     private CancelListener mOnCancelListener;
     private CloseListener mOnCloseListener;
+    private LaterListener mOnLaterListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -210,6 +211,14 @@ public abstract class AbstractFragmentDialog<T extends ViewDataBinding> extends 
         mOnCancelListener = onCancelListener;
     }
 
+    public void setOnLaterListener(LaterListener onCancelListener) {
+        mOnLaterListener  = onCancelListener;
+    }
+
+    public LaterListener getOnLaterListener() {
+        return mOnLaterListener;
+    }
+
     public CloseListener getOnCloseListener() {
         return mOnCloseListener;
     }
@@ -254,6 +263,10 @@ public abstract class AbstractFragmentDialog<T extends ViewDataBinding> extends 
     }
 
     public interface CloseListener {
+        void onClose();
+    }
+
+    public interface LaterListener {
         void onClose();
     }
 

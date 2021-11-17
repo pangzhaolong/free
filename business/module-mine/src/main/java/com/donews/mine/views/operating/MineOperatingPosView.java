@@ -1,20 +1,28 @@
 package com.donews.mine.views.operating;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TableRow;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.GlideUrl;
 import com.donews.mine.R;
+import com.donews.mine.utils.GlideUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author lcl
@@ -23,6 +31,28 @@ import java.util.List;
  * 个人中心 -> 运营位的自定义视图
  */
 public class MineOperatingPosView extends ViewPager {
+
+    /**
+     * 数据项的接口。为了规范数据结构
+     */
+    public interface IOperatingData {
+        /**
+         * 获取显示的Icon的地址
+         *
+         * @return 数字字符：表示是本地res资源id
+         * 其他表示：是一个文件或者URL地址
+         */
+        String getIconUrl();
+
+        /**
+         * 当这个数据项目被点击之后的操作
+         *
+         * @param view 视图对象
+         * @param data 当前点击的数据实体
+         * @return
+         */
+        void onClick(View view, IOperatingData data);
+    }
 
     /**
      * 页面的每项点击事件
@@ -41,9 +71,8 @@ public class MineOperatingPosView extends ViewPager {
     private int pageViewRes = R.layout.incl_mine_operating_pos_page;
     //适配器
     private MineOperatingPosVpAdapter adapter;
-    private List<Object> datas = new ArrayList<>();
-    //点击监听
-    private OnPageItemClick itemClickListener;
+    private List<IOperatingData> datas = new ArrayList<>();
+    private int baseHei = 0;
 
     public MineOperatingPosView(Context context) {
         super(context);
@@ -55,12 +84,25 @@ public class MineOperatingPosView extends ViewPager {
         init();
     }
 
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        if (baseHei == 0) {
+            baseHei = h;
+            ViewGroup.LayoutParams lp = MineOperatingPosView.this.getLayoutParams();
+            if (lp != null && datas.isEmpty() && lp.height != baseHei / 2) {
+                MineOperatingPosView.this.getLayoutParams().height = baseHei / 2;
+                MineOperatingPosView.this.setLayoutParams(lp);
+            }
+        }
+    }
+
     /**
      * 设置数据
      *
      * @param list
      */
-    public void setDatas(List<Object> list) {
+    public void setDatas(List<IOperatingData> list) {
         datas.clear();
         datas.addAll(list);
         if (adapter != null) {
@@ -68,17 +110,24 @@ public class MineOperatingPosView extends ViewPager {
         }
     }
 
-    /**
-     * 设置点击监听
-     *
-     * @param clickListener
-     */
-    public void setItemClick(OnPageItemClick clickListener) {
-        this.itemClickListener = clickListener;
-    }
-
     //初始化
     private void init() {
+        addOnPageChangeListener(new OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                adapter.initViewParams(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         adapter = new MineOperatingPosVpAdapter();
         setAdapter(adapter);
     }
@@ -92,10 +141,18 @@ public class MineOperatingPosView extends ViewPager {
         private int pageSize = 4;
         //缓存视图
         private List<View> cacheViews = new ArrayList<>();
+        //curr视图
+        private Map<Integer, View> hyViews = new HashMap<>();
 
         @Override
         public int getCount() {
-            return Math.round(datas.size() / (pageSize * 1F));
+            return (int) Math.ceil(datas.size() / (pageSize * 1F));
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            initViewParams(getCurrentItem());
+            return super.getItemPosition(object);
         }
 
         @NonNull
@@ -109,7 +166,8 @@ public class MineOperatingPosView extends ViewPager {
                         pageViewRes, container, false);
             }
             if (itemView != null) {
-                initViewParams(itemView, position);
+                hyViews.put(position, itemView);
+                initViewParams(position);
                 container.addView(itemView, position);
             }
             return itemView;
@@ -117,6 +175,7 @@ public class MineOperatingPosView extends ViewPager {
 
         @Override
         public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+            hyViews.remove(position);
             container.removeView((View) object);
             cacheViews.add((View) object);
             super.destroyItem(container, position, object);
@@ -130,28 +189,46 @@ public class MineOperatingPosView extends ViewPager {
         /**
          * 初始化视图参数
          *
-         * @param itemView 当前页的视图
          * @param position 当前页的下标
          */
-        private void initViewParams(View itemView, int position) {
+        private void initViewParams(int position) {
+            View itemView = hyViews.get(position);
+            ViewGroup.LayoutParams lp = MineOperatingPosView.this.getLayoutParams();
+            if (itemView == null) {
+                return;
+            }
             View[] itemViews = new View[4];
+            TableRow row2 = itemView.findViewById(R.id.mine_yyw_row2);
             //每项数据
             itemViews[0] = itemView.findViewById(R.id.mine_operating_1_0);
             itemViews[1] = itemView.findViewById(R.id.mine_operating_1_1);
             itemViews[2] = itemView.findViewById(R.id.mine_operating_2_0);
             itemViews[3] = itemView.findViewById(R.id.mine_operating_2_1);
             int curPos = 0;
-            for (int i = pageSize * position; i < pageSize * position + pageSize; i++) {
+            int startPos = pageSize * position;
+            int endPos = pageSize * position + pageSize;
+            if (endPos > datas.size() && datas.size() - startPos <= 2) {
+                //当前页不足2条数据。那么彻底隐藏视图
+                row2.setVisibility(View.GONE);
+                if (position == getCurrentItem() && lp.height != baseHei / 2) {
+                    startAnim(lp.height, baseHei / 2, lp);
+                }
+            } else {
+                row2.setVisibility(View.VISIBLE);
+                if (position == getCurrentItem() && lp.height != baseHei) {
+                    startAnim(lp.height, baseHei, lp);
+                }
+            }
+            for (int i = startPos; i < endPos; i++) {
                 curPos = i % pageSize;
                 final int curOldPos = i;
                 if (i < datas.size()) {
                     itemViews[curPos].setVisibility(View.VISIBLE);
                     bindData(itemViews[curPos], i);
                     itemViews[curPos].setOnClickListener(v -> {
-                        if (MineOperatingPosView.this.itemClickListener != null &&
-                                v.getVisibility() == View.VISIBLE) {
+                        if (v.getVisibility() == View.VISIBLE) {
                             //点击监听
-                            MineOperatingPosView.this.itemClickListener.click(v, datas.get(curOldPos));
+                            datas.get(curOldPos).onClick(v, datas.get(curOldPos));
                         }
                     });
                 } else {
@@ -162,7 +239,50 @@ public class MineOperatingPosView extends ViewPager {
 
         //绑定数据
         private void bindData(View view, int pos) {
+            IOperatingData data = datas.get(pos);
+            if (!(view instanceof ViewGroup)) {
+                return;
+            }
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                if ("icon".equals(((ViewGroup) view).getChildAt(i).getTag())) {
+                    ImageView icon = (ImageView) ((ViewGroup) view).getChildAt(i);
+                    if (data.getIconUrl() != null && data.getIconUrl().length() > 0) {
+                        try {
+                            int res = Integer.parseInt(data.getIconUrl());
+//                            icon.setImageResource(res);
+                            Glide.with(getContext()).load(res).into(icon);
+                        } catch (Exception e) {
+                            if (data.getIconUrl().endsWith(".gif")) {
+                                GlideUtils.INSTANCE.glideRectCircleOssWGif(
+                                        getContext(), "", data.getIconUrl(), 1,
+                                        icon.getWidth(), icon, R.mipmap.loading_dialog
+                                );
+                            } else {
+                                com.donews.base.utils.glide.GlideUtils.loadImageView(
+                                        getContext(), data.getIconUrl(), icon);
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
+        ValueAnimator valueAnimator;
+        //开始动画
+        private void startAnim(int startHei, int endHei, ViewGroup.LayoutParams lp) {
+            if(valueAnimator != null){
+                valueAnimator.cancel();
+            }
+            int chazhi = baseHei / 2;
+            float offset = Math.abs(endHei - startHei) / (chazhi * 1F);
+            valueAnimator = ValueAnimator.ofInt(startHei, endHei);
+            //根据实际的距离来计算时间
+            valueAnimator.setDuration((long) (250 * offset));
+            valueAnimator.addUpdateListener(animation -> {
+                lp.height = (int) animation.getAnimatedValue();
+                MineOperatingPosView.this.setLayoutParams(lp);
+            });
+            valueAnimator.start();
         }
     }
 }

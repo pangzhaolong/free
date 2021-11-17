@@ -8,16 +8,18 @@ import com.dn.sdk.sdk.interfaces.listener.impl.SimpleRewardVideoListener
 import com.donews.base.base.AppManager
 import com.donews.base.base.AppStatusConstant
 import com.donews.base.base.AppStatusManager
+import com.donews.base.utils.ToastUtil
 import com.donews.common.ad.business.callback.JddAdConfigManager
 import com.donews.common.ad.business.loader.AdManager
 import com.donews.common.ad.business.monitor.LotteryAdCount
 import com.donews.common.router.RouterActivityPath
+import com.donews.common.router.RouterFragmentPath
 import com.donews.main.BuildConfig
-import com.donews.main.dialog.ContinueLotteryDialog
-import com.donews.main.dialog.NotLotteryDialog
-import com.donews.main.dialog.OpenRedPacketDialog
-import com.donews.main.dialog.RemindDialog
+import com.donews.main.dialog.*
 import com.donews.main.entitys.resps.ExitInterceptConfig
+import com.donews.middle.bean.HighValueGoodsBean
+import com.donews.middle.cache.GoodsCache
+import com.donews.middle.request.RequestUtil
 import com.donews.network.EasyHttp
 import com.donews.network.cache.model.CacheMode
 import com.donews.network.callback.SimpleCallBack
@@ -50,7 +52,23 @@ object ExitInterceptUtils {
     private var mFirstClickBackTime: Long = 0L
 
     private var notLotteryDialog: NotLotteryDialog? = null
+
+    //未登录的弹窗
+    private var notLoginDialog: ExitNotLoginDialog? = null
+
+    //中奖弹窗
+    private var winningDialog: ExitWinningDialog? = null
+
+    //有红包未开启的弹窗
     private var openRedPacketDialog: OpenRedPacketDialog? = null
+
+    //红包全开的弹窗
+    private var redPacketAllOpenDialog: RedPacketAllOpenDialog? = null
+
+    //红包全开的弹窗
+    private var redPacketNotAllOpenDialog: WinNotAllOpenDialog? = null
+
+    //已登录未抽奖的弹窗
     private var continueLotteryDialog: ContinueLotteryDialog? = null
     var remindDialog: RemindDialog? = null
 
@@ -83,21 +101,30 @@ object ExitInterceptUtils {
             } else {
                 if (!checkUserIsLogin()) {
                     //用户未登录
-
+                    showNotLoginDialog(activity)
                     return
                 }
-                //已登录用户
-                when {
-                    checkNotLottery() -> { //判断当日是否抽奖
-                        showNotLotteryDialog(activity)
-                    }
-                    checkRedPacketNotOpen() -> { //判断是否还有红包未开启
-                        showOpenRedPacketDialog(activity)
-                    }
-                    else -> {
-                        showContinueLotteryDialog(activity)
-                    }
+                //已登录的逻辑判断
+                // 1:已登录未抽奖
+                if (checkNotLottery()) { //判断当日是否抽奖
+                    //当日未抽奖
+                    showContinueLotteryDialog(activity)
+                    return
                 }
+                // 2：已登录，已抽奖,判断抽奖是否达到了10次
+                if (getNotLotteryCount() >= 10) {
+                    if (checkRedPacketNotOpen()) {
+                        //有红包未开启
+                        showOpenRedPacketDialog(activity)
+                    } else {
+                        //红包已全部开启
+                        showRedPacketAllOpenDialog(activity)
+                    }
+                } else {
+                    // 抽奖未达到10次
+                    showWinNotAllOpenDialog(activity)
+                }
+//                showNotLotteryDialog(activity)
             }
         } else {
             Toast.makeText(activity.application, "再按一次退出！", Toast.LENGTH_SHORT).show()
@@ -116,10 +143,18 @@ object ExitInterceptUtils {
 
     /**
      * 判断用户当日是否抽奖
-     * @return Boolean true 抽过奖,false 未抽过奖
+     * @return Boolean false 抽过奖,true 未抽过奖
      */
     private fun checkNotLottery(): Boolean {
         return !LotteryAdCount.todayLottery()
+    }
+
+    /**
+     * 获取今日参与抽奖的次数
+     * @return 抽奖次数
+     */
+    private fun getNotLotteryCount(): Int {
+        return LotteryAdCount.getTodayLotteryCount()
     }
 
     /**
@@ -134,6 +169,58 @@ object ExitInterceptUtils {
         return false
     }
 
+    /***
+     *  显示未抽奖弹出框
+     */
+    private fun showNotLoginDialog(activity: AppCompatActivity) {
+        if (notLoginDialog != null && notLoginDialog!!.isShowing) {
+            return
+        }
+        notLoginDialog = ExitNotLoginDialog.newInstance(activity)
+        notLoginDialog!!.setFinishListener(object : ExitNotLoginDialog.OnFinishListener {
+            override fun onDismiss() {
+                notLoginDialog = null
+            }
+
+            override fun onDismissAd() {
+                notLoginDialog = null
+            }
+        })
+        notLoginDialog?.show()
+    }
+
+    /***
+     *  显示未抽奖弹出框
+     */
+    private fun showWinningDialog(activity: AppCompatActivity) {
+        if (winningDialog != null && winningDialog!!.dialog != null && winningDialog!!.dialog!!.isShowing) {
+            return
+        }
+        winningDialog = ExitWinningDialog.newInstance().apply {
+            setOnDismissListener {
+                notLotteryDialog = null
+            }
+            setOnSureListener {
+                RequestUtil.requestHighValueGoodsInfo()
+                ARouter.getInstance()
+                    .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
+                    .withString("goods_id", item!!.goodsId)
+                    .withBoolean("start_lottery", true)
+                    .navigation()
+                disMissDialog()
+            }
+            setOnCloseListener {
+                RequestUtil.requestHighValueGoodsInfo()
+                disMissDialog()
+                exitApp(activity)
+            }
+            setOnLaterListener {
+                RequestUtil.requestHighValueGoodsInfo()
+                disMissDialog()
+            }
+        }
+        winningDialog?.show(activity.supportFragmentManager, NotLotteryDialog::class.simpleName)
+    }
 
     /***
      *  显示未抽奖弹出框
@@ -159,7 +246,7 @@ object ExitInterceptUtils {
     }
 
     /**
-     * 开红包弹出框
+     * 参与了抽奖但是还有开红包弹出框
      * @param activity activity
      */
     private fun showOpenRedPacketDialog(activity: AppCompatActivity) {
@@ -180,11 +267,15 @@ object ExitInterceptUtils {
                     }
                     setOnCancelListener {
                         disMissDialog()
-                        showRemindDialog(activity)
+//                        showRemindDialog(activity)
                     }
                     setOnCloseListener {
                         disMissDialog()
-                        showRemindDialog(activity)
+//                        showRemindDialog(activity)
+                    }
+                    setOnLaterListener {
+                        disMissDialog()
+                        exitApp(activity)
                     }
                 }
         openRedPacketDialog?.show(
@@ -193,9 +284,88 @@ object ExitInterceptUtils {
         )
     }
 
+    /**
+     * 参与了抽奖,但是抽奖不到10次
+     * @param activity activity
+     */
+    private fun showWinNotAllOpenDialog(activity: AppCompatActivity) {
+        if (redPacketNotAllOpenDialog != null && redPacketNotAllOpenDialog!!.dialog != null && redPacketNotAllOpenDialog!!.dialog!!.isShowing) {
+            return
+        }
+        redPacketNotAllOpenDialog =
+            WinNotAllOpenDialog.newInstance()
+                .apply {
+                    setOnDismissListener {
+                        redPacketNotAllOpenDialog = null
+                    }
+                    setOnSureListener {
+                        val item: HighValueGoodsBean? =
+                            GoodsCache.readGoodsBean(HighValueGoodsBean::class.java, "exit")
+                        disMissDialog()
+                        if (item != null) {
+                            showWinningDialog(activity)
+                        }
+                    }
+                    setOnCancelListener {
+                        disMissDialog()
+                    }
+                    setOnCloseListener {
+                        disMissDialog()
+                    }
+                    setOnLaterListener {
+                        disMissDialog()
+                        if (checkRedPacketNotOpen()) {
+                            //有红包未开启
+                            showOpenRedPacketDialog(activity)
+                        } else {
+                            //红包已全部开启(显示开奖提醒)
+                            showRemindDialog(activity)
+                        }
+                    }
+                }
+        redPacketNotAllOpenDialog?.show(
+            activity.supportFragmentManager,
+            WinNotAllOpenDialog::class.simpleName
+        )
+    }
 
     /**
-     * 继续抽奖弹出框
+     * 参与了抽奖,并且红包已经全部开启了
+     * @param activity activity
+     */
+    private fun showRedPacketAllOpenDialog(activity: AppCompatActivity) {
+        if (redPacketAllOpenDialog != null && redPacketAllOpenDialog!!.dialog != null && redPacketAllOpenDialog!!.dialog!!.isShowing) {
+            return
+        }
+        redPacketAllOpenDialog =
+            RedPacketAllOpenDialog.newInstance()
+                .apply {
+                    setOnDismissListener {
+                        redPacketAllOpenDialog = null
+                    }
+                    setOnSureListener {
+                        disMissDialog()
+                    }
+                    setOnCancelListener {
+                        disMissDialog()
+                    }
+                    setOnCloseListener {
+                        disMissDialog()
+                    }
+                    setOnLaterListener {
+                        disMissDialog()
+                        exitApp(activity)
+                    }
+                }
+        redPacketAllOpenDialog?.show(
+            activity.supportFragmentManager,
+            RedPacketAllOpenDialog::class.simpleName
+        )
+    }
+
+
+    /**
+     * 已登录用户。当日未参与抽奖的弹窗
      * @param activity activity
      */
     private fun showContinueLotteryDialog(activity: AppCompatActivity) {
@@ -213,7 +383,11 @@ object ExitInterceptUtils {
                     }
                     setOnCloseListener {
                         disMissDialog()
-                        showRemindDialog(activity)
+//                        showRemindDialog(activity)
+                    }
+                    setOnLaterListener {
+                        disMissDialog()
+                        exitApp(activity)
                     }
                 }
         continueLotteryDialog?.show(
@@ -224,7 +398,7 @@ object ExitInterceptUtils {
 
 
     /**
-     * 显示提示弹出框
+     * 显示提示弹出框(是否开启提醒、明日开奖的提示框)
      * @param activity AppCompatActivity
      */
     private fun showRemindDialog(activity: AppCompatActivity) {
@@ -242,6 +416,15 @@ object ExitInterceptUtils {
                 }
 
                 setOnCancelListener {
+                    disMissDialog()
+                    exitApp(activity)
+                }
+
+                setOnCloseListener {
+                    disMissDialog()
+                }
+
+                setOnLaterListener {
                     disMissDialog()
                     exitApp(activity)
                 }
@@ -313,7 +496,8 @@ object ExitInterceptUtils {
      * 退出app
      * @param activity AppCompatActivity
      */
-    private fun exitApp(activity: AppCompatActivity) {
+    @JvmStatic
+    fun exitApp(activity: AppCompatActivity) {
         LotteryAdCount.exitAppWithNotLottery()
         JddAdConfigManager.addListener {
             val jddAdConfigBean = JddAdConfigManager.jddAdConfigBean

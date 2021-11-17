@@ -30,9 +30,10 @@ import java.text.DecimalFormat
 import kotlin.random.Random
 
 /**
- * 拦截弹窗之继续抽奖
+ * 已登录用户。当日未参与抽奖的弹窗
  *
  * @author XuShuai
+ * 改：lcl
  * @version v1.0
  * @date 2021/10/20 20:28
  */
@@ -89,56 +90,23 @@ class ContinueLotteryDialog : AbstractFragmentDialog<MainExitDialogContinueLotte
     }
 
     private fun showCloseBtn() {
-        handler.postDelayed(Runnable {
+        handler.postDelayed({
             dataBinding.ivClose.visibility = View.VISIBLE
+            dataBinding.tvPExit.visibility = View.VISIBLE
         }, continueLotteryConfig.closeBtnLazyShow * 1000L)
     }
 
 
     private fun setTitle() {
-        val random = Random(System.currentTimeMillis())
-
-        val minTimes = continueLotteryConfig.minLotteryTimes
-        val maxTimes = continueLotteryConfig.maxLotteryTimes
-        val times = (random.nextInt(maxTimes - minTimes) + minTimes).toString()
-
-        val min = continueLotteryConfig.minProbability
-        val max = continueLotteryConfig.maxProbability
-        val delta = max - min
-        val prob = (min + random.nextDouble(delta)) * 100
-
-        val format = DecimalFormat("0.##")
-        format.roundingMode = RoundingMode.FLOOR
-        val probString = format.format(prob)
-
-        val result = getString(R.string.main_exit_continue_lottery_title, times, probString)
+        val prob = Random.nextInt(300).toString()
+        val result = "已经有${prob}人抽中该商品"
         val spannable: SpannableString = SpannableString(result)
         spannable.setSpan(
-            ForegroundColorSpan(Color.parseColor("#F53838")),
-            2,
-            2 + times.length,
+            AbsoluteSizeSpan(DensityUtils.dip2px(25f)),
+            3,
+            3 + prob.length,
             Spannable.SPAN_INCLUSIVE_EXCLUSIVE
         )
-        spannable.setSpan(
-            AbsoluteSizeSpan(DensityUtils.dip2px(20f)),
-            2,
-            2 + times.length,
-            Spannable.SPAN_INCLUSIVE_EXCLUSIVE
-        )
-
-        spannable.setSpan(
-            ForegroundColorSpan(Color.parseColor("#F53838")),
-            result.length - probString.length - 1,
-            result.length,
-            Spannable.SPAN_INCLUSIVE_EXCLUSIVE
-        )
-        spannable.setSpan(
-            AbsoluteSizeSpan(DensityUtils.dip2px(20f)),
-            result.length - probString.length - 1,
-            result.length,
-            Spannable.SPAN_INCLUSIVE_EXCLUSIVE
-        )
-
         dataBinding.title = spannable
     }
 
@@ -156,12 +124,13 @@ class ContinueLotteryDialog : AbstractFragmentDialog<MainExitDialogContinueLotte
                         if (dataBinding != null) {
                             dataBinding.goodsBean = it
 
-                            val peopleNumberString = if (it.totalPeople > NotLotteryDialog.TEN_THOUSAND) {
-                                (it.totalPeople / TEN_THOUSAND).toString().substring(0, 3)
+                            val peopleNumberString =
+                                if (it.totalPeople > NotLotteryDialog.TEN_THOUSAND) {
+                                    (it.totalPeople / TEN_THOUSAND).toString().substring(0, 3)
 
-                            } else {
-                                it.totalPeople.toString()
-                            }
+                                } else {
+                                    it.totalPeople.toString()
+                                }
                             dataBinding.totalPeople = peopleNumberString
 
                             goodsInfo = it
@@ -186,13 +155,20 @@ class ContinueLotteryDialog : AbstractFragmentDialog<MainExitDialogContinueLotte
                 ARouter.getInstance()
                     .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                     .withString("goods_id", goodsId)
-                    .navigation();
+                    .withBoolean("start_lottery",true)
+                    .navigation()
             }
         }
 
         fun clickClose(view: View) {
-            if (onCloseListener != null) {
+            if (onCloseListener != null && view.visibility == View.VISIBLE) {
                 onCloseListener.onClose()
+            }
+        }
+
+        fun clickLater(view: View) {
+            if (onLaterListener != null  && view.visibility == View.VISIBLE) {
+                onLaterListener?.onClose()
             }
         }
     }

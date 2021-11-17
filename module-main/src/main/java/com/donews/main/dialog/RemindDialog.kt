@@ -67,7 +67,7 @@ class RemindDialog : AbstractFragmentDialog<MainExitDialogRemindBinding>(), Easy
         dataBinding.eventListener = EventListener()
 
         dataBinding.btnNext.visibility = if (checkPermission()) View.GONE else View.VISIBLE
-//        showCloseBtn()
+        showCloseBtn()
     }
 
 
@@ -78,6 +78,7 @@ class RemindDialog : AbstractFragmentDialog<MainExitDialogRemindBinding>(), Easy
     private fun showCloseBtn() {
         handler.postDelayed(Runnable {
             dataBinding.ivClose.visibility = View.VISIBLE
+            dataBinding.tvOk.visibility = View.VISIBLE
         }, remindConfig.closeBtnLazyShow * 1000L)
     }
 
@@ -152,7 +153,15 @@ class RemindDialog : AbstractFragmentDialog<MainExitDialogRemindBinding>(), Easy
         }
 
         fun clickIvClose(view: View) {
-            onCloseListener?.onClose()
+            if(view.visibility == View.VISIBLE) {
+                onCloseListener?.onClose()
+            }
+        }
+
+        fun laterClose(view: View) {
+            if(view.visibility == View.VISIBLE) {
+                onLaterListener?.onClose()
+            }
         }
     }
 

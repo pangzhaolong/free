@@ -129,10 +129,16 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
         }
     }
 
+    int count = 0;
+
     @Override
     public void onResume() {
-        super.onResume();
         onRefresh();
+        count++;
+        if (count < 10) {
+            setYYW();
+        }
+        super.onResume();
     }
 
     private void onRefresh() {
@@ -242,20 +248,46 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
                         }
                     }
                 });
-        //模拟设置运营位
-        MineOperatingPosView vpOperation = getView().findViewById(R.id.mine_me_k_operating);
-        vpOperation.setItemClick((view,item)->{
-            ToastUtil.show(getActivity(),"this click ->"+item);
-        });
-        List<Object> list = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            list.add("--"+i);
-        }
-        vpOperation.setDatas(list);
         updateUIData();
         mDataBinding.mineFrmRefesh.autoRefresh();
+//        setYYW();
         scrollFloatBar();
 //        mDataBinding.mineCcsView.refreshData();
+    }
+
+    //模拟设置运营位
+    private void setYYW() {
+        MineOperatingPosView vpOperation = getView().findViewById(R.id.mine_me_k_operating);
+        List<MineOperatingPosView.IOperatingData> list = new ArrayList<>();
+        List<Integer> imgs = new ArrayList() {
+            {
+                add(R.drawable.main_yyw);
+                add(R.drawable.main_yyw);
+                add(R.drawable.main_yyw);
+                add(R.drawable.main_yyw);
+                add(R.drawable.main_yyw);
+                add(R.drawable.main_yyw);
+                add(R.drawable.main_yyw);
+                add(R.drawable.main_yyw);
+                add(R.drawable.main_yyw);
+                add(R.drawable.main_yyw);
+                add(R.drawable.main_yyw);
+            }
+        };
+        for (int i = 0; i < count; i++) {
+            final int pos = i;
+            list.add(new MineOperatingPosView.IOperatingData() {
+                @Override
+                public String getIconUrl() {
+                    return "" + imgs.get(pos);
+                }
+
+                @Override
+                public void onClick(View view, MineOperatingPosView.IOperatingData data) {
+                }
+            });
+        }
+        vpOperation.setDatas(list);
     }
 
     //更新UI数据
@@ -345,16 +377,27 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
     int topBaseLinePx = 0;
     int topFloatBaseHei = 0;
     int appBarHei = 0;
+    int vpHei = 0;
+    int selectBarBaseHei = 0;
+    View vpView = null;
 
     //滚动悬浮标题处理
     private void scrollFloatBar() {
         //处理滑动精选标题遮挡问题
+        vpView = getView().findViewById(R.id.mine_me_k_operating);
         int statusHei = BarUtils.getStatusBarHeight();
         mDataBinding.mineMeApptBar.addOnOffsetChangedListener((appBarLayout1, verticalOffset) -> {
-            if (appBarHei == 0) {
-                appBarHei = mDataBinding.mineMeApptBar.getHeight();
+            if (selectBarBaseHei == 0) {
+                selectBarBaseHei = mDataBinding.mineMeSelectBar.getHeight();
+            }
+            if (topFloatBaseHei == 0) {
                 topFloatBaseHei = mDataBinding.mineMeSelectBar.getPaddingTop();
-                topBaseLinePx = (appBarHei - (mDataBinding.mineMeSelectBar.getHeight() - topFloatBaseHei) - statusHei);
+            }
+            //vp调整过位置了。那么重新就散基础距离等相关数据
+            if (vpHei != vpView.getHeight()) {
+                vpHei = vpView.getHeight();
+                appBarHei = mDataBinding.mineMeApptBar.getHeight();
+                topBaseLinePx = (appBarHei - (selectBarBaseHei - topFloatBaseHei) - statusHei);
             }
             if (appBarHei == 0 || topFloatBaseHei == 0 || topBaseLinePx == 0) {
                 return;
@@ -366,7 +409,7 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
                         topFloatBaseHei + Math.abs(topBaseLinePx + verticalOffset),
                         0,
                         mDataBinding.mineMeSelectBar.getPaddingBottom());
-            } else {
+            } else if (verticalOffset > -(topBaseLinePx)) {
                 //还没有到位置
                 if (mDataBinding.mineMeSelectBar.getPaddingTop() > topFloatBaseHei) {
                     mDataBinding.mineMeSelectBar.setPadding(
