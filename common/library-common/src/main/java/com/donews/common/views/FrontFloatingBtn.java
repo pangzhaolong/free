@@ -1,4 +1,4 @@
-package com.donews.front.views;
+package com.donews.common.views;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -11,7 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.donews.front.R;
+import com.donews.common.R;
+
 
 public class FrontFloatingBtn extends LinearLayout {
 

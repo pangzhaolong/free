@@ -1,4 +1,4 @@
-package com.donews.front.views;
+package com.donews.common.views;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -14,7 +14,7 @@ import android.view.animation.LinearInterpolator;
 
 import androidx.annotation.Nullable;
 
-import com.donews.front.R;
+import com.donews.common.R;
 
 
 /**
