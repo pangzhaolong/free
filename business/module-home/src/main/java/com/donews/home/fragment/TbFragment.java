@@ -35,7 +35,7 @@ public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBin
     }
 
     private static class FragmentStatus {
-        public int pageId = 1;
+        public int pageId = 0;
         public boolean firstLoaded = false;
     }
 
@@ -58,7 +58,7 @@ public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBin
             TmpSearchHistory.Ins().getList().add(keyWord);
         }
 
-        mFragmentStatus.pageId = 1;
+        mFragmentStatus.pageId = 0;
         SearchHistory.Ins().setCurKeyWord(keyWord);
 
         HomeGoodsBean homeGoodsBean = GoodsCache.readGoodsBean(HomeGoodsBean.class, SearchHistory.Ins().getCurKeyWord() + mPosition);

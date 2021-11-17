@@ -15,8 +15,9 @@ public class SearchFragmentAdapter extends FragmentStateAdapter {
     private final Map<Integer, Fragment> mFragmentMap = new HashMap<>();
 
     public void search(String keyWord, int position) {
+        Fragment fragment;
         for (int i = 0; i < 3; i++) {
-            Fragment fragment = mFragmentMap.get(i);
+            fragment = getFragment(i);
             if (fragment == null) {
                 continue;
             }
@@ -45,7 +46,7 @@ public class SearchFragmentAdapter extends FragmentStateAdapter {
         super(activity);
     }
 
-    private Fragment mkFragment(int position) {
+    private Fragment getFragment(int position) {
         if (mFragmentMap.get(position) == null) {
             mFragmentMap.put(position, new TbFragment(position));
         }
@@ -55,7 +56,7 @@ public class SearchFragmentAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        return mkFragment(position);
+        return getFragment(position);
     }
 
     @Override

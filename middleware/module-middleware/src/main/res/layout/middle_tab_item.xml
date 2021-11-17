@@ -5,8 +5,8 @@
 
     <ImageView
         android:id="@+id/middle_tab_item_bg"
-        android:layout_width="wrap_content"
-        android:layout_height="7dp"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
         android:layout_gravity="bottom|center_horizontal"
         android:src="@drawable/middle_tablayout_item_line" />
 

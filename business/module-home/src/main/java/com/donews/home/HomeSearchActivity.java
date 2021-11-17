@@ -15,12 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.home.adapter.BuysGoodsAdapter;
 import com.donews.home.adapter.SearchFragmentAdapter;
-import com.donews.home.adapter.SearchHistoryAdapter;
 import com.donews.home.adapter.SearchSugAdapter;
 import com.donews.home.databinding.HomeJddSearchSearchBinding;
 import com.donews.home.listener.GoodsClickListener;
 import com.donews.home.listener.SearchListener;
 import com.donews.home.viewModel.SearchViewModel;
+import com.donews.home.views.SearchHistoryItem;
 import com.donews.middle.bean.home.SearchHistory;
 import com.donews.middle.bean.home.TmpSearchHistory;
 import com.donews.middle.decoration.GridSpaceItemDecoration;
@@ -42,11 +42,12 @@ public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSe
     private SearchFragmentAdapter mSearchFragmentAdapter;
     private SearchSugAdapter mSearchSugAdapter;
     private BuysGoodsAdapter mBuysGoodsAdapter;
-    private SearchHistoryAdapter mSearchHistoryAdapter;
     private Context mContext;
 
     private String mPreKeyWord = "";
     private int mPosition = 0;
+
+    private int mPageId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +126,8 @@ public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSe
             public void afterTextChanged(Editable s) {
                 if (s.toString().equalsIgnoreCase("")) {
                     mDataBinding.homeSearchSuggestionRv.setVisibility(View.GONE);
-                    mDataBinding.homeSearchPlatformLl.setVisibility(View.VISIBLE);
+                    mDataBinding.homeSearchFragmentsLl.setVisibility(View.INVISIBLE);
+                    mDataBinding.homeSearchCl.setVisibility(View.VISIBLE);
                     return;
                 }
                 search(s.toString());
@@ -137,38 +139,21 @@ public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSe
         mDataBinding.homeSearchSuggestionRv.setLayoutManager(new LinearLayoutManager(this));
         mDataBinding.homeSearchSuggestionRv.setAdapter(mSearchSugAdapter);
         mDataBinding.homeSearchSuggestionRv.setVisibility(View.GONE);
-        mDataBinding.homeSearchPlatformLl.setVisibility(View.VISIBLE);
+        mDataBinding.homeSearchFragmentsLl.setVisibility(View.INVISIBLE);
+        mDataBinding.homeSearchCl.setVisibility(View.VISIBLE);
 
         mDataBinding.homeSearchDo.setOnClickListener(v -> {
             InputMethodManager inputMethodManager = (InputMethodManager) mContext.getSystemService(Activity.INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
             mDataBinding.homeSearchSuggestionRv.setVisibility(View.GONE);
-            mDataBinding.homeSearchPlatformLl.setVisibility(View.VISIBLE);
+            mDataBinding.homeSearchFragmentsLl.setVisibility(View.VISIBLE);
+            mDataBinding.homeSearchCl.setVisibility(View.GONE);
             mSearchFragmentAdapter.search(mDataBinding.homeSearchEdit.getText().toString(), mPosition);
         });
 
-        //搜索历史
-        mSearchHistoryAdapter = new SearchHistoryAdapter(this);
-        GridLayoutManager manager = new GridLayoutManager(this, 40);
-        manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int position) {
-                if (position < 0 || position >= SearchHistory.Ins().getList().size()) {
-                    return 0;
-                }
-                String strText = SearchHistory.Ins().getList().get(position);
-                int strLen = strText.getBytes().length;
-                if (strLen >= 40) {
-                    return 40;
-                }
-
-                return strText.getBytes().length;
-            }
-        });
-
-        mDataBinding.homeSearchHistoryRv.setLayoutManager(manager);
-        mDataBinding.homeSearchHistoryRv.setAdapter(mSearchHistoryAdapter);
+        mDataBinding.homeSearchFlowLayout.setFlow(true);
+        mDataBinding.homeSearchFlowLayout.setMaxRows(4);
         reloadSearchHistory();
 
         mDataBinding.homeSearchHistoryCleanTv.setOnClickListener(v -> {
@@ -184,16 +169,23 @@ public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSe
         mDataBinding.homeSearchBuysRv.addItemDecoration(new GridSpaceItemDecoration(2));
         mDataBinding.homeSearchBuysRv.setAdapter(mBuysGoodsAdapter);
 
+        mDataBinding.homeSearchSrl.setEnableRefresh(false);
+        mDataBinding.homeSearchSrl.setOnLoadMoreListener(refreshLayout -> loadBuysData());
+
+
         loadBuysData();
     }
 
     private void loadBuysData() {
-        mViewModel.getBuysData(1).observe(this, homeGoodsBean -> {
+        mPageId++;
+        mViewModel.getBuysData(mPageId).observe(this, homeGoodsBean -> {
+            mDataBinding.homeSearchSrl.finishLoadMore();
             if (homeGoodsBean == null || homeGoodsBean.getList() == null || homeGoodsBean.getList().size() <= 0) {
+                mPageId--;
                 return;
             }
 
-            mBuysGoodsAdapter.refreshData(homeGoodsBean.getList(), true);
+            mBuysGoodsAdapter.refreshData(homeGoodsBean.getList(), mPageId == 1);
         });
     }
 
@@ -205,15 +197,14 @@ public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSe
         mViewModel.getSearchData(strKeyWord).observe((LifecycleOwner) mContext, searchSugBean -> {
             if (searchSugBean.getList().size() <= 0) {
                 mDataBinding.homeSearchSuggestionRv.setVisibility(View.GONE);
-                mDataBinding.homeSearchPlatformLl.setVisibility(View.VISIBLE);
-            } else {
-                mDataBinding.homeSearchBuysLl.setVisibility(View.GONE);
-                mDataBinding.homeSearchSuggestionRv.setVisibility(View.VISIBLE);
-                mDataBinding.homeSearchPlatformLl.setVisibility(View.GONE);
+                mDataBinding.homeSearchFragmentsLl.setVisibility(View.INVISIBLE);
+                mDataBinding.homeSearchCl.setVisibility(View.VISIBLE);
+                return;
             }
             mSearchSugAdapter.refreshData(searchSugBean.getList());
-            mDataBinding.homeSearchFragmentsLl.setVisibility(View.VISIBLE);
-            mDataBinding.homeSearchHistoryTl.setVisibility(View.GONE);
+            mDataBinding.homeSearchSuggestionRv.setVisibility(View.VISIBLE);
+            mDataBinding.homeSearchFragmentsLl.setVisibility(View.INVISIBLE);
+            mDataBinding.homeSearchCl.setVisibility(View.GONE);
         });
 
         mPreKeyWord = strKeyWord;
@@ -224,8 +215,9 @@ public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSe
             mDataBinding.homeSearchHistoryTl.setVisibility(View.GONE);
         } else {
             mDataBinding.homeSearchHistoryTl.setVisibility(View.VISIBLE);
-            if (mSearchHistoryAdapter != null) {
-                mSearchHistoryAdapter.refreshData(SearchHistory.Ins().getList());
+            mDataBinding.homeSearchFlowLayout.removeAllViews();
+            for (int i = 0; i < SearchHistory.Ins().getList().size(); i++) {
+                mDataBinding.homeSearchFlowLayout.addView(new SearchHistoryItem(mContext, SearchHistory.Ins().getList().get(i), this));
             }
         }
     }
@@ -252,7 +244,7 @@ public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSe
         mHistoryIndex--;
         if (mHistoryIndex == -1) {
             mDataBinding.homeSearchHistoryTl.setVisibility(View.VISIBLE);
-            mDataBinding.homeSearchBuysLl.setVisibility(View.VISIBLE);
+            mDataBinding.homeSearchSrl.setVisibility(View.VISIBLE);
             mDataBinding.homeSearchEdit.setText("");
             reloadSearchHistory();
             return;
@@ -269,22 +261,22 @@ public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSe
 
     @Override
     public void onClick(String keyWord) {
+        mDataBinding.homeSearchSuggestionRv.setVisibility(View.GONE);
+        mDataBinding.homeSearchFragmentsLl.setVisibility(View.VISIBLE);
+        mDataBinding.homeSearchCl.setVisibility(View.GONE);
+
         mSearchFragmentAdapter.search(keyWord, mPosition);
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-
-        mDataBinding.homeSearchSuggestionRv.setVisibility(View.GONE);
-        mDataBinding.homeSearchHistoryTl.setVisibility(View.GONE);
-        mDataBinding.homeSearchBuysLl.setVisibility(View.GONE);
-        mDataBinding.homeSearchPlatformLl.setVisibility(View.VISIBLE);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         SearchHistory.Ins().write(SearchHistory.Ins().toString());
-        SearchHistory.Ins().clear();
+        SearchHistory.Ins().setCurKeyWord("");
+//        SearchHistory.Ins().clear();
         TmpSearchHistory.Ins().clear();
     }
 

@@ -3,7 +3,6 @@ package com.donews.home;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +27,7 @@ import com.donews.middle.bean.home.SecKilBean;
 import com.donews.middle.bean.home.TopIconsBean;
 import com.donews.middle.bean.home.UserBean;
 import com.donews.middle.cache.GoodsCache;
+import com.donews.middle.go.GotoUtil;
 import com.donews.middle.views.TabItem;
 import com.donews.utilslibrary.utils.UrlUtils;
 import com.google.android.material.tabs.TabLayout;
@@ -155,11 +155,7 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
         mDataBinding.homeTitleJd.setOnClickListener(v -> ARouter.getInstance().build(RouterActivityPath.Home.Welfare_Activity)
                 .withString("from", "jd")
                 .navigation());
-        mDataBinding.homeTitleElm.setOnClickListener(v -> {
-            Uri uri = Uri.parse("https://s.click.ele.me/PvxZeeu");
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            startActivity(intent);
-        });
+        mDataBinding.homeTitleElm.setOnClickListener(v -> GotoUtil.gotoElem(mContext, "https://s.click.ele.me/PvxZeeu"));
         initSrl();
 
         loadCategory();
@@ -191,6 +187,7 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
     }
 
     private int mPageId = 1;
+
     private void loadRankListData() {
         RealTimeBean realTimeBean = GoodsCache.readGoodsBean(RealTimeBean.class, "home_banner");
         showRankListBean(realTimeBean);
@@ -361,9 +358,7 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
                     .withString("from", icon.getType())
                     .navigation();
         } else {
-            Uri uri = Uri.parse(icon.getUrl());
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            startActivity(intent);
+            GotoUtil.gotoElem(mContext, icon.getUrl());
         }
     }
 
@@ -381,7 +376,6 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
                 @Override
                 public void run() {
                     HomeFragment.this.requireActivity().runOnUiThread(() -> loadRankListData());
-//                    HomeFragment.this.requireActivity().runOnUiThread(() -> loadSecKilData());
                 }
             };
         }

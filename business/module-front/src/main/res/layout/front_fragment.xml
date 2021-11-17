@@ -56,7 +56,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="24dp"
                                 android:layout_marginStart="10dp"
-                                android:layout_marginTop="4dp"
+                                android:layout_marginTop="8dp"
                                 android:gravity="center"
                                 android:text="抽奖开红包"
                                 android:textColor="#FFEEB9
@@ -69,7 +69,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="24dp"
                                 android:layout_marginStart="10dp"
-                                android:layout_marginTop="4dp"
+                                android:layout_marginTop="8dp"
                                 android:layout_toRightOf="@+id/front_rp_title"
                                 android:src="@drawable/front_rp_help" />
 
@@ -78,7 +78,7 @@
                                 android:layout_width="70dp"
                                 android:layout_height="28dp"
                                 android:layout_alignParentRight="true"
-                                android:layout_marginTop="4dp"
+                                android:layout_marginTop="8dp"
                                 android:layout_marginEnd="10dp"
                                 android:background="@drawable/front_getmoney_bg"
                                 android:gravity="center"
@@ -92,7 +92,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/front_cash_get_tv"
-                                android:layout_marginTop="10dp"
+                                android:layout_marginTop="7dp"
                                 android:gravity="bottom"
                                 android:padding="5dp"
                                 android:weightSum="5">
@@ -353,7 +353,7 @@
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="20dp"
+                                    android:layout_marginStart="10dp"
                                     android:src="@drawable/front_lottery_cup" />
 
                                 <TextView
@@ -384,7 +384,7 @@
                                     android:layout_marginEnd="4dp"
                                     android:text="中奖攻略"
                                     android:textColor="#AC623C"
-                                    android:textSize="15sp" />
+                                    android:textSize="13sp" />
 
                                 <ImageView
                                     android:id="@+id/front_lottery_goto_iv"
@@ -392,7 +392,6 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginEnd="10dp"
                                     android:src="@drawable/front_lottery_goto" />
-
                             </LinearLayout>
 
                             <LinearLayout
@@ -412,6 +411,7 @@
                                     android:layout_marginEnd="3dp"
                                     android:background="@drawable/front_rp_num_unknown"
                                     android:gravity="center"
+                                    android:paddingBottom="1dp"
                                     android:text="\?"
                                     android:textColor="#FFFFFF"
                                     android:textSize="20sp" />
@@ -425,6 +425,7 @@
                                     android:layout_marginEnd="3dp"
                                     android:background="@drawable/front_rp_num_unknown"
                                     android:gravity="center"
+                                    android:paddingBottom="1dp"
                                     android:text="\?"
                                     android:textColor="#FFFFFF"
                                     android:textSize="20sp" />
@@ -438,6 +439,7 @@
                                     android:layout_marginEnd="3dp"
                                     android:background="@drawable/front_rp_num_unknown"
                                     android:gravity="center"
+                                    android:paddingBottom="1dp"
                                     android:text="\?"
                                     android:textColor="#FFFFFF"
                                     android:textSize="20sp" />
@@ -451,6 +453,7 @@
                                     android:layout_marginEnd="3dp"
                                     android:background="@drawable/front_rp_num_unknown"
                                     android:gravity="center"
+                                    android:paddingBottom="1dp"
                                     android:text="\?"
                                     android:textColor="#FFFFFF"
                                     android:textSize="20sp" />
@@ -464,6 +467,7 @@
                                     android:layout_marginEnd="3dp"
                                     android:background="@drawable/front_rp_num_unknown"
                                     android:gravity="center"
+                                    android:paddingBottom="1dp"
                                     android:text="\?"
                                     android:textColor="#FFFFFF"
                                     android:textSize="20sp" />
