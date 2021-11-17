@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.dn.events.events.RedPackageStatus;
 import com.donews.base.base.AppManager;
 import com.donews.base.base.AppStatusConstant;
 import com.donews.base.base.AppStatusManager;
@@ -37,14 +39,16 @@ import com.donews.utilslibrary.analysis.AnalysisParam;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.gyf.immersionbar.ImmersionBar;
-import com.orhanobut.logger.Logger;
 import com.vmadalin.easypermissions.EasyPermissions;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import me.majiajie.pagerbottomtabstrip.NavigationController;
-import me.majiajie.pagerbottomtabstrip.PageNavigationView;
 import me.majiajie.pagerbottomtabstrip.listener.SimpleTabItemSelectedListener;
 
 /**
@@ -84,9 +88,7 @@ public class MainActivity
                 .fitsSystemWindows(false)
                 .autoDarkModeEnable(true)
                 .init();
-//        EventBus.getDefault().register(this);
-
-
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -170,18 +172,7 @@ public class MainActivity
                     .addItem(mineItem)
                     .enableAnimateLayoutChanges()
                     .build();
-
-//            mNavigationController = mDataBinding.bottomView.material()
-//                    .addItem(R.drawable.main_home_checked, "首页", checkColor)
-//                    .addItem(R.drawable.main_showtime, "晒单", checkColor)
-//                    .addItem(R.drawable.main_lottery, "开奖", checkColor)
-//                    .addItem(R.drawable.main_buy, "省钱购", checkColor)
-//                    .addItem(R.drawable.main_mine, "我的", checkColor)
-//                    .setDefaultColor(defaultColor)
-//                    .enableAnimateLayoutChanges()
-//                    .build();
         } else {
-
             MainBottomTanItem homeItem = new MainBottomTanItem(this);
             homeItem.initialization("首页", R.drawable.main_home_checked, defaultColor, checkColor,
                     "main_bottom_tab_home.json");
@@ -198,15 +189,6 @@ public class MainActivity
                     .addItem(mineItem)
                     .enableAnimateLayoutChanges()
                     .build();
-
-
-//            PageNavigationView.MaterialBuilder materialBuilder = mDataBinding.bottomView.material();
-//            materialBuilder.addItem(R.drawable.main_home_checked, "首页", checkColor);
-//            materialBuilder.addItem(R.drawable.main_lottery, "马上抢", checkColor);
-//            mNavigationController = materialBuilder.addItem(R.drawable.main_mine, "设置", checkColor)
-//                    .setDefaultColor(defaultColor)
-//                    .enableAnimateLayoutChanges()
-//                    .build();
         }
         mNavigationController.showBottomLayout();
         mDataBinding.cvContentView.setOffscreenPageLimit(4);
@@ -222,6 +204,8 @@ public class MainActivity
             }
         });
         AppStatusManager.getInstance().setAppStatus(AppStatusConstant.STATUS_NORMAL);
+
+        mDataBinding.mainFloatingBtn.setOnClickListener(v -> toggleStatusBar(0));
     }
 
     /**
@@ -232,55 +216,25 @@ public class MainActivity
     private void toggleStatusBar(int position) {
         switch (position) {
             case 0:
-//                ImmersionBar.with(this)
-//                        .statusBarColor(R.color.main_color_bar)
-//                        .navigationBarColor(R.color.black)
-//                        .fitsSystemWindows(true)
-//                        .autoDarkModeEnable(true)
-//                        .init();
                 AnalysisUtils.onEventEx(this, Dot.Page_Home);
                 AnalysisUtils.onEventEx(this, Dot.Btn_Home);
                 break;
             case 1:
                 AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
-//                ImmersionBar.with(this)
-//                        .statusBarColor(R.color.white)
-//                        .navigationBarColor(R.color.black)
-//                        .fitsSystemWindows(true)
-//                        .autoDarkModeEnable(true)
-//                        .init();
                 AnalysisUtils.onEventEx(this, Dot.Page_ShowTime);
                 AnalysisUtils.onEventEx(this, Dot.Btn_ShowTime);
                 break;
             case 2:
-//                ImmersionBar.with(this)
-//                        .statusBarColor(R.color.red_kj)
-//                        .navigationBarColor(R.color.black)
-//                        .fitsSystemWindows(true)
-//                        .autoDarkModeEnable(true)
-//                        .init();
                 AnalysisUtils.onEventEx(this, Dot.Page_Lottery);
                 AnalysisUtils.onEventEx(this, Dot.Btn_Lottery);
                 break;
             case 3:
                 AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
-//                ImmersionBar.with(this)
-//                        .statusBarColor(R.color.white)
-//                        .navigationBarColor(R.color.black)
-//                        .fitsSystemWindows(true)
-//                        .autoDarkModeEnable(true)
-//                        .init();
                 AnalysisUtils.onEventEx(this, Dot.Page_SaveMoneyBuy);
                 AnalysisUtils.onEventEx(this, Dot.Btn_SaveMoneyBuy);
                 break;
             case 4:
                 AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
-//                ImmersionBar.with(this)
-//                        .statusBarColor(R.color.text_red)
-//                        .navigationBarColor(R.color.black)
-//                        .fitsSystemWindows(true)
-//                        .autoDarkModeEnable(true)
-//                        .init();
                 AnalysisUtils.onEventEx(this, Dot.Page_UserCenter);
                 AnalysisUtils.onEventEx(this, Dot.Btn_UserCenter);
                 break;
@@ -291,7 +245,6 @@ public class MainActivity
     private void initFragment() {
         fragments = new ArrayList<>();
         //通过ARouter 获取其他组件提供的fragment
-
         if (ABSwitch.Ins().isOpenAB()) {
             fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Home.PAGER_HOME).navigation());
             fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Spike.PAGER_SPIKE).navigation());
@@ -373,7 +326,7 @@ public class MainActivity
     protected void onDestroy() {
         ImmersionBar.destroy(this, null);
         AppStatusManager.getInstance().setAppStatus(AppStatusConstant.STATUS_FORCE_KILLED);
-//        EventBus.getDefault().unregister(this);
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 
@@ -383,5 +336,12 @@ public class MainActivity
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults,
                 ExitInterceptUtils.INSTANCE.getRemindDialog());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onGetMessage(RedPackageStatus redPackageStatus) {
+        if (redPackageStatus.getStatus() == 0) {
+            mDataBinding.mainFloatingBtn.setProgress(redPackageStatus.getCounts());
+        }
     }
 }

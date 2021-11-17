@@ -32,7 +32,7 @@
             skin:enable="true" />
 
         <com.donews.common.views.FrontFloatingBtn
-            android:id="@+id/front_floating_btn"
+            android:id="@+id/main_floating_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"

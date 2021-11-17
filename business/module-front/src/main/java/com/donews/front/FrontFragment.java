@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.CycleInterpolator;
 import android.view.animation.LinearInterpolator;
@@ -15,7 +14,6 @@ import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +23,8 @@ import androidx.annotation.Nullable;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.BarUtils;
+import com.dn.events.events.LoginLodingStartStatus;
+import com.dn.events.events.RedPackageStatus;
 import com.dn.events.events.WalletRefreshEvent;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.common.router.RouterActivityPath;
@@ -47,6 +47,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -168,6 +169,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         startTimer();
 
         scrollFloatBar();
+
+        EventBus.getDefault().register(this);
     }
 
     private void startTimer() {
@@ -199,13 +202,17 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     private void initSrl() {
         mDataBinding.frontSrl.setEnableLoadMore(false);
         mDataBinding.frontSrl.setOnRefreshListener(refreshLayout -> {
-            loadCategoryData();
-//            loadAwardList();
-            loadRpData();
-            loadLotteryRecord();
-            reloadNorData(mCurSelectPosition);
-            mDataBinding.frontSrl.finishRefresh();
+            refreshFront();
         });
+    }
+
+    private void refreshFront() {
+        loadCategoryData();
+//            loadAwardList();
+        loadRpData();
+        loadLotteryRecord();
+        reloadNorData(mCurSelectPosition);
+        mDataBinding.frontSrl.finishRefresh();
     }
 
     private void reloadNorData(int position) {
@@ -303,6 +310,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mDataBinding.frontRpTv4.setText("抽奖7次");
             mDataBinding.frontRpTv5.setText("抽奖10次");
             startTimer();
+
+            EventBus.getDefault().post(new RedPackageStatus(0, 0));
             return;
         }
 
@@ -413,7 +422,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             }
         }
 
-//        mDataBinding.frontFloatingBtn.setProgress(rpBean.getHadLotteryTotal());
+        EventBus.getDefault().post(new RedPackageStatus(0, rpBean.getHadLotteryTotal()));
 
         SPUtils.setInformain(KeySharePreferences.CLOSE_RED_PACKAGE_COUNTS, nCloseRpCounts);
         if (rpBean.getHadLotteryTotal() == -1) {
@@ -444,6 +453,9 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
+        EventBus.getDefault().unregister(this);
+
         mDataBinding.frontBarrageView.stopScroll();
         if (mFragmentAdapter != null) {
             mFragmentAdapter.clear();
@@ -548,6 +560,16 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                             mDataBinding.frontCategoryTl.getPaddingBottom());
                 }
             }
+        });
+    }
+
+    @Subscribe //用户登录状态变化
+    public void loginStatusEvent(LoginLodingStartStatus event) {
+        event.getLoginLoadingLiveData().observe(this, result -> {
+//            if (result == 1 || result == 2) {
+            LogUtil.e("loginStatusEvent " + result);
+            refreshFront();
+//            }
         });
     }
 }

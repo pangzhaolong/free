@@ -9,14 +9,14 @@
     android:orientation="vertical">
 
     <FrameLayout
-        android:id="@+id/front_floating_fl"
+        android:id="@+id/common_floating_fl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@drawable/front_floating_bg">
+        android:background="@drawable/common_floating_bg">
 
         <com.donews.common.views.CircleProgressBarView
-            android:id="@+id/front_floating_progress"
+            android:id="@+id/common_floating_progress"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
@@ -34,13 +34,13 @@
     </FrameLayout>
 
     <TextView
-        android:id="@+id/front_floating_tv"
+        android:id="@+id/common_floating_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
-        android:background="@drawable/front_floating_text_bg"
+        android:background="@drawable/common_floating_text_bg"
         android:ellipsize="end"
         android:gravity="center"
         android:text="0/10"

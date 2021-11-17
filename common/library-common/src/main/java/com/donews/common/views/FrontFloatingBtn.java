@@ -22,15 +22,15 @@ public class FrontFloatingBtn extends LinearLayout {
     public FrontFloatingBtn(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        View view = LayoutInflater.from(context).inflate(R.layout.front_floating_item, this, true);
-        mCircleProgress = view.findViewById(R.id.front_floating_progress);
-        mProgressTv = view.findViewById(R.id.front_floating_tv);
+        View view = LayoutInflater.from(context).inflate(R.layout.common_floating_item, this, true);
+        mCircleProgress = view.findViewById(R.id.common_floating_progress);
+        mProgressTv = view.findViewById(R.id.common_floating_tv);
     }
 
     @SuppressLint("SetTextI18n")
     public void setProgress(int progress) {
-        mCircleProgress.setCurrentProgress(progress * 10);
-        mProgressTv.setText(progress + "/10");
+        int steps = progress == -1 ? 10 : progress;
+        mCircleProgress.setCurrentProgress(steps * 10);
+        mProgressTv.setText(steps + "/10");
     }
-
 }

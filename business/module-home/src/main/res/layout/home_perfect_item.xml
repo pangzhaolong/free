@@ -44,7 +44,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/home_crazy_item_actprice_rl"
-
                 android:text="原价:"
                 android:textColor="#A9AEB1"
                 android:textSize="12sp" />
@@ -61,7 +60,7 @@
 
             <RelativeLayout
                 android:id="@+id/home_crazy_item_actprice_rl"
-                android:layout_width="140dp"
+                android:layout_width="133dp"
                 android:layout_height="28dp"
                 android:layout_alignParentBottom="true"
                 android:layout_marginTop="8dp"
@@ -95,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginEnd="13dp"
+                android:layout_marginEnd="8dp"
                 android:background="@drawable/home_crzay_item_gift_big_bg"
                 android:orientation="vertical">
 
