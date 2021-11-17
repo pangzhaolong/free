@@ -18,6 +18,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.ScreenUtils;
+import com.dn.drouter.ARouteHelper;
 import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.LotteryStatusEvent;
 import com.dn.events.events.UserTelBindEvent;
@@ -271,6 +272,11 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
 
                 @Override
                 public void onClick(View view, MineOperatingPosView.IOperatingData data) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("url",
+                            "https://i.iwanbei.cn/activities?appKey=c0d8e103601c4bc49abb501c59718143&appEntrance=1&business=money");
+                    bundle.putString("title", "天降豪礼");
+                    ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
                 }
             });
         }
