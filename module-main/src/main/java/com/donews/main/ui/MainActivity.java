@@ -28,6 +28,7 @@ import com.donews.main.R;
 import com.donews.main.adapter.MainPageAdapter;
 import com.donews.main.common.CommonParams;
 import com.donews.main.databinding.MainActivityMainBinding;
+import com.donews.main.dialog.DrawDialog;
 import com.donews.main.utils.ExitInterceptUtils;
 import com.donews.main.views.MainBottomTanItem;
 import com.donews.middle.abswitch.ABSwitch;
@@ -84,7 +85,47 @@ public class MainActivity
                 .autoDarkModeEnable(true)
                 .init();
 //        EventBus.getDefault().register(this);
+
+
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showDrawDialog();
+    }
+
+
+    /**
+     * 显示开奖弹框
+     */
+    private void showDrawDialog() {
+        DrawDialog dialog = new DrawDialog();
+        dialog.setEventListener(new DrawDialog.EventListener() {
+            @Override
+            public void switchPage() {
+                if (mNavigationController != null) {
+                    mPosition = 2;
+                    mNavigationController.setSelect(mPosition);
+                }
+            }
+
+            @Override
+            public void dismiss() {
+                if (dialog.isAdded()) {
+                    dialog.dismiss();
+                }
+            }
+
+            @Override
+            public void show() {
+                dialog.show(getSupportFragmentManager(), "DrawDialog");
+            }
+        });
+        dialog.requestGoodsInfo(getApplicationContext());
+
+    }
+
 
     @Override
     protected void onNewIntent(Intent intent) {
