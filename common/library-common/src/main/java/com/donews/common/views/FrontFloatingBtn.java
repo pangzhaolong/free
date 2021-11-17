@@ -29,6 +29,11 @@ public class FrontFloatingBtn extends LinearLayout {
 
     @SuppressLint("SetTextI18n")
     public void setProgress(int progress) {
+        if (progress == -2) {
+            mCircleProgress.setCurrentProgress(100);
+            mProgressTv.setText("明日继续");
+            return;
+        }
         int steps = progress == -1 ? 10 : progress;
         mCircleProgress.setCurrentProgress(steps * 10);
         mProgressTv.setText(steps + "/10");

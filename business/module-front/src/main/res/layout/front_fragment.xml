@@ -131,7 +131,8 @@
                                         android:gravity="center"
                                         android:text="明日再来"
                                         android:textColor="#FFF3D3"
-                                        android:textSize="12sp" />
+                                        android:textSize="12sp"
+                                        android:visibility="gone" />
 
 
                                 </FrameLayout>
@@ -169,7 +170,8 @@
                                         android:gravity="center"
                                         android:text="明日再来"
                                         android:textColor="#FFF3D3"
-                                        android:textSize="12sp" />
+                                        android:textSize="12sp"
+                                        android:visibility="gone" />
 
 
                                 </FrameLayout>
@@ -208,7 +210,8 @@
                                         android:gravity="center"
                                         android:text="明日再来"
                                         android:textColor="#FFF3D3"
-                                        android:textSize="12sp" />
+                                        android:textSize="12sp"
+                                        android:visibility="gone" />
                                 </FrameLayout>
 
                                 <FrameLayout
@@ -246,7 +249,8 @@
                                         android:gravity="center"
                                         android:text="明日再来"
                                         android:textColor="#FFF3D3"
-                                        android:textSize="12sp" />
+                                        android:textSize="12sp"
+                                        android:visibility="gone" />
                                 </FrameLayout>
 
                                 <FrameLayout
@@ -263,11 +267,13 @@
                                         android:background="@drawable/front_rp_gold" />
 
                                     <LinearLayout
+                                        android:id="@+id/front_rp_88_ll"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:paddingStart="5dp"
                                         android:layout_gravity="center_horizontal"
-                                        android:orientation="horizontal">
+                                        android:orientation="horizontal"
+                                        android:paddingStart="5dp">
+
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
@@ -310,6 +316,18 @@
                                         android:text="抽奖10次"
                                         android:textColor="#B9511B"
                                         android:textSize="12sp" />
+
+                                    <TextView
+                                        android:id="@+id/tomorrow_05"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_horizontal|bottom"
+                                        android:layout_marginBottom="6dp"
+                                        android:gravity="center"
+                                        android:text="明日再来"
+                                        android:textColor="#FFF3D3"
+                                        android:textSize="12sp"
+                                        android:visibility="gone" />
                                 </FrameLayout>
                             </LinearLayout>
 

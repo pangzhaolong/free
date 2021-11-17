@@ -382,6 +382,16 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         }
     }
 
+    private void showTomorrowText() {
+        mDataBinding.tomorrow01.setVisibility(View.VISIBLE);
+        mDataBinding.tomorrow02.setVisibility(View.VISIBLE);
+        mDataBinding.tomorrow03.setVisibility(View.VISIBLE);
+        mDataBinding.tomorrow04.setVisibility(View.VISIBLE);
+        mDataBinding.tomorrow05.setVisibility(View.VISIBLE);
+        mDataBinding.frontRp88Ll.setVisibility(View.GONE);
+        mDataBinding.frontRpGold88.setVisibility(View.GONE);
+    }
+
     int nCloseRpCounts = 0;
 
     @SuppressLint("SetTextI18n")
@@ -408,10 +418,18 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         rpBean = walletBean.getList().get(4);
         mDataBinding.frontRpOpenFl5.setTag(rpBean);
         mDataBinding.frontRpOpenFl5.setOnClickListener(this);
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mDataBinding.frontRpTv5.getLayoutParams();
         if (rpBean.getOpened()) {
             stopTimer();
+            mDataBinding.frontRpIv5.setBackgroundResource(R.drawable.front_rp_gold_open);
             mDataBinding.frontRpIv5.setAlpha(1.0f);
-            mDataBinding.frontRpTv5.setText("明日再来");
+            params.gravity = Gravity.CENTER;
+            params.bottomMargin = DensityUtils.dp2px(10);
+            mDataBinding.frontRpTv5.setLayoutParams(params);
+            mDataBinding.frontRpTv5.setTextColor(topColor);
+            mDataBinding.frontRpTv5.setText("已开启");
+            showTomorrowText();
+            EventBus.getDefault().post(new RedPackageStatus(0, -2));
         } else {
             if (rpBean.getHadLotteryTotal() == -1 || rpBean.getHadLotteryTotal() >= rpBean.getLotteryTotal()) {
                 nCloseRpCounts += 1;
@@ -420,9 +438,9 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             } else if (rpBean.getHadLotteryTotal() < rpBean.getLotteryTotal()) {
                 mDataBinding.frontRpTv5.setText("抽奖" + rpBean.getLotteryTotal() + "次");
             }
+            EventBus.getDefault().post(new RedPackageStatus(0, rpBean.getHadLotteryTotal()));
         }
 
-        EventBus.getDefault().post(new RedPackageStatus(0, rpBean.getHadLotteryTotal()));
 
         SPUtils.setInformain(KeySharePreferences.CLOSE_RED_PACKAGE_COUNTS, nCloseRpCounts);
         if (rpBean.getHadLotteryTotal() == -1) {

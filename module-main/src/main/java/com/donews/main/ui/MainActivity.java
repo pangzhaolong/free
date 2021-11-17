@@ -196,16 +196,17 @@ public class MainActivity
         mNavigationController.setupWithViewPager(mDataBinding.cvContentView);
 
         mDataBinding.cvContentView.setCurrentItem(position);
-        mNavigationController.addSimpleTabItemSelectedListener(new SimpleTabItemSelectedListener() {
-            @Override
-            public void onSelected(int index, int old) {
-                toggleStatusBar(index);
-                mPosition = index;
-            }
+        mNavigationController.addSimpleTabItemSelectedListener((index, old) -> {
+            toggleStatusBar(index);
+            mPosition = index;
         });
         AppStatusManager.getInstance().setAppStatus(AppStatusConstant.STATUS_NORMAL);
 
-        mDataBinding.mainFloatingBtn.setOnClickListener(v -> toggleStatusBar(0));
+        mDataBinding.mainFloatingBtn.setOnClickListener(v -> {
+            toggleStatusBar(0);
+            mDataBinding.cvContentView.setCurrentItem(0);
+            mPosition = 0;
+        });
     }
 
     /**
