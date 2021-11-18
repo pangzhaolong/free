@@ -155,7 +155,7 @@
                     android:layout_width="342dp"
                     android:layout_height="78dp"
                     android:layout_marginStart="34dp"
-                    android:layout_marginTop="62dp"
+                    android:layout_marginTop="52dp"
                     android:layout_marginEnd="34dp"
                     android:gravity="center"
                     android:orientation="horizontal">
@@ -185,7 +185,7 @@
                     android:id="@+id/hint_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="62dp"
+                    android:layout_marginTop="52dp"
                     android:gravity="bottom"
                     android:orientation="vertical"
                     >
