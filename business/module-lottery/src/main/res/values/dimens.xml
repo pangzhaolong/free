@@ -6,6 +6,7 @@
     <dimen name="lottery_constant_15">15dp</dimen>
     <dimen name="lottery_constant_13">13dp</dimen>
     <dimen name="lottery_constant_8">8dp</dimen>
+    <dimen name="lottery_constant_4">4dp</dimen>
     <dimen name="lottery_constant_20">19dp</dimen>
     <dimen name="lottery_constant_16">16dp</dimen>
     <dimen name="lottery_constant_100">100dp</dimen>
