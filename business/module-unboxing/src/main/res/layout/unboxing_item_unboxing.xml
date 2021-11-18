@@ -17,18 +17,17 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="14.3dp"
+        android:layout_marginEnd="14.3dp"
         android:layout_marginBottom="12dp"
-        android:background="@color/white"
-        android:paddingStart="15dp"
-        android:paddingEnd="15dp"
-        android:paddingBottom="8dp">
+        android:background="@drawable/unboxing_bg_item">
 
         <ImageView
             android:id="@+id/iv_photo"
-            android:layout_width="47dp"
-            android:layout_height="47dp"
-            android:layout_marginTop="22dp"
-            android:layout_marginBottom="12dp"
+            android:layout_width="46.7dp"
+            android:layout_height="46.7dp"
+            android:layout_marginStart="13.3dp"
+            android:layout_marginTop="17dp"
             app:imageCircleUrl="@{unboxingBean.avatar}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -38,114 +37,163 @@
             android:id="@+id/tv_nickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="10dp"
             android:text="@{unboxingBean.userName}"
             android:textColor="#2c2c2c"
-            android:textSize="15sp"
+            android:textSize="14.7sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/tv_lottery_cycles"
             app:layout_constraintStart_toEndOf="@id/iv_photo"
-            app:layout_constraintTop_toTopOf="@id/iv_photo" />
-
-        <TextView
-            android:id="@+id/tv_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="9dp"
-            android:text="@{unboxingBean.publishAt*1000}"
-            android:textSize="10sp"
-            android:visibility="gone"
-            app:layout_constraintBaseline_toBaselineOf="@id/tv_nickname"
-            app:layout_constraintStart_toEndOf="@id/tv_nickname" />
-
-
-        <androidx.constraintlayout.helper.widget.Layer
-            android:id="@+id/layer_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/unboxing_bg_location"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            app:constraint_referenced_ids="iv_location,tv_location"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/iv_photo"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="周展翅" />
 
         <TextView
             android:id="@+id/tv_location"
             android:layout_width="wrap_content"
-            android:layout_height="21dp"
-            android:layout_marginEnd="18dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="13.7dp"
+            android:background="@drawable/unboxing_bg_location"
             android:gravity="center"
+            android:includeFontPadding="false"
+            android:paddingStart="4dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="4dp"
+            android:paddingBottom="2dp"
             android:text="@={unboxingBean.city}"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="@id/tv_nickname"
+            app:layout_constraintStart_toEndOf="@id/tv_nickname"
+            app:layout_constraintTop_toTopOf="@id/tv_nickname"
+            tools:text="上海市" />
+
+        <TextView
+            android:id="@+id/tv_lottery_cycles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="@{@string/unboxing_period(unboxingBean.period)}"
+            android:textColor="#2c2c2c"
+            android:textSize="13.3sp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_photo"
+            app:layout_constraintStart_toStartOf="@id/tv_nickname"
+            app:layout_constraintTop_toBottomOf="@id/tv_nickname"
+            tools:text="第20211020期" />
+
+        <TextView
+            android:id="@+id/tv_winning_number"
+            android:layout_width="77.3dp"
+            android:layout_height="22dp"
+            android:layout_marginStart="21dp"
+            android:background="@drawable/unboxing_win_bg"
+            android:gravity="center"
+            android:text="@{unboxingBean.code}"
+            android:textColor="#E9423E"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_nickname" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="2623497" />
+
+        <TextView
+            android:id="@+id/tv_like_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="17dp"
+            android:text="@{String.valueOf(zan?unboxingBean.zan+1:unboxingBean.zan)}"
+            android:textColor="#A9AEB1"
+            android:textSize="12sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_lottery_cycles"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_winning_number"
+            tools:text="34567" />
 
         <ImageView
-            android:id="@+id/iv_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="1dp"
-            android:src="@drawable/unboxing_ic_location"
-            app:layout_constraintBottom_toBottomOf="@id/tv_location"
-            app:layout_constraintEnd_toStartOf="@id/tv_location"
-            app:layout_constraintTop_toTopOf="@id/tv_location" />
+            android:id="@+id/iv_ic_like"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginEnd="6.8dp"
+            android:src="@drawable/unboxing_ic_zan"
+            app:layout_constraintBottom_toBottomOf="@id/tv_like_number"
+            app:layout_constraintEnd_toStartOf="@id/tv_like_number"
+            app:layout_constraintTop_toTopOf="@id/tv_like_number"
+            app:tint="@{zan?@color/unboxing_E9423E:@color/unboxing_A9AEB1}" />
 
         <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/barrier_user_bottom"
+            android:id="@+id/barrier_info_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:barrierDirection="bottom"
-            app:constraint_referenced_ids="tv_nickname,tv_location,tv_date,iv_location" />
+            app:barrierDirection="start"
+            app:constraint_referenced_ids="tv_winning_number,iv_ic_like" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier_info_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="end"
+            app:constraint_referenced_ids="tv_location,tv_lottery_cycles" />
+
+        <ImageView
+            android:id="@+id/iv_ic_free"
+            android:layout_width="69.4dp"
+            android:layout_height="69.4dp"
+            android:padding="8dp"
+            android:src="@drawable/unboxing_ic_win"
+            app:layout_constraintBottom_toBottomOf="@id/iv_photo"
+            app:layout_constraintEnd_toEndOf="@id/barrier_info_right"
+            app:layout_constraintStart_toStartOf="@id/barrier_info_left"
+            app:layout_constraintTop_toTopOf="@id/iv_photo" />
 
         <TextView
             android:id="@+id/tv_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="13.3dp"
             android:layout_marginTop="10dp"
+            android:layout_marginEnd="13.3dp"
+            android:lineSpacingExtra="2dp"
             android:text="@={unboxingBean.message}"
+            android:textColor="#2c2c2c"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/tv_nickname"
-            app:layout_constraintTop_toBottomOf="@id/barrier_user_bottom"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_photo"
             tools:text="评价详情评价详情评价详情评价详情评价详情评价详情评价详情评价详情" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_pics"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:layout_constraintStart_toStartOf="@id/tv_nickname"
+            app:layout_constraintEnd_toEndOf="@id/tv_content"
+            app:layout_constraintStart_toStartOf="@id/tv_content"
             app:layout_constraintTop_toBottomOf="@id/tv_content"
             app:spanCount="3"
             tools:itemCount="5"
             tools:listitem="@layout/unboxing_item_pic" />
 
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/barrier_content_bottom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="bottom"
-            app:constraint_referenced_ids="iv_photo,tv_content,rv_pics" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_goods_info"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/unboxing_bg_location"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp"
+            android:layout_marginStart="13.3dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="13.3dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/unboxing_bg_goods"
+            android:paddingBottom="6.8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/barrier_content_bottom">
+            app:layout_constraintTop_toBottomOf="@id/rv_pics">
 
             <ImageView
                 android:id="@+id/iv_goods_pic"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
                 android:layout_marginStart="9dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="11.7dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:roundRadius="@{10f}"
@@ -156,13 +204,13 @@
                 android:id="@+id/tv_goods_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="9dp"
-                android:layout_marginEnd="37dp"
+                android:layout_marginStart="8.3dp"
+                android:layout_marginEnd="10.7dp"
                 android:ellipsize="end"
-                android:maxLines="1"
+                android:maxLines="2"
                 android:text="@{unboxingBean.title}"
                 android:textColor="#2c2c2c"
-                android:textSize="13sp"
+                android:textSize="14.7sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_goods_pic"
@@ -173,12 +221,12 @@
                 android:id="@+id/tv_goods_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="5.2dp"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@{@string/unboxing_goods_price(unboxingBean.price)}"
                 android:textColor="#E9423E"
-                android:textSize="13sp"
+                android:textSize="13.3sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@id/tv_goods_title"
                 app:layout_constraintTop_toBottomOf="@id/tv_goods_title"
@@ -186,78 +234,17 @@
 
             <Button
                 android:id="@+id/btn_lottery"
-                android:layout_width="67dp"
-                android:layout_height="28dp"
+                android:layout_width="88.7dp"
+                android:layout_height="41.3dp"
+                android:layout_marginTop="8.5dp"
+                android:layout_marginEnd="6.8dp"
                 android:background="@drawable/unboxing_bg_lottery"
                 android:gravity="center"
                 android:text="@string/unboxing_btn_lottery"
                 android:textColor="@color/white"
                 android:textSize="13sp"
-                app:layout_constraintBottom_toBottomOf="@id/iv_goods_pic"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/tv_goods_price" />
+                app:layout_constraintTop_toBottomOf="@id/tv_goods_title" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <TextView
-            android:id="@+id/tv_lottery_cycles"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{@string/unboxing_period(unboxingBean.period)}"
-            android:textColor="#A9AEB1"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@id/iv_ic_free"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/iv_ic_free"
-            tools:text="第20211020期" />
-
-        <TextView
-            android:id="@+id/tv_winning_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="21dp"
-            android:text="@{unboxingBean.code}"
-            android:textColor="#E9423E"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/iv_ic_free"
-            app:layout_constraintStart_toEndOf="@id/tv_lottery_cycles"
-            app:layout_constraintTop_toTopOf="@id/iv_ic_free"
-            tools:text="2233445" />
-
-        <ImageView
-            android:id="@+id/iv_ic_free"
-            android:layout_width="69dp"
-            android:layout_height="69dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginBottom="1dp"
-            android:padding="8dp"
-            android:src="@drawable/unboxing_ic_win"
-            app:layout_constraintStart_toEndOf="@id/tv_winning_number"
-            app:layout_constraintTop_toBottomOf="@id/cl_goods_info" />
-
-        <TextView
-            android:id="@+id/tv_like_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{String.valueOf(zan?unboxingBean.zan+1:unboxingBean.zan)}"
-            android:textColor="#A9AEB1"
-            android:textSize="10sp"
-            app:layout_constraintBottom_toBottomOf="@id/iv_ic_free"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/iv_ic_free"
-            tools:text="123456" />
-
-        <ImageView
-            android:id="@+id/iv_ic_like"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:layout_marginEnd="3dp"
-            android:src="@drawable/unboxing_ic_zan"
-            app:layout_constraintBottom_toBottomOf="@id/tv_like_number"
-            app:layout_constraintEnd_toStartOf="@id/tv_like_number"
-            app:layout_constraintTop_toTopOf="@id/tv_like_number"
-            app:tint="@{zan?@color/unboxing_E9423E:@color/unboxing_A9AEB1}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

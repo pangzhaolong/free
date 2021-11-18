@@ -65,7 +65,7 @@ class UnboxingRVAdapter(layoutResId: Int) : BaseQuickAdapter<UnboxingBean, BaseV
                     removeItemDecorationAt(index)
                 }
 
-                addItemDecoration(GridItemDecoration(3, DensityUtils.dip2px(4f)))
+                addItemDecoration(GridItemDecoration(3, DensityUtils.dip2px(8f)))
                 adapter = picAdapter
             }
             picAdapter.setNewData(bean.images as MutableList<String>?)

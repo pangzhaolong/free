@@ -22,7 +22,7 @@
             android:gravity="center"
             android:text="@string/unboxing_title"
             android:textColor="#2c2c2c"
-            android:textSize="15sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -50,8 +50,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#f4f4f4"
+                android:clipToPadding="false"
                 android:orientation="vertical"
                 android:overScrollMode="never"
+                android:paddingTop="10dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/unboxing_item_unboxing" />
 

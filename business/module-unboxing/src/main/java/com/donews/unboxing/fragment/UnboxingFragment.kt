@@ -46,8 +46,7 @@ class UnboxingFragment :
         mDataBinding.viewModel = mViewModel
 
         unboxingRVAdapter.setOnItemChildClickListener { adapter, _, position ->
-
-            AnalysisUtils.onEventEx(context, Dot.Btn_BeBlessed);
+            AnalysisUtils.onEventEx(context, Dot.Btn_BeBlessed)
             val data: UnboxingBean = adapter.data[position] as UnboxingBean
             ARouter.getInstance()
                 .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
