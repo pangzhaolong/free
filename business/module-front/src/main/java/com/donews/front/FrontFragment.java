@@ -33,6 +33,7 @@ import com.donews.front.adapter.FragmentAdapter;
 import com.donews.front.databinding.FrontFragmentBinding;
 import com.donews.front.dialog.ActivityRuleDialog;
 import com.donews.front.viewModel.FrontViewModel;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.bean.WalletBean;
 import com.donews.middle.bean.front.AwardBean;
 import com.donews.middle.bean.front.LotteryCategoryBean;
@@ -43,6 +44,7 @@ import com.donews.utilslibrary.utils.DensityUtils;
 import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.SPUtils;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -171,6 +173,18 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         scrollFloatBar();
 
         EventBus.getDefault().register(this);
+
+        mDataBinding.frontToTopTv.setOnClickListener(v -> {
+            mDataBinding.frontAppBarLayout.setExpanded(true, true);
+            mDataBinding.frontToTopTv.setVisibility(View.GONE);
+        });
+
+        mDataBinding.frontAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                LogUtil.e("AppBarLayout verticalOffset:" + verticalOffset);
+            }
+        });
     }
 
     private void startTimer() {

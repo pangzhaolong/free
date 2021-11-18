@@ -6,6 +6,19 @@ public class ABBean {
     @SerializedName("openAB")
     private boolean openAB;
     private boolean openVideoToast = true;
+    private boolean openAutoLottery = true;
+
+    public void setOpenAB(boolean openAB) {
+        this.openAB = openAB;
+    }
+
+    public boolean isOpenAutoLottery() {
+        return openAutoLottery;
+    }
+
+    public void setOpenAutoLottery(boolean openAutoLottery) {
+        this.openAutoLottery = openAutoLottery;
+    }
 
     public boolean isOpenVideoToast() {
         return openVideoToast;

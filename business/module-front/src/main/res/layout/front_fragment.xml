@@ -18,6 +18,7 @@
             android:layout_height="match_parent" />
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/front_coordinator_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -565,6 +566,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+
+            <TextView
+                android:id="@+id/front_to_top_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="40dp"
+                android:background="@drawable/front_to_top"
+                android:gravity="center"
+                android:paddingTop="16dp"
+                android:text="顶部"
+                android:textColor="#2C2C2C"
+                android:textSize="12sp" />
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>

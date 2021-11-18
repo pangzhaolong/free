@@ -37,8 +37,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:padding="2dp"
             android:scaleType="centerInside"
-            android:src="@drawable/middle_item_money"/>
+            android:src="@drawable/middle_item_money" />
+
         <TextView
             android:id="@+id/front_goods_item_price_tv1"
             android:layout_width="wrap_content"
@@ -62,14 +64,14 @@
 
     <TextView
         android:id="@+id/front_item_do_tv"
-        android:layout_width="153dp"
-        android:layout_height="36dp"
+        android:layout_width="140dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="2dp"
         android:background="@drawable/front_goods_item_dowhat"
         android:gravity="center"
         android:paddingBottom="4dp"
-        android:layout_gravity="center_horizontal"
         android:text="0元抽奖"
         android:textColor="@color/white"
         android:textSize="13sp"

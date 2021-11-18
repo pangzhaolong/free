@@ -46,6 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:scaleType="centerInside"
+                android:padding="2dp"
                 android:src="@drawable/middle_item_money" />
 
             <TextView
@@ -70,8 +71,8 @@
 
         <TextView
             android:id="@+id/front_item_do_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="37dp"
+            android:layout_width="140dp"
+            android:layout_height="40dp"
             android:layout_marginStart="6dp"
             android:layout_marginTop="6dp"
             android:background="@drawable/front_goods_item_dowhat"
