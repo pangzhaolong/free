@@ -9,8 +9,8 @@
 
 
     <string name="zero_dollar_draw" tools:ignore="ResourceName">0元</string>
-    <string name="lottery_value" tools:ignore="ResourceName">抽奖</string>
-    <string name="continue_value" tools:ignore="ResourceName">继续</string>
+    <string name="lottery_value" tools:ignore="ResourceName">中奖率</string>
+    <string name="continue_value" tools:ignore="ResourceName">增加</string>
     <string name="wait_dollar_draw" tools:ignore="ResourceName">待开奖</string>
 <!-- 返回拦截弹框  -->
     <string name="return_intercept_title" tools:ignore="ResourceName">参与抽奖，立即获得</string>
