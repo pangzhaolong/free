@@ -122,6 +122,9 @@ public class GuideActivity
             RouterActivityPath.LoginProvider.getLoginProvider()
                     .loginWX(loginTag);
         });
+        mDataBinding.loginCkCheckTx.setOnClickListener(v->{
+            mDataBinding.loginCkCheck.performClick();
+        });
         mDataBinding.loginCkCheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 mDataBinding.llMainLogin.setEnabled(true);

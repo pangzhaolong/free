@@ -11,32 +11,29 @@
     <ImageView
         android:id="@+id/mine_me_top_bt_bg"
         android:layout_width="match_parent"
-        android:layout_height="210dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/mine_me_top_bg"
-        skin:enable="true" />
+        skin:enable="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignBottom="@+id/ll_glod_count"
+        android:layout_marginBottom="40dp"/>
 
     <!-- 手机和设置 -->
     <LinearLayout
         android:id="@+id/rl_top_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="45dp"
         android:gravity="right|center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingTop="45dp">
 
-        <TextView
-            android:id="@+id/rl_top_bar_bind"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/mine_me_bind_tel_shape"
-            android:paddingLeft="15dp"
-            android:paddingTop="6dp"
-            android:paddingRight="15dp"
-            android:paddingBottom="6dp"
-            android:text="请绑定手机号"
-            android:textColor="@color/white"
-            android:textSize="12sp" />
+        <ImageView
+            android:id="@+id/iv_top_bar_kf"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="5dp"
+            android:padding="8dp"
+            android:src="@drawable/mine_top_service_icon" />
 
         <ImageView
             android:id="@+id/rl_top_bar_seting"
@@ -53,14 +50,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rl_top_bar"
+        android:layout_marginTop="-15dp"
         android:gravity="center_vertical">
 
         <com.donews.common.views.CircleImageView
             android:id="@+id/iv_user_logo_bg"
             android:layout_width="63dp"
             android:layout_height="63dp"
-            android:background="@drawable/white_quan_shape"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/white_quan_shape" />
 
         <com.donews.common.views.CircleImageView
             android:id="@+id/iv_user_logo"
@@ -118,6 +116,24 @@
             android:text="奖品免费拿  购物超省钱"
             android:textColor="#E9423E"
             android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/rl_top_bar_bind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btn_copy"
+            android:layout_alignLeft="@+id/btn_copy"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/mine_me_bind_tel_shape"
+            android:paddingLeft="15dp"
+            android:paddingTop="6dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="6dp"
+            android:text="请绑定手机号"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
     </RelativeLayout>
 
     <!-- 模块区域 -->
@@ -138,9 +154,8 @@
         <RelativeLayout
             android:id="@+id/mine_me_add_reco"
             android:layout_width="0dp"
-            android:layout_height="79dp"
-            android:layout_weight="0.9"
-            android:paddingBottom="10dp">
+            android:layout_height="70dp"
+            android:layout_weight="0.9">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -150,8 +165,8 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="33dp"
+                    android:layout_height="33dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/mine_add_record" />
 
@@ -160,7 +175,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="参与记录"
-                    android:textColor="@color/A666666"
+                    android:textColor="@color/black"
                     android:textSize="12sp" />
             </LinearLayout>
         </RelativeLayout>
@@ -180,8 +195,8 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="33dp"
+                    android:layout_height="33dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/mine_win_record" />
 
@@ -190,7 +205,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="中奖记录"
-                    android:textColor="@color/A666666"
+                    android:textColor="@color/black"
                     android:textSize="12sp" />
             </LinearLayout>
         </RelativeLayout>
@@ -240,7 +255,7 @@
                         android:paddingBottom="3dp"
                         android:text="0"
                         android:textColor="@color/black"
-                        android:textSize="24sp"
+                        android:textSize="26sp"
                         android:textStyle="bold"
                         app:layout_constraintRight_toRightOf="parent"
                         tools:ignore="MissingConstraints" />
@@ -251,7 +266,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="现金余额"
-                    android:textColor="@color/A666666"
+                    android:textColor="@color/black"
                     android:textSize="12sp" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -263,17 +278,17 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/ll_glod_count"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="-8dp"
-        android:layout_marginRight="50dp"
+        android:layout_marginTop="-5dp"
+        android:textStyle="bold"
+        android:layout_marginRight="25dp"
         android:background="@drawable/cen_cash_js_bg"
         android:paddingLeft="3dp"
         android:paddingTop="2dp"
         android:paddingRight="3dp"
         android:paddingBottom="2dp"
         android:text="可提现"
-        android:textColor="@color/mine_e66a59"
+        android:textColor="#E9423E"
         android:textSize="12sp"
-        app:layout_constraintLeft_toLeftOf="@+id/mine_me_money_num_ll"
         tools:ignore="MissingConstraints" />
 
     <!-- 运营位 -->

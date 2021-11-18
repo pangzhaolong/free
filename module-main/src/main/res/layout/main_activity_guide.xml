@@ -57,7 +57,7 @@
 
             <ImageView
                 android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_height="20dp"
                 android:layout_marginLeft="41dp"
                 android:layout_marginRight="5dp"
                 android:scaleType="fitXY"
@@ -98,13 +98,14 @@
 
             <CheckBox
                 android:id="@+id/login_ck_check"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:background="@drawable/wachat_login_check_bg"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:background="@drawable/guide_wachat_login_check_bg"
                 android:button="@null"
                 android:checked="false" />
 
             <TextView
+                android:id="@+id/login_ck_check_tx"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"

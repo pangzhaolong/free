@@ -17,6 +17,7 @@ import com.donews.common.router.RouterFragmentPath
 import com.donews.main.BuildConfig
 import com.donews.main.dialog.*
 import com.donews.main.entitys.resps.ExitInterceptConfig
+import com.donews.middle.abswitch.ABSwitch
 import com.donews.middle.bean.HighValueGoodsBean
 import com.donews.middle.cache.GoodsCache
 import com.donews.middle.request.RequestUtil
@@ -111,7 +112,7 @@ object ExitInterceptUtils {
                     showContinueLotteryDialog(activity)
                     return
                 }
-                // 2：已登录，已抽奖,判断抽奖是否达到了10次
+                // 2：已登录，已抽奖,判断抽奖是否达到了10次                                                                                                                                                                                                                      
                 if (getNotLotteryCount() >= 10) {
                     if (checkRedPacketNotOpen()) {
                         //有红包未开启
@@ -205,7 +206,7 @@ object ExitInterceptUtils {
                 ARouter.getInstance()
                     .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                     .withString("goods_id", item!!.goodsId)
-                    .withBoolean("start_lottery", true)
+                    .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery)
                     .navigation()
                 disMissDialog()
             }

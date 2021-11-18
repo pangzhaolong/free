@@ -82,7 +82,7 @@ public abstract class BaseSubscriber<T> extends DisposableObserver<T> {
             HttpLog.e("--> e instanceof ApiException err:" + ((ApiException) e).getCode());
             if (((ApiException) e).getCode() != ApiException.ERROR.NULLPOINTER_EXCEPTION) {
                 if (((ApiException) e).getCode() < ApiException.NO_CODE && isShowToast) {
-                    Toast.makeText(contextWeakReference.get(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(contextWeakReference.get(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
                 onError((ApiException) e);
             } else {

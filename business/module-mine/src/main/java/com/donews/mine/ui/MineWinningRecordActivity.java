@@ -1,11 +1,13 @@
 package com.donews.mine.ui;
 
 import android.os.Bundle;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.blankj.utilcode.util.ConvertUtils;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.mine.R;
@@ -98,9 +100,14 @@ public class MineWinningRecordActivity extends
                     mDataBinding.mineWinRecodLayout.getStateLayout().showEmpty(
                             R.layout.incl_open_win_not_data, new ViewGroup.LayoutParams(
                                     ViewGroup.LayoutParams.MATCH_PARENT,
-                                    ViewGroup.LayoutParams.MATCH_PARENT
+                                    ViewGroup.LayoutParams.WRAP_CONTENT
                             )
                     );
+                    View notDataView = mDataBinding.mineWinRecodLayout.getStateLayout().findViewById(R.id.mine_open_win_not_data_ll);
+                    notDataView.setPadding(notDataView.getPaddingLeft()
+                            , notDataView.getPaddingTop()+ ConvertUtils.dp2px(40F),
+                            notDataView.getPaddingRight(),
+                            notDataView.getPaddingBottom());
                 } else {
                     mDataBinding.mineWinRecodLayout.getStateLayout().showContent();
                 }

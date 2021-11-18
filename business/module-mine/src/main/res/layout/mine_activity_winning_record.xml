@@ -24,6 +24,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="中奖记录"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 

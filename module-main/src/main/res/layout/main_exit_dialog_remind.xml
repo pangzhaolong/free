@@ -59,7 +59,7 @@
             android:id="@+id/tv_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="38dp"
+            android:layout_marginTop="50dp"
             android:text="@{@string/main_exit_remind_msg(remindConfig.remindTime)}"
             android:textColor="@color/white"
             android:textSize="16sp"
@@ -92,6 +92,7 @@
             android:textColor="@color/common_F43838"
             android:textSize="20sp"
             android:textStyle="bold"
+            android:paddingBottom="1dp"
             app:layout_constraintBottom_toBottomOf="@+id/iv_window"
             app:layout_constraintEnd_toStartOf="@id/btn_close"
             app:layout_constraintStart_toStartOf="@id/iv_window"
@@ -128,8 +129,8 @@
             app:layout_constraintTop_toBottomOf="@+id/iv_window" />
 
         <ImageView
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:src="@drawable/main_exit_dialog_sz"
             app:layout_constraintLeft_toLeftOf="@+id/iv_window"
             app:layout_constraintRight_toRightOf="@id/iv_window"

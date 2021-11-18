@@ -80,6 +80,7 @@ public class MiddleModuleInit implements IModuleInit {
     public void requestWithdraWallet() {
         EasyHttp.get(BuildConfig.API_WALLET_URL + "v1/wallet")
                 .cacheMode(CacheMode.NO_CACHE)
+                .isShowToast(false)
                 .execute(new SimpleCallBack<WithdraWalletResp>() {
                     @Override
                     public void onError(ApiException e) {

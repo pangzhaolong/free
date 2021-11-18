@@ -3,6 +3,7 @@ package com.donews.mine.viewModel;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -375,6 +376,7 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
                         .build(RouterActivityPath.User.PAGER_LOGIN)
                         .navigation();
             });
+            //首页的开奖页面，登录按钮是否显示怎么显示(等待产品确认)
             if (!isAutoPeriod) {
                 loginBut.setVisibility(View.VISIBLE);
             }
@@ -426,16 +428,22 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
                 return;
             }
             //已参与(参与了本期,但是未中奖)
+            statusName.setTextColor(Color.BLACK);
             statusName.setText("很遗憾,你本次未中奖");
             //添加未中奖的容器
             View childView = getNotDataWindView(false, "", "坚持抽奖,总会中的");
             vGroup.addView(childView);
             return;
         }
+        statusName.setTextColor(Color.parseColor("#E9423E"));
         statusName.setText("恭喜你,获得大奖");
         for (int i = 0; i < detailLivData.getValue().myWin.size(); i++) {
             HistoryPeopleLotteryDetailResp.WinerDTO item = detailLivData.getValue().myWin.get(i);
-            View childView = View.inflate(view.getContext(), R.layout.incl_mine_winning_record_list_good, null);
+            View childView = View.inflate(view.getContext(), R.layout.incl_mine_winning_good_item, null);
+            //标题区域
+            ImageView uIcon = childView.findViewById(R.id.main_win_code_sele_item_icon);
+            TextView uName = childView.findViewById(R.id.main_win_code_sele_item_name);
+            TextView windCode = childView.findViewById(R.id.main_win_code_sele_item_code);
             //更新视图
             TextView seal = childView.findViewById(R.id.mine_win_item_seal);
             ImageView icon = childView.findViewById(R.id.mine_win_item_good_icon);
@@ -444,6 +452,11 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             TextView code = childView.findViewById(R.id.mine_win_item_snap_number);
             TextView goTo = childView.findViewById(R.id.mine_win_item_goto);
             //开始绑定数据
+            GlideUtils.loadImageView(view.getContext(), UrlUtils.formatHeadUrlPrefix(item.avatar), uIcon);
+            uName.setText(item.userName);
+            windCode.setText(Html.fromHtml(TextWinUtils.drawOldText(
+                    detailLivData.getValue().code, item.code
+            )));
             seal.setVisibility(View.VISIBLE);
             if (WinTypes.Alike.type.equals(item.winType)) {
                 seal.setText(WinTypes.Alike.name);
@@ -556,9 +569,9 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
                     TextWinUtils.drawOldText(detailLivData.getValue().code, item.code)));
             goTo.setText("继续抽奖");
             code.setMaxLines(1); //默认一行
-            if(item.code.size() > 3){
+            if (item.code.size() > 3) {
                 more.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 more.setVisibility(View.GONE);
             }
             more.setOnClickListener(v -> {

@@ -23,6 +23,7 @@
                 android:text="关于我们"
                 android:textSize="16sp"
                 android:textStyle="bold"
+                android:textColor="@color/black"
                 android:gravity="center"/>
             <ImageView
                 android:id="@+id/main_about_back"
@@ -37,12 +38,13 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:orientation="vertical"
             tools:ignore="MissingConstraints"
             android:gravity="center_horizontal"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/main_about_titlle_ll">
             <ImageView
                 android:layout_width="80dp"
@@ -62,17 +64,30 @@
                 android:layout_height="wrap_content"
                 android:text="1.0.0"
                 android:textSize="14sp"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="13dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:lineHeight="30dp"
-                android:text="奖多多是一款互动创意购物平台,以休闲时间,抢好物\n为目标理想,打造一个公平公正,正品保证的休闲平台"
+                android:lineHeight="20dp"
+                android:text="奖多多是一款互动创意购物平台，以休闲时间，抢好物 为目标理想，打造一个公平公正，正品保证的休闲平台"
                 android:textSize="13sp"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="13dp"/>
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_lx_kf"
+            android:layout_width="136dp"
+            android:layout_height="48dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:background="@drawable/mine_me_open_not_win_but"
+            android:text="联系客服"
+            android:layout_marginBottom="120dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

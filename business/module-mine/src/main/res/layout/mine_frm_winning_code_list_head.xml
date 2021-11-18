@@ -66,7 +66,7 @@
             android:layout_marginTop="15dp"
             android:gravity="center"
             android:text="每日10点开奖,根据全国7个城市高德地图平均车速所得"
-            android:textColor="@color/white"
+            android:textColor="#FFCDCC"
             android:textSize="12sp" />
 
         <!-- 城市区块 -->
@@ -118,8 +118,8 @@
                 android:orientation="horizontal">
                 <!-- 通知、滚动区域 -->
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:src="@drawable/mine_win_code_notify_ic" />
@@ -181,7 +181,7 @@
                 android:layout_height="wrap_content"
                 android:text="开奖啦~"
                 android:textColor="@color/mine_e7723c"
-                android:textSize="23sp" />
+                android:textSize="20sp" />
 
             <!--
                 我中奖的商品列表所展示的容器。商品的item视图：
@@ -191,8 +191,8 @@
                 android:id="@+id/mine_win_code_win_desc_good_ll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:gravity="center"
                 android:orientation="vertical">
                 <!-- 我中奖的商品显示容器 -->
@@ -223,11 +223,14 @@
                     android:layout_height="wrap_content"
                     android:text="我的抽奖"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="(本期中奖"
+                    android:layout_marginLeft="6dp"
+                    android:text="(共抽奖"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
 
@@ -242,7 +245,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="人)"
+                    android:text="次)"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -260,8 +263,8 @@
                     android:id="@+id/mine_win_code_win_add_good_ll"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
                     android:orientation="vertical" />
 
                 <LinearLayout
@@ -309,11 +312,13 @@
                     android:layout_height="wrap_content"
                     android:text="中奖名单"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
                     android:text="(本期中奖"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
@@ -351,8 +356,8 @@
                 android:id="@+id/mine_win_code_sele_good_ll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:orientation="vertical">
                 <!-- 中奖名单的显示容器 -->
             </LinearLayout>

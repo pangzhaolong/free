@@ -21,6 +21,7 @@ import com.donews.main.entitys.resps.ContinueLotteryConfig
 import com.donews.main.entitys.resps.ExitDialogRecommendGoods
 import com.donews.main.entitys.resps.ExitDialogRecommendGoodsResp
 import com.donews.main.utils.ExitInterceptUtils
+import com.donews.middle.abswitch.ABSwitch
 import com.donews.network.EasyHttp
 import com.donews.network.cache.model.CacheMode
 import com.donews.network.callback.SimpleCallBack
@@ -155,7 +156,7 @@ class ContinueLotteryDialog : AbstractFragmentDialog<MainExitDialogContinueLotte
                 ARouter.getInstance()
                     .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                     .withString("goods_id", goodsId)
-                    .withBoolean("start_lottery",true)
+                    .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery)
                     .navigation()
             }
         }

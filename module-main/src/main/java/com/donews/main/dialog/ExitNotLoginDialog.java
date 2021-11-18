@@ -84,6 +84,7 @@ public class ExitNotLoginDialog extends BaseDialog<MainInterceptDialogLayoutBind
         mDataBinding.tvNextLk.setOnClickListener(v -> {
             if (v.getVisibility() == View.VISIBLE) {
                 ExitInterceptUtils.exitApp((AppCompatActivity) mContext);
+                mOnFinishListener.onDismiss();
             }
         });
 

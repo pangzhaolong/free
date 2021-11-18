@@ -77,7 +77,8 @@
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:weightSum="1"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <TextView
                     android:layout_width="0dp"

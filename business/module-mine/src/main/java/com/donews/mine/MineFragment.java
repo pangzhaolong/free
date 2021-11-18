@@ -36,6 +36,8 @@ import com.donews.mine.bean.resps.RecommendGoodsResp;
 import com.donews.mine.databinding.MineFragmentBinding;
 import com.donews.mine.viewModel.MineViewModel;
 import com.donews.mine.views.operating.MineOperatingPosView;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.LogUtil;
 import com.google.android.material.appbar.AppBarLayout;
@@ -149,6 +151,14 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
     private void initView() {
         mDataBinding.mineMeListLayout.getRefeshLayout().setEnableRefresh(false);
         mViewModel.setDataBinDing(mDataBinding, getBaseActivity());
+        getView().findViewById(R.id.iv_top_bar_kf).setOnClickListener((v) -> {
+            AnalysisUtils.onEventEx(getActivity(), Dot.Page_ContactService);
+            Bundle bundle = new Bundle();
+            bundle.putString("url",
+                    "https://recharge-web.xg.tagtic.cn/jdd/index.html#/customer");
+            bundle.putString("title", "客服");
+            ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
+        });
         getView().findViewById(R.id.tv_userinfo_name).setOnClickListener((v) -> {
             getView().findViewById(R.id.iv_user_logo).performClick();
         });
