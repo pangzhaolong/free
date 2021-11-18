@@ -62,19 +62,22 @@
             android:layout_width="227dp"
             android:layout_height="8dp"
             android:layout_marginBottom="8dp"
-            android:progress="50"
+            android:progress="0"
             android:progressDrawable="@drawable/main_splash_progress_drawable"
             app:layout_constraintBottom_toTopOf="@id/tv_msg"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:progress="50" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/group_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
             app:constraint_referenced_ids="pb_progress,tv_msg"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:visibility="visible" />
 
         <FrameLayout
             android:id="@+id/ad_full_screen_container"
