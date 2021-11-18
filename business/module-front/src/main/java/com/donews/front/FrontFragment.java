@@ -37,6 +37,7 @@ import com.donews.front.viewModel.FrontViewModel;
 import com.donews.middle.bean.WalletBean;
 import com.donews.middle.bean.front.AwardBean;
 import com.donews.middle.bean.front.LotteryCategoryBean;
+import com.donews.middle.bean.home.ServerTimeBean;
 import com.donews.middle.cache.GoodsCache;
 import com.donews.middle.views.TabItem;
 import com.donews.utilslibrary.utils.AppInfo;
@@ -51,6 +52,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -135,7 +137,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         });
 
         loadCategoryData();
-        loadLotteryRecord();
+        loadServerTime();
+//        loadLotteryRecord();
 //        loadAwardList();
         initSrl();
 
@@ -221,7 +224,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         loadCategoryData();
 //            loadAwardList();
         loadRpData();
-        loadLotteryRecord();
+        loadServerTime();
+//        loadLotteryRecord();
         reloadNorData(mCurSelectPosition);
         mDataBinding.frontSrl.finishRefresh();
     }
@@ -248,12 +252,41 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         });
     }
 
+    private void loadServerTime() {
+        mViewModel.getServerTime().observe(this.getViewLifecycleOwner(), serverTimeBean -> {
+            if (serverTimeBean == null) {
+                return;
+            }
+            checkLotteryRecord(serverTimeBean);
+        });
+    }
+
+    private boolean mIsAfterTenClock = false;
+    private void checkLotteryRecord(ServerTimeBean serverTimeBean) {
+        String time = serverTimeBean.getNow();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(Long.parseLong(time) * 1000);
+        LogUtil.e("Time:" + calendar.get(Calendar.YEAR) + " " + calendar.get(Calendar.MONTH) + " " + calendar.get(Calendar.DAY_OF_MONTH)
+                + " " + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE) + ":" + calendar.get(Calendar.SECOND));
+        if (calendar.get(Calendar.HOUR_OF_DAY) < 10) {
+            mIsAfterTenClock = false;
+        }
+        mIsAfterTenClock = true;
+        loadLotteryRecord();
+    }
+
     private void loadLotteryRecord() {
         mViewModel.getLotteryPeriod().observe(this.getViewLifecycleOwner(), lotteryOpenRecord -> {
             if (lotteryOpenRecord == null) {
                 return;
             }
-            showLotteryDate(lotteryOpenRecord.getPeriod());
+
+            if (!mIsAfterTenClock) {
+                showLotteryDateClosed(lotteryOpenRecord.getPeriod());
+                return;
+            }
+            showLotteryDateOpend(lotteryOpenRecord.getPeriod());
             LogUtil.e("record:" + lotteryOpenRecord.getPeriod());
             loadLotteryDetail(lotteryOpenRecord.getPeriod());
         });
@@ -270,8 +303,12 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         });
     }
 
-    private void showLotteryDate(int period) {
+    private void showLotteryDateClosed(int period) {
         mDataBinding.frontLotteryDate.setText(String.format(getString(R.string.front_lottery_date), period - 1));
+    }
+
+    private void showLotteryDateOpend(int period) {
+        mDataBinding.frontLotteryDate.setText(String.format(getString(R.string.front_lottery_date_opened), period - 1));
     }
 
     private void showLotteryCode(String code) {

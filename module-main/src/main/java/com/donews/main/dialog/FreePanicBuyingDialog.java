@@ -85,7 +85,7 @@ public class FreePanicBuyingDialog extends BaseDialog<FreePanicDialogLayoutBindi
 
     public void requestGoodsInfo(Context context) {
         //判断今天是否弹起过
-       if(DateManager.getInstance(context).ifFirst(DateManager.FREE_PANIC_DIALOG_KEY)){
+       if(DateManager.getInstance().ifFirst(DateManager.FREE_PANIC_DIALOG_KEY)){
            Disposable disposable = EasyHttp.get(RECENT_FREE)
                    .cacheMode(CacheMode.NO_CACHE)
                    .execute(new SimpleCallBack<NowTimeBean>() {

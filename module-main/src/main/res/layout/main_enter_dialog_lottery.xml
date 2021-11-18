@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_gravity="right"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/common_close"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@id/iv_title"
+            app:layout_constraintEnd_toEndOf="@id/iv_title" />
+
+        <ImageView
+            android:id="@+id/iv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/main_enter_lottrey_title" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/main_enter_dialog_bg"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/main_enter_dialog_title_bg">
+
+                <TextView
+                    android:id="@+id/tv_probability"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="10dp"
+                    android:text="今日幸运值"
+                    android:textColor="#764D38"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_probability1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="1dp"
+                    android:layout_toEndOf="@+id/tv_probability"
+                    android:text="16.0"
+                    android:textColor="#E9423E"
+                    android:textSize="26sp" />
+
+                <TextView
+                    android:id="@+id/tv_probability2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="6dp"
+                    android:layout_toEndOf="@+id/tv_probability1"
+                    android:text="(幸运值100必中)"
+                    android:textColor="#764D38"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/main_enter_dialog_title_post_bg"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="包邮到家"
+                    android:textColor="#FFF3D3"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/iv_goods_pic"
+                android:layout_width="260dp"
+                android:layout_height="260dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:src="#0000ff" />
+
+
+            <TextView
+                android:id="@+id/tv_goods_title"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:ellipsize="end"
+                android:gravity="start|center_vertical"
+                android:lineSpacingExtra="2dp"
+                android:maxLines="2"
+                android:text="2021款透气飞织椰子鞋250V2男女同款情侣鞋品质男鞋套帮女运动鞋"
+                android:textSize="16sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_actual_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/common_e9423e"
+                    android:textSize="18sp"
+                    tools:text="¥ 24" />
+
+                <TextView
+                    android:id="@+id/tv_original_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="2dp"
+                    android:layout_toEndOf="@+id/tv_actual_price"
+                    android:text="¥ 1699"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_buy_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="#764D38"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="累计40.5万人参与抢购"
+                    android:textColor="#FFF3D3"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp">
+
+                <Button
+                    android:id="@+id/btn_next"
+                    android:layout_width="94dp"
+                    android:layout_height="38dp"
+                    android:layout_alignParentStart="true"
+                    android:background="@drawable/main_exit_btn_bg_negative"
+                    android:text="@string/main_exit_other"
+                    android:textColor="@color/common_F43838"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btn_lottery"
+                    android:layout_width="165dp"
+                    android:layout_height="38dp"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/main_exit_btn_bg_positive"
+                    android:text="@string/main_exit_lottery"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/main_enter_click_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/main_enter_click"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/main_enter_radio_bg_unselect" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="今日不再提醒"
+                android:textColor="#A9AEB1" />
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

@@ -10,6 +10,7 @@ import com.donews.middle.bean.front.LotteryCategoryBean;
 import com.donews.middle.bean.front.LotteryDetailBean;
 import com.donews.middle.bean.front.LotteryOpenRecord;
 import com.donews.middle.bean.front.RedPacketBean;
+import com.donews.middle.bean.home.ServerTimeBean;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
@@ -138,6 +139,26 @@ public class FrontModel extends BaseLiveDataModel {
                     @Override
                     public void onSuccess(LotteryDetailBean lotteryOpenRecord) {
                         mutableLiveData.postValue(lotteryOpenRecord);
+                    }
+                }));
+
+        return mutableLiveData;
+    }
+
+    public MutableLiveData<ServerTimeBean> getServerTime() {
+        MutableLiveData<ServerTimeBean> mutableLiveData = new MutableLiveData<>();
+        addDisposable(EasyHttp.get(FrontApi.serverTimeUrl)
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new SimpleCallBack<ServerTimeBean>() {
+
+                    @Override
+                    public void onError(ApiException e) {
+                        mutableLiveData.postValue(null);
+                    }
+
+                    @Override
+                    public void onSuccess(ServerTimeBean serverTimeBean) {
+                        mutableLiveData.postValue(serverTimeBean);
                     }
                 }));
 
