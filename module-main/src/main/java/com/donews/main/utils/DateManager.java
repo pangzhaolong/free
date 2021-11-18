@@ -14,12 +14,18 @@ import java.util.Calendar;
 
 //广告播放管理类 日期
 public class DateManager {
+    public static String DRAW_DIALOG_KEY = "draw_dialog_key";
+
+    public static String FREE_PANIC_DIALOG_KEY = "Free_Panic_dialog_key";
+
     private static SharedPreferences frequencyData;
-    private static String DRAW_DATA = "draw_data";
-    private static String DRAW_DAY = "draw_day";
-
-
+    private static String DRAW_DATA = "MAIN_SP";
     private static volatile DateManager dateManager;
+
+
+    //用来获取是否是今天首次弹起
+
+
 
     public static DateManager getInstance(Context mContext) {
         if (frequencyData == null) {
@@ -40,10 +46,10 @@ public class DateManager {
     }
 
     //判断是否是同一天
-    public  boolean ifTheSameDay() {
+    public  boolean ifTheSameDay(String firstDay) {
         Calendar c = Calendar.getInstance();//
         int mDay = c.get(Calendar.DAY_OF_MONTH);// 获取当日期
-        int value = frequencyData.getInt(DRAW_DAY, -1);
+        int value = frequencyData.getInt(firstDay, -1);
         if (mDay == value) {
             return true;
         } else {
@@ -55,14 +61,14 @@ public class DateManager {
     /**
      * 判断是否是同一天，并且更新日期
      */
-    public  boolean ifFirst() {
+    public  boolean ifFirst(String firstDay) {
         //是否是同一天
-        boolean ifSameDay = ifTheSameDay();
+        boolean ifSameDay = ifTheSameDay(firstDay);
         if (!ifSameDay) {
             Calendar c = Calendar.getInstance();//
             int mDay = c.get(Calendar.DAY_OF_MONTH);// 获取当日期
             //更新日期
-            putValue(DRAW_DAY, mDay);
+            putValue(firstDay, mDay);
         }
         return !ifSameDay;
     }

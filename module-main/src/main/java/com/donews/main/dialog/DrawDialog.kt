@@ -69,7 +69,7 @@ class DrawDialog : AbstractFragmentDialog<DrawDialogLayoutBinding>(),
     }
 
     fun requestGoodsInfo(context: Context) {
-        if (DateManager.getInstance(context).ifFirst()) {
+        if (DateManager.getInstance(context).ifFirst(DateManager.DRAW_DIALOG_KEY)) {
             val disposable = EasyHttp.get(RECENT_LOTTERY)
                 .cacheMode(CacheMode.NO_CACHE)
                 .params("days", "0")
