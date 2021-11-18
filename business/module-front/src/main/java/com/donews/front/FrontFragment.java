@@ -164,11 +164,11 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mRotateAnimation.setDuration(400);
         }
         if (mScaleAnimation == null) {
-            mScaleAnimation = new ScaleAnimation(1.0f, 0.9f, 1.0f, 0.9f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            mScaleAnimation = new ScaleAnimation(1.0f, 0.8f, 1.0f, 0.8f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
             mScaleAnimation.setInterpolator(new LinearInterpolator());
             mScaleAnimation.setRepeatMode(Animation.REVERSE);
             mScaleAnimation.setRepeatCount(Animation.INFINITE);
-            mScaleAnimation.setDuration(2000);
+            mScaleAnimation.setDuration(1000);
         }
         startTimer();
 
@@ -363,7 +363,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         fl.setTag(rpBean);
         fl.setOnClickListener(this);
         if (rpBean.getOpened()) {
-            iv.setAlpha(1.0f);
+            iv.setAlpha(0.7f);
             iv.setBackgroundResource(R.drawable.front_rp_oen);
             tv.setText("已开启");
             params.gravity = Gravity.CENTER;
@@ -380,7 +380,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             tv.setTextColor(bottomColor);
             if (rpBean.getHadLotteryTotal() == -1 || rpBean.getHadLotteryTotal() >= rpBean.getLotteryTotal()) {
                 nCloseRpCounts += 1;
-                iv.setAlpha(0.5f);
+//                iv.setAlpha(0.5f);
                 tv.setText("待开启");
                 iv.setBackgroundResource(R.drawable.front_rp_ready);
                 if (fl.getAnimation() == null) {
@@ -401,6 +401,11 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         mDataBinding.tomorrow05.setVisibility(View.VISIBLE);
         mDataBinding.frontRp88Ll.setVisibility(View.GONE);
         mDataBinding.frontRpGold88.setVisibility(View.GONE);
+        mDataBinding.frontRpOpenFl1.setAlpha(0.7f);
+        mDataBinding.frontRpOpenFl2.setAlpha(0.7f);
+        mDataBinding.frontRpOpenFl3.setAlpha(0.7f);
+        mDataBinding.frontRpOpenFl4.setAlpha(0.7f);
+        mDataBinding.frontRpOpenFl5.setAlpha(0.7f);
     }
 
     int nCloseRpCounts = 0;
@@ -433,7 +438,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         if (rpBean.getOpened()) {
             stopTimer();
             mDataBinding.frontRpIv5.setBackgroundResource(R.drawable.front_rp_gold_open);
-            mDataBinding.frontRpIv5.setAlpha(1.0f);
             params.gravity = Gravity.CENTER;
             params.bottomMargin = DensityUtils.dp2px(10);
             mDataBinding.frontRpTv5.setLayoutParams(params);
@@ -441,17 +445,21 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mDataBinding.frontRpTv5.setText("已开启");
             showTomorrowText();
             EventBus.getDefault().post(new RedPackageStatus(0, -2));
+            if (mDataBinding.frontRpOpenFl5.getAnimation() != null) {
+                mDataBinding.frontRpOpenFl5.clearAnimation();
+            }
         } else {
             if (rpBean.getHadLotteryTotal() == -1 || rpBean.getHadLotteryTotal() >= rpBean.getLotteryTotal()) {
                 nCloseRpCounts += 1;
-                mDataBinding.frontRpIv5.setAlpha(0.5f);
                 mDataBinding.frontRpTv5.setText("待开启");
+                if (mDataBinding.frontRpOpenFl5.getAnimation() == null) {
+                    mDataBinding.frontRpOpenFl5.startAnimation(mScaleAnimation);
+                }
             } else if (rpBean.getHadLotteryTotal() < rpBean.getLotteryTotal()) {
                 mDataBinding.frontRpTv5.setText("抽奖" + rpBean.getLotteryTotal() + "次");
             }
             EventBus.getDefault().post(new RedPackageStatus(0, rpBean.getHadLotteryTotal()));
         }
-
 
         SPUtils.setInformain(KeySharePreferences.CLOSE_RED_PACKAGE_COUNTS, nCloseRpCounts);
         if (rpBean.getHadLotteryTotal() == -1) {
@@ -609,6 +617,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             return;
         }
 
-        mDataBinding.frontToTopTv.setVisibility(event.getStatus()==1?View.VISIBLE:View.GONE);
+        mDataBinding.frontToTopTv.setVisibility(event.getStatus() == 1 ? View.VISIBLE : View.GONE);
     }
 }

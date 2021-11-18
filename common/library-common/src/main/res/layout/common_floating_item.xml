@@ -17,14 +17,14 @@
 
         <com.donews.common.views.CircleProgressBarView
             android:id="@+id/common_floating_progress"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
             android:layout_gravity="center"
             app:circleBgColor="@color/transparent"
             app:progressColor="#FFCE31"
             cpbv:circleBgStrokeWidth="2dp"
             cpbv:isDrawCenterProgressText="false"
-            cpbv:progressStrokeWidth="1dp" />
+            cpbv:progressStrokeWidth="3dp" />
 
         <ImageView
             android:layout_width="29dp"
