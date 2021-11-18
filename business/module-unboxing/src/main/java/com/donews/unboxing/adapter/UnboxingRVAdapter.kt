@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.alibaba.android.arouter.launcher.ARouter
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.donews.base.utils.ToastUtil
 import com.donews.common.decoration.GridItemDecoration
 import com.donews.common.router.RouterActivityPath
 import com.donews.utilslibrary.utils.DensityUtils
@@ -112,7 +113,7 @@ class UnboxingRVAdapter(layoutResId: Int) : BaseQuickAdapter<UnboxingBean, BaseV
                     mmkv.encode(key, true)
                     dataBinding.zan = true
                 } else {
-                    Toast.makeText(context, "您已经点过赞了！", Toast.LENGTH_SHORT).show()
+                    ToastUtil.show(context, "您已经点过赞了！")
                 }
             }
 
