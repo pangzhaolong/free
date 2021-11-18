@@ -23,6 +23,7 @@ import androidx.annotation.Nullable;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.BarUtils;
+import com.dn.events.events.FrontScrollEvent;
 import com.dn.events.events.LoginLodingStartStatus;
 import com.dn.events.events.RedPackageStatus;
 import com.dn.events.events.WalletRefreshEvent;
@@ -33,7 +34,6 @@ import com.donews.front.adapter.FragmentAdapter;
 import com.donews.front.databinding.FrontFragmentBinding;
 import com.donews.front.dialog.ActivityRuleDialog;
 import com.donews.front.viewModel.FrontViewModel;
-import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.bean.WalletBean;
 import com.donews.middle.bean.front.AwardBean;
 import com.donews.middle.bean.front.LotteryCategoryBean;
@@ -44,12 +44,12 @@ import com.donews.utilslibrary.utils.DensityUtils;
 import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.SPUtils;
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -70,6 +70,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     ActivityRuleDialog mRuleDialog = null;
 
     private int mCurSelectPosition = 0;
+
+    private boolean mIsToTopViewShow = false;
 
     private Context mContext;
 
@@ -175,15 +177,10 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         EventBus.getDefault().register(this);
 
         mDataBinding.frontToTopTv.setOnClickListener(v -> {
+            mFragmentAdapter.gotoTopPosition(mCurSelectPosition);
             mDataBinding.frontAppBarLayout.setExpanded(true, true);
+            mIsToTopViewShow = false;
             mDataBinding.frontToTopTv.setVisibility(View.GONE);
-        });
-
-        mDataBinding.frontAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                LogUtil.e("AppBarLayout verticalOffset:" + verticalOffset);
-            }
         });
     }
 
@@ -603,5 +600,15 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             refreshFront();
 //            }
         });
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onGetMessage(FrontScrollEvent event) {
+        if (event.getEvent() != 0) {
+            return;
+        }
+
+        mDataBinding.frontToTopTv.setVisibility(event.getStatus()==1?View.VISIBLE:View.GONE);
     }
 }
