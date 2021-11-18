@@ -43,7 +43,9 @@
         android:background="@drawable/common_floating_text_bg"
         android:ellipsize="end"
         android:gravity="center"
-        android:text="0/10"
+        android:paddingStart="2dp"
+        android:paddingEnd="2dp"
+        android:text="明日再来"
         android:textColor="@color/white"
         android:textSize="12sp" />
 </LinearLayout>

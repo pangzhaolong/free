@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.dn.events.events.FrontScrollEvent;
 import com.dn.events.events.LotteryStatusEvent;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.common.router.RouterFragmentPath;
@@ -36,6 +37,7 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
     LotteryCategoryBean.categoryBean mCategoryBean;
     private int mPageId = 0;
     private RecyclerView.ItemDecoration mItemDecoration;
+    private int mRvScrollLength = 0;
 
     public FrontGoodsFragment(LotteryCategoryBean.categoryBean categoryBean) {
         mCategoryBean = categoryBean;
@@ -78,12 +80,6 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
             mNorGoodsAdapter.setCols(2);
         }
         mDataBinding.frontNorRv.setAdapter(mNorGoodsAdapter);
-        mDataBinding.frontNorRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
 
         mDataBinding.frontLoadingStatusTv.setOnClickListener(v -> loadNorData());
 
@@ -94,6 +90,24 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
         initSrl();
 
         EventBus.getDefault().register(this);
+        mDataBinding.frontNorRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                mRvScrollLength += dy;
+                checkScrollDy();
+            }
+        });
+
+        checkScrollDy();
+    }
+
+    private void checkScrollDy() {
+        if (mRvScrollLength >= 5000) {
+            EventBus.getDefault().post(new FrontScrollEvent(0, 1));
+        } else {
+            EventBus.getDefault().post(new FrontScrollEvent(0, 0));
+        }
     }
 
     private void initSrl() {
@@ -108,6 +122,12 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
     public void reloadNorData() {
         mPageId = 0;
         loadNorData();
+    }
+
+    public void gotoTopPosition() {
+        mRvScrollLength = 0;
+        mDataBinding.frontNorRv.scrollToPosition(0);
+        EventBus.getDefault().post(new FrontScrollEvent(0, 0));
     }
 
     private void loadNorData() {
