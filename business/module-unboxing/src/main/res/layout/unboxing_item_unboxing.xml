@@ -240,6 +240,7 @@
                 android:layout_marginEnd="6.8dp"
                 android:background="@drawable/unboxing_bg_lottery"
                 android:gravity="center"
+                android:paddingBottom="3dp"
                 android:text="@string/unboxing_btn_lottery"
                 android:textColor="@color/white"
                 android:textSize="13sp"
