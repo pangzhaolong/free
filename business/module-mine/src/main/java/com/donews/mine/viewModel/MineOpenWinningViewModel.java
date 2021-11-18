@@ -463,11 +463,10 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             } else if (WinTypes.Equal.type.equals(item.winType)) {
                 seal.setText(WinTypes.Equal.name);
             } else {
-                seal.setVisibility(View.GONE);
                 seal.setText(WinTypes.None.name);
             }
             name.setText(item.goods.title);
-            picre.setText("" + item.goods.price);
+            picre.setText("¥" + item.goods.price);
             GlideUtils.loadImageView(view.getContext(), UrlUtils.formatUrlPrefix(item.goods.image), icon);
             code.setText(Html.fromHtml(
                     TextWinUtils.drawOldText(detailLivData.getValue().code, item.code)));
@@ -563,7 +562,7 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
                 seal.setText(WinTypes.None.name);
             }
             name.setText(item.goods.title);
-            picre.setText("" + item.goods.price);
+            picre.setText("¥" + item.goods.price);
             GlideUtils.loadImageView(view.getContext(), UrlUtils.formatUrlPrefix(item.goods.image), icon);
             code.setText(Html.fromHtml(
                     TextWinUtils.drawOldText(detailLivData.getValue().code, item.code)));
@@ -601,6 +600,7 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
     public void addSelectToNames(View view, boolean isInitAdd) {
         ViewGroup vGroup = view.findViewById(R.id.mine_win_code_sele_good_ll);
         ViewGroup moreLoadView = view.findViewById(R.id.mine_win_code_win_select_more);
+        TextView nameTvNum = view.findViewById(R.id.mine_win_code_sele_num);
         List<HistoryPeopleLotteryDetailResp.WinerDTO> currentAddRecord = new ArrayList<>();
         int initLoadSize = 2;
         if (isInitAdd) {
@@ -629,8 +629,12 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             moreLoadView.setVisibility(View.GONE);
         }
         if (detailLivData.getValue().winer == null) {
+            //更新数量
+            nameTvNum.setText("0");
             return;
         }
+        //更新数量
+        nameTvNum.setText("" + detailLivData.getValue().winer.size());
         for (HistoryPeopleLotteryDetailResp.WinerDTO item : currentAddRecord) {
             View childView = View.inflate(view.getContext(), R.layout.incl_mine_win_code_sele_item, null);
             TextView seal = childView.findViewById(R.id.main_win_code_sele_item_seal);
