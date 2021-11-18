@@ -52,6 +52,7 @@ import com.module.lottery.dialog.LotteryCodeStartsDialog;
 import com.module.lottery.dialog.ReturnInterceptDialog;
 import com.module.lottery.dialog.ReceiveLotteryDialog;
 import com.module.lottery.model.LotteryModel;
+import com.module.lottery.utils.ClickDoubleUtil;
 import com.module.lottery.utils.DateManager;
 import com.module.lottery.utils.GridSpaceItemDecoration;
 import com.module.lottery.viewModel.LotteryViewModel;
@@ -203,7 +204,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             initLottie(mDataBinding.jsonAnimationRound, "lottery_round.json");
             boolean first_show = mSharedPreferences.getBoolean(FIRST_SHOW, true);
             if (first_show) {
-                mSharedPreferences.edit().putBoolean(FIRST_SHOW,false).commit();
+                mSharedPreferences.edit().putBoolean(FIRST_SHOW, false).commit();
                 mDataBinding.maskingLayout.setVisibility(View.VISIBLE);
                 //圆 新手引导遮罩层
                 initLottie(mDataBinding.maskingButton, "lottery_round.json");
@@ -228,43 +229,46 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
     //开始抽奖
     private void startLottery() {
-        AnalysisUtils.onEventEx(this, Dot.Btn_LotteryNow);
-        //判断是否打开了视频广告
-        boolean isOpenAd = JddAdIdConfigManager.INSTANCE.getConfig().getOpenAd();
-        if (isOpenAd) {
+        if (ClickDoubleUtil.Companion.isFastClick()) {
+            AnalysisUtils.onEventEx(this, Dot.Btn_LotteryNow);
+            //判断是否打开了视频广告
+            boolean isOpenAd = JddAdIdConfigManager.INSTANCE.getConfig().getOpenAd();
+            if (isOpenAd) {
 
-            //开始抽奖
-            //弹框抽奖码生成dialog
-            LotteryCodeStartsDialog lotteryCodeStartsDialog = new LotteryCodeStartsDialog(LotteryActivity.this);
-            lotteryCodeStartsDialog.setStateListener(new LotteryCodeStartsDialog.OnStateListener() {
-                @Override
-                public void onFinish() {
-                    try {
-                        if (lotteryCodeStartsDialog != null) {
-                            lotteryCodeStartsDialog.dismiss();
+                //开始抽奖
+                //弹框抽奖码生成dialog
+                LotteryCodeStartsDialog lotteryCodeStartsDialog = new LotteryCodeStartsDialog(LotteryActivity.this);
+                lotteryCodeStartsDialog.setStateListener(new LotteryCodeStartsDialog.OnStateListener() {
+                    @Override
+                    public void onFinish() {
+                        try {
+                            if (lotteryCodeStartsDialog != null) {
+                                lotteryCodeStartsDialog.dismiss();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
-                }
 
-                @Override
-                public void onJumpAdFinish() {
-                    //弹起生成抽奖码的dialog
-                    showGenerateCodeDialog();
-                }
-            });
-            lotteryCodeStartsDialog.create();
-            lotteryCodeStartsDialog.show();
-        } else {
-            //判断是否支持抽奖
-            boolean state = mDateManager.ifPlayAd(24);
-            if (state) {
-                showGenerateCodeDialog();
+                    @Override
+                    public void onJumpAdFinish() {
+                        //弹起生成抽奖码的dialog
+                        showGenerateCodeDialog();
+                    }
+                });
+                lotteryCodeStartsDialog.create();
+                lotteryCodeStartsDialog.show();
             } else {
-                ToastUtil.showShort(this, HIN_VALUE);
+                //判断是否支持抽奖
+                boolean state = mDateManager.ifPlayAd(10000);
+                if (state) {
+                    showGenerateCodeDialog();
+                } else {
+                    ToastUtil.showShort(this, HIN_VALUE);
+                }
             }
         }
+
     }
 
 
@@ -356,18 +360,19 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
     //展示生成的抽奖码
     private void showExhibitCodeDialog(GenerateCodeBean generateCodeBean) {
-        if (mLotteryCodeBean == null) {
+        if (generateCodeBean == null) {
+            Toast.makeText(LotteryActivity.this, "生成抽奖码失败", Toast.LENGTH_SHORT).show();
             return;
         }
-        ExhibitCodeStartsDialog exhibitCodeStartsDialog = new ExhibitCodeStartsDialog(LotteryActivity.this, mGoodsId, mLotteryCodeBean, generateCodeBean);
+        ExhibitCodeStartsDialog exhibitCodeStartsDialog = new ExhibitCodeStartsDialog(LotteryActivity.this, mGoodsId, generateCodeBean);
         exhibitCodeStartsDialog.setStateListener(new ExhibitCodeStartsDialog.OnStateListener() {
             @Override
             public void onFinish() {
                 exhibitCodeStartsDialog.dismiss();
                 //判断抽奖码的个数 跳到对于的dialog
                 //已经满足6个了
-                if (mLotteryCodeBean != null) {
-                    if (mLotteryCodeBean.getCodes().size() >= 6) {
+                if (generateCodeBean != null) {
+                    if (generateCodeBean.getRemain() == 0) {
                         //抽奖码满足跳转到恭喜dialog
                         showCongratulationsDialog();
                     } else {

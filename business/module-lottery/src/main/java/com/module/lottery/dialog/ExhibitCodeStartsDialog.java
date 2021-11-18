@@ -18,6 +18,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.module.lottery.bean.GenerateCodeBean;
 import com.module.lottery.bean.LotteryCodeBean;
+import com.module.lottery.utils.ClickDoubleUtil;
 import com.module_lottery.R;
 import com.module_lottery.databinding.ExhibitCodeDialogLayoutBinding;
 import com.orhanobut.logger.Logger;
@@ -32,18 +33,16 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
     private OnStateListener mOnFinishListener;
     private LotteryHandler mLotteryHandler = new LotteryHandler(this);
     private String mGoodsId;
-    private LotteryCodeBean mLotteryCodeBean;
     private int time = 3000;
     private GenerateCodeBean mGenerateCodeBean;
     private ValueAnimator valueProbeAnimator;
     private int mProgressMarginStart;
 
-    public ExhibitCodeStartsDialog(Context context, String goodsId, LotteryCodeBean lotteryCodeBean, GenerateCodeBean generateCodeBean) {
+    public ExhibitCodeStartsDialog(Context context, String goodsId, GenerateCodeBean generateCodeBean) {
         super(context, R.style.dialogTransparent);//内容样式在这里引入
         this.context = context;
         mGoodsId = goodsId;
         mGenerateCodeBean = generateCodeBean;
-        this.mLotteryCodeBean = lotteryCodeBean;
         //延迟一秒出现关闭按钮
         Message message = new Message();
         message.what = 2;
@@ -64,8 +63,10 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
             public void onClick(View v) {
                 if (mOnFinishListener != null) {
                     //放在倒计时结束后再次打开
-                    freed();
-                    mOnFinishListener.onFinish();
+                    if(ClickDoubleUtil.Companion.isFastClick()){
+                        freed();
+                        mOnFinishListener.onFinish();
+                    }
                 }
             }
         });
@@ -89,8 +90,8 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
         int schedule = 0;
         int randomValue = 0;
         //抽奖码生成成功回调
-        if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() != 0) {
-            schedule = mLotteryCodeBean.getCodes().size();
+        if (mGenerateCodeBean != null) {
+            schedule = 5 - mGenerateCodeBean.getRemain();
             schedule = mDataBinding.includeProgressBar.progressBar.getMax() / 5 * (schedule);
             if (schedule != mDataBinding.includeProgressBar.progressBar.getMax()) {
                 randomValue = generateRandomNumber(60);
@@ -104,7 +105,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
     }
 
     void initView() {
-        if (mLotteryCodeBean.getCodes().size() >= 5) {
+        if (mGenerateCodeBean.getRemain() == 0) {
             mDataBinding.jsonAnimationLayout.setVisibility(View.GONE);
             mDataBinding.hintLayout.setVisibility(View.VISIBLE);
             automaticJump();
@@ -186,7 +187,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
 
     //进度条设置动画
     public void startProgressBar(int progress) {
-        Logger.d("================== progress "+progress);
+        Logger.d("================== progress " + progress);
         //停止之前的循环动画
         ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, progress);
         valueAnimator.setDuration(500);
@@ -204,7 +205,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
                 if (value > mDataBinding.includeProgressBar.progressBar.getMax() - 10) {
                     mDataBinding.progressReminder.setText("明日10点开奖");
                 } else {
-                    mDataBinding.progressReminder.setText("超过" + (int)percentage + "%的用户");
+                    mDataBinding.progressReminder.setText("超过" + (int) percentage + "%的用户");
                 }
                 mDataBinding.includeProgressBar.progressBar.setProgress((int) value);
                 //设置进度条上的百分比
@@ -251,22 +252,22 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
         if (schedule > 0 && schedule < 100) {
             mDataBinding.includeProgressBar.round01.setImageDrawable(getContext().getResources().getDrawable(R.mipmap.hook_icon));
         }
-        if (schedule >100 && schedule < 200) {
+        if (schedule > 100 && schedule < 200) {
             mDataBinding.includeProgressBar.round01.setImageDrawable(getContext().getResources().getDrawable(R.mipmap.hook_icon));
             mDataBinding.includeProgressBar.round02.setImageDrawable(getContext().getResources().getDrawable(R.mipmap.hook_icon));
         }
-        if (schedule >200 && schedule < 300) {
+        if (schedule > 200 && schedule < 300) {
             mDataBinding.includeProgressBar.round01.setImageDrawable(getContext().getResources().getDrawable(R.mipmap.hook_icon));
             mDataBinding.includeProgressBar.round02.setImageDrawable(getContext().getResources().getDrawable(R.mipmap.hook_icon));
             mDataBinding.includeProgressBar.round03.setImageDrawable(getContext().getResources().getDrawable(R.mipmap.hook_icon));
         }
-        if (schedule >300 && schedule < 400) {
+        if (schedule > 300 && schedule < 400) {
             mDataBinding.includeProgressBar.round01.setImageDrawable(getContext().getResources().getDrawable(R.mipmap.hook_icon));
             mDataBinding.includeProgressBar.round02.setImageDrawable(getContext().getResources().getDrawable(R.mipmap.hook_icon));
             mDataBinding.includeProgressBar.round03.setImageDrawable(getContext().getResources().getDrawable(R.mipmap.hook_icon));
             mDataBinding.includeProgressBar.round04.setImageDrawable(getContext().getResources().getDrawable(R.mipmap.hook_icon));
         }
-        if (schedule >400 ) {
+        if (schedule > 400) {
             mDataBinding.includeProgressBar.round01.setImageDrawable(getContext().getResources().getDrawable(R.mipmap.hook_icon));
             mDataBinding.includeProgressBar.round02.setImageDrawable(getContext().getResources().getDrawable(R.mipmap.hook_icon));
             mDataBinding.includeProgressBar.round03.setImageDrawable(getContext().getResources().getDrawable(R.mipmap.hook_icon));
