@@ -277,7 +277,7 @@
                 android:layout_height="17dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="22dp"
-                android:background="@drawable/guide_wachat_login_check_bg"
+                android:background="@drawable/check_checked_bg"
                 android:button="@null"
                 android:checked="false" />
 
