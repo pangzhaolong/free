@@ -44,7 +44,6 @@ import com.module.lottery.adapter.GuessAdapter;
 import com.module.lottery.bean.CommodityBean;
 import com.module.lottery.bean.GenerateCodeBean;
 import com.module.lottery.bean.LotteryCodeBean;
-import com.module.lottery.bean.WinLotteryBean;
 import com.module.lottery.dialog.CongratulationsDialog;
 import com.module.lottery.dialog.ExhibitCodeStartsDialog;
 import com.module.lottery.dialog.GenerateCodeDialog;
@@ -257,7 +256,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 lotteryCodeStartsDialog.show();
             } else {
                 //判断是否支持抽奖
-                if (DateManager.getInstance().timesLimit(DateManager.LOTTERY_KEY,DateManager.NUMBER_OF_DRAWS,2)) {
+                if (DateManager.getInstance().timesLimit(DateManager.LOTTERY_KEY,DateManager.NUMBER_OF_DRAWS,24)) {
                     showGenerateCodeDialog();
                 } else {
                     ToastUtil.showShort(this, "今天次数已用完，明日再来");
