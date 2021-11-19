@@ -271,8 +271,9 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                 + " " + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE) + ":" + calendar.get(Calendar.SECOND));
         if (calendar.get(Calendar.HOUR_OF_DAY) < 10) {
             mIsAfterTenClock = false;
+        } else {
+            mIsAfterTenClock = true;
         }
-        mIsAfterTenClock = true;
         loadLotteryRecord();
     }
 

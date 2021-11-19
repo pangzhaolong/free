@@ -2,7 +2,6 @@ package com.module.lottery.ui;
 
 import static com.module.lottery.dialog.ReturnInterceptDialog.TYPE_1;
 import static com.module.lottery.dialog.ReturnInterceptDialog.TYPE_2;
-import static com.module.lottery.utils.DateManager.HIN_VALUE;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -40,11 +39,11 @@ import com.donews.common.router.RouterFragmentPath;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
+import com.donews.utilslibrary.utils.DateManager;
 import com.module.lottery.adapter.GuessAdapter;
 import com.module.lottery.bean.CommodityBean;
 import com.module.lottery.bean.GenerateCodeBean;
 import com.module.lottery.bean.LotteryCodeBean;
-import com.module.lottery.bean.WinLotteryBean;
 import com.module.lottery.dialog.CongratulationsDialog;
 import com.module.lottery.dialog.ExhibitCodeStartsDialog;
 import com.module.lottery.dialog.GenerateCodeDialog;
@@ -53,7 +52,6 @@ import com.module.lottery.dialog.ReturnInterceptDialog;
 import com.module.lottery.dialog.ReceiveLotteryDialog;
 import com.module.lottery.model.LotteryModel;
 import com.module.lottery.utils.ClickDoubleUtil;
-import com.module.lottery.utils.DateManager;
 import com.module.lottery.utils.GridSpaceItemDecoration;
 import com.module.lottery.viewModel.LotteryViewModel;
 import com.module_lottery.R;
@@ -88,7 +86,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     @Autowired(name = "action")
     public String mAction;
     private CommodityBean mCommodityBean;
-    private DateManager mDateManager;
     private int mPageNumber = 1;
     private boolean refresh = true;
     //抽奖码的对象用来拦截返回
@@ -135,7 +132,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 mDataBinding.maskingLayout.setVisibility(View.GONE);
             }
         });
-        mDateManager = new DateManager(this);
         initViewData();
         setHeaderView(mDataBinding.lotteryGridview);
         setObserveList();
@@ -260,11 +256,10 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 lotteryCodeStartsDialog.show();
             } else {
                 //判断是否支持抽奖
-                boolean state = mDateManager.ifPlayAd(10000);
-                if (state) {
+                if (DateManager.getInstance().timesLimit(DateManager.LOTTERY_KEY,DateManager.NUMBER_OF_DRAWS,24)) {
                     showGenerateCodeDialog();
                 } else {
-                    ToastUtil.showShort(this, HIN_VALUE);
+                    ToastUtil.showShort(this, "今天次数已用完，明日再来");
                 }
             }
         }

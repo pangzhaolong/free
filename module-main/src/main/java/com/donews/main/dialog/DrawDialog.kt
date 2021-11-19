@@ -6,11 +6,11 @@ import com.donews.main.bean.RecentLotteryInfoBean
 import com.donews.main.BuildConfig
 import com.donews.main.R
 import com.donews.main.databinding.DrawDialogLayoutBinding
-import com.donews.main.utils.DateManager
 import com.donews.network.EasyHttp
 import com.donews.network.cache.model.CacheMode
 import com.donews.network.callback.SimpleCallBack
 import com.donews.network.exception.ApiException
+import com.donews.utilslibrary.utils.DateManager
 import com.orhanobut.logger.Logger
 import com.vmadalin.easypermissions.EasyPermissions
 import java.lang.Exception

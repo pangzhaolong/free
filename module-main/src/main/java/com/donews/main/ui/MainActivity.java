@@ -94,26 +94,25 @@ public class MainActivity
                 .autoDarkModeEnable(true)
                 .init();
         EventBus.getDefault().register(this);
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
         showDrawDialog();
         if (AppInfo.checkIsWXLogin()) {
             if (SPUtils.getInformain(KeySharePreferences.SHOW_DIALOG_WHEN_LAUNCH, true)) {
                 if (mEnterShowDialog != null) {
                     mEnterShowDialog.show();
                 }
+                new EnterShowDialog(this).show();
             }
         }
     }
-
 
     /**
      * 显示开奖弹框
      */
     private void showDrawDialog() {
+        if (ABSwitch.Ins().isOpenAB()) {
+            return;
+        }
         boolean logType = AppInfo.checkIsWXLogin();
         if (logType) {
             DrawDialog mDrawDialog = new DrawDialog();
@@ -144,8 +143,8 @@ public class MainActivity
             mFreePanicBuyingDialog.setFinishListener(new FreePanicBuyingDialog.OnFinishListener() {
                 @Override
                 public void onDismiss() {
-                    if (mFreePanicBuyingDialog != null && mFreePanicBuyingDialog.isShowing()) {
-                        mFreePanicBuyingDialog.dismiss();
+                    if (mFreePanicBuyingDialog != null ) {
+                        new EnterShowDialog(MainActivity.this).show();
                     }
                 }
 
