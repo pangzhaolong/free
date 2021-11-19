@@ -14,6 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.airbnb.lottie.LottieAnimationView;
+import com.blankj.utilcode.util.ConvertUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.donews.mine.R;
@@ -73,6 +75,7 @@ public class MineOperatingPosView extends ViewPager {
     private MineOperatingPosVpAdapter adapter;
     private List<IOperatingData> datas = new ArrayList<>();
     private int baseHei = 0;
+    private int minRowHei = 0;
 
     public MineOperatingPosView(Context context) {
         super(context);
@@ -89,11 +92,22 @@ public class MineOperatingPosView extends ViewPager {
         super.onSizeChanged(w, h, oldw, oldh);
         if (baseHei == 0) {
             baseHei = h;
+            minRowHei = (int) getResources().getDimension(R.dimen.mine_operating_hei);
             ViewGroup.LayoutParams lp = MineOperatingPosView.this.getLayoutParams();
-            if (lp != null && datas.isEmpty() && lp.height != baseHei / 2) {
-                MineOperatingPosView.this.getLayoutParams().height = baseHei / 2;
+            if (lp != null && datas.isEmpty() && lp.height != getRowHei()) {
+                MineOperatingPosView.this.getLayoutParams().height = getRowHei();
                 MineOperatingPosView.this.setLayoutParams(lp);
             }
+        }
+    }
+
+    //获取行高
+    private int getRowHei() {
+        int pyl = ConvertUtils.dp2px(21F);
+        if (baseHei / 2 < minRowHei + pyl) {
+            return minRowHei + pyl;
+        } else {
+            return baseHei / 2;
         }
     }
 
@@ -210,9 +224,15 @@ public class MineOperatingPosView extends ViewPager {
             if (endPos > datas.size() && datas.size() - startPos <= 2) {
                 //当前页不足2条数据。那么彻底隐藏视图
                 row2.setVisibility(View.GONE);
-                if (position == getCurrentItem() && lp.height != baseHei / 2) {
-                    startAnim(lp.height, baseHei / 2, lp);
+                if (position == getCurrentItem() && lp.height != getRowHei()) {
+                    startAnim(lp.height, getRowHei(), lp);
                 }
+                //按钮的动画
+                LottieAnimationView lottieAnimationView = itemView.findViewById(R.id.la_but_anim);
+                lottieAnimationView.setImageAssetsFolder("images");
+                lottieAnimationView.setAnimation("mine_liji_but.json");
+                lottieAnimationView.loop(true);
+                lottieAnimationView.playAnimation();
             } else {
                 row2.setVisibility(View.VISIBLE);
                 if (position == getCurrentItem() && lp.height != baseHei) {
@@ -249,8 +269,10 @@ public class MineOperatingPosView extends ViewPager {
                     if (data.getIconUrl() != null && data.getIconUrl().length() > 0) {
                         try {
                             int res = Integer.parseInt(data.getIconUrl());
-//                            icon.setImageResource(res);
-                            Glide.with(getContext()).load(res).into(icon);
+                            icon.setImageResource(res);
+//                            Glide.with(getContext())
+//                                    .load(res)
+//                                    .into(icon);
                         } catch (Exception e) {
                             if (data.getIconUrl().endsWith(".gif")) {
                                 GlideUtils.INSTANCE.glideRectCircleOssWGif(
@@ -268,12 +290,13 @@ public class MineOperatingPosView extends ViewPager {
         }
 
         ValueAnimator valueAnimator;
+
         //开始动画
         private void startAnim(int startHei, int endHei, ViewGroup.LayoutParams lp) {
-            if(valueAnimator != null){
+            if (valueAnimator != null) {
                 valueAnimator.cancel();
             }
-            int chazhi = baseHei / 2;
+            int chazhi = getRowHei();
             float offset = Math.abs(endHei - startHei) / (chazhi * 1F);
             valueAnimator = ValueAnimator.ofInt(startHei, endHei);
             //根据实际的距离来计算时间

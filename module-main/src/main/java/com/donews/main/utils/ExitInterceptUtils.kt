@@ -213,7 +213,7 @@ object ExitInterceptUtils {
             setOnCloseListener {
                 RequestUtil.requestHighValueGoodsInfo()
                 disMissDialog()
-                exitApp(activity)
+//                exitApp(activity)
             }
             setOnLaterListener {
                 RequestUtil.requestHighValueGoodsInfo()

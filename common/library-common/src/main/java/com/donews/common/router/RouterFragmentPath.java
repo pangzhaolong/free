@@ -150,15 +150,17 @@ public class RouterFragmentPath {
          * 获取开奖的Fragment
          *
          * @param period     期数。如果为 0 :表示自动计算期数
+         * @param isMainLoad 是否为首页加载，T:是，F:否
          * @param isShowBack 是否显示返回按钮，T:显示按钮，F:不显示
          * @param isShowMore 是否显示往期的按钮，T:显示按钮，F:不显示
          * @return 开奖的Fragment
          */
         public static Fragment getMineOpenWinFragment(
-                int period, boolean isShowBack, boolean isShowMore) {
+                int period, boolean isMainLoad,boolean isShowBack, boolean isShowMore) {
             return (Fragment) ARouter.getInstance()
                     .build(RouterFragmentPath.User.PAGER_USER_OPEN_WINNING)
                     .withInt("period", period)
+                    .withBoolean("isMainLoad", isMainLoad)
                     .withBoolean("isShowBack", isShowBack)
                     .withBoolean("isShowMore", isShowMore)
                     .navigation();

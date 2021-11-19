@@ -45,6 +45,9 @@ public class MineOpenWinningFragment extends
 
     @Autowired(name = "period")
     public int period = 0;
+    //是否为首页加载
+    @Autowired(name = "isMainLoad")
+    public boolean isMainLoad = false;
     //是否显示返回按钮
     @Autowired(name = "isShowBack")
     public boolean isShowBack = true;
@@ -53,16 +56,20 @@ public class MineOpenWinningFragment extends
     public boolean isShowMore = true;
 
     private int headRes = R.layout.mine_frm_winning_code_list_head;
+    private int notOpenRecordHeadRes = R.layout.mine_frm_winning_code_list_not_record_head;
     private int headNotOpenWinRes = R.layout.mine_frm_winning_code_list_not_open_win_head;
     //adapter的headView(已开奖)
     private ViewGroup adapterOpenWinHead = null;
     //adapter的headView(未开奖)
     private ViewGroup adapterNotOpenWinHead = null;
+    //adapter的headView(未开奖时候查看我的参与记录时)
+    private ViewGroup adapterNotOpenMyAddRecordHead = null;
     MineWinningCodeAdapter adapter;
     private TextView timeHH;
     private TextView timeMM;
     private TextView timeSS;
     private BarrageView barrageView;
+    private BarrageView barrageView2;
     private boolean isLoadStart = false;
     private boolean isRefesh = false;
     private int scrollTop0Count = 0; //是否初始加载数据
@@ -174,6 +181,7 @@ public class MineOpenWinningFragment extends
     public void onResume() {
         super.onResume();
         barrageView.resumeScroll();
+        barrageView2.resumeScroll();
         onRefresh();
     }
 
@@ -181,14 +189,14 @@ public class MineOpenWinningFragment extends
     public void onPause() {
         super.onPause();
         barrageView.pauseScroll();
+        barrageView2.pauseScroll();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (barrageView != null) {
-            barrageView.stopScroll();
-        }
+        barrageView.stopScroll();
+        barrageView2.stopScroll();
     }
 
     private void onRefresh() {
@@ -208,13 +216,12 @@ public class MineOpenWinningFragment extends
             mViewModel.isAutoPeriod = true;
             AnalysisUtils.onEventEx(this.getActivity(), Dot.Page_Lottery); //开奖事件
         }
+        mViewModel.isMainLoad = isMainLoad;
         mViewModel.setDataBinDing(mDataBinding, getBaseActivity());
         adapterOpenWinHead = (ViewGroup) View.inflate(getBaseActivity(), headRes, null);
-        barrageView = adapterOpenWinHead.findViewById(R.id.mine_win_code_scan_scroll_v);
+        adapterNotOpenMyAddRecordHead = (ViewGroup) View.inflate(getBaseActivity(), notOpenRecordHeadRes, null);
         adapterNotOpenWinHead = (ViewGroup) View.inflate(getBaseActivity(), headNotOpenWinRes, null);
-        timeHH = adapterNotOpenWinHead.findViewById(R.id.mine_frm_win_h);
-        timeMM = adapterNotOpenWinHead.findViewById(R.id.mine_frm_win_m);
-        timeSS = adapterNotOpenWinHead.findViewById(R.id.mine_frm_win_s);
+        barrageView = adapterOpenWinHead.findViewById(R.id.mine_win_code_scan_scroll_v);
         adapterOpenWinHead.findViewById(R.id.mine_win_code_sele_rules).setOnClickListener((v) -> {
             Bundle bundle = new Bundle();
             bundle.putString("url",
@@ -229,6 +236,14 @@ public class MineOpenWinningFragment extends
                     .withInt("position", 1)
                     .navigation();
         });
+        barrageView2 = adapterNotOpenMyAddRecordHead.findViewById(R.id.mine_win_code_scan_scroll_v);
+        adapterNotOpenMyAddRecordHead.findViewById(R.id.mine_win_code_scan_all).setOnClickListener((v) -> {
+            //去往晒单页
+            adapterOpenWinHead.findViewById(R.id.mine_win_code_scan_all).performClick();
+        });
+        timeHH = adapterNotOpenWinHead.findViewById(R.id.mine_frm_win_h);
+        timeMM = adapterNotOpenWinHead.findViewById(R.id.mine_frm_win_m);
+        timeSS = adapterNotOpenWinHead.findViewById(R.id.mine_frm_win_s);
         adapter = new MineWinningCodeAdapter();
         //设置没有更多数据
         adapter.getLoadMoreModule().loadMoreEnd();
@@ -352,6 +367,7 @@ public class MineOpenWinningFragment extends
         mViewModel.awardLiveData.observe(this, data -> {
             if (data != null) {
                 barrageView.refreshData(data.getList());
+                barrageView2.refreshData(data.getList());
             }
         });
         if (mViewModel.isAutoPeriod) {
@@ -384,6 +400,24 @@ public class MineOpenWinningFragment extends
         lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         adapterOpenWinHead.setLayoutParams(lp);
         adapter.addHeaderView(adapterOpenWinHead);
+    }
+
+    //添加列表的未开奖时候的参与记录
+    private void addListNotOpenMyAddHead() {
+        if (adapterNotOpenMyAddRecordHead.getParent() != null) {
+            return; //已经添加了
+        }
+        ViewGroup.LayoutParams lp = adapterNotOpenMyAddRecordHead.getLayoutParams();
+        if (lp == null) {
+            lp = new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+            );
+        }
+        lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        adapterNotOpenMyAddRecordHead.setLayoutParams(lp);
+        adapter.addHeaderView(adapterNotOpenMyAddRecordHead);
     }
 
     //添加列表的未开奖头
@@ -424,6 +458,7 @@ public class MineOpenWinningFragment extends
         if (type == 0) {
             mDataBinding.mineWinCodeListStatus.showContent();
             adapterOpenWinHead.setVisibility(View.GONE);
+            adapterNotOpenMyAddRecordHead.setVisibility(View.GONE);
             adapterNotOpenWinHead.setVisibility(View.VISIBLE);
             addListNotOpenWinHead();
             mViewModel.updateCountDownUI(timeHH, timeMM, timeSS);
@@ -433,6 +468,26 @@ public class MineOpenWinningFragment extends
             }
         } else if (type == 1) {
             adapterNotOpenWinHead.setVisibility(View.GONE);
+            adapterOpenWinHead.setVisibility(View.GONE);
+            //还未开奖。但是不需要显示倒计时而是显示个人参与记录
+            if (mViewModel.openWinCountdown.getValue() <= -2) {
+                addListNotOpenMyAddHead();
+                adapterNotOpenMyAddRecordHead.setVisibility(View.VISIBLE);
+                mViewModel.loadAwardData(); //加载滚动通知
+                if (mViewModel.detailLivData.getValue() == null) {
+                    mDataBinding.mineWinCodeListStatus.showError();
+                    mDataBinding.mineWinCodeListStatus.findViewById(R.id.error_view)
+                            .setOnClickListener(v -> {
+                                mDataBinding.mainWinCodeRefresh.autoRefresh();
+                            });
+                    return;
+                }
+                mViewModel.addAddToGoods( //添加参与商品
+                        adapterNotOpenMyAddRecordHead, true);
+                return; //表示未开奖状态下查看参与记录。那么只显示参与记录相关数据
+            }
+            //正在的已开奖所显示的内容
+            adapterNotOpenMyAddRecordHead.setVisibility(View.GONE);
             adapterOpenWinHead.setVisibility(View.VISIBLE);
             addListHead();
             mViewModel.updateData( //更新其他数据
@@ -448,7 +503,7 @@ public class MineOpenWinningFragment extends
             mDataBinding.mineWinCodeListStatus.showContent();
             mViewModel.loadAwardData(); //加载滚动通知
             mViewModel.uiPosResetBuild( //UI位置顺序构建
-                    adapterOpenWinHead,mDataBinding.llLogin);
+                    adapterOpenWinHead, mDataBinding.llLogin);
             mViewModel.addSelectGoods( //添加中奖商品
                     adapterOpenWinHead);
             mViewModel.addAddToGoods( //添加参与商品

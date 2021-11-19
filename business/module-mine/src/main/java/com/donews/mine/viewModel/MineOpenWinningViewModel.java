@@ -63,6 +63,11 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
     public boolean isAutoPeriod = false;
 
     /**
+     * 是否为主页加载
+     */
+    public boolean isMainLoad = false;
+
+    /**
      * 推荐列表
      */
     public MutableLiveData<List<RecommendGoodsResp.ListDTO>> recommendLivData = new MutableLiveData<>();
@@ -215,6 +220,11 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             //服务器时间小于开奖时间。那么计算开奖时间的差距准备计时
             int stepTime = (int) (serviceTime - currentPeriodOpenTime / 1000);
             if (stepTime < 0) {
+                if(!isAutoPeriod && !isMainLoad){
+                    //表示还未开奖。但是不需要显示计时，可能是个人记录查看参与记录
+                    openWinCountdown.postValue(-2);
+                    return; //不是自动加载。并且不是不是从首页进来的。是参与记录页面进来的
+                }
                 //开启计时器(通过服务器时间计算得出的需要计数的时间)
                 int countDownTime = Math.abs(stepTime);
                 if (openWinCountdown.getValue() == null) {
@@ -526,8 +536,7 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             moreLoadView.setVisibility(View.GONE);
         }
         //更新标题跟无数据视图
-        if (detailLivData.getValue().record.isEmpty() &&
-                detailLivData.getValue().myWin.isEmpty()) {
+        if (detailLivData.getValue().record.isEmpty()) {
             //未参与
             nameTvNum.setText("0");
             View childView = getNotDataWindView(

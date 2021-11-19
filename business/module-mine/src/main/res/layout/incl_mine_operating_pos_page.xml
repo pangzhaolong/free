@@ -27,65 +27,87 @@
                 <ImageView
                     android:id="@+id/mine_operating10_iv"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="0dp"
                     android:scaleType="fitXY"
+                    android:src="@drawable/mine_yyw_01"
+                    android:tag="icon"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    android:tag="icon"/>
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/mine_operating_1_1"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/mine_operating_hei"
-                android:paddingTop="5dp"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:paddingTop="5dp">
 
                 <ImageView
                     android:id="@+id/mine_operating11_iv"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="0dp"
                     android:scaleType="fitXY"
+                    android:src="@drawable/mine_yyw_02"
+                    android:tag="icon"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    android:tag="icon"/>
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/la_but_anim"
+                    android:layout_width="85dp"
+                    android:layout_height="35dp"
+                    android:layout_marginRight="8dp"
+                    android:scaleType="fitXY"
+                    app:layout_constraintBottom_toBottomOf="@+id/mine_operating11_iv"
+                    app:layout_constraintRight_toRightOf="@+id/mine_operating11_iv"
+                    app:layout_constraintTop_toTopOf="@id/mine_operating11_iv"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </TableRow>
 
-        <TableRow
-            android:id="@+id/mine_yyw_row2">
+        <TableRow android:id="@+id/mine_yyw_row2">
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/mine_operating_2_0"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/mine_operating_hei"
-                android:paddingTop="5dp"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:paddingTop="5dp">
 
                 <ImageView
                     android:id="@+id/mine_operating20_iv"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="0dp"
                     android:scaleType="fitXY"
                     android:tag="icon"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent" />
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/mine_operating_2_1"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/mine_operating_hei"
-                android:paddingTop="5dp"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:paddingTop="5dp">
 
                 <ImageView
                     android:id="@+id/mine_operating21_iv"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="0dp"
                     android:scaleType="fitXY"
                     android:tag="icon"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent" />
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </TableRow>
     </TableLayout>

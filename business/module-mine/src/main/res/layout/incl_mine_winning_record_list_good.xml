@@ -13,8 +13,8 @@
 
     <ImageView
         android:id="@+id/mine_win_item_good_icon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
         android:layout_marginTop="8dp"
         android:background="@color/white"
         android:scaleType="fitXY"
@@ -54,7 +54,7 @@
         android:id="@+id/mine_win_item_snap_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="22dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingBottom="8dp"
@@ -91,7 +91,6 @@
             android:paddingRight="7dp"
             android:paddingBottom="4dp"
             android:text="查看全部"
-            android:visibility="gone"
             android:textColor="#E9423F"
             android:textSize="14sp" />
     </LinearLayout>

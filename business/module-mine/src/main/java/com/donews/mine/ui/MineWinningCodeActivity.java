@@ -53,9 +53,9 @@ public class MineWinningCodeActivity extends
     public void initView() {
         ARouter.getInstance().inject(this);
         Fragment f = RouterFragmentPath.User.getMineOpenWinFragment(
-                period,true,false);
+                period, false, true, false);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.mine_win_frm,f);
+        ft.add(R.id.mine_win_frm, f);
         ft.commitAllowingStateLoss();
     }
 

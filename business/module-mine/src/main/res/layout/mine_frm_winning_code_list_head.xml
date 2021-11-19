@@ -258,7 +258,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <!-- 我中奖的商品显示容器 -->
+                <!-- 我的参与商品容器 -->
                 <LinearLayout
                     android:id="@+id/mine_win_code_win_add_good_ll"
                     android:layout_width="match_parent"

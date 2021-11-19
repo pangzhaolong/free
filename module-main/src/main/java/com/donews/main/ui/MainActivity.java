@@ -290,7 +290,7 @@ public class MainActivity
                     .build(RouterFragmentPath.Front.PAGER_FRONT)
                     .navigation());
             fragments.add(RouterFragmentPath.Unboxing.getUnboxingFragment());
-            fragments.add(RouterFragmentPath.User.getMineOpenWinFragment(0, false, true));
+            fragments.add(RouterFragmentPath.User.getMineOpenWinFragment(0,true, false, true));
             fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Home.PAGER_HOME).navigation());
             fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.User.PAGER_USER).navigation());
         }

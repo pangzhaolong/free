@@ -13,6 +13,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.AppUtils;
@@ -266,10 +267,8 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
         List<MineOperatingPosView.IOperatingData> list = new ArrayList<>();
         List<Integer> imgs = new ArrayList() {
             {
-                add(R.drawable.main_yyw);
-                add(R.drawable.main_yyw);
-                add(R.drawable.main_yyw);
-                add(R.drawable.main_yyw);
+                add(R.drawable.mine_yyw_01);
+                add(R.drawable.mine_yyw_02);
             }
         };
         for (int i = 0; i < imgs.size(); i++) {
@@ -310,6 +309,7 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
                     R.drawable.mine_not_login_user_head);
             userName.setText(uf.getUserName());
         }
+        vpHei = 0; //让滚动位置重新计算一遍。防止视图变化引起的位置变化计算不及时导致界面滑动错误
     }
 
     //检查是否已经登录了，T:已登录，F:未登录

@@ -1,11 +1,8 @@
 package com.donews.middle.request;
 
-import android.annotation.SuppressLint;
 
 import com.donews.middle.BuildConfig;
-import com.donews.middle.api.MiddleApi;
 import com.donews.middle.bean.HighValueGoodsBean;
-import com.donews.middle.bean.home.PrivilegeLinkBean;
 import com.donews.middle.cache.GoodsCache;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
@@ -20,7 +17,7 @@ public class RequestUtil {
      * @return
      */
     public static void requestHighValueGoodsInfo() {
-        EasyHttp.get(BuildConfig.API_LOTTERY_URL + "v1/recommend-high-value-goods?limit=1")
+        EasyHttp.get(BuildConfig.API_LOTTERY_URL + "v1/recommend-high-value-goods?limit=4")
                 .cacheMode(CacheMode.CACHEANDREMOTEDISTINCT)
                 .cacheKey("high_value_goods_1")
                 .execute(new SimpleCallBack<HighValueGoodsBean>() {
