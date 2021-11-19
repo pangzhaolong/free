@@ -110,6 +110,9 @@ public class MainActivity
      * 显示开奖弹框
      */
     private void showDrawDialog() {
+        if (ABSwitch.Ins().isOpenAB()) {
+            return;
+        }
         boolean logType = AppInfo.checkIsWXLogin();
         if (logType) {
             DrawDialog mDrawDialog = new DrawDialog();
@@ -140,9 +143,7 @@ public class MainActivity
             mFreePanicBuyingDialog.setFinishListener(new FreePanicBuyingDialog.OnFinishListener() {
                 @Override
                 public void onDismiss() {
-                    if (mFreePanicBuyingDialog != null && mFreePanicBuyingDialog.isShowing()) {
-                        mFreePanicBuyingDialog.dismiss();
-
+                    if (mFreePanicBuyingDialog != null ) {
                         new EnterShowDialog(MainActivity.this).show();
                     }
                 }

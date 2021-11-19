@@ -26,10 +26,12 @@ import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
+import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.DateManager;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.lang.ref.WeakReference;
 import java.util.Calendar;
@@ -64,11 +66,10 @@ public class FreePanicBuyingDialog extends BaseDialog<FreePanicDialogLayoutBindi
         mDataBinding.closure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 dismiss();
             }
         });
+        EventBus.getDefault().register(this);
         initView();
         setOnDismissListener(this);
         //延迟一秒出现关闭按钮
@@ -82,7 +83,7 @@ public class FreePanicBuyingDialog extends BaseDialog<FreePanicDialogLayoutBindi
 
     public void requestGoodsInfo(Context context) {
         //判断今天是否弹起过
-       if(DateManager.getInstance().ifFirst(DateManager.FREE_PANIC_DIALOG_KEY)){
+//       if(DateManager.getInstance().ifFirst(DateManager.FREE_PANIC_DIALOG_KEY)){
            Disposable disposable = EasyHttp.get(RECENT_FREE)
                    .cacheMode(CacheMode.NO_CACHE)
                    .execute(new SimpleCallBack<NowTimeBean>() {
@@ -106,9 +107,17 @@ public class FreePanicBuyingDialog extends BaseDialog<FreePanicDialogLayoutBindi
                    });
 
            addDisposable(disposable);
-       }else{
-           Logger.d("Bounced today");
-       }
+//       }else{
+//           Logger.d("Bounced today");
+//       }
+    }
+
+
+    @Subscribe
+    public void WeChatLoginEvent(LoginUserStatus loginUserStatus) {
+        if (loginUserStatus.getStatus() == 1 && AppInfo.checkIsWXLogin()) {
+            dismiss();
+        }
     }
 
 
