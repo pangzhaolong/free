@@ -94,16 +94,7 @@ public class MainActivity
                 .autoDarkModeEnable(true)
                 .init();
         EventBus.getDefault().register(this);
-
         showDrawDialog();
-        if (AppInfo.checkIsWXLogin()) {
-            if (SPUtils.getInformain(KeySharePreferences.SHOW_DIALOG_WHEN_LAUNCH, true)) {
-                if (mEnterShowDialog != null) {
-                    mEnterShowDialog.show();
-                }
-                new EnterShowDialog(this).show();
-            }
-        }
     }
 
     /**
@@ -112,6 +103,13 @@ public class MainActivity
     private void showDrawDialog() {
         if (ABSwitch.Ins().isOpenAB()) {
             return;
+        }
+        if (AppInfo.checkIsWXLogin()) {
+            if (SPUtils.getInformain(KeySharePreferences.SHOW_DIALOG_WHEN_LAUNCH, true)) {
+                if ((mEnterShowDialog != null) && (!mEnterShowDialog.isShowing())) {
+                    mEnterShowDialog.show();
+                }
+            }
         }
         boolean logType = AppInfo.checkIsWXLogin();
         if (logType) {
@@ -143,7 +141,7 @@ public class MainActivity
             mFreePanicBuyingDialog.setFinishListener(new FreePanicBuyingDialog.OnFinishListener() {
                 @Override
                 public void onDismiss() {
-                    if (mFreePanicBuyingDialog != null ) {
+                    if (mFreePanicBuyingDialog != null) {
                         new EnterShowDialog(MainActivity.this).show();
                     }
                 }

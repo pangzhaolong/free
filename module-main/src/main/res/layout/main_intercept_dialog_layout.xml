@@ -277,7 +277,7 @@
                 android:layout_height="17dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="22dp"
-                android:background="@drawable/guide_wachat_login_check_bg"
+                android:background="@drawable/check_checked_bg"
                 android:button="@null"
                 android:checked="false" />
 
@@ -324,6 +324,7 @@
             android:layout_gravity="center"
             android:text="残忍离开"
             android:padding="5dp"
+            android:layout_marginBottom="26dp"
             android:textColor="#D6D6D6"
             android:layout_marginTop="17dp"
             android:visibility="invisible"

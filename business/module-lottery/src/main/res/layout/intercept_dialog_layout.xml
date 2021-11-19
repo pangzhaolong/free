@@ -7,306 +7,325 @@
 
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/closure"
-            android:layout_width="26dp"
-            android:layout_height="26dp"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="right"
-            android:src="@mipmap/closure_icon"
-            android:visibility="invisible" />
 
-        <RelativeLayout
-            android:id="@+id/return_root_layout"
+        <LinearLayout
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/central_content"
             android:layout_width="match_parent"
-            android:layout_height="340dp"
-            android:layout_marginTop="23dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:orientation="vertical"
-            tools:ignore="ResourceName">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="22dp"
-                android:layout_marginTop="40dp"
-                android:layout_marginRight="22dp"
-                android:src="@drawable/red_shape" />
+            tools:ignore="MissingConstraints">
 
             <RelativeLayout
+
+                android:id="@+id/return_root_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="bottom">
+                android:layout_height="340dp"
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="41dp"
-                    android:layout_marginEnd="41dp"
-                    android:background="@mipmap/card_bg"
-                    android:gravity="bottom"
-                    android:orientation="vertical">
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="145dp"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/title"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="@string/return_intercept_title"
-                            android:textColor="#764D38"
-                            android:textSize="18dp"
-                            android:textStyle="bold" />
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/price"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="1dp"
-                                android:text="8.8"
-                                android:textColor="#E9423E"
-                                android:textSize="60dp"
-                                android:textStyle="bold"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintRight_toRightOf="parent"
-                                tools:ignore="MissingConstraints" />
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                app:layout_constraintLeft_toRightOf="@+id/price"
-                                tools:ignore="MissingConstraints">
-
-                                <TextView
-                                    android:id="@+id/hint_title"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="3dp"
-                                    android:layout_marginTop="10dp"
-                                    android:background="@drawable/shape_max"
-                                    android:paddingStart="7dp"
-                                    android:paddingTop="2dp"
-                                    android:paddingEnd="7dp"
-                                    android:paddingBottom="2dp"
-                                    android:text="@string/return_intercept_hint"
-                                    android:textColor="#FFFFFF"
-                                    android:textSize="12dp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:layout_gravity="bottom"
-                                    android:layout_marginTop="10dp"
-                                    android:text="元"
-                                    android:textColor="#E9423E"
-                                    android:textSize="20dp"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <TextView
-                            android:id="@+id/hint"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="登录参与抽奖，得新人红包"
-                            android:textColor="#764D38"
-                            android:textSize="12dp"
-                            android:textStyle="bold" />
-
-                        <LinearLayout
-                            android:id="@+id/withdraw_hint_layout"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="6dp"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/withdraw_hint"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="1dp"
-                                android:text="@string/return_intercept_withdraw"
-                                android:textColor="#764D38"
-                                android:textSize="12dp"
-                                android:textStyle="bold" />
-
-                            <ImageView
-                                android:layout_width="13dp"
-                                android:layout_height="12dp"
-                                android:layout_gravity="center"
-                                android:src="@mipmap/weixin_icon" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="1dp"
-                                android:text="微信"
-                                android:textColor="#764D38"
-                                android:textSize="12dp"
-                                android:textStyle="bold" />
-
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-
-                </LinearLayout>
+                android:orientation="vertical"
+                tools:ignore="ResourceName">
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/return_button_icon" />
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginRight="22dp"
+                    android:src="@drawable/red_shape" />
 
-            </RelativeLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="15dp">
-
-                <TextView
-                    android:id="@+id/jump_button"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_marginStart="47dp"
-                    android:layout_marginEnd="47dp"
-                    android:layout_weight="5"
-                    android:background="@drawable/panic_buying_button_bg"
-                    android:gravity="center"
-                    android:paddingTop="9dp"
-                    android:paddingBottom="9dp"
-                    android:text="立即抢购"
-                    android:textColor="#D82D2A"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
-                    tools:ignore="MissingConstraints" />
+                    android:gravity="bottom">
 
-                <com.airbnb.lottie.LottieAnimationView
-                    android:id="@+id/masking_hand"
-                    android:layout_width="49dp"
-                    android:layout_height="51dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="65dp"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:lottie_loop="true"
-                    tools:ignore="MissingConstraints" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="41dp"
+                        android:layout_marginEnd="41dp"
+                        android:background="@mipmap/card_bg"
+                        android:gravity="bottom"
+                        android:orientation="vertical">
 
 
-            <ImageView
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="145dp"
-                android:scaleType="fitXY"
-                android:src="@mipmap/gold_icon_01"
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="145dp"
+                            android:orientation="vertical">
 
-                />
+                            <TextView
+                                android:id="@+id/title"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="@string/return_intercept_title"
+                                android:textColor="#764D38"
+                                android:textSize="18dp"
+                                android:textStyle="bold" />
 
-            <ImageView
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="74dp"
-                android:scaleType="fitXY"
-                android:src="@mipmap/gold_icon_02"
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
 
-                />
-        </RelativeLayout>
+                                <TextView
+                                    android:id="@+id/price"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="1dp"
+                                    android:text="8.8"
+                                    android:textColor="#E9423E"
+                                    android:textSize="60dp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintLeft_toLeftOf="parent"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    tools:ignore="MissingConstraints" />
 
-        <LinearLayout
-            android:id="@+id/protocol_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="18dp"
-            android:orientation="horizontal">
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    app:layout_constraintLeft_toRightOf="@+id/price"
+                                    tools:ignore="MissingConstraints">
 
-            <CheckBox
-                android:id="@+id/check_box"
-                android:layout_width="17dp"
-                android:layout_height="17dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="22dp"
-                android:background="@drawable/guide_wachat_login_check_bg"
-                android:button="@null"
-                android:checked="false" />
+                                    <TextView
+                                        android:id="@+id/hint_title"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="3dp"
+                                        android:layout_marginTop="10dp"
+                                        android:background="@drawable/shape_max"
+                                        android:paddingStart="7dp"
+                                        android:paddingTop="2dp"
+                                        android:paddingEnd="7dp"
+                                        android:paddingBottom="2dp"
+                                        android:text="@string/return_intercept_hint"
+                                        android:textColor="#FFFFFF"
+                                        android:textSize="12dp"
+                                        android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="bottom"
+                                        android:layout_marginTop="10dp"
+                                        android:text="元"
+                                        android:textColor="#E9423E"
+                                        android:textSize="20dp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <TextView
+                                android:id="@+id/hint"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="登录参与抽奖，得新人红包"
+                                android:textColor="#764D38"
+                                android:textSize="12dp"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:id="@+id/withdraw_hint_layout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="6dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/withdraw_hint"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="1dp"
+                                    android:text="@string/return_intercept_withdraw"
+                                    android:textColor="#764D38"
+                                    android:textSize="12dp"
+                                    android:textStyle="bold" />
+
+                                <ImageView
+                                    android:layout_width="13dp"
+                                    android:layout_height="12dp"
+                                    android:layout_gravity="center"
+                                    android:src="@mipmap/weixin_icon" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="1dp"
+                                    android:text="微信"
+                                    android:textColor="#764D38"
+                                    android:textSize="12dp"
+                                    android:textStyle="bold" />
+
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/return_button_icon" />
+
+                </RelativeLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="15dp">
+
+                    <TextView
+                        android:id="@+id/jump_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginStart="47dp"
+                        android:layout_marginEnd="47dp"
+                        android:layout_weight="5"
+                        android:background="@drawable/panic_buying_button_bg"
+                        android:gravity="center"
+                        android:paddingTop="9dp"
+                        android:paddingBottom="9dp"
+                        android:text="立即抢购"
+                        android:textColor="#D82D2A"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        tools:ignore="MissingConstraints" />
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/masking_hand"
+                        android:layout_width="49dp"
+                        android:layout_height="51dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="65dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:lottie_loop="true"
+                        tools:ignore="MissingConstraints" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <ImageView
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="145dp"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/gold_icon_01"
+
+                    />
+
+                <ImageView
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="74dp"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/gold_icon_02"
+
+                    />
+            </RelativeLayout>
+
+            <LinearLayout
+
+                android:id="@+id/protocol_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_marginStart="5dp"
-                android:text="已阅读并同意"
-                android:textColor="#D6D6D6"
-                android:textSize="13dp"
+                android:layout_marginTop="18dp"
+                android:orientation="horizontal">
 
-                />
+                <CheckBox
+                    android:id="@+id/check_box"
+                    android:layout_width="17dp"
+                    android:layout_height="17dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="22dp"
+                    android:background="@drawable/check_checked_bg"
+                    android:button="@null"
+                    android:checked="false" />
 
-            <TextView
-                android:id="@+id/user_protocol"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="《用户协议》"
-                android:textColor="#FEDFA7"
-                android:textSize="13dp"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="5dp"
+                    android:text="已阅读并同意"
+                    android:textColor="#D6D6D6"
+                    android:textSize="13dp"
 
-                />
+                    />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="及"
-                android:textColor="#D6D6D6"
-                android:textSize="13dp"
+                <TextView
+                    android:id="@+id/user_protocol"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="《用户协议》"
+                    android:textColor="#FEDFA7"
+                    android:textSize="13dp"
 
-                />
+                    />
 
-            <TextView
-                android:id="@+id/privacy_protocol"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="《隐私协议》"
-                android:textColor="#FEDFA7"
-                android:textSize="13dp"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="及"
+                    android:textColor="#D6D6D6"
+                    android:textSize="13dp"
 
-                />
+                    />
 
+                <TextView
+                    android:id="@+id/privacy_protocol"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="《隐私协议》"
+                    android:textColor="#FEDFA7"
+                    android:textSize="13dp"
+
+                    />
+
+            </LinearLayout>
         </LinearLayout>
 
-    </LinearLayout>
+        <ImageView
+            app:layout_constraintBottom_toTopOf="@id/central_content"
+            app:layout_constraintRight_toRightOf="parent"
+            android:id="@+id/intercept_closure"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_above="@+id/central_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:layout_marginEnd="23dp"
+            android:layout_marginBottom="23dp"
+            android:src="@mipmap/closure_icon"
+            android:visibility="invisible"
+            tools:ignore="MissingConstraints" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
