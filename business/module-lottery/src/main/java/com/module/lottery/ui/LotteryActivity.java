@@ -57,6 +57,7 @@ import com.module.lottery.viewModel.LotteryViewModel;
 import com.module_lottery.R;
 import com.module_lottery.databinding.GuesslikeHeadLayoutBinding;
 import com.module_lottery.databinding.LotteryMainLayoutBinding;
+import com.orhanobut.logger.Logger;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
@@ -189,13 +190,18 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         });
         //当抽奖码大于等于6时显示等待开奖
         if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() >= 5) {
-            mDataBinding.jsonAnimation.setVisibility(View.GONE);
-            mDataBinding.jsonAnimationRound.pauseAnimation();
-            mDataBinding.jsonAnimationRound.setProgress(0);
+            setLottieAnimation(false);
         } else {
+            setLottieAnimation(true);
+        }
+    }
+
+    private  void setLottieAnimation(boolean play){
+        if(play){
             //设置动画
             //小手
             initLottie(mDataBinding.jsonAnimation, "lottery_finger.json");
+            mDataBinding.jsonAnimation.setVisibility(View.VISIBLE);
             //圆
             initLottie(mDataBinding.jsonAnimationRound, "lottery_round.json");
             boolean first_show = mSharedPreferences.getBoolean(FIRST_SHOW, true);
@@ -209,12 +215,16 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             } else {
                 mDataBinding.maskingLayout.setVisibility(View.GONE);
             }
+        }else{
+            mDataBinding.jsonAnimation.setVisibility(View.GONE);
+            mDataBinding.jsonAnimationRound.pauseAnimation();
+            mDataBinding.jsonAnimationRound.setProgress(0);
+
         }
     }
 
-
     private void initLottie(LottieAnimationView view, String json) {
-        if (view != null) {
+        if (view != null&&!view.isAnimating()) {
             view.setImageAssetsFolder("images");
             view.setAnimation(json);
             view.loop(true);
@@ -256,7 +266,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 lotteryCodeStartsDialog.show();
             } else {
                 //判断是否支持抽奖
-                if (DateManager.getInstance().timesLimit(DateManager.LOTTERY_KEY,DateManager.NUMBER_OF_DRAWS,24)) {
+                if (DateManager.getInstance().timesLimit(DateManager.LOTTERY_KEY, DateManager.NUMBER_OF_DRAWS, 24)) {
                     showGenerateCodeDialog();
                 } else {
                     ToastUtil.showShort(this, "今天次数已用完，明日再来");
@@ -510,25 +520,22 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
     //设置底部按钮的文案显示
     private void setButtonValue(LotteryCodeBean lotteryCodeBean) {
-        //判断用户是否登录，未登录走登录流程
-
         mDataBinding.tips.setVisibility(View.VISIBLE);
         //当抽奖码==0 显示0元抽奖
         if (lotteryCodeBean != null && lotteryCodeBean.getCodes().size() == 0) {
             mDataBinding.label02.setVisibility(View.VISIBLE);
             mDataBinding.label01.setText(getResources().getString(R.string.zero_dollar_draw));
-            mDataBinding.label02.setText(getResources().getString(R.string.lottery_value));
+            mDataBinding.label02.setText("抽奖");
             mDataBinding.tips.setText("观看视频，参与抽奖");
+            setLottieAnimation(true);
         }
-
-
         //当抽奖码小于6大于1的话 显示继续抽奖
         if (lotteryCodeBean != null && lotteryCodeBean.getCodes().size() > 0 && lotteryCodeBean.getCodes().size() < 6) {
             mDataBinding.label02.setVisibility(View.VISIBLE);
             mDataBinding.label01.setText(getResources().getString(R.string.continue_value));
             mDataBinding.label02.setText(getResources().getString(R.string.lottery_value));
             mDataBinding.tips.setText("抽奖码越多，中奖概率越大");
-
+            setLottieAnimation(true);
         }
         //当抽奖码大于等于6时显示等待开奖
         if (lotteryCodeBean != null && lotteryCodeBean.getCodes().size() >= 6) {
@@ -537,43 +544,52 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             mDataBinding.label02.setText("");
             mDataBinding.tips.setText("明日10:00点开奖");
             //
-            mDataBinding.jsonAnimation.setVisibility(View.GONE);
-            mDataBinding.jsonAnimationRound.pauseAnimation();
-            mDataBinding.jsonAnimationRound.setProgress(0);
+            setLottieAnimation(false);
 
-
-            mDataBinding.jsonAnimationRound.setColorFilter(Color.BLUE);
-
-            LottieAnimationView mirror = mDataBinding.jsonAnimationRound;
+        }
+        final LottieAnimationView mirror = mDataBinding.jsonAnimationRound;
+        if (mirror != null) {
             mirror.addLottieOnCompositionLoadedListener(new LottieOnCompositionLoadedListener() {
                 @SuppressLint("RestrictedApi")
                 @Override
                 public void onCompositionLoaded(LottieComposition composition) {
-//过滤所有的keypath
-                    List<KeyPath> list = mirror.resolveKeyPath(
-                            new KeyPath("**"));
-                    //通过匹配关键字的深度，来过滤需要改变颜色的keypath
-                    for (KeyPath path : list) {
-                        Log.d("mirror", path.keysToString());
-
-//通过匹配关键字的深度对深度为1 和2 的填充色进行修改
-//                        if (path.matches("btn_q", 2)||path.matches("btn_q", 1) ) {
-
-                        mirror.addValueCallback(path, LottieProperty.COLOR, new SimpleLottieValueCallback<Integer>() {
-                            @Override
-                            public Integer getValue(LottieFrameInfo<Integer> frameInfo) {
-                                return getResources().getColor(R.color.policec_lick);
-                            }
-                        });
-//                        }
+                    if (composition != null) {
+                        setAnimationRoundColor(lotteryCodeBean, mirror);
                     }
-
-
                 }
             });
-
         }
     }
+
+
+    //设置底部按钮颜色
+    @SuppressLint("RestrictedApi")
+    private void setAnimationRoundColor(LotteryCodeBean lotteryCodeBean, LottieAnimationView mirror) {
+        if (lotteryCodeBean == null || mirror == null) {
+            return;
+        }
+        //过滤所有的keypath
+        List<KeyPath> list = mirror.resolveKeyPath(
+                new KeyPath("**"));
+        //通过匹配关键字的深度，来过滤需要改变颜色的keypath
+        for (KeyPath path : list) {
+            if(path.keysToString().indexOf("btn_inner")!=-1){
+                mirror.addValueCallback(path, LottieProperty.COLOR, new SimpleLottieValueCallback<Integer>() {
+                    @Override
+                    public Integer getValue(LottieFrameInfo<Integer> frameInfo) {
+                        if (lotteryCodeBean != null && lotteryCodeBean.getCodes().size() >= 6) {
+                            return getResources().getColor(R.color.policec_lick);
+                        }
+                        return getResources().getColor(R.color.policec_lick_red);
+                    }
+
+                });
+
+            }
+        }
+
+    }
+
 
     @Override
     public void initView() {

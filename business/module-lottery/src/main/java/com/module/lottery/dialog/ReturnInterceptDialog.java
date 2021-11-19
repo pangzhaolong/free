@@ -59,7 +59,7 @@ public class ReturnInterceptDialog extends BaseDialog<InterceptDialogLayoutBindi
         super.onCreate(savedInstanceState);
 
 
-        mDataBinding.closure.setOnClickListener(new View.OnClickListener() {
+        mDataBinding.interceptClosure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismiss();
@@ -242,7 +242,7 @@ public class ReturnInterceptDialog extends BaseDialog<InterceptDialogLayoutBindi
             switch (msg.what) {
                 case 1:
                     if (reference.get() != null) {
-                        reference.get().mDataBinding.closure.setVisibility(View.VISIBLE);
+                        reference.get().mDataBinding.interceptClosure.setVisibility(View.VISIBLE);
                     }
                     break;
             }
