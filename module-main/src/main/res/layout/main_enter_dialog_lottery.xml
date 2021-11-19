@@ -96,8 +96,7 @@
                 android:layout_width="260dp"
                 android:layout_height="260dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:src="#0000ff" />
+                android:layout_marginTop="10dp" />
 
 
             <TextView

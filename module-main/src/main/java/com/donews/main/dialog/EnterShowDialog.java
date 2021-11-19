@@ -37,6 +37,7 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
     public EnterShowDialog(Context context) {
         super(context, R.style.dialogTransparent);
         mContext = context;
+        create();
     }
 
     @Override

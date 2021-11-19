@@ -69,6 +69,8 @@ public class FreePanicBuyingDialog extends BaseDialog<FreePanicDialogLayoutBindi
         mDataBinding.closure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 dismiss();
             }
         });
