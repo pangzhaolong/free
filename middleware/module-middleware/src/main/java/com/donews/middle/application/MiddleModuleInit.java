@@ -101,6 +101,7 @@ public class MiddleModuleInit implements IModuleInit {
     private void requestWithdrawCenterConfig() {
         EasyHttp.get(BuildConfig.API_WALLET_URL + "v1/withdraw/config")
                 .cacheMode(CacheMode.NO_CACHE)
+                .isShowToast(false)
                 .execute(new SimpleCallBack<WithdrawConfigResp>() {
                     @Override
                     public void onError(ApiException e) {

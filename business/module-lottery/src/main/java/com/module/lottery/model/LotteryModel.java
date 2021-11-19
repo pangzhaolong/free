@@ -42,7 +42,6 @@ public class LotteryModel extends BaseLiveDataModel {
     public static String LOTTERY_RECOMMEND_CODE = LOTTERY_BASE + "v1/recommend-lottery-goods";
 
 
-
     //获取抽奖中奖人员列表
     public static String LOTTERY_WIN_LOTTERY = LOTTERY_BASE + "v1/rand-lottery-info";
 
@@ -119,6 +118,7 @@ public class LotteryModel extends BaseLiveDataModel {
         addDisposable(EasyHttp.get(url)
                 .cacheMode(CacheMode.NO_CACHE)
                 .params(params)
+                .isShowToast(false)
                 .execute(new SimpleCallBack<LotteryCodeBean>() {
                     @Override
                     public void onError(ApiException e) {
@@ -181,8 +181,6 @@ public class LotteryModel extends BaseLiveDataModel {
                     }
                 }));
     }
-
-
 
 
     /**

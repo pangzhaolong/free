@@ -323,6 +323,7 @@ public class MineModel extends BaseLiveDataModel {
             MutableLiveData<List<WithdrawConfigResp.WithdrawListDTO>> livData) {
         Disposable disop = EasyHttp.get(BuildConfig.API_WALLET_URL + "v1/withdraw/config")
                 .cacheMode(CacheMode.NO_CACHE)
+                .isShowToast(false)
                 .execute(new SimpleCallBack<WithdrawConfigResp>() {
                     @Override
                     public void onError(ApiException e) {
@@ -373,6 +374,7 @@ public class MineModel extends BaseLiveDataModel {
             MutableLiveData<WithdraWalletResp> livData) {
         Disposable disop = EasyHttp.get(BuildConfig.API_WALLET_URL + "v1/wallet")
                 .cacheMode(CacheMode.NO_CACHE)
+                .isShowToast(false)
                 .execute(new SimpleCallBack<WithdraWalletResp>() {
                     @Override
                     public void onError(ApiException e) {
