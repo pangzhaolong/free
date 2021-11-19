@@ -499,7 +499,7 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
         TextView nameTvNum = view.findViewById(R.id.mine_win_code_add_num);
         List<HistoryPeopleLotteryDetailResp.WinerDTO> currentAddRecord = new ArrayList<>();
 
-        int initLoadSize = 3;
+        int initLoadSize = 2;
         if (isInitAdd) {
             if (detailLivData.getValue().record != null &&
                     detailLivData.getValue().record.size() > initLoadSize) {

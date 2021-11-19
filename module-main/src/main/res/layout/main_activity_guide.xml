@@ -100,7 +100,7 @@
                 android:id="@+id/login_ck_check"
                 android:layout_width="14dp"
                 android:layout_height="14dp"
-                android:background="@drawable/guide_wachat_login_check_bg"
+                android:background="@drawable/main_guide_wachat_login_check_bg"
                 android:button="@null"
                 android:checked="false" />
 
