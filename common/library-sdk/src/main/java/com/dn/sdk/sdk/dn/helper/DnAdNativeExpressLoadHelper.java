@@ -99,8 +99,9 @@ public class DnAdNativeExpressLoadHelper {
 
             @Override
             public void onADExposure() {
-
-
+                if (mListener != null) {
+                    mListener.onAdExposure();
+                }
             }
 
             @Override

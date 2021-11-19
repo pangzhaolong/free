@@ -1,6 +1,7 @@
 package com.dn.sdk.sdk.interfaces.proxy
 
 import com.dn.sdk.sdk.bean.RequestInfo
+import com.dn.sdk.sdk.bean.SDKType
 import com.dn.sdk.sdk.interfaces.listener.IAdInterstitialListener
 import com.dn.sdk.sdk.statistics.CountTrackImpl
 
@@ -38,7 +39,9 @@ class AdInterstitialListenerProxy(
 
     override fun onAdShow() {
         listener?.onAdShow()
-        countTrack.onShow()
+        if (requestInfo.platform.getLoader().sdkType == SDKType.DO_GRO_MORE) {
+            countTrack.onShow()
+        }
     }
 
     override fun onAdClosed() {
@@ -57,6 +60,9 @@ class AdInterstitialListenerProxy(
 
     override fun onAdExposure() {
         listener?.onAdExposure()
+        if (requestInfo.platform.getLoader().sdkType == SDKType.DO_NEWS) {
+            countTrack.onShow()
+        }
         countTrack.onADExposure()
     }
 

@@ -56,6 +56,11 @@ public class SimpleNativeExpressListener implements IAdNativeExpressListener {
 	}
 
 	@Override
+	public void onAdExposure() {
+
+	}
+
+	@Override
 	public void onAdClose() {
 
 	}

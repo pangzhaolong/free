@@ -64,6 +64,7 @@ class AdRewardVideoListenerProxy(
 
     override fun onRewardVerify(result: Boolean) {
         listener?.onRewardVerify(result)
+        countTrack.onRewardVerify(result)
     }
 
     override fun onSkippedRewardVideo() {
