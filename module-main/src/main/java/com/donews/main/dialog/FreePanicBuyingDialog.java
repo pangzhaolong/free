@@ -22,19 +22,14 @@ import com.donews.main.BuildConfig;
 import com.donews.main.R;
 import com.donews.main.bean.NowTimeBean;
 import com.donews.main.databinding.FreePanicDialogLayoutBinding;
-import com.donews.main.utils.ClickDoubleUtil;
-import com.donews.main.utils.DateManager;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
-import com.donews.network.request.GetRequest;
-import com.donews.utilslibrary.analysis.AnalysisUtils;
-import com.donews.utilslibrary.dot.Dot;
-import com.donews.utilslibrary.utils.AppInfo;
+import com.donews.utilslibrary.utils.DateManager;
+import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import java.lang.ref.WeakReference;
 import java.util.Calendar;
@@ -112,7 +107,7 @@ public class FreePanicBuyingDialog extends BaseDialog<FreePanicDialogLayoutBindi
 
            addDisposable(disposable);
        }else{
-//           ToastUtil.show(context,"今天弹起过");
+           Logger.d("Bounced today");
        }
     }
 
@@ -184,6 +179,9 @@ public class FreePanicBuyingDialog extends BaseDialog<FreePanicDialogLayoutBindi
             mLotteryHandler = null;
         }
         EventBus.getDefault().unregister(this);
+        if(mOnFinishListener!=null){
+            mOnFinishListener.onDismiss();
+        }
     }
 
     @Override
