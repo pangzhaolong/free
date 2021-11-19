@@ -1,6 +1,7 @@
 package com.dn.sdk.sdk.interfaces.proxy
 
 import com.dn.sdk.sdk.bean.RequestInfo
+import com.dn.sdk.sdk.bean.SDKType
 import com.dn.sdk.sdk.interfaces.listener.IAdBannerListener
 import com.dn.sdk.sdk.statistics.CountTrackImpl
 
@@ -38,7 +39,9 @@ class AdBannerListenerProxy(
 
     override fun onAdShow() {
         listener?.onAdShow()
-        countTrack.onShow()
+        if (requestInfo.platform.getLoader().sdkType == SDKType.DO_GRO_MORE) {
+            countTrack.onShow()
+        }
     }
 
     override fun onAdClosed() {
@@ -55,8 +58,12 @@ class AdBannerListenerProxy(
         listener?.onAdShowFail(code, msg)
     }
 
+    //只用多牛平台会有这个回调,穿山甲没有
     override fun onAdExposure() {
         listener?.onAdExposure()
+        if (requestInfo.platform.getLoader().sdkType == SDKType.DO_NEWS) {
+            countTrack.onShow()
+        }
         countTrack.onADExposure()
     }
 

@@ -3,8 +3,6 @@ package com.donews.front.api;
 
 import com.donews.front.BuildConfig;
 
-import retrofit2.http.PUT;
-
 /**
  * <p> </p>
  * 作者： created by dw<br>
@@ -23,6 +21,6 @@ public class FrontApi {
 
     public final static String lotteryDetailUrl = BuildConfig.API_LOTTERY_URL + "v1/detail-open-lottery-record";
 
-//    https://lottery.xg.tagtic.cn/lottery/v1/detail-open-lottery-record?period=20211111
+    public final static String serverTimeUrl = BuildConfig.API_LOTTERY_URL + "v1/get-now-time";
 
 }

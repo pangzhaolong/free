@@ -20,7 +20,7 @@ data class ExitDialogRecommendGoodsResp(
     var list: List<ExitDialogRecommendGoods> = listOf()
 ) : BaseCustomViewModel()
 
-data class ExitDialogRecommendGoods(
+data class ExitDialogRecommendGoods (
     @SerializedName("title")
     var title: String = "",
     @SerializedName("main_pic")

@@ -2,6 +2,7 @@ package com.dn.sdk.sdk.interfaces.proxy
 
 import android.view.View
 import com.dn.sdk.sdk.bean.RequestInfo
+import com.dn.sdk.sdk.bean.SDKType
 import com.dn.sdk.sdk.interfaces.listener.IAdNativeExpressListener
 import com.dn.sdk.sdk.statistics.CountTrackImpl
 
@@ -42,7 +43,6 @@ class AdNativeExpressListenerProxy(
 
     override fun onShow() {
         listener?.onShow()
-        countTrack.onShow()
     }
 
     override fun onVideoStart() {
@@ -77,7 +77,16 @@ class AdNativeExpressListenerProxy(
 
     override fun onAdShow() {
         listener?.onAdShow()
-        countTrack.onShow()
+        if (requestInfo.platform.getLoader().sdkType == SDKType.DO_GRO_MORE) {
+            countTrack.onShow()
+        }
+    }
+
+    override fun onAdExposure() {
+        listener?.onAdExposure()
+        if (requestInfo.platform.getLoader().sdkType == SDKType.DO_NEWS) {
+            countTrack.onShow()
+        }
     }
 
     override fun onAdClose() {

@@ -48,7 +48,7 @@ class CountTrackImpl(private val requestInfo: RequestInfo) : ITrack {
     }
 
     override fun onRewardVerify(verify: Boolean) {
-        event(AnalysisEvent.AD_REWARD_VERIFY)
+        event(AnalysisEvent.AD_REWARD_VERIFY, verify)
     }
 
     override fun onVideoComplete() {
@@ -71,6 +71,22 @@ class CountTrackImpl(private val requestInfo: RequestInfo) : ITrack {
             adType.description,
             requestInfo.adId,
             requestId
+        )
+    }
+
+    private fun event(eventName: String, verify: Boolean) {
+        SdkLogUtils.i(
+            SdkLogUtils.TAG, "EventName: " + eventName + " sdk: " + sdkType.description + " adType: "
+                    + adType.description + " adId: " + requestInfo.adId
+        )
+        AnalysisHelp.onEvent(
+            AdSdkManager.getContext(),
+            eventName,
+            sdkType.description,
+            adType.description,
+            requestInfo.adId,
+            requestId,
+            verify.toString()
         )
     }
 }

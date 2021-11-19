@@ -12,4 +12,6 @@
 2、红包奖励包括但不限于现金奖励，商品优惠券或其它福利。如用户获得现金奖励，以红包实际显示奖励金额为准，奖励现金将进入零钱包，满足金额即可提现。<br />
 3、用户每日最多可开启5个红包，每日红包奖励均在<font color="red">0</font>点统一刷新，请及时完成并领取所有奖励。]]></string>
     <string name="front_lottery_date">%d期10点开奖</string>
+
+    <string name="front_lottery_date_opened">%d期10点 已开奖</string>
 </resources>

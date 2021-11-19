@@ -23,6 +23,11 @@ public interface IAdNativeListener extends IAdNativeLoadListener, IAdNativeDisli
      */
     void onAdShow();
 
+    /**
+     * 多牛曝光回调
+     */
+    void onAdExposure();
+
     /** 关闭信息流 */
     void onAdClose();
 }

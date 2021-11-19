@@ -17,9 +17,12 @@ import androidx.databinding.ViewDataBinding;
 
 import com.blankj.utilcode.util.SPUtils;
 
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+
 public  abstract class BaseDialog<V extends ViewDataBinding> extends Dialog {
     protected V mDataBinding;
-    private static final String LOTTERY_PS = "Lottery_BaseDialog";
+    private static final String LOTTERY_PS = " main_base_dialog";
 
 
 
@@ -47,10 +50,6 @@ public  abstract class BaseDialog<V extends ViewDataBinding> extends Dialog {
         lp.dimAmount = 0.8f;//外围遮罩透明度0.0f-1.0f
         dialogWindow.setAttributes(lp);
         dialogWindow.setGravity(Gravity.CENTER);//内围区域底部显示
-//        //设置window背景，默认的背景会有Padding值，不能全屏。当然不一定要是透明，你可以设置其他背景，替换默认的背景即可。
-//        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//        //一定要在setContentView之后调用，否则无效
-//        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
     }
 
@@ -72,5 +71,22 @@ public  abstract class BaseDialog<V extends ViewDataBinding> extends Dialog {
 
 
     public abstract float setSize();
+
+
+    private CompositeDisposable mCompositeDisposable;
+
+    public void addDisposable(Disposable disposable) {
+        if (mCompositeDisposable == null) {
+            mCompositeDisposable = new CompositeDisposable();
+        }
+        mCompositeDisposable.add(disposable);
+    }
+
+    public void unDisposable() {
+        if (mCompositeDisposable != null && mCompositeDisposable.isDisposed()) {
+            mCompositeDisposable.clear();
+        }
+    }
+
 
 }

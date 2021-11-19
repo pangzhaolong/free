@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,6 +30,8 @@ import com.donews.main.adapter.MainPageAdapter;
 import com.donews.main.common.CommonParams;
 import com.donews.main.databinding.MainActivityMainBinding;
 import com.donews.main.dialog.DrawDialog;
+import com.donews.main.dialog.EnterShowDialog;
+import com.donews.main.dialog.FreePanicBuyingDialog;
 import com.donews.main.utils.ExitInterceptUtils;
 import com.donews.main.views.MainBottomTanItem;
 import com.donews.middle.abswitch.ABSwitch;
@@ -38,6 +39,9 @@ import com.donews.utilslibrary.analysis.AnalysisHelp;
 import com.donews.utilslibrary.analysis.AnalysisParam;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
+import com.donews.utilslibrary.utils.AppInfo;
+import com.donews.utilslibrary.utils.KeySharePreferences;
+import com.donews.utilslibrary.utils.SPUtils;
 import com.gyf.immersionbar.ImmersionBar;
 import com.vmadalin.easypermissions.EasyPermissions;
 
@@ -49,7 +53,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.majiajie.pagerbottomtabstrip.NavigationController;
-import me.majiajie.pagerbottomtabstrip.listener.SimpleTabItemSelectedListener;
 
 /**
  * app 主页面
@@ -66,6 +69,8 @@ public class MainActivity
     private MainPageAdapter adapter;
 
     private NavigationController mNavigationController;
+
+    private EnterShowDialog mEnterShowDialog;
 
     private long mFirstClickBackTime = 0;
     /**
@@ -95,6 +100,13 @@ public class MainActivity
     protected void onResume() {
         super.onResume();
         showDrawDialog();
+        if (AppInfo.checkIsWXLogin()) {
+            if (SPUtils.getInformain(KeySharePreferences.SHOW_DIALOG_WHEN_LAUNCH, true)) {
+                if (mEnterShowDialog != null) {
+                    mEnterShowDialog.show();
+                }
+            }
+        }
     }
 
 
@@ -102,30 +114,50 @@ public class MainActivity
      * 显示开奖弹框
      */
     private void showDrawDialog() {
-        DrawDialog dialog = new DrawDialog();
-        dialog.setEventListener(new DrawDialog.EventListener() {
-            @Override
-            public void switchPage() {
-                if (mNavigationController != null) {
-                    mPosition = 2;
-                    mNavigationController.setSelect(mPosition);
+        boolean logType = AppInfo.checkIsWXLogin();
+        if (logType) {
+            DrawDialog mDrawDialog = new DrawDialog();
+            mDrawDialog.setEventListener(new DrawDialog.EventListener() {
+                @Override
+                public void switchPage() {
+                    if (mNavigationController != null) {
+                        mPosition = 2;
+                        mNavigationController.setSelect(mPosition);
+                    }
                 }
-            }
 
-            @Override
-            public void dismiss() {
-                if (dialog.isAdded()) {
-                    dialog.dismiss();
+                @Override
+                public void dismiss() {
+                    if (mDrawDialog.isAdded()) {
+                        mDrawDialog.dismiss();
+                    }
                 }
-            }
 
-            @Override
-            public void show() {
-                dialog.show(getSupportFragmentManager(), "DrawDialog");
-            }
-        });
-        dialog.requestGoodsInfo(getApplicationContext());
+                @Override
+                public void show() {
+                    mDrawDialog.show(getSupportFragmentManager(), "DrawDialog");
+                }
+            });
+            mDrawDialog.requestGoodsInfo(getApplicationContext());
+        } else {
+            FreePanicBuyingDialog mFreePanicBuyingDialog = new FreePanicBuyingDialog(MainActivity.this);
+            mFreePanicBuyingDialog.setFinishListener(new FreePanicBuyingDialog.OnFinishListener() {
+                @Override
+                public void onDismiss() {
+                    if (mFreePanicBuyingDialog != null && mFreePanicBuyingDialog.isShowing()) {
+                        mFreePanicBuyingDialog.dismiss();
+                    }
+                }
 
+                @Override
+                public void onShow() {
+                    if (mFreePanicBuyingDialog != null) {
+                        mFreePanicBuyingDialog.show();
+                    }
+                }
+            });
+            mFreePanicBuyingDialog.requestGoodsInfo(getApplicationContext());
+        }
     }
 
 
@@ -207,6 +239,9 @@ public class MainActivity
             mDataBinding.cvContentView.setCurrentItem(0);
             mPosition = 0;
         });
+
+        mEnterShowDialog = new EnterShowDialog(this);
+        mEnterShowDialog.create();
     }
 
     /**
@@ -328,6 +363,10 @@ public class MainActivity
         ImmersionBar.destroy(this, null);
         AppStatusManager.getInstance().setAppStatus(AppStatusConstant.STATUS_FORCE_KILLED);
         EventBus.getDefault().unregister(this);
+        if (mEnterShowDialog != null) {
+            mEnterShowDialog.dismiss();
+            mEnterShowDialog = null;
+        }
         super.onDestroy();
     }
 

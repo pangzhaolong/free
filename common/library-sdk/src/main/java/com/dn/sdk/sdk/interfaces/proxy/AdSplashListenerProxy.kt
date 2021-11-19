@@ -1,6 +1,7 @@
 package com.dn.sdk.sdk.interfaces.proxy
 
 import com.dn.sdk.sdk.bean.RequestInfo
+import com.dn.sdk.sdk.bean.SDKType
 import com.dn.sdk.sdk.interfaces.listener.IAdSplashListener
 import com.dn.sdk.sdk.statistics.CountTrackImpl
 
@@ -37,7 +38,9 @@ class AdSplashListenerProxy(
 
     override fun onAdShow() {
         listener?.onAdShow()
-        countTrack.onShow()
+        if (requestInfo.platform.getLoader().sdkType == SDKType.DO_GRO_MORE) {
+            countTrack.onShow()
+        }
     }
 
     override fun onAdClicked() {
@@ -55,10 +58,14 @@ class AdSplashListenerProxy(
 
     override fun onAdDismiss() {
         listener?.onAdDismiss()
+        countTrack.onAdClose()
     }
 
     override fun onPresent() {
         listener?.onPresent()
+        if (requestInfo.platform.getLoader().sdkType == SDKType.DO_NEWS) {
+            countTrack.onShow()
+        }
     }
 
     override fun extendExtra(var1: String?) {

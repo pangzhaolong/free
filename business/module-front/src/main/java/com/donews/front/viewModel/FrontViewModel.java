@@ -10,6 +10,7 @@ import com.donews.middle.bean.front.LotteryCategoryBean;
 import com.donews.middle.bean.front.LotteryDetailBean;
 import com.donews.middle.bean.front.LotteryOpenRecord;
 import com.donews.middle.bean.front.RedPacketBean;
+import com.donews.middle.bean.home.ServerTimeBean;
 
 public class FrontViewModel extends BaseLiveDataViewModel<FrontModel> {
 
@@ -41,5 +42,9 @@ public class FrontViewModel extends BaseLiveDataViewModel<FrontModel> {
 
     public MutableLiveData<LotteryDetailBean> getLotteryDetail(int period) {
         return mModel.getLotteryDetail(period);
+    }
+
+    public MutableLiveData<ServerTimeBean> getServerTime() {
+        return mModel.getServerTime();
     }
 }

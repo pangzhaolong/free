@@ -39,4 +39,6 @@ public class KeySharePreferences {
     public final static String CLOSE_RED_PACKAGE_COUNTS = "close_red_package_counts";
 
     public final static String STEPS_TO_GOLD_RED_PACKAGE_COUNTS = "steps_to_gold_red_package_counts";
+
+    public final static String SHOW_DIALOG_WHEN_LAUNCH = "show_dialog_when_launch";
 }
