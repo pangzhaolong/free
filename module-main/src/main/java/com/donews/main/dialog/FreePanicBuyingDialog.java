@@ -83,33 +83,34 @@ public class FreePanicBuyingDialog extends BaseDialog<FreePanicDialogLayoutBindi
 
     public void requestGoodsInfo(Context context) {
         //判断今天是否弹起过
-//       if(DateManager.getInstance().ifFirst(DateManager.FREE_PANIC_DIALOG_KEY)){
-           Disposable disposable = EasyHttp.get(RECENT_FREE)
-                   .cacheMode(CacheMode.NO_CACHE)
-                   .execute(new SimpleCallBack<NowTimeBean>() {
-                       @Override
-                       public void onError(ApiException e) {
-                       }
-                       @Override
-                       public void onSuccess(NowTimeBean time) {
-                           long t = Long.parseLong(time.getNow() + "") * 1000;
-                           Calendar calendar = Calendar.getInstance();
-                           calendar.setTimeInMillis(t);
-                           int hour = calendar.get(Calendar.HOUR_OF_DAY);
-                           int minute = calendar.get(Calendar.MINUTE);
-                           //判断是否是今天首次
-                           if (hour > 9 || (hour >= 9 && minute >= 58)) {
-                               if(mOnFinishListener!=null){
-                                   mOnFinishListener.onShow();
-                               }
-                           }
-                       }
-                   });
+        if (DateManager.getInstance().ifFirst(DateManager.FREE_PANIC_DIALOG_KEY)) {
+            Disposable disposable = EasyHttp.get(RECENT_FREE)
+                    .cacheMode(CacheMode.NO_CACHE)
+                    .execute(new SimpleCallBack<NowTimeBean>() {
+                        @Override
+                        public void onError(ApiException e) {
+                        }
 
-           addDisposable(disposable);
-//       }else{
-//           Logger.d("Bounced today");
-//       }
+                        @Override
+                        public void onSuccess(NowTimeBean time) {
+                            long t = Long.parseLong(time.getNow() + "") * 1000;
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTimeInMillis(t);
+                            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                            int minute = calendar.get(Calendar.MINUTE);
+                            //判断是否是今天首次
+                            if (hour > 9 || (hour >= 9 && minute >= 58)) {
+                                if (mOnFinishListener != null) {
+                                    mOnFinishListener.onShow();
+                                }
+                            }
+                        }
+                    });
+
+            addDisposable(disposable);
+        } else {
+            Logger.d("Bounced today");
+        }
     }
 
 
@@ -173,8 +174,6 @@ public class FreePanicBuyingDialog extends BaseDialog<FreePanicDialogLayoutBindi
     }
 
 
-
-
     public void setFinishListener(OnFinishListener l) {
         mOnFinishListener = l;
     }
@@ -188,7 +187,7 @@ public class FreePanicBuyingDialog extends BaseDialog<FreePanicDialogLayoutBindi
             mLotteryHandler = null;
         }
         EventBus.getDefault().unregister(this);
-        if(mOnFinishListener!=null){
+        if (mOnFinishListener != null) {
             mOnFinishListener.onDismiss();
         }
     }
