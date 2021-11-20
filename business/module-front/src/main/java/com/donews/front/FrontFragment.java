@@ -564,6 +564,10 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
     @Override
     public void onClick(View v) {
+/*        ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
+                .withInt("type", 0)
+                .withFloat("score", 0.37f)
+                .navigation();*/
         if (mIsOpeningRp) {
             return;
         }

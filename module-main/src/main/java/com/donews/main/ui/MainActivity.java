@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -182,6 +180,7 @@ public class MainActivity
         if (mNavigationController != null) {
             mNavigationController.setSelect(mPosition);
         }
+        showDrawDialog();
     }
 
     private void initView(int position) {
@@ -253,7 +252,15 @@ public class MainActivity
             mPosition = 0;
         });
 
-        if (ABSwitch.Ins().isOpenHomeGuid() != 0) {
+        int intoFrontCounts = SPUtils.getInformain(KeySharePreferences.INTO_FRONT_COUNTS, 0);
+        if (!SPUtils.getInformain(KeySharePreferences.HAS_DO_INTO_FRONT, false)) {
+            intoFrontCounts++;
+            SPUtils.setInformain(KeySharePreferences.INTO_FRONT_COUNTS, intoFrontCounts);
+        }
+
+        if (ABSwitch.Ins().isOpenHomeGuid() != 0
+                && SPUtils.getInformain(KeySharePreferences.INTO_FRONT_COUNTS, 0) >= ABSwitch.Ins().isOpenHomeGuid()
+                && !SPUtils.getInformain(KeySharePreferences.HAS_DO_INTO_FRONT, false)) {
             mDataBinding.mainHomeGuidCl.setVisibility(View.VISIBLE);
             mDataBinding.mainHomeGuidCl.setOnClickListener(v -> {
             });
@@ -292,6 +299,8 @@ public class MainActivity
                 AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
                 AnalysisUtils.onEventEx(this, Dot.Page_SaveMoneyBuy);
                 AnalysisUtils.onEventEx(this, Dot.Btn_SaveMoneyBuy);
+                SPUtils.setInformain(KeySharePreferences.INTO_FRONT_COUNTS, 0);
+                SPUtils.setInformain(KeySharePreferences.HAS_DO_INTO_FRONT, true);
                 break;
             case 4:
                 AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);

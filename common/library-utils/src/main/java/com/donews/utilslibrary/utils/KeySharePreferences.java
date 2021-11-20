@@ -41,4 +41,10 @@ public class KeySharePreferences {
     public final static String STEPS_TO_GOLD_RED_PACKAGE_COUNTS = "steps_to_gold_red_package_counts";
 
     public final static String SHOW_DIALOG_WHEN_LAUNCH = "show_dialog_when_launch";
+
+
+    public final static String INTO_FRONT_COUNTS = "into_front_counts";
+
+
+    public final static String HAS_DO_INTO_FRONT = "has_do_into_front";
 }

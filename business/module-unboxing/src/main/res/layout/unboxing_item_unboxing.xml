@@ -82,7 +82,7 @@
 
         <TextView
             android:id="@+id/tv_winning_number"
-            android:layout_width="77.3dp"
+            android:layout_width="wrap_content"
             android:layout_height="22dp"
             android:layout_marginStart="21dp"
             android:background="@drawable/unboxing_win_bg"
@@ -91,6 +91,8 @@
             android:textColor="#E9423E"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="2623497" />
