@@ -330,7 +330,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
     @SuppressLint("SetTextI18n")
     private void loadRpData() {
-        mIsOpeningRp = false;
+//        mIsOpeningRp = false;
         if (!AppInfo.checkIsWXLogin()) {
             mDataBinding.frontRpIv1.setBackgroundResource(R.drawable.front_rp_wait);
             mDataBinding.frontRpIv2.setBackgroundResource(R.drawable.front_rp_wait);
@@ -470,7 +470,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             return;
         }
 
-        mFindFirstReadyRp = false;
+//        mFindFirstReadyRp = false;
         int topColor = Color.parseColor("#764D38");
         int bottomColor = Color.parseColor("#FFF3D3");
         changeRpStatus(rpBean, topColor, bottomColor
@@ -567,7 +567,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         stopTimer();
     }
 
-    private boolean mIsOpeningRp = false;
+//    private boolean mIsOpeningRp = false;
 
     @Override
     public void onClick(View v) {
@@ -575,40 +575,40 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                 .withInt("type", 0)
                 .withFloat("score", 0.37f)
                 .navigation();*/
-        if (mIsOpeningRp) {
+        /*if (mIsOpeningRp) {
             return;
-        }
+        }*/
 
-        mIsOpeningRp = true;
+//        mIsOpeningRp = true;
         if (!AppInfo.checkIsWXLogin()) {
             ARouter.getInstance()
                     .build(RouterActivityPath.User.PAGER_LOGIN)
                     .navigation();
-            mIsOpeningRp = false;
+//            mIsOpeningRp = false;
             return;
         }
 
         WalletBean.RpBean rpBean = (WalletBean.RpBean) v.getTag();
         if (rpBean == null) {
-            mIsOpeningRp = false;
+//            mIsOpeningRp = false;
             return;
         }
 
         if (rpBean.getOpened()) {
             Toast.makeText(this.getContext(), "这个红包已经开过了哦！", Toast.LENGTH_SHORT).show();
-            mIsOpeningRp = false;
+//            mIsOpeningRp = false;
             return;
         }
 
         if (rpBean.getHadLotteryTotal() != -1 && rpBean.getHadLotteryTotal() < rpBean.getLotteryTotal()) {
             Toast.makeText(this.getContext(), "快去抽奖赚取开启红包次数吧！", Toast.LENGTH_SHORT).show();
-            mIsOpeningRp = false;
+//            mIsOpeningRp = false;
             return;
         }
 
         if (rpBean.getHadLotteryTotal() == -1) {
             Toast.makeText(this.getContext(), "前面还有红包未开启哦！", Toast.LENGTH_SHORT).show();
-            mIsOpeningRp = false;
+//            mIsOpeningRp = false;
             return;
         }
 
@@ -619,7 +619,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         mViewModel.openRpData().observe(this.getViewLifecycleOwner(), redPacketBean -> {
             if (redPacketBean == null || redPacketBean.getAward() == null) {
                 Toast.makeText(this.getContext(), "开启红包失败，请稍后再试或者反馈给我们，谢谢！", Toast.LENGTH_SHORT).show();
-                mIsOpeningRp = false;
+//                mIsOpeningRp = false;
                 return;
             }
             ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)

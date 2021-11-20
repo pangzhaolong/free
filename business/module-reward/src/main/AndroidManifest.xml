@@ -4,8 +4,9 @@
 
     <application>
         <activity
-            android:name="com.donews.front.RewardActivity"
-            android:exported="true" />
+            android:name="com.donews.reward.RewardActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

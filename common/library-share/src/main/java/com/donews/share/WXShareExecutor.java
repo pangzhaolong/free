@@ -262,7 +262,7 @@ public class WXShareExecutor extends ShareExecutor {
             BaseToast.makeToast(mActivity).setToastLongText("分享数据出错啦").showToast();
             return;
         }
-        BaseToast.makeToast(mActivity).setToastText("启动微信中").showToast();
+//        BaseToast.makeToast(mActivity).setToastText("启动微信中").showToast();
 
         try {
             ImageBase64Util imageBase64Util = new ImageBase64Util();

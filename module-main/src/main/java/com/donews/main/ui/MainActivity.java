@@ -72,8 +72,6 @@ public class MainActivity
 
     private NavigationController mNavigationController;
 
-    private EnterShowDialog mEnterShowDialog;
-
     private long mFirstClickBackTime = 0;
     /**
      * 初始选择tab
@@ -99,12 +97,6 @@ public class MainActivity
 
         showDrawDialog();
     }
-/*
-    @Override
-    protected void onResume() {
-        super.onResume();
-        new EnterShowDialog(this).show();
-    }*/
 
     /**
      * 显示开奖弹框
@@ -179,7 +171,6 @@ public class MainActivity
         if (mNavigationController != null) {
             mNavigationController.setSelect(mPosition);
         }
-//        showDrawDialog();
     }
 
     private void initView(int position) {

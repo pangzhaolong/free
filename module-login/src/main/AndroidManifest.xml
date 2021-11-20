@@ -11,13 +11,17 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application>
-        <activity android:name=".ui.BindPhoneActivity" />
-        <activity android:name=".ui.MobileActivity" />
-        <activity android:name=".ui.LoginActivity" />
+        <activity android:name=".ui.BindPhoneActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.MobileActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.LoginActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.WXEntryActivity"
             android:exported="true"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -31,6 +35,7 @@
         <activity-alias
             android:name="${applicationId}.wxapi.WXEntryActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:targetActivity=".ui.WXEntryActivity" />
     </application>
 
