@@ -196,8 +196,8 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         }
     }
 
-    private  void setLottieAnimation(boolean play){
-        if(play){
+    private void setLottieAnimation(boolean play) {
+        if (play) {
             //设置动画
             //小手
             initLottie(mDataBinding.jsonAnimation, "lottery_finger.json");
@@ -215,7 +215,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             } else {
                 mDataBinding.maskingLayout.setVisibility(View.GONE);
             }
-        }else{
+        } else {
             mDataBinding.jsonAnimation.setVisibility(View.GONE);
             mDataBinding.jsonAnimationRound.pauseAnimation();
             mDataBinding.jsonAnimationRound.setProgress(0);
@@ -224,7 +224,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     }
 
     private void initLottie(LottieAnimationView view, String json) {
-        if (view != null&&!view.isAnimating()) {
+        if (view != null && !view.isAnimating()) {
             view.setImageAssetsFolder("images");
             view.setAnimation(json);
             view.loop(true);
@@ -235,42 +235,40 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
     //开始抽奖
     private void startLottery() {
-        if (ClickDoubleUtil.Companion.isFastClick()) {
-            AnalysisUtils.onEventEx(this, Dot.Btn_LotteryNow);
-            //判断是否打开了视频广告
-            boolean isOpenAd = JddAdIdConfigManager.INSTANCE.getConfig().getOpenAd();
-            if (isOpenAd) {
+        AnalysisUtils.onEventEx(this, Dot.Btn_LotteryNow);
+        //判断是否打开了视频广告
+        boolean isOpenAd = JddAdIdConfigManager.INSTANCE.getConfig().getOpenAd();
+        if (isOpenAd) {
 
-                //开始抽奖
-                //弹框抽奖码生成dialog
-                LotteryCodeStartsDialog lotteryCodeStartsDialog = new LotteryCodeStartsDialog(LotteryActivity.this);
-                lotteryCodeStartsDialog.setStateListener(new LotteryCodeStartsDialog.OnStateListener() {
-                    @Override
-                    public void onFinish() {
-                        try {
-                            if (lotteryCodeStartsDialog != null) {
-                                lotteryCodeStartsDialog.dismiss();
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
+            //开始抽奖
+            //弹框抽奖码生成dialog
+            LotteryCodeStartsDialog lotteryCodeStartsDialog = new LotteryCodeStartsDialog(LotteryActivity.this);
+            lotteryCodeStartsDialog.setStateListener(new LotteryCodeStartsDialog.OnStateListener() {
+                @Override
+                public void onFinish() {
+                    try {
+                        if (lotteryCodeStartsDialog != null) {
+                            lotteryCodeStartsDialog.dismiss();
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-
-                    @Override
-                    public void onJumpAdFinish() {
-                        //弹起生成抽奖码的dialog
-                        showGenerateCodeDialog();
-                    }
-                });
-                lotteryCodeStartsDialog.create();
-                lotteryCodeStartsDialog.show();
-            } else {
-                //判断是否支持抽奖
-                if (DateManager.getInstance().timesLimit(DateManager.LOTTERY_KEY, DateManager.NUMBER_OF_DRAWS, 24)) {
-                    showGenerateCodeDialog();
-                } else {
-                    ToastUtil.showShort(this, "今天次数已用完，明日再来");
                 }
+
+                @Override
+                public void onJumpAdFinish() {
+                    //弹起生成抽奖码的dialog
+                    showGenerateCodeDialog();
+                }
+            });
+            lotteryCodeStartsDialog.create();
+            lotteryCodeStartsDialog.show();
+        } else {
+            //判断是否支持抽奖
+            if (DateManager.getInstance().timesLimit(DateManager.LOTTERY_KEY, DateManager.NUMBER_OF_DRAWS, 24)) {
+                showGenerateCodeDialog();
+            } else {
+                ToastUtil.showShort(this, "今天次数已用完，明日再来");
             }
         }
 
@@ -573,7 +571,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 new KeyPath("**"));
         //通过匹配关键字的深度，来过滤需要改变颜色的keypath
         for (KeyPath path : list) {
-            if(path.keysToString().indexOf("btn_inner")!=-1){
+            if (path.keysToString().indexOf("btn_inner") != -1) {
                 mirror.addValueCallback(path, LottieProperty.COLOR, new SimpleLottieValueCallback<Integer>() {
                     @Override
                     public Integer getValue(LottieFrameInfo<Integer> frameInfo) {
