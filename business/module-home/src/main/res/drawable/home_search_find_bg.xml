@@ -10,7 +10,7 @@
             android:useLevel="false">
             <!-- 实心 -->
             <solid android:color="#F1F1F1" />
-            <corners android:radius="10dp" />
+            <corners android:radius="30dp" />
             <padding
                 android:bottom="5dp"
                 android:left="5dp"

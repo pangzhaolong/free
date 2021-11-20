@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,6 +41,7 @@ import com.donews.utilslibrary.analysis.AnalysisParam;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
+import com.donews.utilslibrary.utils.DateManager;
 import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.SPUtils;
 import com.gyf.immersionbar.ImmersionBar;
@@ -94,8 +96,16 @@ public class MainActivity
                 .autoDarkModeEnable(true)
                 .init();
         EventBus.getDefault().register(this);
+
         showDrawDialog();
     }
+
+/*    @Override
+    protected void onResume() {
+        super.onResume();
+
+        mDataBinding.mainHomeGuidCl.setVisibility(View.VISIBLE);
+    }*/
 
     /**
      * 显示开奖弹框
@@ -104,13 +114,12 @@ public class MainActivity
         if (ABSwitch.Ins().isOpenAB()) {
             return;
         }
-        if (AppInfo.checkIsWXLogin()) {
-            if (SPUtils.getInformain(KeySharePreferences.SHOW_DIALOG_WHEN_LAUNCH, true)) {
-                if ((mEnterShowDialog != null) && (!mEnterShowDialog.isShowing())) {
-                    mEnterShowDialog.show();
-                }
-            }
+
+        if (DateManager.getInstance().ifFirst(DateManager.SHOW_DIALOG_WHEN_LAUNCH)
+                && SPUtils.getInformain(KeySharePreferences.SHOW_DIALOG_WHEN_LAUNCH, true)) {
+            SPUtils.setInformain(KeySharePreferences.SHOW_DIALOG_WHEN_LAUNCH, true);
         }
+
         boolean logType = AppInfo.checkIsWXLogin();
         if (logType) {
             DrawDialog mDrawDialog = new DrawDialog();
@@ -127,6 +136,11 @@ public class MainActivity
                 public void dismiss() {
                     if (mDrawDialog.isAdded()) {
                         mDrawDialog.dismiss();
+                    }
+                    if (AppInfo.checkIsWXLogin()) {
+                        if (SPUtils.getInformain(KeySharePreferences.SHOW_DIALOG_WHEN_LAUNCH, true)) {
+                            new EnterShowDialog(MainActivity.this).show();
+                        }
                     }
                 }
 
@@ -166,6 +180,7 @@ public class MainActivity
         if (mNavigationController != null) {
             mNavigationController.setSelect(mPosition);
         }
+        showDrawDialog();
     }
 
     private void initView(int position) {
@@ -237,8 +252,27 @@ public class MainActivity
             mPosition = 0;
         });
 
-        mEnterShowDialog = new EnterShowDialog(this);
-        mEnterShowDialog.create();
+        int intoFrontCounts = SPUtils.getInformain(KeySharePreferences.INTO_FRONT_COUNTS, 0);
+        if (!SPUtils.getInformain(KeySharePreferences.HAS_DO_INTO_FRONT, false)) {
+            intoFrontCounts++;
+            SPUtils.setInformain(KeySharePreferences.INTO_FRONT_COUNTS, intoFrontCounts);
+        }
+
+        if (ABSwitch.Ins().isOpenHomeGuid() != 0
+                && SPUtils.getInformain(KeySharePreferences.INTO_FRONT_COUNTS, 0) >= ABSwitch.Ins().isOpenHomeGuid()
+                && !SPUtils.getInformain(KeySharePreferences.HAS_DO_INTO_FRONT, false)) {
+            mDataBinding.mainHomeGuidCl.setVisibility(View.VISIBLE);
+            mDataBinding.mainHomeGuidCl.setOnClickListener(v -> {
+            });
+            mDataBinding.mainHomeBtn.setOnClickListener(v -> {
+                mDataBinding.mainHomeGuidCl.setVisibility(View.GONE);
+                toggleStatusBar(3);
+                mDataBinding.cvContentView.setCurrentItem(3);
+                mPosition = 3;
+            });
+        } else {
+            mDataBinding.mainHomeGuidCl.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -265,6 +299,8 @@ public class MainActivity
                 AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
                 AnalysisUtils.onEventEx(this, Dot.Page_SaveMoneyBuy);
                 AnalysisUtils.onEventEx(this, Dot.Btn_SaveMoneyBuy);
+                SPUtils.setInformain(KeySharePreferences.INTO_FRONT_COUNTS, 0);
+                SPUtils.setInformain(KeySharePreferences.HAS_DO_INTO_FRONT, true);
                 break;
             case 4:
                 AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
@@ -288,7 +324,7 @@ public class MainActivity
                     .build(RouterFragmentPath.Front.PAGER_FRONT)
                     .navigation());
             fragments.add(RouterFragmentPath.Unboxing.getUnboxingFragment());
-            fragments.add(RouterFragmentPath.User.getMineOpenWinFragment(0,true, false, true));
+            fragments.add(RouterFragmentPath.User.getMineOpenWinFragment(0, true, false, true));
             fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Home.PAGER_HOME).navigation());
             fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.User.PAGER_USER).navigation());
         }
@@ -361,10 +397,6 @@ public class MainActivity
         ImmersionBar.destroy(this, null);
         AppStatusManager.getInstance().setAppStatus(AppStatusConstant.STATUS_FORCE_KILLED);
         EventBus.getDefault().unregister(this);
-        if (mEnterShowDialog != null) {
-            mEnterShowDialog.dismiss();
-            mEnterShowDialog = null;
-        }
         super.onDestroy();
     }
 

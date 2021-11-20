@@ -111,7 +111,9 @@ public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBin
         mDataBinding.homeSearchTbGoodsRv.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-                outRect.bottom = 10;
+                outRect.bottom = 32;
+                outRect.left = 32;
+                outRect.right = 32;
             }
         });
         mDataBinding.homeSearchTbGoodsRv.setLayoutManager(new LinearLayoutManager(this.getContext()));

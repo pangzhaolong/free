@@ -11,10 +11,10 @@
                 android:startColor="#FFFFDD9D"
                 android:type="linear" />
             <corners
-                android:bottomLeftRadius="7dp"
+                android:bottomLeftRadius="5dp"
                 android:bottomRightRadius="0dp"
                 android:topLeftRadius="0dp"
-                android:topRightRadius="6dp" />
+                android:topRightRadius="5dp" />
         </shape>
     </item>
 </layer-list>

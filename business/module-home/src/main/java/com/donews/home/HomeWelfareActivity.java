@@ -77,7 +77,7 @@ public class HomeWelfareActivity extends MvvmBaseLiveDataActivity<HomeWelfareAct
         mDataBinding.homeWelfareGoodsRv.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-                outRect.top = 16;
+                outRect.top = 32;
             }
         });
         mDataBinding.homeWelfareGoodsRv.setAdapter(mPerfectGoodsAdapter);

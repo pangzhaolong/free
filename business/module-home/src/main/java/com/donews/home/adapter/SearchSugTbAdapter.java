@@ -65,8 +65,8 @@ public class SearchSugTbAdapter extends RecyclerView.Adapter<SearchSugTbAdapter.
         Glide.with(mContext).load(gi.getMainPic()).into(holder.picIv);
         holder.desTv.setText(getTitleString(gi));
 
-        holder.priceTv.setText(gi.getActualPrice() + "");
-        holder.giftTv.setText(gi.getCouponPrice() + "元");
+        holder.priceTv.setText(String.format("￥%.1f", gi.getActualPrice()));
+        holder.giftTv.setText(String.format("￥%.0f元券", gi.getCouponPrice()));
         holder.originalPriceTv.setText(String.format("%.1f", gi.getOriginalPrice()));
         holder.originalPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
     }

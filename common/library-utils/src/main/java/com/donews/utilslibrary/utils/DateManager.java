@@ -11,10 +11,11 @@ import java.util.Calendar;
 
 // 判断是否是当天的工具类
 public class DateManager {
-    public static String DRAW_DIALOG_KEY = "draw_dialog_key";
+    public final static String DRAW_DIALOG_KEY = "draw_dialog_key";
 
-    public static String FREE_PANIC_DIALOG_KEY = "Free_Panic_dialog_key";
+    public final static String FREE_PANIC_DIALOG_KEY = "Free_Panic_dialog_key";
 
+    public final static String SHOW_DIALOG_WHEN_LAUNCH = "show_dialog_when_launch_dm";
     //抽奖次数
     public static String NUMBER_OF_DRAWS = "number_of_draws";
     //抽奖KEY

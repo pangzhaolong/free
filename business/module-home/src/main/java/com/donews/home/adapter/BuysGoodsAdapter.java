@@ -70,7 +70,7 @@ public class BuysGoodsAdapter extends RecyclerView.Adapter<BuysGoodsAdapter.Buys
 
         holder.priceTv.setText("￥" + gi.getOriginalPrice());
         holder.priceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
-        holder.giftTv.setText("￥" + gi.getCouponPrice() + "元券");
+        holder.giftTv.setText(String.format("￥%.0f元券", gi.getCouponPrice()));
         holder.actualPriceTv.setText("￥" + gi.getActualPrice());
     }
 

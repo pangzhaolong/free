@@ -10,6 +10,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -50,7 +51,6 @@ public  abstract class BaseDialog<V extends ViewDataBinding> extends Dialog {
         lp.dimAmount = 0.8f;//外围遮罩透明度0.0f-1.0f
         dialogWindow.setAttributes(lp);
         dialogWindow.setGravity(Gravity.CENTER);//内围区域底部显示
-
     }
 
 

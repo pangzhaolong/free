@@ -27,24 +27,22 @@
             android:layout_marginStart="11dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="11dp"
-            android:textSize="16dp"
             android:ellipsize="end"
             android:lines="2"
             android:text="阿里客服卡薩丁積分卡時代峰峻大數據發生的風景阿斯蒂芬發"
-            android:textColor="#2C2C2C" />
+            android:textColor="#2C2C2C"
+            android:textSize="16dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:orientation="horizontal"
-
-            >
+            android:orientation="horizontal">
 
             <ImageView
-                android:layout_gravity="center_vertical"
                 android:layout_width="17dp"
                 android:layout_height="17dp"
+                android:layout_gravity="center_vertical"
                 android:layout_marginStart="11dp"
                 android:src="@mipmap/money_icon" />
 
@@ -54,21 +52,20 @@
                 android:layout_marginStart="7dp"
                 android:layout_marginTop="2dp"
                 android:text="参考价"
-                android:textSize="15dp"
-                android:textColor="#A9AEB1" />
+                android:textColor="#A9AEB1"
+                android:textSize="15dp" />
 
             <TextView
-                android:textSize="15dp"
                 android:id="@+id/item_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="2dp"
                 android:text="15306"
-                android:textColor="#A9AEB1" />
+                android:textColor="#A9AEB1"
+                android:textSize="15dp" />
 
         </LinearLayout>
-
 
         <TextView
             android:id="@+id/lottery"
@@ -87,11 +84,7 @@
             android:paddingBottom="8dp"
             android:text="0元抽奖"
             android:textColor="#FFFFFF"
-            android:textSize="16dp"
-
-
-            />
-
+            android:textSize="16dp" />
 
     </LinearLayout>
 </layout>

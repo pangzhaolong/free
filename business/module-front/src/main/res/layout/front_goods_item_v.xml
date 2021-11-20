@@ -10,26 +10,29 @@
         android:id="@+id/front_goods_item_iv"
         android:layout_width="168dp"
         android:layout_height="168dp"
-        android:layout_centerHorizontal="true"
-        app:corner_radius="10dp"
+        android:layout_gravity="center_horizontal"
+        app:leftTop_corner_radius="10dp"
+        app:rightTop_corner_radius="10dp"
         app:type="round" />
 
     <TextView
         android:id="@+id/front_goods_item_des_tv"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="44dp"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="12dp"
         android:ellipsize="end"
         android:maxLines="2"
         android:text="波佐见日本进口陶瓷餐具釉下彩日式海波纹家用大餐盘"
         android:textColor="#2C2C2C"
-        android:textSize="13sp" />
+        android:textSize="16dp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="23dp"
+        android:layout_height="24dp"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="12dp"
         android:orientation="horizontal">
 
@@ -37,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:padding="2dp"
+            android:padding="3dp"
             android:scaleType="centerInside"
             android:src="@drawable/middle_item_money" />
 
@@ -64,16 +67,20 @@
 
     <TextView
         android:id="@+id/front_item_do_tv"
-        android:layout_width="140dp"
-        android:layout_height="45dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="2dp"
-        android:background="@drawable/front_goods_item_dowhat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/front_goods_item_lottery_bg"
         android:gravity="center"
-        android:paddingBottom="4dp"
+        android:paddingStart="20dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="8dp"
         android:text="0元抽奖"
         android:textColor="@color/white"
-        android:textSize="13sp"
+        android:textSize="16dp"
         android:textStyle="bold" />
 </LinearLayout>
