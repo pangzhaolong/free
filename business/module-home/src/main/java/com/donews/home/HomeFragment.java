@@ -55,6 +55,8 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
     private TimerTask mLoadUserListTask = null;
     private TimerTask mLoadSecKilTask = null;
 
+    private boolean mIsResumed = false;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -367,7 +369,9 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
             mLoadUserListTask = new TimerTask() {
                 @Override
                 public void run() {
-                    HomeFragment.this.requireActivity().runOnUiThread(() -> loadUserList());
+                    if (mIsResumed) {
+                        HomeFragment.this.requireActivity().runOnUiThread(() -> loadUserList());
+                    }
                 }
             };
         }
@@ -375,7 +379,9 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
             mLoadSecKilTask = new TimerTask() {
                 @Override
                 public void run() {
-                    HomeFragment.this.requireActivity().runOnUiThread(() -> loadRankListData());
+                    if (mIsResumed) {
+                        HomeFragment.this.requireActivity().runOnUiThread(() -> loadRankListData());
+                    }
                 }
             };
         }
@@ -405,13 +411,14 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
     public void onResume() {
         super.onResume();
         startTimer();
+        mIsResumed = true;
     }
 
     @Override
     public void onPause() {
         super.onPause();
-
         stopTimer();
+        mIsResumed = false;
     }
 
     @Override

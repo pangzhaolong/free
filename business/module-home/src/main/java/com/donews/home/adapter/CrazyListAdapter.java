@@ -70,7 +70,8 @@ public class CrazyListAdapter extends RecyclerView.Adapter<CrazyListAdapter.Craz
         holder.desTv.setText(getTitleString(gi));
 
         holder.priceTv.setText(String.format("￥%.1f", gi.getActualPrice()));
-        holder.giftTv.setText("￥" + gi.getCouponPrice() + "元券");
+//        String.format("￥%d元券", gi.getCouponPrice());
+        holder.giftTv.setText(String.format("￥%.0f元券", gi.getCouponPrice()));
         holder.originalPriceTv.setText(gi.getOriginalPrice() + "");
         holder.originalPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
     }

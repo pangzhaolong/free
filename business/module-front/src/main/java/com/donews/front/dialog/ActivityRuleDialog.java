@@ -41,6 +41,10 @@ public class ActivityRuleDialog extends BaseDialog<FrontActivityRuleDialogBindin
         mDataBinding.frontRuleKnownTv.setOnClickListener(v -> {
             dismiss();
         });
+
+        mDataBinding.frontRuleDialogCloseIv.setOnClickListener(v -> {
+            dismiss();
+        });
     }
 
     @Override

@@ -21,6 +21,7 @@ dependencies {
     implementation project(':common:lib_eventbus')
     implementation project(':middleware:module-middleware')
 
+    implementation('org.raphets:roundimageview:1.2.0')
     api 'me.majiajie:pager-bottom-tab-strip:2.3.0X'
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

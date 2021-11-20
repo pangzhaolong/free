@@ -2,9 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
+    android:layout_height="wrap_content"
     android:background="@drawable/front_goods_item_bg"
-    android:padding="5dp">
+    android:padding="10dp">
 
     <org.raphets.roundimageview.RoundImageView
         android:id="@+id/front_goods_item_iv"
@@ -12,32 +12,32 @@
         android:layout_height="120dp"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
+        android:padding="4dp"
         android:scaleType="fitXY"
         app:corner_radius="10dp"
         app:type="round" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:layout_toEndOf="@+id/front_goods_item_iv"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/front_goods_item_des_tv"
             android:layout_width="match_parent"
-            android:layout_height="37dp"
-            android:layout_marginStart="13dp"
+            android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="2"
             android:text="波佐见日本进口陶瓷餐具釉下彩日式海波纹家用大餐盘"
             android:textColor="#2C2C2C"
-            android:textSize="15sp" />
+            android:textSize="16sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="23dp"
-            android:layout_marginStart="13dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -45,8 +45,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:scaleType="centerInside"
                 android:padding="2dp"
+                android:scaleType="centerInside"
                 android:src="@drawable/middle_item_money" />
 
             <TextView
@@ -71,16 +71,20 @@
 
         <TextView
             android:id="@+id/front_item_do_tv"
-            android:layout_width="140dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="6dp"
-            android:layout_marginTop="6dp"
-            android:background="@drawable/front_goods_item_dowhat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/front_goods_item_lottery_bg"
             android:gravity="center"
-            android:paddingBottom="4dp"
+            android:paddingStart="20dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="8dp"
             android:text="0元抽奖"
             android:textColor="@color/white"
-            android:textSize="13sp"
+            android:textSize="16sp"
             android:textStyle="bold" />
     </LinearLayout>
 

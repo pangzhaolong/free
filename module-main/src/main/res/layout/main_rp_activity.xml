@@ -14,11 +14,24 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|center_horizontal"
-            android:src="@drawable/main_rp_dlg_title" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|center_horizontal"
+                android:src="@drawable/main_rp_dlg_title" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="60dp"
+                android:src="@drawable/icon_shut_down" />
+        </FrameLayout>
 
         <FrameLayout
             android:layout_width="wrap_content"
@@ -34,6 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="-10dp"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -88,7 +102,6 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="80dp"
                     android:layout_marginEnd="10dp"
-                    android:background="@drawable/main_rp_tips_bg"
                     android:gravity="center"
                     android:lineSpacingExtra="4dp"
                     android:paddingStart="20dp"
@@ -96,7 +109,7 @@
                     android:paddingEnd="20dp"
                     android:paddingBottom="5dp"
                     android:text="红包已累加到你的账户\n记得去提现哦"
-                    android:textColor="@color/white"
+                    android:textColor="#FFC1C1"
                     android:textSize="16sp" />
             </LinearLayout>
         </FrameLayout>
@@ -109,8 +122,9 @@
             android:background="@drawable/main_rp_dlg_get"
             android:gravity="center"
             android:text="收下啦"
-            android:textColor="#A6671E"
-            android:textSize="19sp" />
+            android:textColor="#D82D2A"
+            android:textSize="20sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
 </layout>

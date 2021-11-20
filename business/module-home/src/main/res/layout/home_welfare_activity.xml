@@ -45,8 +45,7 @@
                     android:padding="5dp"
                     android:src="@drawable/home_logo_tb" />
 
-                <EditText
-                    android:id="@+id/home_welfare_et"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:layout_centerInParent="true"
@@ -55,11 +54,28 @@
                     android:layout_marginEnd="10dp"
                     android:layout_toEndOf="@+id/home_welfare_logo"
                     android:background="@drawable/home_search_bg"
-                    android:drawableLeft="@drawable/home_jdd_search"
-                    android:hint="搜商品 领优惠券"
-                    android:paddingStart="10dp"
-                    android:textColor="#2C2C2C"
-                    android:textSize="14sp" />
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="10dp"
+                        android:src="@drawable/home_jdd_search" />
+
+                    <EditText
+                        android:id="@+id/home_welfare_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@color/white"
+                        android:hint="搜商品 领优惠券"
+                        android:textColor="#2C2C2C"
+                        android:textCursorDrawable="@drawable/home_search_edit_cursor_color"
+                        android:textSize="14sp" />
+                </LinearLayout>
             </RelativeLayout>
 
             <FrameLayout
@@ -70,9 +86,9 @@
                     android:id="@+id/home_welfare_goods_rv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp"
-                    tools:listitem="@layout/home_fragment_welfare_item" />
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    tools:listitem="@layout/home_perfect_item" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/home_welfare_search_rv"

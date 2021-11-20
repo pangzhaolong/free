@@ -28,7 +28,8 @@ import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.DateManager;
-import com.orhanobut.logger.Logger;
+import com.donews.utilslibrary.utils.KeySharePreferences;
+import com.donews.utilslibrary.utils.SPUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -48,6 +49,7 @@ public class FreePanicBuyingDialog extends BaseDialog<FreePanicDialogLayoutBindi
     private LotteryHandler mLotteryHandler;
     private long fastVibrateTime = 0;
     OnFinishListener mOnFinishListener;
+
     public FreePanicBuyingDialog(Context context) {
         super(context, R.style.dialogTransparent);//内容样式在这里引入
         this.mContext = context;
@@ -109,7 +111,11 @@ public class FreePanicBuyingDialog extends BaseDialog<FreePanicDialogLayoutBindi
 
             addDisposable(disposable);
         } else {
-            Logger.d("Bounced today");
+            if (AppInfo.checkIsWXLogin()) {
+                if (SPUtils.getInformain(KeySharePreferences.SHOW_DIALOG_WHEN_LAUNCH, true)) {
+                    new EnterShowDialog(mContext).show();
+                }
+            }
         }
     }
 

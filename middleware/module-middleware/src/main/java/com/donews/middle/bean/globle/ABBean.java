@@ -7,6 +7,15 @@ public class ABBean {
     private boolean openAB;
     private boolean openVideoToast = true;
     private boolean openAutoLottery = true;
+    private int openHomeGuid = 0;
+
+    public int getOpenHomeGuid() {
+        return openHomeGuid;
+    }
+
+    public void setOpenHomeGuid(int openHomeGuid) {
+        this.openHomeGuid = openHomeGuid;
+    }
 
     public void setOpenAB(boolean openAB) {
         this.openAB = openAB;
@@ -39,11 +48,7 @@ public class ABBean {
         return openAB;
     }
 
-    public boolean getAb() {
+    public boolean getOpenAB() {
         return openAB;
-    }
-
-    public void setAb(boolean openAB) {
-        this.openAB = openAB;
     }
 }

@@ -8,6 +8,7 @@ import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
 import com.donews.utilslibrary.utils.HttpConfigUtilsKt;
+import com.donews.utilslibrary.utils.SPUtils;
 
 public class ABSwitch {
     private ABBean mAbBean;
@@ -24,7 +25,11 @@ public class ABSwitch {
     private void checkABBean() {
         if (mAbBean == null) {
             mAbBean = new ABBean();
-            mAbBean.setAb(true);
+            if (!SPUtils.getInformain("Is_Open_AB", true)) {
+                mAbBean.setOpenAB(false);
+            } else {
+                mAbBean.setOpenAB(true);
+            }
         }
     }
 
@@ -43,6 +48,11 @@ public class ABSwitch {
         return mAbBean.isOpenAutoLottery();
     }
 
+    public int isOpenHomeGuid() {
+        checkABBean();
+        return mAbBean.getOpenHomeGuid();
+    }
+
     public void initAbSwitch() {
         EasyHttp.get(HttpConfigUtilsKt.withConfigParams(BuildConfig.BASE_CONFIG_URL + "plus-abswitch" + BuildConfig.BASE_RULE_URL, true))
                 .cacheMode(CacheMode.NO_CACHE)
@@ -50,13 +60,24 @@ public class ABSwitch {
 
                     @Override
                     public void onError(ApiException e) {
-                        mAbBean.setAb(true);
+                        if (!SPUtils.getInformain("Is_Open_AB", true)) {
+                            mAbBean.setOpenAB(false);
+                        } else {
+                            mAbBean.setOpenAB(true);
+                        }
                     }
 
                     @Override
                     public void onSuccess(ABBean abBean) {
                         mAbBean = abBean;
                         GoodsCache.saveGoodsBean(abBean, "abswitch");
+                        if (!mAbBean.isOpenAB()) {
+                            SPUtils.setInformain("Is_Open_AB", false);
+                        } else {
+                            if (!SPUtils.getInformain("Is_Open_AB", true)) {
+                                mAbBean.setOpenAB(false);
+                            }
+                        }
                     }
                 });
     }

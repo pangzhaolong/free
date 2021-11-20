@@ -2,9 +2,11 @@ package com.donews.main.dialog;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 
@@ -38,6 +40,9 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
         super(context, R.style.dialogTransparent);
         mContext = context;
         create();
+//        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mDataBinding.getRoot().getLayoutParams();
+//        params.topMargin = -100;
+//        mDataBinding.getRoot().setLayoutParams(params);
     }
 
     @Override
@@ -53,10 +58,10 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
 
     @Override
     public float setSize() {
-        return 0.9f;
+        return 0.95f;
     }
 
-    @SuppressLint("RestrictedApi")
+    @SuppressLint({"RestrictedApi", "SetTextI18n"})
     void initView() {
         mDataBinding.ivClose.setOnClickListener(v -> {
             dismiss();
@@ -73,11 +78,13 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
             dismiss();
         });
 
-        float rand = new Random().nextInt(40);
-        mDataBinding.tvProbability1.setText(60 + rand + "");
+        int rand = new Random().nextInt(19);
+        mDataBinding.tvProbability1.setText(80 + rand + "");
 
         if (!SPUtils.getInformain(KeySharePreferences.SHOW_DIALOG_WHEN_LAUNCH, true)) {
-            mDataBinding.mainEnterClickLl.setVisibility(View.GONE);
+            mDataBinding.mainEnterClickLl.setVisibility(View.INVISIBLE);
+        } else {
+            mDataBinding.mainEnterClickLl.setVisibility(View.VISIBLE);
         }
 
         mDataBinding.mainEnterClickLl.setOnClickListener(v -> {
@@ -128,6 +135,7 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
         mDataBinding.tvGoodsTitle.setText(mGoods.getTitle());
         mDataBinding.tvActualPrice.setText("￥" + mGoods.getDisplayPrice());
         mDataBinding.tvOriginalPrice.setText("￥" + mGoods.getOriginalPrice());
+        mDataBinding.tvOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
         if (mGoods.getTotalPeople() > 10000) {
             mDataBinding.tvBuyNumber.setText("累计" + mGoods.getTotalPeople() / 10000 + "万人参与抢购");
         } else {

@@ -95,13 +95,17 @@
                                 android:layout_below="@+id/front_cash_get_tv"
                                 android:layout_marginTop="7dp"
                                 android:gravity="bottom"
-                                android:padding="5dp"
+                                android:paddingStart="5dp"
+                                android:paddingTop="5dp"
+                                android:paddingEnd="5dp"
+                                android:paddingBottom="5dp"
                                 android:weightSum="5">
 
                                 <FrameLayout
                                     android:id="@+id/front_rp_open_fl1"
                                     android:layout_width="0dp"
                                     android:layout_height="85dp"
+                                    android:layout_marginBottom="5dp"
                                     android:layout_weight="1">
 
                                     <ImageView
@@ -142,6 +146,7 @@
                                     android:id="@+id/front_rp_open_fl2"
                                     android:layout_width="0dp"
                                     android:layout_height="85dp"
+                                    android:layout_marginBottom="5dp"
                                     android:layout_weight="1">
 
                                     <ImageView
@@ -181,6 +186,7 @@
                                     android:id="@+id/front_rp_open_fl3"
                                     android:layout_width="0dp"
                                     android:layout_height="85dp"
+                                    android:layout_marginBottom="5dp"
                                     android:layout_weight="1">
 
                                     <ImageView
@@ -219,6 +225,7 @@
                                     android:id="@+id/front_rp_open_fl4"
                                     android:layout_width="0dp"
                                     android:layout_height="85dp"
+                                    android:layout_marginBottom="5dp"
                                     android:layout_weight="1">
 
                                     <ImageView
@@ -258,6 +265,7 @@
                                     android:id="@+id/front_rp_open_fl5"
                                     android:layout_width="0dp"
                                     android:layout_height="85dp"
+                                    android:layout_marginBottom="5dp"
                                     android:layout_weight="1">
 
                                     <ImageView
@@ -551,10 +559,14 @@
                     android:id="@+id/front_category_tl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minWidth="10dp"
                     android:minHeight="35dp"
                     app:tabBackground="@color/transparent"
                     app:tabIndicatorColor="@color/transparent"
                     app:tabIndicatorHeight="0dp"
+                    app:tabMaxWidth="200dp"
+                    app:tabPaddingEnd="10dp"
+                    app:tabPaddingStart="10dp"
                     app:tabRippleColor="@color/transparent"
                     app:tabSelectedTextColor="#F64A43"
                     app:tabTextColor="#6D6D6D" />
@@ -569,8 +581,8 @@
 
             <TextView
                 android:id="@+id/front_to_top_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
                 android:layout_gravity="end|bottom"
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="40dp"
