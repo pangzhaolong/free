@@ -484,6 +484,10 @@ public class MineOpenWinningFragment extends
                 }
                 mViewModel.addAddToGoods( //添加参与商品
                         adapterNotOpenMyAddRecordHead, true);
+                if (!isInitCommData) {
+                    isInitCommData = true;
+                    mViewModel.loadRecommendData(adapter.pageSize); //加载推荐数据
+                }
                 return; //表示未开奖状态下查看参与记录。那么只显示参与记录相关数据
             }
             //正在的已开奖所显示的内容

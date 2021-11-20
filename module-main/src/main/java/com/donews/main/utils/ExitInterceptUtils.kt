@@ -48,6 +48,9 @@ object ExitInterceptUtils {
     /** 兩次返回鍵的间隔时间 */
     private const val CLICK_INTERVAL: Long = 2000L
 
+    //是否完成了一次拦截
+    private var isFinishBack: Boolean = false
+
     var exitInterceptConfig: ExitInterceptConfig = ExitInterceptConfig()
 
     private var mFirstClickBackTime: Long = 0L
@@ -73,6 +76,14 @@ object ExitInterceptUtils {
     private var continueLotteryDialog: ContinueLotteryDialog? = null
     var remindDialog: RemindDialog? = null
 
+    /**
+     * 重置完成退出拦截的状态。否则退出拦截不生效
+     */
+    @JvmStatic
+    fun resetFinishBackStatus() {
+        isFinishBack = false
+    }
+
     private fun getInterceptConfig() {
         EasyHttp.get(CONFIG_URL.withConfigParams())
             .cacheMode(CacheMode.NO_CACHE)
@@ -94,12 +105,17 @@ object ExitInterceptUtils {
     }
 
     fun intercept(activity: AppCompatActivity) {
+        if (isFinishBack) {
+            exitApp(activity)
+            return
+        }
         val duration = System.currentTimeMillis() - mFirstClickBackTime
         if (duration < CLICK_INTERVAL) {
             // 程序关闭
             if (!exitInterceptConfig.intercept) {
                 exitApp(activity)
             } else {
+                isFinishBack = true //设置为本次已经触发退出拦截
                 if (!checkUserIsLogin()) {
                     //用户未登录
                     showNotLoginDialog(activity)

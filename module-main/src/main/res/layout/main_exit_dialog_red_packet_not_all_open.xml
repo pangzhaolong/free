@@ -17,27 +17,27 @@
 
         <ImageView
             android:id="@+id/iv_close"
-            app:layout_constraintBottom_toTopOf="@id/central_content"
-            app:layout_constraintRight_toRightOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="23dp"
-            android:layout_gravity="right"
             android:layout_above="@+id/central_content"
+            android:layout_gravity="right"
+            android:layout_marginBottom="23dp"
             android:onClick="@{eventListener::clickIvClose}"
             android:src="@drawable/common_close"
             android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@id/central_content"
+            app:layout_constraintRight_toRightOf="parent"
             tools:ignore="MissingConstraints" />
 
 
         <LinearLayout
             android:id="@+id/central_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints">
 
             <ImageView
@@ -199,6 +199,5 @@
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

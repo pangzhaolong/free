@@ -39,6 +39,8 @@ class ExitWinningDialog : AbstractFragmentDialog<MainExitDialogWinningOpenBindin
     private val handler = Handler(Looper.getMainLooper())
     private var countTime = 10 * 60
     private var runnableTask: Runnable? = null
+    private val goods: HighValueGoodsBean? =
+        GoodsCache.readGoodsBean(HighValueGoodsBean::class.java, "exit")
     val item: HighValueGoodsBean.GoodsInfo? by lazy {
         val t: HighValueGoodsBean = GoodsCache.readGoodsBean(HighValueGoodsBean::class.java, "exit")
         if (t.list?.isNotEmpty() == true) {
@@ -64,12 +66,44 @@ class ExitWinningDialog : AbstractFragmentDialog<MainExitDialogWinningOpenBindin
                 onLaterListener.onClose()
             }
         }
+        showAnimUI()
+    }
+
+    //显示动画UI
+    private fun showAnimUI() {
+        dataBinding.tvTitle.text = "抽取大奖中..."
+        dataBinding.llBut.visibility = View.INVISIBLE
+        dataBinding.tvFailure.visibility = View.INVISIBLE
+        dataBinding.ivIconBy.visibility = View.INVISIBLE
+        dataBinding.tvGoodsTitle.visibility = View.INVISIBLE
+        if (goods?.list?.isNotEmpty() == true) {
+            dataBinding.scroView.setDatas(goods.list)
+            handler.postDelayed({
+                dataBinding.scroView.startScroll {
+                    handler.postDelayed({
+                        showWindUI() //延迟显示中奖视图
+                    }, 100)
+                }
+            }, 250)
+        } else {
+            showWindUI()
+        }
+    }
+
+    //显示中奖UI
+    private fun showWindUI() {
         item?.apply {
             dataBinding.tvGoodsTitle.text = this.title
             GlideUtils.loadImageView(
                 activity, UrlUtils.formatHeadUrlPrefix(this.mainPic), dataBinding.ivIcon
             )
         }
+        dataBinding.tvTitle.text = "恭喜选中超值大奖"
+        dataBinding.llBut.visibility = View.VISIBLE
+        dataBinding.tvFailure.visibility = View.VISIBLE
+        dataBinding.ivIconBy.visibility = View.VISIBLE
+        dataBinding.tvGoodsTitle.visibility = View.VISIBLE
+        dataBinding.scroView.visibility = View.GONE
         runnableTask = Runnable {
             if (countTime <= 0) {
                 dataBinding.tvFailure.text = "已过期"
@@ -81,9 +115,6 @@ class ExitWinningDialog : AbstractFragmentDialog<MainExitDialogWinningOpenBindin
         }
         runnableTask!!.run()
         showCloseBtn()
-
-        //手
-
         //手
         dataBinding.maskingHand.imageAssetsFolder = "images"
         dataBinding.maskingHand.setAnimation("lottery_finger.json")

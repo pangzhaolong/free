@@ -357,6 +357,7 @@ public class MainActivity
 
     @Override
     protected void onDestroy() {
+        ExitInterceptUtils.resetFinishBackStatus();
         ImmersionBar.destroy(this, null);
         AppStatusManager.getInstance().setAppStatus(AppStatusConstant.STATUS_FORCE_KILLED);
         EventBus.getDefault().unregister(this);

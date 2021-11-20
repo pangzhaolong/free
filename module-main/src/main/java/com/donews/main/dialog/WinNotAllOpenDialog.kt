@@ -9,6 +9,8 @@ import android.view.View
 import com.donews.base.fragmentdialog.AbstractFragmentDialog
 import com.donews.main.R
 import com.donews.main.databinding.MainExitDialogRedPacketNotAllOpenBinding
+import com.donews.middle.bean.HighValueGoodsBean
+import com.donews.middle.cache.GoodsCache
 import com.donews.utilslibrary.utils.KeySharePreferences
 import com.donews.utilslibrary.utils.KeySharePreferences.STEPS_TO_GOLD_RED_PACKAGE_COUNTS
 import com.donews.utilslibrary.utils.SPUtils

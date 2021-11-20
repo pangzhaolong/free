@@ -94,8 +94,8 @@
 
             <ImageView
                 android:id="@+id/iv_goods_pic"
-                android:layout_width="137dp"
-                android:layout_height="137dp"
+                android:layout_width="157dp"
+                android:layout_height="157dp"
                 android:layout_marginTop="5dp"
                 android:scaleType="fitXY"
                 app:layout_constraintEnd_toEndOf="@id/iv_window"
@@ -193,6 +193,16 @@
                 app:layout_constraintStart_toEndOf="@id/btn_next"
                 app:layout_constraintTop_toBottomOf="@+id/iv_window"
                 android:layout_marginTop="18dp"/>
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/masking_hand"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintRight_toRightOf="@+id/btn_lottery"
+                app:layout_constraintTop_toTopOf="@+id/btn_lottery"
+                app:lottie_loop="true"
+                tools:ignore="MissingConstraints" />
 
             <TextView
                 android:id="@+id/tv_p_exit"

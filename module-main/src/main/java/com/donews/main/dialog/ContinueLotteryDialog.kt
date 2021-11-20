@@ -84,6 +84,11 @@ class ContinueLotteryDialog : AbstractFragmentDialog<MainExitDialogContinueLotte
         //请求商品信息
         requestGoodsInfo()
         showCloseBtn()
+        //手
+        dataBinding.maskingHand.imageAssetsFolder = "images"
+        dataBinding.maskingHand.setAnimation("lottery_finger.json")
+        dataBinding.maskingHand.loop(true)
+        dataBinding.maskingHand.playAnimation()
     }
 
     override fun isUseDataBinding(): Boolean {
