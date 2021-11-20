@@ -661,7 +661,7 @@
                 android:layout_height="wrap_content"
                 android:text="猜你喜欢"
                 android:textColor="#2C2C2C"
-                android:textSize="18dp"
+                android:textSize="16dp"
              />
 
             <ImageView
