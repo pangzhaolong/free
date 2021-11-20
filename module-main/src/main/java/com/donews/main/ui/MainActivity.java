@@ -99,12 +99,11 @@ public class MainActivity
 
         showDrawDialog();
     }
-
-/*    @Override
+/*
+    @Override
     protected void onResume() {
         super.onResume();
-
-        mDataBinding.mainHomeGuidCl.setVisibility(View.VISIBLE);
+        new EnterShowDialog(this).show();
     }*/
 
     /**
@@ -180,7 +179,7 @@ public class MainActivity
         if (mNavigationController != null) {
             mNavigationController.setSelect(mPosition);
         }
-        showDrawDialog();
+//        showDrawDialog();
     }
 
     private void initView(int position) {
@@ -262,8 +261,6 @@ public class MainActivity
                 && SPUtils.getInformain(KeySharePreferences.INTO_FRONT_COUNTS, 0) >= ABSwitch.Ins().isOpenHomeGuid()
                 && !SPUtils.getInformain(KeySharePreferences.HAS_DO_INTO_FRONT, false)) {
             mDataBinding.mainHomeGuidCl.setVisibility(View.VISIBLE);
-            mDataBinding.mainHomeGuidCl.setOnClickListener(v -> {
-            });
             mDataBinding.mainHomeBtn.setOnClickListener(v -> {
                 mDataBinding.mainHomeGuidCl.setVisibility(View.GONE);
                 toggleStatusBar(3);

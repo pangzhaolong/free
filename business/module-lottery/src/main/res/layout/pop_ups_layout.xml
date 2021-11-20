@@ -11,6 +11,7 @@
     tools:ignore="ResourceName">
 
     <LinearLayout
+        android:id="@+id/toast_view"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -30,16 +31,16 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="观看完整视频可参与"
+            android:text="观看完整视频可参与 "
             android:textColor="#FFFFFF"
-            android:textSize="13dp" />
+            android:textSize="16dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text='"免费抢购"'
             android:textColor="#DBD64B"
-            android:textSize="13dp" />
+            android:textSize="16dp" />
 
     </LinearLayout>
 

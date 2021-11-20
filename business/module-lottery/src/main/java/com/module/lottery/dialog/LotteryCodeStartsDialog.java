@@ -14,7 +14,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,6 +38,7 @@ import java.lang.ref.WeakReference;
 
 //抽奖码小于6个
 public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayoutBinding> {
+    private static final String TAG = "LotteryCodeStartsDialog";
     private LotteryActivity mContext;
     private OnStateListener mOnFinishListener;
     private LotteryHandler mLotteryHandler = new LotteryHandler(this);
@@ -107,6 +112,7 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
             @Override
             public void onError(int code, String msg) {
                 super.onError(code, msg);
+                Logger.e(TAG + msg + "");
                 if (mOnFinishListener != null) {
                     mOnFinishListener.onFinish();
                 }
@@ -119,11 +125,19 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
                     Activity activity = AppManager.getInstance().getTopActivity();
                     if (activity != null) {
                         if (ABSwitch.Ins().isOpenVideoToast()) {
+                            ScaleAnimation mScaleAnimation = new ScaleAnimation(1.1f, 0.88f, 1.1f, 0.88f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                            mScaleAnimation.setInterpolator(new LinearInterpolator());
+                            mScaleAnimation.setRepeatMode(Animation.REVERSE);
+                            mScaleAnimation.setRepeatCount(Animation.INFINITE);
+                            mScaleAnimation.setDuration(1000);
                             View view = LayoutInflater.from(mContext).inflate(R.layout.pop_ups_layout, null);
+                            LinearLayout linearLayout = view.findViewById(R.id.toast_view);
                             View decorView = activity.getWindow().getDecorView();
                             FrameLayout contentParent =
                                     (FrameLayout) decorView.findViewById(android.R.id.content);
                             contentParent.addView(view);
+                            linearLayout.setAnimation(mScaleAnimation);
+
                         }
                     } else {
                         ToastUtil.showShort(mContext, "完整观看视频即可获得抽奖码");
@@ -159,7 +173,14 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
                             FrameLayout contentParent =
                                     (FrameLayout) decorView.findViewById(android.R.id.content);
                             ConstraintLayout toastLayout = contentParent.findViewById(R.id.toast_layout);
+
+                            LinearLayout linearLayout = toastLayout.findViewById(R.id.toast_view);
+                            if (linearLayout != null) {
+                                linearLayout.clearAnimation();
+                            }
+
                             if (toastLayout != null) {
+
                                 contentParent.removeView(toastLayout);
                             }
                         }

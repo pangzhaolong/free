@@ -108,7 +108,7 @@ public class ReceiveLotteryDialog extends BaseDialog<ReceiveDialogLayoutBinding>
         if (mLotteryCodeBean != null) {
             //设置显示的数量
             if (mLotteryCodeBean.getCodes().size() > 0 && mLotteryCodeBean.getCodes().size() < 6) {
-                mDataBinding.quantity.setText((6 - (mLotteryCodeBean.getCodes().size()))+"");
+                mDataBinding.quantity.setText(" "+(6 - (mLotteryCodeBean.getCodes().size()))+" ");
             }
             //抽奖码满了
             if (mLotteryCodeBean.getCodes().size() == 6) {

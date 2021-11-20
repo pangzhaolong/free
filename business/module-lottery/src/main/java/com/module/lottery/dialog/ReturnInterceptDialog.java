@@ -127,6 +127,14 @@ public class ReturnInterceptDialog extends BaseDialog<InterceptDialogLayoutBindi
             mDataBinding.protocolLayout.setVisibility(View.VISIBLE);
             mDataBinding.userProtocol.setOnClickListener(this);
             mDataBinding.privacyProtocol.setOnClickListener(this);
+
+            mDataBinding.protocolLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mDataBinding.checkBox.setChecked(!mDataBinding.checkBox.isChecked());
+                }
+            });
+
         }
         mDataBinding.jumpButton.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("MissingPermission")

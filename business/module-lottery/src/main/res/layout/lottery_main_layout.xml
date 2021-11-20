@@ -125,7 +125,7 @@
                             android:text="观看视频，参与抽奖"
                             android:textColor="#E9423E"
                             android:textSize="16dp"
-                            android:visibility="invisible" />
+                          />
 
                         <ImageView
                             android:layout_width="match_parent"
@@ -246,7 +246,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/label_01"
                         android:gravity="center"
-                        android:text="@string/lottery_value"
+                        android:text="抽奖"
                         android:textColor="#FFFFFF"
                         android:textSize="17dp"
                         android:textStyle="bold" />
