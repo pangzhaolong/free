@@ -330,6 +330,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
     @SuppressLint("SetTextI18n")
     private void loadRpData() {
+        mIsOpeningRp = false;
         if (!AppInfo.checkIsWXLogin()) {
             mDataBinding.frontRpIv1.setBackgroundResource(R.drawable.front_rp_wait);
             mDataBinding.frontRpIv2.setBackgroundResource(R.drawable.front_rp_wait);
@@ -361,6 +362,12 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mDataBinding.frontRpTv3.setText("抽奖5次");
             mDataBinding.frontRpTv4.setText("抽奖7次");
             mDataBinding.frontRpTv5.setText("抽奖10次");
+
+            mDataBinding.tomorrow01.setVisibility(View.GONE);
+            mDataBinding.tomorrow02.setVisibility(View.GONE);
+            mDataBinding.tomorrow03.setVisibility(View.GONE);
+            mDataBinding.tomorrow04.setVisibility(View.GONE);
+            mDataBinding.tomorrow05.setVisibility(View.GONE);
             startTimer();
 
             EventBus.getDefault().post(new RedPackageStatus(0, 0));
@@ -606,13 +613,13 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         }
 
         openRp();
-        mIsOpeningRp = false;
     }
 
     private void openRp() {
         mViewModel.openRpData().observe(this.getViewLifecycleOwner(), redPacketBean -> {
             if (redPacketBean == null || redPacketBean.getAward() == null) {
                 Toast.makeText(this.getContext(), "开启红包失败，请稍后再试或者反馈给我们，谢谢！", Toast.LENGTH_SHORT).show();
+                mIsOpeningRp = false;
                 return;
             }
             ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)

@@ -6,10 +6,10 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.donews.common.router.RouterFragmentPath;
@@ -18,6 +18,7 @@ import com.donews.main.R;
 import com.donews.main.databinding.MainEnterDialogLotteryBindingImpl;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoods;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoodsResp;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
@@ -40,9 +41,6 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
         super(context, R.style.dialogTransparent);
         mContext = context;
         create();
-//        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mDataBinding.getRoot().getLayoutParams();
-//        params.topMargin = -100;
-//        mDataBinding.getRoot().setLayoutParams(params);
     }
 
     @Override
@@ -58,28 +56,26 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
 
     @Override
     public float setSize() {
-        return 0.95f;
+        return 0.9f;
     }
 
-    @SuppressLint({"RestrictedApi", "SetTextI18n"})
+    @SuppressLint({"RestrictedApi", "SetTextI18n", "DefaultLocale"})
     void initView() {
-        mDataBinding.ivClose.setOnClickListener(v -> {
-            dismiss();
-        });
-        mDataBinding.btnNext.setOnClickListener(v -> {
-            requestGoodsInfo();
-        });
+        mDataBinding.ivClose.setOnClickListener(v -> dismiss());
+        mDataBinding.btnNext.setOnClickListener(v -> requestGoodsInfo());
 
         mDataBinding.btnLottery.setOnClickListener(v -> {
+
             ARouter.getInstance()
                     .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                     .withString("goods_id", mGoods.getGoodsId())
+                    .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
                     .navigation();
             dismiss();
         });
 
-        int rand = new Random().nextInt(19);
-        mDataBinding.tvProbability1.setText(80 + rand + "");
+        float rand = new Random().nextFloat();
+        mDataBinding.tvProbability1.setText(String.format("%.1f", 80 + 20 * rand) + "%");
 
         if (!SPUtils.getInformain(KeySharePreferences.SHOW_DIALOG_WHEN_LAUNCH, true)) {
             mDataBinding.mainEnterClickLl.setVisibility(View.INVISIBLE);
@@ -98,7 +94,19 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
             }
         });
 
+
+        initLottie(mDataBinding.mainEnterDialogLottie, "lottery_finger.json");
+
         requestGoodsInfo();
+    }
+
+    private void initLottie(LottieAnimationView view, String json) {
+        if (view != null && !view.isAnimating()) {
+            view.setImageAssetsFolder("images");
+            view.setAnimation(json);
+            view.loop(true);
+            view.playAnimation();
+        }
     }
 
     @Override
@@ -133,7 +141,7 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
         mGoods = bean.getList().get(0);
         Glide.with(mContext).load(UrlUtils.formatUrlPrefix(mGoods.getMainPic())).into(mDataBinding.ivGoodsPic);
         mDataBinding.tvGoodsTitle.setText(mGoods.getTitle());
-        mDataBinding.tvActualPrice.setText("￥" + mGoods.getDisplayPrice());
+        mDataBinding.tvActualPrice.setText(String.format("￥%.0f", mGoods.getDisplayPrice()));
         mDataBinding.tvOriginalPrice.setText("￥" + mGoods.getOriginalPrice());
         mDataBinding.tvOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
         if (mGoods.getTotalPeople() > 10000) {
