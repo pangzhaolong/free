@@ -32,27 +32,31 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="23dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/iv_window"
                 android:layout_width="267dp"
                 android:layout_height="294dp"
-                android:background="@drawable/dialog_main_exit_red_bg"
-                app:layout_constraintTop_toBottomOf="@+id/iv_window_title"/>
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:background="@drawable/dialog_main_exit_red_hb_bg"
+                app:layout_constraintTop_toBottomOf="@+id/iv_window_title" />
 
             <ImageView
                 android:id="@+id/iv_window_title"
                 android:layout_width="196dp"
                 android:layout_height="33dp"
+                android:layout_marginTop="-12dp"
                 android:background="@drawable/dialog_main_exit_bg_tit"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/iv_window"
-                android:layout_marginTop="-12dp"/>
+                app:layout_constraintTop_toTopOf="@+id/iv_window" />
 
             <ImageView
                 android:id="@+id/iv_close"
@@ -61,32 +65,32 @@
                 android:layout_marginBottom="23dp"
                 android:onClick="@{eventListener::clickClose}"
                 android:src="@drawable/common_close"
-                app:layout_constraintTop_toTopOf="parent"
                 android:visibility="invisible"
-                app:layout_goneMarginBaseline="0dp"
                 app:layout_constraintBottom_toTopOf="@id/iv_window"
-                app:layout_constraintEnd_toEndOf="@id/iv_window" />
+                app:layout_constraintEnd_toEndOf="@id/iv_window"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_goneMarginBaseline="0dp" />
 
             <TextView
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:text="确定放弃0元福利么?"
                 android:textColor="#764D38"
                 android:textSize="16sp"
-                android:layout_marginTop="5dp"
-                app:layout_constraintTop_toTopOf="@+id/iv_window_title"
                 app:layout_constraintLeft_toLeftOf="@+id/iv_window_title"
-                app:layout_constraintRight_toRightOf="@+id/iv_window_title"/>
+                app:layout_constraintRight_toRightOf="@+id/iv_window_title"
+                app:layout_constraintTop_toTopOf="@+id/iv_window_title" />
 
             <TextView
                 android:id="@+id/tv_title_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="40dp"
                 android:text="@{title}"
                 android:textColor="@color/white"
-                android:textSize="14sp"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="@id/iv_window"
                 app:layout_constraintStart_toStartOf="@id/iv_window"
                 app:layout_constraintTop_toBottomOf="@+id/tv_title"
@@ -97,11 +101,12 @@
                 android:layout_width="157dp"
                 android:layout_height="157dp"
                 android:layout_marginTop="5dp"
+                android:background="@drawable/ad_shape_exit_bg"
                 android:scaleType="fitXY"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="@id/iv_window"
                 app:layout_constraintStart_toStartOf="@id/iv_window"
                 app:layout_constraintTop_toBottomOf="@id/tv_title_desc"
-                android:background="@drawable/ad_shape_exit_bg"
                 app:url="@{goodsBean.mainPic}" />
 
             <TextView
@@ -112,25 +117,26 @@
                 android:ellipsize="end"
                 android:gravity="start|center_vertical"
                 android:maxLines="2"
-                android:textColor="@color/white"
-                android:text="@{goodsBean.title}"
-                android:textSize="15sp"
                 android:paddingLeft="30dp"
                 android:paddingRight="30dp"
+                android:text="@{goodsBean.title}"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_goods_pic"
-                tools:text="商品标题"/>
+                tools:text="商品标题" />
 
             <TextView
                 android:id="@+id/tv_actual_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:visibility="gone"
                 android:text="@{@string/main_exit_price(goodsBean.displayPrice)}"
                 android:textColor="@color/common_e9423e"
                 android:textSize="17sp"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@id/tv_goods_title"
                 app:layout_constraintTop_toBottomOf="@id/tv_goods_title"
                 tools:text="¥ 24" />
@@ -168,10 +174,10 @@
                 android:background="@drawable/main_exit_btn_bg_negative"
                 android:onClick="@{eventListener::clickNext}"
                 android:text="@string/main_exit_other"
-                android:visibility="gone"
                 android:textColor="@color/common_F43838"
                 android:textSize="16sp"
                 android:textStyle="bold"
+                android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@id/btn_lottery"
                 app:layout_constraintStart_toStartOf="@id/iv_window"
                 app:layout_constraintTop_toBottomOf="@id/tv_actual_price" />
@@ -180,25 +186,42 @@
                 android:id="@+id/btn_lottery"
                 android:layout_width="wrap_content"
                 android:layout_height="47dp"
+                android:layout_marginTop="18dp"
                 android:background="@drawable/main_bg_guide_but"
                 android:onClick="@{eventListener::clickLottery}"
+                android:paddingLeft="50dp"
+                android:paddingRight="50dp"
+                android:paddingBottom="1dp"
+                android:layout_marginBottom="30dp"
                 android:text="抽奖得现金红包"
                 android:textColor="#D82D2A"
                 android:textSize="20sp"
-                android:paddingLeft="50dp"
-                android:paddingRight="50dp"
                 android:textStyle="bold"
-                android:paddingBottom="1dp"
                 app:layout_constraintEnd_toEndOf="@id/iv_window"
                 app:layout_constraintStart_toEndOf="@id/btn_next"
-                app:layout_constraintTop_toBottomOf="@+id/iv_window"
-                android:layout_marginTop="18dp"/>
+                app:layout_constraintBottom_toBottomOf="@+id/iv_window" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@+id/btn_lottery"
+                app:layout_constraintRight_toRightOf="@+id/btn_lottery"
+                android:text="领8.8元红包"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:background="@drawable/green_shape"
+                android:textSize="15sp"
+                android:textColor="@color/white"
+                android:layout_marginTop="-15dp"/>
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/masking_hand"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginRight="-5dp"
                 app:layout_constraintRight_toRightOf="@+id/btn_lottery"
                 app:layout_constraintTop_toTopOf="@+id/btn_lottery"
                 app:lottie_loop="true"
@@ -209,17 +232,33 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
+                android:onClick="@{eventListener::clickLater}"
+                android:padding="5dp"
                 android:text="稍后再说"
                 android:textColor="@color/white"
                 android:textSize="13sp"
-                android:padding="5dp"
                 android:visibility="invisible"
-                tools:visibility="visible"
                 app:layout_constraintEnd_toEndOf="@id/iv_window"
                 app:layout_constraintStart_toStartOf="@id/iv_window"
-                app:layout_constraintTop_toBottomOf="@+id/btn_lottery"
+                app:layout_constraintTop_toBottomOf="@+id/iv_window"
                 tools:text="稍后再说"
-                android:onClick="@{eventListener::clickLater}"/>
+                tools:visibility="visible" />
+            
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="-20dp"
+                android:src="@drawable/main_exit_dialog_winning_yh_r"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/iv_window"/>
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/main_exit_dialog_winning_yh_r"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/iv_window"
+                android:layout_marginLeft="5dp"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_window"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -215,7 +215,6 @@
             android:id="@+id/mine_me_withdrawal"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
             android:layout_weight="1">
 
             <LinearLayout
@@ -233,7 +232,8 @@
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="35dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="35dp"
                     android:gravity="center_horizontal"
                     android:orientation="horizontal">
 
@@ -248,14 +248,15 @@
                     <TextView
                         android:id="@+id/mine_me_money_num"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="35dp"
                         android:gravity="center"
-                        android:paddingLeft="2dp"
-                        android:paddingTop="3dp"
-                        android:paddingBottom="3dp"
                         android:text="0"
+                        android:paddingLeft="2dp"
+                        android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:textSize="26sp"
+                        android:autoSizeTextType="uniform"
+                        android:autoSizeMaxTextSize="26sp"
+                        android:autoSizeMinTextSize="15sp"
                         android:textStyle="bold"
                         app:layout_constraintRight_toRightOf="parent"
                         tools:ignore="MissingConstraints" />

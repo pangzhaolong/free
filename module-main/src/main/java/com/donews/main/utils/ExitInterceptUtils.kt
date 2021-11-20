@@ -115,6 +115,8 @@ object ExitInterceptUtils {
             if (!exitInterceptConfig.intercept) {
                 exitApp(activity)
             } else {
+                showContinueLotteryDialog(activity)
+                return
                 isFinishBack = true //设置为本次已经触发退出拦截
                 if (!checkUserIsLogin()) {
                     //用户未登录

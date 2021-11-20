@@ -104,13 +104,13 @@ class ContinueLotteryDialog : AbstractFragmentDialog<MainExitDialogContinueLotte
 
 
     private fun setTitle() {
-        val prob = Random.nextInt(300).toString()
-        val result = "已经有${prob}人抽中该商品"
+        val prob = "3千+"//Random.nextInt(300).toString()
+        val result = "已有${prob}人获得免单奖"
         val spannable: SpannableString = SpannableString(result)
         spannable.setSpan(
-            AbsoluteSizeSpan(DensityUtils.dip2px(25f)),
-            3,
-            3 + prob.length,
+            AbsoluteSizeSpan(DensityUtils.dip2px(28f)),
+            2,
+            2 + prob.length,
             Spannable.SPAN_INCLUSIVE_EXCLUSIVE
         )
         dataBinding.title = spannable
