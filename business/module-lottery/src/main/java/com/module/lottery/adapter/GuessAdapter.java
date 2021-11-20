@@ -15,6 +15,7 @@ import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -105,9 +106,31 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 //参考价格
                 listHolder.mGuesslikeHeadBinding.referPrice.setText("参考价: " + mCommodityBean.getOriginalPrice() + "");
                 listHolder.mGuesslikeHeadBinding.referPrice.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG); //中划线
-                listHolder.mGuesslikeHeadBinding.title.setText(mCommodityBean.getTitle());
+//                SpannableString msp =new SpannableString(" "+mCommodityBean.getTitle());
+//                Drawable rightDrawable =mContext.getResources().getDrawable(R.mipmap.free_panic_buying);
+//
+//
+//                rightDrawable.setBounds(0,0,
+//                        mContext.getResources().getDimensionPixelOffset(R.dimen.lottery_constant_144), mContext.getResources().getDimensionPixelOffset(R.dimen.lottery_constant_52));
+//
+//                msp.setSpan(new ImageSpan(rightDrawable),0,1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                listHolder.mGuesslikeHeadBinding.title.setText(msp);
+//                 int w= mContext.getResources().getDimensionPixelOffset(R.dimen.lottery_constant_144);
+//
+//                int h= mContext.getResources().getDimensionPixelOffset(R.dimen.lottery_constant_52);
+
+
+
+
+                int w = mContext.getResources().getDimensionPixelOffset(R.dimen.lottery_constant_144);
+                int h = mContext.getResources().getDimensionPixelOffset(R.dimen.lottery_constant_52);
+
+                setTextImage(w,h, listHolder.mGuesslikeHeadBinding.title, mCommodityBean.getTitle(),R.mipmap.free_panic_buying);
+
                 listHolder.mGuesslikeHeadBinding.cycle.setText("第" + mCommodityBean.getPeriod() + "期");
                 initViewPager(listHolder);
+
+
 
                 listHolder.mGuesslikeHeadBinding.lotteryContainer.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -170,7 +193,10 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
                 RequestOptions options = RequestOptions.bitmapTransform(roundedCorners);
                 Glide.with(mContext).load(imageUrl).apply(options).into(guessViewHolder.mGuesslikeItemLayoutBinding.itemImageSrc);
-                setTextImage(guessViewHolder.mGuesslikeItemLayoutBinding.itemTitle, mCommodityBean.getGuessLikeData().get(position - 1).getTitle() + "");
+                int w = mContext.getResources().getDimensionPixelOffset(R.dimen.merchant_icon_w);
+                int h = mContext.getResources().getDimensionPixelOffset(R.dimen.merchant_icon_h);
+
+                setTextImage(w,h,guessViewHolder.mGuesslikeItemLayoutBinding.itemTitle, mCommodityBean.getGuessLikeData().get(position - 1).getTitle() + "",R.mipmap.taobao_icon);
                 guessViewHolder.mGuesslikeItemLayoutBinding.itemPrice.setText("¥ " + mCommodityBean.getGuessLikeData().get(position - 1).getOriginalPrice() + "");
                 guessViewHolder.mGuesslikeItemLayoutBinding.itemPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
                 guessViewHolder.mGuesslikeItemLayoutBinding.itemLayout.setOnClickListener(new View.OnClickListener() {
@@ -194,12 +220,10 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
 
-    private void setTextImage(TextView textView, String value) {
+    private void setTextImage(int w,int h,TextView textView, String value,int id) {
         if ((textView != null) && (mContext != null)) {
-            int w = mContext.getResources().getDimensionPixelOffset(R.dimen.merchant_icon_w);
-            int h = mContext.getResources().getDimensionPixelOffset(R.dimen.merchant_icon_h);
             SpannableString spannableString = new SpannableString("  " + value);
-            Drawable drawable = mContext.getResources().getDrawable(R.mipmap.taobao_icon);
+            Drawable drawable = mContext.getResources().getDrawable(id);
             drawable.setBounds(0, 0, w, h);
             spannableString.setSpan(new VerticalImageSpan(drawable), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             textView.setText(spannableString);
