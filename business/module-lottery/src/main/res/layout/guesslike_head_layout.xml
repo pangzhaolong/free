@@ -114,9 +114,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
+                android:maxLines="2"
                 android:paddingStart="5dp"
                 android:paddingEnd="30dp"
-                android:maxLines="2"
                 android:text="商品的标题显示品不下打点"
                 android:textColor="#2C2C2C"
                 android:textSize="19dp"
@@ -183,8 +183,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
                 android:layout_alignParentRight="true"
+                android:layout_marginTop="3dp"
                 android:layout_marginEnd="15dp"
                 android:orientation="horizontal">
 
@@ -641,16 +641,37 @@
 
         </LinearLayout>
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#F9F9F9"
             android:gravity="center"
+            android:orientation="horizontal"
             android:paddingTop="20dp"
-            android:paddingBottom="14dp"
-            android:text="猜你喜欢"
-            android:textColor="#2C2C2C"
-            android:textSize="18dp"
-            android:textStyle="bold" />
+            android:paddingBottom="14dp">
+
+            <ImageView
+                android:layout_width="26.5dp"
+                android:layout_height="7dp"
+                android:scaleType="fitXY"
+                android:layout_marginEnd="13dp"
+                android:src="@mipmap/little_bit_lift_icon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#F9F9F9"
+                android:text="猜你喜欢"
+                android:textColor="#2C2C2C"
+                android:textSize="18dp"
+             />
+
+            <ImageView
+                android:layout_width="26.5dp"
+                android:layout_height="7dp"
+                android:scaleType="fitXY"
+                android:layout_marginStart="13dp"
+                android:src="@mipmap/little_bit_right_icon" />
+        </LinearLayout>
+
     </LinearLayout>
 </layout>
