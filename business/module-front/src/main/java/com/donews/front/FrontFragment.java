@@ -470,7 +470,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             return;
         }
 
-//        mFindFirstReadyRp = false;
+        mFindFirstReadyRp = false;
         int topColor = Color.parseColor("#764D38");
         int bottomColor = Color.parseColor("#FFF3D3");
         changeRpStatus(rpBean, topColor, bottomColor

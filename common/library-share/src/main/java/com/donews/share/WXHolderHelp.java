@@ -43,7 +43,7 @@ public class WXHolderHelp {
             return;
         }
 
-        BaseToast.makeToast(ContextHolder.getInstance().getApplication()).setToastText("启动微信中").setToastLongDuration().showToast();
+//        BaseToast.makeToast(ContextHolder.getInstance().getApplication()).setToastText("启动微信中").setToastLongDuration().showToast();
         WXCustomEntryActivity.state = WXHolderHelp.STATE_LOGIN;
         WXCustomEntryActivity.mSuccessCallBack = successCallBack;
         SendAuth.Req req = new SendAuth.Req();
@@ -58,7 +58,7 @@ public class WXHolderHelp {
             BaseToast.makeToast(ContextHolder.getInstance().getApplication()).setToastText("微信没有安装！").showToast();
             return;
         }
-        BaseToast.makeToast(ContextHolder.getInstance().getApplication()).setToastText("启动微信中").setToastLongDuration().showToast();
+//        BaseToast.makeToast(ContextHolder.getInstance().getApplication()).setToastText("启动微信中").setToastLongDuration().showToast();
         WXCustomEntryActivity.state = type;
         WXCustomEntryActivity.mSuccessCallBack = successCallBack;
         SendAuth.Req req = new SendAuth.Req();
