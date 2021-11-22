@@ -47,6 +47,7 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
     private LotteryHandler mLotteryHandler = new LotteryHandler(this);
     boolean aAState = false;
     private LotteryPreloadVideoView mVideoView;
+
     public LotteryCodeStartsDialog(LotteryActivity context, LotteryPreloadVideoView videoView) {
         super(context, R.style.dialogTransparent);//内容样式在这里引入
         this.mContext = context;
@@ -205,6 +206,13 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
                 public void onRewardVideoComplete() {
                     onVideoComplete();
                 }
+
+                @Override
+                public void onError(int code, String msg) {
+                    Logger.e(TAG + msg + "");
+                    loadError();
+                }
+
             });
             mVideoView.getPreloadVideoView().show();
 
@@ -214,13 +222,9 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
                 @Override
                 public void onError(int code, String msg) {
                     super.onError(code, msg);
+                    loadError();
                     Logger.e(TAG + msg + "");
-                    if (mOnFinishListener != null) {
-                        mOnFinishListener.onFinish();
-                        if (mContext != null) {
-                            ToastUtil.showShort(mContext, "请求失败");
-                        }
-                    }
+
                 }
 
                 @Override
@@ -245,13 +249,23 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
                 @Override
                 public void onRewardVerify(boolean result) {
                     super.onRewardVerify(result);
-
                     aAState = result;
                 }
             });
         }
     }
 
+
+    private void loadError() {
+
+        if (mOnFinishListener != null) {
+            mOnFinishListener.onFinish();
+            if (mContext != null) {
+                ToastUtil.showShort(mContext, "抽奖失败,请稍后再试");
+            }
+        }
+
+    }
 
     @Override
     public float setSize() {

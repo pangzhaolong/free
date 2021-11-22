@@ -307,8 +307,10 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             @Override
             public void onError(int code, String msg) {
                 super.onError(code, msg);
+                if (mPreloadVideoView != null && mPreloadVideoView.getPreloadVideoView() != null) {
+                    mPreloadVideoView.getAdStateListener().onError(code, msg);
+                }
                 mPreloadVideoView = null;
-                Logger.e(msg + "");
             }
 
             @Override

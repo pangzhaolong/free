@@ -25,6 +25,7 @@ public class  LotteryPreloadVideoView   {
         public void onRewardedClosed();
         public void onRewardVerify(boolean result);
         public void onRewardVideoComplete();
+        public void onError(int code, String msg);
     }
 
     public IAdStateListener getAdStateListener() {
