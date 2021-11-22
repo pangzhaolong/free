@@ -16,16 +16,16 @@ import com.blankj.utilcode.util.BarUtils;
 import com.dn.drouter.ARouteHelper;
 import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.LotteryStatusEvent;
+import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.business.monitor.PageMonitor;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
-import com.donews.base.utils.ToastUtil;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
+import com.donews.middle.views.BarrageView;
 import com.donews.mine.adapters.MineWinningCodeAdapter;
 import com.donews.mine.bean.resps.RecommendGoodsResp;
 import com.donews.mine.databinding.MineFragmentWinningCodeBinding;
 import com.donews.mine.viewModel.MineOpenWinningViewModel;
-import com.donews.mine.views.scrollview.BarrageView;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 
@@ -180,23 +180,35 @@ public class MineOpenWinningFragment extends
     @Override
     public void onResume() {
         super.onResume();
-        barrageView.resumeScroll();
-        barrageView2.resumeScroll();
+        if (barrageView != null) {
+            barrageView.resumeScroll();
+        }
+        if (barrageView2 != null) {
+            barrageView2.resumeScroll();
+        }
         onRefresh();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        barrageView.pauseScroll();
-        barrageView2.pauseScroll();
+        if (barrageView != null) {
+            barrageView.pauseScroll();
+        }
+        if (barrageView2 != null) {
+            barrageView2.pauseScroll();
+        }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        barrageView.stopScroll();
-        barrageView2.stopScroll();
+        if (barrageView != null) {
+            barrageView.stopScroll();
+        }
+        if (barrageView2 != null) {
+            barrageView2.stopScroll();
+        }
     }
 
     private void onRefresh() {

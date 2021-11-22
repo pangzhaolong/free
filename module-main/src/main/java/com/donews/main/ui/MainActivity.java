@@ -144,7 +144,7 @@ public class MainActivity
             mFreePanicBuyingDialog.setFinishListener(new FreePanicBuyingDialog.OnFinishListener() {
                 @Override
                 public void onDismiss() {
-                    if (mFreePanicBuyingDialog != null) {
+                    if (SPUtils.getInformain(KeySharePreferences.SHOW_DIALOG_WHEN_LAUNCH, true)) {
                         new EnterShowDialog(MainActivity.this).show();
                     }
                 }

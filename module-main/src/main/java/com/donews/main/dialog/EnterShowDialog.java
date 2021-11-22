@@ -62,7 +62,10 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
     @SuppressLint({"RestrictedApi", "SetTextI18n", "DefaultLocale"})
     void initView() {
         mDataBinding.ivClose.setOnClickListener(v -> dismiss());
-        mDataBinding.btnNext.setOnClickListener(v -> requestGoodsInfo());
+        mDataBinding.btnNext.setOnClickListener(v -> {
+            mDataBinding.tvProbability1.setText(randLucky());
+            requestGoodsInfo();
+        });
 
         mDataBinding.btnLottery.setOnClickListener(v -> {
 
@@ -74,8 +77,7 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
             dismiss();
         });
 
-        float rand = new Random().nextFloat();
-        mDataBinding.tvProbability1.setText(String.format("%.1f", 80 + 20 * rand) + "%");
+        mDataBinding.tvProbability1.setText(randLucky());
 
         if (!SPUtils.getInformain(KeySharePreferences.SHOW_DIALOG_WHEN_LAUNCH, true)) {
             mDataBinding.mainEnterClickLl.setVisibility(View.INVISIBLE);
@@ -94,10 +96,18 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
             }
         });
 
-
         initLottie(mDataBinding.mainEnterDialogLottie, "lottery_finger.json");
 
         requestGoodsInfo();
+    }
+
+    @SuppressLint("DefaultLocale")
+    private String randLucky() {
+        float rand = 80 + 20 * (new Random().nextFloat());
+        if (rand >= 99.9f) {
+            rand = 99.7f;
+        }
+        return String.format("%.1f", rand) + "%";
     }
 
     private void initLottie(LottieAnimationView view, String json) {

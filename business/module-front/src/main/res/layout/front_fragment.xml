@@ -69,8 +69,8 @@
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_marginTop="8dp"
-                                android:padding="6dp"
                                 android:layout_toRightOf="@+id/front_rp_title"
+                                android:padding="6dp"
                                 android:src="@drawable/front_rp_help" />
 
                             <TextView
@@ -104,7 +104,7 @@
                                     android:id="@+id/front_rp_open_fl1"
                                     android:layout_width="0dp"
                                     android:layout_height="85dp"
-                                    android:layout_marginBottom="5dp"
+                                    android:layout_marginBottom="10dp"
                                     android:layout_weight="1">
 
                                     <ImageView
@@ -145,7 +145,7 @@
                                     android:id="@+id/front_rp_open_fl2"
                                     android:layout_width="0dp"
                                     android:layout_height="85dp"
-                                    android:layout_marginBottom="5dp"
+                                    android:layout_marginBottom="10dp"
                                     android:layout_weight="1">
 
                                     <ImageView
@@ -185,7 +185,7 @@
                                     android:id="@+id/front_rp_open_fl3"
                                     android:layout_width="0dp"
                                     android:layout_height="85dp"
-                                    android:layout_marginBottom="5dp"
+                                    android:layout_marginBottom="10dp"
                                     android:layout_weight="1">
 
                                     <ImageView
@@ -224,7 +224,7 @@
                                     android:id="@+id/front_rp_open_fl4"
                                     android:layout_width="0dp"
                                     android:layout_height="85dp"
-                                    android:layout_marginBottom="5dp"
+                                    android:layout_marginBottom="10dp"
                                     android:layout_weight="1">
 
                                     <ImageView
@@ -264,7 +264,7 @@
                                     android:id="@+id/front_rp_open_fl5"
                                     android:layout_width="0dp"
                                     android:layout_height="85dp"
-                                    android:layout_marginBottom="5dp"
+                                    android:layout_marginBottom="10dp"
                                     android:layout_weight="1">
 
                                     <ImageView
