@@ -3,15 +3,22 @@ package com.donews.main.dialog;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.main.BuildConfig;
 import com.donews.main.R;
@@ -64,7 +71,7 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
         mDataBinding.ivClose.setOnClickListener(v -> dismiss());
         mDataBinding.btnNext.setOnClickListener(v -> {
             mDataBinding.tvProbability1.setText(randLucky());
-            requestGoodsInfo();
+            requestGoodsInfo(false);
         });
 
         mDataBinding.btnLottery.setOnClickListener(v -> {
@@ -98,7 +105,11 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
 
         initLottie(mDataBinding.mainEnterDialogLottie, "lottery_finger.json");
 
-        requestGoodsInfo();
+//        requestGoodsInfo();
+    }
+
+    public void showEx() {
+        requestGoodsInfo(true);
     }
 
     @SuppressLint("DefaultLocale")
@@ -124,32 +135,52 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
         return super.onKeyDown(keyCode, event);
     }
 
-    private void requestGoodsInfo() {
+    private void requestGoodsInfo(boolean isFirstIn) {
         EasyHttp.get(BuildConfig.API_LOTTERY_URL + "v1/recommend-goods-list")
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<ExitDialogRecommendGoodsResp>() {
 
                     @Override
                     public void onError(ApiException e) {
-//                        mutableLiveData.postValue(null);
+                        if (isFirstIn) {
+                            dismiss();
+                        }
                     }
 
                     @Override
                     public void onSuccess(ExitDialogRecommendGoodsResp bean) {
-//                        mutableLiveData.postValue(serverTimeBean);
-                        showInfo(bean);
+                        showInfo(bean, isFirstIn);
                     }
                 });
     }
 
-    @SuppressLint("SetTextI18n")
-    private void showInfo(ExitDialogRecommendGoodsResp bean) {
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
+    private void showInfo(ExitDialogRecommendGoodsResp bean, boolean isFirstIn) {
         if (bean == null || bean.getList().size() <= 0) {
             dismiss();
             return;
         }
         mGoods = bean.getList().get(0);
-        Glide.with(mContext).load(UrlUtils.formatUrlPrefix(mGoods.getMainPic())).into(mDataBinding.ivGoodsPic);
+        Glide.with(mContext)
+                .load(UrlUtils.formatUrlPrefix(mGoods.getMainPic()))
+                .diskCacheStrategy(DiskCacheStrategy.DATA)
+                .addListener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        if (isFirstIn) {
+                            dismiss();
+                        }
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        mDataBinding.ivGoodsPic.setImageDrawable(resource);
+                        show();
+                        return false;
+                    }
+                }).preload();
+//        Glide.with(mContext).load(UrlUtils.formatUrlPrefix(mGoods.getMainPic())).into(mDataBinding.ivGoodsPic);
         mDataBinding.tvGoodsTitle.setText(mGoods.getTitle());
         mDataBinding.tvActualPrice.setText(String.format("￥%.0f", mGoods.getDisplayPrice()));
         mDataBinding.tvOriginalPrice.setText("￥" + mGoods.getOriginalPrice());
