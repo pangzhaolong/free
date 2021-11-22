@@ -43,7 +43,7 @@
                     android:paddingTop="20dp"
                     android:paddingRight="20dp"
                     android:paddingBottom="20dp"
-                    android:src="@drawable/common_back_black" />
+                    android:src="@drawable/mine_win_write_back" />
 
                 <TextView
                     android:id="@+id/main_win_code_title_right"
@@ -76,8 +76,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:weightSum="1"
                 android:visibility="gone"
+                android:weightSum="1"
                 tools:visibility="visible">
 
                 <TextView
