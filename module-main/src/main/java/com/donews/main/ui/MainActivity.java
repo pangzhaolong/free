@@ -34,6 +34,7 @@ import com.donews.main.dialog.DrawDialog;
 import com.donews.main.dialog.EnterShowDialog;
 import com.donews.main.dialog.FreePanicBuyingDialog;
 import com.donews.main.utils.ExitInterceptUtils;
+import com.donews.main.views.CornerMarkUtils;
 import com.donews.main.views.MainBottomTanItem;
 import com.donews.middle.abswitch.ABSwitch;
 import com.donews.utilslibrary.analysis.AnalysisHelp;
@@ -185,7 +186,7 @@ public class MainActivity
             showTimeItem.initialization("晒单", R.drawable.main_showtime, defaultColor, checkColor,
                     "main_bottom_tab_shaidan.json");
 
-            MainBottomTanItem lotteryItem = new MainBottomTanItem(this);
+            lotteryItem = new MainBottomTanItem(this);
             lotteryItem.initialization("开奖", R.drawable.main_lottery, defaultColor, checkColor,
                     "main_bottom_tab_kaijiang.json");
 
@@ -260,6 +261,8 @@ public class MainActivity
             mDataBinding.mainHomeGuidCl.setVisibility(View.GONE);
         }
     }
+
+    private MainBottomTanItem lotteryItem;
 
     /**
      * 状态栏和导航栏刷新
@@ -388,7 +391,7 @@ public class MainActivity
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults,
                 ExitInterceptUtils.INSTANCE.getRemindDialog());
