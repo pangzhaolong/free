@@ -254,7 +254,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 @Override
                 public void onFinish() {
                     try {
-                        if (lotteryCodeStartsDialog != null) {
+                        if (lotteryCodeStartsDialog != null && lotteryCodeStartsDialog.isShowing()) {
                             lotteryCodeStartsDialog.dismiss();
                         }
                     } catch (Exception e) {
@@ -302,6 +302,13 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                     mPreloadVideoView.getAdStateListener().onRewardedClosed();
                 }
                 preloadRewardVideoAd();
+            }
+
+            @Override
+            public void onError(int code, String msg) {
+                super.onError(code, msg);
+                mPreloadVideoView = null;
+                Logger.e(msg + "");
             }
 
             @Override

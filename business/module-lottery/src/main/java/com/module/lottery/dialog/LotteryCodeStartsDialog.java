@@ -40,7 +40,7 @@ import com.orhanobut.logger.Logger;
 import java.lang.ref.WeakReference;
 
 //抽奖码小于6个
-public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayoutBinding>  {
+public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayoutBinding> {
     private static final String TAG = "LotteryCodeStartsDialog";
     private LotteryActivity mContext;
     private OnStateListener mOnFinishListener;
@@ -211,6 +211,9 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
                     Logger.e(TAG + msg + "");
                     if (mOnFinishListener != null) {
                         mOnFinishListener.onFinish();
+                        if (mContext != null) {
+                            ToastUtil.showShort(mContext, "请求失败");
+                        }
                     }
                 }
 

@@ -21,6 +21,7 @@
 
 
         <RelativeLayout
+            android:id="@+id/content_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -28,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="70dp"
-                android:layout_marginBottom="86dp"
+                android:layout_marginBottom="17dp"
                 android:background="@drawable/white_shape"
                 android:gravity="center"
                 android:orientation="vertical"
@@ -109,5 +110,18 @@
                 android:layout_marginTop="10dp"
                 android:src="@mipmap/gift_box" />
         </RelativeLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/content_layout"
+            android:layout_marginTop="3dp"
+            android:gravity="center"
+            android:layout_marginBottom="60dp"
+            android:text="集齐6个码，中奖概率最大"
+            android:textColor="#D6D6D6"
+            android:textSize="13dp" />
+
     </RelativeLayout>
 </layout>
