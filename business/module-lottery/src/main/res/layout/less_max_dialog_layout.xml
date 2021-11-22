@@ -14,93 +14,100 @@
         <ImageView
             android:id="@+id/closure"
             android:layout_width="26dp"
-            android:visibility="invisible"
             android:layout_height="26dp"
             android:layout_alignParentRight="true"
-            android:src="@mipmap/closure_icon" />
-        <LinearLayout
+            android:src="@mipmap/closure_icon"
+            android:visibility="invisible" />
+
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
-            android:background="@drawable/white_shape"
-            android:gravity="center"
-            android:orientation="vertical"
-            tools:ignore="ResourceName">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="70dp"
+                android:layout_marginBottom="86dp"
+                android:background="@drawable/white_shape"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                tools:ignore="ResourceName">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="再抽"
+                        android:textColor="#000000"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="#FF3A3A"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="个码，奖品抱回家"
+                        android:textColor="#000000"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/jsonAnimation"
+                    android:layout_width="match_parent"
+                    android:layout_height="96dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginEnd="20dp"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true" />
+
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="再抽"
-                    android:textColor="#000000"
-                    android:textSize="18dp"
-                    android:textStyle="bold" />
+                    android:layout_gravity="right"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginTop="21dp"
+                    android:layout_marginEnd="22dp"
+                    android:layout_marginBottom="29dp"
+                    android:background="@drawable/item_lottery_shape"
+                    android:gravity="center"
+                    android:paddingStart="20dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="8dp"
+                    android:text="增加中奖率"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16dp" />
 
-                <TextView
-                    android:id="@+id/number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textColor="#FF3A3A"
-                    android:textSize="18dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="个码，奖品抱回家"
-                    android:textColor="#000000"
-                    android:textSize="18dp"
-                    android:textStyle="bold" />
 
             </LinearLayout>
 
-
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/jsonAnimation"
-                app:lottie_loop="true"
-                android:layout_width="match_parent"
-                android:layout_height="96dp"
-                android:layout_centerInParent="true"
-                android:layout_marginStart="20dp"
-                app:lottie_autoPlay="true"
-                android:layout_marginTop="7dp"
-                android:layout_marginEnd="20dp" />
-
-
-            <TextView
-                android:id="@+id/again"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginStart="22dp"
-                android:layout_marginTop="21dp"
-                android:layout_marginEnd="22dp"
-                android:layout_marginBottom="29dp"
-                android:background="@drawable/item_lottery_shape"
-                android:gravity="center"
-                android:paddingStart="20dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="20dp"
-                android:paddingBottom="10dp"
-                android:text="再抽一次"
-                android:textColor="#FFFFFF"
-                android:textSize="13dp" />
-
-
-        </LinearLayout>
-
-        <ImageView
-            android:layout_width="136dp"
-            android:layout_height="136dp"
-            android:layout_marginTop="10dp"
-            android:layout_centerHorizontal="true"
-            android:src="@mipmap/gift_box" />
+            <ImageView
+                android:layout_width="136dp"
+                android:layout_height="136dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:src="@mipmap/gift_box" />
+        </RelativeLayout>
     </RelativeLayout>
 </layout>

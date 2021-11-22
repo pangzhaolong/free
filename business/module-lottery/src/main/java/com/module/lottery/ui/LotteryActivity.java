@@ -51,6 +51,7 @@ import com.module.lottery.bean.LotteryCodeBean;
 import com.module.lottery.dialog.CongratulationsDialog;
 import com.module.lottery.dialog.ExhibitCodeStartsDialog;
 import com.module.lottery.dialog.GenerateCodeDialog;
+import com.module.lottery.dialog.LessMaxDialog;
 import com.module.lottery.dialog.LotteryCodeStartsDialog;
 import com.module.lottery.dialog.ReturnInterceptDialog;
 import com.module.lottery.dialog.ReceiveLotteryDialog;
@@ -281,7 +282,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     }
 
 
-
     /**
      * 实现广告预加载，防止广告拉取时间过长
      */
@@ -352,6 +352,11 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
     }
 
+
+    private void showLessMaxDialog() {
+        LessMaxDialog lessMaxDialog = new LessMaxDialog(LotteryActivity.this, mLotteryCodeBean);
+        lessMaxDialog.show();
+    }
 
     //提示还差多少个抽奖码Dialog
     private void showReceiveLotteryDialog(boolean ifQuit) {
@@ -735,7 +740,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() < 6 && mLotteryCodeBean.getCodes().size() > 0) {
                 dialogShow = true;
                 //显示立刻领取的dialog
-                showReceiveLotteryDialog(true);
+                showLessMaxDialog();
                 return;
             }
             if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() == 0) {
