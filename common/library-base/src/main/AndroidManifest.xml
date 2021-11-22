@@ -6,7 +6,8 @@
     <application android:networkSecurityConfig="@xml/base_network_security_config">
         <activity
             android:name=".appdialog.permission.GrantActivity"
-            android:theme="@style/GrantNoDisplay" />
+            android:theme="@style/GrantNoDisplay"
+            android:screenOrientation="portrait" />
 
     </application>
 </manifest>
