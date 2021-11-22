@@ -19,17 +19,20 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.dn.sdk.sdk.interfaces.listener.impl.SimpleRewardVideoListener;
+import com.dn.sdk.sdk.interfaces.view.PreloadVideoView;
 import com.donews.base.base.AppManager;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.business.loader.AdManager;
 import com.donews.middle.abswitch.ABSwitch;
 import com.module.lottery.ui.LotteryActivity;
+import com.module.lottery.utils.LotteryPreloadVideoView;
 import com.module_lottery.R;
 import com.module_lottery.databinding.LotteryStartDialogLayoutBinding;
 import com.orhanobut.logger.Logger;
@@ -37,17 +40,19 @@ import com.orhanobut.logger.Logger;
 import java.lang.ref.WeakReference;
 
 //抽奖码小于6个
-public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayoutBinding> {
+public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayoutBinding>  {
     private static final String TAG = "LotteryCodeStartsDialog";
     private LotteryActivity mContext;
     private OnStateListener mOnFinishListener;
     private LotteryHandler mLotteryHandler = new LotteryHandler(this);
     boolean aAState = false;
-
-    public LotteryCodeStartsDialog(LotteryActivity context) {
+    private LotteryPreloadVideoView mVideoView;
+    public LotteryCodeStartsDialog(LotteryActivity context, LotteryPreloadVideoView videoView) {
         super(context, R.style.dialogTransparent);//内容样式在这里引入
         this.mContext = context;
+        this.mVideoView = videoView;
     }
+
 
     @Override
     public int setLayout() {
@@ -70,7 +75,6 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
                 mDataBinding.lotteryText04.destroy();
             }
         });
-
     }
 
 
@@ -107,91 +111,128 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
     }
 
 
-    private void loadAd() {
-        AdManager.INSTANCE.loadRewardVideoAd(mContext, new SimpleRewardVideoListener() {
-            @Override
-            public void onError(int code, String msg) {
-                super.onError(code, msg);
-                Logger.e(TAG + msg + "");
-                if (mOnFinishListener != null) {
-                    mOnFinishListener.onFinish();
-                }
-            }
-
-            @Override
-            public void onRewardAdShow() {
-                super.onRewardAdShow();
-                try {
-                    Activity activity = AppManager.getInstance().getTopActivity();
-                    if (activity != null) {
-                        if (ABSwitch.Ins().isOpenVideoToast()) {
-                            ScaleAnimation mScaleAnimation = new ScaleAnimation(1.1f, 0.88f, 1.1f, 0.88f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                            mScaleAnimation.setInterpolator(new LinearInterpolator());
-                            mScaleAnimation.setRepeatMode(Animation.REVERSE);
-                            mScaleAnimation.setRepeatCount(Animation.INFINITE);
-                            mScaleAnimation.setDuration(1000);
-                            View view = LayoutInflater.from(mContext).inflate(R.layout.pop_ups_layout, null);
-                            LinearLayout linearLayout = view.findViewById(R.id.toast_view);
-                            View decorView = activity.getWindow().getDecorView();
-                            FrameLayout contentParent =
-                                    (FrameLayout) decorView.findViewById(android.R.id.content);
-                            contentParent.addView(view);
-                            linearLayout.setAnimation(mScaleAnimation);
-
-                        }
-                    } else {
-                        ToastUtil.showShort(mContext, "完整观看视频即可获得抽奖码");
-                    }
-                } catch (Exception e) {
-                    Logger.e("" + e.getMessage());
-                    ToastUtil.showShort(mContext, "完整观看视频即可获得抽奖码");
-                }
-                if (mOnFinishListener != null) {
-                    mOnFinishListener.onFinish();
-                }
-            }
-
-            @Override
-            public void onRewardedClosed() {
-                super.onRewardedClosed();
-                //有效关闭
-                if (aAState) {
-                    if (mOnFinishListener != null) {
-                        mOnFinishListener.onJumpAdFinish();
-                    }
-                }
-            }
-
-            @Override
-            public void onRewardVerify(boolean result) {
-                super.onRewardVerify(result);
+    private void addVideoViewToast() {
+        try {
+            Activity activity = AppManager.getInstance().getTopActivity();
+            if (activity != null) {
                 if (ABSwitch.Ins().isOpenVideoToast()) {
-                    try {
-                        Activity activity = AppManager.getInstance().getTopActivity();
-                        if (activity != null) {
-                            View decorView = activity.getWindow().getDecorView();
-                            FrameLayout contentParent =
-                                    (FrameLayout) decorView.findViewById(android.R.id.content);
-                            ConstraintLayout toastLayout = contentParent.findViewById(R.id.toast_layout);
+                    ScaleAnimation mScaleAnimation = new ScaleAnimation(1.1f, 0.88f, 1.1f, 0.88f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                    mScaleAnimation.setInterpolator(new LinearInterpolator());
+                    mScaleAnimation.setRepeatMode(Animation.REVERSE);
+                    mScaleAnimation.setRepeatCount(Animation.INFINITE);
+                    mScaleAnimation.setDuration(1000);
+                    View view = LayoutInflater.from(mContext).inflate(R.layout.pop_ups_layout, null);
+                    LinearLayout linearLayout = view.findViewById(R.id.toast_view);
+                    View decorView = activity.getWindow().getDecorView();
+                    FrameLayout contentParent =
+                            (FrameLayout) decorView.findViewById(android.R.id.content);
+                    contentParent.addView(view);
+                    linearLayout.setAnimation(mScaleAnimation);
 
-                            LinearLayout linearLayout = toastLayout.findViewById(R.id.toast_view);
-                            if (linearLayout != null) {
-                                linearLayout.clearAnimation();
-                            }
+                }
+            } else {
+                ToastUtil.showShort(mContext, "完整观看视频即可获得抽奖码");
+            }
+        } catch (Exception e) {
+            Logger.e("" + e.getMessage());
+            ToastUtil.showShort(mContext, "完整观看视频即可获得抽奖码");
+        }
+        if (mOnFinishListener != null) {
+            mOnFinishListener.onFinish();
+        }
 
-                            if (toastLayout != null) {
 
-                                contentParent.removeView(toastLayout);
-                            }
-                        }
-                    } catch (Exception e) {
-                        Logger.e("" + e.getMessage());
+    }
+
+    private void closedVideoViewToast() {
+        //有效关闭
+        if (aAState) {
+            if (mOnFinishListener != null) {
+                mOnFinishListener.onJumpAdFinish();
+            }
+        }
+    }
+
+
+    private void rewardVerify(boolean result) {
+        if (ABSwitch.Ins().isOpenVideoToast()) {
+            try {
+                Activity activity = AppManager.getInstance().getTopActivity();
+                if (activity != null) {
+                    View decorView = activity.getWindow().getDecorView();
+                    FrameLayout contentParent =
+                            (FrameLayout) decorView.findViewById(android.R.id.content);
+                    ConstraintLayout toastLayout = contentParent.findViewById(R.id.toast_layout);
+
+                    LinearLayout linearLayout = toastLayout.findViewById(R.id.toast_view);
+                    if (linearLayout != null) {
+                        linearLayout.clearAnimation();
+                    }
+
+                    if (toastLayout != null) {
+
+                        contentParent.removeView(toastLayout);
                     }
                 }
-                aAState = result;
+            } catch (Exception e) {
+                Logger.e("" + e.getMessage());
             }
-        });
+        }
+        aAState = result;
+    }
 
+
+    private void loadAd() {
+        if (mVideoView != null && mVideoView.getPreloadVideoView() != null) {
+            mVideoView.setAdStateListener(new LotteryPreloadVideoView.IAdStateListener() {
+                @Override
+                public void onRewardAdShow() {
+                    addVideoViewToast();
+                }
+
+                @Override
+                public void onRewardedClosed() {
+                    closedVideoViewToast();
+                }
+
+                @Override
+                public void onRewardVerify(boolean result) {
+                    rewardVerify(result);
+                }
+            });
+            mVideoView.getPreloadVideoView().show();
+
+
+        } else {
+            AdManager.INSTANCE.loadRewardVideoAd(mContext, new SimpleRewardVideoListener() {
+                @Override
+                public void onError(int code, String msg) {
+                    super.onError(code, msg);
+                    Logger.e(TAG + msg + "");
+                    if (mOnFinishListener != null) {
+                        mOnFinishListener.onFinish();
+                    }
+                }
+
+                @Override
+                public void onRewardAdShow() {
+                    super.onRewardAdShow();
+                    addVideoViewToast();
+                }
+
+                @Override
+                public void onRewardedClosed() {
+                    super.onRewardedClosed();
+                    closedVideoViewToast();
+                }
+
+                @Override
+                public void onRewardVerify(boolean result) {
+                    super.onRewardVerify(result);
+                    rewardVerify(result);
+                }
+            });
+        }
     }
 
 

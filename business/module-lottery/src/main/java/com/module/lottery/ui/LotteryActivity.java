@@ -31,8 +31,12 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.events.LotteryStatusEvent;
+import com.dn.sdk.sdk.interfaces.listener.impl.SimpleRewardVideoListener;
+import com.dn.sdk.sdk.interfaces.listener.preload.IAdPreloadVideoViewListener;
+import com.dn.sdk.sdk.interfaces.view.PreloadVideoView;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.business.callback.JddAdIdConfigManager;
+import com.donews.common.ad.business.loader.AdManager;
 import com.donews.common.provider.IDetailProvider;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
@@ -53,6 +57,7 @@ import com.module.lottery.dialog.ReceiveLotteryDialog;
 import com.module.lottery.model.LotteryModel;
 import com.module.lottery.utils.ClickDoubleUtil;
 import com.module.lottery.utils.GridSpaceItemDecoration;
+import com.module.lottery.utils.LotteryPreloadVideoView;
 import com.module.lottery.viewModel.LotteryViewModel;
 import com.module_lottery.R;
 import com.module_lottery.databinding.GuesslikeHeadLayoutBinding;
@@ -94,6 +99,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     private boolean dialogShow = false;
     @Autowired(name = RouterActivityPath.GoodsDetail.GOODS_DETAIL_PROVIDER)
     public IDetailProvider detailProvider;
+    private LotteryPreloadVideoView mPreloadVideoView;
 
     @Override
     protected int getLayoutId() {
@@ -145,6 +151,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             luckyDrawEntrance();
             mStart_lottery = false;
         }
+        preloadRewardVideoAd();
     }
 
 
@@ -239,10 +246,9 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         //判断是否打开了视频广告
         boolean isOpenAd = JddAdIdConfigManager.INSTANCE.getConfig().getOpenAd();
         if (isOpenAd) {
-
             //开始抽奖
             //弹框抽奖码生成dialog
-            LotteryCodeStartsDialog lotteryCodeStartsDialog = new LotteryCodeStartsDialog(LotteryActivity.this);
+            LotteryCodeStartsDialog lotteryCodeStartsDialog = new LotteryCodeStartsDialog(LotteryActivity.this, mPreloadVideoView);
             lotteryCodeStartsDialog.setStateListener(new LotteryCodeStartsDialog.OnStateListener() {
                 @Override
                 public void onFinish() {
@@ -272,6 +278,48 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             }
         }
 
+    }
+
+
+
+    /**
+     * 实现广告预加载，防止广告拉取时间过长
+     */
+    private void preloadRewardVideoAd() {
+        AdManager.INSTANCE.preloadRewardVideoAd(this, new IAdPreloadVideoViewListener() {
+            @Override
+            public void OnLoadVideoView(PreloadVideoView videoView) {
+                if (mPreloadVideoView == null) {
+                    mPreloadVideoView = new LotteryPreloadVideoView();
+                }
+                mPreloadVideoView.setPreloadVideoView(videoView);
+            }
+        }, new SimpleRewardVideoListener() {
+            @Override
+            public void onRewardedClosed() {
+                super.onRewardedClosed();
+                if (mPreloadVideoView != null && mPreloadVideoView.getPreloadVideoView() != null) {
+                    mPreloadVideoView.getAdStateListener().onRewardedClosed();
+                }
+                preloadRewardVideoAd();
+            }
+
+            @Override
+            public void onRewardAdShow() {
+                super.onRewardAdShow();
+                if (mPreloadVideoView != null && mPreloadVideoView.getPreloadVideoView() != null) {
+                    mPreloadVideoView.getAdStateListener().onRewardAdShow();
+                }
+            }
+
+            @Override
+            public void onRewardVerify(boolean result) {
+                super.onRewardVerify(result);
+                if (mPreloadVideoView != null && mPreloadVideoView.getPreloadVideoView() != null) {
+                    mPreloadVideoView.getAdStateListener().onRewardVerify(result);
+                }
+            }
+        });
     }
 
 
