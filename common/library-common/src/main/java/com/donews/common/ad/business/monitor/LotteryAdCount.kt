@@ -1,5 +1,7 @@
 package com.donews.common.ad.business.monitor
 
+import com.donews.utilslibrary.utils.KeySharePreferences
+import com.donews.utilslibrary.utils.SPUtils
 import com.tencent.mmkv.MMKV
 import java.text.SimpleDateFormat
 import java.util.*
@@ -90,12 +92,26 @@ object LotteryAdCount {
         return isToday(newLotteryTime) && todayLotteryTimes > 0
     }
 
+    /** 今天是否抽奖(扩展方法),扩展方法：[todayLottery] */
+    fun todayLotteryExt(): Boolean {
+        val windCount = SPUtils.getInformain(KeySharePreferences.LOTTERY_COUNTS, 0)
+        return windCount > 0
+    }
+
     /**
      * 获取今日参与抽奖的次数
      * @return Int
      */
-    fun getTodayLotteryCount():Int{
+    fun getTodayLotteryCount(): Int {
         return mmkv.decodeInt(TODAY_LOTTERY_TIMES, 0)
+    }
+
+    /**
+     * 获取今日参与抽奖的次数
+     * @return Int
+     */
+    fun getTodayLotteryCountExt(): Int {
+        return SPUtils.getInformain(KeySharePreferences.LOTTERY_COUNTS, 0)
     }
 
     /**

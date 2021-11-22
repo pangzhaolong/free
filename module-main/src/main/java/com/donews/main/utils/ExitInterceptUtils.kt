@@ -163,7 +163,7 @@ object ExitInterceptUtils {
      * @return Boolean false 抽过奖,true 未抽过奖
      */
     private fun checkNotLottery(): Boolean {
-        return !LotteryAdCount.todayLottery()
+        return !LotteryAdCount.todayLotteryExt()
     }
 
     /**
@@ -171,7 +171,7 @@ object ExitInterceptUtils {
      * @return 抽奖次数
      */
     private fun getNotLotteryCount(): Int {
-        return LotteryAdCount.getTodayLotteryCount()
+        return LotteryAdCount.getTodayLotteryCountExt()
     }
 
     /**
@@ -179,7 +179,7 @@ object ExitInterceptUtils {
      * @return Boolean true 当前有可以开但是没有开的红包
      */
     private fun checkRedPacketNotOpen(): Boolean {
-        val number = SPUtils.getInformain(KeySharePreferences.CLOSE_RED_PACKAGE_COUNTS, 0);
+        val number = SPUtils.getInformain(KeySharePreferences.CLOSE_RED_PACKAGE_COUNTS, 0)
         if (number > 0) {
             return true
         }
