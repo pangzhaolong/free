@@ -73,8 +73,6 @@ public class ReturnInterceptDialog extends BaseDialog<InterceptDialogLayoutBindi
         Message message = new Message();
         message.what = 1;
         mLotteryHandler.sendMessageDelayed(message, 1000);
-
-
     }
 
 

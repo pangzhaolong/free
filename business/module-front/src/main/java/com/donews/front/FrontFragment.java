@@ -77,6 +77,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
     private boolean mFindFirstReadyRp = false;
 
+    private long mPreClickRpTime = 0;
+
     private Context mContext;
 
     @Override
@@ -330,7 +332,12 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
     @SuppressLint("SetTextI18n")
     private void loadRpData() {
-//        mIsOpeningRp = false;
+        mDataBinding.tomorrow01.setVisibility(View.GONE);
+        mDataBinding.tomorrow02.setVisibility(View.GONE);
+        mDataBinding.tomorrow03.setVisibility(View.GONE);
+        mDataBinding.tomorrow04.setVisibility(View.GONE);
+        mDataBinding.tomorrow05.setVisibility(View.GONE);
+
         if (!AppInfo.checkIsWXLogin()) {
             mDataBinding.frontRpIv1.setBackgroundResource(R.drawable.front_rp_wait);
             mDataBinding.frontRpIv2.setBackgroundResource(R.drawable.front_rp_wait);
@@ -343,6 +350,12 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mDataBinding.frontRpOpenFl3.setOnClickListener(this);
             mDataBinding.frontRpOpenFl4.setOnClickListener(this);
             mDataBinding.frontRpOpenFl5.setOnClickListener(this);
+
+            mDataBinding.frontRpOpenFl1.setAlpha(1f);
+            mDataBinding.frontRpOpenFl2.setAlpha(1f);
+            mDataBinding.frontRpOpenFl3.setAlpha(1f);
+            mDataBinding.frontRpOpenFl4.setAlpha(1f);
+            mDataBinding.frontRpOpenFl5.setAlpha(1f);
 
             FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mDataBinding.frontRpTv1.getLayoutParams();
             params.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
@@ -363,21 +376,11 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mDataBinding.frontRpTv4.setText("抽奖7次");
             mDataBinding.frontRpTv5.setText("抽奖10次");
 
-            mDataBinding.tomorrow01.setVisibility(View.GONE);
-            mDataBinding.tomorrow02.setVisibility(View.GONE);
-            mDataBinding.tomorrow03.setVisibility(View.GONE);
-            mDataBinding.tomorrow04.setVisibility(View.GONE);
-            mDataBinding.tomorrow05.setVisibility(View.GONE);
             startTimer();
 
             EventBus.getDefault().post(new RedPackageStatus(0, 0));
             return;
         }
-        mDataBinding.tomorrow01.setVisibility(View.GONE);
-        mDataBinding.tomorrow02.setVisibility(View.GONE);
-        mDataBinding.tomorrow03.setVisibility(View.GONE);
-        mDataBinding.tomorrow04.setVisibility(View.GONE);
-        mDataBinding.tomorrow05.setVisibility(View.GONE);
 
         WalletBean bean = GoodsCache.readGoodsBean(WalletBean.class, "front");
         if (bean != null && bean.getList() != null && bean.getList().size() == 5) {
@@ -394,7 +397,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         });
     }
 
-    private void loadAwardList() {
+    /*private void loadAwardList() {
         AwardBean bean = GoodsCache.readGoodsBean(AwardBean.class, "front");
         if (bean != null && bean.getList() != null && bean.getList().size() == 5) {
             mDataBinding.frontBarrageView.refreshData(bean.getList());
@@ -407,7 +410,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mDataBinding.frontBarrageView.refreshData(awardBean.getList());
             GoodsCache.saveGoodsBean(awardBean, "front");
         });
-    }
+    }*/
 
     @SuppressLint("SetTextI18n")
     private void changeRpStatus(WalletBean.RpBean rpBean,
@@ -499,9 +502,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mDataBinding.frontRpTv5.setText("已开启");
             showTomorrowText();
             EventBus.getDefault().post(new RedPackageStatus(0, -2));
-            /*if (mDataBinding.frontRpOpenFl5.getAnimation() != null) {
-                mDataBinding.frontRpOpenFl5.clearAnimation();
-            }*/
         } else {
             params.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
             params.bottomMargin = DensityUtils.dp2px(6);
@@ -509,9 +509,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             if (rpBean.getHadLotteryTotal() == -1 || rpBean.getHadLotteryTotal() >= rpBean.getLotteryTotal()) {
                 nCloseRpCounts += 1;
                 mDataBinding.frontRpTv5.setText("待开启");
-                /*if (mDataBinding.frontRpOpenFl5.getAnimation() == null) {
-                    mDataBinding.frontRpOpenFl5.startAnimation(mScaleAnimation);
-                }*/
             } else if (rpBean.getHadLotteryTotal() < rpBean.getLotteryTotal()) {
                 mDataBinding.frontRpTv5.setText("抽奖" + rpBean.getLotteryTotal() + "次");
             }
@@ -567,48 +564,48 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         stopTimer();
     }
 
-//    private boolean mIsOpeningRp = false;
+    boolean isDoubleClick() {
+        long curClickTime = System.currentTimeMillis();
+        if (curClickTime - mPreClickRpTime < 500) {
+            mPreClickRpTime = curClickTime;
+            return true;
+        }
+
+        mPreClickRpTime = curClickTime;
+        return false;
+    }
 
     @Override
     public void onClick(View v) {
-/*        ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
-                .withInt("type", 0)
-                .withFloat("score", 0.37f)
-                .navigation();*/
-        /*if (mIsOpeningRp) {
+        if (isDoubleClick()) {
+//            Toast.makeText(this.getContext(), "click too much", Toast.LENGTH_SHORT).show();
             return;
-        }*/
+        }
 
-//        mIsOpeningRp = true;
         if (!AppInfo.checkIsWXLogin()) {
             ARouter.getInstance()
                     .build(RouterActivityPath.User.PAGER_LOGIN)
                     .navigation();
-//            mIsOpeningRp = false;
             return;
         }
 
         WalletBean.RpBean rpBean = (WalletBean.RpBean) v.getTag();
         if (rpBean == null) {
-//            mIsOpeningRp = false;
             return;
         }
 
         if (rpBean.getOpened()) {
             Toast.makeText(this.getContext(), "这个红包已经开过了哦！", Toast.LENGTH_SHORT).show();
-//            mIsOpeningRp = false;
             return;
         }
 
         if (rpBean.getHadLotteryTotal() != -1 && rpBean.getHadLotteryTotal() < rpBean.getLotteryTotal()) {
             Toast.makeText(this.getContext(), "快去抽奖赚取开启红包次数吧！", Toast.LENGTH_SHORT).show();
-//            mIsOpeningRp = false;
             return;
         }
 
         if (rpBean.getHadLotteryTotal() == -1) {
             Toast.makeText(this.getContext(), "前面还有红包未开启哦！", Toast.LENGTH_SHORT).show();
-//            mIsOpeningRp = false;
             return;
         }
 
@@ -619,7 +616,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         mViewModel.openRpData().observe(this.getViewLifecycleOwner(), redPacketBean -> {
             if (redPacketBean == null || redPacketBean.getAward() == null) {
                 Toast.makeText(this.getContext(), "开启红包失败，请稍后再试或者反馈给我们，谢谢！", Toast.LENGTH_SHORT).show();
-//                mIsOpeningRp = false;
                 return;
             }
             ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)

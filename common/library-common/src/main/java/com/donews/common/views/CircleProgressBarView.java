@@ -196,14 +196,13 @@ public class CircleProgressBarView extends View {
                 centerY - radius,
                 centerX + radius,
                 centerY + radius);
-
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.drawCircle(centerX, centerY, radius, circleBgPaint);
-        canvas.drawArc(rectF, 90, currentProgress, false, progressPaint);
+        canvas.drawArc(rectF, 270, currentProgress, false, progressPaint);
         if (isDrawCenterProgressText) {
             drawCenterProgressText(canvas, (int) mProgress + "%");
         }
