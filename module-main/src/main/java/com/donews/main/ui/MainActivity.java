@@ -128,10 +128,8 @@ public class MainActivity
                     if (mDrawDialog.isAdded()) {
                         mDrawDialog.dismiss();
                     }
-                    if (AppInfo.checkIsWXLogin()) {
-                        if (SPUtils.getInformain(KeySharePreferences.SHOW_DIALOG_WHEN_LAUNCH, true)) {
-                            new EnterShowDialog(MainActivity.this).show();
-                        }
+                    if (SPUtils.getInformain(KeySharePreferences.SHOW_DIALOG_WHEN_LAUNCH, true)) {
+                        new EnterShowDialog(MainActivity.this).show();
                     }
                 }
 

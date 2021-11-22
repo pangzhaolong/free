@@ -516,12 +516,17 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         }
 
         SPUtils.setInformain(KeySharePreferences.CLOSE_RED_PACKAGE_COUNTS, nCloseRpCounts);
-        if (rpBean.getHadLotteryTotal() == -1) {
+        if (rpBean.getOpened()) {
             SPUtils.setInformain(KeySharePreferences.STEPS_TO_GOLD_RED_PACKAGE_COUNTS, 0);
-            SPUtils.setInformain(KeySharePreferences.LOTTERY_COUNTS, rpBean.getLotteryTotal());
+            SPUtils.setInformain(KeySharePreferences.LOTTERY_COUNTS,  rpBean.getLotteryTotal());
         } else {
-            SPUtils.setInformain(KeySharePreferences.STEPS_TO_GOLD_RED_PACKAGE_COUNTS, rpBean.getLotteryTotal() - rpBean.getHadLotteryTotal());
-            SPUtils.setInformain(KeySharePreferences.LOTTERY_COUNTS, rpBean.getHadLotteryTotal());
+            if (rpBean.getHadLotteryTotal() == -1) {
+                SPUtils.setInformain(KeySharePreferences.STEPS_TO_GOLD_RED_PACKAGE_COUNTS, 0);
+                SPUtils.setInformain(KeySharePreferences.LOTTERY_COUNTS, rpBean.getLotteryTotal());
+            } else {
+                SPUtils.setInformain(KeySharePreferences.STEPS_TO_GOLD_RED_PACKAGE_COUNTS, rpBean.getLotteryTotal() - rpBean.getHadLotteryTotal());
+                SPUtils.setInformain(KeySharePreferences.LOTTERY_COUNTS, rpBean.getHadLotteryTotal());
+            }
         }
     }
 

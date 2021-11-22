@@ -48,11 +48,7 @@ public class DateManager {
         Calendar c = Calendar.getInstance();//
         int mDay = c.get(Calendar.DAY_OF_MONTH);// 获取当日期
         int value = SPUtils.getInformain(timestampKey, -1);
-        if (mDay == value) {
-            return true;
-        } else {
-            return false;
-        }
+        return mDay == value;
     }
 
 
@@ -69,6 +65,9 @@ public class DateManager {
             int mDay = c.get(Calendar.DAY_OF_MONTH);// 获取当日期
             //更新日期
             putValue(key, mDay);
+            if (key != null && key.equalsIgnoreCase(DateManager.SHOW_DIALOG_WHEN_LAUNCH)) {
+                SPUtils.setInformain(KeySharePreferences.SHOW_DIALOG_WHEN_LAUNCH, true);
+            }
         }
         return !ifSameDay;
     }
