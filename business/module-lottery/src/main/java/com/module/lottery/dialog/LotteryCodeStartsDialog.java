@@ -192,6 +192,7 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
                     showToast();
                 }
 
+                //点击关闭视频
                 @Override
                 public void onRewardedClosed() {
                     closedVideoViewToast();
@@ -202,6 +203,7 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
                     aAState = result;
                 }
 
+                //点击跳过
                 @Override
                 public void onRewardVideoComplete() {
                     onVideoComplete();
@@ -215,7 +217,6 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
 
             });
             mVideoView.getPreloadVideoView().show();
-
 
         } else {
             AdManager.INSTANCE.loadRewardVideoAd(mContext, new SimpleRewardVideoListener() {
@@ -234,12 +235,22 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
                     showToast();
                 }
 
+                //点击关闭视频
                 @Override
                 public void onRewardedClosed() {
                     super.onRewardedClosed();
                     closedVideoViewToast();
                 }
 
+                //跳过
+                @Override
+                public void onSkippedRewardVideo() {
+                    super.onSkippedRewardVideo();
+                    onVideoComplete();
+                }
+
+
+                //视屏播放完成
                 @Override
                 public void onRewardVideoComplete() {
                     super.onRewardVideoComplete();

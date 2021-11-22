@@ -286,7 +286,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
      * 实现广告预加载，防止广告拉取时间过长
      */
     private void preloadRewardVideoAd() {
-        if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes() != null && mLotteryCodeBean.getCodes().size() < 6) {
+        if ((mLotteryCodeBean == null) || (mLotteryCodeBean != null && mLotteryCodeBean.getCodes() != null && mLotteryCodeBean.getCodes().size() < 6)) {
             AdManager.INSTANCE.preloadRewardVideoAd(this, new IAdPreloadVideoViewListener() {
                 @Override
                 public void OnLoadVideoView(PreloadVideoView videoView) {
@@ -330,6 +330,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                     }
                 }
 
+                //点击跳过
                 @Override
                 public void onSkippedRewardVideo() {
                     super.onSkippedRewardVideo();
@@ -338,6 +339,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                     }
                 }
 
+                //视频播放完成
                 @Override
                 public void onRewardVideoComplete() {
                     super.onRewardVideoComplete();
