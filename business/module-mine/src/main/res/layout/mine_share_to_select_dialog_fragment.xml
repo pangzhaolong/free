@@ -16,7 +16,7 @@
         android:background="@drawable/mine_share_bottom_dialog_bg"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingBottom="54dp">
+        android:paddingBottom="34dp">
 
         <TextView
             android:id="@+id/share_select_dialog_t"

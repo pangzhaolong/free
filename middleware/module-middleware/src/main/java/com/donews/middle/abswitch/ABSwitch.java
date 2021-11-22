@@ -25,11 +25,7 @@ public class ABSwitch {
     private void checkABBean() {
         if (mAbBean == null) {
             mAbBean = new ABBean();
-            if (!SPUtils.getInformain("Is_Open_AB", true)) {
-                mAbBean.setOpenAB(false);
-            } else {
-                mAbBean.setOpenAB(true);
-            }
+            mAbBean.setOpenAB(SPUtils.getInformain("Is_Open_AB", true));
         }
     }
 
@@ -60,6 +56,7 @@ public class ABSwitch {
 
                     @Override
                     public void onError(ApiException e) {
+                        checkABBean();
                         if (!SPUtils.getInformain("Is_Open_AB", true)) {
                             mAbBean.setOpenAB(false);
                         } else {

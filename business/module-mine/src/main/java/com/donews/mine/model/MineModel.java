@@ -8,10 +8,8 @@ import com.blankj.utilcode.util.SPUtils;
 import com.donews.base.model.BaseLiveDataModel;
 import com.donews.base.utils.GsonUtils;
 import com.donews.base.utils.ToastUtil;
-import com.donews.common.contract.LoginHelp;
-import com.donews.common.contract.UserInfoBean;
+import com.donews.middle.bean.front.AwardBean;
 import com.donews.mine.BuildConfig;
-import com.donews.mine.bean.AwardBean;
 import com.donews.mine.bean.QueryBean;
 import com.donews.mine.Api.MineHttpApi;
 import com.donews.mine.bean.reqs.WidthdrawalReq;
@@ -35,11 +33,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * <p> </p>
