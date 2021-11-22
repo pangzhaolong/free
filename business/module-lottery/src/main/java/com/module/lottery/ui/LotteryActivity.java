@@ -307,7 +307,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             @Override
             public void onError(int code, String msg) {
                 super.onError(code, msg);
-                if (mPreloadVideoView != null && mPreloadVideoView.getPreloadVideoView() != null) {
+                if (mPreloadVideoView != null &&   mPreloadVideoView.getAdStateListener() != null) {
                     mPreloadVideoView.getAdStateListener().onError(code, msg);
                 }
                 mPreloadVideoView = null;
@@ -316,7 +316,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             @Override
             public void onRewardAdShow() {
                 super.onRewardAdShow();
-                if (mPreloadVideoView != null && mPreloadVideoView.getPreloadVideoView() != null) {
+                if (mPreloadVideoView != null && mPreloadVideoView.getAdStateListener() != null) {
                     mPreloadVideoView.getAdStateListener().onRewardAdShow();
                 }
             }
