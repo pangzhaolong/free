@@ -35,7 +35,6 @@ import org.greenrobot.eventbus.Subscribe;
 public class MineSettingFragment extends
         MvvmLazyLiveDataFragment<MineSettingFragmentBinding, SettingFragmentViewModel> {
 
-
     @Override
     protected void onFragmentFirstVisible() {
         super.onFragmentFirstVisible();

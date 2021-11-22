@@ -13,7 +13,7 @@ import com.donews.utilslibrary.dot.Dot;
 import com.gyf.immersionbar.ImmersionBar;
 
 @Route(path = RouterActivityPath.Mine.PAGER_ACTIVITY_SETTING)
-public class SettingActivity extends MvvmBaseLiveDataActivity<MineActivitySettingBinding, SettingViewModel>{
+public class SettingActivity extends MvvmBaseLiveDataActivity<MineActivitySettingBinding, SettingViewModel> {
 
     @Override
     protected int getLayoutId() {
@@ -28,12 +28,14 @@ public class SettingActivity extends MvvmBaseLiveDataActivity<MineActivitySettin
                 .navigationBarColor(R.color.black)
                 .fitsSystemWindows(true)
                 .autoDarkModeEnable(true)
-                .init(); 
+                .init();
+        mDataBinding.titleBar
+                .setBackImageView(R.drawable.mine_win_write_back);
         initView();
     }
 
     public void initView() {
-        mViewModel.mContext=this;
+        mViewModel.mContext = this;
         mDataBinding.titleBar.setTitle("设置");
         mDataBinding.titleBar.setTitleTextColor("#FFFFFF");
         mDataBinding.titleBar.findViewById(R.id.title_bar_root)
