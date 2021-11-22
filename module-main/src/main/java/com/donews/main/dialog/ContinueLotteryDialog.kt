@@ -11,6 +11,8 @@ import android.text.SpannableString
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import com.alibaba.android.arouter.launcher.ARouter
 import com.donews.base.fragmentdialog.AbstractFragmentDialog
 import com.donews.common.router.RouterFragmentPath
@@ -74,6 +76,12 @@ class ContinueLotteryDialog : AbstractFragmentDialog<MainExitDialogContinueLotte
         return R.layout.main_exit_dialog_continue_lottery
     }
 
+    override fun onDestroy() {
+        handler.removeCallbacksAndMessages(activity)
+        handler.removeCallbacksAndMessages(null)
+        super.onDestroy()
+    }
+
     override fun initView() {
         //原价 中划线
         dataBinding.tvOriginalPrice.paint.flags = Paint.STRIKE_THRU_TEXT_FLAG
@@ -89,6 +97,37 @@ class ContinueLotteryDialog : AbstractFragmentDialog<MainExitDialogContinueLotte
         dataBinding.maskingHand.setAnimation("lottery_finger.json")
         dataBinding.maskingHand.loop(true)
         dataBinding.maskingHand.playAnimation()
+
+        handler.postDelayed({
+            val arr = arrayOf(dataBinding.dialogYhL, dataBinding.dialogYhRt)
+            var pd = 100L
+            for (imageView in arr) {
+                handler.postDelayed({
+                    if (activity != null) {
+                        val anim = AnimationUtils.loadAnimation(
+                            activity,
+                            R.anim.anim_yh_in
+                        )
+                        anim.setAnimationListener(object :Animation.AnimationListener{
+                            override fun onAnimationStart(animation: Animation?) {
+                            }
+
+                            override fun onAnimationEnd(animation: Animation?) {
+                                imageView.visibility = View.INVISIBLE
+                            }
+
+                            override fun onAnimationRepeat(animation: Animation?) {
+                            }
+                        })
+                        anim.repeatCount = 1
+                        imageView.startAnimation(anim)
+                        imageView.visibility = View.VISIBLE
+                    }
+                }, pd)
+                pd += java.util.Random().nextInt(200) + 1000
+            }
+        }, 150)
+
     }
 
     override fun isUseDataBinding(): Boolean {
@@ -173,7 +212,7 @@ class ContinueLotteryDialog : AbstractFragmentDialog<MainExitDialogContinueLotte
         }
 
         fun clickLater(view: View) {
-            if (onLaterListener != null  && view.visibility == View.VISIBLE) {
+            if (onLaterListener != null && view.visibility == View.VISIBLE) {
                 onLaterListener?.onClose()
             }
         }

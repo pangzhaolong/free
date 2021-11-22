@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import com.donews.base.fragmentdialog.AbstractFragmentDialog
 import com.donews.base.utils.glide.GlideUtils
 import com.donews.main.R
@@ -81,6 +83,7 @@ class ExitWinningDialog : AbstractFragmentDialog<MainExitDialogWinningOpenBindin
             handler.postDelayed({
                 dataBinding.scroView.startScroll {
                     handler.postDelayed({
+                        showYhAnim()
                         showWindUI() //延迟显示中奖视图
                     }, 100)
                 }
@@ -88,6 +91,38 @@ class ExitWinningDialog : AbstractFragmentDialog<MainExitDialogWinningOpenBindin
         } else {
             showWindUI()
         }
+    }
+
+    private fun showYhAnim() {
+        handler.postDelayed({
+            val arr = arrayOf(dataBinding.ivYhLb, dataBinding.ivYhR,dataBinding.ivYhLt)
+            var pd = 100L
+            for (imageView in arr) {
+                handler.postDelayed({
+                    if (activity != null) {
+                        val anim = AnimationUtils.loadAnimation(
+                            activity,
+                            R.anim.anim_yh_in
+                        )
+                        anim.setAnimationListener(object :Animation.AnimationListener{
+                            override fun onAnimationStart(animation: Animation?) {
+                            }
+
+                            override fun onAnimationEnd(animation: Animation?) {
+                                imageView.visibility = View.INVISIBLE
+                            }
+
+                            override fun onAnimationRepeat(animation: Animation?) {
+                            }
+                        })
+                        anim.repeatCount = 1
+                        imageView.startAnimation(anim)
+                        imageView.visibility = View.VISIBLE
+                    }
+                }, pd)
+                pd += java.util.Random().nextInt(200) + 1000
+            }
+        }, 150)
     }
 
     //显示中奖UI

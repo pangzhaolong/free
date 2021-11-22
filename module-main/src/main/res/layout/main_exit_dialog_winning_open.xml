@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -33,45 +34,45 @@
                     android:id="@+id/iv_window_top"
                     android:layout_width="247dp"
                     android:layout_height="283dp"
-                    android:layout_marginTop="120dp"
                     android:layout_marginLeft="40dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="120dp"
                     android:background="@drawable/dialog_main_exit_red_bg"
-                    app:layout_constraintBottom_toBottomOf="parent" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_title_bg"
                     android:layout_width="wrap_content"
                     android:layout_height="80dp"
+                    android:layout_marginTop="-40dp"
+                    android:src="@drawable/main_exit_dialog_winning_t_bg"
                     app:layout_constraintLeft_toLeftOf="@+id/iv_window_top"
                     app:layout_constraintRight_toRightOf="@+id/iv_window_top"
-                    android:src="@drawable/main_exit_dialog_winning_t_bg"
-                    app:layout_constraintTop_toTopOf="@+id/iv_window_top"
-                    android:layout_marginTop="-40dp"/>
+                    app:layout_constraintTop_toTopOf="@+id/iv_window_top" />
 
                 <TextView
                     android:id="@+id/tv_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="恭喜选中超值大奖"
-                    android:textSize="16sp"
-                    android:textColor="#764D38"
                     android:layout_marginBottom="18dp"
-                    app:layout_constraintLeft_toLeftOf="@+id/iv_title_bg"
-                    app:layout_constraintTop_toTopOf="@+id/iv_title_bg"
+                    android:text="恭喜选中超值大奖"
+                    android:textColor="#764D38"
+                    android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="@+id/iv_title_bg"
-                    app:layout_constraintRight_toRightOf="@+id/iv_title_bg"/>
+                    app:layout_constraintLeft_toLeftOf="@+id/iv_title_bg"
+                    app:layout_constraintRight_toRightOf="@+id/iv_title_bg"
+                    app:layout_constraintTop_toTopOf="@+id/iv_title_bg" />
 
                 <ImageView
                     android:id="@+id/iv_title_jb"
                     android:layout_width="wrap_content"
                     android:layout_height="76dp"
-                    app:layout_constraintLeft_toLeftOf="@+id/iv_window_top"
-                    app:layout_constraintRight_toRightOf="@+id/iv_window_top"
+                    android:layout_marginBottom="-13dp"
                     android:src="@drawable/main_exit_dialog_winning_t_jb"
                     app:layout_constraintBottom_toTopOf="@+id/iv_title_bg"
-                    android:layout_marginBottom="-13dp"/>
+                    app:layout_constraintLeft_toLeftOf="@+id/iv_window_top"
+                    app:layout_constraintRight_toRightOf="@+id/iv_window_top" />
 
                 <ImageView
                     android:id="@+id/iv_icon"
@@ -90,21 +91,21 @@
                     android:layout_marginRight="-10dp"
                     android:layout_marginBottom="-10dp"
                     android:background="@drawable/main_exit_dialog_winning_by"
-                    app:layout_constraintRight_toRightOf="@+id/iv_icon"
-                    app:layout_constraintBottom_toBottomOf="@+id/iv_icon" />
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_icon"
+                    app:layout_constraintRight_toRightOf="@+id/iv_icon" />
 
                 <TextView
                     android:id="@+id/tv_goods_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
+                    android:layout_marginTop="17dp"
                     android:layout_marginRight="20dp"
+                    android:gravity="center"
                     android:maxLines="2"
                     android:text="title"
-                    android:gravity="center"
                     android:textColor="@color/white"
                     android:textSize="16sp"
-                    android:layout_marginTop="17dp"
                     app:layout_constraintLeft_toLeftOf="@+id/iv_window_top"
                     app:layout_constraintRight_toRightOf="@+id/iv_window_top"
                     app:layout_constraintTop_toBottomOf="@+id/iv_icon" />
@@ -114,28 +115,35 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:src="@drawable/main_exit_dialog_winning_yh_r"
+                    android:visibility="invisible"
                     app:layout_constraintLeft_toRightOf="@+id/iv_window_top"
-                    app:layout_constraintTop_toTopOf="@+id/iv_window_top"/>
+                    app:layout_constraintTop_toTopOf="@+id/iv_window_top"
+                    tools:visibility="visible" />
+
                 <ImageView
                     android:id="@+id/iv_yh_lt"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:layout_marginTop="-20dp"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginTop="-20dp"
                     android:src="@drawable/main_exit_dialog_winning_yh_lt"
+                    android:visibility="invisible"
                     app:layout_constraintLeft_toLeftOf="@+id/iv_title_bg"
-                    app:layout_constraintTop_toTopOf="@+id/iv_title_bg"/>
+                    app:layout_constraintTop_toTopOf="@+id/iv_title_bg"
+                    tools:visibility="visible" />
 
                 <ImageView
                     android:id="@+id/iv_yh_lb"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
                     android:layout_marginRight="-22.5dp"
-                    app:layout_constraintRight_toLeftOf="@+id/iv_window_top"
                     android:src="@drawable/main_exit_dialog_winning_yh_lb"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_window_top"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/iv_window_top"
                     app:layout_constraintTop_toTopOf="@+id/iv_window_top"
-                    app:layout_constraintBottom_toBottomOf="@+id/iv_window_top" />
+                    tools:visibility="visible" />
 
                 <!-- 关闭按钮 -->
                 <ImageView
@@ -146,9 +154,9 @@
                     android:layout_marginBottom="23dp"
                     android:onClick="@{eventListener::clickIvClose}"
                     android:src="@drawable/common_close"
+                    android:visibility="invisible"
                     app:layout_constraintRight_toRightOf="@id/iv_window_top"
-                    app:layout_constraintTop_toTopOf="@+id/iv_title_jb"
-                    android:visibility="invisible" />
+                    app:layout_constraintTop_toTopOf="@+id/iv_title_jb" />
 
                 <!-- 抽奖滚动的动画视图 -->
                 <com.donews.main.dialog.views.WindGoodsScrollView
@@ -156,10 +164,10 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:background="@drawable/ad_shape_bg"
-                    app:layout_constraintTop_toTopOf="@+id/iv_icon"
-                    app:layout_constraintRight_toRightOf="@+id/iv_icon"
                     app:layout_constraintBottom_toBottomOf="@+id/iv_icon"
-                    app:layout_constraintLeft_toLeftOf="@+id/iv_icon"/>
+                    app:layout_constraintLeft_toLeftOf="@+id/iv_icon"
+                    app:layout_constraintRight_toRightOf="@+id/iv_icon"
+                    app:layout_constraintTop_toTopOf="@+id/iv_icon" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
@@ -185,9 +193,9 @@
                     android:paddingTop="11dp"
                     android:paddingBottom="11dp"
                     android:text="免费领取"
-                    android:textStyle="bold"
                     android:textColor="#D82D2A"
-                    android:textSize="19sp" />
+                    android:textSize="19sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout

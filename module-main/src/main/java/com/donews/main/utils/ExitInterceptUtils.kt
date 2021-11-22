@@ -105,47 +105,55 @@ object ExitInterceptUtils {
     }
 
     fun intercept(activity: AppCompatActivity) {
-        if (isFinishBack) {
-            exitApp(activity)
-            return
-        }
+        // 程序关闭
         val duration = System.currentTimeMillis() - mFirstClickBackTime
-        if (duration < CLICK_INTERVAL) {
-            // 程序关闭
-            if (!exitInterceptConfig.intercept) {
+        if (!exitInterceptConfig.intercept) {
+            if (duration < CLICK_INTERVAL) {
                 exitApp(activity)
             } else {
-                isFinishBack = true //设置为本次已经触发退出拦截
-                if (!checkUserIsLogin()) {
-                    //用户未登录
-                    showNotLoginDialog(activity)
-                    return
-                }
-                //已登录的逻辑判断
-                // 1:已登录未抽奖
-                if (checkNotLottery()) { //判断当日是否抽奖
-                    //当日未抽奖
-                    showContinueLotteryDialog(activity)
-                    return
-                }
-                // 2：已登录，已抽奖,判断抽奖是否达到了10次                                                                                                                                                                                                                      
-                if (getNotLotteryCount() >= 10) {
-                    if (checkRedPacketNotOpen()) {
-                        //有红包未开启
-                        showOpenRedPacketDialog(activity)
-                    } else {
-                        //红包已全部开启
-                        showRedPacketAllOpenDialog(activity)
-                    }
-                } else {
-                    // 抽奖未达到10次
-                    showWinNotAllOpenDialog(activity)
-                }
-//                showNotLotteryDialog(activity)
+                Toast.makeText(activity.application, "再按一次退出！", Toast.LENGTH_SHORT).show()
+                mFirstClickBackTime = System.currentTimeMillis()
             }
         } else {
-            Toast.makeText(activity.application, "再按一次退出！", Toast.LENGTH_SHORT).show()
-            mFirstClickBackTime = System.currentTimeMillis()
+//            showContinueLotteryDialog(activity)
+//            showWinningDialog(activity)
+//            return
+            if (isFinishBack) {
+                if (duration < CLICK_INTERVAL) {
+                    exitApp(activity)
+                } else {
+                    Toast.makeText(activity.application, "再按一次退出！", Toast.LENGTH_SHORT).show()
+                    mFirstClickBackTime = System.currentTimeMillis()
+                }
+                return
+            }
+            isFinishBack = true //设置为本次已经触发退出拦截
+            if (!checkUserIsLogin()) {
+                //用户未登录
+                showNotLoginDialog(activity)
+                return
+            }
+            //已登录的逻辑判断
+            // 1:已登录未抽奖
+            if (checkNotLottery()) { //判断当日是否抽奖
+                //当日未抽奖
+                showContinueLotteryDialog(activity)
+                return
+            }
+            // 2：已登录，已抽奖,判断抽奖是否达到了10次
+            if (getNotLotteryCount() >= 10) {
+                if (checkRedPacketNotOpen()) {
+                    //有红包未开启
+                    showOpenRedPacketDialog(activity)
+                } else {
+                    //红包已全部开启
+                    showRedPacketAllOpenDialog(activity)
+                }
+            } else {
+                // 抽奖未达到10次
+                showWinNotAllOpenDialog(activity)
+            }
+//                showNotLotteryDialog(activity)
         }
     }
 
