@@ -22,7 +22,7 @@ public class ABSwitch {
         return sAbSwitch;
     }
 
-    private void checkABBean() {
+    private ABSwitch() {
         if (mAbBean == null) {
             mAbBean = new ABBean();
             mAbBean.setOpenAB(SPUtils.getInformain("Is_Open_AB", true));
@@ -30,22 +30,18 @@ public class ABSwitch {
     }
 
     public boolean isOpenAB() {
-        checkABBean();
         return mAbBean.isOpenAB();
     }
 
     public boolean isOpenVideoToast() {
-        checkABBean();
         return mAbBean.isOpenVideoToast();
     }
 
     public boolean isOpenAutoLottery() {
-        checkABBean();
         return mAbBean.isOpenAutoLottery();
     }
 
     public int isOpenHomeGuid() {
-        checkABBean();
         return mAbBean.getOpenHomeGuid();
     }
 
@@ -56,7 +52,6 @@ public class ABSwitch {
 
                     @Override
                     public void onError(ApiException e) {
-                        checkABBean();
                         if (!SPUtils.getInformain("Is_Open_AB", true)) {
                             mAbBean.setOpenAB(false);
                         } else {
