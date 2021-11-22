@@ -326,6 +326,22 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                     mPreloadVideoView.getAdStateListener().onRewardVerify(result);
                 }
             }
+
+            @Override
+            public void onSkippedRewardVideo() {
+                super.onSkippedRewardVideo();
+                if (mPreloadVideoView != null && mPreloadVideoView.getPreloadVideoView() != null) {
+                    mPreloadVideoView.getAdStateListener().onRewardVideoComplete();
+                }
+            }
+
+            @Override
+            public void onRewardVideoComplete() {
+                super.onRewardVideoComplete();
+                if (mPreloadVideoView != null && mPreloadVideoView.getPreloadVideoView() != null) {
+                    mPreloadVideoView.getAdStateListener().onRewardVideoComplete();
+                }
+            }
         });
     }
 
@@ -362,6 +378,17 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
     private void showLessMaxDialog() {
         LessMaxDialog lessMaxDialog = new LessMaxDialog(LotteryActivity.this, mLotteryCodeBean);
+        lessMaxDialog.setFinishListener(new LessMaxDialog.OnFinishListener() {
+            @Override
+            public void onFinish() {
+
+            }
+
+            @Override
+            public void onFinishAd() {
+                luckyDrawEntrance();
+            }
+        });
         lessMaxDialog.show();
     }
 

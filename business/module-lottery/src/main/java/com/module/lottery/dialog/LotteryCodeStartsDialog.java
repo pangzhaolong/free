@@ -154,7 +154,7 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
     }
 
 
-    private void rewardVerify(boolean result) {
+    private void onVideoComplete() {
         if (ABSwitch.Ins().isOpenVideoToast()) {
             try {
                 Activity activity = AppManager.getInstance().getTopActivity();
@@ -163,22 +163,22 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
                     FrameLayout contentParent =
                             (FrameLayout) decorView.findViewById(android.R.id.content);
                     ConstraintLayout toastLayout = contentParent.findViewById(R.id.toast_layout);
-
-                    LinearLayout linearLayout = toastLayout.findViewById(R.id.toast_view);
-                    if (linearLayout != null) {
-                        linearLayout.clearAnimation();
-                    }
-
                     if (toastLayout != null) {
-
-                        contentParent.removeView(toastLayout);
+                        LinearLayout linearLayout = toastLayout.findViewById(R.id.toast_view);
+                        if (linearLayout != null) {
+                            linearLayout.clearAnimation();
+                        }
+                        if (toastLayout != null) {
+                            contentParent.removeView(toastLayout);
+                        }
                     }
+
                 }
             } catch (Exception e) {
                 Logger.e("" + e.getMessage());
             }
         }
-        aAState = result;
+
     }
 
 
@@ -187,7 +187,8 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
             mVideoView.setAdStateListener(new LotteryPreloadVideoView.IAdStateListener() {
                 @Override
                 public void onRewardAdShow() {
-                    addVideoViewToast();
+                    //延时出现
+                    showToast();
                 }
 
                 @Override
@@ -197,7 +198,12 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
 
                 @Override
                 public void onRewardVerify(boolean result) {
-                    rewardVerify(result);
+                    aAState = result;
+                }
+
+                @Override
+                public void onRewardVideoComplete() {
+                    onVideoComplete();
                 }
             });
             mVideoView.getPreloadVideoView().show();
@@ -220,7 +226,8 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
                 @Override
                 public void onRewardAdShow() {
                     super.onRewardAdShow();
-                    addVideoViewToast();
+                    //延时出现
+                    showToast();
                 }
 
                 @Override
@@ -230,9 +237,16 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
                 }
 
                 @Override
+                public void onRewardVideoComplete() {
+                    super.onRewardVideoComplete();
+                    onVideoComplete();
+                }
+
+                @Override
                 public void onRewardVerify(boolean result) {
                     super.onRewardVerify(result);
-                    rewardVerify(result);
+
+                    aAState = result;
                 }
             });
         }
@@ -249,6 +263,16 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
     public void setOnDismissListener(@Nullable OnDismissListener listener) {
         super.setOnDismissListener(listener);
 
+    }
+
+
+    private void showToast() {
+        if (mLotteryHandler != null) {
+            //延时出现
+            Message mes = new Message();
+            mes.what = 2;
+            mLotteryHandler.sendMessageDelayed(mes, 2000);
+        }
     }
 
 
@@ -282,6 +306,12 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
                     if (reference.get() != null && reference.get().mOnFinishListener != null) {
                         //广告跳转
                         reference.get().loadAd();
+                    }
+                    break;
+                case 2:
+                    if (reference.get() != null) {
+                        //广告跳转
+                        reference.get().addVideoViewToast();
                     }
                     break;
             }
