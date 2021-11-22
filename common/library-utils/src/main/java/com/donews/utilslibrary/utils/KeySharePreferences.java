@@ -47,4 +47,6 @@ public class KeySharePreferences {
 
 
     public final static String HAS_DO_INTO_FRONT = "has_do_into_front";
+
+    public final static String LOTTERY_COUNTS = "lottery_counts";
 }
