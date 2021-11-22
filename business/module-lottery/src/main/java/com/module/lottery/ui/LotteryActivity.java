@@ -147,12 +147,12 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         lotteryInfo();
         //设置下拉，和上拉的监听
         setSmartRefresh();
+        preloadRewardVideoAd();
         if (mStart_lottery) {
             //自动开始抽奖
             luckyDrawEntrance();
             mStart_lottery = false;
         }
-        preloadRewardVideoAd();
     }
 
 
@@ -286,65 +286,69 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
      * 实现广告预加载，防止广告拉取时间过长
      */
     private void preloadRewardVideoAd() {
-        AdManager.INSTANCE.preloadRewardVideoAd(this, new IAdPreloadVideoViewListener() {
-            @Override
-            public void OnLoadVideoView(PreloadVideoView videoView) {
-                if (mPreloadVideoView == null) {
-                    mPreloadVideoView = new LotteryPreloadVideoView();
+        if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes() != null && mLotteryCodeBean.getCodes().size() < 6) {
+            AdManager.INSTANCE.preloadRewardVideoAd(this, new IAdPreloadVideoViewListener() {
+                @Override
+                public void OnLoadVideoView(PreloadVideoView videoView) {
+                    if (mPreloadVideoView == null) {
+                        mPreloadVideoView = new LotteryPreloadVideoView();
+                    }
+                    mPreloadVideoView.setPreloadVideoView(videoView);
                 }
-                mPreloadVideoView.setPreloadVideoView(videoView);
-            }
-        }, new SimpleRewardVideoListener() {
-            @Override
-            public void onRewardedClosed() {
-                super.onRewardedClosed();
-                if (mPreloadVideoView != null && mPreloadVideoView.getPreloadVideoView() != null) {
-                    mPreloadVideoView.getAdStateListener().onRewardedClosed();
+            }, new SimpleRewardVideoListener() {
+                @Override
+                public void onRewardedClosed() {
+                    super.onRewardedClosed();
+                    if (mPreloadVideoView != null && mPreloadVideoView.getPreloadVideoView() != null) {
+                        mPreloadVideoView.getAdStateListener().onRewardedClosed();
+                    }
+                    preloadRewardVideoAd();
                 }
-                preloadRewardVideoAd();
-            }
 
-            @Override
-            public void onError(int code, String msg) {
-                super.onError(code, msg);
-                if (mPreloadVideoView != null &&   mPreloadVideoView.getAdStateListener() != null) {
-                    mPreloadVideoView.getAdStateListener().onError(code, msg);
+                @Override
+                public void onError(int code, String msg) {
+                    super.onError(code, msg);
+                    if (mPreloadVideoView != null && mPreloadVideoView.getAdStateListener() != null) {
+                        mPreloadVideoView.getAdStateListener().onError(code, msg);
+                    }
+                    mPreloadVideoView = null;
                 }
-                mPreloadVideoView = null;
-            }
 
-            @Override
-            public void onRewardAdShow() {
-                super.onRewardAdShow();
-                if (mPreloadVideoView != null && mPreloadVideoView.getAdStateListener() != null) {
-                    mPreloadVideoView.getAdStateListener().onRewardAdShow();
+                @Override
+                public void onRewardAdShow() {
+                    super.onRewardAdShow();
+                    if (mPreloadVideoView != null && mPreloadVideoView.getAdStateListener() != null) {
+                        mPreloadVideoView.getAdStateListener().onRewardAdShow();
+                    }
                 }
-            }
 
-            @Override
-            public void onRewardVerify(boolean result) {
-                super.onRewardVerify(result);
-                if (mPreloadVideoView != null && mPreloadVideoView.getPreloadVideoView() != null) {
-                    mPreloadVideoView.getAdStateListener().onRewardVerify(result);
+                @Override
+                public void onRewardVerify(boolean result) {
+                    super.onRewardVerify(result);
+                    if (mPreloadVideoView != null && mPreloadVideoView.getPreloadVideoView() != null) {
+                        mPreloadVideoView.getAdStateListener().onRewardVerify(result);
+                    }
                 }
-            }
 
-            @Override
-            public void onSkippedRewardVideo() {
-                super.onSkippedRewardVideo();
-                if (mPreloadVideoView != null && mPreloadVideoView.getPreloadVideoView() != null) {
-                    mPreloadVideoView.getAdStateListener().onRewardVideoComplete();
+                @Override
+                public void onSkippedRewardVideo() {
+                    super.onSkippedRewardVideo();
+                    if (mPreloadVideoView != null && mPreloadVideoView.getPreloadVideoView() != null) {
+                        mPreloadVideoView.getAdStateListener().onRewardVideoComplete();
+                    }
                 }
-            }
 
-            @Override
-            public void onRewardVideoComplete() {
-                super.onRewardVideoComplete();
-                if (mPreloadVideoView != null && mPreloadVideoView.getPreloadVideoView() != null) {
-                    mPreloadVideoView.getAdStateListener().onRewardVideoComplete();
+                @Override
+                public void onRewardVideoComplete() {
+                    super.onRewardVideoComplete();
+                    if (mPreloadVideoView != null && mPreloadVideoView.getPreloadVideoView() != null) {
+                        mPreloadVideoView.getAdStateListener().onRewardVideoComplete();
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            Logger.d("不满足预加载需求");
+        }
     }
 
 
