@@ -40,13 +40,14 @@ import com.orhanobut.logger.Logger;
 import java.lang.ref.WeakReference;
 
 //抽奖码小于6个
-public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayoutBinding>  {
+public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayoutBinding> {
     private static final String TAG = "LotteryCodeStartsDialog";
     private LotteryActivity mContext;
     private OnStateListener mOnFinishListener;
     private LotteryHandler mLotteryHandler = new LotteryHandler(this);
     boolean aAState = false;
     private LotteryPreloadVideoView mVideoView;
+
     public LotteryCodeStartsDialog(LotteryActivity context, LotteryPreloadVideoView videoView) {
         super(context, R.style.dialogTransparent);//内容样式在这里引入
         this.mContext = context;
@@ -154,7 +155,7 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
     }
 
 
-    private void rewardVerify(boolean result) {
+    private void onVideoComplete() {
         if (ABSwitch.Ins().isOpenVideoToast()) {
             try {
                 Activity activity = AppManager.getInstance().getTopActivity();
@@ -163,22 +164,22 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
                     FrameLayout contentParent =
                             (FrameLayout) decorView.findViewById(android.R.id.content);
                     ConstraintLayout toastLayout = contentParent.findViewById(R.id.toast_layout);
-
-                    LinearLayout linearLayout = toastLayout.findViewById(R.id.toast_view);
-                    if (linearLayout != null) {
-                        linearLayout.clearAnimation();
-                    }
-
                     if (toastLayout != null) {
-
-                        contentParent.removeView(toastLayout);
+                        LinearLayout linearLayout = toastLayout.findViewById(R.id.toast_view);
+                        if (linearLayout != null) {
+                            linearLayout.clearAnimation();
+                        }
+                        if (toastLayout != null) {
+                            contentParent.removeView(toastLayout);
+                        }
                     }
+
                 }
             } catch (Exception e) {
                 Logger.e("" + e.getMessage());
             }
         }
-        aAState = result;
+
     }
 
 
@@ -187,7 +188,8 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
             mVideoView.setAdStateListener(new LotteryPreloadVideoView.IAdStateListener() {
                 @Override
                 public void onRewardAdShow() {
-                    addVideoViewToast();
+                    //延时出现
+                    showToast();
                 }
 
                 @Override
@@ -197,8 +199,20 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
 
                 @Override
                 public void onRewardVerify(boolean result) {
-                    rewardVerify(result);
+                    aAState = result;
                 }
+
+                @Override
+                public void onRewardVideoComplete() {
+                    onVideoComplete();
+                }
+
+                @Override
+                public void onError(int code, String msg) {
+                    Logger.e(TAG + msg + "");
+                    loadError();
+                }
+
             });
             mVideoView.getPreloadVideoView().show();
 
@@ -208,16 +222,16 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
                 @Override
                 public void onError(int code, String msg) {
                     super.onError(code, msg);
+                    loadError();
                     Logger.e(TAG + msg + "");
-                    if (mOnFinishListener != null) {
-                        mOnFinishListener.onFinish();
-                    }
+
                 }
 
                 @Override
                 public void onRewardAdShow() {
                     super.onRewardAdShow();
-                    addVideoViewToast();
+                    //延时出现
+                    showToast();
                 }
 
                 @Override
@@ -227,14 +241,31 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
                 }
 
                 @Override
+                public void onRewardVideoComplete() {
+                    super.onRewardVideoComplete();
+                    onVideoComplete();
+                }
+
+                @Override
                 public void onRewardVerify(boolean result) {
                     super.onRewardVerify(result);
-                    rewardVerify(result);
+                    aAState = result;
                 }
             });
         }
     }
 
+
+    private void loadError() {
+
+        if (mOnFinishListener != null) {
+            mOnFinishListener.onFinish();
+            if (mContext != null) {
+                ToastUtil.showShort(mContext, "抽奖失败,请稍后再试");
+            }
+        }
+
+    }
 
     @Override
     public float setSize() {
@@ -246,6 +277,16 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
     public void setOnDismissListener(@Nullable OnDismissListener listener) {
         super.setOnDismissListener(listener);
 
+    }
+
+
+    private void showToast() {
+        if (mLotteryHandler != null) {
+            //延时出现
+            Message mes = new Message();
+            mes.what = 2;
+            mLotteryHandler.sendMessageDelayed(mes, 2000);
+        }
     }
 
 
@@ -279,6 +320,12 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
                     if (reference.get() != null && reference.get().mOnFinishListener != null) {
                         //广告跳转
                         reference.get().loadAd();
+                    }
+                    break;
+                case 2:
+                    if (reference.get() != null) {
+                        //广告跳转
+                        reference.get().addVideoViewToast();
                     }
                     break;
             }

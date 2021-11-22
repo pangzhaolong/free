@@ -124,7 +124,7 @@
                     android:layout_marginRight="5dp"
                     android:src="@drawable/mine_win_code_notify_ic" />
 
-                <com.donews.mine.views.scrollview.BarrageView
+                <com.donews.middle.views.BarrageView
                     android:id="@+id/mine_win_code_scan_scroll_v"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -398,8 +398,8 @@
         <ImageView
             android:layout_width="26.5dp"
             android:layout_height="7dp"
-            android:scaleType="fitXY"
             android:layout_marginEnd="13dp"
+            android:scaleType="fitXY"
             android:src="@mipmap/little_bit_lift_icon" />
 
         <TextView
@@ -413,8 +413,8 @@
         <ImageView
             android:layout_width="26.5dp"
             android:layout_height="7dp"
-            android:scaleType="fitXY"
             android:layout_marginStart="13dp"
+            android:scaleType="fitXY"
             android:src="@mipmap/little_bit_right_icon" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

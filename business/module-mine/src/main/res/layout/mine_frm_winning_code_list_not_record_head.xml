@@ -43,7 +43,7 @@
                 android:layout_marginRight="5dp"
                 android:src="@drawable/mine_win_code_notify_ic" />
 
-            <com.donews.mine.views.scrollview.BarrageView
+            <com.donews.middle.views.BarrageView
                 android:id="@+id/mine_win_code_scan_scroll_v"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

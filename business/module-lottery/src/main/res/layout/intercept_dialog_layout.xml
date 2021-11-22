@@ -253,26 +253,26 @@
 
                 android:id="@+id/protocol_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="18dp"
                 android:orientation="horizontal">
 
                 <CheckBox
                     android:id="@+id/check_box"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="22dp"
                     android:background="@drawable/check_checked_bg"
                     android:button="@null"
                     android:checked="false"
                     android:gravity="center_vertical"
-                    android:padding="3dp" />
+                    android:padding="4dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="5dp"
                     android:gravity="center_vertical"
@@ -283,7 +283,7 @@
                 <TextView
                     android:id="@+id/user_protocol"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
                     android:gravity="center_vertical"
                     android:text="《用户协议》"
@@ -292,7 +292,7 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
                     android:gravity="center_vertical"
                     android:text="及"
@@ -302,7 +302,7 @@
                 <TextView
                     android:id="@+id/privacy_protocol"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
                     android:gravity="center_vertical"
                     android:text="《隐私协议》"

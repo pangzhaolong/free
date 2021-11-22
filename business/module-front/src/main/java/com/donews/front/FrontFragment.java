@@ -35,7 +35,6 @@ import com.donews.front.databinding.FrontFragmentBinding;
 import com.donews.front.dialog.ActivityRuleDialog;
 import com.donews.front.viewModel.FrontViewModel;
 import com.donews.middle.bean.WalletBean;
-import com.donews.middle.bean.front.AwardBean;
 import com.donews.middle.bean.front.LotteryCategoryBean;
 import com.donews.middle.bean.home.ServerTimeBean;
 import com.donews.middle.cache.GoodsCache;
@@ -140,6 +139,24 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             }
         });
 
+        if (mRotateAnimation == null) {
+            mRotateAnimation = new RotateAnimation(0, 8, Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF,
+                    1f);
+            mRotateAnimation.setInterpolator(new CycleInterpolator(2));
+            mRotateAnimation.setRepeatMode(Animation.REVERSE);
+            mRotateAnimation.setRepeatCount(1);
+            mRotateAnimation.setDuration(400);
+        }
+        if (mScaleAnimation == null) {
+            mScaleAnimation = new ScaleAnimation(1.15f, 0.9f, 1.15f, 0.9f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            mScaleAnimation.setInterpolator(new LinearInterpolator());
+            mScaleAnimation.setRepeatMode(Animation.REVERSE);
+            mScaleAnimation.setRepeatCount(Animation.INFINITE);
+            mScaleAnimation.setDuration(1000);
+        }
+
+        resetLotteryLayout();
+
         loadCategoryData();
         loadServerTime();
 //        loadLotteryRecord();
@@ -162,25 +179,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mRuleDialog.show();
         });
 
-        if (mRotateAnimation == null) {
-            mRotateAnimation = new RotateAnimation(0, 8, Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF,
-                    1f);
-            mRotateAnimation.setInterpolator(new CycleInterpolator(2));
-            mRotateAnimation.setRepeatMode(Animation.REVERSE);
-            mRotateAnimation.setRepeatCount(1);
-            mRotateAnimation.setDuration(400);
-        }
-        if (mScaleAnimation == null) {
-            mScaleAnimation = new ScaleAnimation(1.1f, 0.88f, 1.1f, 0.88f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-            mScaleAnimation.setInterpolator(new LinearInterpolator());
-            mScaleAnimation.setRepeatMode(Animation.REVERSE);
-            mScaleAnimation.setRepeatCount(Animation.INFINITE);
-            mScaleAnimation.setDuration(1000);
-        }
         startTimer();
-
         scrollFloatBar();
-
         EventBus.getDefault().register(this);
 
         mDataBinding.frontToTopTv.setOnClickListener(v -> {
@@ -330,16 +330,63 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         mDataBinding.frontLotteryNumTv7.setText(code.substring(6, 7));
     }
 
-    @SuppressLint("SetTextI18n")
-    private void loadRpData() {
+    private void resetLotteryLayout() {
+
         mDataBinding.tomorrow01.setVisibility(View.GONE);
         mDataBinding.tomorrow02.setVisibility(View.GONE);
         mDataBinding.tomorrow03.setVisibility(View.GONE);
         mDataBinding.tomorrow04.setVisibility(View.GONE);
         mDataBinding.tomorrow05.setVisibility(View.GONE);
 
+        mDataBinding.frontRpIv1.setBackgroundResource(R.drawable.front_rp_wait);
+        mDataBinding.frontRpIv2.setBackgroundResource(R.drawable.front_rp_wait);
+        mDataBinding.frontRpIv3.setBackgroundResource(R.drawable.front_rp_wait);
+        mDataBinding.frontRpIv4.setBackgroundResource(R.drawable.front_rp_wait);
+        mDataBinding.frontRpIv5.setBackgroundResource(R.drawable.front_rp_gold);
+
+        mDataBinding.frontRpOpenFl1.setOnClickListener(this);
+        mDataBinding.frontRpOpenFl2.setOnClickListener(this);
+        mDataBinding.frontRpOpenFl3.setOnClickListener(this);
+        mDataBinding.frontRpOpenFl4.setOnClickListener(this);
+        mDataBinding.frontRpOpenFl5.setOnClickListener(this);
+
+        mDataBinding.frontRpOpenFl1.setAlpha(1f);
+        mDataBinding.frontRpOpenFl2.setAlpha(1f);
+        mDataBinding.frontRpOpenFl3.setAlpha(1f);
+        mDataBinding.frontRpOpenFl4.setAlpha(1f);
+        mDataBinding.frontRpOpenFl5.setAlpha(1f);
+
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mDataBinding.frontRpTv1.getLayoutParams();
+        params.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+        params.bottomMargin = DensityUtils.dp2px(6);
+        mDataBinding.frontRpTv1.setLayoutParams(params);
+        mDataBinding.frontRpTv2.setLayoutParams(params);
+        mDataBinding.frontRpTv3.setLayoutParams(params);
+        mDataBinding.frontRpTv4.setLayoutParams(params);
+        mDataBinding.frontRpTv5.setLayoutParams(params);
+        int color = Color.parseColor("#FFF3D3");
+        mDataBinding.frontRpTv1.setTextColor(color);
+        mDataBinding.frontRpTv2.setTextColor(color);
+        mDataBinding.frontRpTv3.setTextColor(color);
+        mDataBinding.frontRpTv4.setTextColor(color);
+        mDataBinding.frontRpTv1.setText("抽奖1次");
+        mDataBinding.frontRpTv2.setText("抽奖3次");
+        mDataBinding.frontRpTv3.setText("抽奖5次");
+        mDataBinding.frontRpTv4.setText("抽奖7次");
+        mDataBinding.frontRpTv5.setText("抽奖10次");
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void loadRpData() {
+        resetLotteryLayout();
+        /*mDataBinding.tomorrow01.setVisibility(View.GONE);
+        mDataBinding.tomorrow02.setVisibility(View.GONE);
+        mDataBinding.tomorrow03.setVisibility(View.GONE);
+        mDataBinding.tomorrow04.setVisibility(View.GONE);
+        mDataBinding.tomorrow05.setVisibility(View.GONE);*/
+
         if (!AppInfo.checkIsWXLogin()) {
-            mDataBinding.frontRpIv1.setBackgroundResource(R.drawable.front_rp_wait);
+            /*mDataBinding.frontRpIv1.setBackgroundResource(R.drawable.front_rp_wait);
             mDataBinding.frontRpIv2.setBackgroundResource(R.drawable.front_rp_wait);
             mDataBinding.frontRpIv3.setBackgroundResource(R.drawable.front_rp_wait);
             mDataBinding.frontRpIv4.setBackgroundResource(R.drawable.front_rp_wait);
@@ -374,7 +421,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mDataBinding.frontRpTv2.setText("抽奖3次");
             mDataBinding.frontRpTv3.setText("抽奖5次");
             mDataBinding.frontRpTv4.setText("抽奖7次");
-            mDataBinding.frontRpTv5.setText("抽奖10次");
+            mDataBinding.frontRpTv5.setText("抽奖10次");*/
 
             startTimer();
 
@@ -518,7 +565,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         SPUtils.setInformain(KeySharePreferences.CLOSE_RED_PACKAGE_COUNTS, nCloseRpCounts);
         if (rpBean.getOpened()) {
             SPUtils.setInformain(KeySharePreferences.STEPS_TO_GOLD_RED_PACKAGE_COUNTS, 0);
-            SPUtils.setInformain(KeySharePreferences.LOTTERY_COUNTS,  rpBean.getLotteryTotal());
+            SPUtils.setInformain(KeySharePreferences.LOTTERY_COUNTS, rpBean.getLotteryTotal());
         } else {
             if (rpBean.getHadLotteryTotal() == -1) {
                 SPUtils.setInformain(KeySharePreferences.STEPS_TO_GOLD_RED_PACKAGE_COUNTS, 0);
@@ -585,7 +632,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     @Override
     public void onClick(View v) {
         if (isDoubleClick()) {
-//            Toast.makeText(this.getContext(), "click too much", Toast.LENGTH_SHORT).show();
             return;
         }
 

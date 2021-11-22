@@ -23,6 +23,8 @@ public class LessMaxDialog extends BaseDialog<LessMaxDialogLayoutBinding> {
 
     private LotteryHandler mLotteryHandler = new LotteryHandler(this);
 
+    private OnFinishListener mOnFinishListener;
+
     public LessMaxDialog(Context context, LotteryCodeBean lotteryCodeBean) {
         super(context, R.style.dialogTransparent);//内容样式在这里引入
         mLotteryCodeBean = lotteryCodeBean;
@@ -58,6 +60,13 @@ public class LessMaxDialog extends BaseDialog<LessMaxDialogLayoutBinding> {
             mDataBinding.jsonAnimation.loop(true);
             mDataBinding.jsonAnimation.playAnimation();
 
+
+            mDataBinding.jsonHand.setImageAssetsFolder("images");
+            mDataBinding.jsonHand.setAnimation("lottery_finger.json");
+            mDataBinding.jsonHand.loop(true);
+            mDataBinding.jsonHand.playAnimation();
+
+
         }
         mDataBinding.closure.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +74,17 @@ public class LessMaxDialog extends BaseDialog<LessMaxDialogLayoutBinding> {
                 dismiss();
             }
         });
+
+        mDataBinding.lotteryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnFinishListener != null) {
+                    mOnFinishListener.onFinishAd();
+                    dismiss();
+                }
+            }
+        });
+
     }
 
     @Override
@@ -72,8 +92,6 @@ public class LessMaxDialog extends BaseDialog<LessMaxDialogLayoutBinding> {
 
         return true;
     }
-
-    OnFinishListener mOnFinishListener;
 
 
     public void setFinishListener(OnFinishListener l) {
@@ -85,6 +103,8 @@ public class LessMaxDialog extends BaseDialog<LessMaxDialogLayoutBinding> {
          * 此时可以关闭Activity了
          */
         void onFinish();
+
+        void onFinishAd();
     }
 
 

@@ -254,7 +254,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 @Override
                 public void onFinish() {
                     try {
-                        if (lotteryCodeStartsDialog != null) {
+                        if (lotteryCodeStartsDialog != null && lotteryCodeStartsDialog.isShowing()) {
                             lotteryCodeStartsDialog.dismiss();
                         }
                     } catch (Exception e) {
@@ -305,9 +305,18 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             }
 
             @Override
+            public void onError(int code, String msg) {
+                super.onError(code, msg);
+                if (mPreloadVideoView != null &&   mPreloadVideoView.getAdStateListener() != null) {
+                    mPreloadVideoView.getAdStateListener().onError(code, msg);
+                }
+                mPreloadVideoView = null;
+            }
+
+            @Override
             public void onRewardAdShow() {
                 super.onRewardAdShow();
-                if (mPreloadVideoView != null && mPreloadVideoView.getPreloadVideoView() != null) {
+                if (mPreloadVideoView != null && mPreloadVideoView.getAdStateListener() != null) {
                     mPreloadVideoView.getAdStateListener().onRewardAdShow();
                 }
             }
@@ -317,6 +326,22 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 super.onRewardVerify(result);
                 if (mPreloadVideoView != null && mPreloadVideoView.getPreloadVideoView() != null) {
                     mPreloadVideoView.getAdStateListener().onRewardVerify(result);
+                }
+            }
+
+            @Override
+            public void onSkippedRewardVideo() {
+                super.onSkippedRewardVideo();
+                if (mPreloadVideoView != null && mPreloadVideoView.getPreloadVideoView() != null) {
+                    mPreloadVideoView.getAdStateListener().onRewardVideoComplete();
+                }
+            }
+
+            @Override
+            public void onRewardVideoComplete() {
+                super.onRewardVideoComplete();
+                if (mPreloadVideoView != null && mPreloadVideoView.getPreloadVideoView() != null) {
+                    mPreloadVideoView.getAdStateListener().onRewardVideoComplete();
                 }
             }
         });
@@ -355,6 +380,17 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
     private void showLessMaxDialog() {
         LessMaxDialog lessMaxDialog = new LessMaxDialog(LotteryActivity.this, mLotteryCodeBean);
+        lessMaxDialog.setFinishListener(new LessMaxDialog.OnFinishListener() {
+            @Override
+            public void onFinish() {
+
+            }
+
+            @Override
+            public void onFinishAd() {
+                luckyDrawEntrance();
+            }
+        });
         lessMaxDialog.show();
     }
 
