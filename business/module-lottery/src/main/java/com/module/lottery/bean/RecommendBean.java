@@ -60,6 +60,14 @@ public class RecommendBean extends BaseCustomViewModel {
         this.displayPrice = displayPrice;
     }
 
+    public Integer getTotalPeople() {
+        return totalPeople;
+    }
+
+    public void setTotalPeople(Integer totalPeople) {
+        this.totalPeople = totalPeople;
+    }
+
     @SerializedName("main_pic")
     private String mainPic;
     @SerializedName("original_price")
@@ -70,4 +78,6 @@ public class RecommendBean extends BaseCustomViewModel {
     private String goodsId;
     @SerializedName("display_price")
     private Integer displayPrice;
+    @SerializedName("total_people")
+    private Integer totalPeople;
 }
