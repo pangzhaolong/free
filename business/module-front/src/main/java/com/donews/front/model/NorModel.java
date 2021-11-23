@@ -1,5 +1,7 @@
 package com.donews.front.model;
 
+import android.annotation.SuppressLint;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.model.BaseLiveDataModel;
@@ -17,9 +19,10 @@ public class NorModel extends BaseLiveDataModel {
      *
      * @return 返回 frontBean的数据
      */
+    @SuppressLint("DefaultLocale")
     public MutableLiveData<LotteryGoodsBean> getNetData(String categoryId, int pageId) {
         MutableLiveData<LotteryGoodsBean> mutableLiveData = new MutableLiveData<>();
-        addDisposable(EasyHttp.get(String.format(FrontApi.lotteryGoodsUrl, categoryId, pageId)
+        addDisposable(EasyHttp.get(String.format(FrontApi.lotteryGoodsUrl, categoryId, pageId))
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<LotteryGoodsBean>() {
 
