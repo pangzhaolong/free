@@ -12,7 +12,6 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-
 import com.donews.middle.bean.front.AwardBean;
 
 import java.lang.ref.WeakReference;
@@ -58,7 +57,7 @@ public class BarrageView extends FrameLayout {
 
     private void initAnimation1() {
         mMoveAnimator1 = ObjectAnimator.ofFloat(mAwardView1, "translationY", 0);
-        mMoveAnimator1.setDuration(2000);
+        mMoveAnimator1.setDuration(1500);
         mMoveAnimator1.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -80,9 +79,8 @@ public class BarrageView extends FrameLayout {
 
             }
         });
-        mAlphaAnimator1 = ValueAnimator.ofFloat(1.0f, 0.0f);
-        mAlphaAnimator1.addUpdateListener(animation -> mAwardView1.setAlpha((float) animation.getAnimatedValue()));
-        mAlphaAnimator1.setDuration(1000);
+        mAlphaAnimator1 = ObjectAnimator.ofFloat(mAwardView1, "translationY", -70);
+        mAlphaAnimator1.setDuration(2000);
         mAlphaAnimator1.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -108,7 +106,7 @@ public class BarrageView extends FrameLayout {
 
     private void initAnimation2() {
         mMoveAnimator2 = ObjectAnimator.ofFloat(mAwardView2, "translationY", 0);
-        mMoveAnimator2.setDuration(2000);
+        mMoveAnimator2.setDuration(1800);
         mMoveAnimator2.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -130,9 +128,9 @@ public class BarrageView extends FrameLayout {
 
             }
         });
-        mAlphaAnimator2 = ValueAnimator.ofFloat(1.0f, 0.0f);
-        mAlphaAnimator2.addUpdateListener(animation -> mAwardView2.setAlpha((float) animation.getAnimatedValue()));
-        mAlphaAnimator2.setDuration(1000);
+        mAlphaAnimator2 = ObjectAnimator.ofFloat(mAwardView2, "translationY", -70);
+//        mAlphaAnimator2.addUpdateListener(animation -> mAwardView2.setAlpha((float) animation.getAnimatedValue()));
+        mAlphaAnimator2.setDuration(2000);
         mAlphaAnimator2.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {

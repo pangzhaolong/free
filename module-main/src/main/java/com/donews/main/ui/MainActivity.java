@@ -153,7 +153,7 @@ public class MainActivity
                         mDrawDialog.dismiss();
                     }
                     if (SPUtils.getInformain(KeySharePreferences.SHOW_DIALOG_WHEN_LAUNCH, true)) {
-                        new EnterShowDialog(MainActivity.this).show();
+                        new EnterShowDialog(MainActivity.this).showEx();
                     }
                 }
 
@@ -169,7 +169,7 @@ public class MainActivity
                 @Override
                 public void onDismiss() {
                     if (SPUtils.getInformain(KeySharePreferences.SHOW_DIALOG_WHEN_LAUNCH, true)) {
-                        new EnterShowDialog(MainActivity.this).show();
+                        new EnterShowDialog(MainActivity.this).showEx();
                     }
                 }
 

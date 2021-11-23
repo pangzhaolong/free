@@ -6,22 +6,37 @@
     android:background="@drawable/front_goods_item_bg"
     android:padding="10dp">
 
-    <org.raphets.roundimageview.RoundImageView
-        android:id="@+id/front_goods_item_iv"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+    <FrameLayout
+        android:id="@+id/front_goods_item_fl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:padding="4dp"
-        android:scaleType="fitXY"
-        app:corner_radius="10dp"
-        app:type="round" />
+        android:layout_centerVertical="true">
+
+        <org.raphets.roundimageview.RoundImageView
+            android:id="@+id/front_goods_item_iv"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:padding="4dp"
+            android:scaleType="fitXY"
+            app:corner_radius="10dp"
+            app:type="round" />
+
+        <ImageView
+            android:id="@+id/front_goods_item_label_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="13dp"
+            android:src="@drawable/front_goods_item_label" />
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_toEndOf="@+id/front_goods_item_iv"
+        android:layout_toEndOf="@+id/front_goods_item_fl"
         android:orientation="vertical">
 
         <TextView

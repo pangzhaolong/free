@@ -155,7 +155,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mScaleAnimation.setDuration(1000);
         }
 
-        resetLotteryLayout();
+//        resetLotteryLayout();
 
         loadCategoryData();
         loadServerTime();
@@ -330,63 +330,16 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         mDataBinding.frontLotteryNumTv7.setText(code.substring(6, 7));
     }
 
-    private void resetLotteryLayout() {
-
+    @SuppressLint("SetTextI18n")
+    private void loadRpData() {
         mDataBinding.tomorrow01.setVisibility(View.GONE);
         mDataBinding.tomorrow02.setVisibility(View.GONE);
         mDataBinding.tomorrow03.setVisibility(View.GONE);
         mDataBinding.tomorrow04.setVisibility(View.GONE);
         mDataBinding.tomorrow05.setVisibility(View.GONE);
 
-        mDataBinding.frontRpIv1.setBackgroundResource(R.drawable.front_rp_wait);
-        mDataBinding.frontRpIv2.setBackgroundResource(R.drawable.front_rp_wait);
-        mDataBinding.frontRpIv3.setBackgroundResource(R.drawable.front_rp_wait);
-        mDataBinding.frontRpIv4.setBackgroundResource(R.drawable.front_rp_wait);
-        mDataBinding.frontRpIv5.setBackgroundResource(R.drawable.front_rp_gold);
-
-        mDataBinding.frontRpOpenFl1.setOnClickListener(this);
-        mDataBinding.frontRpOpenFl2.setOnClickListener(this);
-        mDataBinding.frontRpOpenFl3.setOnClickListener(this);
-        mDataBinding.frontRpOpenFl4.setOnClickListener(this);
-        mDataBinding.frontRpOpenFl5.setOnClickListener(this);
-
-        mDataBinding.frontRpOpenFl1.setAlpha(1f);
-        mDataBinding.frontRpOpenFl2.setAlpha(1f);
-        mDataBinding.frontRpOpenFl3.setAlpha(1f);
-        mDataBinding.frontRpOpenFl4.setAlpha(1f);
-        mDataBinding.frontRpOpenFl5.setAlpha(1f);
-
-        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mDataBinding.frontRpTv1.getLayoutParams();
-        params.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
-        params.bottomMargin = DensityUtils.dp2px(6);
-        mDataBinding.frontRpTv1.setLayoutParams(params);
-        mDataBinding.frontRpTv2.setLayoutParams(params);
-        mDataBinding.frontRpTv3.setLayoutParams(params);
-        mDataBinding.frontRpTv4.setLayoutParams(params);
-        mDataBinding.frontRpTv5.setLayoutParams(params);
-        int color = Color.parseColor("#FFF3D3");
-        mDataBinding.frontRpTv1.setTextColor(color);
-        mDataBinding.frontRpTv2.setTextColor(color);
-        mDataBinding.frontRpTv3.setTextColor(color);
-        mDataBinding.frontRpTv4.setTextColor(color);
-        mDataBinding.frontRpTv1.setText("抽奖1次");
-        mDataBinding.frontRpTv2.setText("抽奖3次");
-        mDataBinding.frontRpTv3.setText("抽奖5次");
-        mDataBinding.frontRpTv4.setText("抽奖7次");
-        mDataBinding.frontRpTv5.setText("抽奖10次");
-    }
-
-    @SuppressLint("SetTextI18n")
-    private void loadRpData() {
-        resetLotteryLayout();
-        /*mDataBinding.tomorrow01.setVisibility(View.GONE);
-        mDataBinding.tomorrow02.setVisibility(View.GONE);
-        mDataBinding.tomorrow03.setVisibility(View.GONE);
-        mDataBinding.tomorrow04.setVisibility(View.GONE);
-        mDataBinding.tomorrow05.setVisibility(View.GONE);*/
-
         if (!AppInfo.checkIsWXLogin()) {
-            /*mDataBinding.frontRpIv1.setBackgroundResource(R.drawable.front_rp_wait);
+            mDataBinding.frontRpIv1.setBackgroundResource(R.drawable.front_rp_wait);
             mDataBinding.frontRpIv2.setBackgroundResource(R.drawable.front_rp_wait);
             mDataBinding.frontRpIv3.setBackgroundResource(R.drawable.front_rp_wait);
             mDataBinding.frontRpIv4.setBackgroundResource(R.drawable.front_rp_wait);
@@ -421,7 +374,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mDataBinding.frontRpTv2.setText("抽奖3次");
             mDataBinding.frontRpTv3.setText("抽奖5次");
             mDataBinding.frontRpTv4.setText("抽奖7次");
-            mDataBinding.frontRpTv5.setText("抽奖10次");*/
+            mDataBinding.frontRpTv5.setText("抽奖10次");
 
             startTimer();
 
@@ -494,6 +447,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                 iv.setBackgroundResource(R.drawable.front_rp_wait);
             }
         }
+        fl.postInvalidate();
     }
 
     private void showTomorrowText() {
