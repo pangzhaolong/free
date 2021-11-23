@@ -13,8 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.donews.front.listener.FrontClickListener;
 import com.donews.front.R;
+import com.donews.front.listener.FrontClickListener;
 import com.donews.middle.bean.front.LotteryGoodsBean;
 import com.donews.utilslibrary.utils.UrlUtils;
 
@@ -128,6 +128,8 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
                 break;
             case 2:
                 holder.doTv.setText("等待开奖");
+                holder.labelIv.setVisibility(View.VISIBLE);
+                holder.doTv.setBackgroundResource(R.drawable.front_goods_item_lottery_bg_disable);
                 break;
         }
     }
@@ -151,6 +153,7 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
 
     protected static class GoodsViewHolder extends RecyclerView.ViewHolder {
         private final ImageView mainIv;
+        private final ImageView labelIv;
         private final TextView titleTv;
         private final TextView priceTv;
         private final TextView doTv;
@@ -158,6 +161,7 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
         public GoodsViewHolder(@NonNull View itemView) {
             super(itemView);
             mainIv = itemView.findViewById(R.id.front_goods_item_iv);
+            labelIv = itemView.findViewById(R.id.front_goods_item_label_iv);
             titleTv = itemView.findViewById(R.id.front_goods_item_des_tv);
             priceTv = itemView.findViewById(R.id.front_goods_item_price_tv);
             doTv = itemView.findViewById(R.id.front_item_do_tv);
