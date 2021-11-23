@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,6 +27,7 @@ import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.common.updatedialog.UpdateManager;
 import com.donews.common.updatedialog.UpdateReceiver;
+import com.donews.main.MainViewModel;
 import com.donews.main.R;
 import com.donews.main.adapter.MainPageAdapter;
 import com.donews.main.common.CommonParams;
@@ -65,7 +67,7 @@ import me.majiajie.pagerbottomtabstrip.NavigationController;
 
 @Route(path = RouterActivityPath.Main.PAGER_MAIN)
 public class MainActivity
-        extends MvvmBaseLiveDataActivity<MainActivityMainBinding, BaseLiveDataViewModel> {
+        extends MvvmBaseLiveDataActivity<MainActivityMainBinding, MainViewModel> {
 
     private List<Fragment> fragments;
 
@@ -79,6 +81,16 @@ public class MainActivity
      */
     @Autowired(name = "position")
     int mPosition = 0;
+    private CornerMarkUtils maskUtils = new CornerMarkUtils(this);
+
+    private MainBottomTanItem lotteryItem;
+    private ViewTreeObserver.OnGlobalLayoutListener layoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+        @Override
+        public void onGlobalLayout() {
+            mViewModel.checkMaskData(MainActivity.this);
+            lotteryItem.getViewTreeObserver().removeOnGlobalLayoutListener(layoutListener);
+        }
+    };
 
     public static void start(Context context) {
         context.startActivity(new Intent(context, MainActivity.class));
@@ -95,8 +107,19 @@ public class MainActivity
                 .autoDarkModeEnable(true)
                 .init();
         EventBus.getDefault().register(this);
-
         showDrawDialog();
+        //检查浮标
+        mViewModel.openWindFastNewPeriod.observe(this, result -> {
+            if (result == null) {
+                return;
+            }
+            if (result) {
+                maskUtils.addMark(lotteryItem);
+            } else {
+                maskUtils.removeMark();
+            }
+        });
+        lotteryItem.getViewTreeObserver().addOnGlobalLayoutListener(layoutListener);
     }
 
     /**
@@ -262,8 +285,6 @@ public class MainActivity
         }
     }
 
-    private MainBottomTanItem lotteryItem;
-
     /**
      * 状态栏和导航栏刷新
      *
@@ -274,6 +295,10 @@ public class MainActivity
             case 0:
                 AnalysisUtils.onEventEx(this, Dot.Page_Home);
                 AnalysisUtils.onEventEx(this, Dot.Btn_Home);
+                if (mViewModel.openWindFastNewPeriod.getValue() == null) {
+                    //重新更新一次
+                    mViewModel.checkMaskData(this);
+                }
                 break;
             case 1:
                 AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
@@ -283,6 +308,9 @@ public class MainActivity
             case 2:
                 AnalysisUtils.onEventEx(this, Dot.Page_Lottery);
                 AnalysisUtils.onEventEx(this, Dot.Btn_Lottery);
+                if (mViewModel.getFastOpenWindPeriod() != null) {
+                    mViewModel.updateLocalOpenWindPeriod();
+                }
                 break;
             case 3:
                 AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
@@ -391,7 +419,7 @@ public class MainActivity
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-            @NonNull int[] grantResults) {
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults,
                 ExitInterceptUtils.INSTANCE.getRemindDialog());

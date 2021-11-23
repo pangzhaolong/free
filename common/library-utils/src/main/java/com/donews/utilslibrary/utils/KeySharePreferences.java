@@ -49,4 +49,7 @@ public class KeySharePreferences {
     public final static String HAS_DO_INTO_FRONT = "has_do_into_front";
 
     public final static String LOTTERY_COUNTS = "lottery_counts";
+
+    /** main模块。报错首页提示浮标最新一期提交的记录。表示当前期数已经被记录过了 */
+    public final static String MAIN_MASK_FLG = "main_model_mask_flg";
 }

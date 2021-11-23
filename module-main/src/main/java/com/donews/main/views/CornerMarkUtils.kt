@@ -1,20 +1,12 @@
 package com.donews.main.views
 
 import android.app.Activity
-import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
-import com.donews.common.contract.BaseCustomViewModel
-import com.donews.main.BuildConfig
 import com.donews.main.R
-import com.donews.network.EasyHttp
-import com.donews.network.cache.model.CacheMode
-import com.donews.network.callback.SimpleCallBack
-import com.donews.network.exception.ApiException
 import com.donews.utilslibrary.utils.DensityUtils
-import com.google.gson.annotations.SerializedName
 
 
 /**
@@ -30,7 +22,7 @@ class CornerMarkUtils(val activity: Activity) {
     private var imageView: ImageView? = null
 
 
-    fun addMark(activity: Activity, item: MainBottomTanItem) {
+    fun addMark(item: MainBottomTanItem) {
         if (imageView != null) {
             imageView?.let {
                 val parent = it.parent as ViewGroup
@@ -69,29 +61,4 @@ class CornerMarkUtils(val activity: Activity) {
         }
     }
 
-
-    companion object {
-        fun check() {
-            EasyHttp.get(BuildConfig.API_LOTTERY_URL + "v1/recent-lottery")
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(object : SimpleCallBack<LotteryRecent>() {
-                    override fun onError(e: ApiException?) {
-
-                    }
-
-                    override fun onSuccess(t: LotteryRecent?) {
-
-                    }
-                })
-        }
-    }
 }
-
-data class LotteryRecent(
-    @SerializedName("joined")
-    var joined: Boolean = false,
-    @SerializedName("period")
-    var period: Int = 0,
-    @SerializedName("now")
-    var now: String = ""
-) : BaseCustomViewModel()
