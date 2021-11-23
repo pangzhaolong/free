@@ -136,7 +136,7 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
     }
 
     private void requestGoodsInfo(boolean isFirstIn) {
-        EasyHttp.get(BuildConfig.API_LOTTERY_URL + "v1/recommend-goods-list")
+        EasyHttp.get(BuildConfig.API_LOTTERY_URL + "v1/recommend-goods-list?limit=1&first"+SPUtils.getInformain(KeySharePreferences.IS_FIRST_IN_APP, "true"))
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<ExitDialogRecommendGoodsResp>() {
 
@@ -190,5 +190,7 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
         } else {
             mDataBinding.tvBuyNumber.setText("累计" + mGoods.getTotalPeople() + "人参与抢购");
         }
+
+        SPUtils.setInformain(KeySharePreferences.IS_FIRST_IN_APP, "false");
     }
 }

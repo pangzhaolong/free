@@ -37,6 +37,9 @@ import com.donews.network.model.HttpParams;
 import com.donews.network.utils.HttpLog;
 import com.donews.network.utils.RxUtil;
 import com.donews.network.utils.Utils;
+import com.donews.utilslibrary.utils.DeviceUtils;
+import com.donews.utilslibrary.utils.KeySharePreferences;
+import com.donews.utilslibrary.utils.SPUtils;
 import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor;
 
 import java.io.File;
@@ -132,6 +135,7 @@ public abstract class BaseRequest<R extends BaseRequest> {
         String acceptLanguage = HttpHeaders.getAcceptLanguage();
         if (!TextUtils.isEmpty(acceptLanguage))
             headers(HttpHeaders.HEAD_KEY_ACCEPT_LANGUAGE, acceptLanguage);
+        headers("chl", DeviceUtils.getChannelName());
         //默认添加 User-Agent
         String userAgent = HttpHeaders.getUserAgent();
         if (!TextUtils.isEmpty(userAgent)) headers(HttpHeaders.HEAD_KEY_USER_AGENT, userAgent);
@@ -424,7 +428,7 @@ public abstract class BaseRequest<R extends BaseRequest> {
             //添加头  头添加放在最前面方便其他拦截器可能会用到
             newClientBuilder.addInterceptor(new LoginHeaderInterceptor(headers));
 
-            if(BuildConfig.DEBUG){
+            if (BuildConfig.DEBUG) {
                 //添加代理调试
                 newClientBuilder.addInterceptor(new OkHttpProfilerInterceptor());
             }

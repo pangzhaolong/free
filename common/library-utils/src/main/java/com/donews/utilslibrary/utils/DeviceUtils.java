@@ -244,6 +244,8 @@ public class DeviceUtils {
         } else {
             channel = WalleChannelReader.getChannel(UtilsConfig.getApplication());
         }
+
+//        return "huawei";
         return !TextUtils.isEmpty(channel) ? channel : BuildConfig.APP_IDENTIFICATION;
 
     }

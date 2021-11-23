@@ -33,7 +33,7 @@ public class HomeGoodsBean extends BaseCustomViewModel {
         @SerializedName("coupon_price")
         private float couponPrice;
         @SerializedName("src")
-        private Integer src;
+        private int src;
         @SerializedName("shop_name")
         private String shopName;
         @SerializedName("shop_type")
@@ -93,11 +93,11 @@ public class HomeGoodsBean extends BaseCustomViewModel {
             this.couponPrice = couponPrice;
         }
 
-        public Integer getSrc() {
+        public int getSrc() {
             return src;
         }
 
-        public void setSrc(Integer src) {
+        public void setSrc(int src) {
             this.src = src;
         }
 

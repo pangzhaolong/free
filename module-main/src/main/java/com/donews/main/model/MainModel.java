@@ -33,6 +33,7 @@ public class MainModel extends BaseLiveDataModel {
         Disposable disop = EasyHttp.get(BuildConfig.API_LOTTERY_URL + "v1/history-people-lottery")
                 .params("offset", "1")
                 .params("limit", "2")
+                .isShowToast(false)
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<HistoryPeopleLottery>() {
                     @Override

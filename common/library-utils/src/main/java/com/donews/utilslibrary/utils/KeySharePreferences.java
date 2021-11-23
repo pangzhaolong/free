@@ -52,4 +52,6 @@ public class KeySharePreferences {
 
     /** main模块。报错首页提示浮标最新一期提交的记录。表示当前期数已经被记录过了 */
     public final static String MAIN_MASK_FLG = "main_model_mask_flg";
+
+    public final static String IS_FIRST_IN_APP = "is_first_in_app";
 }

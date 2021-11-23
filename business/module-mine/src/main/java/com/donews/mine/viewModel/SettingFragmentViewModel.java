@@ -24,6 +24,7 @@ import com.donews.common.base.popwindow.ConfirmPopupWindow;
 import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.UserInfoBean;
 import com.donews.common.router.RouterActivityPath;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.mine.Api.MineHttpApi;
 import com.donews.mine.BuildConfig;
 import com.donews.mine.R;
@@ -76,15 +77,21 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
         {
             put(0, (Runnable) () -> { //用户协议
                 Bundle bundle = new Bundle();
-                bundle.putString("url",
-                        "http://ad-static-xg.tagtic.cn/wangzhuan/file/9e5f7a06cbf80a2186e3e34a70f0c360.html");
+                if (ABSwitch.Ins().isOpenAB() && DeviceUtils.getChannelName().equalsIgnoreCase("huawei")) {
+                    bundle.putString("url", "http://ad-static-xg.tagtic.cn/wangzhuan/file/4fb165459cd438f9a3987841d7707d8a.html");
+                } else {
+                    bundle.putString("url", "https://recharge-privacy.xg.tagtic.cn/#/Slas?authorization=plus");
+                }
                 bundle.putString("title", "用户协议");
                 ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
             });
             put(1, (Runnable) () -> { //隐私政策
                 Bundle bundle = new Bundle();
-                bundle.putString("url",
-                        "http://ad-static-xg.tagtic.cn/wangzhuan/file/b7f18dcb857e80eab353cfb99c3f042e.html");
+                if (ABSwitch.Ins().isOpenAB() && DeviceUtils.getChannelName().equalsIgnoreCase("huawei")) {
+                    bundle.putString("url", "http://ad-static-xg.tagtic.cn/wangzhuan/file/739eaf3002ea80d1a2232c9cd5a8b9f4.html");
+                } else {
+                    bundle.putString("url", "https://recharge-privacy.xg.tagtic.cn/#/privacy?authorization=plus");
+                }
                 bundle.putString("title", "隐私政策");
                 ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
             });

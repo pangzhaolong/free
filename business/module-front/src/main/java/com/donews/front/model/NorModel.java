@@ -19,7 +19,7 @@ public class NorModel extends BaseLiveDataModel {
      */
     public MutableLiveData<LotteryGoodsBean> getNetData(String categoryId, int pageId) {
         MutableLiveData<LotteryGoodsBean> mutableLiveData = new MutableLiveData<>();
-        addDisposable(EasyHttp.get(FrontApi.lotteryGoodsUrl + "?category_id=" + categoryId + "&page_size=20&page_id=" + pageId++)
+        addDisposable(EasyHttp.get(String.format(FrontApi.lotteryGoodsUrl, categoryId, pageId)
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<LotteryGoodsBean>() {
 

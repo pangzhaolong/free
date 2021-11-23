@@ -111,7 +111,15 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                     if (mLotteryCategoryBean == null || mLotteryCategoryBean.getList() == null) {
                         return;
                     }
-                    tabItem.setTitle(mLotteryCategoryBean.getList().get(position).getName());
+                    LotteryCategoryBean.categoryBean bean = mLotteryCategoryBean.getList().get(position);
+                    tabItem.setTitle(bean.getName());
+                    if (bean.isSelected()) {
+                        tabItem.selected();
+//                        mDataBinding.frontCategoryTl.setSelected(true);
+                        mDataBinding.frontVp2.setCurrentItem(position, true);
+                    } else {
+                        tabItem.unSelected();
+                    }
                 });
         tab.attach();
 

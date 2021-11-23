@@ -19,6 +19,8 @@ import com.donews.main.databinding.MainDialogPeopleGuideBinding;
 import com.donews.base.fragmentdialog.AbstractFragmentDialog;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.main.utils.SplashUtils;
+import com.donews.middle.abswitch.ABSwitch;
+import com.donews.utilslibrary.utils.DeviceUtils;
 
 import java.util.Objects;
 
@@ -110,13 +112,16 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
             @Override
             public void onClick(@NonNull View widget) {
                 Bundle bundle = new Bundle();
-                bundle.putString("url", BuildConfig.HTTP_H5 + "SLAs");
+                if (ABSwitch.Ins().isOpenAB() && DeviceUtils.getChannelName().equalsIgnoreCase("huawei")) {
+                    bundle.putString("url", "http://ad-static-xg.tagtic.cn/wangzhuan/file/4fb165459cd438f9a3987841d7707d8a.html");
+                } else {
+                    bundle.putString("url", "https://recharge-privacy.xg.tagtic.cn/#/Slas?authorization="+BuildConfig.APP_IDENTIFICATION);
+                }
                 bundle.putString("title", "用户协议");
                 ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
 
                 //重新设置文字背景为透明色。否则会出现淡绿色背景
                 dataBinding.tvDeal.setHighlightColor(Color.TRANSPARENT);
-
             }
 
             @Override
@@ -132,9 +137,12 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
         span.setSpan(new ClickableSpan() {
             @Override
             public void onClick(@NonNull View widget) {
-
                 Bundle bundle = new Bundle();
-                bundle.putString("url", BuildConfig.HTTP_H5 + "privacy");
+                if (ABSwitch.Ins().isOpenAB() && DeviceUtils.getChannelName().equalsIgnoreCase("huawei")) {
+                    bundle.putString("url", "http://ad-static-xg.tagtic.cn/wangzhuan/file/739eaf3002ea80d1a2232c9cd5a8b9f4.html");
+                } else {
+                    bundle.putString("url", "https://recharge-privacy.xg.tagtic.cn/#/privacy?authorization="+BuildConfig.APP_IDENTIFICATION);
+                }
                 bundle.putString("title", "隐私政策");
                 ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
 

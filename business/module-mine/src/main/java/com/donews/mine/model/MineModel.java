@@ -85,6 +85,7 @@ public class MineModel extends BaseLiveDataModel {
         Disposable disop = EasyHttp.get(BuildConfig.API_LOTTERY_URL + "v1/history-people-lottery")
                 .params("offset", "1")
                 .params("limit", "10")
+                .isShowToast(false)
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<HistoryPeopleLottery>() {
                     @Override
@@ -152,6 +153,7 @@ public class MineModel extends BaseLiveDataModel {
             int period) {
         Disposable disop = EasyHttp.get(BuildConfig.API_LOTTERY_URL + "v1/history-people-lottery-detail")
                 .params("period", "" + period)
+                .isShowToast(false)
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<HistoryPeopleLotteryDetailResp>() {
                     @Override

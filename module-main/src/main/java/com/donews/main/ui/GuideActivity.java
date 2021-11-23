@@ -23,6 +23,7 @@ import com.donews.common.router.RouterActivityPath;
 import com.donews.common.services.config.ServicesConfig;
 import com.donews.main.R;
 import com.donews.main.databinding.MainActivityGuideBinding;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.LogUtil;
 import com.gyf.immersionbar.ImmersionBar;
@@ -48,7 +49,7 @@ public class GuideActivity
 
     public static void start(Context context) {
         isLoadGuide = SPUtils.getInstance().getBoolean("mainGuideIsShow", true);
-        if (isLoadGuide) {
+        if (isLoadGuide && !ABSwitch.Ins().isOpenAB()) {
             //需要显示引导页，去往引导页
             ARouter.getInstance().build(RouterActivityPath.Main.PAGER_GUIDE_ACTIVITY)
                     .navigation(context);
@@ -122,7 +123,7 @@ public class GuideActivity
             RouterActivityPath.LoginProvider.getLoginProvider()
                     .loginWX(loginTag);
         });
-        mDataBinding.loginCkCheckTx.setOnClickListener(v->{
+        mDataBinding.loginCkCheckTx.setOnClickListener(v -> {
             mDataBinding.loginCkCheck.performClick();
         });
         mDataBinding.loginCkCheck.setOnCheckedChangeListener((buttonView, isChecked) -> {

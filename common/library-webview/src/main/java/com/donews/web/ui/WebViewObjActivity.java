@@ -70,15 +70,14 @@ public class WebViewObjActivity extends MvvmBaseLiveDataActivity<WebViewObjActiv
 
     @Override
     public void initView() {
-
         ImmersionBar.with(this)
                 .statusBarColor(R.color.white)
                 .navigationBarColor(R.color.black)
                 .fitsSystemWindows(true)
                 .autoDarkModeEnable(true)
                 .init();
+        
         mDataBinding.webView.getSettings().setSupportMultipleWindows(false);
-
         mDataBinding.progressBar.setIndeterminate(false);
         mDataBinding.progressBar.setIndeterminateDrawable(
                 getResources().getDrawable(android.R.drawable.progress_indeterminate_horizontal));

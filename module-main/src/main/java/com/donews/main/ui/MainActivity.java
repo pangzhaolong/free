@@ -119,7 +119,9 @@ public class MainActivity
                 maskUtils.removeMark();
             }
         });
-        lotteryItem.getViewTreeObserver().addOnGlobalLayoutListener(layoutListener);
+        if (!ABSwitch.Ins().isOpenAB()) {
+            lotteryItem.getViewTreeObserver().addOnGlobalLayoutListener(layoutListener);
+        }
     }
 
     /**
@@ -258,11 +260,16 @@ public class MainActivity
         });
         AppStatusManager.getInstance().setAppStatus(AppStatusConstant.STATUS_NORMAL);
 
-        mDataBinding.mainFloatingBtn.setOnClickListener(v -> {
-            toggleStatusBar(0);
-            mDataBinding.cvContentView.setCurrentItem(0);
-            mPosition = 0;
-        });
+        if (ABSwitch.Ins().isOpenAB()) {
+            mDataBinding.mainFloatingBtn.setVisibility(View.GONE);
+        } else {
+            mDataBinding.mainFloatingBtn.setVisibility(View.VISIBLE);
+            mDataBinding.mainFloatingBtn.setOnClickListener(v -> {
+                toggleStatusBar(0);
+                mDataBinding.cvContentView.setCurrentItem(0);
+                mPosition = 0;
+            });
+        }
 
         int intoFrontCounts = SPUtils.getInformain(KeySharePreferences.INTO_FRONT_COUNTS, 0);
         if (!SPUtils.getInformain(KeySharePreferences.HAS_DO_INTO_FRONT, false)) {
