@@ -74,6 +74,11 @@ public class DnAdFullVideoLoadHelper {
 		mDoNewsAdNative = DoNewsAdManagerHolder.get().createDoNewsAdNative();
 		mDoNewsAdNative.preLoadFullScreenVideoAd(mActivity, doNewsAD, new DoNewsAdNative.FullSreenVideoListener() {
 			@Override
+			public void onAdStatus(int i, Object o) {
+
+			}
+
+			@Override
 			public void onAdShow() {
 				if (mListener != null) {
 					mListener.onFullVideoAdShow();
@@ -155,6 +160,11 @@ public class DnAdFullVideoLoadHelper {
 		DnNewsPreloadFullVideoView preloadFullVideoView = new DnNewsPreloadFullVideoView(mDoNewsAdNative);
 
 		mDoNewsAdNative.preLoadFullScreenVideoAd(mActivity, doNewsAD, new DoNewsAdNative.FullSreenVideoListener() {
+			@Override
+			public void onAdStatus(int i, Object o) {
+
+			}
+
 			@Override
 			public void onAdShow() {
 				if (mListener != null) {

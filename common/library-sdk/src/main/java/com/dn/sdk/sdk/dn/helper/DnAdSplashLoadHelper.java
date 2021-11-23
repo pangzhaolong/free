@@ -72,6 +72,18 @@ public class DnAdSplashLoadHelper {
         mDoNewsAdNative = DoNewsAdManagerHolder.get().createDoNewsAdNative();
         mDoNewsAdNative.onCreateAdSplash(mActivity, doNewsAD, new DoNewsAdNative.SplashListener() {
             @Override
+            public void onAdStatus(int i, Object o) {
+
+            }
+
+            @Override
+            public void onAdLoad() {
+                if (mListener != null) {
+                    mListener.onLoad();
+                }
+            }
+
+            @Override
             public void onShow() {
                 if (mListener != null) {
                     mListener.onAdShow();

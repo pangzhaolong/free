@@ -1,6 +1,8 @@
 package com.donews.main.ui;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -87,7 +89,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
     private static final String toForeGroundKey = "toForeGround";
 
     //启动页正常的等待时间
-    public static final long PROGRESS_DURATION = 5 * 1000;
+    public static final long PROGRESS_DURATION = 10 * 1000;
     //是否为后台到前台。即:是有后台唤醒到前台并非正常启动流程，T:唤醒，F:正常的启动逻辑
     private boolean mIsBackgroundToFore = false;
 
@@ -223,6 +225,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
             @Override
             public void onAdShow() {
                 super.onAdShow();
+                stopProgressAnim();
             }
 
             @Override
@@ -285,6 +288,11 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
                 finish();
             }
 
+            @Override
+            public void onAdShow() {
+                super.onAdShow();
+                stopProgressAnim();
+            }
 
             @Override
             public void onAdClosed() {
@@ -300,6 +308,12 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
             public void onError(int code, String msg) {
                 super.onError(code, msg);
                 finish();
+            }
+
+            @Override
+            public void onRewardAdShow() {
+                super.onRewardAdShow();
+                stopProgressAnim();
             }
 
             @Override
@@ -414,6 +428,12 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
                     }
                     mDataBinding.pbProgress.setProgress(progress);
                 }
+            }
+        });
+        mLoadAdAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
             }
         });
         mLoadAdAnimator.start();

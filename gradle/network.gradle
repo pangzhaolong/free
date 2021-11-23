@@ -13,6 +13,8 @@ ext {
     //包名
     APPLICATION_ID = "com.cdyfnts.lottery.jdd.plus"
 
+    //打开广告日志,true 打开日志，false 关闭日志
+    OPEN_AD_LOGGER = "false"
 
     // 正式环境base Url
     API_BASE_URL_REALSE = "https://lottery.xg.tagtic.cn/"

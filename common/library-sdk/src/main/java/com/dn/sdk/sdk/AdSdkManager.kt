@@ -4,10 +4,10 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.os.Looper
-import com.bytedance.sdk.openadsdk.TTAdManager
-import com.dn.admediation.csj.api.DnMediationAdSdk
+import com.dn.sdk.BuildConfig
 import com.dn.sdk.sdk.interfaces.ISdkManager
 import com.dn.sdk.sdk.tt.TTAdManagerHolder
+import com.dn.sdk.sdk.utils.AdLoggerUtils
 import com.donews.b.start.DoNewsAdManagerHolder
 import com.donews.b.utils.DnLogSwitchUtils
 
@@ -25,24 +25,12 @@ object AdSdkManager : ISdkManager {
 
     /** 渠道信息 */
     var channel: String? = null
-        set(value) {
-            field = value
-            DnMediationAdSdk.setChannel(value)
-        }
 
     /** 用户信息 */
     var userId: String? = null
-        set(value) {
-            field = value
-            DnMediationAdSdk.setUserId(value)
-        }
 
     /** OAID 信息 */
     var oaid: String? = null
-        set(value) {
-            field = value
-            DnMediationAdSdk.setOAID(value)
-        }
 
     @Volatile
     private var hadInit = false
@@ -51,6 +39,7 @@ object AdSdkManager : ISdkManager {
         if (Thread.currentThread() == Looper.getMainLooper().thread) {
             this.context = context.applicationContext
             if (!hadInit) {
+                AdLoggerUtils.setLoggable(BuildConfig.OPEN_AD_LOGGER)
                 //多牛SDK 初始化
                 initDnSdk(this.context, openDebug)
                 initDnGroMore(context, openDebug, groMoreAppId)

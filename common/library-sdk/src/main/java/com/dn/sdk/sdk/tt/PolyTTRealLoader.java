@@ -1,8 +1,9 @@
 package com.dn.sdk.sdk.tt;
 
+import static com.dn.sdk.sdk.ErrorConstant.ERROR_GROMORE_CLOSE;
+
 import android.app.Activity;
 import android.content.Context;
-
 
 import com.dn.sdk.sdk.bean.RequestInfo;
 import com.dn.sdk.sdk.bean.SDKType;
@@ -15,18 +16,6 @@ import com.dn.sdk.sdk.interfaces.listener.IAdRewardVideoListener;
 import com.dn.sdk.sdk.interfaces.listener.IAdSplashListener;
 import com.dn.sdk.sdk.interfaces.listener.preload.IAdPreloadVideoViewListener;
 import com.dn.sdk.sdk.interfaces.loader.IRealLoader;
-import com.dn.sdk.sdk.interfaces.proxy.AdBannerListenerProxy;
-import com.dn.sdk.sdk.interfaces.proxy.AdFullVideoListenerProxy;
-import com.dn.sdk.sdk.interfaces.proxy.AdInterstitialListenerProxy;
-import com.dn.sdk.sdk.interfaces.proxy.AdNativeExpressListenerProxy;
-import com.dn.sdk.sdk.interfaces.proxy.AdRewardVideoListenerProxy;
-import com.dn.sdk.sdk.interfaces.proxy.AdSplashListenerProxy;
-import com.dn.sdk.sdk.tt.helper.TTAdBannerLoadHelper;
-import com.dn.sdk.sdk.tt.helper.TTAdFullVideoLoadHelper;
-import com.dn.sdk.sdk.tt.helper.TTAdInterstitialLoadHelper;
-import com.dn.sdk.sdk.tt.helper.TTAdNativeExpressLoadHelper;
-import com.dn.sdk.sdk.tt.helper.TTAdRewardVideoLoadHelper;
-import com.dn.sdk.sdk.tt.helper.TTAdSplashLoadHelper;
 
 /**
  * 穿山甲 GroMore 聚合封装
@@ -37,6 +26,7 @@ import com.dn.sdk.sdk.tt.helper.TTAdSplashLoadHelper;
  */
 @SuppressWarnings("unused")
 public class PolyTTRealLoader implements IRealLoader {
+
     @Override
     public SDKType getSdkType() {
         return SDKType.DO_GRO_MORE;
@@ -44,58 +34,75 @@ public class PolyTTRealLoader implements IRealLoader {
 
     @Override
     public void loadSplashAd(Activity activity, RequestInfo requestInfo, IAdSplashListener listener) {
-        new TTAdSplashLoadHelper().loadSplashAd(activity, requestInfo,
-                new AdSplashListenerProxy(requestInfo, listener));
+        if (listener != null) {
+            listener.onLoadFail(ERROR_GROMORE_CLOSE, "多年sdk6.8版本，已关闭私自接入GroMore，改用多牛后台控制平台切换");
+            listener.onError(ERROR_GROMORE_CLOSE, "多年sdk6.8版本，已关闭私自接入GroMore，改用多牛后台控制平台切换");
+        }
     }
 
     @Override
     public void loadBannerAd(Activity activity, RequestInfo requestInfo, IAdBannerListener listener) {
-        new TTAdBannerLoadHelper().loadBannerAd(activity, requestInfo,
-                new AdBannerListenerProxy(requestInfo, listener));
+        if (listener != null) {
+            listener.onLoadFail(ERROR_GROMORE_CLOSE, "多年sdk6.8版本，已关闭私自接入GroMore，改用多牛后台控制平台切换");
+            listener.onError(ERROR_GROMORE_CLOSE, "多年sdk6.8版本，已关闭私自接入GroMore，改用多牛后台控制平台切换");
+        }
     }
 
     @Override
     public void loadInterstitialAd(Activity activity, RequestInfo requestInfo, IAdInterstitialListener listener) {
-        new TTAdInterstitialLoadHelper().loadAd(activity, requestInfo,
-                new AdInterstitialListenerProxy(requestInfo, listener));
+        if (listener != null) {
+            listener.onLoadFail(ERROR_GROMORE_CLOSE, "多年sdk6.8版本，已关闭私自接入GroMore，改用多牛后台控制平台切换");
+            listener.onError(ERROR_GROMORE_CLOSE, "多年sdk6.8版本，已关闭私自接入GroMore，改用多牛后台控制平台切换");
+        }
     }
 
     @Override
     public void loadRewardVideoAd(Activity activity, RequestInfo requestInfo, IAdRewardVideoListener listener) {
-        new TTAdRewardVideoLoadHelper().loadAd(activity, requestInfo,
-                new AdRewardVideoListenerProxy(requestInfo, listener));
+        if (listener != null) {
+            listener.onLoadFail(ERROR_GROMORE_CLOSE, "多年sdk6.8版本，已关闭私自接入GroMore，改用多牛后台控制平台切换");
+            listener.onError(ERROR_GROMORE_CLOSE, "多年sdk6.8版本，已关闭私自接入GroMore，改用多牛后台控制平台切换");
+        }
     }
 
     @Override
     public void preloadRewardViewAd(Activity activity, RequestInfo requestInfo,
             IAdPreloadVideoViewListener viewListener, IAdRewardVideoListener listener) {
-        new TTAdRewardVideoLoadHelper().preloadAd(activity, requestInfo, viewListener,
-                new AdRewardVideoListenerProxy(requestInfo, listener));
+        if (listener != null) {
+            listener.onLoadFail(ERROR_GROMORE_CLOSE, "多年sdk6.8版本，已关闭私自接入GroMore，改用多牛后台控制平台切换");
+            listener.onError(ERROR_GROMORE_CLOSE, "多年sdk6.8版本，已关闭私自接入GroMore，改用多牛后台控制平台切换");
+        }
     }
-
 
     @Override
     public void loadFullVideoAd(Activity activity, RequestInfo requestInfo, IAdFullVideoListener listener) {
-        new TTAdFullVideoLoadHelper().loadAd(activity, requestInfo,
-                new AdFullVideoListenerProxy(requestInfo, listener));
+        if (listener != null) {
+            listener.onLoadFail(ERROR_GROMORE_CLOSE, "多年sdk6.8版本，已关闭私自接入GroMore，改用多牛后台控制平台切换");
+            listener.onError(ERROR_GROMORE_CLOSE, "多年sdk6.8版本，已关闭私自接入GroMore，改用多牛后台控制平台切换");
+        }
     }
 
     @Override
     public void preloadFullVideoAd(Activity activity, RequestInfo requestInfo, IAdPreloadVideoViewListener viewListener,
             IAdFullVideoListener listener) {
-        new TTAdFullVideoLoadHelper().preloadAd(activity, requestInfo, viewListener,
-                new AdFullVideoListenerProxy(requestInfo, listener));
+        if (listener != null) {
+            listener.onLoadFail(ERROR_GROMORE_CLOSE, "多年sdk6.8版本，已关闭私自接入GroMore，改用多牛后台控制平台切换");
+            listener.onError(ERROR_GROMORE_CLOSE, "多年sdk6.8版本，已关闭私自接入GroMore，改用多牛后台控制平台切换");
+        }
     }
-
 
     @Override
     public void loadFeedNativeAd(Context context, RequestInfo requestInfo, IAdNativeListener listener) {
-
+        if (listener != null) {
+            listener.onLoadFail(ERROR_GROMORE_CLOSE, "多年sdk6.8版本，已关闭私自接入GroMore，改用多牛后台控制平台切换");
+            listener.onError(ERROR_GROMORE_CLOSE, "多年sdk6.8版本，已关闭私自接入GroMore，改用多牛后台控制平台切换");
+        }
     }
 
     @Override
     public void loadFeedNativeExpressAd(Context context, RequestInfo requestInfo, IAdNativeExpressListener listener) {
-        new TTAdNativeExpressLoadHelper().loadAd(context, requestInfo,
-                new AdNativeExpressListenerProxy(requestInfo, listener));
+        if (listener != null) {
+            listener.onLoadFail(ERROR_GROMORE_CLOSE, "多年sdk6.8版本，已关闭私自接入GroMore，改用多牛后台控制平台切换");
+            listener.onError(ERROR_GROMORE_CLOSE, "多年sdk6.8版本，已关闭私自接入GroMore，改用多牛后台控制平台切换");
+        }
     }
 }

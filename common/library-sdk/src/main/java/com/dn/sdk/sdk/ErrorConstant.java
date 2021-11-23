@@ -7,12 +7,15 @@ package com.dn.sdk.sdk;
  */
 public class ErrorConstant {
 
-	/** 多牛聚合没有广告的错误id */
-	public static final int ERROR_CODE_NO_AD = -100;
+    /** 未知错误 */
+    public static final int ERROR_CODE_UNKNOWN = -1;
 
-	/** 没有请求广告的错误id */
-	public static final int ERROR_CODE_NOT_AD = -1;
+    /** 多牛聚合没有广告的错误id */
+    public static final int ERROR_CODE_NO_AD = -10000;
 
-	/** 未知错误 */
-	public static final int ERROR_CODE_UNKNOWN = -2;
+    /** 关闭广告 */
+    public static final int ERROR_AD_CLOSE = -10001;
+
+    /** gromore广告关闭错误 */
+    public static final int ERROR_GROMORE_CLOSE = -10002;
 }

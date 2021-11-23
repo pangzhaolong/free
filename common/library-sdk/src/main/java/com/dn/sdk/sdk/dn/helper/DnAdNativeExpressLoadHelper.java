@@ -71,18 +71,19 @@ public class DnAdNativeExpressLoadHelper {
         if (mRequestInfo.getNativeAdCount() == 0) {
             mRequestInfo.setNativeAdCount(1);
         }
-
-        Logger.d(mRequestInfo);
         DoNewsAD doNewsAD = new DoNewsAD.Builder()
                 .setPositionid(mRequestInfo.getAdId())
                 .setExpressViewWidth(mRequestInfo.getWidth())
                 .setExpressViewHeight(mRequestInfo.getHeight())
                 .setAdCount(mRequestInfo.getNativeAdCount())
                 .build();
-
-
         mDoNewsAdNative = DoNewsAdManagerHolder.get().createDoNewsAdNative();
         mDoNewsAdNative.onCreatTemplateAd((Activity) mContext, doNewsAD, new DoNewsAdNative.DoNewsTemplateListener() {
+            @Override
+            public void onAdStatus(int i, Object o) {
+
+            }
+
             @Override
             public void onAdClose() {
                 if (mListener != null) {
@@ -104,12 +105,6 @@ public class DnAdNativeExpressLoadHelper {
                 }
             }
 
-            @Override
-            public void onNoAD(String s) {
-                if (mListener != null) {
-                    mListener.onError(ErrorConstant.ERROR_CODE_NO_AD, s);
-                }
-            }
 
             @Override
             public void onAdError(String s) {
@@ -127,114 +122,5 @@ public class DnAdNativeExpressLoadHelper {
                 }
             }
         });
-//		mDoNewsAdNative.onCreatTemplateAd((Activity) mContext, doNewsAD, new DoNewsAdNative
-//		.DoNewsExpressTemplateListener() {
-//			@Override
-//			public void onAdError(String s) {
-//				Logger.d("多牛模板广告加载失败:%s ", s);
-//				if (mListener != null) {
-//					mListener.onLoadFail(ERROR_CODE_NO_AD, s);
-//					mListener.onError(ERROR_CODE_NO_AD, s);
-//				}
-//			}
-//
-//			@Override
-//			public void onADLoaded(List<DoNewsNativeExpressAd> list) {
-//				Logger.d("多牛模板广告加载成功:size = " + list.size());
-//				List<View> views = new ArrayList<>();
-//				for (DoNewsNativeExpressAd ad : list) {
-//					View view = ad.getExpressAdView();
-//					views.add(view);
-//					ad.setExpressInteractionListener(new DoNewsNativeExpressAd.ExpressAdInteractionListener() {
-//						@Override
-//						public void onAdShow() {
-//							if (mListener != null) {
-//								mListener.onAdShow();
-//							}
-//						}
-//
-//						@Override
-//						public void onAdClicked() {
-//							if (mListener != null) {
-//								mListener.onAdClick();
-//							}
-//						}
-//
-//						@Override
-//						public void onAdClose() {
-//							if (mListener != null) {
-//								mListener.onCancel();
-//							}
-//						}
-//
-//						@Override
-//						public void onRenderFail(String s, int i) {
-//							if (mListener != null) {
-//								mListener.onRenderFail(view, s, i);
-//							}
-//						}
-//
-//						@Override
-//						public void onRenderSuccess() {
-//							if (mListener != null) {
-//								mListener.onRenderSuccess(view.getWidth(), view.getHeight());
-//							}
-//						}
-//					});
-//					ad.setVideoAdListener(new DoNewsNativeExpressAd.ExpressVideoAdListener() {
-//						@Override
-//						public void onVideoLoad() {
-//							if (mListener != null) {
-//
-//							}
-//						}
-//
-//						@Override
-//						public void onVideoAdStartPlay() {
-//							if (mListener != null) {
-//								mListener.onVideoStart();
-//							}
-//						}
-//
-//						@Override
-//						public void onVideoAdContinuePlay() {
-//
-//						}
-//
-//						@Override
-//						public void onClickRetry() {
-//
-//						}
-//
-//						@Override
-//						public void onVideoAdPaused() {
-//							if (mListener != null) {
-//								mListener.onVideoPause();
-//							}
-//						}
-//
-//						@Override
-//						public void onVideoAdComplete() {
-//							if (mListener != null) {
-//								mListener.onVideoCompleted();
-//							}
-//						}
-//
-//						@Override
-//						public void onVideoError(int i, String s) {
-//							if (mListener != null) {
-//								mListener.onVideoError(i, s);
-//							}
-//						}
-//					});
-//					ad.render();
-//				}
-//
-//				if (mListener != null) {
-//					mListener.onLoad(views);
-//				}
-//			}
-//		});
-
     }
 }

@@ -69,6 +69,11 @@ public class DnAdRewardVideoLoadHelper {
 		mDoNewsAdNative = DoNewsAdManagerHolder.get().createDoNewsAdNative();
 		mDoNewsAdNative.preLoadRewardAd(mActivity, doNewsAD, new DoNewsAdNative.RewardVideoAdCacheListener() {
 			@Override
+			public void onAdStatus(int i, Object o) {
+
+			}
+
+			@Override
 			public void onADLoad() {
 				if (mListener != null) {
 					mListener.onLoad();
@@ -153,6 +158,11 @@ public class DnAdRewardVideoLoadHelper {
 
 		mDoNewsAdNative.preLoadRewardAd(mActivity, doNewsAD, new DoNewsAdNative.RewardVideoAdCacheListener() {
 			@Override
+			public void onAdStatus(int i, Object o) {
+
+			}
+
+			@Override
 			public void onADLoad() {
 				if (mListener != null) {
 					mListener.onLoad();
@@ -178,7 +188,6 @@ public class DnAdRewardVideoLoadHelper {
 				if (mListener != null) {
 					mListener.onLoadCached();
 				}
-				preloadRewardVideoView.setLoadSuccess(true);
 				preloadRewardVideoView.setLoadSuccess(true);
 				if (preloadRewardVideoView.isNeedShow()) {
 					preloadRewardVideoView.show();

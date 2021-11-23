@@ -4,6 +4,7 @@ import com.dn.sdk.sdk.bean.RequestInfo
 import com.dn.sdk.sdk.bean.SDKType
 import com.dn.sdk.sdk.interfaces.listener.IAdBannerListener
 import com.dn.sdk.sdk.statistics.CountTrackImpl
+import com.dn.sdk.sdk.utils.AdLoggerUtils
 
 /**
  * BannerListener 代理类
@@ -21,20 +22,24 @@ class AdBannerListenerProxy(
 
     override fun onLoad() {
         listener?.onLoad()
+        AdLoggerUtils.d(AdLoggerUtils.createMsg(requestInfo, "onLoad"))
     }
 
     override fun onLoadFail(code: Int, error: String?) {
         listener?.onLoadFail(code, error)
         countTrack.onLoadError()
+        AdLoggerUtils.d(AdLoggerUtils.createMsg(requestInfo, "onLoadFail($code,$error)"))
     }
 
     override fun onLoadTimeout() {
         listener?.onLoadTimeout()
         countTrack.onLoadError()
+        AdLoggerUtils.d(AdLoggerUtils.createMsg(requestInfo, "onLoadTimeout"))
     }
 
     override fun onError(code: Int, msg: String?) {
         listener?.onError(code, msg)
+        AdLoggerUtils.d(AdLoggerUtils.createMsg(requestInfo, "onError($code,$msg)"))
     }
 
     override fun onAdShow() {
@@ -42,20 +47,24 @@ class AdBannerListenerProxy(
         if (requestInfo.platform.getLoader().sdkType == SDKType.DO_GRO_MORE) {
             countTrack.onShow()
         }
+        AdLoggerUtils.d(AdLoggerUtils.createMsg(requestInfo, "onAdShow"))
     }
 
     override fun onAdClosed() {
         listener?.onAdClosed()
         countTrack.onAdClose()
+        AdLoggerUtils.d(AdLoggerUtils.createMsg(requestInfo, "onAdClosed"))
     }
 
     override fun onAdClicked() {
         listener?.onAdClicked()
         countTrack.onClick()
+        AdLoggerUtils.d(AdLoggerUtils.createMsg(requestInfo, "onAdClicked"))
     }
 
     override fun onAdShowFail(code: Int, msg: String?) {
         listener?.onAdShowFail(code, msg)
+        AdLoggerUtils.d(AdLoggerUtils.createMsg(requestInfo, "onAdShowFail($code,$msg)"))
     }
 
     //只用多牛平台会有这个回调,穿山甲没有
@@ -65,13 +74,16 @@ class AdBannerListenerProxy(
             countTrack.onShow()
         }
         countTrack.onADExposure()
+        AdLoggerUtils.d(AdLoggerUtils.createMsg(requestInfo, "onAdExposure"))
     }
 
     override fun onAdOpened() {
         listener?.onAdOpened()
+        AdLoggerUtils.d(AdLoggerUtils.createMsg(requestInfo, "onAdOpened"))
     }
 
     override fun onAdLeftApplication() {
         listener?.onAdLeftApplication()
+        AdLoggerUtils.d(AdLoggerUtils.createMsg(requestInfo, "onAdLeftApplication"))
     }
 }
