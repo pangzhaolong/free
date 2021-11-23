@@ -102,9 +102,14 @@ public class JsonUtils {
      *
      * @return
      */
-    public static String getCommonH5Json() {
+    public static String getCommonH5Json(boolean hasQuestionChar) {
         StringBuilder device = new StringBuilder();
         try {
+            if (hasQuestionChar) {
+                device.append("&imei=").append(DeviceUtils.getDeviceId());
+            } else {
+                device.append("?imei=").append(DeviceUtils.getDeviceId());
+            }
             device.append("?imei=").append(DeviceUtils.getDeviceId());
             device.append("&idfa=").append("");
             device.append("&android_id=").append(DeviceUtils.getAndroidID());

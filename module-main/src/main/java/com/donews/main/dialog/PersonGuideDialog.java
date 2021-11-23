@@ -12,6 +12,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.drouter.ARouteHelper;
 import com.donews.main.BuildConfig;
 import com.donews.main.R;
@@ -111,14 +112,25 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
         span.setSpan(new ClickableSpan() {
             @Override
             public void onClick(@NonNull View widget) {
-                Bundle bundle = new Bundle();
+/*//                Bundle bundle = new Bundle();
+                String url = "https://recharge-privacy.xg.tagtic.cn/#/Slas?authorization=" + BuildConfig.APP_IDENTIFICATION;
                 if (ABSwitch.Ins().isOpenAB() && DeviceUtils.getChannelName().equalsIgnoreCase("huawei")) {
                     bundle.putString("url", "http://ad-static-xg.tagtic.cn/wangzhuan/file/4fb165459cd438f9a3987841d7707d8a.html");
+                    url = "http://ad-static-xg.tagtic.cn/wangzhuan/file/4fb165459cd438f9a3987841d7707d8a.html";
                 } else {
-                    bundle.putString("url", "https://recharge-privacy.xg.tagtic.cn/#/Slas?authorization="+BuildConfig.APP_IDENTIFICATION);
+                    bundle.putString("url", "https://recharge-privacy.xg.tagtic.cn/#/Slas?authorization=" + BuildConfig.APP_IDENTIFICATION);
+                    url = "https://recharge-privacy.xg.tagtic.cn/#/Slas?authorization=" + BuildConfig.APP_IDENTIFICATION
                 }
                 bundle.putString("title", "用户协议");
-                ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
+                ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);*/
+                String url = "https://recharge-privacy.xg.tagtic.cn/#/Slas?authorization=" + BuildConfig.APP_IDENTIFICATION;
+                if (ABSwitch.Ins().isOpenAB() && DeviceUtils.getChannelName().equalsIgnoreCase("huawei")) {
+                    url = "http://ad-static-xg.tagtic.cn/wangzhuan/file/4fb165459cd438f9a3987841d7707d8a.html";
+                } else {
+                    url = "https://recharge-privacy.xg.tagtic.cn/#/Slas?authorization=" + BuildConfig.APP_IDENTIFICATION;
+                }
+                ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY).withString("url", url)
+                        .withString("title", "用户协议").navigation();
 
                 //重新设置文字背景为透明色。否则会出现淡绿色背景
                 dataBinding.tvDeal.setHighlightColor(Color.TRANSPARENT);
@@ -137,15 +149,23 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
         span.setSpan(new ClickableSpan() {
             @Override
             public void onClick(@NonNull View widget) {
-                Bundle bundle = new Bundle();
+                /*Bundle bundle = new Bundle();
                 if (ABSwitch.Ins().isOpenAB() && DeviceUtils.getChannelName().equalsIgnoreCase("huawei")) {
                     bundle.putString("url", "http://ad-static-xg.tagtic.cn/wangzhuan/file/739eaf3002ea80d1a2232c9cd5a8b9f4.html");
                 } else {
                     bundle.putString("url", "https://recharge-privacy.xg.tagtic.cn/#/privacy?authorization="+BuildConfig.APP_IDENTIFICATION);
                 }
                 bundle.putString("title", "隐私政策");
-                ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
+                ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);*/
+                String url = "https://recharge-privacy.xg.tagtic.cn/#/privacy?authorization=" + BuildConfig.APP_IDENTIFICATION;
+                if (ABSwitch.Ins().isOpenAB() && DeviceUtils.getChannelName().equalsIgnoreCase("huawei")) {
+                    url = "http://ad-static-xg.tagtic.cn/wangzhuan/file/739eaf3002ea80d1a2232c9cd5a8b9f4.html";
+                } else {
+                    url = "https://recharge-privacy.xg.tagtic.cn/#/privacy?authorization=" + BuildConfig.APP_IDENTIFICATION;
+                }
 
+                ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY).withString("url", url)
+                        .withString("title", "隐私政策").navigation();
                 //重新设置文字背景为透明色。否则会出现淡绿色背景
                 dataBinding.tvDeal.setHighlightColor(Color.TRANSPARENT);
 

@@ -10,6 +10,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.view.View;
+import android.widget.Toast;
+
+import androidx.test.espresso.remote.EspressoRemoteMessage;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.dn.events.events.LoginUserStatus;
@@ -82,7 +85,9 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
     }
 
 
-    /** 请求权限code */
+    /**
+     * 请求权限code
+     */
     private static final int REQUEST_PERMISSIONS_CODE = 1024;
 
     //再其他页面后台太久回到前台。导师开屏页面被打开的标记
@@ -167,7 +172,9 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
                 .show(getSupportFragmentManager(), null);
     }
 
-    /** 加载热启动广告 */
+    /**
+     * 加载热启动广告
+     */
     private void loadHotStartAd() {
         startProgressAnim();
         JddAdConfigManager.INSTANCE.addListener(() -> {
@@ -186,7 +193,9 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         });
     }
 
-    /** 加载冷启动广告 */
+    /**
+     * 加载冷启动广告
+     */
     private void loadClodStartAd() {
         startProgressAnim();
         JddAdConfigManager.INSTANCE.addListener(() -> {
@@ -263,7 +272,17 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         mDataBinding.adHalfScreenContainer.setVisibility(View.GONE);
     }
 
+    private long mPreClickTime = 0;
+
     private void loadDisagreePrivacyPolicyAd() {
+        long curClickTime = System.currentTimeMillis();
+        if (curClickTime - mPreClickTime < 1000) {
+            mPreClickTime = curClickTime;
+            Toast.makeText(this, "点击频率过高", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        mPreClickTime = curClickTime;
+
         startProgressAnim();
         JddAdConfigManager.INSTANCE.addListener(() -> {
             JddAdConfigBean configBean = JddAdConfigManager.INSTANCE.getJddAdConfigBean();
