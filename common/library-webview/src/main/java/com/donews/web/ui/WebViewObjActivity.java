@@ -95,14 +95,19 @@ public class WebViewObjActivity extends MvvmBaseLiveDataActivity<WebViewObjActiv
         LogUtil.d("url" + url);
         url = JsonUtils.H5url(url);
         LogUtil.d("url" + url);
-        mDataBinding.webView.loadUrl(url + JsonUtils.getCommonH5Json(url.contains("?")));
+        if (url.contains("report.amap.com")) {
+            mDataBinding.webView.loadUrl(url);
+            LogUtil.e("url:" + url);
+        } else {
+            mDataBinding.webView.loadUrl(url + JsonUtils.getCommonH5Json(url.contains("?") && url.contains("authorization")));
+            LogUtil.e("url:" + url + JsonUtils.getCommonH5Json(url.contains("?") && url.contains("authorization")));
+        }
         mDataBinding.titleBar.setBackOnClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
-
     }
 
     @Override
@@ -132,7 +137,6 @@ public class WebViewObjActivity extends MvvmBaseLiveDataActivity<WebViewObjActiv
         LogUtil.e("=onResume=");
         mWebModel.setResume(true);
         mDataBinding.webView.loadUrl(JavaScriptMethod.getResume());
-
     }
 
     @Override
@@ -145,7 +149,6 @@ public class WebViewObjActivity extends MvvmBaseLiveDataActivity<WebViewObjActiv
                 mDataBinding.webView != null && mOpenType == OpenWebViewType.SHARE_SUCCESS) {
             mDataBinding.webView.loadUrl(JavaScriptMethod.getShareSuccess());
         }
-
     }
 
     @Override

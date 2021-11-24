@@ -110,7 +110,6 @@ public class JsonUtils {
             } else {
                 device.append("?imei=").append(DeviceUtils.getDeviceId());
             }
-            device.append("?imei=").append(DeviceUtils.getDeviceId());
             device.append("&idfa=").append("");
             device.append("&android_id=").append(DeviceUtils.getAndroidID());
             device.append("&mac=").append(DeviceUtils.getMacAddress());

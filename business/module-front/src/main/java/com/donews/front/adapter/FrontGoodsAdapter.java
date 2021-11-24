@@ -93,9 +93,13 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
             switch (goodsInfo.getLotteryStatus()) {
                 case 0:
                     holder.doTv.setText("0元抽奖");
+                    holder.labelIv.setVisibility(View.GONE);
+                    holder.doTv.setBackgroundResource(R.drawable.front_goods_item_lottery_bg);
                     break;
                 case 1:
                     holder.doTv.setText("继续参与");
+                    holder.labelIv.setVisibility(View.GONE);
+                    holder.doTv.setBackgroundResource(R.drawable.front_goods_item_lottery_bg);
                     break;
                 case 2:
                     holder.doTv.setText("等待开奖");
@@ -121,12 +125,17 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
         holder.titleTv.setText(goodsInfo.getTitle());
         holder.priceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
         holder.priceTv.setText("￥ " + goodsInfo.getOriginalPrice());
+
         switch (goodsInfo.getLotteryStatus()) {
             case 0:
                 holder.doTv.setText("0元抽奖");
+                holder.labelIv.setVisibility(View.GONE);
+                holder.doTv.setBackgroundResource(R.drawable.front_goods_item_lottery_bg);
                 break;
             case 1:
                 holder.doTv.setText("继续参与");
+                holder.labelIv.setVisibility(View.GONE);
+                holder.doTv.setBackgroundResource(R.drawable.front_goods_item_lottery_bg);
                 break;
             case 2:
                 holder.doTv.setText("等待开奖");

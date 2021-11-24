@@ -1,5 +1,6 @@
 package com.donews.main.ui;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -76,6 +77,8 @@ public class MainActivity
 
     private NavigationController mNavigationController;
 
+    private MonitoHomeReceiver mMonitoHomeReceiver;
+
     private long mFirstClickBackTime = 0;
     /**
      * 初始选择tab
@@ -126,6 +129,12 @@ public class MainActivity
 
         //预加载一个激励视频
         AdVideoCacheUtils.INSTANCE.startCache();
+
+        if (mMonitoHomeReceiver == null) {
+            mMonitoHomeReceiver = new MonitoHomeReceiver();
+            IntentFilter homeFilter = new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+            registerReceiver(mMonitoHomeReceiver, homeFilter);
+        }
     }
 
     /**
@@ -422,15 +431,12 @@ public class MainActivity
     @Override
     protected void onStop() {
         super.onStop();
-
         LogUtil.e("MainActivity onStop");
-
-        SPUtils.setInformain(KeySharePreferences.IS_FIRST_IN_APP, "false");
-        finish();
     }
 
     @Override
     protected void onDestroy() {
+        SPUtils.setInformain(KeySharePreferences.IS_FIRST_IN_APP, "false");
         ExitInterceptUtils.resetFinishBackStatus();
         ImmersionBar.destroy(this, null);
         AppStatusManager.getInstance().setAppStatus(AppStatusConstant.STATUS_FORCE_KILLED);
@@ -442,6 +448,10 @@ public class MainActivity
         if (adapter != null) {
             adapter.clear();
             adapter = null;
+        }
+        if (mMonitoHomeReceiver != null) {
+            unregisterReceiver(mMonitoHomeReceiver);
+            mMonitoHomeReceiver = null;
         }
         super.onDestroy();
     }
@@ -458,6 +468,25 @@ public class MainActivity
     public void onGetMessage(RedPackageStatus redPackageStatus) {
         if (redPackageStatus.getStatus() == 0) {
             mDataBinding.mainFloatingBtn.setProgress(redPackageStatus.getCounts());
+        }
+    }
+
+    public class MonitoHomeReceiver extends BroadcastReceiver {
+        final String HOME_DIALOG_REASON = "homereason";
+        final String HOME_DIALOG_REASON_HOME = "homekey";
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+            if (action.equals(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)) {
+                MainActivity.this.finish();
+                /*String reason = intent.getStringExtra(HOME_DIALOG_REASON);
+                if (reason != null && reason.equals(HOME_DIALOG_REASON_HOME)) {
+                    LogUtil.e("MonitoHomeReceiver got home key");
+                    MainActivity.this.finish();
+                }*/
+            }
         }
     }
 }
