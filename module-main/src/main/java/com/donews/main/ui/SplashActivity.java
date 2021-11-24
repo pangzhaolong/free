@@ -12,7 +12,7 @@ import android.os.Build;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.test.espresso.remote.EspressoRemoteMessage;
+import androidx.fragment.app.Fragment;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.dn.events.events.LoginUserStatus;
@@ -93,6 +93,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
     //再其他页面后台太久回到前台。导师开屏页面被打开的标记
     private static final String toForeGroundKey = "toForeGround";
 
+    private PersonGuideDialog personGuideDialog;
     //启动页正常的等待时间
     public static final long PROGRESS_DURATION = 10 * 1000;
     //是否为后台到前台。即:是有后台唤醒到前台并非正常启动流程，T:唤醒，F:正常的启动逻辑
@@ -123,6 +124,13 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         }
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkDeal();
+    }
+
     @Subscribe //网络状态变化监听
     public void eventNetworkChanage(NetworkChanageEvnet event) {
         LogUtils.v("网络状态发生了变化：" + event.getType());
@@ -145,6 +153,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         super.onDestroy();
     }
 
+
     /**
      * 检查用户是否同意协议
      */
@@ -155,21 +164,33 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
             return;
         }
 
-        //拒绝激励激励视频
-        new PersonGuideDialog()
-                .setSureListener(() -> {
-                    SplashUtils.INSTANCE.savePersonExit(true);
-                    SPUtils.setInformain(KeySharePreferences.DEAL, true);
-                    SPUtils.setInformain(KeySharePreferences.AGREEMENT, true);
-                    AnalysisHelp.setAnalysisInitUmeng(getApplication());
+        if (personGuideDialog != null) {
+            return;
+        }
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag("PersonGuideDialog");
+        if (fragment != null && fragment instanceof PersonGuideDialog) {
+            getSupportFragmentManager().beginTransaction().remove(fragment).commitAllowingStateLoss();
+        }
+        personGuideDialog = new PersonGuideDialog();
+        personGuideDialog.setSureListener(() -> {
+            SplashUtils.INSTANCE.savePersonExit(true);
+            SPUtils.setInformain(KeySharePreferences.DEAL, true);
+            SPUtils.setInformain(KeySharePreferences.AGREEMENT, true);
+            AnalysisHelp.setAnalysisInitUmeng(getApplication());
 
-                    if (!AnalysisHelp.analysisRegister) {
-                        AnalysisHelp.register(getApplication());
-                    }
-                    checkAndRequestPermission();
-                })
-                .setCancelListener(this::loadDisagreePrivacyPolicyAd)
-                .show(getSupportFragmentManager(), null);
+            if (!AnalysisHelp.analysisRegister) {
+                AnalysisHelp.register(getApplication());
+            }
+            checkAndRequestPermission();
+        }).setCancelListener(new AbstractFragmentDialog.CancelListener() {
+            @Override
+            public void onCancel() {
+                loadDisagreePrivacyPolicyAd();
+                moveTaskToBack(true);
+                personGuideDialog = null;
+            }
+        }).show(getSupportFragmentManager(), "PersonGuideDialog");
+
     }
 
     /**
