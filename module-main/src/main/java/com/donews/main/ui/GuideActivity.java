@@ -126,6 +126,9 @@ public class GuideActivity
         mDataBinding.loginCkCheckTx.setOnClickListener(v -> {
             mDataBinding.loginCkCheck.performClick();
         });
+        mDataBinding.loginCkCheckLayout.setOnClickListener(v -> {
+            mDataBinding.loginCkCheck.performClick();
+        });
         mDataBinding.loginCkCheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 mDataBinding.llMainLogin.setEnabled(true);

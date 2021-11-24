@@ -96,19 +96,26 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent">
 
-            <CheckBox
-                android:id="@+id/login_ck_check"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:background="@drawable/main_guide_wachat_login_check_bg"
-                android:button="@null"
-                android:checked="false" />
-
+            <LinearLayout
+                android:id="@+id/login_ck_check_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingBottom="10dp"
+                android:paddingRight="5dp">
+                <CheckBox
+                    android:id="@+id/login_ck_check"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:background="@drawable/main_guide_wachat_login_check_bg"
+                    android:button="@null"
+                    android:checked="false" />
+            </LinearLayout>
             <TextView
                 android:id="@+id/login_ck_check_tx"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
                 android:text="已阅读并同意"
                 android:textColor="@color/white"
                 android:textSize="12sp" />
