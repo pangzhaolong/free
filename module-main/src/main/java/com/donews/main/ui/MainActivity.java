@@ -21,6 +21,7 @@ import com.donews.base.base.AppManager;
 import com.donews.base.base.AppStatusConstant;
 import com.donews.base.base.AppStatusManager;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
+import com.donews.common.ad.cache.AdVideoCacheUtils;
 import com.donews.common.adapter.ScreenAutoAdapter;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
@@ -122,6 +123,9 @@ public class MainActivity
         if (!ABSwitch.Ins().isOpenAB()) {
             lotteryItem.getViewTreeObserver().addOnGlobalLayoutListener(layoutListener);
         }
+
+        //预加载一个激励视频
+        AdVideoCacheUtils.INSTANCE.startCache();
     }
 
     /**
@@ -426,7 +430,7 @@ public class MainActivity
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults,
                 ExitInterceptUtils.INSTANCE.getRemindDialog());

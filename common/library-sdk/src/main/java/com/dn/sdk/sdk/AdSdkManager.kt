@@ -8,6 +8,7 @@ import com.dn.sdk.BuildConfig
 import com.dn.sdk.sdk.interfaces.ISdkManager
 import com.dn.sdk.sdk.tt.TTAdManagerHolder
 import com.dn.sdk.sdk.utils.AdLoggerUtils
+import com.donews.b.main.DNSDK
 import com.donews.b.start.DoNewsAdManagerHolder
 import com.donews.b.utils.DnLogSwitchUtils
 
@@ -25,12 +26,24 @@ object AdSdkManager : ISdkManager {
 
     /** 渠道信息 */
     var channel: String? = null
+        set(value) {
+            field = value
+            DNSDK.setChannel(value)
+        }
 
     /** 用户信息 */
     var userId: String? = null
+        set(value) {
+            field = value
+            DNSDK.setUserId(value)
+        }
 
     /** OAID 信息 */
     var oaid: String? = null
+        set(value) {
+            field = value
+            DNSDK.setOAID(value)
+        }
 
     @Volatile
     private var hadInit = false
