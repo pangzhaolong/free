@@ -59,9 +59,13 @@ class OnePixelVideoCacheActivity : AppCompatActivity() {
         super.onNewIntent(intent)
         setIntent(intent)
         ARouter.getInstance().inject(this)
-        if (videoType == 1) {
-            needShow = false
-            startPlayRewardVideo()
+        if (startCache) {
+            moveTaskToBack(true)
+        } else {
+            if (videoType == 1) {
+                needShow = false
+                startPlayRewardVideo()
+            }
         }
     }
 
@@ -131,6 +135,7 @@ class OnePixelVideoCacheActivity : AppCompatActivity() {
 
             override fun onError(code: Int, msg: String?) {
                 //将此activity移入后台而不销毁
+                moveTaskToBack(true)
                 rewardVideoListener?.onError(code, msg)
                 preloadVideoView = null
                 if (code != ErrorConstant.ERROR_CODE_NO_AD) {
