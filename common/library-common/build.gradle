@@ -24,4 +24,6 @@ dependencies {
     api rootProject.ext.dependencies["refresh-layout-kernel"]
     api rootProject.ext.dependencies["refresh-header-classics"]
     api rootProject.ext.dependencies["refresh-footer-classics"]
+
+    kapt rootProject.ext.dependencies["arouter-compiler"]
 }

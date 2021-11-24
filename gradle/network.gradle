@@ -5,7 +5,7 @@ ext {
     //版本号，版本名称 版本号对应于版本名称，
     // 例如：1.2.1->12010;1.3.2->13020
     //对应版本名称向右补0
-    VERSION_CODE = 13011
+    VERSION_CODE = 13013
     VERSION_NAME = "1.3.0"
     // app标识identification
     APP_IDENTIFICATION = "plus"
@@ -13,6 +13,8 @@ ext {
     //包名
     APPLICATION_ID = "com.cdyfnts.lottery.jdd.plus"
 
+    //打开广告日志,true 打开日志，false 关闭日志
+    OPEN_AD_LOGGER = "false"
 
     // 正式环境base Url
     API_BASE_URL_REALSE = "https://lottery.xg.tagtic.cn/"

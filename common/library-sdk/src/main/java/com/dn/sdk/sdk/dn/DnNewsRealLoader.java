@@ -3,6 +3,7 @@ package com.dn.sdk.sdk.dn;
 import android.app.Activity;
 import android.content.Context;
 
+import com.dn.sdk.sdk.ErrorConstant;
 import com.dn.sdk.sdk.bean.RequestInfo;
 import com.dn.sdk.sdk.bean.SDKType;
 import com.dn.sdk.sdk.interfaces.listener.IAdBannerListener;
@@ -25,6 +26,7 @@ import com.dn.sdk.sdk.interfaces.proxy.AdFullVideoListenerProxy;
 import com.dn.sdk.sdk.interfaces.proxy.AdInterstitialListenerProxy;
 import com.dn.sdk.sdk.interfaces.proxy.AdRewardVideoListenerProxy;
 import com.dn.sdk.sdk.interfaces.proxy.AdSplashListenerProxy;
+import com.dn.sdk.sdk.utils.AdLoggerUtils;
 
 /**
  * 多牛聚合sdk 加载
@@ -41,24 +43,28 @@ public class DnNewsRealLoader implements IRealLoader {
 
     @Override
     public void loadSplashAd(Activity activity, RequestInfo requestInfo, IAdSplashListener listener) {
+        AdLoggerUtils.INSTANCE.d(AdLoggerUtils.INSTANCE.createMsg(requestInfo, "startLoad"));
         new DnAdSplashLoadHelper().loadAd(activity, requestInfo,
                 new AdSplashListenerProxy(requestInfo, listener));
     }
 
     @Override
     public void loadBannerAd(Activity activity, RequestInfo requestInfo, IAdBannerListener listener) {
+        AdLoggerUtils.INSTANCE.d(AdLoggerUtils.INSTANCE.createMsg(requestInfo, "startLoad"));
         new DnAdBannerLoadHelper().loadAd(activity, requestInfo,
                 new AdBannerListenerProxy(requestInfo, listener));
     }
 
     @Override
     public void loadInterstitialAd(Activity activity, RequestInfo requestInfo, IAdInterstitialListener listener) {
+        AdLoggerUtils.INSTANCE.d(AdLoggerUtils.INSTANCE.createMsg(requestInfo, "startLoad"));
         new DnAdInterstitialLoadHelper().loadAd(activity, requestInfo,
                 new AdInterstitialListenerProxy(requestInfo, listener));
     }
 
     @Override
     public void loadRewardVideoAd(Activity activity, RequestInfo requestInfo, IAdRewardVideoListener listener) {
+        AdLoggerUtils.INSTANCE.d(AdLoggerUtils.INSTANCE.createMsg(requestInfo, "startLoad"));
         new DnAdRewardVideoLoadHelper().loadAd(activity, requestInfo,
                 new AdRewardVideoListenerProxy(requestInfo, listener));
     }
@@ -66,6 +72,7 @@ public class DnNewsRealLoader implements IRealLoader {
     @Override
     public void preloadRewardViewAd(Activity activity, RequestInfo requestInfo,
             IAdPreloadVideoViewListener viewListener, IAdRewardVideoListener listener) {
+        AdLoggerUtils.INSTANCE.d(AdLoggerUtils.INSTANCE.createMsg(requestInfo, "startLoad"));
         new DnAdRewardVideoLoadHelper().preloadAd(activity, requestInfo, viewListener,
                 new AdRewardVideoListenerProxy(requestInfo, listener));
     }
@@ -73,6 +80,7 @@ public class DnNewsRealLoader implements IRealLoader {
 
     @Override
     public void loadFullVideoAd(Activity activity, RequestInfo requestInfo, IAdFullVideoListener listener) {
+        AdLoggerUtils.INSTANCE.d(AdLoggerUtils.INSTANCE.createMsg(requestInfo, "startLoad"));
         new DnAdFullVideoLoadHelper().loadAd(activity, requestInfo,
                 new AdFullVideoListenerProxy(requestInfo, listener));
     }
@@ -80,6 +88,7 @@ public class DnNewsRealLoader implements IRealLoader {
     @Override
     public void preloadFullVideoAd(Activity activity, RequestInfo requestInfo,
             IAdPreloadVideoViewListener viewListener, IAdFullVideoListener listener) {
+        AdLoggerUtils.INSTANCE.d(AdLoggerUtils.INSTANCE.createMsg(requestInfo, "startLoad"));
         new DnAdFullVideoLoadHelper().preloadAd(activity, requestInfo, viewListener,
                 new AdFullVideoListenerProxy(requestInfo, listener));
     }
@@ -87,11 +96,15 @@ public class DnNewsRealLoader implements IRealLoader {
 
     @Override
     public void loadFeedNativeAd(Context context, RequestInfo requestInfo, IAdNativeListener listener) {
-
+        AdLoggerUtils.INSTANCE.d(AdLoggerUtils.INSTANCE.createMsg(requestInfo, "startLoad"));
+        if (listener != null) {
+            listener.onError(ErrorConstant.ERROR_CODE_NO_AD, "还未实现该接口");
+        }
     }
 
     @Override
     public void loadFeedNativeExpressAd(Context context, RequestInfo requestInfo, IAdNativeExpressListener listener) {
+        AdLoggerUtils.INSTANCE.d(AdLoggerUtils.INSTANCE.createMsg(requestInfo, "startLoad"));
         new DnAdNativeExpressLoadHelper().loadAd(context, requestInfo, listener);
     }
 }

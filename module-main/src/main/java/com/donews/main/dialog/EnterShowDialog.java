@@ -30,6 +30,7 @@ import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
+import com.donews.utilslibrary.utils.HttpConfigUtilsKt;
 import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.SPUtils;
 import com.donews.utilslibrary.utils.UrlUtils;
@@ -136,7 +137,8 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
     }
 
     private void requestGoodsInfo(boolean isFirstIn) {
-        EasyHttp.get(BuildConfig.API_LOTTERY_URL + "v1/recommend-goods-list?limit=1&first"+SPUtils.getInformain(KeySharePreferences.IS_FIRST_IN_APP, "true"))
+        EasyHttp.get(HttpConfigUtilsKt.withConfigParams(BuildConfig.API_LOTTERY_URL + "v1/recommend-goods-list", true)
+                + "&limit=1&first=" + SPUtils.getInformain(KeySharePreferences.IS_FIRST_IN_APP, "true"))
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<ExitDialogRecommendGoodsResp>() {
 

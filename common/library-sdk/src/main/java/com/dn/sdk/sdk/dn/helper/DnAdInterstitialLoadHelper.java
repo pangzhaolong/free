@@ -74,6 +74,18 @@ public class DnAdInterstitialLoadHelper {
         mDoNewsAdNative = DoNewsAdManagerHolder.get().createDoNewsAdNative();
         mDoNewsAdNative.onCreateInterstitial(mActivity, doNewsAD, new DoNewsAdNative.DonewsInterstitialADListener() {
             @Override
+            public void onAdStatus(int i, Object o) {
+
+            }
+
+            @Override
+            public void onAdLoad() {
+                if (mListener != null) {
+                    mListener.onLoad();
+                }
+            }
+
+            @Override
             public void onAdShow() {
                 if (mListener != null) {
                     mListener.onAdShow();

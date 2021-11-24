@@ -37,5 +37,10 @@
         <activity
             android:name=".updatedialog.UpdateSkipDialog"
             android:theme="@style/UpdateDialogTheme" />
+
+        <activity
+            android:name=".ad.cache.activity.OnePixelVideoCacheActivity"
+            android:launchMode="singleInstance"
+            android:theme="@style/common_onePixelActivityStyle" />
     </application>
 </manifest>

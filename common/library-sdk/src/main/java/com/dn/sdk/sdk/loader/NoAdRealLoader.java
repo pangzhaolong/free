@@ -1,5 +1,7 @@
 package com.dn.sdk.sdk.loader;
 
+import static com.dn.sdk.sdk.ErrorConstant.ERROR_AD_CLOSE;
+
 import android.app.Activity;
 import android.content.Context;
 
@@ -30,32 +32,32 @@ public class NoAdRealLoader implements IRealLoader {
     @Override
     public void loadSplashAd(Activity activity, RequestInfo requestInfo, IAdSplashListener listener) {
         if (listener != null) {
-            listener.onLoadFail(-1, "已关闭广告");
-            listener.onError(-1, "已关闭广告");
+            listener.onLoadFail(ERROR_AD_CLOSE, "已关闭广告");
+            listener.onError(ERROR_AD_CLOSE, "已关闭广告");
         }
     }
 
     @Override
     public void loadBannerAd(Activity activity, RequestInfo requestInfo, IAdBannerListener listener) {
         if (listener != null) {
-            listener.onLoadFail(-1, "已关闭广告");
-            listener.onError(-1, "已关闭广告");
+            listener.onLoadFail(ERROR_AD_CLOSE, "已关闭广告");
+            listener.onError(ERROR_AD_CLOSE, "已关闭广告");
         }
     }
 
     @Override
     public void loadInterstitialAd(Activity activity, RequestInfo requestInfo, IAdInterstitialListener listener) {
         if (listener != null) {
-            listener.onLoadFail(-1, "已关闭广告");
-            listener.onError(-1, "已关闭广告");
+            listener.onLoadFail(ERROR_AD_CLOSE, "已关闭广告");
+            listener.onError(ERROR_AD_CLOSE, "已关闭广告");
         }
     }
 
     @Override
     public void loadRewardVideoAd(Activity activity, RequestInfo requestInfo, IAdRewardVideoListener listener) {
         if (listener != null) {
-            listener.onLoadFail(-1, "已关闭广告");
-            listener.onError(-1, "已关闭广告");
+            listener.onLoadFail(ERROR_AD_CLOSE, "已关闭广告");
+            listener.onError(ERROR_AD_CLOSE, "已关闭广告");
         }
     }
 
@@ -63,16 +65,16 @@ public class NoAdRealLoader implements IRealLoader {
     public void preloadRewardViewAd(Activity activity, RequestInfo requestInfo,
             IAdPreloadVideoViewListener viewListener, IAdRewardVideoListener listener) {
         if (listener != null) {
-            listener.onLoadFail(-1, "已关闭广告");
-            listener.onError(-1, "已关闭广告");
+            listener.onLoadFail(ERROR_AD_CLOSE, "已关闭广告");
+            listener.onError(ERROR_AD_CLOSE, "已关闭广告");
         }
     }
 
     @Override
     public void loadFullVideoAd(Activity activity, RequestInfo requestInfo, IAdFullVideoListener listener) {
         if (listener != null) {
-            listener.onLoadFail(-1, "已关闭广告");
-            listener.onError(-1, "已关闭广告");
+            listener.onLoadFail(ERROR_AD_CLOSE, "已关闭广告");
+            listener.onError(ERROR_AD_CLOSE, "已关闭广告");
         }
     }
 
@@ -80,24 +82,24 @@ public class NoAdRealLoader implements IRealLoader {
     public void preloadFullVideoAd(Activity activity, RequestInfo requestInfo, IAdPreloadVideoViewListener viewListener,
             IAdFullVideoListener listener) {
         if (listener != null) {
-            listener.onLoadFail(-1, "已关闭广告");
-            listener.onError(-1, "已关闭广告");
+            listener.onLoadFail(ERROR_AD_CLOSE, "已关闭广告");
+            listener.onError(ERROR_AD_CLOSE, "已关闭广告");
         }
     }
 
     @Override
     public void loadFeedNativeAd(Context context, RequestInfo requestInfo, IAdNativeListener listener) {
         if (listener != null) {
-            listener.onLoadFail(-1, "已关闭广告");
-            listener.onError(-1, "已关闭广告");
+            listener.onLoadFail(ERROR_AD_CLOSE, "已关闭广告");
+            listener.onError(ERROR_AD_CLOSE, "已关闭广告");
         }
     }
 
     @Override
     public void loadFeedNativeExpressAd(Context context, RequestInfo requestInfo, IAdNativeExpressListener listener) {
         if (listener != null) {
-            listener.onLoadFail(-1, "已关闭广告");
-            listener.onError(-1, "已关闭广告");
+            listener.onLoadFail(ERROR_AD_CLOSE, "已关闭广告");
+            listener.onError(ERROR_AD_CLOSE, "已关闭广告");
         }
     }
 }

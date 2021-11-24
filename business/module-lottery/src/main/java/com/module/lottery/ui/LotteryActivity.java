@@ -31,12 +31,8 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.events.LotteryStatusEvent;
-import com.dn.sdk.sdk.interfaces.listener.impl.SimpleRewardVideoListener;
-import com.dn.sdk.sdk.interfaces.listener.preload.IAdPreloadVideoViewListener;
-import com.dn.sdk.sdk.interfaces.view.PreloadVideoView;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.business.callback.JddAdIdConfigManager;
-import com.donews.common.ad.business.loader.AdManager;
 import com.donews.common.provider.IDetailProvider;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
@@ -56,14 +52,11 @@ import com.module.lottery.dialog.LotteryCodeStartsDialog;
 import com.module.lottery.dialog.ReturnInterceptDialog;
 import com.module.lottery.dialog.ReceiveLotteryDialog;
 import com.module.lottery.model.LotteryModel;
-import com.module.lottery.utils.ClickDoubleUtil;
 import com.module.lottery.utils.GridSpaceItemDecoration;
-import com.module.lottery.utils.LotteryPreloadVideoView;
 import com.module.lottery.viewModel.LotteryViewModel;
 import com.module_lottery.R;
 import com.module_lottery.databinding.GuesslikeHeadLayoutBinding;
 import com.module_lottery.databinding.LotteryMainLayoutBinding;
-import com.orhanobut.logger.Logger;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
@@ -100,7 +93,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     private boolean dialogShow = false;
     @Autowired(name = RouterActivityPath.GoodsDetail.GOODS_DETAIL_PROVIDER)
     public IDetailProvider detailProvider;
-    private LotteryPreloadVideoView mPreloadVideoView;
 
     @Override
     protected int getLayoutId() {
@@ -147,7 +139,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         lotteryInfo();
         //设置下拉，和上拉的监听
         setSmartRefresh();
-        preloadRewardVideoAd();
         if (mStart_lottery) {
             //自动开始抽奖
             luckyDrawEntrance();
@@ -249,7 +240,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         if (isOpenAd) {
             //开始抽奖
             //弹框抽奖码生成dialog
-            LotteryCodeStartsDialog lotteryCodeStartsDialog = new LotteryCodeStartsDialog(LotteryActivity.this, mPreloadVideoView);
+            LotteryCodeStartsDialog lotteryCodeStartsDialog = new LotteryCodeStartsDialog(LotteryActivity.this);
             lotteryCodeStartsDialog.setStateListener(new LotteryCodeStartsDialog.OnStateListener() {
                 @Override
                 public void onFinish() {
@@ -279,78 +270,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             }
         }
 
-    }
-
-
-    /**
-     * 实现广告预加载，防止广告拉取时间过长
-     */
-    private void preloadRewardVideoAd() {
-        if ((mLotteryCodeBean == null) || (mLotteryCodeBean != null && mLotteryCodeBean.getCodes() != null && mLotteryCodeBean.getCodes().size() < 6)) {
-            AdManager.INSTANCE.preloadRewardVideoAd(this, new IAdPreloadVideoViewListener() {
-                @Override
-                public void OnLoadVideoView(PreloadVideoView videoView) {
-                    if (mPreloadVideoView == null) {
-                        mPreloadVideoView = new LotteryPreloadVideoView();
-                    }
-                    mPreloadVideoView.setPreloadVideoView(videoView);
-                }
-            }, new SimpleRewardVideoListener() {
-                @Override
-                public void onRewardedClosed() {
-                    super.onRewardedClosed();
-                    if (mPreloadVideoView != null && mPreloadVideoView.getPreloadVideoView() != null) {
-                        mPreloadVideoView.getAdStateListener().onRewardedClosed();
-                    }
-                    preloadRewardVideoAd();
-                }
-
-                @Override
-                public void onError(int code, String msg) {
-                    super.onError(code, msg);
-                    if (mPreloadVideoView != null && mPreloadVideoView.getAdStateListener() != null) {
-                        mPreloadVideoView.getAdStateListener().onError(code, msg);
-                    }
-                    mPreloadVideoView = null;
-                }
-
-                @Override
-                public void onRewardAdShow() {
-                    super.onRewardAdShow();
-                    if (mPreloadVideoView != null && mPreloadVideoView.getAdStateListener() != null) {
-                        mPreloadVideoView.getAdStateListener().onRewardAdShow();
-                    }
-                }
-
-                @Override
-                public void onRewardVerify(boolean result) {
-                    super.onRewardVerify(result);
-                    if (mPreloadVideoView != null && mPreloadVideoView.getPreloadVideoView() != null) {
-                        mPreloadVideoView.getAdStateListener().onRewardVerify(result);
-                    }
-                }
-
-                //点击跳过
-                @Override
-                public void onSkippedRewardVideo() {
-                    super.onSkippedRewardVideo();
-                    if (mPreloadVideoView != null && mPreloadVideoView.getPreloadVideoView() != null) {
-                        mPreloadVideoView.getAdStateListener().onRewardVideoComplete();
-                    }
-                }
-
-                //视频播放完成
-                @Override
-                public void onRewardVideoComplete() {
-                    super.onRewardVideoComplete();
-                    if (mPreloadVideoView != null && mPreloadVideoView.getPreloadVideoView() != null) {
-                        mPreloadVideoView.getAdStateListener().onRewardVideoComplete();
-                    }
-                }
-            });
-        } else {
-            Logger.d("不满足预加载需求");
-        }
     }
 
 

@@ -44,7 +44,6 @@ public class WebViewFragment extends MvvmLazyLiveDataFragment<WebViewFragmentBin
     }
 
 
-
     @Override
     protected void onFragmentFirstVisible() {
         super.onFragmentFirstVisible();
@@ -69,7 +68,7 @@ public class WebViewFragment extends MvvmLazyLiveDataFragment<WebViewFragmentBin
         LogUtil.d("url" + url);
         url = JsonUtils.H5url(url);
         LogUtil.d("url" + url);
-        mDataBinding.webViewFrag.loadUrl(url + JsonUtils.getCommonH5Json());
+        mDataBinding.webViewFrag.loadUrl(url + JsonUtils.getCommonH5Json(url.contains("?")));
         ARouteHelper.bind(RouterFragmentPath.ClassPath.WEB_VIEW_MODEL, mViewModel);
 
     }

@@ -2,6 +2,7 @@ apply from: rootProject.file('gradle/library.build.gradle')
 
 android {
     defaultConfig {
+        buildConfigField("boolean", "OPEN_AD_LOGGER", "${rootProject.OPEN_AD_LOGGER}")
         ndk {
             abiFilters "armeabi-v7a"
         }
@@ -18,4 +19,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
     //使用其中的大数据
     implementation project(path: ':common:library-utils')
+    implementation rootProject.ext.androidx["androidx-appcompat"]
+    api 'androidx.legacy:legacy-support-v4:1.0.0'
 }

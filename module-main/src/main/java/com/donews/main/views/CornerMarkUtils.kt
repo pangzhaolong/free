@@ -45,7 +45,7 @@ class CornerMarkUtils(val activity: Activity) {
             it.setImageResource(R.drawable.main_icon_corner_mark)
             val contentView: ViewGroup = activity.window.decorView.findViewById(android.R.id.content)
             val params =
-                FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT)
+                    FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT)
             params.marginStart = (x - width / 2f).toInt()
             params.topMargin = y - DensityUtils.dip2px(height)
             contentView.addView(it, params)
@@ -58,6 +58,7 @@ class CornerMarkUtils(val activity: Activity) {
                 val parent = it.parent as ViewGroup
                 parent.removeView(it)
             }
+            imageView = null;
         }
     }
 

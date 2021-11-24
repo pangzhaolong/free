@@ -69,9 +69,10 @@ public class RouterActivityPath {
 
         /**
          * 获取登录功能提供者
+         *
          * @return
          */
-        public static IARouterLoginProvider getLoginProvider(){
+        public static IARouterLoginProvider getLoginProvider() {
             return (IARouterLoginProvider) ARouter.getInstance().build(PROVIDER_LOGIN)
                     .navigation();
         }
@@ -205,5 +206,10 @@ public class RouterActivityPath {
                     .withInt("position", postion)
                     .navigation();
         }
+    }
+
+    public static class Ad {
+        private static final String AD_GROUP = "/ad";
+        public static final String AD_ONE_PX_CACHE_ACTIVITY = AD_GROUP + "/OnePxVideoCacheActivity";
     }
 }

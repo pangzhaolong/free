@@ -1,6 +1,8 @@
 package com.donews.main.ui;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -8,6 +10,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.view.View;
+import android.widget.Toast;
+
+import androidx.test.espresso.remote.EspressoRemoteMessage;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.dn.events.events.LoginUserStatus;
@@ -80,14 +85,16 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
     }
 
 
-    /** 请求权限code */
+    /**
+     * 请求权限code
+     */
     private static final int REQUEST_PERMISSIONS_CODE = 1024;
 
     //再其他页面后台太久回到前台。导师开屏页面被打开的标记
     private static final String toForeGroundKey = "toForeGround";
 
     //启动页正常的等待时间
-    public static final long PROGRESS_DURATION = 5 * 1000;
+    public static final long PROGRESS_DURATION = 10 * 1000;
     //是否为后台到前台。即:是有后台唤醒到前台并非正常启动流程，T:唤醒，F:正常的启动逻辑
     private boolean mIsBackgroundToFore = false;
 
@@ -165,7 +172,9 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
                 .show(getSupportFragmentManager(), null);
     }
 
-    /** 加载热启动广告 */
+    /**
+     * 加载热启动广告
+     */
     private void loadHotStartAd() {
         startProgressAnim();
         JddAdConfigManager.INSTANCE.addListener(() -> {
@@ -184,7 +193,9 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         });
     }
 
-    /** 加载冷启动广告 */
+    /**
+     * 加载冷启动广告
+     */
     private void loadClodStartAd() {
         startProgressAnim();
         JddAdConfigManager.INSTANCE.addListener(() -> {
@@ -223,6 +234,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
             @Override
             public void onAdShow() {
                 super.onAdShow();
+                stopProgressAnim();
             }
 
             @Override
@@ -260,7 +272,17 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         mDataBinding.adHalfScreenContainer.setVisibility(View.GONE);
     }
 
+    private long mPreClickTime = 0;
+
     private void loadDisagreePrivacyPolicyAd() {
+        long curClickTime = System.currentTimeMillis();
+        if (curClickTime - mPreClickTime < 1000) {
+            mPreClickTime = curClickTime;
+            Toast.makeText(this, "点击频率过高", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        mPreClickTime = curClickTime;
+
         startProgressAnim();
         JddAdConfigManager.INSTANCE.addListener(() -> {
             JddAdConfigBean configBean = JddAdConfigManager.INSTANCE.getJddAdConfigBean();
@@ -285,6 +307,11 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
                 finish();
             }
 
+            @Override
+            public void onAdShow() {
+                super.onAdShow();
+                stopProgressAnim();
+            }
 
             @Override
             public void onAdClosed() {
@@ -300,6 +327,12 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
             public void onError(int code, String msg) {
                 super.onError(code, msg);
                 finish();
+            }
+
+            @Override
+            public void onRewardAdShow() {
+                super.onRewardAdShow();
+                stopProgressAnim();
             }
 
             @Override
@@ -414,6 +447,12 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
                     }
                     mDataBinding.pbProgress.setProgress(progress);
                 }
+            }
+        });
+        mLoadAdAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
             }
         });
         mLoadAdAnimator.start();

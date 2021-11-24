@@ -73,6 +73,13 @@ public class DnAdBannerLoadHelper {
 
         mDoNewsAdNative = DoNewsAdManagerHolder.get().createDoNewsAdNative();
         mDoNewsAdNative.onCreateBanner(mActivity, doNewsAD, new DoNewsAdNative.DoNewsBannerADListener() {
+
+
+            @Override
+            public void onAdStatus(int i, Object o) {
+
+            }
+
             @Override
             public void onAdShow() {
                 if (mListener != null) {

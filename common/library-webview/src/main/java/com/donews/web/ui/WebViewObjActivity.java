@@ -57,7 +57,7 @@ public class WebViewObjActivity extends MvvmBaseLiveDataActivity<WebViewObjActiv
         mWebModel.setmOpenType(mOpenType);
         mWebModel.setmActionId(mActionId);
         webViewManager = new WebViewManager.Builder()
-                .setView(mDataBinding.webView, mDataBinding.errorView).setContext(this).setOverrideUrlLoad(false).url(
+                .setView(mDataBinding.webView, mDataBinding.errorView).setContext(this).setOverrideUrlLoad(true).url(
                         url)
                 .setProgressBar(mDataBinding.progressBar).setLoadingView(mDataBinding.loadingView)
                 .setFinishCallBack(this)
@@ -76,7 +76,7 @@ public class WebViewObjActivity extends MvvmBaseLiveDataActivity<WebViewObjActiv
                 .fitsSystemWindows(true)
                 .autoDarkModeEnable(true)
                 .init();
-        
+
         mDataBinding.webView.getSettings().setSupportMultipleWindows(false);
         mDataBinding.progressBar.setIndeterminate(false);
         mDataBinding.progressBar.setIndeterminateDrawable(
@@ -92,11 +92,10 @@ public class WebViewObjActivity extends MvvmBaseLiveDataActivity<WebViewObjActiv
         javaScriptInterface.setWebViewModel(mViewModel);
         mDataBinding.webView.addJavascriptInterface(javaScriptInterface, "android");
         mDataBinding.titleBar.setTitle(title);
-
         LogUtil.d("url" + url);
         url = JsonUtils.H5url(url);
         LogUtil.d("url" + url);
-        mDataBinding.webView.loadUrl(url + JsonUtils.getCommonH5Json());
+        mDataBinding.webView.loadUrl(url + JsonUtils.getCommonH5Json(url.contains("?")));
         mDataBinding.titleBar.setBackOnClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
