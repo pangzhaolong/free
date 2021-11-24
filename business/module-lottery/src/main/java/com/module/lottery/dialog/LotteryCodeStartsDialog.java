@@ -225,7 +225,6 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
             //视屏播放完成
             @Override
             public void onRewardVideoComplete() {
-                ToastUtil.showShort(mContext,"11");
                 onVideoComplete();
             }
             @Override
@@ -244,7 +243,6 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
             //点击跳过
             @Override
             public void onSkippedRewardVideo() {
-                ToastUtil.showShort(mContext,"22");
                 onVideoComplete();
             }
         });
