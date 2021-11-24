@@ -144,7 +144,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             luckyDrawEntrance();
             mStart_lottery = false;
         }
-        showGenerateCodeDialog();
     }
 
 
