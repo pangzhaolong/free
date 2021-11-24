@@ -25,11 +25,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.dn.sdk.sdk.interfaces.listener.IAdRewardVideoListener;
 import com.dn.sdk.sdk.interfaces.listener.impl.SimpleRewardVideoListener;
 import com.dn.sdk.sdk.interfaces.view.PreloadVideoView;
 import com.donews.base.base.AppManager;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.business.loader.AdManager;
+import com.donews.common.ad.cache.AdVideoCacheUtils;
 import com.donews.middle.abswitch.ABSwitch;
 import com.module.lottery.ui.LotteryActivity;
 import com.module.lottery.utils.LotteryPreloadVideoView;
@@ -40,18 +42,16 @@ import com.orhanobut.logger.Logger;
 import java.lang.ref.WeakReference;
 
 //抽奖码小于6个
-public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayoutBinding> {
+public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayoutBinding>implements DialogInterface.OnDismissListener {
     private static final String TAG = "LotteryCodeStartsDialog";
+    private static final String CLOSURE_HINT = "抽奖失败,请稍后再试";
     private LotteryActivity mContext;
     private OnStateListener mOnFinishListener;
     private LotteryHandler mLotteryHandler = new LotteryHandler(this);
     boolean aAState = false;
-    private LotteryPreloadVideoView mVideoView;
-
-    public LotteryCodeStartsDialog(LotteryActivity context, LotteryPreloadVideoView videoView) {
+    public LotteryCodeStartsDialog(LotteryActivity context ) {
         super(context, R.style.dialogTransparent);//内容样式在这里引入
         this.mContext = context;
-        this.mVideoView = videoView;
     }
 
 
@@ -67,15 +67,10 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
         Message mes = new Message();
         mes.what = 1;
         mLotteryHandler.sendMessageDelayed(mes, 1500);
-        setOnDismissListener(new OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                mDataBinding.lotteryText01.destroy();
-                mDataBinding.lotteryText02.destroy();
-                mDataBinding.lotteryText03.destroy();
-                mDataBinding.lotteryText04.destroy();
-            }
-        });
+        setOnDismissListener(this);
+        Message delay = new Message();
+        delay.what = 3;
+        mLotteryHandler.sendMessageDelayed(delay, 20000);
     }
 
 
@@ -184,86 +179,75 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
 
 
     private void loadAd() {
-        if (mVideoView != null && mVideoView.getPreloadVideoView() != null) {
-            mVideoView.setAdStateListener(new LotteryPreloadVideoView.IAdStateListener() {
-                @Override
-                public void onRewardAdShow() {
-                    //延时出现
-                    showToast();
-                }
+        AdVideoCacheUtils.INSTANCE.playRewardVideo(new IAdRewardVideoListener() {
+            @Override
+            public void onError(int code, String msg) {
+                loadError();
+                Logger.e(TAG + msg + "");
+            }
 
-                //点击关闭视频
-                @Override
-                public void onRewardedClosed() {
-                    closedVideoViewToast();
-                }
+            @Override
+            public void onLoadCached() {
 
-                @Override
-                public void onRewardVerify(boolean result) {
-                    aAState = result;
-                }
+            }
 
-                //点击跳过
-                @Override
-                public void onRewardVideoComplete() {
-                    onVideoComplete();
-                }
+            @Override
+            public void onLoad() {
 
-                @Override
-                public void onError(int code, String msg) {
-                    Logger.e(TAG + msg + "");
-                    loadError();
-                }
+            }
 
-            });
-            mVideoView.getPreloadVideoView().show();
+            @Override
+            public void onLoadFail(int code, String error) {
 
-        } else {
-            AdManager.INSTANCE.loadRewardVideoAd(mContext, new SimpleRewardVideoListener() {
-                @Override
-                public void onError(int code, String msg) {
-                    super.onError(code, msg);
-                    loadError();
-                    Logger.e(TAG + msg + "");
+            }
 
-                }
+            @Override
+            public void onLoadTimeout() {
 
-                @Override
-                public void onRewardAdShow() {
-                    super.onRewardAdShow();
-                    //延时出现
-                    showToast();
-                }
+            }
 
-                //点击关闭视频
-                @Override
-                public void onRewardedClosed() {
-                    super.onRewardedClosed();
-                    closedVideoViewToast();
-                }
+            @Override
+            public void onRewardAdShow() {
+                //延时出现
+                showToast();
+            }
 
-                //跳过
-                @Override
-                public void onSkippedRewardVideo() {
-                    super.onSkippedRewardVideo();
-                    onVideoComplete();
-                }
+            @Override
+            public void onRewardBarClick() {
 
+            }
 
-                //视屏播放完成
-                @Override
-                public void onRewardVideoComplete() {
-                    super.onRewardVideoComplete();
-                    onVideoComplete();
-                }
+            //点击关闭视频
+            @Override
+            public void onRewardedClosed() {
+                closedVideoViewToast();
+            }
+            //视屏播放完成
+            @Override
+            public void onRewardVideoComplete() {
+                ToastUtil.showShort(mContext,"11");
+                onVideoComplete();
+            }
+            @Override
+            public void onRewardVideoError() {
 
-                @Override
-                public void onRewardVerify(boolean result) {
-                    super.onRewardVerify(result);
-                    aAState = result;
-                }
-            });
-        }
+            }
+            @Override
+            public void onRewardVideoAdShowFail(int code, String message) {
+
+            }
+
+            @Override
+            public void onRewardVerify(boolean result) {
+                aAState = result;
+            }
+            //点击跳过
+            @Override
+            public void onSkippedRewardVideo() {
+                ToastUtil.showShort(mContext,"22");
+                onVideoComplete();
+            }
+        });
     }
 
 
@@ -272,7 +256,7 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
         if (mOnFinishListener != null) {
             mOnFinishListener.onFinish();
             if (mContext != null) {
-                ToastUtil.showShort(mContext, "抽奖失败,请稍后再试");
+                ToastUtil.showShort(mContext, CLOSURE_HINT);
             }
         }
 
@@ -303,6 +287,18 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
 
     public void setStateListener(OnStateListener l) {
         mOnFinishListener = l;
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        mDataBinding.lotteryText01.destroy();
+        mDataBinding.lotteryText02.destroy();
+        mDataBinding.lotteryText03.destroy();
+        mDataBinding.lotteryText04.destroy();
+        if(mLotteryHandler!=null){
+            mLotteryHandler.removeMessages(0);
+            mLotteryHandler.removeCallbacksAndMessages(null);
+        }
     }
 
     public interface OnStateListener {
@@ -337,6 +333,17 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
                     if (reference.get() != null) {
                         //广告跳转
                         reference.get().addVideoViewToast();
+                    }
+                    break;
+
+                case 3:
+                    if (reference.get() != null) {
+                        if (reference.get().isShowing()) {
+                            reference.get().dismiss();
+                            if (reference.get().getContext() != null) {
+                                ToastUtil.showShort(reference.get().getContext(), CLOSURE_HINT);
+                            }
+                        }
                     }
                     break;
             }
