@@ -130,7 +130,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
 
             //手
             mDataBinding.jsonAnimationHand.setImageAssetsFolder("images");
-            mDataBinding.jsonAnimationHand.setAnimation("hand.json");
+            mDataBinding.jsonAnimationHand.setAnimation("lottery_finger.json");
             mDataBinding.jsonAnimationHand.loop(true);
             mDataBinding.jsonAnimationHand.playAnimation();
 
