@@ -78,6 +78,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
     private long mPreClickRpTime = 0;
 
+    private boolean mHasRefreshed = false;
+
     private Context mContext;
 
     @Override
@@ -115,12 +117,14 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                     }
                     LotteryCategoryBean.categoryBean bean = mLotteryCategoryBean.getList().get(position);
                     tabItem.setTitle(bean.getName());
-                    if (bean.isSelected()) {
-                        tabItem.selected();
-                        mDataBinding.frontVp2.setCurrentItem(position, true);
-                        mCurSelectPosition = position;
-                    } else {
-                        tabItem.unSelected();
+                    if (!mHasRefreshed) {
+                        if (bean.isSelected()) {
+                            tabItem.selected();
+                            mDataBinding.frontVp2.setCurrentItem(position, true);
+                            mCurSelectPosition = position;
+                        } else {
+                            tabItem.unSelected();
+                        }
                     }
                 });
         tab.attach();
@@ -235,6 +239,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     }
 
     private void refreshFront() {
+        mHasRefreshed = true;
         loadCategoryData();
 //            loadAwardList();
         loadRpData();
@@ -322,11 +327,13 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     }
 
     private void showLotteryDateClosed(int period) {
-        mDataBinding.frontLotteryDate.setText(String.format(getString(R.string.front_lottery_date), period - 1));
+//        mDataBinding.frontLotteryDate.setText(String.format(getString(R.string.front_lottery_date), period - 1));
+        mDataBinding.frontLotteryDate.setText(getString(R.string.front_lottery_date));
     }
 
     private void showLotteryDateOpend(int period) {
-        mDataBinding.frontLotteryDate.setText(String.format(getString(R.string.front_lottery_date_opened), period - 1));
+//        mDataBinding.frontLotteryDate.setText(String.format(getString(R.string.front_lottery_date_opened), period - 1));
+        mDataBinding.frontLotteryDate.setText(R.string.front_lottery_date_opened);
     }
 
     private void showLotteryCode(String code) {

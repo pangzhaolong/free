@@ -110,6 +110,11 @@ public class MainActivity
                 .fitsSystemWindows(false)
                 .autoDarkModeEnable(true)
                 .init();
+
+        int nInAppCount = SPUtils.getInformain(KeySharePreferences.IS_FIRST_IN_APP, 0);
+        nInAppCount++;
+        SPUtils.setInformain(KeySharePreferences.IS_FIRST_IN_APP, nInAppCount);
+
         EventBus.getDefault().register(this);
         showDrawDialog();
         //检查浮标
@@ -436,7 +441,8 @@ public class MainActivity
 
     @Override
     protected void onDestroy() {
-        SPUtils.setInformain(KeySharePreferences.IS_FIRST_IN_APP, "false");
+        LogUtil.e("MainActivity onDestroy");
+
         ExitInterceptUtils.resetFinishBackStatus();
         ImmersionBar.destroy(this, null);
         AppStatusManager.getInstance().setAppStatus(AppStatusConstant.STATUS_FORCE_KILLED);
@@ -478,12 +484,16 @@ public class MainActivity
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
+            LogUtil.e("MonitoHomeReceiver onReceive" + action);
 
             if (action.equals(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)) {
-                MainActivity.this.finish();
-                /*String reason = intent.getStringExtra(HOME_DIALOG_REASON);
-                if (reason != null && reason.equals(HOME_DIALOG_REASON_HOME)) {
-                    LogUtil.e("MonitoHomeReceiver got home key");
+                LogUtil.e("MonitoHomeReceiver onReceive 1" + action);
+                /*Activity activity = AppManager.getInstance().getTopActivity();
+                if (activity == null) {
+                    return;
+                }
+
+                if (activity instanceof MainActivity) {
                     MainActivity.this.finish();
                 }*/
             }

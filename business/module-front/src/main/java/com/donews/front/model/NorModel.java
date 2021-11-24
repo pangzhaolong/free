@@ -24,8 +24,16 @@ public class NorModel extends BaseLiveDataModel {
     @SuppressLint("DefaultLocale")
     public MutableLiveData<LotteryGoodsBean> getNetData(String categoryId, int pageId) {
         MutableLiveData<LotteryGoodsBean> mutableLiveData = new MutableLiveData<>();
-        addDisposable(EasyHttp.get(String.format(FrontApi.lotteryGoodsUrl, categoryId, pageId)
-                + "&first=" + SPUtils.getInformain(KeySharePreferences.IS_FIRST_IN_APP, "true"))
+        int nInAPpCount = SPUtils.getInformain(KeySharePreferences.IS_FIRST_IN_APP, 0);
+
+        String url = String.format(FrontApi.lotteryGoodsUrl, categoryId, pageId) + "&first=true";
+        if (nInAPpCount == 1) {
+            url = String.format(FrontApi.lotteryGoodsUrl, categoryId, pageId) + "&first=true";
+        } else {
+            url = String.format(FrontApi.lotteryGoodsUrl, categoryId, pageId) + "&first=false";
+        }
+
+        addDisposable(EasyHttp.get(url)
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<LotteryGoodsBean>() {
 

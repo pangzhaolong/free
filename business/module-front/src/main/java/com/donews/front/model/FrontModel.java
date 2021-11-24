@@ -30,9 +30,15 @@ public class FrontModel extends BaseLiveDataModel {
     public MutableLiveData<LotteryCategoryBean> getNetData() {
         MutableLiveData<LotteryCategoryBean> mutableLiveData = new MutableLiveData<>();
 
-        addDisposable(EasyHttp.get(HttpConfigUtilsKt.withConfigParams(FrontApi.lotteryCategoryUrl, true)
-                + "&first=" + SPUtils.getInformain(KeySharePreferences.IS_FIRST_IN_APP, "true"))
-//                .cacheKey("lotteryCategoryUrl")
+        int nInAPpCount = SPUtils.getInformain(KeySharePreferences.IS_FIRST_IN_APP, 0);
+
+        String url = HttpConfigUtilsKt.withConfigParams(FrontApi.lotteryCategoryUrl, true) + "&first=true";
+        if (nInAPpCount == 1) {
+            url = HttpConfigUtilsKt.withConfigParams(FrontApi.lotteryCategoryUrl, true) + "&first=true";
+        } else {
+            url = HttpConfigUtilsKt.withConfigParams(FrontApi.lotteryCategoryUrl, true) + "&first=false";
+        }
+        addDisposable(EasyHttp.get(url)
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<LotteryCategoryBean>() {
 

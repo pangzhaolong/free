@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.View;
 
@@ -46,6 +45,8 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
 
     private boolean mIsNoTipsShow = false;
 
+    private boolean mChangeOne = false;
+
     public EnterShowDialog(Context context) {
         super(context, R.style.dialogTransparent);
         mContext = context;
@@ -73,6 +74,7 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
         mDataBinding.ivClose.setOnClickListener(v -> dismiss());
         mDataBinding.btnNext.setOnClickListener(v -> {
             mDataBinding.tvProbability1.setText(randLucky());
+            mChangeOne = true;
             requestGoodsInfo(false);
         });
 
@@ -138,8 +140,22 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
     }
 
     private void requestGoodsInfo(boolean isFirstIn) {
-        EasyHttp.get(HttpConfigUtilsKt.withConfigParams(BuildConfig.API_LOTTERY_URL + "v1/recommend-goods-list", true)
-                + "&limit=1&first=" + SPUtils.getInformain(KeySharePreferences.IS_FIRST_IN_APP, "true"))
+        String url = HttpConfigUtilsKt.withConfigParams(BuildConfig.API_LOTTERY_URL + "v1/recommend-goods-list", true)
+                + "&limit=1&first=true";
+        if (mChangeOne) {
+            url = HttpConfigUtilsKt.withConfigParams(BuildConfig.API_LOTTERY_URL + "v1/recommend-goods-list", true)
+                    + "&limit=1&first=false";
+        } else {
+            int nInAPpCount = SPUtils.getInformain(KeySharePreferences.IS_FIRST_IN_APP, 0);
+            if (nInAPpCount == 1) {
+                url = HttpConfigUtilsKt.withConfigParams(BuildConfig.API_LOTTERY_URL + "v1/recommend-goods-list", true)
+                        + "&limit=1&first=true";
+            } else {
+                url = HttpConfigUtilsKt.withConfigParams(BuildConfig.API_LOTTERY_URL + "v1/recommend-goods-list", true)
+                        + "&limit=1&first=false";
+            }
+        }
+        EasyHttp.get(url)
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<ExitDialogRecommendGoodsResp>() {
 
