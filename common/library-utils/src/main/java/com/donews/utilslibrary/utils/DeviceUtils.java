@@ -245,7 +245,7 @@ public class DeviceUtils {
             channel = WalleChannelReader.getChannel(UtilsConfig.getApplication());
         }
 
-//        return "gdt123";
+//        return "csj123";
         return !TextUtils.isEmpty(channel) ? channel : BuildConfig.APP_IDENTIFICATION;
 
     }

@@ -16,6 +16,7 @@ import com.dn.sdk.sdk.interfaces.listener.IAdRewardVideoListener;
 import com.dn.sdk.sdk.interfaces.listener.IAdSplashListener;
 import com.dn.sdk.sdk.interfaces.listener.preload.IAdPreloadVideoViewListener;
 import com.dn.sdk.sdk.interfaces.loader.IRealLoader;
+import com.dn.sdk.sdk.interfaces.view.PreloadFullVideoView;
 
 
 /**
@@ -79,8 +80,7 @@ public class NoAdRealLoader implements IRealLoader {
     }
 
     @Override
-    public void preloadFullVideoAd(Activity activity, RequestInfo requestInfo, IAdPreloadVideoViewListener viewListener,
-            IAdFullVideoListener listener) {
+    public void preloadFullVideoAd(Activity activity, RequestInfo requestInfo, IAdPreloadVideoViewListener viewListener, IAdFullVideoListener listener) {
         if (listener != null) {
             listener.onLoadFail(ERROR_AD_CLOSE, "已关闭广告");
             listener.onError(ERROR_AD_CLOSE, "已关闭广告");
