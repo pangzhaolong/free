@@ -48,6 +48,7 @@ class OnePixelVideoCacheActivity : AppCompatActivity() {
         if (startCache) {
             preloadRewardVideo()
         }
+        moveTaskToBack(true)
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -94,11 +95,10 @@ class OnePixelVideoCacheActivity : AppCompatActivity() {
             }
 
             override fun onRewardedClosed() {
+                moveTaskToBack(true)
                 rewardVideoListener?.onRewardedClosed()
-
                 rewardVideoListener = null
                 preloadVideoView = null
-
                 //加载下一个激励视频
                 preloadRewardVideo()
             }
