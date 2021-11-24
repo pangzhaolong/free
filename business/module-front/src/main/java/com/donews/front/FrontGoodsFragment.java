@@ -131,7 +131,9 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
     }
 
     private void loadNorData() {
-        mDataBinding.frontLoadingStatusTv.setText("数据加载中...");
+        if (mDataBinding.frontLoadingStatusTv != null) {
+            mDataBinding.frontLoadingStatusTv.setText("数据加载中...");
+        }
         mPageId++;
         mViewModel.getNetData(mCategoryBean.getCategoryId(), mPageId).observe(getViewLifecycleOwner(), norGoodsBean -> {
             if (norGoodsBean == null || norGoodsBean.getList() == null || norGoodsBean.getList().size() <= 0) {

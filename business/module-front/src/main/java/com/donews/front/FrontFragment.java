@@ -97,6 +97,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
         mContext = this.getContext();
 
+        mCurSelectPosition = 0;
+
         mFragmentAdapter = new FragmentAdapter(this);
         mDataBinding.frontVp2.setAdapter(mFragmentAdapter);
         mDataBinding.frontCategoryTl.setTabMode(TabLayout.MODE_SCROLLABLE);
@@ -115,8 +117,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                     tabItem.setTitle(bean.getName());
                     if (bean.isSelected()) {
                         tabItem.selected();
-//                        mDataBinding.frontCategoryTl.setSelected(true);
                         mDataBinding.frontVp2.setCurrentItem(position, true);
+                        mCurSelectPosition = position;
                     } else {
                         tabItem.unSelected();
                     }
@@ -249,18 +251,20 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     }
 
     private void loadCategoryData() {
-        mLotteryCategoryBean = GoodsCache.readGoodsBean(LotteryCategoryBean.class, "front");
+        /*mLotteryCategoryBean = GoodsCache.readGoodsBean(LotteryCategoryBean.class, "front");
         if (mLotteryCategoryBean != null && mLotteryCategoryBean.getList() != null) {
             mFragmentAdapter.refreshData(mLotteryCategoryBean.getList());
         }
+*/
         mViewModel.getNetData().observe(getViewLifecycleOwner(), categoryBean -> {
             if (categoryBean == null) {
                 return;
             }
 
             mLotteryCategoryBean = categoryBean;
+
             mFragmentAdapter.refreshData(categoryBean.getList());
-            GoodsCache.saveGoodsBean(categoryBean, "front");
+//            GoodsCache.saveGoodsBean(categoryBean, "front");
         });
     }
 
@@ -556,6 +560,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mDataBinding.frontBarrageView.pauseScroll();
         }
     }
+
 
     @Override
     public void onDestroyView() {
