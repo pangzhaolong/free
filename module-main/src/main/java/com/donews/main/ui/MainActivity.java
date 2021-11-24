@@ -20,7 +20,6 @@ import com.dn.events.events.RedPackageStatus;
 import com.donews.base.base.AppManager;
 import com.donews.base.base.AppStatusConstant;
 import com.donews.base.base.AppStatusManager;
-import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.common.ad.cache.AdVideoCacheUtils;
 import com.donews.common.adapter.ScreenAutoAdapter;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
@@ -47,6 +46,7 @@ import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.DateManager;
 import com.donews.utilslibrary.utils.KeySharePreferences;
+import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.SPUtils;
 import com.gyf.immersionbar.ImmersionBar;
 import com.vmadalin.easypermissions.EasyPermissions;
@@ -420,17 +420,35 @@ public class MainActivity
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+
+        LogUtil.e("MainActivity onStop");
+
+        SPUtils.setInformain(KeySharePreferences.IS_FIRST_IN_APP, "false");
+        finish();
+    }
+
+    @Override
     protected void onDestroy() {
         ExitInterceptUtils.resetFinishBackStatus();
         ImmersionBar.destroy(this, null);
         AppStatusManager.getInstance().setAppStatus(AppStatusConstant.STATUS_FORCE_KILLED);
         EventBus.getDefault().unregister(this);
+        if (fragments != null) {
+            fragments.clear();
+            fragments = null;
+        }
+        if (adapter != null) {
+            adapter.clear();
+            adapter = null;
+        }
         super.onDestroy();
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-            @NonNull int[] grantResults) {
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults,
                 ExitInterceptUtils.INSTANCE.getRemindDialog());

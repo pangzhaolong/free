@@ -99,6 +99,8 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
                     break;
                 case 2:
                     holder.doTv.setText("等待开奖");
+                    holder.labelIv.setVisibility(View.VISIBLE);
+                    holder.doTv.setBackgroundResource(R.drawable.front_goods_item_lottery_bg_disable);
                     break;
             }
             holder.doTv.postInvalidate();

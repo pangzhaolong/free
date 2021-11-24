@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.View;
 
@@ -192,7 +193,5 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
         } else {
             mDataBinding.tvBuyNumber.setText("累计" + mGoods.getTotalPeople() + "人参与抢购");
         }
-
-        SPUtils.setInformain(KeySharePreferences.IS_FIRST_IN_APP, "false");
     }
 }

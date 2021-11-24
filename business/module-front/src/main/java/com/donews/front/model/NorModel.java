@@ -11,6 +11,8 @@ import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
+import com.donews.utilslibrary.utils.KeySharePreferences;
+import com.donews.utilslibrary.utils.SPUtils;
 
 public class NorModel extends BaseLiveDataModel {
 
@@ -22,7 +24,8 @@ public class NorModel extends BaseLiveDataModel {
     @SuppressLint("DefaultLocale")
     public MutableLiveData<LotteryGoodsBean> getNetData(String categoryId, int pageId) {
         MutableLiveData<LotteryGoodsBean> mutableLiveData = new MutableLiveData<>();
-        addDisposable(EasyHttp.get(String.format(FrontApi.lotteryGoodsUrl, categoryId, pageId))
+        addDisposable(EasyHttp.get(String.format(FrontApi.lotteryGoodsUrl, categoryId, pageId)
+                + "&first=" + SPUtils.getInformain(KeySharePreferences.IS_FIRST_IN_APP, "true"))
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<LotteryGoodsBean>() {
 

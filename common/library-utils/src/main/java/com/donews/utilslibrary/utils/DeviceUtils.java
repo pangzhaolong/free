@@ -245,9 +245,9 @@ public class DeviceUtils {
             channel = WalleChannelReader.getChannel(UtilsConfig.getApplication());
         }
 
+//        return "kuaishou123";
 //        return "csj123";
         return !TextUtils.isEmpty(channel) ? channel : BuildConfig.APP_IDENTIFICATION;
-
     }
 
     public static String getOaid() {
