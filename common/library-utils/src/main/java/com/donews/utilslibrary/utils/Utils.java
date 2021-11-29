@@ -24,7 +24,7 @@ public class Utils {
             }
         } catch (Exception e) {
         }
-        return null;
+        return "";
     }
 
     /**

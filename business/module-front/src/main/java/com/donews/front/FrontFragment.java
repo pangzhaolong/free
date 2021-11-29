@@ -72,8 +72,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
     private int mCurSelectPosition = 0;
 
-    private boolean mIsToTopViewShow = false;
-
     private boolean mFindFirstReadyRp = false;
 
     private long mPreClickRpTime = 0;
@@ -169,8 +167,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mScaleAnimation.setDuration(1000);
         }
 
-//        resetLotteryLayout();
-
         loadCategoryData();
         loadServerTime();
 //        loadLotteryRecord();
@@ -200,7 +196,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         mDataBinding.frontToTopTv.setOnClickListener(v -> {
             mFragmentAdapter.gotoTopPosition(mCurSelectPosition);
             mDataBinding.frontAppBarLayout.setExpanded(true, true);
-            mIsToTopViewShow = false;
             mDataBinding.frontToTopTv.setVisibility(View.GONE);
         });
     }
@@ -291,11 +286,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         calendar.setTimeInMillis(Long.parseLong(time) * 1000);
         LogUtil.e("Time:" + calendar.get(Calendar.YEAR) + " " + calendar.get(Calendar.MONTH) + " " + calendar.get(Calendar.DAY_OF_MONTH)
                 + " " + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE) + ":" + calendar.get(Calendar.SECOND));
-        if (calendar.get(Calendar.HOUR_OF_DAY) < 10) {
-            mIsAfterTenClock = false;
-        } else {
-            mIsAfterTenClock = true;
-        }
+        mIsAfterTenClock = calendar.get(Calendar.HOUR_OF_DAY) >= 10;
         loadLotteryRecord();
     }
 

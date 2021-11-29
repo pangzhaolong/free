@@ -77,8 +77,6 @@ public class MainActivity
 
     private NavigationController mNavigationController;
 
-    private MonitoHomeReceiver mMonitoHomeReceiver;
-
     private long mFirstClickBackTime = 0;
     /**
      * 初始选择tab
@@ -134,12 +132,6 @@ public class MainActivity
 
         //预加载一个激励视频
         AdVideoCacheUtils.INSTANCE.startCache();
-
-        if (mMonitoHomeReceiver == null) {
-            mMonitoHomeReceiver = new MonitoHomeReceiver();
-            IntentFilter homeFilter = new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
-            registerReceiver(mMonitoHomeReceiver, homeFilter);
-        }
     }
 
     /**
@@ -457,10 +449,7 @@ public class MainActivity
             adapter.clear();
             adapter = null;
         }
-        if (mMonitoHomeReceiver != null) {
-            unregisterReceiver(mMonitoHomeReceiver);
-            mMonitoHomeReceiver = null;
-        }
+
         super.onDestroy();
     }
 
@@ -476,29 +465,6 @@ public class MainActivity
     public void onGetMessage(RedPackageStatus redPackageStatus) {
         if (redPackageStatus.getStatus() == 0) {
             mDataBinding.mainFloatingBtn.setProgress(redPackageStatus.getCounts());
-        }
-    }
-
-    public class MonitoHomeReceiver extends BroadcastReceiver {
-        final String HOME_DIALOG_REASON = "homereason";
-        final String HOME_DIALOG_REASON_HOME = "homekey";
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            LogUtil.e("MonitoHomeReceiver onReceive" + action);
-
-            if (action.equals(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)) {
-                LogUtil.e("MonitoHomeReceiver onReceive 1" + action);
-                /*Activity activity = AppManager.getInstance().getTopActivity();
-                if (activity == null) {
-                    return;
-                }
-
-                if (activity instanceof MainActivity) {
-                    MainActivity.this.finish();
-                }*/
-            }
         }
     }
 }
