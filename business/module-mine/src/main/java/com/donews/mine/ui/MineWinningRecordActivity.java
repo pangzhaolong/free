@@ -3,6 +3,7 @@ package com.donews.mine.ui;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -104,10 +105,12 @@ public class MineWinningRecordActivity extends
                             )
                     );
                     View notDataView = mDataBinding.mineWinRecodLayout.getStateLayout().findViewById(R.id.mine_open_win_not_data_ll);
+                    ImageView icon = mDataBinding.mineWinRecodLayout.getStateLayout().findViewById(R.id.mine_open_win_not_data_icon);
                     notDataView.setPadding(notDataView.getPaddingLeft()
-                            , notDataView.getPaddingTop()+ ConvertUtils.dp2px(40F),
+                            , notDataView.getPaddingTop() + ConvertUtils.dp2px(40F),
                             notDataView.getPaddingRight(),
                             notDataView.getPaddingBottom());
+                    icon.setImageResource(R.drawable.mine_open_win_not_data_bg);
                 } else {
                     mDataBinding.mineWinRecodLayout.getStateLayout().showContent();
                 }

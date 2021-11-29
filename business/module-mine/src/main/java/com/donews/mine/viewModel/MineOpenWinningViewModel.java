@@ -40,6 +40,7 @@ import com.donews.utilslibrary.utils.UrlUtils;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -197,6 +198,7 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
         cancelNotOpenWinCountDownTimer();
         try {
             DateFormat df = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
+            DateFormat dfD = new SimpleDateFormat("yyyyMMdd");
             //获取当前期的开奖时间
             long currentPeriodOpenTime = df.parse(openWinPeriod.getValue() + 1 + " 10:00:00").getTime();
             if (serviceTimeLiveData.getValue() == null) {
@@ -212,10 +214,19 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             //服务器时间小于开奖时间。那么计算开奖时间的差距准备计时
             int stepTime = (int) (serviceTime - currentPeriodOpenTime / 1000);
             if (stepTime < 0) {
-                if(!isAutoPeriod && !isMainLoad){
-                    //表示还未开奖。但是不需要显示计时，可能是个人记录查看参与记录
-                    openWinCountdown.postValue(-2);
-                    return; //不是自动加载。并且不是不是从首页进来的。是参与记录页面进来的
+                if (!isAutoPeriod && !isMainLoad) {
+                    try {
+                        //服务器是否已经到达当天
+                        String isCurrDayDate = dfD.format(new Date(serviceTime * 1000));
+                        if (openWinPeriod.getValue() == null ||
+                                openWinPeriod.getValue() != mModel.dateTheDay(Integer.parseInt(isCurrDayDate))) {
+                            //表示还未开奖。但是不需要显示计时，可能是个人记录查看参与记录
+                            openWinCountdown.postValue(-2);
+                            return; //不是自动加载。并且不是不是从首页进来的。是参与记录页面进来的
+                        }
+                    } catch (Exception e) {
+                        //如果出错。则进行倒计时处理。所以这里不处理(已产品确认)
+                    }
                 }
                 //开启计时器(通过服务器时间计算得出的需要计数的时间)
                 int countDownTime = Math.abs(stepTime);
@@ -419,6 +430,7 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
      */
     @SuppressLint("SetTextI18n")
     public void addSelectGoods(View view) {
+        ImageView statusIcon = view.findViewById(R.id.mine_win_code_win_desc_icon);
         TextView statusName = view.findViewById(R.id.mine_win_code_win_desc_name);
         ViewGroup vGroup = view.findViewById(R.id.mine_win_code_win_desc_good_ll);
         vGroup.removeAllViews();
@@ -427,8 +439,11 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             if (detailLivData.getValue().record.isEmpty() &&
                     detailLivData.getValue().myWin.isEmpty()) {
                 //未参与，不显示中奖模块
+                statusIcon.setVisibility(View.GONE);
                 return;
             }
+            statusIcon.setVisibility(View.VISIBLE);
+            statusIcon.setImageResource(R.drawable.mine_win_code_not_sele_icon);
             //已参与(参与了本期,但是未中奖)
             statusName.setTextColor(Color.BLACK);
             statusName.setText("很遗憾,你本次未中奖");
@@ -439,6 +454,8 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
         }
         statusName.setTextColor(Color.parseColor("#E9423E"));
         statusName.setText("恭喜你,获得大奖");
+        statusIcon.setVisibility(View.VISIBLE);
+        statusIcon.setImageResource(R.drawable.mine_win_code_sele_icon);
         for (int i = 0; i < detailLivData.getValue().myWin.size(); i++) {
             HistoryPeopleLotteryDetailResp.WinerDTO item = detailLivData.getValue().myWin.get(i);
             View childView = View.inflate(view.getContext(), R.layout.incl_mine_winning_good_item, null);
