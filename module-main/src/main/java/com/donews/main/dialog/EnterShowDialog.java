@@ -1,6 +1,7 @@
 package com.donews.main.dialog;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
@@ -180,25 +181,27 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
             return;
         }
         mGoods = bean.getList().get(0);
-        Glide.with(mContext)
-                .load(UrlUtils.formatUrlPrefix(mGoods.getMainPic()))
-                .diskCacheStrategy(DiskCacheStrategy.DATA)
-                .addListener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        if (isFirstIn) {
-                            dismiss();
+        if (mContext != null && mContext instanceof Activity && !((Activity) mContext).isDestroyed()) {
+            Glide.with(mContext)
+                    .load(UrlUtils.formatUrlPrefix(mGoods.getMainPic()))
+                    .diskCacheStrategy(DiskCacheStrategy.DATA)
+                    .addListener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            if (isFirstIn) {
+                                dismiss();
+                            }
+                            return false;
                         }
-                        return false;
-                    }
 
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        mDataBinding.ivGoodsPic.setImageDrawable(resource);
-                        show();
-                        return false;
-                    }
-                }).preload();
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            mDataBinding.ivGoodsPic.setImageDrawable(resource);
+                            show();
+                            return false;
+                        }
+                    }).preload();
+        }
 //        Glide.with(mContext).load(UrlUtils.formatUrlPrefix(mGoods.getMainPic())).into(mDataBinding.ivGoodsPic);
         mDataBinding.tvGoodsTitle.setText(mGoods.getTitle());
         mDataBinding.tvActualPrice.setText(String.format("￥%.0f", mGoods.getDisplayPrice()));

@@ -138,7 +138,9 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
         mViewModel.getNetData(mCategoryBean.getCategoryId(), mPageId).observe(getViewLifecycleOwner(), norGoodsBean -> {
             if (norGoodsBean == null || norGoodsBean.getList() == null || norGoodsBean.getList().size() <= 0) {
                 mPageId--;
-                mDataBinding.frontLoadingStatusTv.setText("加载数据失败，点击重新加载");
+                if( mDataBinding.frontLoadingStatusTv!=null){
+                    mDataBinding.frontLoadingStatusTv.setText("加载数据失败，点击重新加载");
+                }
                 mDataBinding.frontNorSrl.finishLoadMoreWithNoMoreData();
                 return;
             }
