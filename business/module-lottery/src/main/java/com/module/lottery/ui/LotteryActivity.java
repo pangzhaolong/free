@@ -193,6 +193,17 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         } else {
             setLottieAnimation(true);
         }
+        boolean first_show = mSharedPreferences.getBoolean(FIRST_SHOW, true);
+        if (first_show) {
+            mSharedPreferences.edit().putBoolean(FIRST_SHOW, false).commit();
+            mDataBinding.maskingLayout.setVisibility(View.VISIBLE);
+            //圆 新手引导遮罩层
+            initLottie(mDataBinding.maskingButton, "lottery_round.json");
+            //小手 新手引导遮罩层
+            initLottie(mDataBinding.maskingHand, "lottery_finger.json");
+        } else {
+            mDataBinding.maskingLayout.setVisibility(View.GONE);
+        }
     }
 
     private void setLottieAnimation(boolean play) {
@@ -203,17 +214,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             mDataBinding.jsonAnimation.setVisibility(View.VISIBLE);
             //圆
             initLottie(mDataBinding.jsonAnimationRound, "lottery_round.json");
-            boolean first_show = mSharedPreferences.getBoolean(FIRST_SHOW, true);
-            if (first_show) {
-                mSharedPreferences.edit().putBoolean(FIRST_SHOW, false).commit();
-                mDataBinding.maskingLayout.setVisibility(View.VISIBLE);
-                //圆 新手引导遮罩层
-                initLottie(mDataBinding.maskingButton, "lottery_round.json");
-                //小手 新手引导遮罩层
-                initLottie(mDataBinding.maskingHand, "lottery_finger.json");
-            } else {
-                mDataBinding.maskingLayout.setVisibility(View.GONE);
-            }
+
         } else {
             mDataBinding.jsonAnimation.setVisibility(View.GONE);
             mDataBinding.jsonAnimationRound.pauseAnimation();

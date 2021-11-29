@@ -15,6 +15,9 @@ import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
+import com.donews.utilslibrary.utils.HttpConfigUtilsKt;
+import com.donews.utilslibrary.utils.KeySharePreferences;
+import com.donews.utilslibrary.utils.SPUtils;
 
 public class FrontModel extends BaseLiveDataModel {
 
@@ -26,9 +29,17 @@ public class FrontModel extends BaseLiveDataModel {
      */
     public MutableLiveData<LotteryCategoryBean> getNetData() {
         MutableLiveData<LotteryCategoryBean> mutableLiveData = new MutableLiveData<>();
-        addDisposable(EasyHttp.get(FrontApi.lotteryCategoryUrl)
-                .cacheKey("lotteryCategoryUrl")
-                .cacheMode(CacheMode.CACHEANDREMOTEDISTINCT)
+
+        int nInAPpCount = SPUtils.getInformain(KeySharePreferences.IS_FIRST_IN_APP, 0);
+
+        String url = HttpConfigUtilsKt.withConfigParams(FrontApi.lotteryCategoryUrl, true) + "&first=true";
+        if (nInAPpCount == 1) {
+            url = HttpConfigUtilsKt.withConfigParams(FrontApi.lotteryCategoryUrl, true) + "&first=true";
+        } else {
+            url = HttpConfigUtilsKt.withConfigParams(FrontApi.lotteryCategoryUrl, true) + "&first=false";
+        }
+        addDisposable(EasyHttp.get(url)
+                .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<LotteryCategoryBean>() {
 
                     @Override

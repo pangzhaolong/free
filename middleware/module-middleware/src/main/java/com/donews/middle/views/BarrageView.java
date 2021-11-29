@@ -57,7 +57,7 @@ public class BarrageView extends FrameLayout {
 
     private void initAnimation1() {
         mMoveAnimator1 = ObjectAnimator.ofFloat(mAwardView1, "translationY", 0);
-        mMoveAnimator1.setDuration(1500);
+        mMoveAnimator1.setDuration(2000);
         mMoveAnimator1.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -106,7 +106,7 @@ public class BarrageView extends FrameLayout {
 
     private void initAnimation2() {
         mMoveAnimator2 = ObjectAnimator.ofFloat(mAwardView2, "translationY", 0);
-        mMoveAnimator2.setDuration(1800);
+        mMoveAnimator2.setDuration(2000);
         mMoveAnimator2.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {

@@ -78,6 +78,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
     private long mPreClickRpTime = 0;
 
+    private boolean mHasRefreshed = false;
+
     private Context mContext;
 
     @Override
@@ -97,6 +99,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
         mContext = this.getContext();
 
+        mCurSelectPosition = 0;
+
         mFragmentAdapter = new FragmentAdapter(this);
         mDataBinding.frontVp2.setAdapter(mFragmentAdapter);
         mDataBinding.frontCategoryTl.setTabMode(TabLayout.MODE_SCROLLABLE);
@@ -113,12 +117,14 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                     }
                     LotteryCategoryBean.categoryBean bean = mLotteryCategoryBean.getList().get(position);
                     tabItem.setTitle(bean.getName());
-                    if (bean.isSelected()) {
-                        tabItem.selected();
-//                        mDataBinding.frontCategoryTl.setSelected(true);
-                        mDataBinding.frontVp2.setCurrentItem(position, true);
-                    } else {
-                        tabItem.unSelected();
+                    if (!mHasRefreshed) {
+                        if (bean.isSelected()) {
+                            tabItem.selected();
+                            mDataBinding.frontVp2.setCurrentItem(position, true);
+                            mCurSelectPosition = position;
+                        } else {
+                            tabItem.unSelected();
+                        }
                     }
                 });
         tab.attach();
@@ -233,6 +239,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     }
 
     private void refreshFront() {
+        mHasRefreshed = true;
         loadCategoryData();
 //            loadAwardList();
         loadRpData();
@@ -249,18 +256,20 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     }
 
     private void loadCategoryData() {
-        mLotteryCategoryBean = GoodsCache.readGoodsBean(LotteryCategoryBean.class, "front");
+        /*mLotteryCategoryBean = GoodsCache.readGoodsBean(LotteryCategoryBean.class, "front");
         if (mLotteryCategoryBean != null && mLotteryCategoryBean.getList() != null) {
             mFragmentAdapter.refreshData(mLotteryCategoryBean.getList());
         }
+*/
         mViewModel.getNetData().observe(getViewLifecycleOwner(), categoryBean -> {
             if (categoryBean == null) {
                 return;
             }
 
             mLotteryCategoryBean = categoryBean;
+
             mFragmentAdapter.refreshData(categoryBean.getList());
-            GoodsCache.saveGoodsBean(categoryBean, "front");
+//            GoodsCache.saveGoodsBean(categoryBean, "front");
         });
     }
 
@@ -318,11 +327,13 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     }
 
     private void showLotteryDateClosed(int period) {
-        mDataBinding.frontLotteryDate.setText(String.format(getString(R.string.front_lottery_date), period - 1));
+//        mDataBinding.frontLotteryDate.setText(String.format(getString(R.string.front_lottery_date), period - 1));
+        mDataBinding.frontLotteryDate.setText(getString(R.string.front_lottery_date));
     }
 
     private void showLotteryDateOpend(int period) {
-        mDataBinding.frontLotteryDate.setText(String.format(getString(R.string.front_lottery_date_opened), period - 1));
+//        mDataBinding.frontLotteryDate.setText(String.format(getString(R.string.front_lottery_date_opened), period - 1));
+        mDataBinding.frontLotteryDate.setText(R.string.front_lottery_date_opened);
     }
 
     private void showLotteryCode(String code) {
@@ -556,6 +567,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mDataBinding.frontBarrageView.pauseScroll();
         }
     }
+
 
     @Override
     public void onDestroyView() {

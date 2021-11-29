@@ -48,4 +48,11 @@ public class MainPageAdapter extends FragmentPagerAdapter {
         }
         return 0;
     }
+
+    public void clear() {
+        if (fragments != null) {
+            fragments.clear();
+            fragments = null;
+        }
+    }
 }

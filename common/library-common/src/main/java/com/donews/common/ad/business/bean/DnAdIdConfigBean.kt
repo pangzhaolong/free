@@ -10,10 +10,10 @@ package com.donews.common.ad.business.bean
 class DnAdIdConfigBean : JddBaseAdIdConfigBean() {
 
     init {
-        invalidInterstitialId = "946949406"
-        invalidRewardVideoId = "946943379"
-        splashId = "887601190"
-        interstitialId = "946949021"
-        rewardVideoId = "946943369"
+        invalidInterstitialId = "92544"
+        invalidRewardVideoId = "92540"
+        splashId = "92509"
+        interstitialId = "92513"
+        rewardVideoId = "91902"
     }
 }

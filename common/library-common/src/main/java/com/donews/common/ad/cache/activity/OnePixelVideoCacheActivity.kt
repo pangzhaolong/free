@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
+import com.dn.sdk.sdk.ErrorConstant
 import com.dn.sdk.sdk.interfaces.listener.IAdRewardVideoListener
 import com.dn.sdk.sdk.interfaces.view.PreloadVideoView
 import com.donews.common.ad.business.loader.AdManager
@@ -41,6 +42,9 @@ class OnePixelVideoCacheActivity : AppCompatActivity() {
 
     var needShow: Boolean = false
 
+    /** 预加载错误，重试 */
+    private var retry: Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setWindowOnePx()
@@ -55,9 +59,13 @@ class OnePixelVideoCacheActivity : AppCompatActivity() {
         super.onNewIntent(intent)
         setIntent(intent)
         ARouter.getInstance().inject(this)
-        if (videoType == 1) {
-            needShow = false
-            startPlayRewardVideo()
+        if (startCache) {
+            moveTaskToBack(true)
+        } else {
+            if (videoType == 1) {
+                needShow = false
+                startPlayRewardVideo()
+            }
         }
     }
 
@@ -72,6 +80,8 @@ class OnePixelVideoCacheActivity : AppCompatActivity() {
         }, object : IAdRewardVideoListener {
             override fun onLoad() {
                 rewardVideoListener?.onLoad()
+                //加载成功,则重置加载次数
+                retry = 0
             }
 
             override fun onLoadFail(code: Int, error: String?) {
@@ -124,11 +134,16 @@ class OnePixelVideoCacheActivity : AppCompatActivity() {
             }
 
             override fun onError(code: Int, msg: String?) {
-                //将此activity移入后台而销毁
+                //将此activity移入后台而不销毁
+                moveTaskToBack(true)
                 rewardVideoListener?.onError(code, msg)
                 preloadVideoView = null
-                //错误，继续预加载一个广告
-                preloadRewardVideo()
+                if (code != ErrorConstant.ERROR_CODE_NO_AD) {
+                    retry++
+                    if (retry < 3) {
+                        preloadRewardVideo()
+                    }
+                }
             }
         })
     }
@@ -136,6 +151,7 @@ class OnePixelVideoCacheActivity : AppCompatActivity() {
     private fun startPlayRewardVideo() {
         if (preloadVideoView == null) {
             needShow = true
+            retry = 0
             preloadRewardVideo()
         } else {
             preloadVideoView?.show()
