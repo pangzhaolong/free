@@ -14,9 +14,9 @@ class JddAdIdConfigBean(
     @SerializedName("openAd")
     var openAd: Boolean = true,
     @SerializedName("bjcsj")
-    var bjcsj: Int = 10,
+    var bjcsj: Int = 0,
     @SerializedName("bjdn")
-    var bjdn: Int = 0,
+    var bjdn: Int = 10,
     @SerializedName("csjAdIdConfigBean")
     var csjAdIdConfigBean: CsjAdIdConfigBean = CsjAdIdConfigBean(),
     @SerializedName("dnAdIdConfigBean")

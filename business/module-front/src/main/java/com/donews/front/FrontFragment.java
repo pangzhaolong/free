@@ -5,6 +5,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
@@ -51,6 +54,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.lang.ref.WeakReference;
 import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -67,6 +71,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
     private Timer mRotateTimer = null;
     private TimerTask mRotateTask = null;
+    private boolean mIsFragmentActive = false;
 
     ActivityRuleDialog mRuleDialog = null;
 
@@ -200,12 +205,50 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         });
     }
 
+    private FrontHandler mFrontHandler = null;
+
+    private static class FrontHandler extends Handler {
+        private final WeakReference<FrontFragment> fragmentWeakReference;
+
+        public FrontHandler(FrontFragment fragment, Looper looper) {
+            super(looper);
+            fragmentWeakReference = new WeakReference<>(fragment);
+        }
+
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            FrontFragment fragment = fragmentWeakReference.get();
+            if (fragment == null) {
+                return;
+            }
+            if (msg.what == 10001) {
+                fragment.startRotateAnim();
+            }
+        }
+    }
+
+    public void startRotateAnim() {
+        try {
+            if (mDataBinding.frontRpGold88 == null || !mDataBinding.frontRpGold88.isShown()) {
+                return;
+            }
+            mDataBinding.frontRpGold88.startAnimation(mRotateAnimation);
+        } catch (Exception ignored) {
+        }
+    }
+
     private void startTimer() {
+        if (mFrontHandler == null) {
+            mFrontHandler = new FrontHandler(this, this.requireContext().getMainLooper());
+        }
         if (mRotateTask == null) {
             mRotateTask = new TimerTask() {
                 @Override
                 public void run() {
-                    FrontFragment.this.requireActivity().runOnUiThread(() -> mDataBinding.frontRpGold88.startAnimation(mRotateAnimation));
+                    if (mFrontHandler != null && mIsFragmentActive) {
+                        mFrontHandler.sendEmptyMessage(10001);
+                    }
                 }
             };
         }
@@ -549,6 +592,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         }
 
         loadRpData();
+
+        mIsFragmentActive = true;
     }
 
     @Override
@@ -557,6 +602,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         if (mDataBinding.frontBarrageView != null) {
             mDataBinding.frontBarrageView.pauseScroll();
         }
+
+        mIsFragmentActive = false;
     }
 
 
