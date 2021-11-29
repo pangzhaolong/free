@@ -13,7 +13,7 @@ public class ABBean extends BaseCustomViewModel {
     @SerializedName("openHomeGuid")
     private int openHomeGuid = 0;
     @SerializedName("openAutoAgreeProtocol")
-    private boolean openAutoAgreeProtocol;
+    private boolean openAutoAgreeProtocol = false;
 
     public boolean isOpenAutoAgreeProtocol() {
         return openAutoAgreeProtocol;
