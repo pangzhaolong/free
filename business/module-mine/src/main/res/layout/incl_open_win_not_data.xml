@@ -18,6 +18,7 @@
         android:paddingTop="10dp">
 
         <ImageView
+            android:id="@+id/mine_open_win_not_data_icon"
             android:layout_width="130dp"
             android:layout_height="120dp"
             android:src="@drawable/mine_win_not_data" />

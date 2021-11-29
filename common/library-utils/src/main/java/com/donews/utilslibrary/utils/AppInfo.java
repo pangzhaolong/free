@@ -35,13 +35,11 @@ public class AppInfo {
      * @return T:退出成功 F:退出失败
      */
     public static boolean exitLogin() {
-        if(checkIsWXLogin()){
-            //发送退出登录通知
-            EventBus.getDefault().post(new LoginUserStatus(2));
-        }
         SPUtils.setInformain(KeySharePreferences.USER_INFO, "");
         SPUtils.setInformain(KeySharePreferences.TOKEN, "");
         SPUtils.setInformain(KeySharePreferences.USER_ID, "");
+        //发送退出登录通知
+        EventBus.getDefault().post(new LoginUserStatus(2));
         exitWXLogin();
         return true;
     }
@@ -73,6 +71,8 @@ public class AppInfo {
      */
     public static void exitWXLogin() {
         saveWXLoginCode(null);
+        //发送退出登录通知
+        EventBus.getDefault().post(new LoginUserStatus(3));
     }
 
     /**

@@ -94,6 +94,10 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
         if (isWithdrawLoading) {
             return;
         }
+        if(getGridSelectViewItem(superLayout) == null){
+            ToastUtil.showShort(superLayout.getContext(),"请选择提金额");
+            return ;
+        }
         isWithdrawLoading = true;
         mModel.requestWithdra(withdrawLivData, getGridSelectViewItem(superLayout), baseActivity);
     }
