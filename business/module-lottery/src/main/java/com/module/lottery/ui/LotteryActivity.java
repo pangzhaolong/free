@@ -149,8 +149,8 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             if (frequency >= configurationCount) {
                 luckyDrawEntrance();
             }
-            mStart_lottery = false;
         }
+        mStart_lottery = false;
     }
 
 
