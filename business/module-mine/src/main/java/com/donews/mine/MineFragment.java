@@ -90,9 +90,9 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
 
     @Subscribe(threadMode = ThreadMode.MAIN) //用户登录状态变化
     public void loginStatusEvent(LoginUserStatus event) {
-        if (event.getStatus() == 2) {
+        if (!AppInfo.checkIsWXLogin()) {
             mViewModel.withdrawDatilesLivData.postValue(null);
-        } else if (event.getStatus() == 1) {
+        } else {
             mViewModel.getLoadWithdrawData();
         }
         updateUIData();

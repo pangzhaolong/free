@@ -21,6 +21,7 @@ import com.donews.common.services.config.ServicesConfig;
 import com.donews.login.R;
 import com.donews.login.databinding.LoginActivityBinding;
 import com.donews.login.viewmodel.LoginViewModel;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.share.ISWXSuccessCallBack;
 import com.donews.share.WXHolderHelp;
 import com.donews.utilslibrary.utils.LogUtil;
@@ -77,6 +78,7 @@ public class LoginActivity extends MvvmBaseLiveDataActivity<LoginActivityBinding
         mDataBinding.llBotDesc.setOnClickListener(v -> {
             mDataBinding.loginCkCheck.setChecked(!mDataBinding.loginCkCheck.isChecked());
         });
+        mDataBinding.loginCkCheck.setChecked(ABSwitch.Ins().isOpenAutoAgreeProtocol());
         mDataBinding.loginCkCheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 mDataBinding.rlWachatLogin.setEnabled(true);

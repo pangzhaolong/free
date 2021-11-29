@@ -129,6 +129,7 @@ public class GuideActivity
         mDataBinding.loginCkCheckLayout.setOnClickListener(v -> {
             mDataBinding.loginCkCheck.performClick();
         });
+        mDataBinding.loginCkCheck.setChecked(ABSwitch.Ins().isOpenAutoAgreeProtocol());
         mDataBinding.loginCkCheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 mDataBinding.llMainLogin.setEnabled(true);
