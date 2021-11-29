@@ -49,6 +49,10 @@ public class ABSwitch {
         return mAbBean.isOpenAutoAgreeProtocol();
     }
 
+    public int getOpenAutoLotteryCount() {
+        return mAbBean.getOpenAutoLotteryCount();
+    }
+
     public void initAbSwitch() {
         EasyHttp.get(HttpConfigUtilsKt.withConfigParams(BuildConfig.BASE_CONFIG_URL + "plus-abswitch" + BuildConfig.BASE_RULE_URL, true))
                 .cacheMode(CacheMode.NO_CACHE)
