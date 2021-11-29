@@ -1,13 +1,27 @@
 package com.donews.middle.bean.globle;
 
+import com.donews.common.contract.BaseCustomViewModel;
 import com.google.gson.annotations.SerializedName;
 
-public class ABBean {
+public class ABBean extends BaseCustomViewModel {
     @SerializedName("openAB")
     private boolean openAB;
+    @SerializedName("openVideoToast")
     private boolean openVideoToast = true;
+    @SerializedName("openAutoLottery")
     private boolean openAutoLottery = true;
+    @SerializedName("openHomeGuid")
     private int openHomeGuid = 0;
+    @SerializedName("openAutoAgreeProtocol")
+    private boolean openAutoAgreeProtocol;
+
+    public boolean isOpenAutoAgreeProtocol() {
+        return openAutoAgreeProtocol;
+    }
+
+    public void setOpenAutoAgreeProtocol(boolean openAutoAgreeProtocol) {
+        this.openAutoAgreeProtocol = openAutoAgreeProtocol;
+    }
 
     public int getOpenHomeGuid() {
         return openHomeGuid;

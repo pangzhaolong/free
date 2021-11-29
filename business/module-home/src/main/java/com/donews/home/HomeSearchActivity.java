@@ -195,12 +195,13 @@ public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSe
             return;
         }
         mViewModel.getSearchData(strKeyWord).observe((LifecycleOwner) mContext, searchSugBean -> {
-            if (searchSugBean.getList().size() <= 0) {
+            if (searchSugBean == null || searchSugBean.getList() == null || searchSugBean.getList().size() <= 0) {
                 mDataBinding.homeSearchSuggestionRv.setVisibility(View.GONE);
                 mDataBinding.homeSearchFragmentsLl.setVisibility(View.INVISIBLE);
                 mDataBinding.homeSearchCl.setVisibility(View.VISIBLE);
                 return;
             }
+
             mSearchSugAdapter.refreshData(searchSugBean.getList());
             mDataBinding.homeSearchSuggestionRv.setVisibility(View.VISIBLE);
             mDataBinding.homeSearchFragmentsLl.setVisibility(View.INVISIBLE);
