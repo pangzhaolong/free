@@ -222,15 +222,18 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
             public void onRewardedClosed() {
                 closedVideoViewToast();
             }
+
             //视屏播放完成
             @Override
             public void onRewardVideoComplete() {
                 onVideoComplete();
             }
+
             @Override
             public void onRewardVideoError() {
 
             }
+
             @Override
             public void onRewardVideoAdShowFail(int code, String message) {
 
@@ -240,6 +243,7 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
             public void onRewardVerify(boolean result) {
                 aAState = result;
             }
+
             //点击跳过
             @Override
             public void onSkippedRewardVideo() {
@@ -293,7 +297,7 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
         mDataBinding.lotteryText02.destroy();
         mDataBinding.lotteryText03.destroy();
         mDataBinding.lotteryText04.destroy();
-        if(mLotteryHandler!=null){
+        if (mLotteryHandler != null) {
             mLotteryHandler.removeMessages(0);
             mLotteryHandler.removeCallbacksAndMessages(null);
         }
@@ -336,8 +340,8 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
 
                 case 3:
                     if (reference.get() != null) {
-                        if (reference.get().isShowing()) {
-                            reference.get().dismiss();
+                        if (reference.get().isShowing() && reference.get().mOnFinishListener != null) {
+                            reference.get().mOnFinishListener.onFinish();
                             if (reference.get().getContext() != null) {
                                 ToastUtil.showShort(reference.get().getContext(), CLOSURE_HINT);
                             }

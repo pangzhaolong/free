@@ -246,7 +246,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 @Override
                 public void onFinish() {
                     try {
-                        if (lotteryCodeStartsDialog != null && lotteryCodeStartsDialog.isShowing()) {
+                        if (!LotteryActivity.this.isFinishing() && lotteryCodeStartsDialog != null && lotteryCodeStartsDialog.isShowing()) {
                             lotteryCodeStartsDialog.dismiss();
                         }
                     } catch (Exception e) {
