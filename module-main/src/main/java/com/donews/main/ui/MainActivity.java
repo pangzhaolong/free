@@ -171,7 +171,9 @@ public class MainActivity
 
                 @Override
                 public void show() {
-                    mDrawDialog.show(getSupportFragmentManager(), "DrawDialog");
+                    if (!MainActivity.this.isFinishing()) {
+                        mDrawDialog.show(getSupportFragmentManager(), "DrawDialog");
+                    }
                 }
             });
             mDrawDialog.requestGoodsInfo(getApplicationContext());
@@ -187,7 +189,7 @@ public class MainActivity
 
                 @Override
                 public void onShow() {
-                    if (mFreePanicBuyingDialog != null) {
+                    if (mFreePanicBuyingDialog != null && !MainActivity.this.isFinishing()) {
                         mFreePanicBuyingDialog.show();
                     }
                 }
