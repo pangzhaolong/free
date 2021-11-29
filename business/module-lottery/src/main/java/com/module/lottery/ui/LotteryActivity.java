@@ -36,6 +36,7 @@ import com.donews.common.ad.business.callback.JddAdIdConfigManager;
 import com.donews.common.provider.IDetailProvider;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
@@ -139,9 +140,15 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         lotteryInfo();
         //设置下拉，和上拉的监听
         setSmartRefresh();
-        if (mStart_lottery) {
-            //自动开始抽奖
-            luckyDrawEntrance();
+        //自动开始抽奖
+        if (mStart_lottery && ABSwitch.Ins().isOpenAutoLottery()) {
+            //获取配置的最低次数
+            int configurationCount = ABSwitch.Ins().getOpenAutoLotteryCount();
+            //获取已抽奖的次数
+            int frequency = DateManager.getInstance().getLotteryCount(DateManager.LOTTERY_COUNT);
+            if (frequency >= configurationCount) {
+                luckyDrawEntrance();
+            }
             mStart_lottery = false;
         }
     }

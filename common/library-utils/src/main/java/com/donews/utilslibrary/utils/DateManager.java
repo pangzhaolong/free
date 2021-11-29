@@ -21,6 +21,9 @@ public class DateManager {
     //抽奖KEY
     public static String LOTTERY_KEY = "lottery_key";
 
+    //抽奖次数
+    public static String LOTTERY_COUNT = "lottery_count";
+
 
     private static volatile DateManager dateManager;
 
@@ -116,6 +119,26 @@ public class DateManager {
 
     private void putValue(String key, int number) {
         SPUtils.setInformain(key, number);
+    }
+
+
+    /**
+     * @param lotteryCountKey 获取抽奖次数的key
+     */
+    public int getLotteryCount(String lotteryCountKey) {
+        int number = SPUtils.getInformain(lotteryCountKey, 0);
+        return number;
+    }
+
+
+    /**
+     * 需要保存抽奖次数
+     */
+    public void putLotteryCount(String lotteryCountKey) {
+        //获取次数
+        int number = SPUtils.getInformain(lotteryCountKey, 0);
+        number = number + 1;
+        SPUtils.setInformain(lotteryCountKey, number);
     }
 
 }
