@@ -137,6 +137,7 @@ dependencies {
         implementation project(path: ':business:module-reward')
         implementation project(path: ':business:module-lottery')
         implementation project(path: ':middleware:module-middleware')
+        implementation project(path: ':common:library-keepalive')
     }
 }
 

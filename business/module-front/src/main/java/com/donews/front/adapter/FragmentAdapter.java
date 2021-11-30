@@ -51,7 +51,7 @@ public class FragmentAdapter extends FragmentStateAdapter {
             return;
         }
 
-        fragment.reloadNorData();
+        fragment.reloadNorData(position);
     }
 
     public void gotoTopPosition(int position) {

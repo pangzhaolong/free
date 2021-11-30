@@ -53,6 +53,14 @@ public class ABSwitch {
         return mAbBean.getOpenAutoLotteryCount();
     }
 
+    public boolean isOpenAutoLotteryAfterLoginWxAtExitDialog() {
+        return mAbBean.isOpenAutoLotteryAfterLoginWxAtExitDialog();
+    }
+
+    public boolean isOpenAutoLotteryAfterLoginWx() {
+        return mAbBean.isOpenAutoLotteryAfterLoginWx();
+    }
+
     public void initAbSwitch() {
         EasyHttp.get(HttpConfigUtilsKt.withConfigParams(BuildConfig.BASE_CONFIG_URL + "plus-abswitch" + BuildConfig.BASE_RULE_URL, true))
                 .cacheMode(CacheMode.NO_CACHE)

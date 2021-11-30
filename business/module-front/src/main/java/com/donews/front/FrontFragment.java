@@ -73,6 +73,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     private TimerTask mRotateTask = null;
     private boolean mIsFragmentActive = false;
 
+    private FrontHandler mFrontHandler = null;
+
     ActivityRuleDialog mRuleDialog = null;
 
     private int mCurSelectPosition = 0;
@@ -205,8 +207,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         });
     }
 
-    private FrontHandler mFrontHandler = null;
-
     private static class FrontHandler extends Handler {
         private final WeakReference<FrontFragment> fragmentWeakReference;
 
@@ -230,7 +230,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
     public void startRotateAnim() {
         try {
-            if (mDataBinding.frontRpGold88 == null || !mDataBinding.frontRpGold88.isShown()) {
+            if (mDataBinding.frontRpGold88 == null || !mDataBinding.frontRpGold88.isShown() || requireActivity().isFinishing()) {
                 return;
             }
             mDataBinding.frontRpGold88.startAnimation(mRotateAnimation);
@@ -266,6 +266,10 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         if (mRotateTask != null) {
             mRotateTask.cancel();
             mRotateTask = null;
+        }
+        if (mFrontHandler != null) {
+            mFrontHandler.removeCallbacksAndMessages(null);
+            mFrontHandler = null;
         }
     }
 

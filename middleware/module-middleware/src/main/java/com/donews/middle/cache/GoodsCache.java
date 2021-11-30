@@ -6,6 +6,7 @@ import android.content.Context;
 
 import com.donews.utilslibrary.utils.LogUtil;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -16,7 +17,7 @@ public class GoodsCache {
     private static String s_base_cache_path = "";
 
     public static void init(Context context) {
-        s_base_cache_path = context.getDir("jdd", MODE_PRIVATE).getAbsolutePath();
+        s_base_cache_path = context.getDir("jdd", MODE_PRIVATE).getAbsolutePath()+ File.separator;
     }
 
     public static synchronized <T> T readGoodsBean(Class c, String ext) {

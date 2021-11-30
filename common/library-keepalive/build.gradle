@@ -1,0 +1,32 @@
+apply from: rootProject.file('gradle/module.build.gradle')
+/*plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+}*/
+
+
+android {
+
+    defaultConfig {
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [AROUTER_MODULE_NAME: project.getName()]
+            }
+        }
+    }
+
+    repositories {
+        flatDir {
+            dirs 'libs','../library-keeplive/libs'
+        }
+    }
+}
+
+dependencies {
+    api fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+
+    api project(':common:library-sdk')
+    api project(':common:library-common')
+//    api rootProject.ext.dependencies["mmkv"]
+    annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
+}
