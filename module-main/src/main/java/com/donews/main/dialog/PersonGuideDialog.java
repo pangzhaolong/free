@@ -46,6 +46,7 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
         //拒绝协议
         dataBinding.tvRefuse.setOnClickListener(v -> {
             dataBinding.llGuide.setVisibility(View.GONE);
+            dataBinding.imgMainPeople.setVisibility(View.GONE);
             dataBinding.llRefuseHint.setVisibility(View.VISIBLE);
         });
         dataBinding.tvRefuseHint.setText(
