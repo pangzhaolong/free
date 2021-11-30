@@ -22,10 +22,13 @@ import com.donews.main.BuildConfig;
 import com.donews.main.R;
 import com.donews.main.bean.NowTimeBean;
 import com.donews.main.databinding.FreePanicDialogLayoutBinding;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.DateManager;
 import com.donews.utilslibrary.utils.KeySharePreferences;
@@ -137,12 +140,15 @@ public class FreePanicBuyingDialog extends BaseDialog<FreePanicDialogLayoutBindi
     }
 
 
+    private boolean isSendCloseEvent = true;
+
     // 1 表示未登录 2 表示登录未抽奖
     private void initView() {
         //未登录时
         mDataBinding.userProtocol.setOnClickListener(this);
         mDataBinding.privacyProtocol.setOnClickListener(this);
-        boolean protocol = getSharedPreferences().getBoolean("Free", false);
+        boolean protocol = getSharedPreferences().getBoolean("Free", false) ||
+                ABSwitch.Ins().isOpenAutoAgreeProtocol();
         mDataBinding.checkBox.setChecked(protocol);
         mDataBinding.jumpButton.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("MissingPermission")
@@ -151,6 +157,8 @@ public class FreePanicBuyingDialog extends BaseDialog<FreePanicDialogLayoutBindi
                 //判断是否同意了隐私协议
                 if (mDataBinding.checkBox.isChecked()) {
                     //存储状态
+                    isSendCloseEvent = false;
+                    AnalysisUtils.onEventEx(mContext, Dot.Btn_Home_Login_Immediately);
                     getEditor().putBoolean("Free", true).commit();
                     RouterActivityPath.LoginProvider.getLoginProvider()
                             .loginWX(null);
@@ -195,6 +203,9 @@ public class FreePanicBuyingDialog extends BaseDialog<FreePanicDialogLayoutBindi
 
     @Override
     public void onDismiss(DialogInterface dialog) {
+        if (isSendCloseEvent) {
+            AnalysisUtils.onEventEx(mContext, Dot.Btn_Home_Login_Immediately_Close);
+        }
         if (mLotteryHandler != null) {
             mLotteryHandler.removeMessages(0);
             mLotteryHandler.removeMessages(1);

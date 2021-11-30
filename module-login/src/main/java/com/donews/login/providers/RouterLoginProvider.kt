@@ -34,7 +34,6 @@ class RouterLoginProvider : IARouterLoginProvider {
 
             override fun onFailed(msg: String?) {
             }
-
         })
     }
 }

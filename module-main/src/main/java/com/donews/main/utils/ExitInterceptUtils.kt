@@ -8,7 +8,6 @@ import com.dn.sdk.sdk.interfaces.listener.impl.SimpleRewardVideoListener
 import com.donews.base.base.AppManager
 import com.donews.base.base.AppStatusConstant
 import com.donews.base.base.AppStatusManager
-import com.donews.base.utils.ToastUtil
 import com.donews.common.ad.business.callback.JddAdConfigManager
 import com.donews.common.ad.business.loader.AdManager
 import com.donews.common.ad.business.monitor.LotteryAdCount
@@ -27,6 +26,7 @@ import com.donews.network.callback.SimpleCallBack
 import com.donews.network.exception.ApiException
 import com.donews.utilslibrary.analysis.AnalysisParam
 import com.donews.utilslibrary.analysis.AnalysisUtils
+import com.donews.utilslibrary.dot.Dot
 import com.donews.utilslibrary.utils.AppInfo
 import com.donews.utilslibrary.utils.KeySharePreferences
 import com.donews.utilslibrary.utils.SPUtils
@@ -215,7 +215,7 @@ object ExitInterceptUtils {
     }
 
     /***
-     *  显示未抽奖弹出框
+     *  显示抽奖弹出框（有滚动动画的弹窗）
      */
     private fun showWinningDialog(activity: AppCompatActivity) {
         if (winningDialog != null && winningDialog!!.dialog != null && winningDialog!!.dialog!!.isShowing) {
@@ -226,6 +226,7 @@ object ExitInterceptUtils {
                 notLotteryDialog = null
             }
             setOnSureListener {
+                AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Lucky_Not_Meet_Continue_Receive)
                 RequestUtil.requestHighValueGoodsInfo()
                 ARouter.getInstance()
                     .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
@@ -235,13 +236,16 @@ object ExitInterceptUtils {
                 disMissDialog()
             }
             setOnCloseListener {
+                AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Lucky_Not_Meet_Continue_Close)
                 RequestUtil.requestHighValueGoodsInfo()
                 disMissDialog()
 //                exitApp(activity)
             }
             setOnLaterListener {
+                AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Lucky_Not_Meet_Continue_Later)
                 RequestUtil.requestHighValueGoodsInfo()
                 disMissDialog()
+
             }
         }
         winningDialog?.show(activity.supportFragmentManager, NotLotteryDialog::class.simpleName)
@@ -286,19 +290,23 @@ object ExitInterceptUtils {
                     }
                     setOnSureListener {
                         disMissDialog()
+                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Open_RedPacket_Receive)
                         ARouter.getInstance().build(RouterActivityPath.Main.PAGER_MAIN)
                             .withInt("position", 0)
                             .navigation()
                     }
                     setOnCancelListener {
+                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Open_RedPacket_Close)
                         disMissDialog()
 //                        showRemindDialog(activity)
                     }
                     setOnCloseListener {
+                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Open_RedPacket_Close)
                         disMissDialog()
 //                        showRemindDialog(activity)
                     }
                     setOnLaterListener {
+                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Open_RedPacket_Later)
                         disMissDialog()
                         exitApp(activity)
                     }
@@ -324,6 +332,7 @@ object ExitInterceptUtils {
                         redPacketNotAllOpenDialog = null
                     }
                     setOnSureListener {
+                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Lucky_Not_Meet_Continue)
                         val item: HighValueGoodsBean? =
                             GoodsCache.readGoodsBean(HighValueGoodsBean::class.java, "exit")
                         disMissDialog()
@@ -332,12 +341,15 @@ object ExitInterceptUtils {
                         }
                     }
                     setOnCancelListener {
+                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Lucky_Not_Meet_Close)
                         disMissDialog()
                     }
                     setOnCloseListener {
+                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Lucky_Not_Meet_Close)
                         disMissDialog()
                     }
                     setOnLaterListener {
+                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Lucky_Not_Meet_later)
                         disMissDialog()
                         if (checkRedPacketNotOpen()) {
                             //有红包未开启
@@ -369,15 +381,19 @@ object ExitInterceptUtils {
                         redPacketAllOpenDialog = null
                     }
                     setOnSureListener {
+                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_All_RedPacket_Continue)
                         disMissDialog()
                     }
                     setOnCancelListener {
+                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_All_RedPacket_Close)
                         disMissDialog()
                     }
                     setOnCloseListener {
+                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_All_RedPacket_Close)
                         disMissDialog()
                     }
                     setOnLaterListener {
+                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_All_RedPacket_Close)
                         disMissDialog()
                         exitApp(activity)
                     }
@@ -405,12 +421,19 @@ object ExitInterceptUtils {
                     }
                     setOnSureListener {
                         disMissDialog()
+                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Not_Lucky_Continue)
                     }
                     setOnCloseListener {
+                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Not_Lucky_Close)
                         disMissDialog()
 //                        showRemindDialog(activity)
                     }
+                    setOnCancelListener {
+                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Not_Lucky_Close)
+                        disMissDialog()
+                    }
                     setOnLaterListener {
+                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Not_Lucky_Later)
                         disMissDialog()
                         exitApp(activity)
                     }

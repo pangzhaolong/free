@@ -64,4 +64,96 @@ public class Dot {
     //    注销用户
     public final static String Btn_unsubscribe = "Btn_unsubscribe";
 
+    //-- 引导页
+    //新增:跳过引导
+    public final static String But_Guide_Skip = "But_Splash_Skip";
+    //新增:微信登录
+    public final static String But_Guide_WX_Login = "But_Splash_WX_Login";
+
+    //-- 启动页
+    //新增:服务条款-同意
+    public final static String Btn_ServiceOk = "Btn_ServiceOk";
+    //新增:服务条款-我在想想
+    public final static String Btn_ServiceThink = "Btn_ServiceThink";
+    //新增:服务条款-我再想想-退出应用
+    public final static String Btn_ServiceThinkExit = "Btn_ServiceThinkExit";
+    //新增:服务条款-我再想想-同意并继续使用
+    public final static String Btn_ServiceThinkOk = "Btn_ServiceThinkOk";
+
+    //-- 首页
+    //新增:首页弹窗->免费抢购-立即登录抢购
+    public final static String Btn_Home_Login_Immediately = "Btn_Home_Login_Immediately";
+    //新增:首页弹窗->免费抢购-关闭
+    public final static String Btn_Home_Login_Immediately_Close = "Btn_Home_Login_Immediately_Close";
+    //新增:首页弹窗->热门推荐（未登录）-关闭
+    public final static String But_Hme_Recommend_Not_Login_Close = "But_Hme_Recommend_Not_Login_Close";
+    //新增:首页弹窗->热门推荐（未登录）-登录抢购
+    public final static String But_Hme_Recommend_Not_Login_Snap = "But_Hme_Recommend_Not_Login_Snap";
+    //新增:首页弹窗->热门推荐（未登录）-换一个（报点击次数）
+    public final static String But_Hme_Recommend_Not_Login_Next = "But_Hme_Recommend_Not_Login_Next";
+    //新增:首页弹窗->热门推荐-关闭
+    public final static String But_Hme_Recommend_Login_Close = "But_Hme_Recommend_Login_Close";
+    //新增:首页弹窗->热门推荐-免费抢购
+    public final static String But_Hme_Recommend_Login_Snap = "But_Hme_Recommend_Login_Snap";
+    //新增:首页弹窗->热门推荐-> 换一个（报点击次数）
+
+    //-- 首页 -> 退出弹窗
+    public final static String But_Hme_Recommend_Login_Next = "But_Hme_Recommend_Login_Next";
+    //新增:退出拦截-未登录用户退出时-立即登录抢购
+    public final static String But_Home_Exit_Not_Login_Continue = "But_Home_Exit_Not_Login_Continue";
+    //新增:退出拦截-未登录用户退出时-关闭
+    public final static String But_Home_Exit_Not_Login_Close = "But_Home_Exit_Not_Login_Close";
+    //新增:退出拦截-当日抽奖次数超过10次时（有未开红包时）-关闭
+    public final static String But_Home_Exit_Open_RedPacket_Close = "But_Home_Exit_Open_RedPacket_Close";
+    //新增:退出拦截-当日抽奖次数超过10次时（有未开红包时）-立即领取
+    public final static String But_Home_Exit_Open_RedPacket_Receive = "But_Home_Exit_Open_RedPacket_Receive";
+    //新增:退出拦截-当日抽奖次数超过10次时（有未开红包时）-稍后再来
+    public final static String But_Home_Exit_Open_RedPacket_Later = "But_Home_Exit_Open_RedPacket_Later";
+    //新增:退出拦截-当日抽奖次数超过10次时（红包全开时）-关闭
+    public final static String But_Home_Exit_All_RedPacket_Close = "But_Home_Exit_All_RedPacket_Close";
+    //新增:退出拦截-当日抽奖次数超过10次时（红包全开时）-继续抽奖
+    public final static String But_Home_Exit_All_RedPacket_Continue = "But_Home_Exit_All_RedPacket_Continue";
+    //新增:退出拦截-已登录用户当日未抽奖时-抽奖得现金红包
+    public final static String But_Home_Exit_Not_Lucky_Continue = "But_Home_Exit_Not_Lucky_Continue";
+    //新增:退出拦截-已登录用户当日未抽奖时-关闭
+    public final static String But_Home_Exit_Not_Lucky_Close = "But_Home_Exit_Not_Lucky_Close";
+    //新增:退出拦截-已登录用户当日未抽奖时-残忍离开
+    public final static String But_Home_Exit_Not_Lucky_Later = "But_Home_Exit_Not_Lucky_Later";
+    //新增:退出拦截-当日抽奖次数不到10次时-关闭
+    public final static String But_Home_Exit_Lucky_Not_Meet_Close = "But_Home_Exit_Lucky_Not_Meet_Close";
+    //新增:退出拦截-当日抽奖次数不到10次时-继续抽奖
+    public final static String But_Home_Exit_Lucky_Not_Meet_Continue = "But_Home_Exit_Lucky_Not_Meet_Continue";
+    //新增:退出拦截-当日抽奖次数不到10次时-残忍离开
+    public final static String But_Home_Exit_Lucky_Not_Meet_later = "But_Home_Exit_Lucky_Not_Meet_later";
+    //新增:退出拦截-当日抽奖次数不到10次时-继续抽奖-关闭
+    public final static String But_Home_Exit_Lucky_Not_Meet_Continue_Close = "But_Home_Exit_Lucky_Not_Meet_Continue_Close";
+    //新增:退出拦截-当日抽奖次数不到10次时-继续抽奖-免费领取
+    public final static String But_Home_Exit_Lucky_Not_Meet_Continue_Receive = "But_Home_Exit_Lucky_Not_Meet_Continue_Receive";
+    //新增:退出拦截-当日抽奖次数不到10次时-继续抽奖-倒计时点击关闭弹窗
+    public final static String But_Home_Exit_Lucky_Not_Meet_Continue_Later = "But_Home_Exit_Lucky_Not_Meet_Continue_Later";
+
+    //-- 抽奖页 ->弹窗
+    //新增:抽奖页-未登录返回拦截-关闭
+    public final static String Lottery_Not_Login_Dialog_Close = "Lottery_Not_Login_Dialog_Close";
+    //新增:抽奖页-未登录返回拦截-立即登录抢购
+    public final static String Lottery_Not_Login_Dialog_Continue = "Lottery_Not_Login_Dialog_Continue";
+    //新增:抽奖页-已登录用户-未参与该商品抽奖-关闭
+    public final static String Lottery_Login_Dialog_Close = "Lottery_Login_Dialog_Close";
+    //新增:抽奖页-已登录用户-未参与该商品抽奖-立即抢购
+    public final static String Lottery_Login_Dialog_Continue = "Lottery_Login_Dialog_Continue";
+    //新增:抽奖页-抽奖页返回拦截-增加中奖率
+    public final static String Lottery_Increase_ChancesDialog_Continue = "Lottery_Increase_ChancesDialog_Continue";
+    //新增:抽奖页-抽奖页返回拦截-关闭
+    public final static String Lottery_Increase_ChancesDialog_Close = "Lottery_Increase_ChancesDialog_Close";
+    //新增:抽奖页 - 6次完成弹窗 - 关闭
+    public final static String Lottery_Complete_Drawing_Close = "Lottery_Complete_Drawing_Close";
+    //新增:抽奖页 - 还可免费领取-关闭
+    public final static String Lottery_Exit_Drawing_Count_Close = "Lottery_Exit_Drawing_Count_Close";
+    //新增:抽奖页 - 还可免费领取-立即领取
+    public final static String Lottery_Exit_Drawing_Count_Receive = "Lottery_Exit_Drawing_Count_Receive";
+    //新增:抽奖页 - 恭喜获得抽奖码-增加中奖几率
+    public final static String Lottery_Drawing_Probability_Continue = "Lottery_Drawing_Probability_Continue";
+    //新增:抽奖页 - 恭喜获得抽奖码-关闭
+    public final static String Lottery_Drawing_Probability_Close = "Lottery_Drawing_Probability_Close";
+
 }

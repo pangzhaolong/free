@@ -19,6 +19,7 @@ import com.donews.base.utils.ToastUtil;
 import com.dn.drouter.ARouteHelper;
 import com.dn.events.events.LoginUserStatus;
 import com.donews.common.router.RouterActivityPath;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
@@ -87,7 +88,9 @@ public class ReturnInterceptDialog extends BaseDialog<InterceptDialogLayoutBindi
 
     //立即抢购
     private void immediatelySnappedUp() {
+        isSendCloseEvent = false;
         AnalysisUtils.onEventEx(mContext, Dot.Btn_LotteryNow);
+        AnalysisUtils.onEventEx(mContext, Dot.Lottery_Login_Dialog_Continue);
         if (ClickDoubleUtil.isFastClick()) {
             if (mOnFinishListener != null) {
                 mOnFinishListener.onDismiss();
@@ -96,7 +99,7 @@ public class ReturnInterceptDialog extends BaseDialog<InterceptDialogLayoutBindi
         }
 
     }
-
+    private boolean isSendCloseEvent = true;
     // 1 表示未登录 2 表示登录未抽奖
     private void initView() {
         if (mType == TYPE_1) {
@@ -115,7 +118,8 @@ public class ReturnInterceptDialog extends BaseDialog<InterceptDialogLayoutBindi
             mDataBinding.protocolLayout.setVisibility(View.GONE);
         } else if (mType == TYPE_2) {
             //未登录时
-            boolean protocol = getSharedPreferences().getBoolean("protocol", false);
+            boolean protocol = getSharedPreferences().getBoolean("protocol", false) ||
+                    ABSwitch.Ins().isOpenAutoAgreeProtocol();
             mDataBinding.checkBox.setChecked(protocol);
             mDataBinding.title.setText(getContext().getResources().getString(R.string.return_intercept_title));
             mDataBinding.hintTitle.setText(getContext().getResources().getString(R.string.return_intercept_hint_no));
@@ -147,6 +151,8 @@ public class ReturnInterceptDialog extends BaseDialog<InterceptDialogLayoutBindi
                     //判断是否同意了隐私协议
                     if (mDataBinding.checkBox.isChecked()) {
                         //存储状态
+                        isSendCloseEvent = false;
+                        AnalysisUtils.onEventEx(mContext, Dot.Lottery_Not_Login_Dialog_Continue);
                         getEditor().putBoolean("protocol", true).commit();
                         RouterActivityPath.LoginProvider.getLoginProvider()
                                 .loginWX(null);
@@ -194,6 +200,15 @@ public class ReturnInterceptDialog extends BaseDialog<InterceptDialogLayoutBindi
 
     @Override
     public void onDismiss(DialogInterface dialog) {
+        if(isSendCloseEvent) {
+            if(TYPE_2 == mType) {
+                //未登录关闭
+                AnalysisUtils.onEventEx(mContext, Dot.Lottery_Not_Login_Dialog_Close);
+            }else{
+                //已登录关闭
+                AnalysisUtils.onEventEx(mContext, Dot.Lottery_Login_Dialog_Close);
+            }
+        }
         if (mLotteryHandler != null) {
             mLotteryHandler.removeMessages(0);
             mLotteryHandler.removeMessages(1);

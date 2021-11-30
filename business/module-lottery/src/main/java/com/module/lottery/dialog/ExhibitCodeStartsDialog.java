@@ -16,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.module.lottery.bean.GenerateCodeBean;
 import com.module.lottery.bean.LotteryCodeBean;
 import com.module.lottery.utils.ClickDoubleUtil;
@@ -74,12 +76,14 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
         mProgressMarginStart = getContext().getResources().getDimensionPixelSize(R.dimen.lottery_constant_13);
         initProgressBar();
         initView();
-        setOnDismissListener(new OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                if (valueProbeAnimator != null) {
-                    valueProbeAnimator.cancel();
-                }
+        setOnDismissListener(dialog -> {
+            if(mGenerateCodeBean.getRemain() <= 0){
+                AnalysisUtils.onEventEx(context, Dot.Lottery_Complete_Drawing_Close);
+            }else{
+                AnalysisUtils.onEventEx(context, Dot.Lottery_Drawing_Probability_Close);
+            }
+            if (valueProbeAnimator != null) {
+                valueProbeAnimator.cancel();
             }
         });
     }
@@ -116,6 +120,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
             mDataBinding.jsonAnimation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    AnalysisUtils.onEventEx(context, Dot.Lottery_Drawing_Probability_Continue);
                     dismiss();
                     if (mOnFinishListener != null) {
                         mOnFinishListener.onLottery();

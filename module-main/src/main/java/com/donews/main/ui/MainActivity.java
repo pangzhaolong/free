@@ -1,9 +1,9 @@
 package com.donews.main.ui;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -28,6 +28,7 @@ import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.common.updatedialog.UpdateManager;
 import com.donews.common.updatedialog.UpdateReceiver;
+import com.donews.main.BuildConfig;
 import com.donews.main.MainViewModel;
 import com.donews.main.R;
 import com.donews.main.adapter.MainPageAdapter;
@@ -57,7 +58,10 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 import me.majiajie.pagerbottomtabstrip.NavigationController;
 
@@ -132,6 +136,18 @@ public class MainActivity
 
         //预加载一个激励视频
         AdVideoCacheUtils.INSTANCE.startCache();
+        //上报一个测试友盟多参数事件
+        testUMMuliParams();
+    }
+
+    //上报测试多参数事件
+    private void testUMMuliParams() {
+        if (BuildConfig.DEBUG) {
+            HashMap<String, Object> para = new HashMap<>();
+            String paramsValue = "testParams" + new Random().nextInt(10);
+            para.put("source", paramsValue);
+            AnalysisUtils.onEventEx(this, "TEST_ABCDEF", para);
+        }
     }
 
     /**
@@ -197,7 +213,6 @@ public class MainActivity
             mFreePanicBuyingDialog.requestGoodsInfo(getApplicationContext());
         }
     }
-
 
     @Override
     protected void onNewIntent(Intent intent) {

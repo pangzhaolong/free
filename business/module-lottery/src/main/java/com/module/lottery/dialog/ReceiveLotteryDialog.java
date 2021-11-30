@@ -17,6 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.module.lottery.bean.LotteryCodeBean;
 import com.module_lottery.R;
 import com.module_lottery.databinding.ReceiveDialogLayoutBinding;
@@ -33,16 +35,12 @@ public class ReceiveLotteryDialog extends BaseDialog<ReceiveDialogLayoutBinding>
     private boolean mIfQuit;
 
 
-    public ReceiveLotteryDialog(Context context, LotteryCodeBean lotteryCodeBean,boolean ifQuit) {
+    public ReceiveLotteryDialog(Context context, LotteryCodeBean lotteryCodeBean, boolean ifQuit) {
         super(context, R.style.dialogTransparent);//内容样式在这里引入
         this.context = context;
-        this.mIfQuit=ifQuit;
+        this.mIfQuit = ifQuit;
         this.mLotteryCodeBean = lotteryCodeBean;
     }
-
-
-
-
 
     @Override
     public int setLayout() {
@@ -73,15 +71,15 @@ public class ReceiveLotteryDialog extends BaseDialog<ReceiveDialogLayoutBinding>
     }
 
 
-
-
+    private boolean isSendCloseEvent = true;
 
     @Override
     public float setSize() {
         return 1.0f;
     }
-    private  void initView(){
-        if(mIfQuit){
+
+    private void initView() {
+        if (mIfQuit) {
             mDataBinding.titleForward.setText(getContext().getResources().getString(R.string.return_receive_title_forward));
             mDataBinding.titleRear.setText(getContext().getResources().getString(R.string.return_receive_title_rear));
             mDataBinding.subtitle.setText(getContext().getResources().getString(R.string.return_receive_subtitle));
@@ -98,8 +96,14 @@ public class ReceiveLotteryDialog extends BaseDialog<ReceiveDialogLayoutBinding>
             public void onClick(View v) {
                 dismiss();
                 if (mOnFinishListener != null) {
+                    AnalysisUtils.onEventEx(context, Dot.Lottery_Exit_Drawing_Count_Receive);
                     mOnFinishListener.onLottery();
                 }
+            }
+        });
+        setOnDismissListener((d) -> {
+            if (isSendCloseEvent) {
+                AnalysisUtils.onEventEx(context, Dot.Lottery_Exit_Drawing_Count_Close);
             }
         });
     }
@@ -108,7 +112,7 @@ public class ReceiveLotteryDialog extends BaseDialog<ReceiveDialogLayoutBinding>
         if (mLotteryCodeBean != null) {
             //设置显示的数量
             if (mLotteryCodeBean.getCodes().size() > 0 && mLotteryCodeBean.getCodes().size() < 6) {
-                mDataBinding.quantity.setText(" "+(6 - (mLotteryCodeBean.getCodes().size()))+" ");
+                mDataBinding.quantity.setText(" " + (6 - (mLotteryCodeBean.getCodes().size())) + " ");
             }
             //抽奖码满了
             if (mLotteryCodeBean.getCodes().size() == 6) {
@@ -125,7 +129,6 @@ public class ReceiveLotteryDialog extends BaseDialog<ReceiveDialogLayoutBinding>
 
 
     }
-
 
 
     public void setStateListener(OnStateListener l) {

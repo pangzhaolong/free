@@ -24,6 +24,8 @@ import com.donews.common.services.config.ServicesConfig;
 import com.donews.main.R;
 import com.donews.main.databinding.MainActivityGuideBinding;
 import com.donews.middle.abswitch.ABSwitch;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.LogUtil;
 import com.gyf.immersionbar.ImmersionBar;
@@ -103,6 +105,7 @@ public class GuideActivity
     public void initView() {
         mDataBinding.llMainLogin.setEnabled(false);
         mDataBinding.tvGotoGuide.setOnClickListener(v -> {
+            AnalysisUtils.onEventEx(this, Dot.But_Guide_Skip);
             MainActivity.start(this);
             isLoadGuide = false;
             SPUtils.getInstance().put("mainGuideIsShow", false);
@@ -120,6 +123,7 @@ public class GuideActivity
             mDataBinding.llBotDesc.startAnimation(anim);
         });
         mDataBinding.llMainLogin.setOnClickListener(v -> {
+            AnalysisUtils.onEventEx(this, Dot.But_Guide_WX_Login);
             RouterActivityPath.LoginProvider.getLoginProvider()
                     .loginWX(loginTag);
         });

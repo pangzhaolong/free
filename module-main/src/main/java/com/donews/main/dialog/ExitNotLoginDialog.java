@@ -119,7 +119,7 @@ public class ExitNotLoginDialog extends BaseDialog<MainInterceptDialogLayoutBind
         }
 
     }
-
+    private boolean isSendCloseEvent = true;
     // 1 表示未登录 2 表示登录未抽奖
     private void initView() {
         if (mType == TYPE_1) {
@@ -163,6 +163,8 @@ public class ExitNotLoginDialog extends BaseDialog<MainInterceptDialogLayoutBind
                     //判断是否同意了隐私协议
                     if (mDataBinding.checkBox.isChecked()) {
                         //存储状态
+                        isSendCloseEvent = false;
+                        AnalysisUtils.onEventEx(mContext, Dot.But_Home_Exit_Not_Login_Continue);
                         getEditor().putBoolean("protocol", true).commit();
                         RouterActivityPath.LoginProvider.getLoginProvider()
                                 .loginWX(null);
@@ -210,6 +212,9 @@ public class ExitNotLoginDialog extends BaseDialog<MainInterceptDialogLayoutBind
 
     @Override
     public void onDismiss(DialogInterface dialog) {
+        if(isSendCloseEvent){
+            AnalysisUtils.onEventEx(mContext, Dot.But_Home_Exit_Not_Login_Close);
+        }
         if (mLotteryHandler != null) {
             mLotteryHandler.removeMessages(0);
             mLotteryHandler.removeMessages(1);

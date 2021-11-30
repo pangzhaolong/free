@@ -3,6 +3,7 @@ package com.donews.main.dialog;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -31,6 +32,9 @@ import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
+import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.HttpConfigUtilsKt;
 import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.SPUtils;
@@ -47,6 +51,7 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
     private boolean mIsNoTipsShow = false;
 
     private boolean mChangeOne = false;
+    private boolean isSendCloseEvent = true;
 
     public EnterShowDialog(Context context) {
         super(context, R.style.dialogTransparent);
@@ -74,13 +79,24 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
     void initView() {
         mDataBinding.ivClose.setOnClickListener(v -> dismiss());
         mDataBinding.btnNext.setOnClickListener(v -> {
+            isSendCloseEvent = false;
+            if (AppInfo.checkIsWXLogin()) {
+                AnalysisUtils.onEventEx(mContext, Dot.But_Hme_Recommend_Login_Next);
+            } else {
+                AnalysisUtils.onEventEx(mContext, Dot.But_Hme_Recommend_Not_Login_Next);
+            }
             mDataBinding.tvProbability1.setText(randLucky());
             mChangeOne = true;
             requestGoodsInfo(false);
         });
 
         mDataBinding.btnLottery.setOnClickListener(v -> {
-
+            isSendCloseEvent = false;
+            if (AppInfo.checkIsWXLogin()) {
+                AnalysisUtils.onEventEx(mContext, Dot.But_Hme_Recommend_Login_Snap);
+            } else {
+                AnalysisUtils.onEventEx(mContext, Dot.But_Hme_Recommend_Not_Login_Snap);
+            }
             ARouter.getInstance()
                     .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                     .withString("goods_id", mGoods.getGoodsId())
@@ -109,7 +125,15 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
         });
 
         initLottie(mDataBinding.mainEnterDialogLottie, "lottery_finger.json");
-
+        setOnDismissListener(dialog -> {
+            if (isSendCloseEvent) {
+                if (AppInfo.checkIsWXLogin()) {
+                    AnalysisUtils.onEventEx(mContext, Dot.But_Hme_Recommend_Login_Close);
+                } else {
+                    AnalysisUtils.onEventEx(mContext, Dot.But_Hme_Recommend_Not_Login_Close);
+                }
+            }
+        });
 //        requestGoodsInfo();
     }
 

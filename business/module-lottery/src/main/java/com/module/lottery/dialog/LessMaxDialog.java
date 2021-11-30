@@ -10,6 +10,8 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.module.lottery.bean.LotteryCodeBean;
 import com.module_lottery.R;
 import com.module_lottery.databinding.LessMaxDialogLayoutBinding;
@@ -24,6 +26,7 @@ public class LessMaxDialog extends BaseDialog<LessMaxDialogLayoutBinding> {
     private LotteryHandler mLotteryHandler = new LotteryHandler(this);
 
     private OnFinishListener mOnFinishListener;
+    private boolean isSendCloseEvent = true;
 
     public LessMaxDialog(Context context, LotteryCodeBean lotteryCodeBean) {
         super(context, R.style.dialogTransparent);//内容样式在这里引入
@@ -68,6 +71,11 @@ public class LessMaxDialog extends BaseDialog<LessMaxDialogLayoutBinding> {
 
 
         }
+        setOnDismissListener((d)->{
+            if(isSendCloseEvent) {
+                AnalysisUtils.onEventEx(mContext, Dot.Lottery_Increase_ChancesDialog_Close);
+            }
+        });
         mDataBinding.closure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,6 +86,8 @@ public class LessMaxDialog extends BaseDialog<LessMaxDialogLayoutBinding> {
         mDataBinding.lotteryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isSendCloseEvent = false;
+                AnalysisUtils.onEventEx(mContext, Dot.Lottery_Increase_ChancesDialog_Continue);
                 if (mOnFinishListener != null) {
                     mOnFinishListener.onFinishAd();
                     dismiss();
