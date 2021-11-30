@@ -85,10 +85,12 @@ class OnePixelVideoCacheActivity : AppCompatActivity() {
             }
 
             override fun onLoadFail(code: Int, error: String?) {
+                moveTaskToBack(true)
                 rewardVideoListener?.onLoadFail(code, error)
             }
 
             override fun onLoadTimeout() {
+                moveTaskToBack(true)
                 rewardVideoListener?.onLoadTimeout()
             }
 

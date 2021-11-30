@@ -212,6 +212,9 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
             public void onRewardAdShow() {
                 //延时出现
                 showToast();
+                if (mLotteryHandler != null) {
+                    mLotteryHandler.removeMessages(3);
+                }
             }
 
             @Override
