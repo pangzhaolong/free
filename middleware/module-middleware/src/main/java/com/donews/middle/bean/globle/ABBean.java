@@ -14,6 +14,16 @@ public class ABBean extends BaseCustomViewModel {
     private int openHomeGuid = 0;
     @SerializedName("openAutoAgreeProtocol")
     private boolean openAutoAgreeProtocol = false;
+    @SerializedName("openAutoLotteryCount")
+    private int openAutoLotteryCount = 6;
+
+    public int getOpenAutoLotteryCount() {
+        return openAutoLotteryCount;
+    }
+
+    public void setOpenAutoLotteryCount(int openAutoLotteryCount) {
+        this.openAutoLotteryCount = openAutoLotteryCount;
+    }
 
     public boolean isOpenAutoAgreeProtocol() {
         return openAutoAgreeProtocol;

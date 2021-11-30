@@ -30,12 +30,14 @@ import com.airbnb.lottie.value.SimpleLottieValueCallback;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.LotteryStatusEvent;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.business.callback.JddAdIdConfigManager;
 import com.donews.common.provider.IDetailProvider;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
@@ -57,11 +59,13 @@ import com.module.lottery.viewModel.LotteryViewModel;
 import com.module_lottery.R;
 import com.module_lottery.databinding.GuesslikeHeadLayoutBinding;
 import com.module_lottery.databinding.LotteryMainLayoutBinding;
+import com.orhanobut.logger.Logger;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 import java.util.Map;
@@ -104,6 +108,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         super.onCreate(savedInstanceState);
         mSharedPreferences = this.getSharedPreferences(LOTTERY_ACTIVITY, 0);
         ARouter.getInstance().inject(this);
+        EventBus.getDefault().register(this);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
@@ -139,14 +144,37 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         lotteryInfo();
         //设置下拉，和上拉的监听
         setSmartRefresh();
-        if (mStart_lottery) {
-            //自动开始抽奖
-            luckyDrawEntrance();
-            mStart_lottery = false;
+        //自动开始抽奖
+        if (mStart_lottery && ABSwitch.Ins().isOpenAutoLottery()) {
+            ifOpenAutoLotteryAndCount();
+        }
+        mStart_lottery = false;
+    }
+
+    /**
+     * 判断是否需要自动抽奖,并且是否大于了中台控制次数
+     *
+     * */
+    private   void   ifOpenAutoLotteryAndCount(){
+        if(ABSwitch.Ins().isOpenAutoLottery()){
+            //获取配置的最低次数
+            int configurationCount = ABSwitch.Ins().getOpenAutoLotteryCount();
+            //获取已抽奖的次数
+            int frequency = DateManager.getInstance().getLotteryCount(DateManager.LOTTERY_COUNT);
+            if (frequency >= configurationCount) {
+                luckyDrawEntrance();
+            }
         }
     }
 
 
+    @Subscribe
+    public void WeChatLoginEvent(LoginUserStatus loginUserStatus) {
+        if (loginUserStatus.getStatus() == 1 && AppInfo.checkIsWXLogin()) {
+            //登录成功
+            ifOpenAutoLotteryAndCount();
+        }
+    }
     public void luckyDrawEntrance() {
         boolean logType = AppInfo.checkIsWXLogin();
         if (logType) {
@@ -246,7 +274,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 @Override
                 public void onFinish() {
                     try {
-                        if (lotteryCodeStartsDialog != null && lotteryCodeStartsDialog.isShowing()) {
+                        if (!LotteryActivity.this.isFinishing() && lotteryCodeStartsDialog != null && lotteryCodeStartsDialog.isShowing()) {
                             lotteryCodeStartsDialog.dismiss();
                         }
                     } catch (Exception e) {
@@ -374,6 +402,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     //展示生成的抽奖码

@@ -219,7 +219,7 @@
             <LinearLayout
                 android:id="@+id/protocol_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="18dp"
                 android:orientation="horizontal">
@@ -241,9 +241,7 @@
                     android:layout_marginStart="5dp"
                     android:text="已阅读并同意"
                     android:textColor="#D6D6D6"
-                    android:textSize="13dp"
-
-                    />
+                    android:textSize="13dp" />
 
                 <TextView
                     android:id="@+id/user_protocol"
@@ -252,9 +250,7 @@
                     android:layout_gravity="center_vertical"
                     android:text="《用户协议》"
                     android:textColor="#FEDFA7"
-                    android:textSize="13dp"
-
-                    />
+                    android:textSize="13dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -262,9 +258,7 @@
                     android:layout_gravity="center_vertical"
                     android:text="及"
                     android:textColor="#D6D6D6"
-                    android:textSize="13dp"
-
-                    />
+                    android:textSize="13dp" />
 
                 <TextView
                     android:id="@+id/privacy_protocol"
@@ -273,9 +267,7 @@
                     android:layout_gravity="center_vertical"
                     android:text="《隐私协议》"
                     android:textColor="#FEDFA7"
-                    android:textSize="13dp"
-
-                    />
+                    android:textSize="13dp" />
 
             </LinearLayout>
         </LinearLayout>
@@ -284,17 +276,16 @@
             android:id="@+id/closure"
             android:layout_width="26dp"
             android:layout_height="26dp"
-            android:layout_marginEnd="23dp"
             android:layout_above="@+id/central_content"
             android:layout_alignParentRight="true"
             android:layout_gravity="right"
+            android:layout_marginEnd="23dp"
             android:layout_marginBottom="23dp"
             android:src="@mipmap/closure_icon"
             android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@id/central_content"
             app:layout_constraintRight_toRightOf="parent"
             tools:ignore="MissingConstraints" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
