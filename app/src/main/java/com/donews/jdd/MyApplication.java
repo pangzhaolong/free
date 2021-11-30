@@ -7,10 +7,12 @@ import androidx.multidex.MultiDex;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.DNEventBusUtils;
+import com.donews.alive.KeepAlive;
 import com.donews.base.base.BaseApplication;
 import com.donews.base.utils.CrashHandlerUtil;
 import com.donews.common.config.ModuleLifecycleConfig;
 import com.donews.jpush.JPushHelper;
+import com.donews.main.ui.MainActivity;
 import com.donews.utilslibrary.utils.KeyConstant;
 import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.Utils;
@@ -53,6 +55,8 @@ public class MyApplication extends BaseApplication {
 
             disableAPIDialog();
         }
+
+        KeepAlive.getInstance().init(this, MainActivity.class);
     }
 
 

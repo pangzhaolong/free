@@ -16,6 +16,26 @@ public class ABBean extends BaseCustomViewModel {
     private boolean openAutoAgreeProtocol = false;
     @SerializedName("openAutoLotteryCount")
     private int openAutoLotteryCount = 6;
+    @SerializedName("openAutoLotteryAfterLoginWx")
+    private boolean openAutoLotteryAfterLoginWx = true;
+    @SerializedName("openAutoLotteryAfterLoginWxAtExitDialog")
+    private boolean openAutoLotteryAfterLoginWxAtExitDialog = false;
+
+    public boolean isOpenAutoLotteryAfterLoginWxAtExitDialog() {
+        return openAutoLotteryAfterLoginWxAtExitDialog;
+    }
+
+    public void setOpenAutoLotteryAfterLoginWxAtExitDialog(boolean openAutoLotteryAfterLoginWxAtExitDialog) {
+        this.openAutoLotteryAfterLoginWxAtExitDialog = openAutoLotteryAfterLoginWxAtExitDialog;
+    }
+
+    public boolean isOpenAutoLotteryAfterLoginWx() {
+        return openAutoLotteryAfterLoginWx;
+    }
+
+    public void setOpenAutoLotteryAfterLoginWx(boolean openAutoLotteryAfterLoginWx) {
+        this.openAutoLotteryAfterLoginWx = openAutoLotteryAfterLoginWx;
+    }
 
     public int getOpenAutoLotteryCount() {
         return openAutoLotteryCount;

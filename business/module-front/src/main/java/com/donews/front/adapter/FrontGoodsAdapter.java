@@ -19,6 +19,7 @@ import com.donews.middle.bean.front.LotteryGoodsBean;
 import com.donews.utilslibrary.utils.UrlUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.GoodsViewHolder> implements View.OnClickListener {
@@ -38,11 +39,21 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void refreshData(List<LotteryGoodsBean.GoodsInfo> list, boolean needClear) {
+    public void refreshData(List<LotteryGoodsBean.GoodsInfo> list, boolean needClear, boolean needKeepFirst) {
         if (needClear) {
             mGoodsList.clear();
+            mGoodsList.addAll(list);
+            //精选推荐保持第一个不变
+            if (needKeepFirst) {
+                mGoodsList.remove(0);
+                Collections.shuffle(mGoodsList);
+                mGoodsList.add(0, list.get(0));
+            } else {
+                Collections.shuffle(mGoodsList);
+            }
+        } else {
+            mGoodsList.addAll(list);
         }
-        mGoodsList.addAll(list);
         notifyDataSetChanged();
     }
 

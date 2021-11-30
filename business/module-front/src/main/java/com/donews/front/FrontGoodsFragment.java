@@ -24,6 +24,8 @@ import com.donews.middle.bean.front.LotteryCategoryBean;
 import com.donews.middle.bean.front.LotteryGoodsBean;
 import com.donews.middle.cache.GoodsCache;
 import com.donews.middle.decoration.GridSpaceItemDecoration;
+import com.donews.utilslibrary.utils.KeySharePreferences;
+import com.donews.utilslibrary.utils.SPUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -38,6 +40,8 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
     private int mPageId = 0;
     private RecyclerView.ItemDecoration mItemDecoration;
     private int mRvScrollLength = 0;
+
+    private int mCurrentPosition = 0;
 
     public FrontGoodsFragment(LotteryCategoryBean.categoryBean categoryBean) {
         mCategoryBean = categoryBean;
@@ -119,7 +123,8 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
         });
     }
 
-    public void reloadNorData() {
+    public void reloadNorData(int position) {
+        mCurrentPosition = position;
         mPageId = 0;
         loadNorData();
     }
@@ -138,7 +143,7 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
         mViewModel.getNetData(mCategoryBean.getCategoryId(), mPageId).observe(getViewLifecycleOwner(), norGoodsBean -> {
             if (norGoodsBean == null || norGoodsBean.getList() == null || norGoodsBean.getList().size() <= 0) {
                 mPageId--;
-                if( mDataBinding.frontLoadingStatusTv!=null){
+                if (mDataBinding.frontLoadingStatusTv != null) {
                     mDataBinding.frontLoadingStatusTv.setText("加载数据失败，点击重新加载");
                 }
                 mDataBinding.frontNorSrl.finishLoadMoreWithNoMoreData();
@@ -157,7 +162,8 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
             }
         }
 
-        mNorGoodsAdapter.refreshData(lotteryGoodsBean.getList(), mPageId == 1);
+        mNorGoodsAdapter.refreshData(lotteryGoodsBean.getList(), mPageId == 1
+                , mCurrentPosition == 0 && SPUtils.getInformain(KeySharePreferences.IS_FIRST_IN_APP, 0) == 1);
         mDataBinding.frontNorLoadingLl.setVisibility(View.GONE);
         mDataBinding.frontNorRv.setVisibility(View.VISIBLE);
     }

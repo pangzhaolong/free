@@ -61,9 +61,13 @@ data class JddAdConfigBean(
     @SerializedName("notLotteryExitAppAdType")
     var notLotteryExitAppAdType: Int = 1,
 
-    /** 用户注册 48小时 时间过后的  开启页面插屏广告 */
+    /** 用户安装app 12 小时过后的  开启页面插屏广告 */
     @SerializedName("interstitialStartTime")
-    var interstitialStartTime: Int = 48,
+    var interstitialStartTime: Int = 12,
+
+    @SerializedName("interstitialLotteryStartTime")
+    /** 用户抽奖达到一定次数后，开启插屏广告 */
+    var interstitialLotteryStartTime: Int = 6,
 
     /** 所有插屏广告间隔最小间隔时间 */
     @SerializedName("interstitialDuration")
@@ -107,6 +111,7 @@ data class JddAdConfigBean(
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
+        parcel.readInt(),
         parcel.readByte() != 0.toByte(),
         parcel.readByte() != 0.toByte(),
         parcel.readInt()
@@ -129,6 +134,7 @@ data class JddAdConfigBean(
         parcel.writeInt(notLotteryExitAppTimes)
         parcel.writeInt(notLotteryExitAppAdType)
         parcel.writeInt(interstitialStartTime)
+        parcel.writeInt(interstitialLotteryStartTime)
         parcel.writeInt(interstitialDuration)
         parcel.writeInt(noOperationDuration)
         parcel.writeInt(playRewardVideoTimes)

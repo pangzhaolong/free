@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="one_pixel_bg">@android:color/holo_red_dark</drawable>
+
+    <color name="teal_200">#FF03DAC5</color>
+
+    <style name="OnePixelActivityTheme" parent="android:Theme.Holo.Light.NoActionBar">
+        <item name="android:windowBackground">@null</item>
+        <!--<item name="android:windowBackground">@color/colorPrimaryDark</item>-->
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoDisplay">false</item>
+        <item name="android:windowDisablePreview">true</item>
+    </style>
+</resources>

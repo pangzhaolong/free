@@ -6,6 +6,7 @@ import com.dn.sdk.sdk.interfaces.listener.impl.SimpleInterstListener
 import com.donews.common.ad.business.callback.JddAdConfigManager
 import com.donews.common.ad.business.loader.AdManager
 import com.donews.common.ad.business.monitor.RewardVideoCount
+import com.donews.common.ad.business.utils.InterstitialUtils
 
 /**
  * 激励视频回调代理
@@ -49,7 +50,11 @@ class JddAdRewardVideoListenerProxy(
         JddAdConfigManager.addListener {
             val jddAdConfigBean = JddAdConfigManager.jddAdConfigBean
             if (jddAdConfigBean.playRewardVideoTimes <= RewardVideoCount.todayPlayRewardVideoTimes()) {
-                loadAd()
+                if (InterstitialUtils.checkOpenAd(jddAdConfigBean)) {
+                    loadAd()
+                } else {
+                    listener?.onRewardedClosed()
+                }
             } else {
                 listener?.onRewardedClosed()
             }

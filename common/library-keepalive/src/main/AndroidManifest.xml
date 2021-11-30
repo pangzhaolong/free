@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.donews.alive">
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.REORDER_TASKS" />
+
+    <application>
+        <activity
+            android:name="com.donews.alive.ui.LockerActivity"
+            android:excludeFromRecents="true"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:taskAffinity=":lockerAA"
+            android:theme="@style/Theme.Locker.Activity.Locker" />
+
+
+        <activity
+            android:name="com.donews.alive.ui.PopupVideoActivity"
+            android:excludeFromRecents="true"
+            android:hardwareAccelerated="true"
+            android:launchMode="standard"
+            android:screenOrientation="portrait"
+            android:taskAffinity=":lock.video"
+            android:theme="@style/Theme.Locker.Activity.Locker" />
+
+
+        <activity
+            android:name="com.donews.alive.ui.AppOutDialog"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
+            android:theme="@style/AppDialogTheme" />
+
+        <service android:name=".service.KeepAliveProviderService" />
+        <!--        <service android:name="com.donews.alive.service.AdDaemonService" />-->
+
+        <!--        <receiver android:name="com.donews.alive.receiver.PackageReceiver">-->
+        <!--            <intent-filter>-->
+        <!--                <action android:name="android.intent.action.PACKAGE_ADDED" />-->
+        <!--                <action android:name="android.intent.action.PACKAGE_REMOVED" />-->
+        <!--            </intent-filter>-->
+        <!--        </receiver>-->
+    </application>
+
+</manifest>
