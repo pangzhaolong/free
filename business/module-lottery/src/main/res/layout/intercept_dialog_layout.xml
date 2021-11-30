@@ -250,7 +250,6 @@
             </RelativeLayout>
 
             <LinearLayout
-
                 android:id="@+id/protocol_layout"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -260,8 +259,8 @@
 
                 <CheckBox
                     android:id="@+id/check_box"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="17dp"
+                    android:layout_height="17dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="22dp"
                     android:background="@drawable/check_checked_bg"
