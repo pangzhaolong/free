@@ -13,6 +13,7 @@ import androidx.lifecycle.OnLifecycleEvent
 import com.donews.common.ad.business.callback.JddAdConfigManager
 import com.donews.common.ad.business.loader.AdManager
 import com.dn.sdk.sdk.interfaces.listener.impl.SimpleInterstListener
+import com.donews.common.ad.business.utils.InterstitialUtils
 import com.donews.common.contract.LoginHelp
 import com.donews.utilslibrary.utils.AppInfo
 import com.donews.utilslibrary.utils.AppStatusUtils
@@ -127,8 +128,8 @@ class PageMonitor : LifecycleObserver {
 
     private fun resumeCheckShowAd() {
         val jddAdConfigBean = JddAdConfigManager.jddAdConfigBean
-        //注册时间大于设置时间
-        if (checkUserRegisterTime(jddAdConfigBean.interstitialStartTime)) {
+
+        if (InterstitialUtils.checkOpenAd(jddAdConfigBean)) {
             //显示次数大于设置的页面最小显示次数,比如第二次显示页面才显示广告
             val resumeNumber = PageCount.getResumeNumber(mTag)
             val showAdNumber = PageCount.getAdShowNumber(mTag)
@@ -140,7 +141,7 @@ class PageMonitor : LifecycleObserver {
     private fun checkSendMessage() {
         val jddAdConfigBean = JddAdConfigManager.jddAdConfigBean
         //注册时间大于设置时间
-        if (checkUserRegisterTime(jddAdConfigBean.interstitialStartTime)) {
+        if (InterstitialUtils.checkOpenAd(jddAdConfigBean)) {
             sendMessage()
         }
     }

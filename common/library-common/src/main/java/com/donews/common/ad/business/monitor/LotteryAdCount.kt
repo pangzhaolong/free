@@ -17,6 +17,9 @@ object LotteryAdCount {
 
     private val mDataFormat = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA)
 
+    /** 总的抽奖次数 */
+    private const val TOTAL_LOTTERY_TIME = "totalLotteryTime";
+
     /** 最新的打开app时间 */
     private const val NEW_OPEN_APP_TIME = "newOpenAppTime"
 
@@ -52,6 +55,11 @@ object LotteryAdCount {
      * 抽奖成功调用
      */
     fun lotterySuccess() {
+        //记录总的抽奖次数
+        var totalLotteryNumber = mmkv.decodeInt(TOTAL_LOTTERY_TIME, 0)
+        totalLotteryNumber++
+        mmkv.encode(TOTAL_LOTTERY_TIME, totalLotteryNumber)
+
         val newLotteryTime = mmkv.decodeLong(NEW_LOTTERY_TIME, 0L)
         if (!isToday(newLotteryTime)) {
             mmkv.encode(TODAY_LOTTERY_TIMES, 1)
@@ -74,6 +82,10 @@ object LotteryAdCount {
         if (newOpenAppTime > newLotteryTime) {
             mmkv.encode(EXIT_APP_WITH_NOT_LOTTERY, exitAppWithNotLotteryTimes + 1)
         }
+    }
+
+    fun getTotalLotteryNumber(): Int {
+        return mmkv.decodeInt(TOTAL_LOTTERY_TIME, 0)
     }
 
     /** 返回退出app但是没有抽奖的次数 */
