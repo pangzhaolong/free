@@ -1,5 +1,6 @@
 package com.donews.main.utils
 
+import android.content.Intent
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.alibaba.android.arouter.launcher.ARouter
@@ -32,6 +33,7 @@ import com.donews.utilslibrary.utils.KeySharePreferences
 import com.donews.utilslibrary.utils.SPUtils
 import com.donews.utilslibrary.utils.withConfigParams
 import com.orhanobut.logger.Logger
+import java.lang.Exception
 
 /**
  * 拦截退出
@@ -115,9 +117,6 @@ object ExitInterceptUtils {
                 mFirstClickBackTime = System.currentTimeMillis()
             }
         } else {
-//            showContinueLotteryDialog(activity)
-//            showWinningDialog(activity)
-//            return
             if (isFinishBack) {
                 if (duration < CLICK_INTERVAL) {
                     exitApp(activity)
@@ -195,7 +194,7 @@ object ExitInterceptUtils {
     }
 
     /***
-     *  显示未抽奖弹出框
+     *  显示未登录拦截弹窗
      */
     private fun showNotLoginDialog(activity: AppCompatActivity) {
         if (notLoginDialog != null && notLoginDialog!!.isShowing) {
@@ -205,6 +204,13 @@ object ExitInterceptUtils {
         notLoginDialog!!.setFinishListener(object : ExitNotLoginDialog.OnFinishListener {
             override fun onDismiss() {
                 notLoginDialog = null
+                if (AppInfo.checkIsWXLogin()) {
+                    val item: HighValueGoodsBean? =
+                        GoodsCache.readGoodsBean(HighValueGoodsBean::class.java, "exit")
+                    if (item != null) {
+                        showWinningDialog(activity)
+                    }
+                }
             }
 
             override fun onDismissAd() {
@@ -215,7 +221,7 @@ object ExitInterceptUtils {
     }
 
     /***
-     *  显示抽奖弹出框（有滚动动画的弹窗）
+     *  显示抽奖动画弹出框（有滚动动画的弹窗）
      */
     private fun showWinningDialog(activity: AppCompatActivity) {
         if (winningDialog != null && winningDialog!!.dialog != null && winningDialog!!.dialog!!.isShowing) {
@@ -335,10 +341,10 @@ object ExitInterceptUtils {
                         AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Lucky_Not_Meet_Continue)
                         val item: HighValueGoodsBean? =
                             GoodsCache.readGoodsBean(HighValueGoodsBean::class.java, "exit")
-                        disMissDialog()
                         if (item != null) {
                             showWinningDialog(activity)
                         }
+                        disMissDialog()
                     }
                     setOnCancelListener {
                         AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Lucky_Not_Meet_Close)
@@ -347,10 +353,6 @@ object ExitInterceptUtils {
                     setOnCloseListener {
                         AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Lucky_Not_Meet_Close)
                         disMissDialog()
-                    }
-                    setOnLaterListener {
-                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Lucky_Not_Meet_later)
-                        disMissDialog()
                         if (checkRedPacketNotOpen()) {
                             //有红包未开启
                             showOpenRedPacketDialog(activity)
@@ -358,6 +360,11 @@ object ExitInterceptUtils {
                             //红包已全部开启(显示开奖提醒)
                             showRemindDialog(activity)
                         }
+                    }
+                    setOnLaterListener {
+                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Lucky_Not_Meet_later)
+                        disMissDialog()
+                        exitApp(activity)
                     }
                 }
         redPacketNotAllOpenDialog?.show(
@@ -382,6 +389,12 @@ object ExitInterceptUtils {
                     }
                     setOnSureListener {
                         AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_All_RedPacket_Continue)
+                        //去往商品滚动页面
+                        val item: HighValueGoodsBean? =
+                            GoodsCache.readGoodsBean(HighValueGoodsBean::class.java, "exit")
+                        if (item != null) {
+                            showWinningDialog(activity)
+                        }
                         disMissDialog()
                     }
                     setOnCancelListener {
@@ -420,8 +433,13 @@ object ExitInterceptUtils {
                         continueLotteryDialog = null
                     }
                     setOnSureListener {
-                        disMissDialog()
                         AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Not_Lucky_Continue)
+                        val item: HighValueGoodsBean? =
+                            GoodsCache.readGoodsBean(HighValueGoodsBean::class.java, "exit")
+                        if (item != null) {
+                            showWinningDialog(activity)
+                        }
+                        disMissDialog()
                     }
                     setOnCloseListener {
                         AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Not_Lucky_Close)
@@ -586,9 +604,18 @@ object ExitInterceptUtils {
 
     private fun realExitApp(activity: AppCompatActivity) {
         // 程序关闭
-        AppStatusManager.getInstance().setAppStatus(AppStatusConstant.STATUS_FORCE_KILLED)
-        AnalysisUtils.onEvent(activity, AnalysisParam.SHUTDOWN)
-        AppManager.getInstance().AppExit()
-        activity.finish()
+        try {
+            //如果正常执行只是推到桌面
+            val home = Intent(Intent.ACTION_MAIN)
+            home.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            home.addCategory(Intent.CATEGORY_HOME)
+            activity.startActivity(home)
+        } catch (e: Exception) {
+            //出错则真的退出
+            AppStatusManager.getInstance().setAppStatus(AppStatusConstant.STATUS_FORCE_KILLED)
+            AnalysisUtils.onEvent(activity, AnalysisParam.SHUTDOWN)
+            AppManager.getInstance().AppExit()
+            activity.finish()
+        }
     }
 }

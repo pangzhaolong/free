@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
 import android.text.Spannable
@@ -62,6 +63,18 @@ class ContinueLotteryDialog : AbstractFragmentDialog<MainExitDialogContinueLotte
     private lateinit var continueLotteryConfig: ContinueLotteryConfig
     private val handler = Handler(Looper.getMainLooper())
     private var goodsInfo: ExitDialogRecommendGoods? = null
+    private val times: CountDownTimer = object : CountDownTimer(4000L, 1000L) {
+        override fun onTick(millisUntilFinished: Long) {
+            //倒计时3秒
+            dataBinding.btnLottery.text = "抽奖得现金红包(${millisUntilFinished / 1000})"
+        }
+
+        override fun onFinish() {
+            dataBinding.btnLottery.text = "抽奖得现金红包(0)"
+            dataBinding.eventListener?.clickLottery(dataBinding.btnLottery)
+        }
+
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -77,6 +90,7 @@ class ContinueLotteryDialog : AbstractFragmentDialog<MainExitDialogContinueLotte
     }
 
     override fun onDestroy() {
+        times.cancel()
         handler.removeCallbacksAndMessages(activity)
         handler.removeCallbacksAndMessages(null)
         super.onDestroy()
@@ -108,7 +122,7 @@ class ContinueLotteryDialog : AbstractFragmentDialog<MainExitDialogContinueLotte
                             activity,
                             R.anim.anim_yh_in
                         )
-                        anim.setAnimationListener(object :Animation.AnimationListener{
+                        anim.setAnimationListener(object : Animation.AnimationListener {
                             override fun onAnimationStart(animation: Animation?) {
                             }
 
@@ -127,7 +141,7 @@ class ContinueLotteryDialog : AbstractFragmentDialog<MainExitDialogContinueLotte
                 pd += java.util.Random().nextInt(200) + 1000
             }
         }, 150)
-
+        times.start()
     }
 
     override fun isUseDataBinding(): Boolean {
@@ -196,13 +210,13 @@ class ContinueLotteryDialog : AbstractFragmentDialog<MainExitDialogContinueLotte
             if (onSureListener != null) {
                 onSureListener.onSure()
             }
-            goodsInfo?.run {
-                ARouter.getInstance()
-                    .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
-                    .withString("goods_id", goodsId)
-                    .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery)
-                    .navigation()
-            }
+//            goodsInfo?.run {
+//                ARouter.getInstance()
+//                    .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
+//                    .withString("goods_id", goodsId)
+//                    .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery)
+//                    .navigation()
+//            }
         }
 
         fun clickClose(view: View) {

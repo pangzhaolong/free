@@ -78,6 +78,7 @@ public class LoginActivity extends MvvmBaseLiveDataActivity<LoginActivityBinding
         mDataBinding.llBotDesc.setOnClickListener(v -> {
             mDataBinding.loginCkCheck.setChecked(!mDataBinding.loginCkCheck.isChecked());
         });
+        mDataBinding.rlWachatLogin.setEnabled(false);
         mDataBinding.loginCkCheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 mDataBinding.rlWachatLogin.setEnabled(true);
@@ -88,7 +89,6 @@ public class LoginActivity extends MvvmBaseLiveDataActivity<LoginActivityBinding
             }
         });
         mDataBinding.loginCkCheck.setChecked(ABSwitch.Ins().isOpenAutoAgreeProtocol());
-        mDataBinding.rlWachatLogin.setEnabled(false);
         mDataBinding.tvUserXy.setOnClickListener(v -> { //用户协议
             Bundle bundle = new Bundle();
             bundle.putString("url",

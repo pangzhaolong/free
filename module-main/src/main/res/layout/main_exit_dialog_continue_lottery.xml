@@ -193,7 +193,7 @@
                 android:paddingLeft="50dp"
                 android:paddingRight="50dp"
                 android:paddingBottom="1dp"
-                android:text="抽奖得现金红包"
+                android:text="抽奖得现金红包(3)"
                 android:textColor="#D82D2A"
                 android:textSize="20sp"
                 android:textStyle="bold"
