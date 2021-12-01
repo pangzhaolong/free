@@ -90,7 +90,7 @@ public class LogToWeChatDialog extends BaseDialog<LogToWechatLayoutBinding> impl
     @Subscribe
     public void WeChatLoginEvent(LoginUserStatus loginUserStatus) {
         if (loginUserStatus.getStatus() == 1 && AppInfo.checkIsWXLogin()) {
-            if(mOnFinishListener!=null){
+            if (mOnFinishListener != null) {
                 mOnFinishListener.onWeChatReturn();
                 mOnFinishListener.onDismiss();
             }
@@ -115,7 +115,7 @@ public class LogToWeChatDialog extends BaseDialog<LogToWechatLayoutBinding> impl
                     //存储状态
                     getEditor().putBoolean("Free", true).commit();
                     RouterActivityPath.LoginProvider.getLoginProvider()
-                            .loginWX(null);
+                            .loginWX(null, "抽奖页返回拦截弹窗");
                 } else {
                     //檢查是否勾选协议
                     if (System.currentTimeMillis() - fastVibrateTime > 1500) {

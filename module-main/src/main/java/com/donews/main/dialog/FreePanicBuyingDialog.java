@@ -161,7 +161,7 @@ public class FreePanicBuyingDialog extends BaseDialog<FreePanicDialogLayoutBindi
                     AnalysisUtils.onEventEx(mContext, Dot.Btn_Home_Login_Immediately);
                     getEditor().putBoolean("Free", true).commit();
                     RouterActivityPath.LoginProvider.getLoginProvider()
-                            .loginWX(null);
+                            .loginWX(null, "首页登陆弹窗");
                 } else {
                     //檢查是否勾选协议
                     if (System.currentTimeMillis() - fastVibrateTime > 1500) {

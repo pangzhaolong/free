@@ -117,7 +117,7 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
             } else {
                 AnalysisUtils.onEventEx(mContext, Dot.But_Hme_Recommend_Not_Login_Snap);
 
-                RouterActivityPath.LoginProvider.getLoginProvider().loginWX(LOGIN_TAG);
+                RouterActivityPath.LoginProvider.getLoginProvider().loginWX(LOGIN_TAG, "热门商品推荐弹窗");
             }
         });
 
@@ -304,8 +304,6 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
                     .withString("goods_id", mGoods.getGoodsId())
                     .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
                     .navigation();
-
-            AnalysisUtils.onEventEx(this.getContext(), Dot.WX_Login, "热门商品推荐弹窗");
             dismiss();
         }
     }

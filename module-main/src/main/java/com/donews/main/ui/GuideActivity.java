@@ -123,9 +123,8 @@ public class GuideActivity
             mDataBinding.llBotDesc.startAnimation(anim);
         });
         mDataBinding.llMainLogin.setOnClickListener(v -> {
-            AnalysisUtils.onEventEx(this, Dot.WX_Login, "引导页面");
             RouterActivityPath.LoginProvider.getLoginProvider()
-                    .loginWX(loginTag);
+                    .loginWX(loginTag, "引导页面");
         });
         mDataBinding.loginCkCheckTx.setOnClickListener(v -> {
             mDataBinding.loginCkCheck.performClick();

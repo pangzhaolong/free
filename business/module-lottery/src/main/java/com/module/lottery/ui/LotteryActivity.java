@@ -336,7 +336,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                     @Override
                     public void onToWeChat() {
                         RouterActivityPath.LoginProvider.getLoginProvider()
-                                .loginWX(null);
+                                .loginWX(null, "抽奖页面");
                     }
 
                     @Override
