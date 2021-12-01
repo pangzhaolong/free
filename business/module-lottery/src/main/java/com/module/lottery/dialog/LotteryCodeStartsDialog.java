@@ -143,9 +143,13 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
 
     private void closedVideoViewToast() {
         //有效关闭
+        Logger.d(TAG + aAState + "");
         if (aAState) {
             if (mOnFinishListener != null) {
+                Logger.d(TAG + "onJumpAdFinish");
                 mOnFinishListener.onJumpAdFinish();
+            } else {
+                Logger.d(TAG + "onJumpAdFinish is null");
             }
         }
     }
