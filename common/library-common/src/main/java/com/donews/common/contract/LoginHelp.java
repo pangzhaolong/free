@@ -77,11 +77,13 @@ public class LoginHelp {
      */
     public boolean checkUserRegisterTime(int time) {
         long duration = time * 60 * 60 * 1000L;
+        long installApp = AppStatusUtils.getAppInstallTime();
+        return System.currentTimeMillis() - installApp >= duration;
 
-        if (LoginHelp.getInstance().isLogin()) {
+        /*if (LoginHelp.getInstance().isLogin()) {            //未登陆
             long installApp = AppStatusUtils.getAppInstallTime();
             return System.currentTimeMillis() - installApp >= duration;
-        } else {
+        } else {                                            //已登陆
             try {
                 SimpleDateFormat mDataFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
                 String createAt = userInfoBean.getCreatedAt();
@@ -94,6 +96,6 @@ public class LoginHelp {
                 e.printStackTrace();
                 return false;
             }
-        }
+        }*/
     }
 }
