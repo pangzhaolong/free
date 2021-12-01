@@ -20,10 +20,13 @@ import com.donews.common.services.ILoginService;
 import com.donews.common.services.config.ServicesConfig;
 import com.donews.login.R;
 import com.donews.login.databinding.LoginActivityBinding;
+import com.donews.login.providers.RouterLoginProvider;
 import com.donews.login.viewmodel.LoginViewModel;
 import com.donews.middle.abswitch.ABSwitch;
 import com.donews.share.ISWXSuccessCallBack;
 import com.donews.share.WXHolderHelp;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.LogUtil;
 import com.gyf.immersionbar.ImmersionBar;
 
@@ -63,7 +66,9 @@ public class LoginActivity extends MvvmBaseLiveDataActivity<LoginActivityBinding
         mDataBinding.titleBar
                 .setTitle("登录");
         mDataBinding.rlMobileLogin.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, MobileActivity.class)));
-        mDataBinding.rlWachatLogin.setOnClickListener(v -> onWxLogin());
+        mDataBinding.rlWachatLogin.setOnClickListener(v -> {
+            onWxLogin();
+        });
         mDataBinding.rlWachatLoginFloat.setOnClickListener(v -> {
             //檢查是否勾选协议
             if (System.currentTimeMillis() - fastVibrateTime > 1500) {
@@ -143,7 +148,10 @@ public class LoginActivity extends MvvmBaseLiveDataActivity<LoginActivityBinding
 
     @Override
     public void onFailed(String msg) {
-
+        AnalysisUtils.onEventEx(
+                this,
+                Dot.WX_Login, "微信登录页(微信服务异常)"
+        );
     }
 
 }

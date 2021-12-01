@@ -90,7 +90,7 @@ public class LoginProvider implements IProvider {
             getLogin();
         }else{
             //走微信登录
-            UserInfoManage.onLoadNetUserInfo(UserInfoManage.getNetDataStr(wxCode));
+            UserInfoManage.onLoadNetUserInfo(UserInfoManage.getNetDataStr(wxCode),null,"微信登录页");
         }
     }
 

@@ -50,7 +50,7 @@ public class LoginModel extends BaseLiveDataModel {
      */
     public MutableLiveData<UserInfoBean> onWXLogin(String code) {
         AppInfo.saveWXLoginCode(code);
-        return UserInfoManage.onLoadNetUserInfo(UserInfoManage.getNetDataStr(code));
+        return UserInfoManage.onLoadNetUserInfo(UserInfoManage.getNetDataStr(code),null,"微信登录页");
     }
 
     /**
