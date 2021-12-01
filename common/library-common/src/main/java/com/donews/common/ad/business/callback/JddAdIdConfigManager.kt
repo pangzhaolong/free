@@ -37,6 +37,7 @@ object JddAdIdConfigManager : BaseAdIdConfigManager<NewAdIdConfigBean>() {
                 override fun onSuccess(t: NewAdIdConfigBean?) {
                     Logger.d(t)
                     mConfigBean = t ?: getDefaultConfig()
+                    dnAdPlatform = DnNewsPlatform(mConfigBean!!)
                     mInit = true
                     callInitListener()
                 }

@@ -3,7 +3,6 @@ package com.donews.main.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -17,10 +16,12 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.RedPackageStatus;
 import com.donews.base.base.AppManager;
 import com.donews.base.base.AppStatusConstant;
 import com.donews.base.base.AppStatusManager;
+import com.donews.common.ad.business.loader.AdManager;
 import com.donews.common.ad.cache.AdVideoCacheUtils;
 import com.donews.common.adapter.ScreenAutoAdapter;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
@@ -47,6 +48,7 @@ import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.DateManager;
+import com.donews.utilslibrary.utils.HttpConfigUtilsKt;
 import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.SPUtils;
@@ -61,7 +63,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
 import me.majiajie.pagerbottomtabstrip.NavigationController;
 
@@ -149,6 +150,17 @@ public class MainActivity
             AnalysisUtils.onEventEx(this, "TEST_ABCDEF", para);
         }
     }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onLoginEvent(LoginUserStatus status) {
+        if (status.getStatus() == 1 && AppInfo.checkIsWXLogin()) {
+            //登录刷新广告id
+            String url = HttpConfigUtilsKt.withConfigParams(BuildConfig.AD_ID_CONFIG, false);
+            AdManager.INSTANCE.initAdIdConfig(url);
+        }
+    }
+
 
     /**
      * 显示开奖弹框
@@ -376,7 +388,7 @@ public class MainActivity
                     .navigation());
             fragments.add(RouterFragmentPath.Unboxing.getUnboxingFragment());
             fragments.add(RouterFragmentPath.User.getMineOpenWinFragment(
-                    0, true, false, true,1));
+                    0, true, false, true, 1));
             fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Home.PAGER_HOME).navigation());
             fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.User.PAGER_USER).navigation());
         }

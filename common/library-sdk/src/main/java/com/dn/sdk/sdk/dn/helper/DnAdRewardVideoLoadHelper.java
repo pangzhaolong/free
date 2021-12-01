@@ -15,6 +15,7 @@ import com.dn.sdk.sdk.dn.bean.DnNewsPreloadRewardVideoView;
 import com.donews.b.main.DoNewsAdNative;
 import com.donews.b.main.info.DoNewsAD;
 import com.donews.b.start.DoNewsAdManagerHolder;
+import com.orhanobut.logger.Logger;
 
 /**
  * 多牛聚合 激励广告加载
@@ -162,11 +163,12 @@ public class DnAdRewardVideoLoadHelper {
         mDoNewsAdNative.preLoadRewardAd(mActivity, doNewsAD, new DoNewsAdNative.RewardVideoAdCacheListener() {
             @Override
             public void onAdStatus(int i, Object o) {
-
+                Logger.t("oldAd").d("onAdStatus");
             }
 
             @Override
             public void onADLoad() {
+                Logger.t("oldAd").d("onADLoad");
                 if (mListener != null) {
                     mListener.onLoad();
                 }
@@ -174,6 +176,7 @@ public class DnAdRewardVideoLoadHelper {
 
             @Override
             public void onAdShow() {
+                Logger.t("oldAd").d("onAdShow");
                 if (mListener != null) {
                     mListener.onRewardAdShow();
                 }
@@ -181,6 +184,7 @@ public class DnAdRewardVideoLoadHelper {
 
             @Override
             public void onAdClose() {
+                Logger.t("oldAd").d("onAdClose");
                 if (mListener != null) {
                     mListener.onRewardedClosed();
                 }
@@ -188,6 +192,7 @@ public class DnAdRewardVideoLoadHelper {
 
             @Override
             public void onVideoCached() {
+                Logger.t("oldAd").d("onVideoCached");
                 if (mListener != null) {
                     mListener.onLoadCached();
                 }
@@ -199,6 +204,7 @@ public class DnAdRewardVideoLoadHelper {
 
             @Override
             public void onVideoComplete() {
+                Logger.t("oldAd").d("onVideoComplete");
                 if (mListener != null) {
                     mListener.onRewardVideoComplete();
                 }
@@ -206,6 +212,7 @@ public class DnAdRewardVideoLoadHelper {
 
             @Override
             public void onAdVideoBarClick() {
+                Logger.t("oldAd").d("onAdVideoBarClick");
                 if (mListener != null) {
                     mListener.onRewardBarClick();
                 }
@@ -213,6 +220,7 @@ public class DnAdRewardVideoLoadHelper {
 
             @Override
             public void onRewardVerify(boolean b) {
+                Logger.t("oldAd").d("onRewardVerify----" + b);
                 if (mListener != null) {
                     mListener.onRewardVerify(b);
                 }
@@ -220,6 +228,7 @@ public class DnAdRewardVideoLoadHelper {
 
             @Override
             public void onError(int i, String s) {
+                Logger.t("oldAd").d("onRewardVerify----i---" + s);
                 if (mListener != null) {
                     mListener.onError(i, s);
                 }
