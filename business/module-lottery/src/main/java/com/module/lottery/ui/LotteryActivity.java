@@ -342,6 +342,10 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
                     @Override
                     public void onWeChatReturn() {
+                        //登录成功 刷新页面
+                        clearState();
+                        //加载抽奖商品详情信息
+                        lotteryInfo();
                         //读取中台控制自动开始抽奖
                         if (ABSwitch.Ins().isOpenAutoLotteryAfterLoginWx()) {
                             luckyDrawEntrance();
