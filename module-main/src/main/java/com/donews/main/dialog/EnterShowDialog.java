@@ -300,11 +300,17 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void loginUserStatus(LoginUserStatus userStatus) {
         if (userStatus.getStatus() == 1) {
-            ARouter.getInstance()
-                    .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
-                    .withString("goods_id", mGoods.getGoodsId())
-                    .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
-                    .navigation();
+            if (mGoods == null) {
+                return;
+            }
+            try {
+                ARouter.getInstance()
+                        .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
+                        .withString("goods_id", mGoods.getGoodsId())
+                        .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
+                        .navigation();
+            } catch (Exception e) {
+            }
             dismiss();
         }
     }

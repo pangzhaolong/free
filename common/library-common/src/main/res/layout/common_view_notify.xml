@@ -3,110 +3,61 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="78dp"
+    android:orientation="horizontal"
+    android:padding="6dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ImageView
+        android:id="@+id/nf_logo"
+        android:layout_width="23dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="10dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_launcher_round"
+        app:layout_constraintLeft_toLeftOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="6dp">
+        android:layout_height="match_parent"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="6dp"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/nf_logo"
-            android:layout_width="17dp"
-            android:layout_height="17dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/margin_15"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_launcher_round"
-            app:layout_constraintLeft_toLeftOf="parent"
-            tools:ignore="MissingConstraints" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/nf_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="√【代签收】"
+                android:textColor="#2C2C2C"
+                android:textStyle="bold"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/nf_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="6dp"
+                android:text="17:44"
+                android:textColor="#CCCCCC"
+                android:textSize="12sp"
+                tools:ignore="MissingConstraints" />
+        </RelativeLayout>
 
         <TextView
+            android:id="@+id/nf_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:layout_toRightOf="@+id/nf_logo"
-            android:text="好友中奖提醒"
-            android:textColor="#2C2C2C"
-            android:textStyle="bold"
-            app:layout_constraintLeft_toRightOf="@+id/nf_logo"
-            tools:ignore="MissingConstraints" />
-
-        <ImageView
-            android:id="@+id/nf_avatar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
             android:layout_marginTop="4dp"
-            android:src="@drawable/nf_avatar"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nf_logo" />
-
-        <TextView
-            android:id="@+id/nf_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="4dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textColor="#2C2C2C"
-            android:textSize="11sp"
-            app:layout_constraintLeft_toRightOf="@+id/nf_avatar"
-            app:layout_constraintTop_toBottomOf="@+id/nf_logo"
-            tools:text="平安一生" />
-
-        <TextView
-            android:id="@+id/nf_friend_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/nf_text_friend_bg"
-            android:gravity="center"
-            android:maxLines="1"
-            android:paddingStart="6dp"
-            android:paddingTop="2dp"
-            android:paddingEnd="6dp"
-            android:paddingBottom="2dp"
-            android:text="你的好友"
-            android:textColor="#F43B3A"
-            android:textSize="11sp"
-            app:layout_constraintLeft_toRightOf="@+id/nf_name"
-            app:layout_constraintTop_toBottomOf="@+id/nf_logo" />
-
-        <TextView
-            android:id="@+id/nf_desc"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="4dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textColor="#2C2C2C"
-            android:textSize="13sp"
-            app:layout_constraintLeft_toRightOf="@+id/nf_avatar"
-            app:layout_constraintTop_toBottomOf="@+id/nf_name"
-            tools:text="是真的，我在奖多多0元领" />
-
-        <TextView
-            android:id="@+id/nf_goods"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="4dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textColor="#F43B3A"
-            android:textSize="13sp"
-            app:layout_constraintLeft_toRightOf="@+id/nf_desc"
-            app:layout_constraintTop_toBottomOf="@+id/nf_name"
-            tools:text="华为手机" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:textColor="#767676"
+            android:textSize="15sp"
+            tools:text="派送中...已向您的账户转入华为P40一台📱 点击查收" />
+    </LinearLayout>
 </LinearLayout>
 
 

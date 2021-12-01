@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+    <string-array name="yx_am_title">
+        <item>【奖多多】今日好物已上新🌟</item>
+        <item>【奖多多】500元话费已到账💶</item>
+        <item>您的夏日清凉好物已上线❗️</item>
+    </string-array>
+    <string-array name="yx_am_content">
+        <item>苹果新款iMAC一体机已准备发货，红的紫的绿的都有~快来抽取包邮到家>></item>
+        <item>点击抽奖领取，立即充值到账>></item>
+        <item>点击立即参与抽奖，明日10:00即可查看中奖信息，先到先得~</item>
+    </string-array>
+    <string-array name="nf_am_title">
+        <item>📱本期锦鲤开奖啦</item>
+        <item>【奖多多】苹果笔记本电脑已抽中💻</item>
+        <item>【中奖通知】📱</item>
+    </string-array>
+    <string-array name="nf_am_content">
+        <item>iphone13已被抽中，点击查看您是否中奖❗️</item>
+        <item>今日大奖已开出，点击立即查看中奖信息>></item>
+        <item>华为Mate40pro已被抽中，点击查看中奖信息>></item>
+    </string-array>
+
+    <string-array name="yx_pm_title">
+        <item>您已获得iphone13领取资格🎁</item>
+        <item>您已获得IMAC领取资格🎁</item>
+        <item>【物流通知】</item>
+    </string-array>
+    <string-array name="yx_pm_content">
+        <item>苹点击立即参与抽奖，0元领取包邮到家>></item>
+        <item>2021新款苹果一体机已准备发货，立即参与抽取>>0元包邮到家</item>
+        <item>华为mate40Pro已准备发货，立即抽取~明日10:00即可查看中奖信息>></item>
+    </string-array>
+    <string-array name="yx_pm_rp_title">
+        <item>您有一个现金红包待领取🧧</item>
+        <item>您还有8.8元待提现💸</item>
+        <item>¥8.8元已到账💰</item>
+    </string-array>
+    <string-array name="yx_pm_rp_content">
+        <item>今日还可领取8.8现金红包，支付宝提现秒到账！点此领取~</item>
+        <item>还有24小时即将失效~点击提现秒到账，立即领取>></item>
+        <item>提现即可秒到账，点此领取>></item>
+    </string-array>
+    <string-array name="yx_pm_score_title">
+        <item>【积分兑换iphone13】资格已领取❗️</item>
+        <item>惊喜大奖放送  换一个商品🔄</item>
+        <item>好物更新  换一个商品🔄</item>
+        <item>iphone13】积分兑换已到账</item>
+    </string-array>
+    <string-array name="yx_pm_score_content">
+        <item>现登录app积分兑换iphone13，限时领取>>先到先得，大奖抱回家🎰</item>
+        <item>恭喜您可兑换苹果笔记本，点此参与抽奖，大奖抱回家🎰</item>
+        <item>恭喜您可兑换IMAC，点此参与抽奖>>大奖抱回家🎰</item>
+        <item>限时福利，兑换成功即可包邮到家。立即点此领取>></item>
+    </string-array>
+    <string-array name="yx_pm_gift_title">
+        <item>💻ipad pro已送出</item>
+        <item>【包裹领取通知】</item>
+        <item>⚠️华为mate40砸中你啦</item>
+    </string-array>
+    <string-array name="yx_pm_gift_content">
+        <item>立即参查看抽奖信息>>还有手机/家电等你拿~</item>
+        <item>ipad物流信息已更新，点此查看中奖信息>></item>
+        <item>点此进入参与抽奖>>还有电脑/苹果手机等你拿~</item>
+    </string-array>
+</resources>
