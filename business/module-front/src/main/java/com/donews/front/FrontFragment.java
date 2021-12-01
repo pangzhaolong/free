@@ -718,7 +718,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             return;
         }
 
-        int index = (int) v.getTag(1);
+        int index = (int) v.getTag(R.id.tag_first);
         AnalysisUtils.onEventEx(mContext, Dot.But_Rp_Click, String.valueOf(index));
 
         openRp();
