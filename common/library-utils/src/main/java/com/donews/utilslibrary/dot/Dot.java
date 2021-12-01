@@ -66,7 +66,7 @@ public class Dot {
 
     //-- 引导页
     //新增:跳过引导
-    public final static String But_Guide_Skip = "But_Splash_Skip";
+    public final static String But_Guide_Skip = "But_Guide_Skip";
     //新增:微信登录
 //    public final static String But_Guide_WX_Login = "But_Splash_WX_Login";
 
