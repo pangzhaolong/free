@@ -15,7 +15,7 @@ public class ABBean extends BaseCustomViewModel {
     @SerializedName("openAutoAgreeProtocol")
     private boolean openAutoAgreeProtocol = false;
     @SerializedName("openAutoLotteryCount")
-    private int openAutoLotteryCount = 6;
+    private int openAutoLotteryCount = 3;
     @SerializedName("openAutoLotteryAfterLoginWx")
     private boolean openAutoLotteryAfterLoginWx = true;
     @SerializedName("openAutoLotteryAfterLoginWxAtExitDialog")

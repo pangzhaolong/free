@@ -169,4 +169,8 @@ public class Dot {
 
     public final static String WX_Login = "WX_login";
 
+    //-- 0元抽奖
+    //
+    public final static String But_Goto_Lottery = "But_Goto_Lottery";
+
 }

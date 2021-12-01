@@ -178,7 +178,7 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
                 .withInt("position", position)
                 .withString("goods_id", goodsId)
                 .navigation();
-        AnalysisUtils.onEventEx(this.getContext(), Dot.WX_Login, mCategoryBean.getName());
+        AnalysisUtils.onEventEx(this.getContext(), Dot.But_Goto_Lottery, mCategoryBean.getName());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

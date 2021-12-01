@@ -304,6 +304,8 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
                     .withString("goods_id", mGoods.getGoodsId())
                     .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
                     .navigation();
+
+            AnalysisUtils.onEventEx(this.getContext(), Dot.WX_Login, "热门商品推荐弹窗");
             dismiss();
         }
     }
