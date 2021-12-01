@@ -57,7 +57,10 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -371,13 +374,23 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                 return;
             }
             showLotteryDateOpend(lotteryOpenRecord.getPeriod());
-            LogUtil.e("record:" + lotteryOpenRecord.getPeriod());
-            loadLotteryDetail(lotteryOpenRecord.getPeriod());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+            try {
+                Date date = sdf.parse(lotteryOpenRecord.getPeriod() + "");
+                Calendar c = Calendar.getInstance();
+                assert date != null;
+                c.setTime(date);
+                c.add(Calendar.DAY_OF_MONTH, -1);
+                String yesterday = sdf.format(c.getTime());
+                loadLotteryDetail(Integer.parseInt(yesterday));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         });
     }
 
     private void loadLotteryDetail(int period) {
-        mViewModel.getLotteryDetail(period - 1).observe(getViewLifecycleOwner(), lotteryDetailBean -> {
+        mViewModel.getLotteryDetail(period).observe(getViewLifecycleOwner(), lotteryDetailBean -> {
             if (lotteryDetailBean == null) {
                 LogUtil.e("record1: detail1:");
                 return;
@@ -705,7 +718,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             return;
         }
 
-        int index = (int) v.getTag(1);
+        int index = (int) v.getTag(R.id.tag_first);
         AnalysisUtils.onEventEx(mContext, Dot.But_Rp_Click, String.valueOf(index));
 
         openRp();

@@ -60,6 +60,7 @@ public class FrontModel extends BaseLiveDataModel {
         MutableLiveData<WalletBean> mutableLiveData = new MutableLiveData<>();
         addDisposable(EasyHttp.get(FrontApi.walletRedPacketUrl)
                 .cacheMode(CacheMode.NO_CACHE)
+                .isShowToast(false)
                 .execute(new SimpleCallBack<WalletBean>() {
 
                     @Override
@@ -80,6 +81,7 @@ public class FrontModel extends BaseLiveDataModel {
         MutableLiveData<RedPacketBean> mutableLiveData = new MutableLiveData<>();
         addDisposable(EasyHttp.post(FrontApi.walletRedPacketUrl)
                 .cacheMode(CacheMode.NO_CACHE)
+                .isShowToast(false)
                 .execute(new SimpleCallBack<RedPacketBean>() {
 
                     @Override
