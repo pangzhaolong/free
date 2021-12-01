@@ -77,10 +77,12 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
         initProgressBar();
         initView();
         setOnDismissListener(dialog -> {
-            if(mGenerateCodeBean.getRemain() <= 0){
-                AnalysisUtils.onEventEx(context, Dot.Lottery_Complete_Drawing_Close);
-            }else{
-                AnalysisUtils.onEventEx(context, Dot.Lottery_Drawing_Probability_Close);
+            if(isSendCloseEvent) {
+                if (mGenerateCodeBean.getRemain() <= 0) {
+                    AnalysisUtils.onEventEx(context, Dot.Lottery_Complete_Drawing_Close);
+                } else {
+                    AnalysisUtils.onEventEx(context, Dot.Lottery_Drawing_Probability_Close);
+                }
             }
             if (valueProbeAnimator != null) {
                 valueProbeAnimator.cancel();
@@ -88,7 +90,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
         });
     }
 
-
+    private boolean isSendCloseEvent = true;
     private void initProgressBar() {
         mDataBinding.setCodeBean(mGenerateCodeBean);
         int schedule = 0;
@@ -120,6 +122,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
             mDataBinding.jsonAnimation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    isSendCloseEvent = false;
                     AnalysisUtils.onEventEx(context, Dot.Lottery_Drawing_Probability_Continue);
                     dismiss();
                     if (mOnFinishListener != null) {
