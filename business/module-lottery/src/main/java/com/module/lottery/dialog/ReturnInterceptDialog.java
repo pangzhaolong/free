@@ -155,7 +155,7 @@ public class ReturnInterceptDialog extends BaseDialog<InterceptDialogLayoutBindi
                         AnalysisUtils.onEventEx(mContext, Dot.Lottery_Not_Login_Dialog_Continue);
                         getEditor().putBoolean("protocol", true).commit();
                         RouterActivityPath.LoginProvider.getLoginProvider()
-                                .loginWX(null, "退出拦截弹窗");
+                                .loginWX(null, "抽奖页退出拦截弹窗");
                     } else {
                         //檢查是否勾选协议
                         if (System.currentTimeMillis() - fastVibrateTime > 1500) {

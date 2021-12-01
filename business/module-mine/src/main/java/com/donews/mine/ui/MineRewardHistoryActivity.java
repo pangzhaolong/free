@@ -87,6 +87,7 @@ public class MineRewardHistoryActivity extends MvvmBaseLiveDataActivity<MineRewa
     @Override
     public void onClick(int period) {
         ARouter.getInstance().build(PAGER_MINE_WINNING_CODE_ACTIVITY)
+                .withInt("from", 2)
                 .withInt("period", period)
                 .navigation();
     }

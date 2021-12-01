@@ -7,7 +7,6 @@ import com.dn.events.events.LoginLodingStartStatus
 import com.donews.common.router.RouterActivityPath.LoginProvider.PROVIDER_LOGIN
 import com.donews.common.router.providers.IARouterLoginProvider
 import com.donews.login.model.UserInfoManage
-import com.donews.login.providers.RouterLoginProvider.Companion.context
 import com.donews.share.ISWXSuccessCallBack
 import com.donews.share.WXHolderHelp
 import com.donews.utilslibrary.analysis.AnalysisUtils
@@ -25,13 +24,10 @@ import org.greenrobot.eventbus.EventBus
 @Route(path = PROVIDER_LOGIN, name = "登录模块中的登录功能提供者")
 class RouterLoginProvider : IARouterLoginProvider {
 
-    companion object {
-        @SuppressLint("StaticFieldLeak")
-        var context: Context? = null
-    }
+    var context: Context? = null
 
     override fun init(context: Context) {
-        RouterLoginProvider.context = context
+        this.context = context
     }
 
     override fun loginWX(loginTag: String?) {

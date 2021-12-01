@@ -17,8 +17,11 @@ import com.donews.common.router.RouterFragmentPath;
 import com.donews.mine.R;
 import com.donews.mine.bean.resps.RecommendGoodsResp;
 import com.donews.mine.utils.TextWinUtils;
+import com.donews.mine.viewModel.MineOpenWinningViewModel;
 import com.donews.mine.views.SectionCornerMessageLayout;
 import com.donews.mine.views.refresh.adapters.BaesLoadMoreAdapter;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.UrlUtils;
 
 import java.util.List;
@@ -29,6 +32,8 @@ import java.util.List;
  * Description:
  */
 public class MineWinningCodeAdapter extends BaesLoadMoreAdapter<RecommendGoodsResp.ListDTO, BaseViewHolder> {
+
+    public  int from = -1;
 
     public MineWinningCodeAdapter() {
         super(R.layout.mine_open_win_good_list_item);
@@ -66,12 +71,9 @@ public class MineWinningCodeAdapter extends BaesLoadMoreAdapter<RecommendGoodsRe
         );
         holder.itemView
                 .setOnClickListener(v -> {
-                    ARouter.getInstance()
-                            .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
-                            .withBoolean("needLotteryEvent", true)
-                            .withInt("position", holder.getAdapterPosition())
-                            .withString("goods_id", item.goodsId)
-                            .navigation();
+                    MineOpenWinningViewModel.goLotteryPage(
+                            true, holder.getAdapterPosition(),item.goodsId,from
+                    );
                 });
     }
 }

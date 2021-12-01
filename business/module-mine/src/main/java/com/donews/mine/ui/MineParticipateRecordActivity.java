@@ -21,6 +21,7 @@ import com.donews.mine.adapters.MineParticipateRecordAdapter;
 import com.donews.mine.bean.resps.HistoryPeopleLottery;
 import com.donews.mine.bean.resps.RecommendGoodsResp;
 import com.donews.mine.databinding.MineActivityParticipateRecordBinding;
+import com.donews.mine.viewModel.MineOpenWinningViewModel;
 import com.donews.mine.viewModel.MineParticipateRecordViewModel;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
@@ -211,6 +212,7 @@ public class MineParticipateRecordActivity extends
         mItemView.setOnClickListener((v) -> {
             SPUtils.getInstance().put("" + period.period, 1);
             ARouter.getInstance().build(PAGER_MINE_WINNING_CODE_ACTIVITY)
+                    .withInt("from", 3)
                     .withInt("period", period.period)
                     .navigation();
             //直接将当前数据项目设置为已查看状态

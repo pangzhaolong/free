@@ -15,9 +15,11 @@ import android.widget.TextView;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.MutableLiveData;
 
+import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ConvertUtils;
 import com.dn.drouter.ARouteHelper;
+import com.donews.base.base.BaseApplication;
 import com.donews.base.utils.glide.GlideUtils;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.common.router.RouterActivityPath;
@@ -47,6 +49,40 @@ import java.util.List;
  * 开奖Fragment
  */
 public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
+
+    /**
+     * 去往开奖页面
+     *
+     * @param needLotteryEvent 是否自动抽奖
+     * @param position         关联的下标(无)
+     * @param goods_id
+     * @param from             来源
+     *                         1：首页
+     *                         2：往期开奖
+     *                         3：个人参与记录
+     */
+    public static void goLotteryPage(
+            boolean needLotteryEvent, int position, String goods_id, int from) {
+        if (from == 1) {
+            AnalysisUtils.onEventEx(BaseApplication.getInstance(),
+                    Dot.But_Goto_Lottery, "首页->开奖页面>热门抽奖");
+        } else if(from == 2){
+            AnalysisUtils.onEventEx(BaseApplication.getInstance(),
+                    Dot.But_Goto_Lottery, "往期记录>开奖详情页>热门抽奖");
+        } else if(from == 3){
+            AnalysisUtils.onEventEx(BaseApplication.getInstance(),
+                    Dot.But_Goto_Lottery, "参与记录>开奖详情页>热门抽奖");
+        }
+        Postcard posta = ARouter.getInstance()
+                .build(RouterFragmentPath.Lottery.PAGER_LOTTERY);
+        if (position >= 0) {
+            posta.withInt("position", position);
+        }
+        posta.withBoolean("needLotteryEvent", needLotteryEvent)
+                .withString("goods_id", goods_id)
+                .navigation();
+    }
+
     public Context mContext;
     private MineFragmentWinningCodeBinding viewDataBinding;
 
@@ -59,6 +95,14 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
      * 是否为主页加载
      */
     public boolean isMainLoad = false;
+
+    /**
+     * 是否为主页加载
+     * 1：首页
+     * 2：往期记录>开奖详情
+     * 3：参与记录>开奖详情
+     */
+    public int from = -1;
 
     /**
      * 推荐列表
@@ -596,6 +640,16 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
                 code.setMaxLines(3);
             });
             childView.setOnClickListener((v) -> {
+                if (from == 1) {
+                    AnalysisUtils.onEventEx(mContext,
+                            Dot.But_Goto_Lottery, "首页>开奖页面>我的参与");
+                } else if (from == 2){
+                    AnalysisUtils.onEventEx(mContext,
+                            Dot.But_Goto_Lottery, "往期记录>抽奖详情页>我的参与");
+                }else if (from == 3){
+                    AnalysisUtils.onEventEx(mContext,
+                            Dot.But_Goto_Lottery, "参与记录>抽奖详情页>我的参与");
+                }
                 ARouter.getInstance()
                         .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                         .withString("goods_id", item.goods.id)
@@ -680,6 +734,16 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             goodPice.setText("" + item.goods.price);
             goTo.setText("试试手气");
             childView.setOnClickListener((v) -> {
+                if (from == 1) {
+                    AnalysisUtils.onEventEx(mContext,
+                            Dot.But_Goto_Lottery, "首页>开奖页面>中奖名单");
+                } else if (from == 2){
+                    AnalysisUtils.onEventEx(mContext,
+                            Dot.But_Goto_Lottery, "往期记录>抽奖详情页>中奖名单");
+                }else if (from == 3){
+                    AnalysisUtils.onEventEx(mContext,
+                            Dot.But_Goto_Lottery, "参与记录>抽奖详情页>中奖名单");
+                }
                 ARouter.getInstance()
                         .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                         .withString("goods_id", item.goods.id)

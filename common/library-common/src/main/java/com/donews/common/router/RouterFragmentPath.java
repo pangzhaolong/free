@@ -153,16 +153,21 @@ public class RouterFragmentPath {
          * @param isMainLoad 是否为首页加载，T:是，F:否
          * @param isShowBack 是否显示返回按钮，T:显示按钮，F:不显示
          * @param isShowMore 是否显示往期的按钮，T:显示按钮，F:不显示
+         * @param from 来源，
+         *             1：首页
+         *             2：往期开奖
+         *             3：个人参与记录
          * @return 开奖的Fragment
          */
         public static Fragment getMineOpenWinFragment(
-                int period, boolean isMainLoad,boolean isShowBack, boolean isShowMore) {
+                int period, boolean isMainLoad,boolean isShowBack, boolean isShowMore,int from) {
             return (Fragment) ARouter.getInstance()
                     .build(RouterFragmentPath.User.PAGER_USER_OPEN_WINNING)
                     .withInt("period", period)
                     .withBoolean("isMainLoad", isMainLoad)
                     .withBoolean("isShowBack", isShowBack)
                     .withBoolean("isShowMore", isShowMore)
+                    .withInt("from", from)
                     .navigation();
         }
     }

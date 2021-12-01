@@ -167,7 +167,7 @@ public class ExitNotLoginDialog extends BaseDialog<MainInterceptDialogLayoutBind
                         AnalysisUtils.onEventEx(mContext, Dot.But_Home_Exit_Not_Login_Continue);
                         getEditor().putBoolean("protocol", true).commit();
                         RouterActivityPath.LoginProvider.getLoginProvider()
-                                .loginWX(null, "未登陆退出弹窗");
+                                .loginWX(null, "首页>退出拦截>未登陆弹窗");
                     } else {
                         //檢查是否勾选协议
                         if (System.currentTimeMillis() - fastVibrateTime > 1500) {

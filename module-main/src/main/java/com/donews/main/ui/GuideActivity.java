@@ -132,7 +132,6 @@ public class GuideActivity
         mDataBinding.loginCkCheckLayout.setOnClickListener(v -> {
             mDataBinding.loginCkCheck.performClick();
         });
-        mDataBinding.loginCkCheck.setChecked(ABSwitch.Ins().isOpenAutoAgreeProtocol());
         mDataBinding.loginCkCheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 mDataBinding.llMainLogin.setEnabled(true);
@@ -142,6 +141,7 @@ public class GuideActivity
                 mDataBinding.rlWachatLoginFloat.setVisibility(View.VISIBLE);
             }
         });
+        mDataBinding.loginCkCheck.setChecked(ABSwitch.Ins().isOpenAutoAgreeProtocol());
         mDataBinding.tvUserXy.setOnClickListener(v -> { //用户协议
             Bundle bundle = new Bundle();
             bundle.putString("url",

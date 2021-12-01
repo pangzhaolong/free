@@ -54,6 +54,9 @@ public class MineOpenWinningFragment extends
     //是否显示往期
     @Autowired(name = "isShowMore")
     public boolean isShowMore = true;
+    //是否显示往期
+    @Autowired(name = "from")
+    public int from = -1;
 
     private int headRes = R.layout.mine_frm_winning_code_list_head;
     private int notOpenRecordHeadRes = R.layout.mine_frm_winning_code_list_not_record_head;
@@ -229,6 +232,7 @@ public class MineOpenWinningFragment extends
             AnalysisUtils.onEventEx(this.getActivity(), Dot.Page_Lottery); //开奖事件
         }
         mViewModel.isMainLoad = isMainLoad;
+        mViewModel.from = from;
         mViewModel.setDataBinDing(mDataBinding, getBaseActivity());
         adapterOpenWinHead = (ViewGroup) View.inflate(getBaseActivity(), headRes, null);
         adapterNotOpenMyAddRecordHead = (ViewGroup) View.inflate(getBaseActivity(), notOpenRecordHeadRes, null);
@@ -257,6 +261,7 @@ public class MineOpenWinningFragment extends
         timeMM = adapterNotOpenWinHead.findViewById(R.id.mine_frm_win_m);
         timeSS = adapterNotOpenWinHead.findViewById(R.id.mine_frm_win_s);
         adapter = new MineWinningCodeAdapter();
+        adapter.from = from;
         //设置没有更多数据
         adapter.getLoadMoreModule().loadMoreEnd();
         adapter.setOnLoadMoreListener((page, pageSize) -> {

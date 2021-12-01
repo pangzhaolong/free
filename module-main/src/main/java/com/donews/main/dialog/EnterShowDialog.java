@@ -117,7 +117,8 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
             } else {
                 AnalysisUtils.onEventEx(mContext, Dot.But_Hme_Recommend_Not_Login_Snap);
 
-                RouterActivityPath.LoginProvider.getLoginProvider().loginWX(LOGIN_TAG, "热门商品推荐弹窗");
+                RouterActivityPath.LoginProvider.getLoginProvider()
+                        .loginWX(LOGIN_TAG, "首页>热门商品推荐>未登录弹窗");
             }
         });
 

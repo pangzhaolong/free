@@ -17,8 +17,11 @@ import com.donews.common.router.RouterFragmentPath;
 import com.donews.mine.R;
 import com.donews.mine.bean.resps.RecommendGoodsResp;
 import com.donews.mine.utils.TextWinUtils;
+import com.donews.mine.viewModel.MineOpenWinningViewModel;
 import com.donews.mine.views.refresh.adapters.BaesLoadMoreAdapter;
 import com.donews.mine.views.SectionCornerMessageLayout;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.UrlUtils;
 
 import java.util.List;
@@ -67,6 +70,8 @@ public class MineParticipateRecordAdapter extends BaesLoadMoreAdapter<RecommendG
         );
         helper.itemView
                 .setOnClickListener(v -> {
+                    AnalysisUtils.onEventEx(this.getContext(),
+                            Dot.But_Goto_Lottery, "参与记录>精选推荐");
                     ARouter.getInstance()
                             .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                             .withBoolean("needLotteryEvent", true)

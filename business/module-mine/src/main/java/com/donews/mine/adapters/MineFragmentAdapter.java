@@ -17,6 +17,8 @@ import com.donews.mine.bean.resps.RecommendGoodsResp;
 import com.donews.mine.utils.TextWinUtils;
 import com.donews.mine.views.refresh.adapters.BaesLoadMoreAdapter;
 import com.donews.mine.views.SectionCornerMessageLayout;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.UrlUtils;
 
 import java.util.List;
@@ -62,6 +64,8 @@ public class MineFragmentAdapter extends BaesLoadMoreAdapter<RecommendGoodsResp.
         );
         helper.itemView
                 .setOnClickListener(v -> {
+                    AnalysisUtils.onEventEx(this.getContext(),
+                            Dot.But_Goto_Lottery, "个人中心>热门抽奖");
                     ARouter.getInstance()
                             .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                             .withBoolean("needLotteryEvent", true)

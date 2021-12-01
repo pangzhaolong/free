@@ -27,7 +27,8 @@ public class MineWinningCodeActivity extends
 
     @Autowired(name = "period")
     public int period;
-
+    @Autowired(name = "from")
+    public int from = -1;
     @Override
     protected int getLayoutId() {
         return R.layout.mine_activity_winning_code;
@@ -53,7 +54,7 @@ public class MineWinningCodeActivity extends
     public void initView() {
         ARouter.getInstance().inject(this);
         Fragment f = RouterFragmentPath.User.getMineOpenWinFragment(
-                period, false, true, false);
+                period, false, true, false,from);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.mine_win_frm, f);
         ft.commitAllowingStateLoss();

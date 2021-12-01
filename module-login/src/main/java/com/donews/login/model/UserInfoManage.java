@@ -6,6 +6,7 @@ import com.dn.drouter.ARouteHelper;
 import com.dn.events.events.LoginLodingStartStatus;
 import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.UserTelBindEvent;
+import com.donews.base.base.BaseApplication;
 import com.donews.base.utils.GsonUtils;
 import com.donews.common.contract.DataBean;
 import com.donews.common.contract.LoginHelp;
@@ -324,7 +325,9 @@ public class UserInfoManage {
      * @param from 需要上报到后台的登录源：就是发起登录的位置
      */
     public static MutableLiveData<UserInfoBean> onLoadNetUserInfo(String data, String tag, String from) {
-        boolean isWxLogin = AppInfo.getWXLoginCode() == null || AppInfo.getWXLoginCode().isEmpty();
+        boolean isWxLogin = (AppInfo.getWXLoginCode() != null &&
+                AppInfo.getWXLoginCode().length() > 0);
+        boolean isSendLoginEvent = (from != null && from.length() > 0);
         LoginLodingStartStatus eventLoadIngStatus;
         if (tag == null || tag.isEmpty()) {
             eventLoadIngStatus = new LoginLodingStartStatus();
@@ -342,9 +345,9 @@ public class UserInfoManage {
                         eventLoadIngStatus.getLoginLoadingLiveData().postValue(-1);
                         EventBus.getDefault().post(new LoginUserStatus(-1));
                         LogUtil.i(e.getCode() + e.getMessage() + "");
-                        if (isWxLogin && RouterLoginProvider.Companion.getContext() != null) {
+                        if (isWxLogin && isSendLoginEvent && BaseApplication.getInstance() != null) {
                             AnalysisUtils.onEventEx(
-                                    RouterLoginProvider.Companion.getContext(),
+                                    BaseApplication.getInstance(),
                                     Dot.WX_Login, from + "(网络异常)");
                         }
                     }
@@ -354,16 +357,16 @@ public class UserInfoManage {
                         if (userInfoBean == null) {
                             EventBus.getDefault().post(new LoginUserStatus(0));
                             eventLoadIngStatus.getLoginLoadingLiveData().postValue(1);
-                            if (isWxLogin && RouterLoginProvider.Companion.getContext() != null) {
+                            if (isWxLogin && isSendLoginEvent && BaseApplication.getInstance() != null) {
                                 AnalysisUtils.onEventEx(
-                                        RouterLoginProvider.Companion.getContext(),
+                                        BaseApplication.getInstance(),
                                         Dot.WX_Login, from + "(后台业务服务失败)");
                             }
                             return;
                         }
-                        if (isWxLogin && RouterLoginProvider.Companion.getContext() != null) {
+                        if (isWxLogin && isSendLoginEvent && BaseApplication.getInstance() != null) {
                             AnalysisUtils.onEventEx(
-                                    RouterLoginProvider.Companion.getContext(),
+                                    BaseApplication.getInstance(),
                                     Dot.WX_Login, from + "(成功)");
                         }
                         eventLoadIngStatus.getLoginLoadingLiveData().postValue(2);
