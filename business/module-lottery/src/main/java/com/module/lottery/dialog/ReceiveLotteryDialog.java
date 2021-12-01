@@ -96,6 +96,7 @@ public class ReceiveLotteryDialog extends BaseDialog<ReceiveDialogLayoutBinding>
             public void onClick(View v) {
                 dismiss();
                 if (mOnFinishListener != null) {
+                    isSendCloseEvent = false;
                     AnalysisUtils.onEventEx(context, Dot.Lottery_Exit_Drawing_Count_Receive);
                     mOnFinishListener.onLottery();
                 }
