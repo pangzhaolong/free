@@ -142,8 +142,10 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                 TabItem tabItem = (TabItem) tab.getCustomView();
                 assert tabItem != null;
                 tabItem.selected();
-                mCurSelectPosition = tab.getPosition();
-                sendDotData();
+                if (tab.getPosition() != mCurSelectPosition) {
+                    mCurSelectPosition = tab.getPosition();
+                    sendDotData();
+                }
             }
 
             @Override

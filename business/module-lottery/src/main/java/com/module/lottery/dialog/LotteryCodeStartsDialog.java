@@ -43,7 +43,8 @@ import com.orhanobut.logger.Logger;
 import java.lang.ref.WeakReference;
 
 //抽奖码小于6个
-public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayoutBinding> implements DialogInterface.OnDismissListener {
+public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayoutBinding>
+        implements DialogInterface.OnDismissListener {
     private static final String TAG = "LotteryCodeStartsDialog";
     private static final String CLOSURE_HINT = "抽奖失败,请稍后再试";
     private LotteryActivity mContext;
@@ -73,6 +74,7 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
         Message delay = new Message();
         delay.what = 3;
         mLotteryHandler.sendMessageDelayed(delay, 20000);
+        Logger.d("22222222");
     }
 
 
@@ -114,7 +116,8 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
             Activity activity = AppManager.getInstance().getTopActivity();
             if (activity != null) {
                 if (ABSwitch.Ins().isOpenVideoToast()) {
-                    ScaleAnimation mScaleAnimation = new ScaleAnimation(1.1f, 0.88f, 1.1f, 0.88f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                    ScaleAnimation mScaleAnimation = new ScaleAnimation(1.1f, 0.88f, 1.1f, 0.88f,
+                            Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
                     mScaleAnimation.setInterpolator(new LinearInterpolator());
                     mScaleAnimation.setRepeatMode(Animation.REVERSE);
                     mScaleAnimation.setRepeatCount(Animation.INFINITE);
@@ -143,9 +146,13 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
 
     private void closedVideoViewToast() {
         //有效关闭
+        Logger.d(TAG + aAState + "");
         if (aAState) {
             if (mOnFinishListener != null) {
+                Logger.d(TAG + "onJumpAdFinish");
                 mOnFinishListener.onJumpAdFinish();
+            } else {
+                Logger.d(TAG + "onJumpAdFinish is null");
             }
         }
     }
@@ -180,7 +187,7 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
 
 
     private void loadAd() {
-        AdVideoCacheUtils.INSTANCE.playRewardVideo(new IAdRewardVideoListener() {
+        IAdRewardVideoListener listener = new IAdRewardVideoListener() {
             @Override
             public void onError(int code, String msg) {
                 loadError();
@@ -256,7 +263,9 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
             public void onSkippedRewardVideo() {
                 onVideoComplete();
             }
-        });
+        };
+
+        AdVideoCacheUtils.INSTANCE.showRewardVideo(listener);
     }
 
 

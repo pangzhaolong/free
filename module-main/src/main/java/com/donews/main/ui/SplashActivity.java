@@ -124,7 +124,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
     @Override
     protected void onResume() {
         super.onResume();
-        checkDeal();
+        showPersonGuideDialog();
     }
 
     @Subscribe //网络状态变化监听
@@ -157,39 +157,42 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         //如果协议已经同意，直接检查权限进入app
         if (SPUtils.getInformain(KeySharePreferences.DEAL, false)) {
             checkAndRequestPermission();
+        }
+    }
+
+
+    private void showPersonGuideDialog() {
+        //如果协议已经同意，不需要弹起弹框
+        if (SPUtils.getInformain(KeySharePreferences.DEAL, false)) {
             return;
         }
+        if (personGuideDialog != null && personGuideDialog.isAdded() && personGuideDialog.isVisible()) {
+            Logger.d("personGuideDialog isAdded");
+        } else {
+            Logger.d("personGuideDialog no isAdded");
+            personGuideDialog = new PersonGuideDialog();
+            personGuideDialog.setSureListener(() -> {
+                SplashUtils.INSTANCE.savePersonExit(true);
+                SPUtils.setInformain(KeySharePreferences.DEAL, true);
+                SPUtils.setInformain(KeySharePreferences.AGREEMENT, true);
+                AnalysisHelp.setAnalysisInitUmeng(getApplication());
 
-        if (personGuideDialog != null) {
-            return;
+                if (!AnalysisHelp.analysisRegister) {
+                    AnalysisHelp.register(getApplication());
+                }
+                //极光推送
+                JPushHelper.setDebugMode(BuildConfig.DEBUG);
+                JPushHelper.init(getApplication());
+                checkAndRequestPermission();
+            }).setCancelListener(new AbstractFragmentDialog.CancelListener() {
+                @Override
+                public void onCancel() {
+                    loadDisagreePrivacyPolicyAd();
+                    moveTaskToBack(true);
+                    personGuideDialog.dismiss();
+                }
+            }).show(getSupportFragmentManager(), "PersonGuideDialog");
         }
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag("PersonGuideDialog");
-        if (fragment != null && fragment instanceof PersonGuideDialog) {
-            getSupportFragmentManager().beginTransaction().remove(fragment).commitAllowingStateLoss();
-        }
-        personGuideDialog = new PersonGuideDialog();
-        personGuideDialog.setSureListener(() -> {
-            SplashUtils.INSTANCE.savePersonExit(true);
-            SPUtils.setInformain(KeySharePreferences.DEAL, true);
-            SPUtils.setInformain(KeySharePreferences.AGREEMENT, true);
-            AnalysisHelp.setAnalysisInitUmeng(getApplication());
-
-            if (!AnalysisHelp.analysisRegister) {
-                AnalysisHelp.register(getApplication());
-            }
-            //极光推送
-            JPushHelper.setDebugMode(BuildConfig.DEBUG);
-            JPushHelper.init(getApplication());
-            checkAndRequestPermission();
-        }).setCancelListener(new AbstractFragmentDialog.CancelListener() {
-            @Override
-            public void onCancel() {
-                loadDisagreePrivacyPolicyAd();
-                moveTaskToBack(true);
-                personGuideDialog = null;
-            }
-        }).show(getSupportFragmentManager(), "PersonGuideDialog");
-
     }
 
     /**
@@ -296,7 +299,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
 
     private void loadDisagreePrivacyPolicyAd() {
         long curClickTime = System.currentTimeMillis();
-        if (curClickTime - mPreClickTime < 1000) {
+        if (curClickTime - mPreClickTime < 2000) {
             mPreClickTime = curClickTime;
             Toast.makeText(this, "点击频率过高", Toast.LENGTH_SHORT).show();
             return;

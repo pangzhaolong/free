@@ -75,6 +75,7 @@ import java.util.Map;
 
 @Route(path = RouterFragmentPath.Lottery.PAGER_LOTTERY)
 public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, LotteryViewModel> {
+    private static final String TAG = "LotteryActivity";
     private static final String LOTTERY_ACTIVITY = "LOTTERY_ACTIVITY";
     private static final String FIRST_SHOW = "first_show";
     @Autowired(name = "goods_id")
@@ -193,7 +194,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     }
 
 
-
     public void luckyDrawEntrance() {
         boolean logType = AppInfo.checkIsWXLogin();
         if (logType) {
@@ -303,6 +303,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 @Override
                 public void onJumpAdFinish() {
                     //弹起生成抽奖码的dialog
+                    Logger.d(TAG + "showGenerateCodeDialog");
                     showGenerateCodeDialog();
                 }
             });

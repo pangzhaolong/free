@@ -11,6 +11,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.dn.sdk.sdk.ErrorConstant
 import com.dn.sdk.sdk.interfaces.listener.IAdRewardVideoListener
 import com.dn.sdk.sdk.interfaces.view.PreloadVideoView
+import com.dn.sdk.sdk.utils.AdLoggerUtils
 import com.donews.common.ad.business.loader.AdManager
 import com.donews.common.router.RouterActivityPath
 import com.orhanobut.logger.Logger
@@ -69,6 +70,11 @@ class OnePixelVideoCacheActivity : AppCompatActivity() {
         }
     }
 
+    override fun onDestroy() {
+        AdLoggerUtils.d("onDestroy")
+        super.onDestroy()
+
+    }
 
     private fun preloadRewardVideo() {
         AdManager.preloadRewardVideoAd(this, {
@@ -79,34 +85,41 @@ class OnePixelVideoCacheActivity : AppCompatActivity() {
             }
         }, object : IAdRewardVideoListener {
             override fun onLoad() {
+                AdLoggerUtils.d("onLoad")
                 rewardVideoListener?.onLoad()
                 //加载成功,则重置加载次数
                 retry = 0
             }
 
             override fun onLoadFail(code: Int, error: String?) {
+                AdLoggerUtils.d("onLoadFail")
                 moveTaskToBack(true)
                 rewardVideoListener?.onLoadFail(code, error)
             }
 
             override fun onLoadTimeout() {
+                AdLoggerUtils.d("onLoadTimeout")
                 moveTaskToBack(true)
                 rewardVideoListener?.onLoadTimeout()
             }
 
             override fun onLoadCached() {
+                AdLoggerUtils.d("onLoadCached")
                 rewardVideoListener?.onLoadTimeout()
             }
 
             override fun onRewardAdShow() {
+                AdLoggerUtils.d("onRewardAdShow")
                 rewardVideoListener?.onRewardAdShow()
             }
 
             override fun onRewardBarClick() {
+                AdLoggerUtils.d("onRewardBarClick")
                 rewardVideoListener?.onRewardBarClick()
             }
 
             override fun onRewardedClosed() {
+                AdLoggerUtils.d("onRewardedClosed")
                 moveTaskToBack(true)
                 rewardVideoListener?.onRewardedClosed()
                 rewardVideoListener = null
@@ -116,26 +129,32 @@ class OnePixelVideoCacheActivity : AppCompatActivity() {
             }
 
             override fun onRewardVideoComplete() {
+                AdLoggerUtils.d("onRewardVideoComplete")
                 rewardVideoListener?.onRewardVideoComplete()
             }
 
             override fun onRewardVideoError() {
+                AdLoggerUtils.d("onRewardVideoError")
                 rewardVideoListener?.onRewardVideoError()
             }
 
             override fun onRewardVideoAdShowFail(code: Int, message: String?) {
+                AdLoggerUtils.d("onRewardVideoAdShowFail")
                 rewardVideoListener?.onRewardVideoAdShowFail(code, message)
             }
 
             override fun onRewardVerify(result: Boolean) {
+                AdLoggerUtils.d("onRewardVerify")
                 rewardVideoListener?.onRewardVerify(result)
             }
 
             override fun onSkippedRewardVideo() {
+                AdLoggerUtils.d("onSkippedRewardVideo")
                 rewardVideoListener?.onSkippedRewardVideo()
             }
 
             override fun onError(code: Int, msg: String?) {
+                AdLoggerUtils.d("onError")
                 //将此activity移入后台而不销毁
                 moveTaskToBack(true)
                 rewardVideoListener?.onError(code, msg)
