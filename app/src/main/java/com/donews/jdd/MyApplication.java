@@ -45,9 +45,6 @@ public class MyApplication extends BaseApplication {
             CrashHandlerUtil.getInstance().init(this);
             // 集成bugly
             CrashReport.initCrashReport(getApplicationContext(), KeyConstant.getBuglyId(), BuildConfig.DEBUG);
-            //极光推送
-            JPushHelper.setDebugMode(BuildConfig.DEBUG);
-            JPushHelper.init(this);
 
             DNEventBusUtils.INSTANCE.init(MyApplication.this);
 

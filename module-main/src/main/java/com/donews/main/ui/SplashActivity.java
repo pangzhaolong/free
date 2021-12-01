@@ -30,9 +30,10 @@ import com.donews.common.ad.business.bean.JddAdConfigBean;
 import com.donews.common.ad.business.callback.JddAdConfigManager;
 import com.donews.common.ad.business.loader.AdManager;
 import com.donews.common.ad.business.monitor.LotteryAdCount;
-import com.donews.common.adapter.ScreenAutoAdapter;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.contract.LoginHelp;
+import com.donews.jpush.JPushHelper;
+import com.donews.main.BuildConfig;
 import com.donews.main.R;
 import com.donews.main.databinding.MainActivitySplashBinding;
 import com.donews.main.dialog.PersonGuideDialog;
@@ -43,8 +44,6 @@ import com.donews.utilslibrary.base.UtilsConfig;
 import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.NetworkUtils;
 import com.donews.utilslibrary.utils.SPUtils;
-import com.gyf.immersionbar.BarHide;
-import com.gyf.immersionbar.ImmersionBar;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
@@ -52,9 +51,6 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import kotlin.Unit;
-import kotlin.jvm.functions.Function0;
 
 /**
  * 应用模块: 主业务模块
@@ -181,6 +177,9 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
             if (!AnalysisHelp.analysisRegister) {
                 AnalysisHelp.register(getApplication());
             }
+            //极光推送
+            JPushHelper.setDebugMode(BuildConfig.DEBUG);
+            JPushHelper.init(getApplication());
             checkAndRequestPermission();
         }).setCancelListener(new AbstractFragmentDialog.CancelListener() {
             @Override

@@ -123,7 +123,7 @@ public class GuideActivity
             mDataBinding.llBotDesc.startAnimation(anim);
         });
         mDataBinding.llMainLogin.setOnClickListener(v -> {
-            AnalysisUtils.onEventEx(this, Dot.But_Guide_WX_Login);
+            AnalysisUtils.onEventEx(this, Dot.WX_Login, "引导页面");
             RouterActivityPath.LoginProvider.getLoginProvider()
                     .loginWX(loginTag);
         });
