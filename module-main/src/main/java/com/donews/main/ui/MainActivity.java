@@ -135,7 +135,7 @@ public class MainActivity
         }
 
         //预加载一个激励视频
-        AdVideoCacheUtils.INSTANCE.startCache();
+        AdVideoCacheUtils.INSTANCE.cacheRewardVideo(this);
         //上报一个测试友盟多参数事件
         testUMMuliParams();
     }
@@ -470,7 +470,7 @@ public class MainActivity
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults,
                 ExitInterceptUtils.INSTANCE.getRemindDialog());

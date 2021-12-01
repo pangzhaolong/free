@@ -15,6 +15,7 @@ import com.dn.sdk.sdk.interfaces.listener.IAdSplashListener
 import com.dn.sdk.sdk.interfaces.listener.preload.IAdPreloadVideoViewListener
 import com.dn.sdk.sdk.interfaces.loader.IAdManager
 import com.dn.sdk.sdk.platform.IAdIdConfigCallback
+import com.dn.sdk.sdk.utils.AdLoggerUtils
 import com.donews.base.utils.ToastUtil
 import com.donews.common.BuildConfig
 import com.donews.common.ad.business.constant.*
@@ -94,6 +95,7 @@ object AdManager : IAdManager, ISdkManager by AdSdkManager, IAdIdConfig by JddAd
     }
 
     override fun loadFullScreenSplashAd(activity: Activity, container: ViewGroup, listener: IAdSplashListener?) {
+        AdLoggerUtils.d("loadFullScreenSplashAd")
         JddAdIdConfigManager.addInitListener(object : IAdIdConfigCallback {
             override fun initSuccess() {
                 val key = SPLASH
@@ -116,6 +118,7 @@ object AdManager : IAdManager, ISdkManager by AdSdkManager, IAdIdConfig by JddAd
     }
 
     override fun loadHalfScreenSplashAd(activity: Activity, container: ViewGroup, listener: IAdSplashListener?) {
+        AdLoggerUtils.d("loadHalfScreenSplashAd")
         JddAdIdConfigManager.addInitListener(object : IAdIdConfigCallback {
             override fun initSuccess() {
                 val key = SPLASH
