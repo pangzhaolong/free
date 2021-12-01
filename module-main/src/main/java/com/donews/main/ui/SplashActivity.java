@@ -323,7 +323,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
     }
 
     private void loadDisagreePrivacyPolicyInters() {
-        AdManager.INSTANCE.loadInvalidInterstitialAd(this, new SimpleInterstListener() {
+        AdManager.INSTANCE.loadInterstitialAd(this, new SimpleInterstListener() {
             @Override
             public void onError(int code, String msg) {
                 super.onError(code, msg);

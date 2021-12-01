@@ -1,9 +1,9 @@
 package com.donews.common.ad.business.bean
 
-import android.os.Parcel
 import android.os.Parcelable
 import com.donews.common.contract.BaseCustomViewModel
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
 /**
  * 奖多多广告场景配置策略
@@ -12,6 +12,7 @@ import com.google.gson.annotations.SerializedName
  * @version v1.0
  * @date 2021/10/26 17:25
  */
+@Parcelize
 data class JddAdConfigBean(
 
     /** 冷启动广告开关 */
@@ -25,7 +26,7 @@ data class JddAdConfigBean(
     var coldStartDoubleSplashOpen: Boolean = true,
     /** 冷启动使用双开屏策略时间，用户注册48小时后 */
     @SerializedName("coldStartDoubleSplash")
-    var coldStartDoubleSplash: Int = 48,
+    var coldStartDoubleSplash: Int = 48*60,
 
     /** 热启动广告开关 */
     var hotStartAdEnable: Boolean = true,
@@ -40,7 +41,7 @@ data class JddAdConfigBean(
     var hotStartDoubleSplashOpen: Boolean = true,
     /** 热启动使用双开屏策略时间，用户注册48小时后 */
     @SerializedName("hotStartDoubleSplash")
-    var hotStartDoubleSplash: Int = 48,
+    var hotStartDoubleSplash: Int = 48*60,
 
 
     /** 无效用户不同意隐私协议最终拒绝的时候广告开关*/
@@ -81,6 +82,10 @@ data class JddAdConfigBean(
     @SerializedName("playRewardVideoTimes")
     var playRewardVideoTimes: Int = 10,
 
+    /** 用户当日抽奖达到一定次数则会启动无效激励视频广告位加载激励视频 */
+    @SerializedName("useInvalidRewardVideoIdWhenLotteryNumber")
+    var useInvalidRewardVideoIdWhenLotteryNumber: Int = 15,
+
     /** 用户未抽奖时退出app弹出框关闭按钮点击时出现的广告开关 */
     @SerializedName("notLotteryExitAppDialogAdEnable")
     var notLotteryExitAppDialogAdEnable: Boolean = false,
@@ -91,70 +96,4 @@ data class JddAdConfigBean(
     @SerializedName("notLotteryExitAppDialogAdType")
     var notLotteryExitAppDialogAdType: Int = 1
 
-) : BaseCustomViewModel(), Parcelable {
-    constructor(parcel: Parcel) : this(
-        parcel.readByte() != 0.toByte(),
-        parcel.readInt(),
-        parcel.readByte() != 0.toByte(),
-        parcel.readInt(),
-        parcel.readByte() != 0.toByte(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readByte() != 0.toByte(),
-        parcel.readInt(),
-        parcel.readByte() != 0.toByte(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readByte() != 0.toByte(),
-        parcel.readByte() != 0.toByte(),
-        parcel.readInt()
-    ) {
-    }
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeByte(if (coldStartAdEnable) 1 else 0)
-        parcel.writeInt(coldStartSplashStyle)
-        parcel.writeByte(if (coldStartDoubleSplashOpen) 1 else 0)
-        parcel.writeInt(coldStartDoubleSplash)
-        parcel.writeByte(if (hotStartAdEnable) 1 else 0)
-        parcel.writeInt(hotStartSplashStyle)
-        parcel.writeInt(hotStartSplashInterval)
-        parcel.writeByte(if (hotStartDoubleSplashOpen) 1 else 0)
-        parcel.writeInt(hotStartDoubleSplash)
-        parcel.writeByte(if (disagreePrivacyPolicyAdEnable) 1 else 0)
-        parcel.writeInt(disagreePrivacyPolicyInterval)
-        parcel.writeInt(disagreePrivacyPolicyAdType)
-        parcel.writeInt(notLotteryExitAppTimes)
-        parcel.writeInt(notLotteryExitAppAdType)
-        parcel.writeInt(interstitialStartTime)
-        parcel.writeInt(interstitialLotteryStartTime)
-        parcel.writeInt(interstitialDuration)
-        parcel.writeInt(noOperationDuration)
-        parcel.writeInt(playRewardVideoTimes)
-        parcel.writeByte(if (notLotteryExitAppDialogAdEnable) 1 else 0)
-        parcel.writeByte(if (notLotteryExitAppDialogAdMutex) 1 else 0)
-        parcel.writeInt(notLotteryExitAppDialogAdType)
-    }
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    companion object CREATOR : Parcelable.Creator<JddAdConfigBean> {
-        override fun createFromParcel(parcel: Parcel): JddAdConfigBean {
-            return JddAdConfigBean(parcel)
-        }
-
-        override fun newArray(size: Int): Array<JddAdConfigBean?> {
-            return arrayOfNulls(size)
-        }
-    }
-
-}
+) : BaseCustomViewModel(), Parcelable

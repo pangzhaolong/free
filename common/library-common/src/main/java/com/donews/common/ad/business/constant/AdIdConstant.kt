@@ -8,6 +8,7 @@ package com.donews.common.ad.business.constant
  * @date 2021/10/26 19:16
  */
 
+//region 1.3.1以前使用
 /** 无效用户插屏广告id */
 const val INVALID_INTERSTITIAL = "invalid_interstitial"
 
@@ -25,3 +26,14 @@ const val INTERSTITIAL = "interstitial"
 
 /** 通用激励视频id */
 const val REWARD_VIDEO = "reward_video"
+//endregion
+
+//region 1.3.2版本使用新的key
+const val NEW_SPLASH_ID = "new_splash_Id"
+
+const val NEW_INTERSTITIAL_ID = "new_interstitial_Id"
+
+const val NEW_REWARD_VIDEO_ID = "new_reward_video_id"
+
+const val NEW_INVALID_REWARD_VIDEO_ID = "new_invalid_reward_video_id"
+//endregion

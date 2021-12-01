@@ -25,15 +25,6 @@ interface IAdManager {
         listener: IAdRewardVideoListener?
     )
 
-    /** 加载无效用户插屏 */
-    fun loadInvalidInterstitialAd(activity: Activity, listener: IAdInterstitialListener?)
-
-    /** 加载全屏启动页广告 */
-    fun loadFullScreenSplashAd(activity: Activity, container: ViewGroup, listener: IAdSplashListener?)
-
-    /** 加载半屏启动页广告 */
-    fun loadHalfScreenSplashAd(activity: Activity, container: ViewGroup, listener: IAdSplashListener?)
-
     /** 加载激励视频 */
     fun loadRewardVideoAd(activity: Activity, listener: IAdRewardVideoListener?)
 
@@ -43,6 +34,13 @@ interface IAdManager {
         viewListener: IAdPreloadVideoViewListener,
         listener: IAdRewardVideoListener?
     )
+
+
+    /** 加载全屏启动页广告 */
+    fun loadFullScreenSplashAd(activity: Activity, container: ViewGroup, listener: IAdSplashListener?)
+
+    /** 加载半屏启动页广告 */
+    fun loadHalfScreenSplashAd(activity: Activity, container: ViewGroup, listener: IAdSplashListener?)
 
     /** 加载插屏广告 */
     fun loadInterstitialAd(activity: Activity, listener: IAdInterstitialListener?)

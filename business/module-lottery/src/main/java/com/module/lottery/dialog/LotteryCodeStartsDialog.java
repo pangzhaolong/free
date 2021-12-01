@@ -74,7 +74,6 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
         Message delay = new Message();
         delay.what = 3;
         mLotteryHandler.sendMessageDelayed(delay, 20000);
-        Logger.d("22222222");
     }
 
 

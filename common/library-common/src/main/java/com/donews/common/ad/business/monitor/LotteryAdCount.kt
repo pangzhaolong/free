@@ -119,7 +119,7 @@ object LotteryAdCount {
     }
 
     /**
-     * 获取今日参与抽奖的次数
+     * 获取抽奖激励视频播放完成次数
      * @return Int
      */
     fun getTodayLotteryCountExt(): Int {

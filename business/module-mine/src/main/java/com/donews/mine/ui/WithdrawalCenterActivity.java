@@ -9,6 +9,7 @@ import com.dn.events.events.WalletRefreshEvent;
 import com.donews.base.fragmentdialog.LoadingHintDialog;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.business.callback.JddAdIdConfigManager;
+import com.donews.common.ad.business.utils.JddAdUnits;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.UserInfoBean;
@@ -65,8 +66,8 @@ public class WithdrawalCenterActivity extends
                     .navigation();
         });
         mDataBinding.mineDrawSubmit.setOnClickListener(v -> {
-            if(!JddAdIdConfigManager.INSTANCE.getConfig().getOpenAd()){
-                ToastUtil.showShort(this,"账户升级中，请稍后再试");
+            if (!JddAdUnits.INSTANCE.isOpenAd()) {
+                ToastUtil.showShort(this, "账户升级中，请稍后再试");
                 return;
             }
             mDataBinding.mineDrawSubmit.setEnabled(false);
@@ -99,7 +100,7 @@ public class WithdrawalCenterActivity extends
                 mViewModel.getLoadWithdraWalletDite();
                 mViewModel.getLoadWithdrawData(true); //更新配置信息
                 EventBus.getDefault().post(new WalletRefreshEvent(1));
-            }else{
+            } else {
                 hideLoading();
             }
         });

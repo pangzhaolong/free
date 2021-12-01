@@ -6,9 +6,7 @@ import static com.module.lottery.dialog.ReturnInterceptDialog.TYPE_2;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,10 +28,9 @@ import com.airbnb.lottie.value.SimpleLottieValueCallback;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.LotteryStatusEvent;
 import com.donews.base.utils.ToastUtil;
-import com.donews.common.ad.business.callback.JddAdIdConfigManager;
+import com.donews.common.ad.business.utils.JddAdUnits;
 import com.donews.common.provider.IDetailProvider;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
@@ -52,8 +49,8 @@ import com.module.lottery.dialog.GenerateCodeDialog;
 import com.module.lottery.dialog.LessMaxDialog;
 import com.module.lottery.dialog.LogToWeChatDialog;
 import com.module.lottery.dialog.LotteryCodeStartsDialog;
-import com.module.lottery.dialog.ReturnInterceptDialog;
 import com.module.lottery.dialog.ReceiveLotteryDialog;
+import com.module.lottery.dialog.ReturnInterceptDialog;
 import com.module.lottery.model.LotteryModel;
 import com.module.lottery.utils.ClickDoubleUtil;
 import com.module.lottery.utils.GridSpaceItemDecoration;
@@ -67,7 +64,6 @@ import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 import java.util.Map;
@@ -283,7 +279,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     private void startLottery() {
         AnalysisUtils.onEventEx(this, Dot.Btn_LotteryNow);
         //判断是否打开了视频广告
-        boolean isOpenAd = JddAdIdConfigManager.INSTANCE.getConfig().getOpenAd();
+        boolean isOpenAd = JddAdUnits.INSTANCE.isOpenAd();
         if (isOpenAd) {
             //开始抽奖
             //弹框抽奖码生成dialog
@@ -410,7 +406,8 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     //提示还差多少个抽奖码Dialog
     private void showReceiveLotteryDialog(boolean ifQuit) {
         if (mLotteryCodeBean != null) {
-            ReceiveLotteryDialog receiveLottery = new ReceiveLotteryDialog(LotteryActivity.this, mLotteryCodeBean, ifQuit);
+            ReceiveLotteryDialog receiveLottery = new ReceiveLotteryDialog(LotteryActivity.this, mLotteryCodeBean,
+                    ifQuit);
             receiveLottery.setStateListener(new ReceiveLotteryDialog.OnStateListener() {
                 @Override
                 public void onFinish() {
@@ -469,7 +466,8 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             Toast.makeText(LotteryActivity.this, "生成抽奖码失败", Toast.LENGTH_SHORT).show();
             return;
         }
-        ExhibitCodeStartsDialog exhibitCodeStartsDialog = new ExhibitCodeStartsDialog(LotteryActivity.this, mGoodsId, generateCodeBean);
+        ExhibitCodeStartsDialog exhibitCodeStartsDialog = new ExhibitCodeStartsDialog(LotteryActivity.this, mGoodsId,
+                generateCodeBean);
         exhibitCodeStartsDialog.setStateListener(new ExhibitCodeStartsDialog.OnStateListener() {
             @Override
             public void onFinish() {
@@ -741,7 +739,8 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
     //设置列表的顶部
     private void setHeaderView(RecyclerView view) {
-        GuesslikeHeadLayoutBinding guesslikeHeadLayoutBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.guesslike_head_layout, view, false);
+        GuesslikeHeadLayoutBinding guesslikeHeadLayoutBinding = DataBindingUtil.inflate(LayoutInflater.from(this),
+                R.layout.guesslike_head_layout, view, false);
         guessAdapter.setHeaderView(guesslikeHeadLayoutBinding);
     }
 

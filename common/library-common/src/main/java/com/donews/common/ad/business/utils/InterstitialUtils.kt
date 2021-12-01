@@ -20,7 +20,7 @@ object InterstitialUtils {
     fun checkOpenAd(bean: JddAdConfigBean): Boolean {
         //安装时间
         val installTime = AppStatusUtils.getAppInstallTime()
-        val duration = bean.interstitialStartTime * 60 * 60 * 1000L
+        val duration = bean.interstitialStartTime * 60 * 1000L
         if ((System.currentTimeMillis() - installTime) >= duration) {
             Logger.d("安装超过设置时间,开启插屏")
             return true

@@ -18,4 +18,7 @@ public class ErrorConstant {
 
     /** gromore广告关闭错误 */
     public static final int ERROR_GROMORE_CLOSE = -10002;
+
+    /** 预加载激励视频过长 */
+    public static final int ERROR_LOADING_TIME = -10003;
 }

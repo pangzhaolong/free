@@ -35,7 +35,7 @@ object AdManager : IAdManager, ISdkManager by AdSdkManager, IAdIdConfig by JddAd
     override fun loadInvalidRewardVideoAd(activity: Activity, listener: IAdRewardVideoListener?) {
         JddAdIdConfigManager.addInitListener(object : IAdIdConfigCallback {
             override fun initSuccess() {
-                val key = INVALID_REWARD_VIDEO
+                val key = NEW_INVALID_REWARD_VIDEO_ID
                 val requestInfo = RequestInfo()
                 requestInfo.platform = JddAdIdConfigManager.getPlatform()
                 requestInfo.adId = requestInfo.platform.getAdIdByKey(key)
@@ -59,7 +59,7 @@ object AdManager : IAdManager, ISdkManager by AdSdkManager, IAdIdConfig by JddAd
     ) {
         JddAdIdConfigManager.addInitListener(object : IAdIdConfigCallback {
             override fun initSuccess() {
-                val key = INVALID_REWARD_VIDEO
+                val key = NEW_INVALID_REWARD_VIDEO_ID
                 val requestInfo = RequestInfo()
                 requestInfo.platform = JddAdIdConfigManager.getPlatform()
                 requestInfo.adId = requestInfo.platform.getAdIdByKey(key)
@@ -73,33 +73,13 @@ object AdManager : IAdManager, ISdkManager by AdSdkManager, IAdIdConfig by JddAd
         })
     }
 
-    override fun loadInvalidInterstitialAd(activity: Activity, listener: IAdInterstitialListener?) {
-        JddAdIdConfigManager.addInitListener(object : IAdIdConfigCallback {
-            override fun initSuccess() {
-                val key = INVALID_INTERSTITIAL
-                val requestInfo = RequestInfo()
-                requestInfo.platform = JddAdIdConfigManager.getPlatform()
-                requestInfo.adId = requestInfo.platform.getAdIdByKey(key)
-                requestInfo.appIdKey = key
-                requestInfo.adType = AdType.INTERSTITIAL
-                requestInfo.userId = AdSdkManager.userId
-                requestInfo.channel = AdSdkManager.channel
-                requestInfo.oaid = AdSdkManager.oaid
-                val pxScreenWidth = DensityUtils.getScreenWidth()
-                val marginWidth = DensityUtils.dip2px(30f) * 2
-                requestInfo.width = DensityUtils.px2dp((pxScreenWidth - marginWidth).toFloat()).toInt()
-                requestInfo.height = 0
-                requestInfo.platform.getLoader().loadInterstitialAd(activity, requestInfo, listener)
-            }
-        })
-    }
 
     override fun loadFullScreenSplashAd(activity: Activity, container: ViewGroup, listener: IAdSplashListener?) {
         AdLoggerUtils.d("loadFullScreenSplashAd")
         JddAdIdConfigManager.addInitListener(object : IAdIdConfigCallback {
             override fun initSuccess() {
-                val key = SPLASH
-                val minimumCodeIdKey = SPLASH_MINIMUM_CODE_ID
+                val key = NEW_SPLASH_ID
+                val minimumCodeIdKey = ""
                 val requestInfo = RequestInfo()
                 requestInfo.platform = JddAdIdConfigManager.getPlatform()
                 requestInfo.adId = requestInfo.platform.getAdIdByKey(key)
@@ -121,8 +101,8 @@ object AdManager : IAdManager, ISdkManager by AdSdkManager, IAdIdConfig by JddAd
         AdLoggerUtils.d("loadHalfScreenSplashAd")
         JddAdIdConfigManager.addInitListener(object : IAdIdConfigCallback {
             override fun initSuccess() {
-                val key = SPLASH
-                val minimumCodeIdKey = SPLASH_MINIMUM_CODE_ID
+                val key = NEW_SPLASH_ID
+                val minimumCodeIdKey = ""
                 val requestInfo = RequestInfo()
                 requestInfo.platform = JddAdIdConfigManager.getPlatform()
                 requestInfo.adId = requestInfo.platform.getAdIdByKey(key)
@@ -143,7 +123,7 @@ object AdManager : IAdManager, ISdkManager by AdSdkManager, IAdIdConfig by JddAd
     override fun loadRewardVideoAd(activity: Activity, listener: IAdRewardVideoListener?) {
         JddAdIdConfigManager.addInitListener(object : IAdIdConfigCallback {
             override fun initSuccess() {
-                val key = REWARD_VIDEO
+                val key = NEW_REWARD_VIDEO_ID
                 val requestInfo = RequestInfo()
                 requestInfo.platform = JddAdIdConfigManager.getPlatform()
                 requestInfo.adId = requestInfo.platform.getAdIdByKey(key)
@@ -168,7 +148,7 @@ object AdManager : IAdManager, ISdkManager by AdSdkManager, IAdIdConfig by JddAd
     ) {
         JddAdIdConfigManager.addInitListener(object : IAdIdConfigCallback {
             override fun initSuccess() {
-                val key = REWARD_VIDEO
+                val key = NEW_REWARD_VIDEO_ID
                 val requestInfo = RequestInfo()
                 requestInfo.platform = JddAdIdConfigManager.getPlatform()
                 requestInfo.adId = requestInfo.platform.getAdIdByKey(key)
@@ -196,7 +176,7 @@ object AdManager : IAdManager, ISdkManager by AdSdkManager, IAdIdConfig by JddAd
             JddAdIdConfigManager.addInitListener(object : IAdIdConfigCallback {
                 override fun initSuccess() {
                     val proxyListener = JddInterstitialListenerProxy(listener)
-                    val key = INTERSTITIAL
+                    val key = NEW_INTERSTITIAL_ID
                     val requestInfo = RequestInfo()
                     requestInfo.platform = JddAdIdConfigManager.getPlatform()
                     requestInfo.adId = requestInfo.platform.getAdIdByKey(key)
