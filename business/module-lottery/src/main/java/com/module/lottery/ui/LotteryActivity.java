@@ -359,31 +359,36 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
     //生成抽奖码的Dialog
     private void showGenerateCodeDialog() {
-        GenerateCodeDialog generateCodeDialog = new GenerateCodeDialog(LotteryActivity.this, mGoodsId);
-        generateCodeDialog.setStateListener(new GenerateCodeDialog.OnStateListener() {
-            @Override
-            public void onFinish() {
-                generateCodeDialog.dismiss();
-            }
-
-            @Override
-            public void onJump(GenerateCodeBean generateCodeBean) {
-                //不跳转广告 展示生成的随机抽奖码
-                generateCodeDialog.dismiss();
-
-                if (generateCodeBean == null) {
-                    Toast.makeText(LotteryActivity.this, "生成抽奖码失败", Toast.LENGTH_SHORT).show();
-                    return;
+        try {
+            GenerateCodeDialog generateCodeDialog = new GenerateCodeDialog(LotteryActivity.this, mGoodsId);
+            generateCodeDialog.setStateListener(new GenerateCodeDialog.OnStateListener() {
+                @Override
+                public void onFinish() {
+                    generateCodeDialog.dismiss();
                 }
 
-                //刷新页面
-                lotteryInfo();
-                showExhibitCodeDialog(generateCodeBean);
-            }
-        });
-        generateCodeDialog.create();
-        generateCodeDialog.show();
+                @Override
+                public void onJump(GenerateCodeBean generateCodeBean) {
+                    //不跳转广告 展示生成的随机抽奖码
+                    generateCodeDialog.dismiss();
 
+                    if (generateCodeBean == null) {
+                        Toast.makeText(LotteryActivity.this, "生成抽奖码失败", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    //刷新页面
+                    lotteryInfo();
+                    showExhibitCodeDialog(generateCodeBean);
+                }
+            });
+            generateCodeDialog.create();
+            if (!LotteryActivity.this.isFinishing()) {
+                generateCodeDialog.show();
+            }
+        } catch (Exception e) {
+            Logger.e("" + e.getMessage());
+        }
     }
 
 
