@@ -7,11 +7,6 @@ import com.donews.utilslibrary.utils.AppStatusUtils;
 import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.SPUtils;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 /**
  * <p> </p>
  * 作者： created by honeylife<br>
@@ -76,7 +71,7 @@ public class LoginHelp {
      * @return true 用户注册时间已经大于 time时长
      */
     public boolean checkUserRegisterTime(int time) {
-        long duration = time * 60 * 60 * 1000L;
+        long duration = time * 60 * 1000L;              //单位:分钟
         long installApp = AppStatusUtils.getAppInstallTime();
         return System.currentTimeMillis() - installApp >= duration;
 
