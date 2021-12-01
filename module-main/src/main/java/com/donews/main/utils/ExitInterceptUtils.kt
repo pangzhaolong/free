@@ -208,7 +208,7 @@ object ExitInterceptUtils {
                     val item: HighValueGoodsBean? =
                         GoodsCache.readGoodsBean(HighValueGoodsBean::class.java, "exit")
                     if (item != null) {
-                        showWinningDialog(activity)
+                        showWinningDialog(activity, 1)
                     }
                 }
             }
@@ -220,10 +220,17 @@ object ExitInterceptUtils {
         notLoginDialog?.show()
     }
 
-    /***
-     *  显示抽奖动画弹出框（有滚动动画的弹窗）
+    /**
+     * 显示抽奖动画弹出框（有滚动动画的弹窗）
+     * @param activity AppCompatActivity
+     * @param type Int 来源
+     *     1：未登录弹窗 -> 立即登录(登录成功之后)
+     *     2：参与了抽奖但<10次的弹窗 -> 继续抽奖
+     *     3：参与了抽奖并且红包已经全部开启 -> 继续抽奖
+     *     4：已登录用户。当日未参与抽奖的弹窗 -> 抽奖得现金红包
      */
-    private fun showWinningDialog(activity: AppCompatActivity) {
+    private fun showWinningDialog(activity: AppCompatActivity, type: Int) {
+        //TODO 优化：除了2以外的其他几个来源事件并未上报。后续优化上报
         if (winningDialog != null && winningDialog!!.dialog != null && winningDialog!!.dialog!!.isShowing) {
             return
         }
@@ -232,7 +239,12 @@ object ExitInterceptUtils {
                 notLotteryDialog = null
             }
             setOnSureListener {
-                AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Lucky_Not_Meet_Continue_Receive)
+                if (type == 2) { //暂时只报了来源为2的事件
+                    AnalysisUtils.onEventEx(
+                        activity,
+                        Dot.But_Home_Exit_Lucky_Not_Meet_Continue_Receive
+                    )
+                }
                 RequestUtil.requestHighValueGoodsInfo()
                 ARouter.getInstance()
                     .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
@@ -242,13 +254,23 @@ object ExitInterceptUtils {
                 disMissDialog()
             }
             setOnCloseListener {
-                AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Lucky_Not_Meet_Continue_Close)
+                if (type == 2) { //暂时只报了来源为2的事件
+                    AnalysisUtils.onEventEx(
+                        activity,
+                        Dot.But_Home_Exit_Lucky_Not_Meet_Continue_Close
+                    )
+                }
                 RequestUtil.requestHighValueGoodsInfo()
                 disMissDialog()
 //                exitApp(activity)
             }
             setOnLaterListener {
-                AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Lucky_Not_Meet_Continue_Later)
+                if (type == 2) { //暂时只报了来源为2的事件
+                    AnalysisUtils.onEventEx(
+                        activity,
+                        Dot.But_Home_Exit_Lucky_Not_Meet_Continue_Later
+                    )
+                }
                 RequestUtil.requestHighValueGoodsInfo()
                 disMissDialog()
 
@@ -366,7 +388,7 @@ object ExitInterceptUtils {
                         val item: HighValueGoodsBean? =
                             GoodsCache.readGoodsBean(HighValueGoodsBean::class.java, "exit")
                         if (item != null) {
-                            showWinningDialog(activity)
+                            showWinningDialog(activity, 2)
                         }
                         disMissDialog()
                     }
@@ -417,7 +439,7 @@ object ExitInterceptUtils {
                         val item: HighValueGoodsBean? =
                             GoodsCache.readGoodsBean(HighValueGoodsBean::class.java, "exit")
                         if (item != null) {
-                            showWinningDialog(activity)
+                            showWinningDialog(activity, 3)
                         }
                         disMissDialog()
                     }
@@ -461,7 +483,7 @@ object ExitInterceptUtils {
                         val item: HighValueGoodsBean? =
                             GoodsCache.readGoodsBean(HighValueGoodsBean::class.java, "exit")
                         if (item != null) {
-                            showWinningDialog(activity)
+                            showWinningDialog(activity, 4)
                         }
                         disMissDialog()
                     }
