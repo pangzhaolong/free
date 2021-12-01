@@ -68,7 +68,10 @@ object AdManager : IAdManager, ISdkManager by AdSdkManager, IAdIdConfig by JddAd
                 requestInfo.userId = AdSdkManager.userId
                 requestInfo.channel = AdSdkManager.channel
                 requestInfo.oaid = AdSdkManager.oaid
-                requestInfo.platform.getLoader().preloadRewardViewAd(activity, requestInfo, viewListener, listener)
+                requestInfo.platform.getLoader().preloadRewardViewAd(
+                    activity, requestInfo, viewListener,
+                    JddAdRewardVideoListenerProxy(activity, listener)
+                )
             }
         })
     }

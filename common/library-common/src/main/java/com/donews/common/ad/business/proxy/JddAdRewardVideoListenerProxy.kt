@@ -3,6 +3,7 @@ package com.donews.common.ad.business.proxy
 import android.app.Activity
 import com.dn.sdk.sdk.interfaces.listener.IAdRewardVideoListener
 import com.dn.sdk.sdk.interfaces.listener.impl.SimpleInterstListener
+import com.donews.base.base.AppManager
 import com.donews.common.ad.business.callback.JddAdConfigManager
 import com.donews.common.ad.business.loader.AdManager
 import com.donews.common.ad.business.monitor.RewardVideoCount
@@ -47,18 +48,20 @@ class JddAdRewardVideoListenerProxy(
 
     override fun onRewardedClosed() {
         RewardVideoCount.playRewardVideoSuccess()
-        JddAdConfigManager.addListener {
-            val jddAdConfigBean = JddAdConfigManager.jddAdConfigBean
-            if (jddAdConfigBean.playRewardVideoTimes <= RewardVideoCount.todayPlayRewardVideoTimes()) {
-                if (InterstitialUtils.checkOpenAd(jddAdConfigBean)) {
-                    loadAd()
-                } else {
-                    listener?.onRewardedClosed()
-                }
-            } else {
-                listener?.onRewardedClosed()
-            }
-        }
+        listener?.onRewardedClosed()
+
+//        JddAdConfigManager.addListener {
+//            val jddAdConfigBean = JddAdConfigManager.jddAdConfigBean
+//            if (jddAdConfigBean.playRewardVideoTimes <= RewardVideoCount.todayPlayRewardVideoTimes()) {
+//                if (InterstitialUtils.checkOpenAd(jddAdConfigBean)) {
+//                    loadAd()
+//                } else {
+//                    listener?.onRewardedClosed()
+//                }
+//            } else {
+//                listener?.onRewardedClosed()
+//            }
+//        }
     }
 
     override fun onRewardVideoComplete() {
@@ -86,6 +89,7 @@ class JddAdRewardVideoListenerProxy(
     }
 
     private fun loadAd() {
+        val activity = AppManager.getInstance().topActivity
         AdManager.loadInterstitialAd(activity, object : SimpleInterstListener() {
 
             override fun onError(code: Int, msg: String?) {
