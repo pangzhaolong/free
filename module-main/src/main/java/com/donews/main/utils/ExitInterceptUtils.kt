@@ -296,23 +296,47 @@ object ExitInterceptUtils {
                     }
                     setOnSureListener {
                         disMissDialog()
-                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Open_RedPacket_Receive)
+                        if (getNotLotteryCount() >= 10) {
+                            //必须抽奖 >= 10 才上报事件(因为逻辑变动造成现在少于10次也会走到这里)
+                            AnalysisUtils.onEventEx(
+                                activity,
+                                Dot.But_Home_Exit_Open_RedPacket_Receive
+                            )
+                        }
                         ARouter.getInstance().build(RouterActivityPath.Main.PAGER_MAIN)
                             .withInt("position", 0)
                             .navigation()
                     }
                     setOnCancelListener {
-                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Open_RedPacket_Close)
+                        if (getNotLotteryCount() >= 10) {
+                            //必须抽奖 >= 10 才上报事件(因为逻辑变动造成现在少于10次也会走到这里)
+                            AnalysisUtils.onEventEx(
+                                activity,
+                                Dot.But_Home_Exit_Open_RedPacket_Close
+                            )
+                        }
                         disMissDialog()
 //                        showRemindDialog(activity)
                     }
                     setOnCloseListener {
-                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Open_RedPacket_Close)
+                        if (getNotLotteryCount() >= 10) {
+                            //必须抽奖 >= 10 才上报事件(因为逻辑变动造成现在少于10次也会走到这里)
+                            AnalysisUtils.onEventEx(
+                                activity,
+                                Dot.But_Home_Exit_Open_RedPacket_Close
+                            )
+                        }
                         disMissDialog()
 //                        showRemindDialog(activity)
                     }
                     setOnLaterListener {
-                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Open_RedPacket_Later)
+                        if (getNotLotteryCount() >= 10) {
+                            //必须抽奖 >= 10 才上报事件(因为逻辑变动造成现在少于10次也会走到这里)
+                            AnalysisUtils.onEventEx(
+                                activity,
+                                Dot.But_Home_Exit_Open_RedPacket_Later
+                            )
+                        }
                         disMissDialog()
                         exitApp(activity)
                     }
@@ -610,8 +634,10 @@ object ExitInterceptUtils {
             home.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             home.addCategory(Intent.CATEGORY_HOME)
             activity.startActivity(home)
+            resetFinishBackStatus()
         } catch (e: Exception) {
             //出错则真的退出
+            resetFinishBackStatus()
             AppStatusManager.getInstance().setAppStatus(AppStatusConstant.STATUS_FORCE_KILLED)
             AnalysisUtils.onEvent(activity, AnalysisParam.SHUTDOWN)
             AppManager.getInstance().AppExit()
