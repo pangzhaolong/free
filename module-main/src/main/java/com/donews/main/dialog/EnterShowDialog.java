@@ -3,7 +3,6 @@ package com.donews.main.dialog;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -21,6 +20,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.dn.drouter.ARouteHelper;
+import com.dn.events.events.LoginLodingStartStatus;
+import com.dn.events.events.LoginUserStatus;
+import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.main.BuildConfig;
 import com.donews.main.R;
@@ -40,6 +43,10 @@ import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.SPUtils;
 import com.donews.utilslibrary.utils.UrlUtils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.Random;
 
 public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImpl> {
@@ -52,6 +59,8 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
 
     private boolean mChangeOne = false;
     private boolean isSendCloseEvent = true;
+
+    private final String LOGIN_TAG = "EnterShowDialog";
 
     public EnterShowDialog(Context context) {
         super(context, R.style.dialogTransparent);
@@ -67,6 +76,9 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        EventBus.getDefault().register(this);
+
         initView();
     }
 
@@ -94,26 +106,32 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
             isSendCloseEvent = false;
             if (AppInfo.checkIsWXLogin()) {
                 AnalysisUtils.onEventEx(mContext, Dot.But_Hme_Recommend_Login_Snap);
+
+                ARouter.getInstance()
+                        .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
+                        .withString("goods_id", mGoods.getGoodsId())
+                        .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
+                        .navigation();
+
+                dismiss();
             } else {
                 AnalysisUtils.onEventEx(mContext, Dot.But_Hme_Recommend_Not_Login_Snap);
+
+                RouterActivityPath.LoginProvider.getLoginProvider().loginWX(LOGIN_TAG);
             }
-            ARouter.getInstance()
-                    .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
-                    .withString("goods_id", mGoods.getGoodsId())
-                    .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
-                    .navigation();
-            dismiss();
         });
 
         mDataBinding.tvProbability1.setText(randLucky());
 
         if (!SPUtils.getInformain(KeySharePreferences.SHOW_DIALOG_WHEN_LAUNCH, true)) {
             mDataBinding.mainEnterClickLl.setVisibility(View.INVISIBLE);
+            mIsNoTipsShow = false;
         } else {
             mDataBinding.mainEnterClickLl.setVisibility(View.VISIBLE);
+            mIsNoTipsShow = true;
         }
 
-        mDataBinding.mainEnterClickLl.setOnClickListener(v -> {
+        mDataBinding.mainEnterNoTipsToday.setOnClickListener(v -> {
             mIsNoTipsShow = !mIsNoTipsShow;
             if (mIsNoTipsShow) {
                 mDataBinding.mainEnterClick.setBackgroundResource(R.drawable.main_enter_radio_bg_select);
@@ -134,7 +152,40 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
                 }
             }
         });
-//        requestGoodsInfo();
+
+        if (AppInfo.checkIsWXLogin()) {
+            mDataBinding.mainEnterNoTipsToday.setVisibility(View.VISIBLE);
+            mDataBinding.mainEnterAgreeProtocol.setVisibility(View.GONE);
+            mDataBinding.btnLottery.setText(R.string.main_exit_lottery);
+        } else {
+            mDataBinding.mainEnterNoTipsToday.setVisibility(View.GONE);
+            mDataBinding.mainEnterAgreeProtocol.setVisibility(View.VISIBLE);
+            boolean protocol = getSharedPreferences().getBoolean("Free", false) ||
+                    ABSwitch.Ins().isOpenAutoAgreeProtocol();
+            mDataBinding.mainEnterCheckBox.setChecked(protocol);
+            mDataBinding.btnLottery.setText("登录抢购");
+        }
+
+        mDataBinding.mainEnterUserProtocol.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("url",
+                    "http://ad-static-xg.tagtic.cn/wangzhuan/file/9e5f7a06cbf80a2186e3e34a70f0c360.html");
+            bundle.putString("title", "用户协议");
+            ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
+        });
+        mDataBinding.mainEnterPrivacyProtocol.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("url",
+                    "http://ad-static-xg.tagtic.cn/wangzhuan/file/b7f18dcb857e80eab353cfb99c3f042e.html");
+            bundle.putString("title", "隐私政策");
+            ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
+        });
+        mDataBinding.mainEnterAgreeProtocol.setOnClickListener(v -> {
+            if (AppInfo.checkIsWXLogin()) {
+                mDataBinding.mainEnterCheckBox.setChecked(!mDataBinding.mainEnterCheckBox.isChecked());
+                getSharedPreferences().getBoolean("Free", mDataBinding.mainEnterCheckBox.isChecked());
+            }
+        });
     }
 
     public void showEx() {
@@ -236,5 +287,30 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
         } else {
             mDataBinding.tvBuyNumber.setText("累计" + mGoods.getTotalPeople() + "人参与抢购");
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void loginStatusEvent(LoginLodingStartStatus event) {
+        if (!event.getTag().equalsIgnoreCase(LOGIN_TAG)) {
+            return;
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void loginUserStatus(LoginUserStatus userStatus) {
+        if (userStatus.getStatus() == 1) {
+            ARouter.getInstance()
+                    .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
+                    .withString("goods_id", mGoods.getGoodsId())
+                    .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
+                    .navigation();
+            dismiss();
+        }
+    }
+
+    @Override
+    public void dismiss() {
+        super.dismiss();
+        EventBus.getDefault().unregister(this);
     }
 }

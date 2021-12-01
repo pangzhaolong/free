@@ -126,7 +126,6 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
                             (FrameLayout) decorView.findViewById(android.R.id.content);
                     contentParent.addView(view);
                     linearLayout.setAnimation(mScaleAnimation);
-
                 }
             } else {
                 ToastUtil.showShort(mContext, "完整观看视频即可获得抽奖码");

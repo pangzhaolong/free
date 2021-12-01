@@ -42,6 +42,8 @@ import com.donews.middle.bean.front.LotteryCategoryBean;
 import com.donews.middle.bean.home.ServerTimeBean;
 import com.donews.middle.cache.GoodsCache;
 import com.donews.middle.views.TabItem;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.DensityUtils;
 import com.donews.utilslibrary.utils.KeySharePreferences;
@@ -141,6 +143,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                 assert tabItem != null;
                 tabItem.selected();
                 mCurSelectPosition = tab.getPosition();
+                sendDotData();
             }
 
             @Override
@@ -194,6 +197,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                 mRuleDialog.create();
             }
             mRuleDialog.show();
+            AnalysisUtils.onEventEx(mContext, Dot.But_Rp_Rule);
         });
 
         startTimer();
@@ -205,6 +209,23 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mDataBinding.frontAppBarLayout.setExpanded(true, true);
             mDataBinding.frontToTopTv.setVisibility(View.GONE);
         });
+    }
+
+    private void sendDotData() {
+        if (mLotteryCategoryBean == null || mLotteryCategoryBean.getList() == null || mLotteryCategoryBean.getList().size() <= 0) {
+            return;
+        }
+
+        if (mCurSelectPosition < 0 || mCurSelectPosition > mLotteryCategoryBean.getList().size() - 1) {
+            return;
+        }
+
+        LotteryCategoryBean.categoryBean bean = mLotteryCategoryBean.getList().get(mCurSelectPosition);
+        if (bean == null) {
+            return;
+        }
+
+        AnalysisUtils.onEventEx(mContext, Dot.But_Category_Click, bean.getName());
     }
 
     private static class FrontHandler extends Handler {
@@ -471,9 +492,12 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
     @SuppressLint("SetTextI18n")
     private void changeRpStatus(WalletBean.RpBean rpBean,
-                                int topColor, int bottomColor, FrameLayout fl, TextView tv, ImageView iv) {
+                                int topColor, int bottomColor,
+                                FrameLayout fl, TextView tv,
+                                ImageView iv, int index) {
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) tv.getLayoutParams();
         fl.setTag(rpBean);
+        fl.setTag(R.id.tag_first, index);
         fl.setOnClickListener(this);
         if (fl.getAnimation() != null) {
             fl.clearAnimation();
@@ -535,19 +559,20 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         int topColor = Color.parseColor("#764D38");
         int bottomColor = Color.parseColor("#FFF3D3");
         changeRpStatus(rpBean, topColor, bottomColor
-                , mDataBinding.frontRpOpenFl1, mDataBinding.frontRpTv1, mDataBinding.frontRpIv1);
+                , mDataBinding.frontRpOpenFl1, mDataBinding.frontRpTv1, mDataBinding.frontRpIv1, 1);
         rpBean = walletBean.getList().get(1);
         changeRpStatus(rpBean, topColor, bottomColor
-                , mDataBinding.frontRpOpenFl2, mDataBinding.frontRpTv2, mDataBinding.frontRpIv2);
+                , mDataBinding.frontRpOpenFl2, mDataBinding.frontRpTv2, mDataBinding.frontRpIv2, 2);
         rpBean = walletBean.getList().get(2);
         changeRpStatus(rpBean, topColor, bottomColor
-                , mDataBinding.frontRpOpenFl3, mDataBinding.frontRpTv3, mDataBinding.frontRpIv3);
+                , mDataBinding.frontRpOpenFl3, mDataBinding.frontRpTv3, mDataBinding.frontRpIv3, 3);
         rpBean = walletBean.getList().get(3);
         changeRpStatus(rpBean, topColor, bottomColor
-                , mDataBinding.frontRpOpenFl4, mDataBinding.frontRpTv4, mDataBinding.frontRpIv4);
+                , mDataBinding.frontRpOpenFl4, mDataBinding.frontRpTv4, mDataBinding.frontRpIv4, 4);
 
         rpBean = walletBean.getList().get(4);
         mDataBinding.frontRpOpenFl5.setTag(rpBean);
+        mDataBinding.frontRpOpenFl5.setTag(R.id.tag_first, 5);
         mDataBinding.frontRpOpenFl5.setOnClickListener(this);
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mDataBinding.frontRpTv5.getLayoutParams();
         if (rpBean.getOpened()) {
@@ -677,6 +702,9 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             Toast.makeText(this.getContext(), "前面还有红包未开启哦！", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        int index = (int) v.getTag(1);
+        AnalysisUtils.onEventEx(mContext, Dot.But_Rp_Click, String.valueOf(index));
 
         openRp();
     }

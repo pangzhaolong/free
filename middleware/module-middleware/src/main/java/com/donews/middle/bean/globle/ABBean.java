@@ -19,7 +19,7 @@ public class ABBean extends BaseCustomViewModel {
     @SerializedName("openAutoLotteryAfterLoginWx")
     private boolean openAutoLotteryAfterLoginWx = true;
     @SerializedName("openAutoLotteryAfterLoginWxAtExitDialog")
-    private boolean openAutoLotteryAfterLoginWxAtExitDialog = false;
+    private boolean openAutoLotteryAfterLoginWxAtExitDialog = true;
 
     public boolean isOpenAutoLotteryAfterLoginWxAtExitDialog() {
         return openAutoLotteryAfterLoginWxAtExitDialog;

@@ -70,10 +70,41 @@ public class AnalysisUtils {
         }
     }
 
+    /**
+     * 友盟带自定义参数上报
+     *
+     * @param mActivity
+     * @param eventId   事件的id（友盟统计事件，大数据的使用相同的id)
+     * @param from      上报的参数
+     */
+    public static void onEventEx(Context mActivity, @NonNull String eventId, String from) {
+        if (!TextUtils.isEmpty(eventId)) {
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("from", from);
+
+            //上报友盟自定义参数
+            MobclickAgent.onEventObject(mActivity, eventId, params);
+            //上报大数据平台带参数的
+            Object[] pa = params.values().toArray();
+            String[] keys = new String[pa.length];
+            params.keySet().toArray(keys);
+            if (keys.length == 1) {
+                AnalysisHelp.onEvent(
+                        mActivity,
+                        eventId,
+                        DIBuildUtils.getDIBuildStartIndex(keys[0]),
+                        pa);
+            } else {
+                //TODO 暂时还不支持多参数大数据自定义起点下标上报。故而后续遇到在处理
+                AnalysisHelp.onEvent(mActivity, eventId, params.values().toArray());
+            }
+        }
+    }
+
     public static void onEventEx(
             Context mActivity,
             @NonNull String eventId) {
-        onEventEx(mActivity, eventId, null);
+        onEventEx(mActivity, eventId, (HashMap<String, Object>) null);
     }
 
     /**

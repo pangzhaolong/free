@@ -24,6 +24,8 @@ import com.donews.middle.bean.front.LotteryCategoryBean;
 import com.donews.middle.bean.front.LotteryGoodsBean;
 import com.donews.middle.cache.GoodsCache;
 import com.donews.middle.decoration.GridSpaceItemDecoration;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.SPUtils;
 
@@ -176,6 +178,7 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
                 .withInt("position", position)
                 .withString("goods_id", goodsId)
                 .navigation();
+        AnalysisUtils.onEventEx(this.getContext(), Dot.WX_Login, mCategoryBean.getName());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

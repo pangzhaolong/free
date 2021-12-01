@@ -156,4 +156,17 @@ public class Dot {
     //新增:抽奖页 - 恭喜获得抽奖码-关闭
     public final static String Lottery_Drawing_Probability_Close = "Lottery_Drawing_Probability_Close";
 
+    //-- 首页按钮 ->
+    //红包规则
+    public final static String But_Rp_Rule = "But_Rp_Rule";
+    //红包按钮(报第几个红包)
+    public final static String But_Rp_Click = "But_Rp_Click";
+    //标签页按钮
+    public final static String But_Category_Click = "But_Category_Click";
+
+    //-- 微信登陆 ->
+    //
+
+    public final static String WX_Login = "WX_login";
+
 }
