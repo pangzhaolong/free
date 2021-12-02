@@ -512,22 +512,16 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
     private void setSmartRefresh() {
         //下拉刷新
-        mDataBinding.mailSmRefresh.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                mPageNumber = 1;
-                refresh = true;
-                lotteryInfo();
-            }
+        mDataBinding.mailSmRefresh.setOnRefreshListener(refreshLayout -> {
+            mPageNumber = 1;
+            refresh = true;
+            lotteryInfo();
         });
         //上拉加载
-        mDataBinding.mailSmRefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                mPageNumber++;
-                refresh = false;
-                youMayAlsoLike(mPageNumber, false);
-            }
+        mDataBinding.mailSmRefresh.setOnLoadMoreListener(refreshLayout -> {
+            mPageNumber++;
+            refresh = false;
+            youMayAlsoLike(mPageNumber, false);
         });
 
     }

@@ -1,21 +1,19 @@
 package com.module.lottery.view;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.view.View;
-import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import java.lang.ref.WeakReference;
 import java.util.Random;
 
 public class LotteryTextView extends androidx.appcompat.widget.AppCompatTextView {
 
     WeakReferenceHandler weakReferenceHandler = new WeakReferenceHandler(this);
-
 
     public LotteryTextView(Context context) {
         super(context);
@@ -36,7 +34,6 @@ public class LotteryTextView extends androidx.appcompat.widget.AppCompatTextView
         message.obj = ran;
         message.what = 1;
         weakReferenceHandler.sendMessageDelayed(message, 20);
-
     }
 
     public void destroy() {
@@ -46,13 +43,11 @@ public class LotteryTextView extends androidx.appcompat.widget.AppCompatTextView
             weakReferenceHandler.removeCallbacksAndMessages(null);
             weakReferenceHandler = null;
         }
-
-
     }
 
     private static class WeakReferenceHandler extends Handler {
 
-        private WeakReference<LotteryTextView> reference;   //
+        private final WeakReference<LotteryTextView> reference;   //
 
         WeakReferenceHandler(LotteryTextView view) {
             reference = new WeakReference(view);
@@ -62,19 +57,14 @@ public class LotteryTextView extends androidx.appcompat.widget.AppCompatTextView
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
-            switch (msg.what) {
-                case 1:
-                    if (reference != null) {
-                        reference.get().setText(msg.obj.toString());
-                        reference.get().start();
-                    }
-                    break;
+            if (msg.what == 1) {
+                if (reference != null && reference.get() != null) {
+                    reference.get().setText(msg.obj.toString());
+                    reference.get().start();
+                }
             }
-
         }
     }
-
-
 }
 
 

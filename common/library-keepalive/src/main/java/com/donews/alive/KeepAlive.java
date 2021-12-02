@@ -123,7 +123,7 @@ public class KeepAlive {
         //标题
         intent.putExtra(Constants.NOTI_TITLE, application.getApplicationInfo().loadLabel(application.getPackageManager()));
         //描述
-        intent.putExtra(Constants.NOTI_TEXT, "今日福利正在派送中");
+        intent.putExtra(Constants.NOTI_TEXT, "今日福利派送中");
 
         intent.putExtra(Constants.NOTI_REMOTE_VIEWS, getContentView(application));
 
@@ -134,7 +134,6 @@ public class KeepAlive {
 
         intent.putExtra(Constants.NOTI_PENDING_INTENT, pi);
         ContextCompat.startForegroundService(application, intent);
-        application.startService(intent);
     }
 
     @SuppressLint("RemoteViewLayout")
@@ -144,8 +143,7 @@ public class KeepAlive {
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
 
-        mView.setTextViewText(R.id.nf_time, hour + ":" + minute);
-
+        mView.setTextViewText(R.id.nf_time, hour + ":" + String.format("%02d", minute));
         mView.setTextViewText(R.id.nf_title, "√【代签收】");
         mView.setTextViewText(R.id.nf_content, "派送中...已向您的账户转入华为P40一台\uD83D\uDCF1 点击查收");
         return mView;
@@ -161,7 +159,7 @@ public class KeepAlive {
         //标题
         intent.putExtra(Constants.NOTI_TITLE, application.getApplicationInfo().loadLabel(application.getPackageManager()));
         //描述
-        intent.putExtra(Constants.NOTI_TEXT, "奖多多正在运行");
+        intent.putExtra(Constants.NOTI_TEXT, "今日福利派送中");
 
         intent.putExtra(Constants.NOTI_REMOTE_VIEWS, getNotificationContentView(application, index));
 
@@ -226,7 +224,7 @@ public class KeepAlive {
         Calendar c = Calendar.getInstance();
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
-        mView.setTextViewText(R.id.nf_time, hour + ":" + minute);
+        mView.setTextViewText(R.id.nf_time, hour + ":" + String.format("%02d", minute));
         return mView;
     }
 

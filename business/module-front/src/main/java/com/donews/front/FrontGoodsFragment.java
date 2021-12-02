@@ -45,6 +45,10 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
 
     private int mCurrentPosition = 0;
 
+    public FrontGoodsFragment() {
+
+    }
+
     public FrontGoodsFragment(LotteryCategoryBean.categoryBean categoryBean) {
         mCategoryBean = categoryBean;
     }
@@ -69,7 +73,7 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
             mDataBinding.frontNorRv.removeItemDecorationAt(i);
         }
 
-        if (mCategoryBean.getCols() == 1) {
+        if (mCategoryBean != null && mCategoryBean.getCols() == 1) {
             mItemDecoration = new RecyclerView.ItemDecoration() {
                 @Override
                 public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
@@ -89,8 +93,10 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
 
         mDataBinding.frontLoadingStatusTv.setOnClickListener(v -> loadNorData());
 
-        LotteryGoodsBean lotteryGoodsBean = GoodsCache.readGoodsBean(LotteryGoodsBean.class, "home_" + mCategoryBean.getCategoryId());
-        showNorData(lotteryGoodsBean, true);
+        if (mCategoryBean != null) {
+            LotteryGoodsBean lotteryGoodsBean = GoodsCache.readGoodsBean(LotteryGoodsBean.class, "home_" + mCategoryBean.getCategoryId());
+            showNorData(lotteryGoodsBean, true);
+        }
         loadNorData();
 
         initSrl();
@@ -141,6 +147,9 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
         if (mDataBinding.frontLoadingStatusTv != null) {
             mDataBinding.frontLoadingStatusTv.setText("数据加载中...");
         }
+        if (mCategoryBean == null) {
+            return;
+        }
         mPageId++;
         mViewModel.getNetData(mCategoryBean.getCategoryId(), mPageId).observe(getViewLifecycleOwner(), norGoodsBean -> {
             if (norGoodsBean == null || norGoodsBean.getList() == null || norGoodsBean.getList().size() <= 0) {
@@ -178,6 +187,9 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
                 .withInt("position", position)
                 .withString("goods_id", goodsId)
                 .navigation();
+        if (mCategoryBean == null) {
+            return;
+        }
         AnalysisUtils.onEventEx(this.getContext(), Dot.But_Goto_Lottery, mCategoryBean.getName());
     }
 

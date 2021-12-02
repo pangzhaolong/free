@@ -152,6 +152,7 @@ public class MainActivity
     }
 
 
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onLoginEvent(LoginUserStatus status) {
         if (status.getStatus() == 1 && AppInfo.checkIsWXLogin()) {
