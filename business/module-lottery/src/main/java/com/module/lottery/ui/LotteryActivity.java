@@ -500,9 +500,13 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 startLottery();
             }
         });
-        exhibitCodeStartsDialog.create();
-        exhibitCodeStartsDialog.show();
-
+        try {
+            exhibitCodeStartsDialog.create();
+            if (!this.isFinishing() && !this.isDestroyed()) {
+                exhibitCodeStartsDialog.show();
+            }
+        } catch (Exception ignored) {
+        }
     }
 
 

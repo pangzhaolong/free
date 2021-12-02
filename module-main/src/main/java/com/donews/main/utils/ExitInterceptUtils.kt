@@ -33,7 +33,6 @@ import com.donews.utilslibrary.utils.KeySharePreferences
 import com.donews.utilslibrary.utils.SPUtils
 import com.donews.utilslibrary.utils.withConfigParams
 import com.orhanobut.logger.Logger
-import java.lang.Exception
 
 /**
  * 拦截退出
@@ -45,7 +44,7 @@ import java.lang.Exception
 object ExitInterceptUtils {
 
     private const val CONFIG_URL =
-        BuildConfig.BASE_CONFIG_URL + BuildConfig.APP_IDENTIFICATION + "-interceptExitConfig" + BuildConfig.BASE_RULE_URL
+            BuildConfig.BASE_CONFIG_URL + BuildConfig.APP_IDENTIFICATION + "-interceptExitConfig" + BuildConfig.BASE_RULE_URL
 
     /** 兩次返回鍵的间隔时间 */
     private const val CLICK_INTERVAL: Long = 2000L
@@ -88,18 +87,18 @@ object ExitInterceptUtils {
 
     private fun getInterceptConfig() {
         EasyHttp.get(CONFIG_URL.withConfigParams())
-            .cacheMode(CacheMode.NO_CACHE)
-            .execute(object : SimpleCallBack<ExitInterceptConfig>() {
-                override fun onError(e: ApiException?) {
-                    Logger.e(e, "");
-                }
-
-                override fun onSuccess(t: ExitInterceptConfig?) {
-                    t?.let {
-                        exitInterceptConfig = it
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(object : SimpleCallBack<ExitInterceptConfig>() {
+                    override fun onError(e: ApiException?) {
+                        Logger.e(e, "");
                     }
-                }
-            })
+
+                    override fun onSuccess(t: ExitInterceptConfig?) {
+                        t?.let {
+                            exitInterceptConfig = it
+                        }
+                    }
+                })
     }
 
     fun init() {
@@ -206,7 +205,7 @@ object ExitInterceptUtils {
                 notLoginDialog = null
                 if (AppInfo.checkIsWXLogin()) {
                     val item: HighValueGoodsBean? =
-                        GoodsCache.readGoodsBean(HighValueGoodsBean::class.java, "exit")
+                            GoodsCache.readGoodsBean(HighValueGoodsBean::class.java, "exit")
                     if (item != null) {
                         showWinningDialog(activity, 1)
                     }
@@ -241,23 +240,23 @@ object ExitInterceptUtils {
             setOnSureListener {
                 if (type == 2) { //暂时只报了来源为2的事件
                     AnalysisUtils.onEventEx(
-                        activity,
-                        Dot.But_Home_Exit_Lucky_Not_Meet_Continue_Receive
+                            activity,
+                            Dot.But_Home_Exit_Lucky_Not_Meet_Continue_Receive
                     )
                 }
                 RequestUtil.requestHighValueGoodsInfo()
                 ARouter.getInstance()
-                    .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
-                    .withString("goods_id", item!!.goodsId)
-                    .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery)
-                    .navigation()
+                        .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
+                        .withString("goods_id", item!!.goodsId)
+                        .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery)
+                        .navigation()
                 disMissDialog()
             }
             setOnCloseListener {
                 if (type == 2) { //暂时只报了来源为2的事件
                     AnalysisUtils.onEventEx(
-                        activity,
-                        Dot.But_Home_Exit_Lucky_Not_Meet_Continue_Close
+                            activity,
+                            Dot.But_Home_Exit_Lucky_Not_Meet_Continue_Close
                     )
                 }
                 RequestUtil.requestHighValueGoodsInfo()
@@ -267,8 +266,8 @@ object ExitInterceptUtils {
             setOnLaterListener {
                 if (type == 2) { //暂时只报了来源为2的事件
                     AnalysisUtils.onEventEx(
-                        activity,
-                        Dot.But_Home_Exit_Lucky_Not_Meet_Continue_Later
+                            activity,
+                            Dot.But_Home_Exit_Lucky_Not_Meet_Continue_Later
                     )
                 }
                 RequestUtil.requestHighValueGoodsInfo()
@@ -276,7 +275,9 @@ object ExitInterceptUtils {
 
             }
         }
-        winningDialog?.show(activity.supportFragmentManager, NotLotteryDialog::class.simpleName)
+        if (!activity.isFinishing && !activity.isDestroyed) {
+            winningDialog?.show(activity.supportFragmentManager, NotLotteryDialog::class.simpleName)
+        }
     }
 
     /***
@@ -287,18 +288,18 @@ object ExitInterceptUtils {
             return
         }
         notLotteryDialog = NotLotteryDialog.newInstance(exitInterceptConfig.notLotteryConfig)
-            .apply {
-                setOnDismissListener {
-                    notLotteryDialog = null
+                .apply {
+                    setOnDismissListener {
+                        notLotteryDialog = null
+                    }
+                    setOnSureListener {
+                        disMissDialog()
+                    }
+                    setOnCloseListener {
+                        disMissDialog()
+                        notLotteryExitApp(activity)
+                    }
                 }
-                setOnSureListener {
-                    disMissDialog()
-                }
-                setOnCloseListener {
-                    disMissDialog()
-                    notLotteryExitApp(activity)
-                }
-            }
         notLotteryDialog?.show(activity.supportFragmentManager, NotLotteryDialog::class.simpleName)
     }
 
@@ -311,61 +312,61 @@ object ExitInterceptUtils {
             return
         }
         openRedPacketDialog =
-            OpenRedPacketDialog.newInstance(exitInterceptConfig.openRedPacketConfig)
-                .apply {
-                    setOnDismissListener {
-                        openRedPacketDialog = null
-                    }
-                    setOnSureListener {
-                        disMissDialog()
-                        if (getNotLotteryCount() >= 10) {
-                            //必须抽奖 >= 10 才上报事件(因为逻辑变动造成现在少于10次也会走到这里)
-                            AnalysisUtils.onEventEx(
-                                activity,
-                                Dot.But_Home_Exit_Open_RedPacket_Receive
-                            )
-                        }
-                        ARouter.getInstance().build(RouterActivityPath.Main.PAGER_MAIN)
-                            .withInt("position", 0)
-                            .navigation()
-                    }
-                    setOnCancelListener {
-                        if (getNotLotteryCount() >= 10) {
-                            //必须抽奖 >= 10 才上报事件(因为逻辑变动造成现在少于10次也会走到这里)
-                            AnalysisUtils.onEventEx(
-                                activity,
-                                Dot.But_Home_Exit_Open_RedPacket_Close
-                            )
-                        }
-                        disMissDialog()
+                OpenRedPacketDialog.newInstance(exitInterceptConfig.openRedPacketConfig)
+                        .apply {
+                            setOnDismissListener {
+                                openRedPacketDialog = null
+                            }
+                            setOnSureListener {
+                                disMissDialog()
+                                if (getNotLotteryCount() >= 10) {
+                                    //必须抽奖 >= 10 才上报事件(因为逻辑变动造成现在少于10次也会走到这里)
+                                    AnalysisUtils.onEventEx(
+                                            activity,
+                                            Dot.But_Home_Exit_Open_RedPacket_Receive
+                                    )
+                                }
+                                ARouter.getInstance().build(RouterActivityPath.Main.PAGER_MAIN)
+                                        .withInt("position", 0)
+                                        .navigation()
+                            }
+                            setOnCancelListener {
+                                if (getNotLotteryCount() >= 10) {
+                                    //必须抽奖 >= 10 才上报事件(因为逻辑变动造成现在少于10次也会走到这里)
+                                    AnalysisUtils.onEventEx(
+                                            activity,
+                                            Dot.But_Home_Exit_Open_RedPacket_Close
+                                    )
+                                }
+                                disMissDialog()
 //                        showRemindDialog(activity)
-                    }
-                    setOnCloseListener {
-                        if (getNotLotteryCount() >= 10) {
-                            //必须抽奖 >= 10 才上报事件(因为逻辑变动造成现在少于10次也会走到这里)
-                            AnalysisUtils.onEventEx(
-                                activity,
-                                Dot.But_Home_Exit_Open_RedPacket_Close
-                            )
-                        }
-                        disMissDialog()
+                            }
+                            setOnCloseListener {
+                                if (getNotLotteryCount() >= 10) {
+                                    //必须抽奖 >= 10 才上报事件(因为逻辑变动造成现在少于10次也会走到这里)
+                                    AnalysisUtils.onEventEx(
+                                            activity,
+                                            Dot.But_Home_Exit_Open_RedPacket_Close
+                                    )
+                                }
+                                disMissDialog()
 //                        showRemindDialog(activity)
-                    }
-                    setOnLaterListener {
-                        if (getNotLotteryCount() >= 10) {
-                            //必须抽奖 >= 10 才上报事件(因为逻辑变动造成现在少于10次也会走到这里)
-                            AnalysisUtils.onEventEx(
-                                activity,
-                                Dot.But_Home_Exit_Open_RedPacket_Later
-                            )
+                            }
+                            setOnLaterListener {
+                                if (getNotLotteryCount() >= 10) {
+                                    //必须抽奖 >= 10 才上报事件(因为逻辑变动造成现在少于10次也会走到这里)
+                                    AnalysisUtils.onEventEx(
+                                            activity,
+                                            Dot.But_Home_Exit_Open_RedPacket_Later
+                                    )
+                                }
+                                disMissDialog()
+                                exitApp(activity)
+                            }
                         }
-                        disMissDialog()
-                        exitApp(activity)
-                    }
-                }
         openRedPacketDialog?.show(
-            activity.supportFragmentManager,
-            OpenRedPacketDialog::class.simpleName
+                activity.supportFragmentManager,
+                OpenRedPacketDialog::class.simpleName
         )
     }
 
@@ -378,44 +379,44 @@ object ExitInterceptUtils {
             return
         }
         redPacketNotAllOpenDialog =
-            WinNotAllOpenDialog.newInstance()
-                .apply {
-                    setOnDismissListener {
-                        redPacketNotAllOpenDialog = null
-                    }
-                    setOnSureListener {
-                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Lucky_Not_Meet_Continue)
-                        val item: HighValueGoodsBean? =
-                            GoodsCache.readGoodsBean(HighValueGoodsBean::class.java, "exit")
-                        if (item != null) {
-                            showWinningDialog(activity, 2)
+                WinNotAllOpenDialog.newInstance()
+                        .apply {
+                            setOnDismissListener {
+                                redPacketNotAllOpenDialog = null
+                            }
+                            setOnSureListener {
+                                AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Lucky_Not_Meet_Continue)
+                                val item: HighValueGoodsBean? =
+                                        GoodsCache.readGoodsBean(HighValueGoodsBean::class.java, "exit")
+                                if (item != null) {
+                                    showWinningDialog(activity, 2)
+                                }
+                                disMissDialog()
+                            }
+                            setOnCancelListener {
+                                AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Lucky_Not_Meet_Close)
+                                disMissDialog()
+                            }
+                            setOnCloseListener {
+                                AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Lucky_Not_Meet_Close)
+                                disMissDialog()
+                                if (checkRedPacketNotOpen()) {
+                                    //有红包未开启
+                                    showOpenRedPacketDialog(activity)
+                                } else {
+                                    //红包已全部开启(显示开奖提醒)
+                                    showRemindDialog(activity)
+                                }
+                            }
+                            setOnLaterListener {
+                                AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Lucky_Not_Meet_later)
+                                disMissDialog()
+                                exitApp(activity)
+                            }
                         }
-                        disMissDialog()
-                    }
-                    setOnCancelListener {
-                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Lucky_Not_Meet_Close)
-                        disMissDialog()
-                    }
-                    setOnCloseListener {
-                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Lucky_Not_Meet_Close)
-                        disMissDialog()
-                        if (checkRedPacketNotOpen()) {
-                            //有红包未开启
-                            showOpenRedPacketDialog(activity)
-                        } else {
-                            //红包已全部开启(显示开奖提醒)
-                            showRemindDialog(activity)
-                        }
-                    }
-                    setOnLaterListener {
-                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Lucky_Not_Meet_later)
-                        disMissDialog()
-                        exitApp(activity)
-                    }
-                }
         redPacketNotAllOpenDialog?.show(
-            activity.supportFragmentManager,
-            WinNotAllOpenDialog::class.simpleName
+                activity.supportFragmentManager,
+                WinNotAllOpenDialog::class.simpleName
         )
     }
 
@@ -428,38 +429,38 @@ object ExitInterceptUtils {
             return
         }
         redPacketAllOpenDialog =
-            RedPacketAllOpenDialog.newInstance()
-                .apply {
-                    setOnDismissListener {
-                        redPacketAllOpenDialog = null
-                    }
-                    setOnSureListener {
-                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_All_RedPacket_Continue)
-                        //去往商品滚动页面
-                        val item: HighValueGoodsBean? =
-                            GoodsCache.readGoodsBean(HighValueGoodsBean::class.java, "exit")
-                        if (item != null) {
-                            showWinningDialog(activity, 3)
+                RedPacketAllOpenDialog.newInstance()
+                        .apply {
+                            setOnDismissListener {
+                                redPacketAllOpenDialog = null
+                            }
+                            setOnSureListener {
+                                AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_All_RedPacket_Continue)
+                                //去往商品滚动页面
+                                val item: HighValueGoodsBean? =
+                                        GoodsCache.readGoodsBean(HighValueGoodsBean::class.java, "exit")
+                                if (item != null) {
+                                    showWinningDialog(activity, 3)
+                                }
+                                disMissDialog()
+                            }
+                            setOnCancelListener {
+                                AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_All_RedPacket_Close)
+                                disMissDialog()
+                            }
+                            setOnCloseListener {
+                                AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_All_RedPacket_Close)
+                                disMissDialog()
+                            }
+                            setOnLaterListener {
+                                AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_All_RedPacket_Close)
+                                disMissDialog()
+                                exitApp(activity)
+                            }
                         }
-                        disMissDialog()
-                    }
-                    setOnCancelListener {
-                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_All_RedPacket_Close)
-                        disMissDialog()
-                    }
-                    setOnCloseListener {
-                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_All_RedPacket_Close)
-                        disMissDialog()
-                    }
-                    setOnLaterListener {
-                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_All_RedPacket_Close)
-                        disMissDialog()
-                        exitApp(activity)
-                    }
-                }
         redPacketAllOpenDialog?.show(
-            activity.supportFragmentManager,
-            RedPacketAllOpenDialog::class.simpleName
+                activity.supportFragmentManager,
+                RedPacketAllOpenDialog::class.simpleName
         )
     }
 
@@ -473,39 +474,45 @@ object ExitInterceptUtils {
             return
         }
         continueLotteryDialog =
-            ContinueLotteryDialog.newInstance(exitInterceptConfig.continueLotteryConfig)
-                .apply {
-                    setOnDismissListener {
-                        continueLotteryDialog = null
-                    }
-                    setOnSureListener {
-                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Not_Lucky_Continue)
-                        val item: HighValueGoodsBean? =
-                            GoodsCache.readGoodsBean(HighValueGoodsBean::class.java, "exit")
-                        if (item != null) {
-                            showWinningDialog(activity, 4)
-                        }
-                        disMissDialog()
-                    }
-                    setOnCloseListener {
-                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Not_Lucky_Close)
-                        disMissDialog()
+                ContinueLotteryDialog.newInstance(exitInterceptConfig.continueLotteryConfig)
+                        .apply {
+                            setOnDismissListener {
+                                continueLotteryDialog = null
+                            }
+                            setOnSureListener {
+                                AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Not_Lucky_Continue)
+                                val item: HighValueGoodsBean? =
+                                        GoodsCache.readGoodsBean(HighValueGoodsBean::class.java, "exit")
+                                if (item != null) {
+                                    showWinningDialog(activity, 4)
+                                }
+                                disMissDialog()
+                            }
+                            setOnCloseListener {
+                                AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Not_Lucky_Close)
+                                disMissDialog()
 //                        showRemindDialog(activity)
-                    }
-                    setOnCancelListener {
-                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Not_Lucky_Close)
-                        disMissDialog()
-                    }
-                    setOnLaterListener {
-                        AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Not_Lucky_Later)
-                        disMissDialog()
-                        exitApp(activity)
-                    }
-                }
-        continueLotteryDialog?.show(
-            activity.supportFragmentManager,
-            ContinueLotteryDialog::class.simpleName
-        )
+                            }
+                            setOnCancelListener {
+                                AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Not_Lucky_Close)
+                                disMissDialog()
+                            }
+                            setOnLaterListener {
+                                AnalysisUtils.onEventEx(activity, Dot.But_Home_Exit_Not_Lucky_Later)
+                                disMissDialog()
+                                exitApp(activity)
+                            }
+                        }
+        try {
+
+            if (!activity.isFinishing && !activity.isDestroyed) {
+                continueLotteryDialog?.show(
+                        activity.supportFragmentManager,
+                        ContinueLotteryDialog::class.simpleName
+                )
+            }
+        } catch (e: Exception) {
+        }
     }
 
 
@@ -518,29 +525,29 @@ object ExitInterceptUtils {
             return
         }
         remindDialog = RemindDialog.newInstance(exitInterceptConfig.remindConfig)
-            .apply {
-                setOnDismissListener {
-                    remindDialog = null
-                }
-                setOnSureListener {
-                    disMissDialog()
-                    exitApp(activity)
-                }
+                .apply {
+                    setOnDismissListener {
+                        remindDialog = null
+                    }
+                    setOnSureListener {
+                        disMissDialog()
+                        exitApp(activity)
+                    }
 
-                setOnCancelListener {
-                    disMissDialog()
-                    exitApp(activity)
-                }
+                    setOnCancelListener {
+                        disMissDialog()
+                        exitApp(activity)
+                    }
 
-                setOnCloseListener {
-                    disMissDialog()
-                }
+                    setOnCloseListener {
+                        disMissDialog()
+                    }
 
-                setOnLaterListener {
-                    disMissDialog()
-                    exitApp(activity)
+                    setOnLaterListener {
+                        disMissDialog()
+                        exitApp(activity)
+                    }
                 }
-            }
         remindDialog?.show(activity.supportFragmentManager, RemindDialog::class.simpleName)
     }
 

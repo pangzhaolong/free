@@ -1,7 +1,6 @@
 package com.donews.main.dialog
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -10,28 +9,21 @@ import android.os.Looper
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.AbsoluteSizeSpan
-import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import com.alibaba.android.arouter.launcher.ARouter
 import com.donews.base.fragmentdialog.AbstractFragmentDialog
-import com.donews.common.router.RouterFragmentPath
-import com.donews.utilslibrary.utils.DensityUtils
 import com.donews.main.R
 import com.donews.main.databinding.MainExitDialogContinueLotteryBinding
 import com.donews.main.entitys.resps.ContinueLotteryConfig
 import com.donews.main.entitys.resps.ExitDialogRecommendGoods
 import com.donews.main.entitys.resps.ExitDialogRecommendGoodsResp
 import com.donews.main.utils.ExitInterceptUtils
-import com.donews.middle.abswitch.ABSwitch
 import com.donews.network.EasyHttp
 import com.donews.network.cache.model.CacheMode
 import com.donews.network.callback.SimpleCallBack
 import com.donews.network.exception.ApiException
-import java.math.RoundingMode
-import java.text.DecimalFormat
-import kotlin.random.Random
+import com.donews.utilslibrary.utils.DensityUtils
 
 /**
  * 已登录用户。当日未参与抽奖的弹窗
@@ -70,10 +62,12 @@ class ContinueLotteryDialog : AbstractFragmentDialog<MainExitDialogContinueLotte
         }
 
         override fun onFinish() {
-            dataBinding.btnLottery.text = "抽奖得现金红包(0)"
-            dataBinding.eventListener?.clickLottery(dataBinding.btnLottery)
+            try {
+                dataBinding.btnLottery.text = "抽奖得现金红包(0)"
+                dataBinding.eventListener?.clickLottery(dataBinding.btnLottery)
+            } catch (e: Exception) {
+            }
         }
-
     }
 
     override fun onAttach(context: Context) {
@@ -119,8 +113,8 @@ class ContinueLotteryDialog : AbstractFragmentDialog<MainExitDialogContinueLotte
                 handler.postDelayed({
                     if (activity != null) {
                         val anim = AnimationUtils.loadAnimation(
-                            activity,
-                            R.anim.anim_yh_in
+                                activity,
+                                R.anim.anim_yh_in
                         )
                         anim.setAnimationListener(object : Animation.AnimationListener {
                             override fun onAnimationStart(animation: Animation?) {
@@ -161,43 +155,43 @@ class ContinueLotteryDialog : AbstractFragmentDialog<MainExitDialogContinueLotte
         val result = "已有${prob}人获得免单奖"
         val spannable: SpannableString = SpannableString(result)
         spannable.setSpan(
-            AbsoluteSizeSpan(DensityUtils.dip2px(28f)),
-            2,
-            2 + prob.length,
-            Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+                AbsoluteSizeSpan(DensityUtils.dip2px(28f)),
+                2,
+                2 + prob.length,
+                Spannable.SPAN_INCLUSIVE_EXCLUSIVE
         )
         dataBinding.title = spannable
     }
 
     private fun requestGoodsInfo() {
         val disposable = EasyHttp.get(ExitInterceptUtils.getRecommendGoodsUrl())
-            .cacheMode(CacheMode.NO_CACHE)
-            .params("limit", LIMIT_DATA)
-            .execute(object : SimpleCallBack<ExitDialogRecommendGoodsResp>() {
-                override fun onError(e: ApiException?) {
+                .cacheMode(CacheMode.NO_CACHE)
+                .params("limit", LIMIT_DATA)
+                .execute(object : SimpleCallBack<ExitDialogRecommendGoodsResp>() {
+                    override fun onError(e: ApiException?) {
 
-                }
+                    }
 
-                override fun onSuccess(t: ExitDialogRecommendGoodsResp?) {
-                    t?.list?.get(0)?.let {
-                        if (dataBinding != null) {
-                            dataBinding.goodsBean = it
+                    override fun onSuccess(t: ExitDialogRecommendGoodsResp?) {
+                        t?.list?.get(0)?.let {
+                            if (dataBinding != null) {
+                                dataBinding.goodsBean = it
 
-                            val peopleNumberString =
-                                if (it.totalPeople > NotLotteryDialog.TEN_THOUSAND) {
-                                    (it.totalPeople / TEN_THOUSAND).toString().substring(0, 3)
+                                val peopleNumberString =
+                                        if (it.totalPeople > NotLotteryDialog.TEN_THOUSAND) {
+                                            (it.totalPeople / TEN_THOUSAND).toString().substring(0, 3)
 
-                                } else {
-                                    it.totalPeople.toString()
-                                }
-                            dataBinding.totalPeople = peopleNumberString
+                                        } else {
+                                            it.totalPeople.toString()
+                                        }
+                                dataBinding.totalPeople = peopleNumberString
 
-                            goodsInfo = it
+                                goodsInfo = it
 
+                            }
                         }
                     }
-                }
-            })
+                })
         addDisposable(disposable)
     }
 

@@ -73,6 +73,11 @@
 -keep class **Listener
 -keep public class * extends com.platform.dai.webview.CommonJSInterface{ *;}
 
+#---------SdkLogUtils-----------begin-----------
+-keep class com.dn.sdk.sdk.utils.SdkLogUtils
+#---------SdkLogUtils-----------end-------------
+
+
 #---------[多牛model]其他第三方混淆排除--------------------
 #保持多牛的sdk模块中代码不混淆，保持原样
 -keep class cn.cd.dn.sdk.** { *; }

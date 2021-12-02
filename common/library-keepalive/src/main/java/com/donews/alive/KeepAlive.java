@@ -123,7 +123,7 @@ public class KeepAlive {
         //标题
         intent.putExtra(Constants.NOTI_TITLE, application.getApplicationInfo().loadLabel(application.getPackageManager()));
         //描述
-        intent.putExtra(Constants.NOTI_TEXT, "奖多多正在运行");
+        intent.putExtra(Constants.NOTI_TEXT, "今日福利正在派送中");
 
         intent.putExtra(Constants.NOTI_REMOTE_VIEWS, getContentView(application));
 
@@ -134,6 +134,7 @@ public class KeepAlive {
 
         intent.putExtra(Constants.NOTI_PENDING_INTENT, pi);
         ContextCompat.startForegroundService(application, intent);
+        application.startService(intent);
     }
 
     @SuppressLint("RemoteViewLayout")

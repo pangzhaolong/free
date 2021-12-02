@@ -4,15 +4,12 @@ import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.view.View;
 import android.widget.Toast;
-
-import androidx.fragment.app.Fragment;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.dn.events.events.LoginUserStatus;
@@ -382,31 +379,31 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         SplashUtils.INSTANCE.loginDevice();
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
     private void checkAndRequestPermission() {
-        List<String> lackedPermission = new ArrayList<String>();
-        if ((checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED)) {
-            lackedPermission.add(Manifest.permission.READ_PHONE_STATE);
-        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            List<String> lackedPermission = new ArrayList<String>();
+            if ((checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED)) {
+                lackedPermission.add(Manifest.permission.READ_PHONE_STATE);
+            }
 
-        if ((checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
-            lackedPermission.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        }
+            if ((checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
+                lackedPermission.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
 
-        if ((checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
-            lackedPermission.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-        }
+            if ((checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
+                lackedPermission.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+            }
 
-        // 权限都已经有了，那么直接调用SDK
-        if (lackedPermission.size() == 0) {
-            hadPermissions();
-        } else {
-            String[] requestPermissions = new String[lackedPermission.size()];
-            lackedPermission.toArray(requestPermissions);
-            requestPermissions(requestPermissions, REQUEST_PERMISSIONS_CODE);
+            // 权限都已经有了，那么直接调用SDK
+            if (lackedPermission.size() == 0) {
+                hadPermissions();
+            } else {
+                String[] requestPermissions = new String[lackedPermission.size()];
+                lackedPermission.toArray(requestPermissions);
+                requestPermissions(requestPermissions, REQUEST_PERMISSIONS_CODE);
+            }
         }
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
