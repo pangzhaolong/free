@@ -223,8 +223,14 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             @Override
             public void onClick(View v) {
                 AnalysisUtils.onEventEx(LotteryActivity.this, Dot.Btn_Buy);
-                if (mCommodityBean != null) {
-                    detailProvider.goToTaoBao(LotteryActivity.this, mCommodityBean.getItemLink());
+                if (mCommodityBean != null && mCommodityBean.getItemLink() != null) {
+                    if (mCommodityBean.getItemLink().equals("")) {
+                        ToastUtil.showShort(getApplicationContext(), "暂不支持购买");
+                    } else {
+                        detailProvider.goToTaoBao(LotteryActivity.this, mCommodityBean.getItemLink());
+                    }
+                } else {
+                    ToastUtil.showShort(getApplicationContext(), "暂不支持购买");
                 }
 
             }

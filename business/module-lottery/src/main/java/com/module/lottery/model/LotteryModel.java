@@ -54,6 +54,7 @@ public class LotteryModel extends BaseLiveDataModel {
         unDisposable();
         addDisposable(EasyHttp.get(url)
                 .cacheMode(CacheMode.NO_CACHE)
+                .isShowToast(false)
                 .params(params)
                 .execute(new SimpleCallBack<MaylikeBean>() {
                     @Override
@@ -75,6 +76,7 @@ public class LotteryModel extends BaseLiveDataModel {
         unDisposable();
         addDisposable(EasyHttp.get(url)
                 .cacheMode(CacheMode.NO_CACHE)
+                .isShowToast(false)
                 .params(params)
                 .execute(new SimpleCallBack<CommodityBean>() {
                     @Override
@@ -96,6 +98,7 @@ public class LotteryModel extends BaseLiveDataModel {
         unDisposable();
         addDisposable(EasyHttp.get(url)
                 .cacheMode(CacheMode.NO_CACHE)
+                .isShowToast(false)
                 .params(params)
                 .execute(new SimpleCallBack<ParticipateBean>() {
                     @Override
@@ -193,6 +196,7 @@ public class LotteryModel extends BaseLiveDataModel {
         addDisposable(EasyHttp.get(url)
                 .cacheMode(CacheMode.NO_CACHE)
                 .params(params)
+                .isShowToast(false)
                 .execute(new SimpleCallBack<WinLotteryBean>() {
                     @Override
                     public void onError(ApiException e) {
