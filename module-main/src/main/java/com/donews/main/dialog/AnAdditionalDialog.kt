@@ -1,6 +1,7 @@
 package com.donews.main.dialog
 
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Handler
 import android.os.Looper
 import android.view.View
@@ -80,6 +81,11 @@ class AnAdditionalDialog(
                 pd += Random().nextInt(200) + 1000
             }
         }, 150)
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        SoundHelp.newInstance().onRelease()
     }
 
     override fun isUseDataBinding(): Boolean {
