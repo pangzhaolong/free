@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.dn.events.events.LoginLodingStartStatus
+import com.donews.base.utils.ToastUtil
 import com.donews.common.router.RouterActivityPath.LoginProvider.PROVIDER_LOGIN
 import com.donews.common.router.providers.IARouterLoginProvider
 import com.donews.login.model.UserInfoManage
@@ -47,6 +48,9 @@ class RouterLoginProvider : IARouterLoginProvider {
             }
 
             override fun onFailed(msg: String?) {
+                if(context != null){
+                    ToastUtil.showShort(context, "微信处理失败")
+                }
                 if (from?.isNotEmpty() == true && context != null) {
                     AnalysisUtils.onEventEx(
                         context,

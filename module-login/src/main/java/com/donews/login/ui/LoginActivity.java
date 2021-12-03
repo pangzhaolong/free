@@ -148,6 +148,7 @@ public class LoginActivity extends MvvmBaseLiveDataActivity<LoginActivityBinding
 
     @Override
     public void onFailed(String msg) {
+        ToastUtil.showShort(this, "微信处理失败");
         AnalysisUtils.onEventEx(
                 this,
                 Dot.WX_Login, "微信登录页(微信服务异常)"
