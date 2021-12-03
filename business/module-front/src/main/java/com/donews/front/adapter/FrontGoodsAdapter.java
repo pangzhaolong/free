@@ -18,7 +18,6 @@ import com.donews.front.R;
 import com.donews.front.listener.FrontClickListener;
 import com.donews.middle.bean.front.LotteryGoodsBean;
 import com.donews.utilslibrary.utils.DensityUtils;
-import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.UrlUtils;
 
 import java.util.ArrayList;
@@ -47,9 +46,6 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
         if (needClear) {
             mGoodsList.clear();
             initTopList(list);
-            for (LotteryGoodsBean.GoodsInfo gi : mGoodsList) {
-                LogUtil.e(gi.toString());
-            }
         } else {
             mGoodsList.addAll(list);
         }

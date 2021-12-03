@@ -39,6 +39,7 @@ import com.donews.utilslibrary.analysis.AnalysisHelp;
 import com.donews.utilslibrary.base.SmSdkConfig;
 import com.donews.utilslibrary.base.UtilsConfig;
 import com.donews.utilslibrary.utils.KeySharePreferences;
+import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.NetworkUtils;
 import com.donews.utilslibrary.utils.SPUtils;
 import com.orhanobut.logger.Logger;
@@ -48,6 +49,8 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * 应用模块: 主业务模块
@@ -157,10 +160,22 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         }
     }
 
+    private void initPushAndDnDi() {
+        AnalysisHelp.setAnalysisInitUmeng(getApplication());
+        if (!AnalysisHelp.analysisRegister) {
+            AnalysisHelp.register(getApplication());
+        }
+        //极光推送
+        JPushHelper.setDebugMode(BuildConfig.DEBUG);
+        JPushHelper.init(getApplication());
+
+//        LogUtil.e("xxxxxxxxx" + JPushInterface.getRegistrationID(this));
+    }
 
     private void showPersonGuideDialog() {
         //如果协议已经同意，不需要弹起弹框
         if (SPUtils.getInformain(KeySharePreferences.DEAL, false)) {
+            initPushAndDnDi();
             return;
         }
         if (personGuideDialog != null && personGuideDialog.isAdded() && personGuideDialog.isVisible()) {
@@ -172,14 +187,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
                 SplashUtils.INSTANCE.savePersonExit(true);
                 SPUtils.setInformain(KeySharePreferences.DEAL, true);
                 SPUtils.setInformain(KeySharePreferences.AGREEMENT, true);
-                AnalysisHelp.setAnalysisInitUmeng(getApplication());
-
-                if (!AnalysisHelp.analysisRegister) {
-                    AnalysisHelp.register(getApplication());
-                }
-                //极光推送
-                JPushHelper.setDebugMode(BuildConfig.DEBUG);
-                JPushHelper.init(getApplication());
+                initPushAndDnDi();
                 checkAndRequestPermission();
             }).setCancelListener(new AbstractFragmentDialog.CancelListener() {
                 @Override
@@ -365,8 +373,12 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
 
     private void goToMain() {
         stopProgressAnim();
+//        LogUtil.e("xxx" + mIsBackgroundToFore);
         if (!mIsBackgroundToFore) {
+//            LogUtil.e("xxx111111111111");
             if (AppStatusManager.getInstance().getAppStatus() != AppStatusConstant.STATUS_NORMAL) {
+
+//                LogUtil.e("xxx222222222222222");
                 LotteryAdCount.INSTANCE.init();
                 GuideActivity.start(this);
             }
