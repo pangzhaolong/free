@@ -281,6 +281,7 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
 
                 @Override
                 public void onClick(View view, MineOperatingPosView.IOperatingData data) {
+                    AnalysisUtils.onEventEx(getActivity(), Dot.But_Mine_Operating, "个人中心>运营位" + pos);
                     Bundle bundle = new Bundle();
 //                    bundle.putString("url",
 //                            "https://i.iwanbei.cn/activities?appKey=c0d8e103601c4bc49abb501c59718143&appEntrance=1&business=money");

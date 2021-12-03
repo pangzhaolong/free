@@ -63,6 +63,8 @@ public class Dot {
     public final static String Btn_BuyNow = "Btn_BuyNow";
     //    注销用户
     public final static String Btn_unsubscribe = "Btn_unsubscribe";
+    //    个人中心运营位
+    public final static String But_Mine_Operating = "But_Mine_Operating";
 
     //-- 引导页
     //新增:跳过引导
