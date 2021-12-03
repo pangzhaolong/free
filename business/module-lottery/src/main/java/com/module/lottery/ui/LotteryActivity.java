@@ -12,6 +12,9 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.CycleInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -205,8 +208,22 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         }
     }
 
+    RotateAnimation mRotateAnimation;
 
     private void initViewData() {
+
+        //设置 抽奖按钮上的tips 动画
+        if (mRotateAnimation == null) {
+            mRotateAnimation = new RotateAnimation(0, 8, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+                    0.5f);
+            mRotateAnimation.setInterpolator(new CycleInterpolator(2));
+            mRotateAnimation.setRepeatMode(Animation.REVERSE);
+            mRotateAnimation.setRepeatCount(Animation.INFINITE);
+            mRotateAnimation.setStartOffset(3000);
+            mRotateAnimation.setRepeatMode(Animation.REVERSE);
+            mRotateAnimation.setDuration(400);
+        }
+        mDataBinding.lotteryTips.setAnimation(mRotateAnimation);
         mDataBinding.jsonAnimationRound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -471,6 +488,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mDataBinding.lotteryTips.clearAnimation();
     }
 
     //展示生成的抽奖码

@@ -53,6 +53,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clipChildren="false"
                 android:layout_alignParentBottom="true"
                 android:background="@drawable/linear_background"
                 android:gravity="center">
@@ -107,6 +108,7 @@
                     tools:ignore="MissingConstraints">
 
                     <LinearLayout
+                        android:id="@+id/lottery_tips"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
