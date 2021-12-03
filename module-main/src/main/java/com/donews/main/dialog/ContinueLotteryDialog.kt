@@ -38,7 +38,7 @@ class ContinueLotteryDialog : AbstractFragmentDialog<MainExitDialogContinueLotte
     companion object {
         const val LIMIT_DATA = "1"
 
-        const val TEN_THOUSAND = 10000
+        const val TEN_THOUSAND = 10000F
 
         private const val PARAMS_CONFIG = "config"
 
@@ -180,7 +180,6 @@ class ContinueLotteryDialog : AbstractFragmentDialog<MainExitDialogContinueLotte
                                 val peopleNumberString =
                                         if (it.totalPeople > NotLotteryDialog.TEN_THOUSAND) {
                                             (it.totalPeople / TEN_THOUSAND).toString().substring(0, 3)
-
                                         } else {
                                             it.totalPeople.toString()
                                         }
