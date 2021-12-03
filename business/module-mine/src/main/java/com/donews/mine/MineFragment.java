@@ -282,8 +282,9 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
                 @Override
                 public void onClick(View view, MineOperatingPosView.IOperatingData data) {
                     Bundle bundle = new Bundle();
-                    bundle.putString("url",
-                            "https://i.iwanbei.cn/activities?appKey=c0d8e103601c4bc49abb501c59718143&appEntrance=1&business=money");
+//                    bundle.putString("url",
+//                            "https://i.iwanbei.cn/activities?appKey=c0d8e103601c4bc49abb501c59718143&appEntrance=1&business=money");
+                    bundle.putString("url", "https://p.pinduoduo.com/vEY44O05");
                     bundle.putString("title", "天降豪礼");
                     ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
                 }

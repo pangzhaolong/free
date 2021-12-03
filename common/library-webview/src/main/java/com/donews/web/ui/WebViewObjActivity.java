@@ -60,6 +60,7 @@ public class WebViewObjActivity extends MvvmBaseLiveDataActivity<WebViewObjActiv
                 .setView(mDataBinding.webView, mDataBinding.errorView).setContext(this).setOverrideUrlLoad(true).url(
                         url)
                 .setProgressBar(mDataBinding.progressBar).setLoadingView(mDataBinding.loadingView)
+                .setOverrideUrlLoad(false) //是否新开启一个页面打开链接
                 .setFinishCallBack(this)
                 .build();
 
