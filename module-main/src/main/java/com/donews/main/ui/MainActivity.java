@@ -35,6 +35,7 @@ import com.donews.main.R;
 import com.donews.main.adapter.MainPageAdapter;
 import com.donews.main.common.CommonParams;
 import com.donews.main.databinding.MainActivityMainBinding;
+import com.donews.main.dialog.AnAdditionalDialog;
 import com.donews.main.dialog.DrawDialog;
 import com.donews.main.dialog.EnterShowDialog;
 import com.donews.main.dialog.FreePanicBuyingDialog;
@@ -139,6 +140,11 @@ public class MainActivity
         AdVideoCacheUtils.INSTANCE.cacheRewardVideo(this);
         //上报一个测试友盟多参数事件
         testUMMuliParams();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     //上报测试多参数事件
