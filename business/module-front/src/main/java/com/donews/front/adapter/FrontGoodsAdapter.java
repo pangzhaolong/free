@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.donews.front.R;
 import com.donews.front.listener.FrontClickListener;
 import com.donews.middle.bean.front.LotteryGoodsBean;
+import com.donews.utilslibrary.utils.DensityUtils;
 import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.UrlUtils;
 
@@ -30,6 +31,7 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
     private Context mContext;
     private FrontClickListener mListener;
     private int mCols;
+    private int mPadding = DensityUtils.dp2px(6);
 
     public FrontGoodsAdapter(Context context, FrontClickListener listener) {
         mContext = context;
@@ -147,24 +149,28 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
         holder.priceTv.setText("￥ " + goodsInfo.getOriginalPrice());
         holder.edgeFl.setBackground(null);
         holder.tipTv.setVisibility(View.GONE);
+        holder.edgeFl.setPadding(0, 0, 0, 0);
         switch (goodsInfo.getTag()) {
             case 1:
                 holder.tipTv.setText("爆款推荐");
                 holder.tipTv.setVisibility(View.VISIBLE);
                 holder.tipTv.setBackgroundResource(R.drawable.front_goods_item_iv_tip_1);
                 holder.edgeFl.setBackgroundResource(R.drawable.front_goods_item_iv_edge_1);
+                holder.edgeFl.setPadding(mPadding, mPadding, mPadding, mPadding);
                 break;
             case 2:
                 holder.tipTv.setText("今日热门");
                 holder.tipTv.setVisibility(View.VISIBLE);
                 holder.tipTv.setBackgroundResource(R.drawable.front_goods_item_iv_tip_2);
                 holder.edgeFl.setBackgroundResource(R.drawable.front_goods_item_iv_edge_2);
+                holder.edgeFl.setPadding(mPadding, mPadding, mPadding, mPadding);
                 break;
             case 3:
                 holder.tipTv.setText("中奖最多");
                 holder.tipTv.setVisibility(View.VISIBLE);
                 holder.tipTv.setBackgroundResource(R.drawable.front_goods_item_iv_tip_3);
                 holder.edgeFl.setBackgroundResource(R.drawable.front_goods_item_iv_edge_3);
+                holder.edgeFl.setPadding(mPadding, mPadding, mPadding, mPadding);
                 break;
         }
 

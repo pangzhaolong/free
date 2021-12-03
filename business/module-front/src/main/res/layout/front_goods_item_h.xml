@@ -26,17 +26,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="matrix"
+                app:border_color="@color/transparent"
+                app:border_width="0dp"
                 app:corner_radius="10dp"
                 app:type="round" />
 
             <TextView
                 android:id="@+id/front_goods_item_tip_tv"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
+                android:layout_width="35dp"
+                android:layout_height="40dp"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="-4dp"
+                android:layout_marginTop="-3dp"
                 android:background="@drawable/front_goods_item_iv_tip_1"
-                android:gravity="center"
+                android:gravity="top|center_horizontal"
                 android:padding="2dp"
                 android:text="爆款推荐"
                 android:textColor="#FFFFFF"
