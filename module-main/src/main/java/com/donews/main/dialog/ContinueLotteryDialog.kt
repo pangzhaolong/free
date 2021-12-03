@@ -177,13 +177,13 @@ class ContinueLotteryDialog : AbstractFragmentDialog<MainExitDialogContinueLotte
                             if (dataBinding != null) {
                                 dataBinding.goodsBean = it
 
-                                val peopleNumberString =
-                                        if (it.totalPeople > NotLotteryDialog.TEN_THOUSAND) {
-                                            (it.totalPeople / TEN_THOUSAND).toString().substring(0, 3)
-                                        } else {
-                                            it.totalPeople.toString()
-                                        }
-                                dataBinding.totalPeople = peopleNumberString
+//                                val peopleNumberString =
+//                                        if (it.totalPeople > NotLotteryDialog.TEN_THOUSAND) {
+//                                            (it.totalPeople / TEN_THOUSAND).toString().substring(0, 3)
+//                                        } else {
+//                                            it.totalPeople.toString()
+//                                        }
+                                dataBinding.totalPeople = "0"
 
                                 goodsInfo = it
 
