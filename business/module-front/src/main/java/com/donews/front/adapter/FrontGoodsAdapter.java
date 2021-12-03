@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.donews.front.R;
 import com.donews.front.listener.FrontClickListener;
 import com.donews.middle.bean.front.LotteryGoodsBean;
+import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.UrlUtils;
 
 import java.util.ArrayList;
@@ -42,19 +44,26 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
     public void refreshData(List<LotteryGoodsBean.GoodsInfo> list, boolean needClear, boolean needKeepFirst) {
         if (needClear) {
             mGoodsList.clear();
-            mGoodsList.addAll(list);
-            //精选推荐保持第一个不变
-            if (needKeepFirst) {
-                mGoodsList.remove(0);
-                Collections.shuffle(mGoodsList);
-                mGoodsList.add(0, list.get(0));
-            } else {
-                Collections.shuffle(mGoodsList);
+            initTopList(list);
+            for (LotteryGoodsBean.GoodsInfo gi : mGoodsList) {
+                LogUtil.e(gi.toString());
             }
         } else {
             mGoodsList.addAll(list);
         }
         notifyDataSetChanged();
+    }
+
+    private void initTopList(List<LotteryGoodsBean.GoodsInfo> list) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).isTop()) {
+                mGoodsList.add(list.get(i));
+                list.remove(i);
+                i--;
+            }
+        }
+        Collections.shuffle(list);
+        mGoodsList.addAll(list);
     }
 
     public void refreshItem(int position, String goodsId, int lotteryStatus) {
@@ -136,6 +145,28 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
         holder.titleTv.setText(goodsInfo.getTitle());
         holder.priceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
         holder.priceTv.setText("￥ " + goodsInfo.getOriginalPrice());
+        holder.edgeFl.setBackground(null);
+        holder.tipTv.setVisibility(View.GONE);
+        switch (goodsInfo.getTag()) {
+            case 1:
+                holder.tipTv.setText("爆款推荐");
+                holder.tipTv.setVisibility(View.VISIBLE);
+                holder.tipTv.setBackgroundResource(R.drawable.front_goods_item_iv_tip_1);
+                holder.edgeFl.setBackgroundResource(R.drawable.front_goods_item_iv_edge_1);
+                break;
+            case 2:
+                holder.tipTv.setText("今日热门");
+                holder.tipTv.setVisibility(View.VISIBLE);
+                holder.tipTv.setBackgroundResource(R.drawable.front_goods_item_iv_tip_2);
+                holder.edgeFl.setBackgroundResource(R.drawable.front_goods_item_iv_edge_2);
+                break;
+            case 3:
+                holder.tipTv.setText("中奖最多");
+                holder.tipTv.setVisibility(View.VISIBLE);
+                holder.tipTv.setBackgroundResource(R.drawable.front_goods_item_iv_tip_3);
+                holder.edgeFl.setBackgroundResource(R.drawable.front_goods_item_iv_edge_3);
+                break;
+        }
 
         switch (goodsInfo.getLotteryStatus()) {
             case 0:
@@ -179,6 +210,8 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
         private final TextView titleTv;
         private final TextView priceTv;
         private final TextView doTv;
+        private final FrameLayout edgeFl;
+        private final TextView tipTv;
 
         public GoodsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -187,6 +220,8 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
             titleTv = itemView.findViewById(R.id.front_goods_item_des_tv);
             priceTv = itemView.findViewById(R.id.front_goods_item_price_tv);
             doTv = itemView.findViewById(R.id.front_item_do_tv);
+            edgeFl = itemView.findViewById(R.id.front_goods_item_edge_fl);
+            tipTv = itemView.findViewById(R.id.front_goods_item_tip_tv);
         }
     }
 }

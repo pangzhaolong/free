@@ -30,8 +30,8 @@
                 android:layout_gravity="end"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="50dp"
-                android:visibility="gone"
-                android:src="@drawable/icon_shut_down" />
+                android:src="@drawable/icon_shut_down"
+                android:visibility="gone" />
         </FrameLayout>
 
         <FrameLayout
@@ -42,15 +42,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="360dp"
                 android:layout_gravity="center"
-                android:layout_marginEnd="20dp"
                 android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 android:background="@drawable/main_rp_bg" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="-60dp"
+                android:layout_marginTop="-70dp"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -96,25 +96,52 @@
                     android:paddingBottom="5dp"
                     android:text="现金红包"
                     android:textColor="#FFE9423E"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:visibility="gone" />
+            </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/main_rp_double"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginStart="95dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="95dp"
+                android:layout_marginBottom="40dp"
+                android:background="@drawable/main_rp_dlg_get"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/main_rp_play_icon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:gravity="center"
+                    android:text="翻倍领取"
+                    android:textColor="#D82D2A"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
             </LinearLayout>
         </FrameLayout>
 
         <TextView
-            android:id="@+id/main_rp_get"
+            android:id="@+id/main_rp_give_up"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_gravity="bottom|center_horizontal"
             android:layout_marginStart="80dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="80dp"
-            android:background="@drawable/main_rp_dlg_get"
             android:gravity="center"
-            android:text="收下啦"
-            android:textColor="#D82D2A"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:text="放弃额外奖励"
+            android:textColor="#D6D6D6"
+            android:textSize="13sp" />
     </LinearLayout>
 
 </layout>

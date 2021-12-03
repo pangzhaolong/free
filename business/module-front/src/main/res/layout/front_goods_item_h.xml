@@ -13,14 +13,35 @@
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true">
 
-        <org.raphets.roundimageview.RoundImageView
-            android:id="@+id/front_goods_item_iv"
+        <FrameLayout
+            android:id="@+id/front_goods_item_edge_fl"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:padding="4dp"
-            android:scaleType="fitXY"
-            app:corner_radius="10dp"
-            app:type="round" />
+            android:layout_gravity="center"
+            android:background="@drawable/front_goods_item_iv_edge_1"
+            android:padding="6dp">
+
+            <org.raphets.roundimageview.RoundImageView
+                android:id="@+id/front_goods_item_iv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="matrix"
+                app:corner_radius="10dp"
+                app:type="round" />
+
+            <TextView
+                android:id="@+id/front_goods_item_tip_tv"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="-4dp"
+                android:background="@drawable/front_goods_item_iv_tip_1"
+                android:gravity="center"
+                android:padding="2dp"
+                android:text="爆款推荐"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp" />
+        </FrameLayout>
 
         <ImageView
             android:id="@+id/front_goods_item_label_iv"

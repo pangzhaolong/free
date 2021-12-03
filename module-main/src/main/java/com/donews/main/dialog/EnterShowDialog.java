@@ -290,26 +290,30 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
         }
     }
 
+    private boolean mIsSelf = false;
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void loginStatusEvent(LoginLodingStartStatus event) {
         if (!event.getTag().equalsIgnoreCase(LOGIN_TAG)) {
             return;
         }
+        mIsSelf = true;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void loginUserStatus(LoginUserStatus userStatus) {
         if (userStatus.getStatus() == 1) {
-            if (mGoods == null) {
+            if (!mIsSelf || mGoods == null) {
                 return;
             }
+
             try {
                 ARouter.getInstance()
                         .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                         .withString("goods_id", mGoods.getGoodsId())
                         .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
                         .navigation();
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
             dismiss();
         }

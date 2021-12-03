@@ -6,6 +6,8 @@ import com.donews.base.model.BaseLiveDataModel;
 import com.donews.main.BuildConfig;
 import com.donews.main.entitys.resps.HistoryPeopleLottery;
 import com.donews.main.entitys.resps.RewardHistoryBean;
+import com.donews.middle.bean.RestIdBean;
+import com.donews.middle.bean.front.DoubleRedPacketBean;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
@@ -82,6 +84,28 @@ public class MainModel extends BaseLiveDataModel {
                 });
         addDisposable(disop);
         return disop;
+    }
+
+    public MutableLiveData<DoubleRedPacketBean> postDoubleRp(String restId) {
+        MutableLiveData<DoubleRedPacketBean> mutableLiveData = new MutableLiveData<>();
+        addDisposable(EasyHttp.post(BuildConfig.API_WALLET_URL + "v1/double-red-packet")
+                .upObject(new RestIdBean(restId))
+                .cacheMode(CacheMode.NO_CACHE)
+                .isShowToast(false)
+                .execute(new SimpleCallBack<DoubleRedPacketBean>() {
+
+                    @Override
+                    public void onError(ApiException e) {
+                        mutableLiveData.postValue(null);
+                    }
+
+                    @Override
+                    public void onSuccess(DoubleRedPacketBean bean) {
+                        mutableLiveData.postValue(bean);
+                    }
+                }));
+
+        return mutableLiveData;
     }
 
 }

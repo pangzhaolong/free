@@ -16,11 +16,14 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.dn.events.events.DoubleRpEvent;
 import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.RedPackageStatus;
+import com.dn.events.events.WalletRefreshEvent;
 import com.donews.base.base.AppManager;
 import com.donews.base.base.AppStatusConstant;
 import com.donews.base.base.AppStatusManager;
+import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.business.loader.AdManager;
 import com.donews.common.ad.cache.AdVideoCacheUtils;
 import com.donews.common.adapter.ScreenAutoAdapter;
@@ -30,7 +33,6 @@ import com.donews.common.router.RouterFragmentPath;
 import com.donews.common.updatedialog.UpdateManager;
 import com.donews.common.updatedialog.UpdateReceiver;
 import com.donews.main.BuildConfig;
-import com.donews.main.MainViewModel;
 import com.donews.main.R;
 import com.donews.main.adapter.MainPageAdapter;
 import com.donews.main.common.CommonParams;
@@ -40,6 +42,7 @@ import com.donews.main.dialog.DrawDialog;
 import com.donews.main.dialog.EnterShowDialog;
 import com.donews.main.dialog.FreePanicBuyingDialog;
 import com.donews.main.utils.ExitInterceptUtils;
+import com.donews.main.viewModel.MainViewModel;
 import com.donews.main.views.CornerMarkUtils;
 import com.donews.main.views.MainBottomTanItem;
 import com.donews.middle.abswitch.ABSwitch;
@@ -156,7 +159,6 @@ public class MainActivity
             AnalysisUtils.onEventEx(this, "TEST_ABCDEF", para);
         }
     }
-
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -490,7 +492,7 @@ public class MainActivity
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-            @NonNull int[] grantResults) {
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults,
                 ExitInterceptUtils.INSTANCE.getRemindDialog());
@@ -501,5 +503,31 @@ public class MainActivity
         if (redPackageStatus.getStatus() == 0) {
             mDataBinding.mainFloatingBtn.setProgress(redPackageStatus.getCounts());
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onDoubleRpEvent(DoubleRpEvent event) {
+        if (event.getEvent() == 1) {
+            //双倍领取红包ok
+            postGotDoubleRp(event.getRestId());
+        }
+    }
+
+    private void postGotDoubleRp(String restId) {
+        mViewModel.postDoubleRp(restId).observe(this, doubleRedPacketBean -> {
+            if (doubleRedPacketBean == null) {
+                ToastUtil.showShort(MainActivity.this, "获取双倍奖励失败");
+                return;
+            }
+
+            AnAdditionalDialog mDrawDialog = new AnAdditionalDialog(String.valueOf(doubleRedPacketBean.getScore()));
+            mDrawDialog.setEventListener(() -> {
+                if (mDrawDialog.isAdded()) {
+                    mDrawDialog.dismiss();
+                }
+            });
+            mDrawDialog.show(getSupportFragmentManager(), "AnAddDialog");
+            EventBus.getDefault().post(new WalletRefreshEvent(0));
+        });
     }
 }

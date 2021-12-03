@@ -240,12 +240,12 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 AnalysisUtils.onEventEx(LotteryActivity.this, Dot.Btn_Buy);
                 if (mCommodityBean != null && mCommodityBean.getItemLink() != null) {
                     if (mCommodityBean.getItemLink().equals("")) {
-                        ToastUtil.showShort(getApplicationContext(), "暂不支持购买");
+                        ToastUtil.showShort(getApplicationContext(), "该商品暂不支持购买");
                     } else {
                         detailProvider.goToTaoBao(LotteryActivity.this, mCommodityBean.getItemLink());
                     }
                 } else {
-                    ToastUtil.showShort(getApplicationContext(), "暂不支持购买");
+                    ToastUtil.showShort(getApplicationContext(), "该商品暂不支持购买");
                 }
 
             }
@@ -545,7 +545,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             refresh = false;
             youMayAlsoLike(mPageNumber, false);
         });
-
     }
 
     @Override
@@ -638,8 +637,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 guessAdapter.setScrollListData(winLotteryBean);
             }
         });
-
-
     }
 
 

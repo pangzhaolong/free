@@ -18,19 +18,58 @@ public class LotteryGoodsBean extends BaseCustomViewModel {
         this.list = list;
     }
 
-    public static class GoodsInfo  extends BaseCustomViewModel{
+    public static class GoodsInfo extends BaseCustomViewModel {
+        //商品来源
         @SerializedName("id")
         private String id;
+        //三方平台商品id
         @SerializedName("goods_id")
         private String goodsId;
+        //商品标题
         @SerializedName("title")
         private String title;
+        //商品主图
         @SerializedName("main_pic")
         private String mainPic;
+        //商品原价
         @SerializedName("original_price")
         private float originalPrice;
+        //参与状态 0未参与抽奖 1已参与，可继续抽 2抽奖码已满
         @SerializedName("lottery_status")
         private int lotteryStatus;
+        //是否置顶
+        @SerializedName("top")
+        private boolean top;
+        //中奖用户数
+        @SerializedName("lucky_people")
+        private int lucky_people;
+        //标签 1 爆款推荐 2 今日热门 3 中奖最多
+        @SerializedName("tag")
+        private int tag;
+
+        public int getTag() {
+            return tag;
+        }
+
+        public void setTag(int tag) {
+            this.tag = tag;
+        }
+
+        public boolean isTop() {
+            return top;
+        }
+
+        public void setTop(boolean top) {
+            this.top = top;
+        }
+
+        public int getLucky_people() {
+            return lucky_people;
+        }
+
+        public void setLucky_people(int lucky_people) {
+            this.lucky_people = lucky_people;
+        }
 
         public String getId() {
             return id;
@@ -79,5 +118,22 @@ public class LotteryGoodsBean extends BaseCustomViewModel {
         public void setLotteryStatus(int lotteryStatus) {
             this.lotteryStatus = lotteryStatus;
         }
+
+
+        @Override
+        public String toString() {
+            return "GoodsInfo{" +
+                    "id='" + id + '\'' +
+                    ", goodsId='" + goodsId + '\'' +
+                    ", title='" + title + '\'' +
+                    ", mainPic='" + mainPic + '\'' +
+                    ", originalPrice=" + originalPrice +
+                    ", lotteryStatus=" + lotteryStatus +
+                    ", top=" + top +
+                    ", lucky_people=" + lucky_people +
+                    ", tag=" + tag +
+                    '}';
+        }
+
     }
 }
