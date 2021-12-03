@@ -39,7 +39,6 @@ import com.donews.utilslibrary.analysis.AnalysisHelp;
 import com.donews.utilslibrary.base.SmSdkConfig;
 import com.donews.utilslibrary.base.UtilsConfig;
 import com.donews.utilslibrary.utils.KeySharePreferences;
-import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.NetworkUtils;
 import com.donews.utilslibrary.utils.SPUtils;
 import com.orhanobut.logger.Logger;
@@ -49,8 +48,6 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import cn.jpush.android.api.JPushInterface;
 
 /**
  * 应用模块: 主业务模块
@@ -104,6 +101,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
 
     @Override
     public void initView() {
+        AppStatusManager.getInstance().setAppStatus(AppStatusConstant.STATUS_FORCE_KILLED);
         mIsBackgroundToFore = getIntent().getBooleanExtra(toForeGroundKey, false);
         EventBus.getDefault().register(this);
         if (mIsBackgroundToFore) {
@@ -169,7 +167,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         JPushHelper.setDebugMode(BuildConfig.DEBUG);
         JPushHelper.init(getApplication());
 
-//        LogUtil.e("xxxxxxxxx" + JPushInterface.getRegistrationID(this));
+//        Log.e("xxxx", "xxxxxxxxx" + JPushInterface.getRegistrationID(this));
     }
 
     private void showPersonGuideDialog() {
@@ -373,12 +371,11 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
 
     private void goToMain() {
         stopProgressAnim();
-//        LogUtil.e("xxx" + mIsBackgroundToFore);
+//        Log.e("xxxx", "xxx" + mIsBackgroundToFore);
         if (!mIsBackgroundToFore) {
-//            LogUtil.e("xxx111111111111");
+//            Log.e("xxxx", "xxx111111111111");
             if (AppStatusManager.getInstance().getAppStatus() != AppStatusConstant.STATUS_NORMAL) {
-
-//                LogUtil.e("xxx222222222222222");
+//                Log.e("xxxx", "xxx222222222222222");
                 LotteryAdCount.INSTANCE.init();
                 GuideActivity.start(this);
             }
