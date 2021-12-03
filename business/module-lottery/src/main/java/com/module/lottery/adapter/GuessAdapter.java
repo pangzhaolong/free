@@ -106,22 +106,6 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 //参考价格
                 listHolder.mGuesslikeHeadBinding.referPrice.setText("参考价: " + mCommodityBean.getOriginalPrice() + "");
                 listHolder.mGuesslikeHeadBinding.referPrice.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG); //中划线
-//                SpannableString msp =new SpannableString(" "+mCommodityBean.getTitle());
-//                Drawable rightDrawable =mContext.getResources().getDrawable(R.mipmap.free_panic_buying);
-//
-//
-//                rightDrawable.setBounds(0,0,
-//                        mContext.getResources().getDimensionPixelOffset(R.dimen.lottery_constant_144), mContext.getResources().getDimensionPixelOffset(R.dimen.lottery_constant_52));
-//
-//                msp.setSpan(new ImageSpan(rightDrawable),0,1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-//                listHolder.mGuesslikeHeadBinding.title.setText(msp);
-//                 int w= mContext.getResources().getDimensionPixelOffset(R.dimen.lottery_constant_144);
-//
-//                int h= mContext.getResources().getDimensionPixelOffset(R.dimen.lottery_constant_52);
-
-
-
-
                 int w = mContext.getResources().getDimensionPixelOffset(R.dimen.lottery_constant_144);
                 int h = mContext.getResources().getDimensionPixelOffset(R.dimen.lottery_constant_52);
 

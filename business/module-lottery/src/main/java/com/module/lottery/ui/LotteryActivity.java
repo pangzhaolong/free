@@ -17,7 +17,6 @@ import android.view.animation.CycleInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -64,9 +63,6 @@ import com.module_lottery.R;
 import com.module_lottery.databinding.GuesslikeHeadLayoutBinding;
 import com.module_lottery.databinding.LotteryMainLayoutBinding;
 import com.orhanobut.logger.Logger;
-import com.scwang.smart.refresh.layout.api.RefreshLayout;
-import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
-import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -219,7 +215,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             mRotateAnimation.setInterpolator(new CycleInterpolator(2));
             mRotateAnimation.setRepeatMode(Animation.REVERSE);
             mRotateAnimation.setRepeatCount(Animation.INFINITE);
-            mRotateAnimation.setStartOffset(3000);
+            mRotateAnimation.setStartOffset(2500);
             mRotateAnimation.setRepeatMode(Animation.REVERSE);
             mRotateAnimation.setDuration(400);
         }

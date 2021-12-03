@@ -542,7 +542,7 @@
                     android:paddingEnd="10dp"
                     android:paddingBottom="5dp"
                     android:text="待领取"
-                    android:textColor="#A9AEB1"
+                    android:textColor="#D17500"
                     android:textSize="13dp" />
 
                 <TextView
@@ -559,7 +559,7 @@
                     android:paddingEnd="10dp"
                     android:paddingBottom="5dp"
                     android:text="待领取"
-                    android:textColor="#A9AEB1"
+                    android:textColor="#D17500"
                     android:textSize="13dp" />
 
                 <TextView
@@ -576,7 +576,7 @@
                     android:paddingEnd="10dp"
                     android:paddingBottom="5dp"
                     android:text="待领取"
-                    android:textColor="#A9AEB1"
+                    android:textColor="#D17500"
                     android:textSize="13dp" />
             </LinearLayout>
 
@@ -601,7 +601,7 @@
                     android:paddingEnd="10dp"
                     android:paddingBottom="5dp"
                     android:text="待领取"
-                    android:textColor="#A9AEB1"
+                    android:textColor="#D17500"
                     android:textSize="13dp" />
 
                 <TextView
@@ -618,7 +618,7 @@
                     android:paddingEnd="10dp"
                     android:paddingBottom="5dp"
                     android:text="待领取"
-                    android:textColor="#A9AEB1"
+                    android:textColor="#D17500"
                     android:textSize="13dp" />
 
                 <TextView
@@ -635,7 +635,7 @@
                     android:paddingEnd="10dp"
                     android:paddingBottom="5dp"
                     android:text="最大概率"
-                    android:textColor="#A9AEB1"
+                    android:textColor="#D17500"
                     android:textSize="13dp" />
             </LinearLayout>
 
@@ -645,6 +645,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:background="#F9F9F9"
             android:orientation="horizontal"
             android:paddingTop="20dp"
             android:paddingBottom="14dp">
