@@ -61,6 +61,10 @@ public class ABSwitch {
         return mAbBean.isOpenAutoLotteryAfterLoginWx();
     }
 
+    public boolean isOpenGuidGif() {
+        return mAbBean.isOpenGuidGif();
+    }
+
     public void initAbSwitch() {
         EasyHttp.get(HttpConfigUtilsKt.withConfigParams(BuildConfig.BASE_CONFIG_URL + "plus-abswitch" + BuildConfig.BASE_RULE_URL, true))
                 .cacheMode(CacheMode.NO_CACHE)
