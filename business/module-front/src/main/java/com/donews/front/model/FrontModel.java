@@ -4,12 +4,13 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.model.BaseLiveDataModel;
 import com.donews.front.api.FrontApi;
+import com.donews.middle.bean.RestIdBean;
 import com.donews.middle.bean.WalletBean;
 import com.donews.middle.bean.front.AwardBean;
+import com.donews.middle.bean.front.DoubleRedPacketBean;
 import com.donews.middle.bean.front.LotteryCategoryBean;
 import com.donews.middle.bean.front.LotteryDetailBean;
 import com.donews.middle.bean.front.LotteryOpenRecord;
-import com.donews.middle.bean.front.RedPacketBean;
 import com.donews.middle.bean.home.ServerTimeBean;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
@@ -77,12 +78,13 @@ public class FrontModel extends BaseLiveDataModel {
         return mutableLiveData;
     }
 
-    public MutableLiveData<RedPacketBean> openRpData() {
-        MutableLiveData<RedPacketBean> mutableLiveData = new MutableLiveData<>();
-        addDisposable(EasyHttp.post(FrontApi.walletRedPacketUrl)
+    public MutableLiveData<DoubleRedPacketBean> openRpData(String restId) {
+        MutableLiveData<DoubleRedPacketBean> mutableLiveData = new MutableLiveData<>();
+        addDisposable(EasyHttp.post(FrontApi.walletOpenRedPacketUrl_New)
+                .upObject(new RestIdBean(restId))
                 .cacheMode(CacheMode.NO_CACHE)
                 .isShowToast(false)
-                .execute(new SimpleCallBack<RedPacketBean>() {
+                .execute(new SimpleCallBack<DoubleRedPacketBean>() {
 
                     @Override
                     public void onError(ApiException e) {
@@ -90,8 +92,8 @@ public class FrontModel extends BaseLiveDataModel {
                     }
 
                     @Override
-                    public void onSuccess(RedPacketBean redPacketBean) {
-                        mutableLiveData.postValue(redPacketBean);
+                    public void onSuccess(DoubleRedPacketBean bean) {
+                        mutableLiveData.postValue(bean);
                     }
                 }));
 

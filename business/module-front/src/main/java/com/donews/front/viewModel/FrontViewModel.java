@@ -6,6 +6,7 @@ import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.front.model.FrontModel;
 import com.donews.middle.bean.WalletBean;
 import com.donews.middle.bean.front.AwardBean;
+import com.donews.middle.bean.front.DoubleRedPacketBean;
 import com.donews.middle.bean.front.LotteryCategoryBean;
 import com.donews.middle.bean.front.LotteryDetailBean;
 import com.donews.middle.bean.front.LotteryOpenRecord;
@@ -28,8 +29,8 @@ public class FrontViewModel extends BaseLiveDataViewModel<FrontModel> {
         return mModel.getRpData();
     }
 
-    public MutableLiveData<RedPacketBean> openRpData() {
-        return mModel.openRpData();
+    public MutableLiveData<DoubleRedPacketBean> openRpData(String restId) {
+        return mModel.openRpData(restId);
     }
 
     public MutableLiveData<AwardBean> getAwardList() {

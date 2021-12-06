@@ -1,23 +1,16 @@
 package com.donews.main.dialog
 
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import com.donews.base.fragmentdialog.AbstractFragmentDialog
-import com.donews.main.BuildConfig
 import com.donews.main.R
-import com.donews.main.bean.RecentLotteryInfoBean
 import com.donews.main.databinding.AnAdditionalDialogLayoutBinding
-import com.donews.main.databinding.DrawDialogLayoutBinding
-import com.donews.network.EasyHttp
-import com.donews.network.cache.model.CacheMode
-import com.donews.network.callback.SimpleCallBack
-import com.donews.network.exception.ApiException
-import com.donews.utilslibrary.utils.DateManager
-import com.orhanobut.logger.Logger
+import com.donews.utilslibrary.utils.SoundHelp
 import com.vmadalin.easypermissions.EasyPermissions
 import java.util.*
 
@@ -30,10 +23,10 @@ import java.util.*
  * @date 2021/12/3
  */
 class AnAdditionalDialog(
-    /** 金额 */
-    val number: String
+        /** 金额 */
+        val number: String
 ) : AbstractFragmentDialog<AnAdditionalDialogLayoutBinding>(),
-    EasyPermissions.PermissionCallbacks {
+        EasyPermissions.PermissionCallbacks {
     lateinit var eventListener: EventListener
     private val handler = Handler(Looper.getMainLooper())
 
@@ -47,6 +40,8 @@ class AnAdditionalDialog(
     }
 
     override fun initView() {
+        SoundHelp.newInstance().init(context)
+        SoundHelp.newInstance().onStart()
         dataBinding.tvNum.text = number
         setOnDismissListener {
             if (eventListener != null) {
@@ -54,6 +49,7 @@ class AnAdditionalDialog(
             }
         }
         dataBinding.butSx.setOnClickListener {
+            SoundHelp.newInstance().onRelease()
             dismiss()
         }
         handler.postDelayed({
@@ -63,8 +59,8 @@ class AnAdditionalDialog(
                 handler.postDelayed({
                     if (activity != null) {
                         val anim = AnimationUtils.loadAnimation(
-                            activity,
-                            R.anim.anim_yh_in
+                                activity,
+                                R.anim.anim_yh_in
                         )
                         anim.setAnimationListener(object : Animation.AnimationListener {
                             override fun onAnimationStart(animation: Animation?) {
@@ -87,6 +83,10 @@ class AnAdditionalDialog(
         }, 150)
     }
 
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        SoundHelp.newInstance().onRelease()
+    }
 
     override fun isUseDataBinding(): Boolean {
         return true

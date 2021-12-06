@@ -1,17 +1,13 @@
 package com.donews.main.dialog
 
 import android.content.Context
-import android.content.DialogInterface
 import android.graphics.Paint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import com.alibaba.android.arouter.launcher.ARouter
 import com.donews.base.fragmentdialog.AbstractFragmentDialog
-import com.donews.base.model.BaseLiveDataModel
-import com.donews.base.viewmodel.BaseLiveDataViewModel
 import com.donews.common.router.RouterFragmentPath
 import com.donews.main.R
 import com.donews.main.databinding.MainExitDialogNotLotteryBinding
@@ -25,8 +21,6 @@ import com.donews.network.callback.SimpleCallBack
 import com.donews.network.exception.ApiException
 import com.donews.utilslibrary.analysis.AnalysisUtils
 import com.donews.utilslibrary.dot.Dot
-import com.orhanobut.logger.Logger
-import io.reactivex.disposables.CompositeDisposable
 import kotlin.random.Random
 
 /**
@@ -42,7 +36,7 @@ class NotLotteryDialog : AbstractFragmentDialog<MainExitDialogNotLotteryBinding>
 
         const val LIMIT_DATA = "1"
 
-        const val TEN_THOUSAND = 10000
+        const val TEN_THOUSAND = 10000F
 
         const val PARAMS_CONFIG = "config"
 
@@ -106,34 +100,37 @@ class NotLotteryDialog : AbstractFragmentDialog<MainExitDialogNotLotteryBinding>
 
     private fun requestGoodsInfo() {
         val disposable = EasyHttp.get(ExitInterceptUtils.getRecommendGoodsUrl())
-            .cacheMode(CacheMode.NO_CACHE)
-            .params("limit", LIMIT_DATA)
-            .execute(object : SimpleCallBack<ExitDialogRecommendGoodsResp>() {
-                override fun onError(e: ApiException?) {
+                .cacheMode(CacheMode.NO_CACHE)
+                .params("limit", LIMIT_DATA)
+                .execute(object : SimpleCallBack<ExitDialogRecommendGoodsResp>() {
+                    override fun onError(e: ApiException?) {
 
-                }
+                    }
 
-                override fun onSuccess(t: ExitDialogRecommendGoodsResp?) {
-                    t?.list?.get(0)?.let {
-                        if (dataBinding != null) {
+                    override fun onSuccess(t: ExitDialogRecommendGoodsResp?) {
+                        t?.list?.get(0)?.let {
+                            if (dataBinding != null) {
 
-                            randomProbability()
+                                randomProbability()
 
-                            dataBinding.goodsBean = it
+                                dataBinding.goodsBean = it
 
-                            val peopleNumberString = if (it.totalPeople > TEN_THOUSAND) {
-                                (it.totalPeople / TEN_THOUSAND).toString().substring(0, 3)
+                                try {
+                                    val peopleNumberString = if (it.totalPeople > TEN_THOUSAND) {
+                                        (it.totalPeople / TEN_THOUSAND).toString().substring(0, 3)
+                                    } else {
+                                        it.totalPeople.toString()
+                                    }
+                                    dataBinding.totalPeople = peopleNumberString
+                                } catch (e: Exception) {
+                                    dataBinding.totalPeople = "5039"
+                                }
 
-                            } else {
-                                it.totalPeople.toString()
+                                goodsInfo = it
                             }
-                            dataBinding.totalPeople = peopleNumberString
-
-                            goodsInfo = it
                         }
                     }
-                }
-            })
+                })
         addDisposable(disposable)
     }
 
@@ -151,9 +148,9 @@ class NotLotteryDialog : AbstractFragmentDialog<MainExitDialogNotLotteryBinding>
             AnalysisUtils.onEventEx(context, Dot.Btn_BuyNow)
             goodsInfo?.run {
                 ARouter.getInstance()
-                    .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
-                    .withString("goods_id", goodsId)
-                    .navigation();
+                        .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
+                        .withString("goods_id", goodsId)
+                        .navigation();
             }
         }
 

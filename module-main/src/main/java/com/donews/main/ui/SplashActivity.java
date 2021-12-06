@@ -101,6 +101,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
 
     @Override
     public void initView() {
+        AppStatusManager.getInstance().setAppStatus(AppStatusConstant.STATUS_FORCE_KILLED);
         mIsBackgroundToFore = getIntent().getBooleanExtra(toForeGroundKey, false);
         EventBus.getDefault().register(this);
         if (mIsBackgroundToFore) {
@@ -157,10 +158,22 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         }
     }
 
+    private void initPushAndDnDi() {
+        AnalysisHelp.setAnalysisInitUmeng(getApplication());
+        if (!AnalysisHelp.analysisRegister) {
+            AnalysisHelp.register(getApplication());
+        }
+        //极光推送
+        JPushHelper.setDebugMode(BuildConfig.DEBUG);
+        JPushHelper.init(getApplication());
+
+//        Log.e("xxxx", "xxxxxxxxx" + JPushInterface.getRegistrationID(this));
+    }
 
     private void showPersonGuideDialog() {
         //如果协议已经同意，不需要弹起弹框
         if (SPUtils.getInformain(KeySharePreferences.DEAL, false)) {
+            initPushAndDnDi();
             return;
         }
         if (personGuideDialog != null && personGuideDialog.isAdded() && personGuideDialog.isVisible()) {
@@ -172,14 +185,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
                 SplashUtils.INSTANCE.savePersonExit(true);
                 SPUtils.setInformain(KeySharePreferences.DEAL, true);
                 SPUtils.setInformain(KeySharePreferences.AGREEMENT, true);
-                AnalysisHelp.setAnalysisInitUmeng(getApplication());
-
-                if (!AnalysisHelp.analysisRegister) {
-                    AnalysisHelp.register(getApplication());
-                }
-                //极光推送
-                JPushHelper.setDebugMode(BuildConfig.DEBUG);
-                JPushHelper.init(getApplication());
+                initPushAndDnDi();
                 checkAndRequestPermission();
             }).setCancelListener(new AbstractFragmentDialog.CancelListener() {
                 @Override
@@ -365,8 +371,11 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
 
     private void goToMain() {
         stopProgressAnim();
+//        Log.e("xxxx", "xxx" + mIsBackgroundToFore);
         if (!mIsBackgroundToFore) {
+//            Log.e("xxxx", "xxx111111111111");
             if (AppStatusManager.getInstance().getAppStatus() != AppStatusConstant.STATUS_NORMAL) {
+//                Log.e("xxxx", "xxx222222222222222");
                 LotteryAdCount.INSTANCE.init();
                 GuideActivity.start(this);
             }

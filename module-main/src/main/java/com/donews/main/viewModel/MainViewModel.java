@@ -1,4 +1,4 @@
-package com.donews.main;
+package com.donews.main.viewModel;
 
 import static com.donews.utilslibrary.utils.KeySharePreferences.MAIN_MASK_FLG;
 
@@ -10,6 +10,7 @@ import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.main.entitys.resps.HistoryPeopleLottery;
 import com.donews.main.entitys.resps.RewardHistoryBean;
 import com.donews.main.model.MainModel;
+import com.donews.middle.bean.front.DoubleRedPacketBean;
 import com.donews.utilslibrary.utils.SPUtils;
 
 import java.util.List;
@@ -111,5 +112,9 @@ public class MainViewModel extends BaseLiveDataViewModel<MainModel> {
     @Override
     public MainModel createModel() {
         return new MainModel();
+    }
+
+    public MutableLiveData<DoubleRedPacketBean> postDoubleRp(String restId) {
+        return mModel.postDoubleRp(restId);
     }
 }
