@@ -23,12 +23,14 @@ import java.util.*
  * @date 2021/12/3
  */
 class AnAdditionalDialog(
-        /** 金额 */
-        val number: String
+    /** 金额 */
+    var number: String = "1.8",
+    var count: Int = 4 //倒计时三秒
 ) : AbstractFragmentDialog<AnAdditionalDialogLayoutBinding>(),
         EasyPermissions.PermissionCallbacks {
     lateinit var eventListener: EventListener
     private val handler = Handler(Looper.getMainLooper())
+    private var timeTask: Runnable? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -40,10 +42,24 @@ class AnAdditionalDialog(
     }
 
     override fun initView() {
+        timeTask = Runnable {
+            count--
+            dataBinding.tvTimeSp.text = "($count)"
+            if (count > 0) {
+                handler.postDelayed(timeTask!!, 1000)
+            } else {
+                dismiss()
+            }
+        }
+        handler.post(timeTask!!)
         SoundHelp.newInstance().init(context)
         SoundHelp.newInstance().onStart()
         dataBinding.tvNum.text = number
         setOnDismissListener {
+            handler.removeCallbacksAndMessages(null)
+            timeTask?.apply {
+                handler.removeCallbacks(this)
+            }
             if (eventListener != null) {
                 eventListener.dismiss()
             }
