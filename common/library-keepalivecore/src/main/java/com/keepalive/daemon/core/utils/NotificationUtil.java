@@ -15,7 +15,7 @@ import android.widget.RemoteViews;
 import androidx.core.app.NotificationCompat;
 
 import com.donews.keepalive.Dazzle;
-import com.keepalive.daemon.core.BuildConfig;
+import com.keepalive.daemon.core.Constants;
 import com.keepalive.daemon.core.R;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
@@ -90,6 +90,22 @@ public class NotificationUtil {
      * 唯一前台通知ID
      */
     public static final int NOTIFICATION_ID = Dazzle.NOTIFICATION_KEEPALIVE;
+
+    public static Notification createDefaultNotification(Context context){
+        return NotificationUtil.createNotification(
+                context,
+                R.drawable.ic_launcher_round,
+                R.drawable.ic_launcher_round,
+                "",
+                "",
+                true,
+                NotificationCompat.PRIORITY_DEFAULT,
+                NotificationManager.IMPORTANCE_DEFAULT,
+                Constants.NOTI_TICKER_TEXT,
+                null,
+                null
+        );
+    }
 
     public static Notification createNotification(Context context,
                                                   int smallIconId,

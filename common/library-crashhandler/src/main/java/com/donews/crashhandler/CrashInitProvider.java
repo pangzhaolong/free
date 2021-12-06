@@ -11,7 +11,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.donews.common.AppGlobalConfigManager;
+import com.donews.common.NotifyLuncherConfigManager;
 import com.donews.crashhandler.core.CrashCoreHandler;
 
 /**
@@ -36,7 +36,7 @@ public class CrashInitProvider extends ContentProvider {
     public void attachInfo(Context context, ProviderInfo info) {
         super.attachInfo(context, info);
         try {
-            AppGlobalConfigManager.getInstance().addAppConfigDataUpdateListener(new AppGlobalConfigManager.AppGlobalConfigDataUpdateListener() {
+            NotifyLuncherConfigManager.getInstance().addAppConfigDataUpdateListener(new NotifyLuncherConfigManager.AppGlobalConfigDataUpdateListener() {
                 @Override
                 public void dataUpdate(boolean isRefresh) {
                     Log.d(TAG,"CrashInitProvider dataUpdate ......");
@@ -49,11 +49,9 @@ public class CrashInitProvider extends ContentProvider {
         Log.i(TAG,"CrashInitProvider attachInfo ...");
     }
 
-
-
     private void installCrash(boolean isRefresh){
-        boolean lifecycleHandler = AppGlobalConfigManager.getInstance().getAppGlobalConfigBean().crashLifecycleHandler;
-        boolean openCrashHandler = AppGlobalConfigManager.getInstance().getAppGlobalConfigBean().crashIsOpen;
+        boolean lifecycleHandler = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().crashLifecycleHandler;
+        boolean openCrashHandler = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().crashIsOpen;
         if(openCrashHandler){
             //如果未安装
             if(!CrashCoreHandler.installed()){

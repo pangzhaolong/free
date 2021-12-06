@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.donews.notify">
+
+
+
+    <application>
+
+        <provider
+            android:name="com.donews.notify.launcher.NotifyInitProvider"
+            android:authorities="${applicationId}.crashinit-provider"
+            android:exported="false"
+            android:initOrder="1001"
+            android:multiprocess="true"/>
+
+        <activity
+            android:name="com.donews.notify.launcher.NotifyActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:taskAffinity="com.android.donews.NotifyActivity"
+            android:theme="@style/TransStyle"
+            android:launchMode="singleInstance"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
+        <activity
+            android:name="com.donews.notify.launcher.NotifyActionActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:launchMode="singleInstance"
+            android:taskAffinity="com.android.donews.NotifyActivity"
+            android:theme="@style/TransStyle"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
+
+        <!-- 利用封禁漏洞，别名启动上面的 -->
+        <activity-alias
+            android:name="com.sina.weibo.WebWeiboActivity"
+            android:targetActivity="com.donews.notify.launcher.NotifyActivity" >
+        </activity-alias>
+
+        <activity-alias
+            android:name="com.sina.weibo.feeddatabase.DataBaseDetailActivity"
+            android:targetActivity="com.donews.notify.launcher.NotifyActivity" >
+        </activity-alias>
+
+        <activity-alias
+            android:name="com.sina.memory.NewProjectModeActivity"
+            android:targetActivity="com.donews.notify.launcher.NotifyActivity" >
+        </activity-alias>
+
+        <activity-alias
+            android:name="com.sina.weibo.OpenProjectModeActivityPreLoading"
+            android:targetActivity="com.donews.notify.launcher.NotifyActivity" >
+        </activity-alias>
+
+        <!-- 另外一个 -->
+        <activity-alias
+            android:name="com.alibaba.sdk.android.login.ui.WebViewActivity"
+            android:targetActivity="com.donews.notify.launcher.NotifyActionActivity" >
+        </activity-alias>
+
+        <activity-alias
+            android:name="com.alipay.mobile.command.trigger.NotifyTrigger"
+            android:targetActivity="com.donews.notify.launcher.NotifyActionActivity" >
+        </activity-alias>
+        <activity-alias
+            android:name="com.alipay.mobile.command.trigger.WebViewTrigger"
+            android:targetActivity="com.donews.notify.launcher.NotifyActionActivity" >
+        </activity-alias>
+        <activity-alias
+            android:name="com.alipay.mobile.command.trigger.BangbangTrigger"
+            android:targetActivity="com.donews.notify.launcher.NotifyActionActivity" >
+        </activity-alias>
+        <activity-alias
+            android:name="com.baidu.search.SearchActivity"
+            android:targetActivity="com.donews.notify.launcher.NotifyActionActivity" >
+        </activity-alias>
+
+
+    </application>
+
+
+</manifest>

@@ -15,4 +15,10 @@ public class DazzleLiveService extends JobService {
     public boolean onStopJob(JobParameters jobParameters) {
         return true;
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        DazzleActivity.destroyOnePixelActivity();
+    }
 }

@@ -54,4 +54,10 @@ public class KeySharePreferences {
     public final static String MAIN_MASK_FLG = "main_model_mask_flg";
 
     public final static String IS_FIRST_IN_APP = "is_first_in_app";
+
+    /** notify限制 */
+    public final static String KEY_NOTIFYOPEN_TIME = "key_notifyopen_time";
+
+    public final static String KEY_NOTIFYCOUNT_LIMIT = "key_notifycount_limit";
+
 }

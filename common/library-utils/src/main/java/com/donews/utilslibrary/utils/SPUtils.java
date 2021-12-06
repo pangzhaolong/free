@@ -16,7 +16,7 @@ public class SPUtils {
     private static MMKV mmkv;
     private static boolean hasInit = false;
 
-    private static void init(Context context) {
+    public static void init(Context context) {
         if (!hasInit) {
             MMKV.initialize(context);
             hasInit = true;

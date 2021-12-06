@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.SystemClock;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DazzleService extends Service {
+    public static final String TAG = "keepalive-global";
+
     private static final long DELAY = DazzleReal.debug ? 3 * 1000L : 30 * 60 * 1000L;
 
     private final ServiceHandler handler = new ServiceHandler(this);
@@ -80,6 +83,7 @@ public class DazzleService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.d(TAG,"DazzleService onCreate...");
         CommonNotification.startForeground(this);
     }
 
@@ -98,6 +102,8 @@ public class DazzleService extends Service {
 
     @Override
     public void onDestroy() {
+        super.onDestroy();
+        DazzleReal.unregReceiver(this);
         DazzleReal.callback.onStop();
         handler.removeCallbacksAndMessages(null);
     }

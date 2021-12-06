@@ -199,8 +199,6 @@ public class LaunchStart {
         };
 
 
-
-
         ActionStart end = new ActionStart(handler) {
             @Override
             public void doRun(Context context, Intent intent) {
@@ -247,6 +245,10 @@ public class LaunchStart {
     public void doStart(Context context, Intent intent) {
         start.reset();
         start.run(context, intent);
+    }
+
+    public ActionStart getActionStart(){
+        return start;
     }
 
     public void cancel() {

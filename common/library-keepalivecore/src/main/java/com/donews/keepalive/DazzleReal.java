@@ -77,7 +77,6 @@ public class DazzleReal {
     }
 
     private static void startKeep(Application application) {
-
         //启动服务
         startService(application);
     }
@@ -104,7 +103,7 @@ public class DazzleReal {
         }
     }
 
-    static void regReceiver(Context context) {
+    public static void regReceiver(Context context) {
 
         try {
             IntentFilter intentFilter = new IntentFilter();
@@ -126,9 +125,20 @@ public class DazzleReal {
             context.registerReceiver(mSystemNotifyReceiver, filter);
         } catch (Throwable t) {
         }
-
     }
 
+    public static void unregReceiver(Context context) {
+        try{
+            context.unregisterReceiver(sScreenStateReceiver);
+        }catch (Throwable t){
+        	t.printStackTrace();
+        }
+        try{
+            context.unregisterReceiver(mSystemNotifyReceiver);
+        }catch (Throwable t){
+        	t.printStackTrace();
+        }
+    }
 
     private static boolean isMainProcess(Application app) {
         int pid = android.os.Process.myPid();

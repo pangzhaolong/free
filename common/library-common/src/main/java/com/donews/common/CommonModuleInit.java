@@ -1,13 +1,9 @@
 package com.donews.common;
 
 
-import android.content.Intent;
-import android.content.IntentFilter;
-
 import com.donews.base.base.BaseApplication;
 import com.donews.common.appconfig.AppCommonConfigUtils;
 import com.donews.common.lifecycle.SimpleApplicationObServer;
-import com.donews.common.updatedialog.UpdateReceiver;
 import com.donews.utilslibrary.utils.AppStatusUtils;
 import com.tencent.mmkv.MMKV;
 
@@ -31,6 +27,10 @@ public class CommonModuleInit implements IModuleInit {
         AppStatusUtils.saveAppInstallTime();
         //app 公共配置
         AppCommonConfigUtils.INSTANCE.initConfig();
+
+        //桌面通知模块数据结构配置项
+        NotifyLuncherConfigManager.update();
+
         return false;
     }
 

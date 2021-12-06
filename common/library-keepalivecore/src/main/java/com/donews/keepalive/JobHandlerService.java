@@ -12,13 +12,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.text.TextUtils;
-
-import androidx.annotation.RequiresApi;
+import android.util.Log;
 
 import java.util.List;
 
 @SuppressLint("NewApi")
 public class JobHandlerService extends JobService {
+    public static final String TAG = "keepalive-global";
     public static final int JOB_ID = 100001;
     public static final int JOB_ID_2 = 100002;
     public static final int JOB_ID_3 = 100003;
@@ -27,7 +27,7 @@ public class JobHandlerService extends JobService {
         boolean isRunning = false;
         ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningServiceInfo> servicesList = activityManager.getRunningServices(Integer.MAX_VALUE);
-        for (ActivityManager.RunningServiceInfo si : servicesList) {
+        for(ActivityManager.RunningServiceInfo si : servicesList) {
             if (TextUtils.equals(className, si.service.getClassName())) {
                 isRunning = true;
                 break;
@@ -62,16 +62,13 @@ public class JobHandlerService extends JobService {
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.d(TAG,"JobHandlerService onCreate...");
         startFg();//启动通知
     }
 
     @Override
     public boolean onStartJob(JobParameters jobParameters) {
-        if (!isServiceRunning(
-                getApplicationContext(),
-                DazzleService.class.getName()
-        )
-        ) {
+        if (!isServiceRunning(getApplicationContext(),DazzleService.class.getName())) {
             startService(this);
         }
         return false;
@@ -79,11 +76,7 @@ public class JobHandlerService extends JobService {
 
     @Override
     public boolean onStopJob(JobParameters jobParameters) {
-        if (!isServiceRunning(
-                getApplicationContext(),
-                DazzleService.class.getName()
-        )
-        ) {
+        if (!isServiceRunning(getApplicationContext(),DazzleService.class.getName())) {
             startService(this);
         }
         return false;
@@ -92,18 +85,11 @@ public class JobHandlerService extends JobService {
     private void startJobScheduler() {
         if (Build.VERSION.SDK_INT >= 21) {
             JobScheduler mJobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
-            JobInfo.Builder builder =
-                    new JobInfo.Builder(
-                            JOB_ID_2,
-                            new ComponentName(getPackageName(), JobHandlerService.class.getName())
-                    );
+            JobInfo.Builder builder =new JobInfo.Builder(JOB_ID_2,new ComponentName(getPackageName(), JobHandlerService.class.getName()));
             if (Build.VERSION.SDK_INT >= 24) {
                 builder.setMinimumLatency(JobInfo.DEFAULT_INITIAL_BACKOFF_MILLIS);//执行的最小延迟时间
                 builder.setOverrideDeadline(JobInfo.DEFAULT_INITIAL_BACKOFF_MILLIS); //执行的最长延时时间
-                builder.setBackoffCriteria(
-                        JobInfo.DEFAULT_INITIAL_BACKOFF_MILLIS,
-                        JobInfo.BACKOFF_POLICY_LINEAR
-                );//线性重试方案
+                builder.setBackoffCriteria(JobInfo.DEFAULT_INITIAL_BACKOFF_MILLIS,JobInfo.BACKOFF_POLICY_LINEAR);//线性重试方案
             } else {
                 builder.setPeriodic(JobInfo.DEFAULT_INITIAL_BACKOFF_MILLIS);
             }
@@ -120,8 +106,18 @@ public class JobHandlerService extends JobService {
     private void startService(Context context) {
         //启动本地服务
         Intent localIntent = new Intent(context, DazzleService.class);
-        startService(localIntent);
+        if (Build.VERSION.SDK_INT >= 26) {
+            try {
+                startForegroundService(localIntent);
+            } catch (Throwable t) {
+            }
+        } else {
+            startService(localIntent);
+        }
         DazzleReal.serviceStart = true;
         DazzleReal.regReceiver(context);
     }
+
+
+
 }

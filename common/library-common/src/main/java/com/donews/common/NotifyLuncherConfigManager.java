@@ -28,7 +28,7 @@ import java.util.List;
  * Date on 2021/4/6
  * Description:
  */
-public class AppGlobalConfigManager {
+public class NotifyLuncherConfigManager {
     private final List<AppGlobalConfigDataUpdateListener> mAppGlobalConfigDataUpdateListeners = new ArrayList<>();
     private AppGlobalConfigBean mAppGlobalConfigBean;
 
@@ -36,28 +36,25 @@ public class AppGlobalConfigManager {
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
-            AppGlobalConfigManager.update();
+            NotifyLuncherConfigManager.update();
         }
     };
 
 
-    private AppGlobalConfigManager() {
+    private NotifyLuncherConfigManager() {
     }
 
 
     private static final class Holder {
-        private static final AppGlobalConfigManager sInstance = new AppGlobalConfigManager();
+        private static final NotifyLuncherConfigManager sInstance = new NotifyLuncherConfigManager();
     }
 
-    public static AppGlobalConfigManager getInstance() {
+    public static NotifyLuncherConfigManager getInstance() {
         return Holder.sInstance;
     }
 
-    /**
-     * 保活控制相关接口
-     */
     public static void update() {
-        EasyHttp.get(BuildConfig.BASE_CONFIG_URL + "appGlobalCrashConfig" + BuildConfig.BASE_RULE_URL + JsonUtils.getCommonJson(false))
+        EasyHttp.get(BuildConfig.APP_NOTIFY_LUNCHER + JsonUtils.getCommonJson(false))
                 .cacheMode(CacheMode.NO_CACHE)
                 .addInterceptor(new AppGlobalInterceptor())
                 .isShowToast(BuildConfig.DEBUG)
@@ -84,7 +81,7 @@ public class AppGlobalConfigManager {
                         int refreshInterval = getInstance().getAppGlobalConfigBean().refreshInterval;
                         if (bean != null) {
                             refreshInterval = bean.refreshInterval;
-                            AppGlobalConfigManager.getInstance().setAppGlobalConfigBean(bean);
+                            NotifyLuncherConfigManager.getInstance().setAppGlobalConfigBean(bean);
                         }
                         if (mHandler != null) {
                             mHandler.sendEmptyMessageDelayed(0, refreshInterval * 1000);
@@ -96,7 +93,7 @@ public class AppGlobalConfigManager {
     }
 
     public AppGlobalConfigBean getAppGlobalConfigBean(Context context) {
-        SPUtils.init(context,KeySharePreferences.SP_KEY);
+        SPUtils.init(context);
         return getAppGlobalConfigBean();
     }
 

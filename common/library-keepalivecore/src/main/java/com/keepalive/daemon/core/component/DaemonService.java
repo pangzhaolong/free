@@ -2,6 +2,8 @@ package com.keepalive.daemon.core.component;
 
 import android.content.Intent;
 import android.os.IBinder;
+import android.os.Process;
+import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 
@@ -17,6 +19,7 @@ public class DaemonService extends DaemonBaseService {
 
     @Override
     public void onCreate() {
+        Log.i(TAG,"DaemonService onCreate");
         try {
             ContextCompat.startForegroundService(this,new Intent().setClassName(getPackageName(), NotifyResidentService.class.getName()));
         } catch (Throwable th) {
@@ -25,5 +28,11 @@ public class DaemonService extends DaemonBaseService {
         startService(new Intent().setClassName(getPackageName(), AssistService1.class.getName()));
         startService(new Intent().setClassName(getPackageName(), AssistService2.class.getName()));
         super.onCreate();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e(TAG,"DaemonService onDestroy , pid = "+ Process.myPid());
     }
 }

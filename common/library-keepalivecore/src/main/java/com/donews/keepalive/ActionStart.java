@@ -35,14 +35,19 @@ public abstract class ActionStart {
     }
 
     public void run(Context context, Intent intent) {
-        if (isCancel) return;
+        if (isCancel) {
+            return;
+        }
         doRun(context, intent);
 
         handler.postDelayed(() -> {
 
-            if (isCancel) return;
-            if (next != null)
+            if (isCancel) {
+                return;
+            }
+            if (next != null){
                 next.run(context, intent);
+            }
         }, getDelayAfter());
     }
 
@@ -54,12 +59,16 @@ public abstract class ActionStart {
 
     public void cancel() {
         isCancel = true;
-        if (next != null) next.cancel();
+        if (next != null) {
+            next.cancel();
+        }
     }
 
     public void reset() {
         isCancel = false;
-        if (next != null) next.reset();
+        if (next != null) {
+            next.reset();
+        }
     }
 
     public abstract int getActionId();

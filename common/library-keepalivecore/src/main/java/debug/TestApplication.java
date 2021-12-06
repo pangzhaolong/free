@@ -11,7 +11,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.donews.base.base.BaseApplication;
-import com.donews.common.AppGlobalConfigManager;
+import com.donews.common.NotifyLuncherConfigManager;
 import com.donews.crashhandler.core.CrashCoreHandler;
 import com.donews.keepalive.Dazzle;
 import com.donews.keepalive.DazzleCallback;
@@ -51,7 +51,7 @@ public class TestApplication extends BaseApplication {
         CrashCoreHandler.install(true);
 
         DaemonHolder.setGlobalNotifycation(createNotification());
-        DaemonHolder.getInstance().attach(base, this);
+        DaemonHolder.getInstance().attach( this);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class TestApplication extends BaseApplication {
                     .setCacheMode(CacheMode.FIRSTREMOTE)
                     .addCommonHeaders(httpHeaders);
             CrashReport.initCrashReport(getApplicationContext(), KeyConstant.getBuglyId(), BuildConfig.DEBUG);
-            AppGlobalConfigManager.update();
+            NotifyLuncherConfigManager.update();
 
 
             initDazzle();

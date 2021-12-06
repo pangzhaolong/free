@@ -12,10 +12,6 @@ import androidx.multidex.MultiDex;
 
 import com.donews.base.BuildConfig;
 import com.donews.utilslibrary.base.UtilsConfig;
-import com.orhanobut.logger.AndroidLogAdapter;
-import com.orhanobut.logger.FormatStrategy;
-import com.orhanobut.logger.Logger;
-import com.orhanobut.logger.PrettyFormatStrategy;
 
 import java.util.List;
 
@@ -32,6 +28,7 @@ public class BaseApplication extends Application {
     private static BaseApplication sInstance;
 
     private static boolean sDebug = false;
+
 
     @Override
     public void onCreate() {

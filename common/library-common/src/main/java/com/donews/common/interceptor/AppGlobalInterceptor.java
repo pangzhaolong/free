@@ -1,11 +1,7 @@
 package com.donews.common.interceptor;
 
-import android.util.Log;
-
-import com.donews.common.AppGlobalConfigManager;
 import com.donews.common.bean.AppGlobalConfigBean;
 import com.donews.network.model.ApiResult;
-import com.donews.network.utils.HttpLog;
 import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.SPUtils;
 import com.google.gson.Gson;

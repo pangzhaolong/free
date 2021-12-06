@@ -125,7 +125,6 @@ dependencies {
         implementation project(path: ':module-main')
         implementation project(path: ':module-login')
         implementation project(path: ':common:library-webview')
-        implementation project(path: ':common:library-crashhandler')
         implementation project(path: ':common:library-jpush')
         implementation project(path: ':business:module-mine')
         implementation project(path: ':business:module-home')
@@ -137,7 +136,9 @@ dependencies {
         implementation project(path: ':business:module-reward')
         implementation project(path: ':business:module-lottery')
         implementation project(path: ':middleware:module-middleware')
-        implementation project(path: ':common:library-keepalive')
+
+        //Swei新增桌面通知模块
+        implementation project(path: ':business:module-notify')
     }
 }
 

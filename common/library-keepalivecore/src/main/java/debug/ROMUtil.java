@@ -41,6 +41,7 @@ public class ROMUtil {
 
     //vivo
     public static boolean isVivo() {
+
         return check(ROM_VIVO);
     }
 

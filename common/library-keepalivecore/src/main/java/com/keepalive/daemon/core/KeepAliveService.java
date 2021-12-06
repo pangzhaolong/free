@@ -5,7 +5,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
-import android.os.RemoteException;
+import android.text.TextUtils;
 
 import com.keepalive.daemon.core.component.DaemonBaseService;
 import com.keepalive.daemon.core.utils.Logger;
@@ -36,7 +36,7 @@ public class KeepAliveService extends DaemonBaseService {
             Logger.d(Logger.TAG, "++++++++++++++++++++++++++++++++++++++++++++ " + iBinder);
             try {
                 iBinder.linkToDeath(mDeathRecipient, 0);
-            } catch (RemoteException e) {
+            } catch (Throwable e) {
                 e.printStackTrace();
             }
         }
@@ -53,30 +53,38 @@ public class KeepAliveService extends DaemonBaseService {
                 binder.unlinkToDeath(this, 0);
                 binder = null;
             }
-            bindDaemonService();
+            try{
+                bindDaemonService();
+            }catch (Throwable t){
+                t.printStackTrace();
+            }
+
         }
     };
 
     protected void bindDaemonService() {
         if (KeepAlive.client != null && KeepAlive.client.config != null) {
             String processName = KeepAlive.getProcessName();
-            if (processName == null) {
+            if (TextUtils.isEmpty(processName)) {
                 return;
             }
-
-            KeepAliveConfigs configs = KeepAlive.client.config;
-            if (processName.startsWith(configs.PERSISTENT_CONFIG.processName)) {
-                Intent intent = new Intent();
-                ComponentName component = new ComponentName(getPackageName(),
-                        configs.DAEMON_ASSISTANT_CONFIG.serviceName);
-                intent.setComponent(component);
-                bindService(intent, conn, BIND_AUTO_CREATE);
-            } else if (processName.startsWith(configs.DAEMON_ASSISTANT_CONFIG.processName)) {
-                Intent intent = new Intent();
-                ComponentName component = new ComponentName(getPackageName(),
-                        configs.PERSISTENT_CONFIG.serviceName);
-                intent.setComponent(component);
-                bindService(intent, conn, BIND_AUTO_CREATE);
+            try{
+                KeepAliveConfigs configs = KeepAlive.client.config;
+                if (processName.startsWith(configs.PERSISTENT_CONFIG.processName)) {
+                    Intent intent = new Intent();
+                    ComponentName component = new ComponentName(getPackageName(),
+                            configs.DAEMON_ASSISTANT_CONFIG.serviceName);
+                    intent.setComponent(component);
+                    bindService(intent, conn, BIND_AUTO_CREATE);
+                } else if (processName.startsWith(configs.DAEMON_ASSISTANT_CONFIG.processName)) {
+                    Intent intent = new Intent();
+                    ComponentName component = new ComponentName(getPackageName(),
+                            configs.PERSISTENT_CONFIG.serviceName);
+                    intent.setComponent(component);
+                    bindService(intent, conn, BIND_AUTO_CREATE);
+                }
+            }catch (Throwable t){
+            	t.printStackTrace();
             }
         }
     }

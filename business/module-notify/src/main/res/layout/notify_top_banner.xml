@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_notifyroot"
+    android:fitsSystemWindows="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.donews.notify.launcher.NotifyAnimationView
+        android:id="@+id/layout_notifyanimation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
+        android:layout_marginRight="8dip">
+
+        <ImageView
+            android:id="@+id/img_notify"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dip"
+            android:scaleType="fitXY"
+            android:src="@drawable/notifycation_notify_content" />
+
+    </com.donews.notify.launcher.NotifyAnimationView>
+
+</RelativeLayout>

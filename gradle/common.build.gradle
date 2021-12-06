@@ -22,5 +22,7 @@ android {
         buildConfigField("String", "APP_ID_GROMORE", "\"${rootProject.APP_ID_GROMORE}\"")
         buildConfigField("String", "APP_COMMON_CONFIG", "\"${rootProject.APP_COMMON_CONFIG}\"")
 
+        buildConfigField("String", "APP_NOTIFY_LUNCHER", "\"${rootProject.APP_NOTIFY_LUNCHER}\"")
+
     }
 }

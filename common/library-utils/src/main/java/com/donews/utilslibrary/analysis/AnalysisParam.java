@@ -32,4 +32,11 @@ public final class AnalysisParam {
     public static String CLICK_BENEFIT_HEART = "click_benefit_heart"; //点击收下红心（统计增加）
     public static String LOOK_JOB_LOOK = "look_job_look"; //创意视频完整播放
 
+
+    /** Swei桌面通知新增的事件 */
+    public static final String DESKTOP_DISPLAY = "desktopdisplay";
+    public static final String DESKTOP_DISPLAY_CLICK = "desktopclicking";
+    public static final String NOTICE_BAR_DISPLAY = "noticebardisplay";
+    public static final String NOTICE_BAR_CLICK = "noticebarClick";
+
 }

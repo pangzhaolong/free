@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.donews.base.base.BaseApplication;
-import com.donews.common.AppGlobalConfigManager;
+import com.donews.common.NotifyLuncherConfigManager;
 import com.donews.common.BuildConfig;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.converter.GsonDiskConverter;
@@ -55,7 +55,7 @@ public class TestApplication extends BaseApplication {
                 .setCacheMode(CacheMode.FIRSTREMOTE)
                 .addCommonHeaders(httpHeaders);
         CrashReport.initCrashReport(getApplicationContext(), KeyConstant.getBuglyId(), BuildConfig.DEBUG);
-        AppGlobalConfigManager.update();
+        NotifyLuncherConfigManager.update();
 
     }
 }

@@ -159,7 +159,7 @@ public class CrashCoreHandler {
         try{
             sHandler.removeCallbacks(getJavaCodeCrashHandlerTask());
         }catch (Throwable t){
-        	t.printStackTrace();
+            t.printStackTrace();
         }
         sJavaCrashRunning = false;
     }
@@ -338,7 +338,7 @@ public class CrashCoreHandler {
         try{
             CrashReport.postCatchedException(throwable);
         }catch (Throwable t){
-        	t.printStackTrace();
+            t.printStackTrace();
         }
     }
 

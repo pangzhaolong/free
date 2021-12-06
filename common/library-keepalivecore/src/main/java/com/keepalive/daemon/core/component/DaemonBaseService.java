@@ -8,10 +8,12 @@ import android.os.RemoteException;
 
 import androidx.annotation.Nullable;
 
+import com.donews.keepalive.global.KeepAliveGlobalConfig;
 import com.keepalive.daemon.core.IMonitorService;
 import com.keepalive.daemon.core.utils.Logger;
 
 public abstract class DaemonBaseService extends Service {
+    public static final String TAG = KeepAliveGlobalConfig.TAG;
 
     private IMonitorService.Stub binder = new IMonitorService.Stub() {
         @Override
