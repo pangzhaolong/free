@@ -19,23 +19,18 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.dn.sdk.sdk.interfaces.listener.IAdRewardVideoListener;
-import com.dn.sdk.sdk.interfaces.listener.impl.SimpleRewardVideoListener;
-import com.dn.sdk.sdk.interfaces.view.PreloadVideoView;
+import com.dn.sdk.listener.IAdRewardVideoListener;
 import com.donews.base.base.AppManager;
 import com.donews.base.utils.ToastUtil;
-import com.donews.common.ad.business.loader.AdManager;
 import com.donews.common.ad.cache.AdVideoCacheUtils;
 import com.donews.middle.abswitch.ABSwitch;
 import com.donews.utilslibrary.utils.DateManager;
 import com.module.lottery.ui.LotteryActivity;
-import com.module.lottery.utils.LotteryPreloadVideoView;
 import com.module_lottery.R;
 import com.module_lottery.databinding.LotteryStartDialogLayoutBinding;
 import com.orhanobut.logger.Logger;
@@ -157,7 +152,7 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
     }
 
 
-    private void onVideoComplete() {
+    private void videoComplete() {
         if (ABSwitch.Ins().isOpenVideoToast()) {
             try {
                 Activity activity = AppManager.getInstance().getTopActivity();
@@ -188,33 +183,17 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
     private void loadAd() {
         IAdRewardVideoListener listener = new IAdRewardVideoListener() {
             @Override
-            public void onError(int code, String msg) {
-                loadError();
-                Logger.e(TAG + msg + "");
-            }
-
-            @Override
-            public void onLoadCached() {
+            public void onAdStatus(int code, @Nullable Object any) {
 
             }
 
             @Override
-            public void onLoad() {
+            public void onAdLoad() {
 
             }
 
             @Override
-            public void onLoadFail(int code, String error) {
-
-            }
-
-            @Override
-            public void onLoadTimeout() {
-
-            }
-
-            @Override
-            public void onRewardAdShow() {
+            public void onAdShow() {
                 //延时出现
                 showToast();
                 if (mLotteryHandler != null) {
@@ -223,29 +202,7 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
             }
 
             @Override
-            public void onRewardBarClick() {
-
-            }
-
-            //点击关闭视频
-            @Override
-            public void onRewardedClosed() {
-                closedVideoViewToast();
-            }
-
-            //视屏播放完成
-            @Override
-            public void onRewardVideoComplete() {
-                onVideoComplete();
-            }
-
-            @Override
-            public void onRewardVideoError() {
-
-            }
-
-            @Override
-            public void onRewardVideoAdShowFail(int code, String message) {
+            public void onAdVideoClick() {
 
             }
 
@@ -257,13 +214,27 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
                 aAState = result;
             }
 
-            //点击跳过
             @Override
-            public void onSkippedRewardVideo() {
-                onVideoComplete();
+            public void onAdClose() {
+                closedVideoViewToast();
+            }
+
+            @Override
+            public void onVideoCached() {
+
+            }
+
+            @Override
+            public void onVideoComplete() {
+                videoComplete();
+            }
+
+            @Override
+            public void onAdError(int code, @Nullable String errorMsg) {
+                loadError();
+                Logger.e(TAG + errorMsg + "");
             }
         };
-
         AdVideoCacheUtils.INSTANCE.showRewardVideo(listener);
     }
 

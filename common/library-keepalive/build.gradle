@@ -25,8 +25,8 @@ android {
 dependencies {
     api fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 
-    api project(':common:library-sdk')
+//    api project(':common:library-sdk')
     api project(':common:library-common')
 //    api rootProject.ext.dependencies["mmkv"]
-    annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
+    kapt rootProject.ext.dependencies["arouter-compiler"]
 }

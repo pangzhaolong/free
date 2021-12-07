@@ -2,26 +2,24 @@ package com.donews.common.ad.business.loader
 
 import android.app.Activity
 import android.view.ViewGroup
-import android.view.WindowManager
-import com.donews.common.ad.business.callback.JddAdIdConfigManager
-import com.dn.sdk.sdk.AdSdkManager
-import com.dn.sdk.sdk.bean.AdType
-import com.dn.sdk.sdk.bean.RequestInfo
-import com.dn.sdk.sdk.interfaces.ISdkManager
-import com.dn.sdk.sdk.interfaces.idconfig.IAdIdConfig
-import com.dn.sdk.sdk.interfaces.listener.IAdInterstitialListener
-import com.dn.sdk.sdk.interfaces.listener.IAdRewardVideoListener
-import com.dn.sdk.sdk.interfaces.listener.IAdSplashListener
-import com.dn.sdk.sdk.interfaces.listener.preload.IAdPreloadVideoViewListener
-import com.dn.sdk.sdk.interfaces.loader.IAdManager
-import com.dn.sdk.sdk.platform.IAdIdConfigCallback
-import com.dn.sdk.sdk.utils.AdLoggerUtils
-import com.donews.base.utils.ToastUtil
-import com.donews.common.BuildConfig
-import com.donews.common.ad.business.constant.*
+import com.blankj.utilcode.util.ScreenUtils
+import com.dn.sdk.AdCustomError
+import com.dn.sdk.bean.AdRequest
+import com.dn.sdk.bean.AdType
+import com.dn.sdk.listener.IAdInterstitialListener
+import com.dn.sdk.listener.IAdRewardVideoListener
+import com.dn.sdk.listener.IAdSplashListener
+import com.dn.sdk.manager.config.IAdConfigInitListener
+import com.dn.sdk.manager.config.IAdConfigManager
+import com.dn.sdk.manager.sdk.AdSdkManager
+import com.dn.sdk.manager.sdk.ISdkManager
+import com.dn.sdk.utils.AdLoggerUtils
+import com.donews.common.ad.business.constant.NEW_INTERSTITIAL_ID
+import com.donews.common.ad.business.constant.NEW_INVALID_REWARD_VIDEO_ID
+import com.donews.common.ad.business.constant.NEW_REWARD_VIDEO_ID
+import com.donews.common.ad.business.constant.NEW_SPLASH_ID
+import com.donews.common.ad.business.manager.JddAdManager
 import com.donews.common.ad.business.monitor.InterstitialAdCount
-import com.donews.common.ad.business.proxy.JddAdRewardVideoListenerProxy
-import com.donews.common.ad.business.proxy.JddInterstitialListenerProxy
 import com.donews.utilslibrary.utils.DensityUtils
 
 /**
@@ -31,142 +29,111 @@ import com.donews.utilslibrary.utils.DensityUtils
  * @version v1.0
  * @date 2021/10/25 17:16
  */
-object AdManager : IAdManager, ISdkManager by AdSdkManager, IAdIdConfig by JddAdIdConfigManager {
+object AdManager : IAdLoadManager, ISdkManager by AdSdkManager, IAdConfigManager by JddAdManager {
     override fun loadInvalidRewardVideoAd(activity: Activity, listener: IAdRewardVideoListener?) {
-        JddAdIdConfigManager.addInitListener(object : IAdIdConfigCallback {
+        addInitListener(object : IAdConfigInitListener {
             override fun initSuccess() {
                 val key = NEW_INVALID_REWARD_VIDEO_ID
-                val requestInfo = RequestInfo()
-                requestInfo.platform = JddAdIdConfigManager.getPlatform()
-                requestInfo.adId = requestInfo.platform.getAdIdByKey(key)
-                requestInfo.appIdKey = key
-                requestInfo.adType = AdType.REWARD_VIDEO
-                requestInfo.userId = AdSdkManager.userId
-                requestInfo.channel = AdSdkManager.channel
-                requestInfo.oaid = AdSdkManager.oaid
-                requestInfo.platform.getLoader().loadRewardVideoAd(
-                    activity, requestInfo,
-                    JddAdRewardVideoListenerProxy(activity, listener)
-                )
+                val adRequest = AdRequest(AdType.REWARD_VIDEO)
+                adRequest.mPlatform = getPlatform()
+                adRequest.mAdId = adRequest.mPlatform.getAdIdByKey(key)
+                adRequest.mAdKey = key
+                adRequest.mPlatform.getLoader().loadAndShowRewardVideoAd(activity, adRequest, listener)
             }
         })
     }
 
     override fun preloadInvalidRewardVideoAd(
         activity: Activity,
-        viewListener: IAdPreloadVideoViewListener,
+        preloadAdListener: IPreloadAdListener,
         listener: IAdRewardVideoListener?
     ) {
-        JddAdIdConfigManager.addInitListener(object : IAdIdConfigCallback {
+
+        addInitListener(object : IAdConfigInitListener {
             override fun initSuccess() {
                 val key = NEW_INVALID_REWARD_VIDEO_ID
-                val requestInfo = RequestInfo()
-                requestInfo.platform = JddAdIdConfigManager.getPlatform()
-                requestInfo.adId = requestInfo.platform.getAdIdByKey(key)
-                requestInfo.appIdKey = key
-                requestInfo.adType = AdType.REWARD_VIDEO
-                requestInfo.userId = AdSdkManager.userId
-                requestInfo.channel = AdSdkManager.channel
-                requestInfo.oaid = AdSdkManager.oaid
-                requestInfo.platform.getLoader().preloadRewardViewAd(
-                    activity, requestInfo, viewListener,
-                    JddAdRewardVideoListenerProxy(activity, listener)
-                )
+                val adRequest = AdRequest(AdType.REWARD_VIDEO)
+                adRequest.mPlatform = getPlatform()
+                adRequest.mAdId = adRequest.mPlatform.getAdIdByKey(key)
+                adRequest.mAdKey = key
+                adRequest.mAdPreload = true
+                val preloadAd = adRequest.mPlatform.getLoader().preloadRewardVideoAd(activity, adRequest, listener)
+                preloadAdListener.preloadAd(preloadAd)
             }
         })
     }
 
 
     override fun loadFullScreenSplashAd(activity: Activity, container: ViewGroup, listener: IAdSplashListener?) {
-        AdLoggerUtils.d("loadFullScreenSplashAd")
-        JddAdIdConfigManager.addInitListener(object : IAdIdConfigCallback {
+        addInitListener(object : IAdConfigInitListener {
             override fun initSuccess() {
                 val key = NEW_SPLASH_ID
-                val minimumCodeIdKey = ""
-                val requestInfo = RequestInfo()
-                requestInfo.platform = JddAdIdConfigManager.getPlatform()
-                requestInfo.adId = requestInfo.platform.getAdIdByKey(key)
-                requestInfo.minimumCodeId = requestInfo.platform.getAdIdByKey(minimumCodeIdKey)
-                requestInfo.appIdKey = key
-                requestInfo.adType = AdType.SPLASH
-                requestInfo.userId = AdSdkManager.userId
-                requestInfo.channel = AdSdkManager.channel
-                requestInfo.oaid = AdSdkManager.oaid
-                requestInfo.container = container
-                requestInfo.width = DensityUtils.getScreenWidth()
-                requestInfo.height = DensityUtils.getScreenHeight()
-                requestInfo.platform.getLoader().loadSplashAd(activity, requestInfo, listener)
+                val adRequest = AdRequest(AdType.SPLASH)
+                adRequest.mPlatform = getPlatform()
+//                adRequest.mAdId = adRequest.mPlatform.getAdIdByKey(key)
+                adRequest.mAdId = "158533"
+                adRequest.mAdKey = key
+                adRequest.mAdContainer = container
+                adRequest.mWidthDp = DensityUtils.px2dp(DensityUtils.getScreenWidth().toFloat())
+                adRequest.mHeightDp = DensityUtils.px2dp(DensityUtils.getScreenHeight().toFloat())
+                adRequest.mPlatform.getLoader().loadAndShowSplashAd(activity, adRequest, listener)
             }
         })
     }
 
     override fun loadHalfScreenSplashAd(activity: Activity, container: ViewGroup, listener: IAdSplashListener?) {
         AdLoggerUtils.d("loadHalfScreenSplashAd")
-        JddAdIdConfigManager.addInitListener(object : IAdIdConfigCallback {
+        addInitListener(object : IAdConfigInitListener {
             override fun initSuccess() {
                 val key = NEW_SPLASH_ID
-                val minimumCodeIdKey = ""
-                val requestInfo = RequestInfo()
-                requestInfo.platform = JddAdIdConfigManager.getPlatform()
-                requestInfo.adId = requestInfo.platform.getAdIdByKey(key)
-                requestInfo.minimumCodeId = requestInfo.platform.getAdIdByKey(minimumCodeIdKey)
-                requestInfo.appIdKey = key
-                requestInfo.adType = AdType.SPLASH
-                requestInfo.userId = AdSdkManager.userId
-                requestInfo.channel = AdSdkManager.channel
-                requestInfo.oaid = AdSdkManager.oaid
-                requestInfo.container = container
-                requestInfo.width = container.layoutParams.width
-                requestInfo.height = container.layoutParams.height
-                requestInfo.platform.getLoader().loadSplashAd(activity, requestInfo, listener)
+                val adRequest = AdRequest(AdType.SPLASH)
+                adRequest.mPlatform = getPlatform()
+//                adRequest.mAdId = adRequest.mPlatform.getAdIdByKey(key)
+                adRequest.mAdId = "158534"
+                adRequest.mAdKey = key
+                adRequest.mAdContainer = container
+
+                if (container.layoutParams.width > 0) {
+                    adRequest.mWidthDp = DensityUtils.px2dp(container.layoutParams.width.toFloat())
+                    adRequest.mHeightDp = DensityUtils.px2dp(container.layoutParams.height.toFloat()) - 96
+                } else {
+                    adRequest.mWidthDp = DensityUtils.px2dp(ScreenUtils.getScreenWidth().toFloat())
+                    adRequest.mHeightDp = DensityUtils.px2dp(ScreenUtils.getScreenHeight().toFloat()) - 96
+                }
+                adRequest.mPlatform.getLoader().loadAndShowSplashAd(activity, adRequest, listener)
             }
         })
     }
 
     override fun loadRewardVideoAd(activity: Activity, listener: IAdRewardVideoListener?) {
-        JddAdIdConfigManager.addInitListener(object : IAdIdConfigCallback {
+        addInitListener(object : IAdConfigInitListener {
             override fun initSuccess() {
                 val key = NEW_REWARD_VIDEO_ID
-                val requestInfo = RequestInfo()
-                requestInfo.platform = JddAdIdConfigManager.getPlatform()
-                requestInfo.adId = requestInfo.platform.getAdIdByKey(key)
-                requestInfo.appIdKey = key
-                requestInfo.adType = AdType.REWARD_VIDEO
-                requestInfo.userId = AdSdkManager.userId
-                requestInfo.channel = AdSdkManager.channel
-                requestInfo.oaid = AdSdkManager.oaid
-                requestInfo.isOpenSound = true
-                requestInfo.platform.getLoader().loadRewardVideoAd(
-                    activity, requestInfo,
-                    JddAdRewardVideoListenerProxy(activity, listener)
-                )
+                val adRequest = AdRequest(AdType.REWARD_VIDEO)
+                adRequest.mPlatform = getPlatform()
+                adRequest.mAdId = adRequest.mPlatform.getAdIdByKey(key)
+                adRequest.mAdKey = key
+                adRequest.mPlatform.getLoader().loadAndShowRewardVideoAd(activity, adRequest, listener)
             }
         })
     }
 
     override fun preloadRewardVideoAd(
         activity: Activity,
-        viewListener: IAdPreloadVideoViewListener,
+        preloadAdListener: IPreloadAdListener,
         listener: IAdRewardVideoListener?
     ) {
-        JddAdIdConfigManager.addInitListener(object : IAdIdConfigCallback {
+        addInitListener(object : IAdConfigInitListener {
             override fun initSuccess() {
                 val key = NEW_REWARD_VIDEO_ID
-                val requestInfo = RequestInfo()
-                requestInfo.platform = JddAdIdConfigManager.getPlatform()
-                requestInfo.adId = requestInfo.platform.getAdIdByKey(key)
-                requestInfo.appIdKey = key
-                requestInfo.isOpenSound = true
-                requestInfo.adType = AdType.REWARD_VIDEO
-                requestInfo.userId = AdSdkManager.userId
-                requestInfo.channel = AdSdkManager.channel
-                requestInfo.oaid = AdSdkManager.oaid
-                requestInfo.platform.getLoader().preloadRewardViewAd(
-                    activity,
-                    requestInfo,
-                    viewListener,
-                    JddAdRewardVideoListenerProxy(activity, listener)
-                )
+                val adRequest = AdRequest(AdType.REWARD_VIDEO)
+                adRequest.mPlatform = getPlatform()
+//                adRequest.mAdId = adRequest.mPlatform.getAdIdByKey(key)
+                adRequest.mAdId = "158592"
+                adRequest.mAdKey = key
+                adRequest.mAdPreload = true
+                val preloadAd = adRequest.mPlatform.getLoader().preloadRewardVideoAd(activity, adRequest, listener)
+                preloadAdListener.preloadAd(preloadAd)
             }
         })
     }
@@ -176,28 +143,28 @@ object AdManager : IAdManager, ISdkManager by AdSdkManager, IAdIdConfig by JddAd
             //先更新一次显示时间
             InterstitialAdCount.showAdStart()
             InterstitialAdCount.updateLoadAdTime()
-            JddAdIdConfigManager.addInitListener(object : IAdIdConfigCallback {
+
+            addInitListener(object : IAdConfigInitListener {
                 override fun initSuccess() {
-                    val proxyListener = JddInterstitialListenerProxy(listener)
                     val key = NEW_INTERSTITIAL_ID
-                    val requestInfo = RequestInfo()
-                    requestInfo.platform = JddAdIdConfigManager.getPlatform()
-                    requestInfo.adId = requestInfo.platform.getAdIdByKey(key)
-                    requestInfo.appIdKey = key
-                    requestInfo.adType = AdType.INTERSTITIAL
-                    requestInfo.userId = AdSdkManager.userId
-                    requestInfo.channel = AdSdkManager.channel
-                    requestInfo.oaid = AdSdkManager.oaid
+                    val adRequest = AdRequest(AdType.INTERSTITIAL)
+                    adRequest.mPlatform = getPlatform()
+                    adRequest.mAdId = adRequest.mPlatform.getAdIdByKey(key)
+                    adRequest.mAdKey = key
+                    adRequest.mAdPreload = true
 
                     val pxScreenWidth = DensityUtils.getScreenWidth()
                     val marginWidth = DensityUtils.dip2px(30f) * 2
-                    requestInfo.width = DensityUtils.px2dp((pxScreenWidth - marginWidth).toFloat()).toInt()
-                    requestInfo.height = 0
-                    requestInfo.platform.getLoader().loadInterstitialAd(activity, requestInfo, proxyListener)
+                    adRequest.mWidthDp = DensityUtils.px2dp((pxScreenWidth - marginWidth).toFloat())
+                    adRequest.mHeightDp = adRequest.mWidthDp / 2f * 3
+                    adRequest.mPlatform.getLoader().loadAndShowInterstitialAd(activity, adRequest, listener)
                 }
             })
         } else {
-            listener?.onError(-1001, "显示插屏广告间隔小于配置时间")
+            listener?.onAdError(
+                AdCustomError.InterstitialIntervalError.code,
+                AdCustomError.InterstitialIntervalError.errorMsg
+            )
         }
     }
 

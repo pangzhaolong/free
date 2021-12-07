@@ -15,7 +15,7 @@ android {
         versionName "1.0"
         multiDexEnabled true
 
-        consumerProguardFiles 'consumer-rules.pro'
+        consumerProguardFiles 'consumer-rules.pro', 'proguard-rules.pro'
 
         kapt {
             arguments {
@@ -23,26 +23,15 @@ android {
             }
         }
     }
-/*
-    signingConfigs {
-        release {
-            keyAlias 'key0'
-            keyPassword '123456'
-            storeFile rootProject.file('keystore/jkzaaaa.jks')
-            storePassword '123456'
-        }
-    }*/
+
     buildTypes {
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//            signingConfig signingConfigs.release
-
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//            signingConfig signingConfigs.release
         }
     }
 
@@ -62,6 +51,8 @@ android {
                 manifest.srcFile 'src/main/AndroidManifest.xml'
                 java.srcDirs = ['src/main/java']
             }
+
+            jniLibs.srcDirs = ['libs',"src/main/jniLibs"]
         }
     }
 
@@ -76,5 +67,11 @@ android {
 
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
     }
 }

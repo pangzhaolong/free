@@ -30,7 +30,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.events.LotteryStatusEvent;
 import com.donews.base.utils.ToastUtil;
-import com.donews.common.ad.business.utils.JddAdUnits;
+import com.donews.common.ad.business.manager.JddAdManager;
 import com.donews.common.provider.IDetailProvider;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
@@ -279,7 +279,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     private void startLottery() {
         AnalysisUtils.onEventEx(this, Dot.Btn_LotteryNow);
         //判断是否打开了视频广告
-        boolean isOpenAd = JddAdUnits.INSTANCE.isOpenAd();
+        boolean isOpenAd = JddAdManager.INSTANCE.isOpenAd();
         if (isOpenAd) {
             //开始抽奖
             //弹框抽奖码生成dialog

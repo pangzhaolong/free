@@ -2,11 +2,10 @@ package com.donews.main.application;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.donews.common.ad.business.bean.JddAdConfigBean;
-import com.donews.common.ad.business.callback.JddAdConfigManager;
+import com.donews.common.ad.business.manager.JddAdConfigManager;
 import com.donews.main.BuildConfig;
 import com.donews.main.ui.SplashActivity;
 import com.donews.base.base.BaseApplication;
@@ -20,10 +19,7 @@ import com.donews.network.cookie.CookieManger;
 import com.donews.network.model.HttpHeaders;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.DeviceUtils;
-import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.LogUtil;
-import com.donews.utilslibrary.utils.SPUtils;
-import com.orhanobut.logger.Logger;
 
 import org.jetbrains.annotations.NotNull;
 

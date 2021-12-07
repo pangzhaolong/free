@@ -1,24 +1,22 @@
 package com.donews.common.ad.business.bean
 
-import com.google.gson.annotations.SerializedName
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
 
 /**
- * 奖多多id配置
+ * 新的广告位id配置
  *
  * @author XuShuai
  * @version v1.0
- * @date 2021/10/27 10:12
+ * @date 2021/12/1 16:52
  */
-class JddAdIdConfigBean(
-    @SerializedName("openAd")
-    var openAd: Boolean = true,
-    @SerializedName("bjcsj")
-    var bjcsj: Int = 0,
-    @SerializedName("bjdn")
-    var bjdn: Int = 10,
-    @SerializedName("csjAdIdConfigBean")
-    var csjAdIdConfigBean: CsjAdIdConfigBean = CsjAdIdConfigBean(),
-    @SerializedName("dnAdIdConfigBean")
-    var dnAdIdConfigBean: DnAdIdConfigBean = DnAdIdConfigBean()
-) : JddBaseAdIdConfigBean()
+@Parcelize
+class JddAdIdConfigBean : BaseAdIdConfigBean(), Parcelable {
+    init {
+        splashId = "92914"
+        interstitialId = "92513"
+        rewardVideoId = "91918"
+        invalidRewardVideoId = "92540"
+    }
+}
