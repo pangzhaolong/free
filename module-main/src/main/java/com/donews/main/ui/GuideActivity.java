@@ -45,13 +45,16 @@ public class GuideActivity
 
     //是否需要显示引导页
     private static boolean isLoadGuide = false;
+    //中台配置是否需要显示引导页
+    private static boolean isCenterConfigShow = false;
 
     private long fastVibrateTime = 0;
     private String loginTag = "GuideActivity";
 
     public static void start(Context context) {
+        isCenterConfigShow = ABSwitch.Ins().isOpenGuidGif();//中台配置是否显示
         isLoadGuide = SPUtils.getInstance().getBoolean("mainGuideIsShow", true);
-        if (isLoadGuide && !ABSwitch.Ins().isOpenAB()) {
+        if (isLoadGuide && isCenterConfigShow && !ABSwitch.Ins().isOpenAB()) {
             //需要显示引导页，去往引导页
             ARouter.getInstance().build(RouterActivityPath.Main.PAGER_GUIDE_ACTIVITY)
                     .navigation(context);

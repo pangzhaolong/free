@@ -569,7 +569,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         if (rpBean == null) {
             return;
         }
-
+        nCloseRpCounts = 0;
         mFindFirstReadyRp = false;
         int topColor = Color.parseColor("#764D38");
         int bottomColor = Color.parseColor("#FFF3D3");
