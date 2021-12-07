@@ -65,6 +65,10 @@ public class ABSwitch {
         return mAbBean.isOpenGuidGif();
     }
 
+    public int getLotteryLine() {
+        return mAbBean.getLotteryLine();
+    }
+
     public void initAbSwitch() {
         EasyHttp.get(HttpConfigUtilsKt.withConfigParams(BuildConfig.BASE_CONFIG_URL + "plus-abswitch" + BuildConfig.BASE_RULE_URL, true))
                 .cacheMode(CacheMode.NO_CACHE)

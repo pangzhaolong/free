@@ -22,6 +22,16 @@ public class ABBean extends BaseCustomViewModel {
     private boolean openAutoLotteryAfterLoginWxAtExitDialog = true;
     @SerializedName("openGuidGif")
     private boolean openGuidGif = false;
+    @SerializedName("lotteryLine")
+    private int lotteryLine = 0;
+
+    public int getLotteryLine() {
+        return lotteryLine;
+    }
+
+    public void setLotteryLine(int lotteryLine) {
+        this.lotteryLine = lotteryLine;
+    }
 
     public boolean isOpenGuidGif() {
         return openGuidGif;
