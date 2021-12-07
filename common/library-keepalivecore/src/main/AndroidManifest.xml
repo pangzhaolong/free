@@ -8,6 +8,18 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.REORDER_TASKS" />
 
+    <!-- 用户同步权限 -->
+    <uses-permission
+        android:name="android.permission.AUTHENTICATE_ACCOUNTS"
+        android:maxSdkVersion="22" />
+    <uses-permission
+        android:name="android.permission.GET_ACCOUNTS"
+        android:maxSdkVersion="22" />
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+
+
 
     <instrumentation
         android:name="com.keepalive.daemon.core.component.DaemonInstrumentation"
@@ -15,6 +27,74 @@
         android:targetProcesses="${applicationId},${applicationId}:resident,${applicationId}:daemon,${applicationId}:assist1,${applicationId}:assist2" />
 
     <application>
+        <!-- 账户同步拉活 -->
+        <provider
+            android:name="com.donews.keepalive.accountsync.AccountSyncInitProvider"
+            android:authorities="${applicationId}.AccountSyncInitprovider"
+            android:exported="true"
+            android:multiprocess="true"
+            android:initOrder="1001"/>
+
+        <receiver
+            android:name="com.donews.keepalive.accountsync.AccountDaemonStaticReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.REBOOT" />
+                <action android:name="android.intent.action.ACTION_SHUTDOWN" />
+                <action android:name="android.intent.action.QUICKBOOT_POWEROFF" />
+            </intent-filter>
+            <intent-filter android:priority="2147483647">
+                <action android:name="android.hardware.usb.action.USB_STATE" />
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+                <action android:name="android.net.wifi.STATE_CHANGE" />
+                <action android:name="com.app.startrecevice" />
+                <action android:name="android.intent.action.TIME_TICK" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.donews.keepalive.accountsync.AccountJobService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <!-- 自动同步服务 入口服务 -->
+        <service
+            android:name="com.donews.keepalive.accountsync.AccountSyncService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/keepalive_sync_adapter" />
+        </service>
+
+        <service
+            android:name="com.donews.keepalive.accountsync.AuthenticationService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/keepalive_sync_account_authenticator" />
+        </service>
+        <!-- 账户结束 -->
+
         <service
             android:name="com.keepalive.daemon.core.component.DaemonService"
             android:exported="true"

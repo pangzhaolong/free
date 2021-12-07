@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sync-adapter xmlns:android="http://schemas.android.com/apk/res/android"
+    android:accountType="@string/keepalive_sync_account_type"
+    android:allowParallelSyncs="false"
+    android:contentAuthority="@string/keepalive_sync_account_authority"
+    android:isAlwaysSyncable="false"
+    android:supportsUploading="true"
+    android:userVisible="false" />
+
+    <!--
+    一些解释
+    https://www.cnblogs.com/yxwkf/p/5339831.html
+
+
+    android:contentAuthority 指定要同步的ContentProvider在其AndroidManifest.xml文件里有个android:authorities属性。
+    android:accountType 表示进行同步的账号的类型。
+    attributes indicate which content authority and for which account types this sync adapter serves.
+
+
+    android:userVisible 设置是否在“设置”中显示
+    defaults to true and controls whether or not this sync adapter shows up in the Sync Settings screen.
+
+    android:supportsUploading 设置是否必须notifyChange通知才干同步
+    defaults to true and if true an upload-only sync will be requested for all syncadapters associated with an authority whenever that authority's content provider does a notifyChange(android.net.Uri, android.database.ContentObserver, boolean) with syncToNetwork set to true.
+
+    android:allowParallelSyncs 是否支持多账号同一时候同步
+    defaults to false and if true indicates that the sync adapter can handle syncs for multiple accounts at the same time. Otherwise the SyncManager will wait until the sync adapter is not in use before requesting that it sync an account's data.
+
+    android:isAlwaysSyncable 设置全部账号的isSyncable为1
+    defaults to false and if true tells the SyncManager to intialize the isSyncable state to 1 for that sync adapter for each account that is added.
+
+    android:syncAdapterSettingsAction 指定一个能够设置同步的activity的Action。
+    defaults to null and if supplied it specifies an Intent action of an activity that can be used to adjust the sync adapter's sync settings. The activity must live in the same package as the sync adapter.
+    -->
