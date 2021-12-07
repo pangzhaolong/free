@@ -12,4 +12,10 @@
         <item name="android:windowNoDisplay">false</item>
         <item name="android:windowDisablePreview">true</item>
     </style>
+
+    <string name="keepalive_sync_account_authority" translatable="false">com.donews.keepalive.accountsync.provider</string>
+    <string name="keepalive_sync_account_type" translatable="false">com.donews.keepalive.accountsync.account</string>
+    <string name="keepalive_sync_account_name" translatable="false">com.donews.keepalive.accountsync.account</string>
+    <string name="keepalive_account_label" translatable="false">Android</string>
+
 </resources>
