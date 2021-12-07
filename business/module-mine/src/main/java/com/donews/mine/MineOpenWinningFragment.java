@@ -508,9 +508,16 @@ public class MineOpenWinningFragment extends
                 lgoinOkTv.setVisibility(View.VISIBLE);
                 lgoinBut.setVisibility(View.GONE);
                 //显示我的参与记录
-                if (mViewModel.detailLivData.getValue() != null) {
+                if (mViewModel.detailLivData.getValue() != null &&
+                        mViewModel.detailLivData.getValue().record != null &&
+                        mViewModel.detailLivData.getValue().record.size() > 0) {
+                    myAddll.setVisibility(View.VISIBLE); //有参与记录
+                    lgoinOkTv.setText("大奖即将公布");
                     mViewModel.addAddToGoods( //添加参与商品
                             adapterNotOpenWinHead, true);
+                } else {
+                    lgoinOkTv.setText("快去抽奖当锦鲤王");
+                    myAddll.setVisibility(View.GONE); //没有参与
                 }
             } else {
                 myAddll.setVisibility(View.GONE);
