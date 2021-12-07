@@ -68,9 +68,9 @@ public class NotifyActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notify_top_banner);
         //统计展示
-        try{
+        try {
             AnalysisUtils.onEvent(this, AnalysisParam.DESKTOP_DISPLAY);
-        }catch (Throwable t){
+        } catch (Throwable t) {
             t.printStackTrace();
         }
         NotifyScreenDelegate.putTodayShowCount(this);
@@ -79,9 +79,9 @@ public class NotifyActivity extends Activity {
         mLayoutNotifyRoot = findViewById(R.id.layout_notifyroot);
         mNotifyIv = findViewById(R.id.img_notify);
         int notifyShowSizeType = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyShowSizeType;
-        if(notifyShowSizeType == 0){
+        if (notifyShowSizeType == 0) {
             mNotifyIv.setImageResource(R.drawable.notifycation_notify_content);
-        }else{
+        } else {
             mNotifyIv.setImageResource(R.drawable.launcher_notify_big);
         }
         mNotifyAnimationView = findViewById(R.id.layout_notifyanimation);
@@ -106,30 +106,31 @@ public class NotifyActivity extends Activity {
             }
         });
         String url = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyLauncherImg;
-        Log.d(TAG, "start url ,url = "+url);
-        if(!TextUtils.isEmpty(url) && url.startsWith("http")){
+        Log.d(TAG, "start url ,url = " + url);
+        if (!TextUtils.isEmpty(url) && url.startsWith("http")) {
             Glide.with(this).asBitmap().load(url).into(new CustomTarget<Bitmap>() {
                 @Override
                 public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                     mNotifyIv.setImageBitmap(resource);
                     mNotifyAnimationView.setHideDuration(NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyShowTime);
-                    Log.d(TAG, "img url loaded , url = "+url);
+                    Log.d(TAG, "img url loaded , url = " + url);
                     mNotifyAnimationView.start();
                 }
 
                 @Override
                 public void onLoadCleared(@Nullable Drawable placeholder) {
-                    Log.d(TAG, "img url onLoadCleared , url ="+url);
+                    Log.d(TAG, "img url onLoadCleared , url =" + url);
                 }
+
                 @Override
                 public void onLoadFailed(@Nullable Drawable errorDrawable) {
                     super.onLoadFailed(errorDrawable);
-                    Log.d(NotifyInitProvider.TAG, "tryLoadNewImg onLoadFailed , url = "+url);
+                    Log.d(NotifyInitProvider.TAG, "tryLoadNewImg onLoadFailed , url = " + url);
                     mNotifyAnimationView.setHideDuration(NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyShowTime);
                     mNotifyAnimationView.start();
                 }
             });
-        }else{
+        } else {
             mNotifyAnimationView.setHideDuration(NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyShowTime);
             mNotifyAnimationView.start();
         }
@@ -153,7 +154,7 @@ public class NotifyActivity extends Activity {
         destroy();
         try {
             Intent intent = new Intent();
-            ComponentName componentName = new ComponentName(context,NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyAlias);
+            ComponentName componentName = new ComponentName(context, NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyAlias);
             intent.setComponent(componentName);
             launchStart.doStart(context, intent);
         } catch (Throwable t) {
@@ -188,9 +189,9 @@ public class NotifyActivity extends Activity {
     }
 
     private void schemeOpen() {
-        try{
+        try {
             AnalysisUtils.onEvent(NotifyActivity.this, AnalysisParam.DESKTOP_DISPLAY_CLICK);
-        }catch (Throwable t){
+        } catch (Throwable t) {
             t.printStackTrace();
         }
         String scheme = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifySchemeOpen;

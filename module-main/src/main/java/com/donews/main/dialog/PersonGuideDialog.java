@@ -130,11 +130,11 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
                 }
                 bundle.putString("title", "用户协议");
                 ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);*/
-                String url = "https://recharge-privacy.xg.tagtic.cn/#/Slas?authorization=" + BuildConfig.APP_IDENTIFICATION;
+                String url = "";
                 if (ABSwitch.Ins().isOpenAB() && DeviceUtils.getChannelName().equalsIgnoreCase("huawei")) {
                     url = "http://ad-static-xg.tagtic.cn/wangzhuan/file/4fb165459cd438f9a3987841d7707d8a.html";
                 } else {
-                    url = "https://recharge-privacy.xg.tagtic.cn/#/Slas?authorization=" + BuildConfig.APP_IDENTIFICATION;
+                    url = "http://ad-static-xg.tagtic.cn/wangzhuan/file/9e5f7a06cbf80a2186e3e34a70f0c360.html";
                 }
                 ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY).withString("url", url)
                         .withString("title", "用户协议").navigation();
@@ -164,11 +164,11 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
                 }
                 bundle.putString("title", "隐私政策");
                 ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);*/
-                String url = "https://recharge-privacy.xg.tagtic.cn/#/privacy?authorization=" + BuildConfig.APP_IDENTIFICATION;
+                String url = "";
                 if (ABSwitch.Ins().isOpenAB() && DeviceUtils.getChannelName().equalsIgnoreCase("huawei")) {
                     url = "http://ad-static-xg.tagtic.cn/wangzhuan/file/739eaf3002ea80d1a2232c9cd5a8b9f4.html";
                 } else {
-                    url = "https://recharge-privacy.xg.tagtic.cn/#/privacy?authorization=" + BuildConfig.APP_IDENTIFICATION;
+                    url = "http://ad-static-xg.tagtic.cn/wangzhuan/file/b7f18dcb857e80eab353cfb99c3f042e.html";
                 }
 
                 ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY).withString("url", url)

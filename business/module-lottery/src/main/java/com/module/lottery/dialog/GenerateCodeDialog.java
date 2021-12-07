@@ -1,17 +1,10 @@
 package com.module.lottery.dialog;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.DisplayMetrics;
-import android.view.Gravity;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,6 +16,8 @@ import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.module.lottery.bean.GenerateCodeBean;
 import com.module.lottery.model.LotteryModel;
 import com.module.lottery.ui.BaseParams;
@@ -41,7 +36,8 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
     private LotteryHandler mLotteryHandler = new LotteryHandler(this);
     private BaseLiveDataModel baseLiveDataModel;
     private String mGoodsId;
-    public GenerateCodeDialog(Context context,String goodsId) {
+
+    public GenerateCodeDialog(Context context, String goodsId) {
         super(context, R.style.dialogTransparent);//内容样式在这里引入
         baseLiveDataModel = new BaseLiveDataModel();
         mGoodsId = goodsId;
@@ -90,7 +86,7 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
                         @Override
                         public void onError(ApiException e) {
                             //广告跳转
-                            if(mOnFinishListener!=null){
+                            if (mOnFinishListener != null) {
                                 mOnFinishListener.onFinish();
                             }
                             Toast.makeText(getContext(), "抽奖码获取失败", Toast.LENGTH_SHORT).show();
@@ -101,9 +97,12 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
                             if (generateCode != null) {
                                 //抽奖统计
                                 LotteryAdCount.INSTANCE.lotterySuccess();
-                                if(mOnFinishListener!=null){
+                                if (mOnFinishListener != null) {
                                     mOnFinishListener.onJump(generateCode);
                                 }
+                                AnalysisUtils.onEventEx(getContext(), Dot.PAY_SUCC);
+                            } else {
+                                AnalysisUtils.onEventEx(getContext(), Dot.PAY_FAIL);
                             }
                         }
                     }));
@@ -111,8 +110,7 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
     }
 
 
-
-    private  void initView(){
+    private void initView() {
         mDataBinding.lotteryText01.start();
         mDataBinding.lotteryText02.start();
         mDataBinding.lotteryText03.start();
@@ -134,8 +132,6 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
         super.setOnDismissListener(listener);
 
     }
-
-
 
 
     public void setStateListener(OnStateListener l) {
@@ -166,7 +162,7 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
             switch (msg.what) {
                 case 1:
                     if (reference.get() != null && reference.get().mOnFinishListener != null) {
-                        reference.get(). generateLotteryCode();
+                        reference.get().generateLotteryCode();
                     }
                     break;
             }

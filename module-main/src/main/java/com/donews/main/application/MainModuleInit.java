@@ -98,6 +98,7 @@ public class MainModuleInit implements IModuleInit {
 
         long seconds = (currentTime - stopTime) / 1000;
         LogUtil.d("toForeGround: seconds:" + seconds);
+        LogUtil.e(activity.getClass().getName());
         if (seconds > backGroundInt) {
             SplashActivity.toForeGround(activity);
         }

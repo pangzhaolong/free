@@ -15,7 +15,7 @@ import androidx.annotation.Nullable;
  * @date 2021/4/7 17:31
  * @since v1.0
  */
-public class TestActivity extends Activity {
+public class TestActivity11 extends Activity {
     public static final String TAG = "crash";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

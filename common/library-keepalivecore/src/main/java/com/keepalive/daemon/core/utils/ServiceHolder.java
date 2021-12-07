@@ -73,10 +73,14 @@ public class ServiceHolder {
         Intent bindIntent = new Intent(context, clazz);
         bindIntent.setAction(context.getPackageName() + ".monitor.BIND_SERVICE");
         Logger.i(Logger.TAG, "call bindService(): " + bindIntent);
-        return context.bindService(bindIntent,
-                new ServiceConnectionImpl(listener),
-                Context.BIND_AUTO_CREATE
-        );
+        try {
+            return context.bindService(bindIntent,
+                    new ServiceConnectionImpl(listener),
+                    Context.BIND_AUTO_CREATE
+            );
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public void unbindService(Context context, ServiceConnection connection) {

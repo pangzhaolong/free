@@ -87,8 +87,12 @@ public class Logger {
         if (element != null && element.length >= 4) {
             String methodName = element[4].getMethodName();
             int lineNumber = element[4].getLineNumber();
-            return String.format("%s.%s : %d ---> ", getClassName(),
-                    methodName, lineNumber, Locale.CHINESE);
+            try {
+                return String.format("%s.%s : %d ---> ", getClassName(),
+                        methodName, lineNumber, Locale.CHINESE);
+            } catch (Exception e) {
+
+            }
         }
         return null;
     }

@@ -55,7 +55,7 @@ class NotificationApiCompat {
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             if (img != null) {
                 if (remoteViews != null) {
-                    if (!ROMUtil.isVivo()) {
+                    if (!ROMUtil12.isVivo()) {
                         remoteViews.setImageViewBitmap(R.id.iv_img, img);
                     }
                 }
@@ -115,7 +115,7 @@ class NotificationApiCompat {
         }
 
         Builder setLargeIcon(Bitmap icon) {
-            if (ROMUtil.isMiui()) {
+            if (ROMUtil12.isMiui()) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     mBuilder26.setLargeIcon(icon);
                 } else {
@@ -165,7 +165,7 @@ class NotificationApiCompat {
                 mBuilder26.setCustomBigContentView(remoteViews);
                 mBuilder26.setCustomContentView(remoteViews2);
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                if (!ROMUtil.isVivo()) {
+                if (!ROMUtil12.isVivo()) {
                     remoteViews = new RemoteViews(mContext.getPackageName(), R.layout.layout_notification);
                     mBuilder25.setCustomBigContentView(remoteViews);
                 }

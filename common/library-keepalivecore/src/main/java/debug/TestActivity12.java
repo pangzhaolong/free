@@ -21,7 +21,7 @@ import com.keepalive.daemon.core.notification.NotifyResidentService;
  * @date 2021/4/7 17:31
  * @since v1.0
  */
-public class TestActivity extends Activity {
+public class TestActivity12 extends Activity {
     public static final String TAG = "crash";
     private static final LaunchStart launchStart = new LaunchStart();
     @Override
@@ -73,10 +73,10 @@ public class TestActivity extends Activity {
             @Override
             public void onClick(View v) {
                 try {
-                    Intent intent = new Intent(TestActivity.this, NotifyResidentService.class);
+                    Intent intent = new Intent(TestActivity12.this, NotifyResidentService.class);
                     intent.putExtra("noti_title", "Test");
                     intent.putExtra("noti_text", "Hello,world!");
-                    intent.putExtra("noti_activity", TestActivity.class.getName());
+                    intent.putExtra("noti_activity", TestActivity12.class.getName());
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         startForegroundService(intent);
                     }else{
@@ -122,9 +122,9 @@ public class TestActivity extends Activity {
                 new android.os.Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Intent intent = new Intent(TestActivity.this, Test2Activity.class);
-                        intent.putExtra(Test2Activity.METHOD, "onCreate");
-                        launchStart.doStart(TestActivity.this,intent);
+                        Intent intent = new Intent(TestActivity12.this, Test2Activity12.class);
+                        intent.putExtra(Test2Activity12.METHOD, "onCreate");
+                        launchStart.doStart(TestActivity12.this,intent);
 //                        startActivity(intent);
                     }
                 },3000);

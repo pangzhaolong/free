@@ -16,7 +16,7 @@ import java.util.Date;
  * @date 2021/4/9 10:38
  * @since v1.0
  */
-public class Test2Activity extends Activity {
+public class Test2Activity12 extends Activity {
 
     public static final String METHOD = "method";
     private String exceptionPoint;

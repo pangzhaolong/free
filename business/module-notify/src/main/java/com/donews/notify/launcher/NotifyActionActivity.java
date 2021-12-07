@@ -63,14 +63,14 @@ public class NotifyActionActivity extends Activity {
     public static void actionStart(Context context) {
         Log.i(TAG, "NotifyActionActivity actionStart");
         destroy();
-        try{
+        try {
             Intent intent = new Intent();
             ComponentName componentName = new ComponentName(context, NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyActionAlias);
             intent.setComponent(componentName);
 //            Intent intent = new Intent(context, NotifyActionActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             launchStart.doStart(context, intent);
-        }catch (Throwable t){
+        } catch (Throwable t) {
             Intent intent = new Intent(context, NotifyActionActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             launchStart.doStart(context, intent);

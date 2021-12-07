@@ -109,7 +109,7 @@ android {
         targetCompatibility 1.8
     }
 
-    ndkVersion '20.0.5594570'
+    ndkVersion '23.0.7599858'
 
     useLibrary 'org.apache.http.legacy'
 }
