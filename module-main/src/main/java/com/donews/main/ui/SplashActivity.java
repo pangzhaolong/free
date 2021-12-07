@@ -138,7 +138,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         showPersonGuideDialog();
         Uri referrer = this.getReferrer();
 
-        Log.e("Notify", "----------------->");
+        /*Log.e("Notify", "----------------->");
         if (referrer != null) {
             try {
 
@@ -149,7 +149,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
 
             }
         }
-        Log.e("Notify", "-----------------<");
+        Log.e("Notify", "-----------------<");*/
     }
 
     @Subscribe //网络状态变化监听
