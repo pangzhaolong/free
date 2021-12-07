@@ -98,7 +98,7 @@ object DoNewsSplashLoadHelper : BaseHelper() {
             //设置超时时间5000代表5秒，时间建议大于等于5秒以上，如果GroMore广告，请按照gromore后台合理配置
             .setTimeOut(adRequest.mAdRequestTimeOut)
             .build()
-
+        listener?.onAdStartLoad()
         doNewsAdNative.loadAndShowSplash(activity, doNewsAd, doNewsSplashListener)
     }
 
@@ -198,7 +198,7 @@ object DoNewsSplashLoadHelper : BaseHelper() {
             //设置超时时间5000代表5秒，时间建议大于等于5秒以上，如果GroMore广告，请按照gromore后台合理配置
             .setTimeOut(adRequest.mAdRequestTimeOut)
             .build()
-
+        listener?.onAdStartLoad()
         doNewsAdNative.loadSplashAd(activity, doNewsAd, doNewsSplashListener)
         return doNewsPreloadSplashAd
     }

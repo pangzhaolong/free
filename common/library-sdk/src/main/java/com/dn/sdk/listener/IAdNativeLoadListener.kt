@@ -9,7 +9,7 @@ import com.dn.sdk.bean.natives.INativeAdData
  * @version v1.0
  * @date 2021/12/2 13:55
  */
-interface IAdNativeLoadListener {
+interface IAdNativeLoadListener:IAdStartLoadListener {
 
     /** 无广告填充 */
     fun onAdError(code: Int, errorMsg: String?)

@@ -91,6 +91,7 @@ object DoNewsNativeTemplateLoadHelper : BaseHelper() {
             .setExpressViewHeight(adRequest.mHeightDp)
             .setTimeOut(adRequest.mAdRequestTimeOut)
             .build()
+        listener?.onAdStartLoad()
         doNewsAdNative.loadTemplate(activity, doNewsAd, doNewsTemplateListener)
     }
 }

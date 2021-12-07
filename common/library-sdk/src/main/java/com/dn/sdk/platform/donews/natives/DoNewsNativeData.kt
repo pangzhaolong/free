@@ -5,8 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
+import com.dn.sdk.bean.AdRequest
 import com.dn.sdk.bean.natives.INativeAdData
 import com.dn.sdk.listener.IAdNativeListener
+import com.dn.sdk.listener.proxy.LoggerNativeListenerProxy
 import com.dn.sdk.loader.SdkType
 import com.donews.ads.mediation.v2.framework.listener.DoNewsAdNativeData
 import com.donews.ads.mediation.v2.framework.listener.NativeAdListener
@@ -18,7 +20,14 @@ import com.donews.ads.mediation.v2.framework.listener.NativeAdListener
  * @version v1.0
  * @date 2021/12/3 15:09
  */
-class DoNewsNativeData(private val nativeData: DoNewsAdNativeData) : INativeAdData {
+class DoNewsNativeData(
+    private val adRequest: AdRequest,
+    private val nativeData: DoNewsAdNativeData
+) : INativeAdData {
+    override fun getAdRequest(): AdRequest {
+        return adRequest
+    }
+
     override fun getSdkType(): SdkType {
         return SdkType.DO_NEWS
     }
@@ -82,21 +91,23 @@ class DoNewsNativeData(private val nativeData: DoNewsAdNativeData) : INativeAdDa
         clickViews: List<View>?,
         listener: IAdNativeListener?
     ) {
+
+        val loggerListener = LoggerNativeListenerProxy(adRequest, listener)
         nativeData.bindView(context, viewGroup, frameLayout, clickViews, object : NativeAdListener {
             override fun onAdStatus(code: Int, any: Any?) {
-                listener?.onAdStatus(code, any)
+                loggerListener.onAdStatus(code, any)
             }
 
             override fun onAdExposure() {
-                listener?.onAdExposure()
+                loggerListener.onAdExposure()
             }
 
             override fun onAdClicked() {
-                listener?.onAdClicked()
+                loggerListener.onAdClicked()
             }
 
             override fun onAdError(errorMsg: String?) {
-                listener?.onAdError(errorMsg)
+                loggerListener.onAdError(errorMsg)
             }
         })
     }

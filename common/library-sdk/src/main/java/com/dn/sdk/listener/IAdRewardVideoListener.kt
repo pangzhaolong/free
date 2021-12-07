@@ -8,7 +8,7 @@ package com.dn.sdk.listener;
  * @version v1.0
  * @date 2021/9/26 14:46
  */
-interface IAdRewardVideoListener {
+interface IAdRewardVideoListener:IAdStartLoadListener {
 
     /**
      *

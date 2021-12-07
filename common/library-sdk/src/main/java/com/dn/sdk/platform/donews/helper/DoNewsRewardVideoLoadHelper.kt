@@ -4,11 +4,9 @@ import android.app.Activity
 import com.dn.sdk.AdCustomError
 import com.dn.sdk.bean.AdRequest
 import com.dn.sdk.bean.PreloadAdState
-import com.dn.sdk.platform.donews.preloadad.DoNewsPreloadRewardVideoAd
-import com.dn.sdk.listener.IAdRewardVideoListener
 import com.dn.sdk.bean.preload.PreloadRewardVideoAd
-import com.dn.sdk.utils.AdLoggerUtils
-import com.dn.sdk.utils.SdkLogUtils
+import com.dn.sdk.listener.IAdRewardVideoListener
+import com.dn.sdk.platform.donews.preloadad.DoNewsPreloadRewardVideoAd
 import com.donews.ads.mediation.v2.api.DoNewsAdManagerHolder
 import com.donews.ads.mediation.v2.api.DoNewsAdNative
 import com.donews.ads.mediation.v2.framework.bean.DoNewsAD
@@ -38,49 +36,40 @@ object DoNewsRewardVideoLoadHelper : BaseHelper() {
         val doNewsRewardVideoListener = object : DoNewsAdNative.RewardVideoADListener {
 
             override fun onAdStatus(code: Int, any: Any?) {
-                AdLoggerUtils.d("in onAdStatus($code,$any)")
                 listener?.onAdStatus(code, any)
             }
 
             override fun onAdLoad() {
-                AdLoggerUtils.d("in onAdLoad()")
                 listener?.onAdLoad()
             }
 
             override fun onVideoCached() {
-                AdLoggerUtils.d("in onVideoCached()")
                 listener?.onVideoCached()
                 //缓存成功,则播放激励视频
                 doNewsAdNative?.showRewardAd()
             }
 
             override fun onAdShow() {
-                AdLoggerUtils.d("in onAdShow()")
                 listener?.onAdShow()
             }
 
             override fun onAdVideoClick() {
-                AdLoggerUtils.d("in onAdVideoClick()")
                 listener?.onAdVideoClick()
             }
 
             override fun onRewardVerify(result: Boolean) {
-                AdLoggerUtils.d("in onRewardVerify($result)")
                 listener?.onRewardVerify(result)
             }
 
             override fun onVideoComplete() {
-                AdLoggerUtils.d("in onVideoComplete()")
                 listener?.onVideoComplete()
             }
 
             override fun onAdClose() {
-                AdLoggerUtils.d("in onAdClose()")
                 listener?.onAdClose()
             }
 
             override fun onAdError(code: Int, errorMsg: String?) {
-                AdLoggerUtils.d("in onAdError($code,$errorMsg)")
                 listener?.onAdError(code, errorMsg)
             }
         }
@@ -118,17 +107,14 @@ object DoNewsRewardVideoLoadHelper : BaseHelper() {
         val doNewsRewardVideoListener = object : DoNewsAdNative.RewardVideoADListener {
 
             override fun onAdStatus(code: Int, any: Any?) {
-                AdLoggerUtils.d("in onAdStatus($code,$any)")
                 listener?.onAdStatus(code, any)
             }
 
             override fun onAdLoad() {
-                AdLoggerUtils.d("in onAdLoad()")
                 listener?.onAdLoad()
             }
 
             override fun onVideoCached() {
-                AdLoggerUtils.d("in onVideoCached()")
                 listener?.onVideoCached()
                 preloadRewardVideoAd.setLoadState(PreloadAdState.Success)
                 if (preloadRewardVideoAd.isNeedShow()) {
@@ -137,32 +123,26 @@ object DoNewsRewardVideoLoadHelper : BaseHelper() {
             }
 
             override fun onAdShow() {
-                AdLoggerUtils.d("in onAdShow()")
                 listener?.onAdShow()
             }
 
             override fun onAdVideoClick() {
-                AdLoggerUtils.d("in onAdVideoClick()")
                 listener?.onAdVideoClick()
             }
 
             override fun onRewardVerify(result: Boolean) {
-                AdLoggerUtils.d("in onRewardVerify($result)")
                 listener?.onRewardVerify(result)
             }
 
             override fun onVideoComplete() {
-                AdLoggerUtils.d("in onVideoComplete()")
                 listener?.onVideoComplete()
             }
 
             override fun onAdClose() {
-                AdLoggerUtils.d("in onAdClose()")
                 listener?.onAdClose()
             }
 
             override fun onAdError(code: Int, errorMsg: String?) {
-                AdLoggerUtils.d("in onAdError($code,$errorMsg)")
                 preloadRewardVideoAd.setLoadState(PreloadAdState.Error)
                 listener?.onAdError(code, errorMsg)
             }
@@ -175,7 +155,6 @@ object DoNewsRewardVideoLoadHelper : BaseHelper() {
             .setOrientation(adRequest.mOrientation)
             .setTimeOut(adRequest.mAdRequestTimeOut)
             .build()
-        AdLoggerUtils.d("in onStartLoad()")
         doNewsAdNative.loadRewardVideo(activity, doNewsAd, doNewsRewardVideoListener)
         return preloadRewardVideoAd
     }

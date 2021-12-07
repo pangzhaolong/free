@@ -83,6 +83,7 @@ object DoNewsInterstitialLoadHelper : BaseHelper() {
             .setExpressViewHeight(adRequest.mHeightDp)
             .setTimeOut(adRequest.mAdRequestTimeOut)
             .build()
+        listener?.onAdStartLoad()
         doNewsNative.loadAndShowInterstitial(activity, doNewsAd, doNewsInterstitialListener)
     }
 

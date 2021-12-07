@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
+import com.dn.sdk.bean.AdRequest
 import com.dn.sdk.listener.IAdNativeListener
 import com.dn.sdk.loader.SdkType
 
@@ -16,6 +17,8 @@ import com.dn.sdk.loader.SdkType
  * @date 2021/12/3 14:31
  */
 interface INativeAdData {
+
+    fun getAdRequest(): AdRequest
 
     /** 数据获取来源平台 */
     fun getSdkType(): SdkType

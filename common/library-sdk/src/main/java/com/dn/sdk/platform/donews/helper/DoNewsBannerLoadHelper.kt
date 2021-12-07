@@ -89,6 +89,7 @@ object DoNewsBannerLoadHelper : BaseHelper() {
             .setTimeOut(adRequest.mAdRequestTimeOut)
             .setView(adRequest.mAdContainer)
             .build()
+        listener?.onAdStartLoad()
         doNewsNative.loadAndShowBanner(activity, doNewsAd, doNewsBannerListener)
     }
 

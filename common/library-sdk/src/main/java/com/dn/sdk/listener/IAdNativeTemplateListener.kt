@@ -9,7 +9,7 @@ import android.view.View
  * @version v1.0
  * @date 2021/12/2 14:01
  */
-interface IAdNativeTemplateListener {
+interface IAdNativeTemplateListener:IAdStartLoadListener {
 
     /**
      *

@@ -30,5 +30,5 @@ interface IAdNativeListener {
     fun onAdClicked()
 
     /** 广告展示错误 */
-    fun onAdError(var1: String?)
+    fun onAdError(errorMsg: String?)
 }
