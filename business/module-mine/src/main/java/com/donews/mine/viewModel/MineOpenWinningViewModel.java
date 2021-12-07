@@ -272,6 +272,13 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
                         //如果出错。则进行倒计时处理。所以这里不处理(已产品确认)
                     }
                 }
+                if(AppInfo.checkIsWXLogin()) {
+                    //无论如何都加载详情数据(倒计时阶段。需要加载一次详情数据)
+                    loadData(openWinPeriod.getValue(), true);
+                }else{
+                    //关闭刷新状态
+                    viewDataBinding.mainWinCodeRefresh.finishRefresh();
+                }
                 //开启计时器(通过服务器时间计算得出的需要计数的时间)
                 int countDownTime = Math.abs(stepTime);
                 if (openWinCountdown.getValue() == null) {

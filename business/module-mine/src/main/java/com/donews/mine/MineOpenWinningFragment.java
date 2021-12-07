@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -21,6 +22,7 @@ import com.donews.common.ad.business.monitor.PageMonitor;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
+import com.donews.common.router.providers.IARouterLoginProvider;
 import com.donews.middle.views.BarrageView;
 import com.donews.mine.adapters.MineWinningCodeAdapter;
 import com.donews.mine.bean.resps.RecommendGoodsResp;
@@ -28,6 +30,8 @@ import com.donews.mine.databinding.MineFragmentWinningCodeBinding;
 import com.donews.mine.viewModel.MineOpenWinningViewModel;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
+import com.donews.utilslibrary.utils.AppInfo;
+import com.scwang.smart.refresh.layout.constant.RefreshState;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -65,7 +69,7 @@ public class MineOpenWinningFragment extends
     private ViewGroup adapterOpenWinHead = null;
     //adapter的headView(未开奖)
     private ViewGroup adapterNotOpenWinHead = null;
-    //adapter的headView(未开奖时候查看我的参与记录时)
+    //adapter的headView(未开奖时候查看我的参与记录视图)
     private ViewGroup adapterNotOpenMyAddRecordHead = null;
     MineWinningCodeAdapter adapter;
     private TextView timeHH;
@@ -98,11 +102,19 @@ public class MineOpenWinningFragment extends
 
     @Subscribe
     public void userLoginStatus(LoginUserStatus event) {
+        loginStatus = AppInfo.checkIsWXLogin();
         if (event.getStatus() == 1 ||
                 event.getStatus() == 2) {
             if (mViewModel.detailLivData.getValue() != null) {
                 mDataBinding.mainWinCodeRefresh.autoRefresh();
+            } else {
+                if (fastType == 0 || mViewModel.openWinCountdown.getValue() > 0) {
+                    //当前状态为未开奖。那么刷新UI
+                    updateUI(fastType);
+                }
             }
+        } else {
+            mDataBinding.mainWinCodeRefresh.autoRefresh();
         }
     }
 
@@ -338,9 +350,8 @@ public class MineOpenWinningFragment extends
                 if (countDown > 0) { //未开奖
                     //更新未开奖的UI
                     updateUI(0);
-                    mDataBinding.mainWinCodeRefresh.finishRefresh();
                 } else { //已开奖
-                    //强制调用。否则将会地柜调用
+                    //强制调用。否则将会递归调用
                     mViewModel.cancelNotOpenWinCountDownTimer();
                     mViewModel.loadData(
                             mViewModel.openWinPeriod.getValue(), true);
@@ -353,7 +364,11 @@ public class MineOpenWinningFragment extends
             }
             mDataBinding.mainWinCodeRefresh.finishRefresh();
             //更新已开奖的UI
-            updateUI(1);
+            if (mViewModel.openWinCountdown.getValue() > 0) {
+                updateUI(0); //还在计时阶段。那么直接刷新一次未开奖视图
+            } else {
+                updateUI(1);
+            }
             if (isRefesh) {
                 if (scrollTop0Count < 2) {
                     mDataBinding.mineWinCodeList.scrollToPosition(0);
@@ -455,12 +470,18 @@ public class MineOpenWinningFragment extends
         adapter.addHeaderView(adapterNotOpenWinHead);
     }
 
+
+    //上一次更新的UI类型
+    private int fastType = -1;
+    private boolean loginStatus = AppInfo.checkIsWXLogin(); //登录状态
+
     /**
      * 更新UI
      *
-     * @param type -1:为止类型只更新通用部分，0:未开奖UI，1：已开奖UI
+     * @param type -1:为止类型只更新通用部分，0:未开奖 UI，1：已开奖UI
      */
     private void updateUI(int type) {
+        fastType = type;
         if (period > 0) {
             mDataBinding.mainWinCodeTitleName.setText(period + "期");
         } else {
@@ -478,6 +499,28 @@ public class MineOpenWinningFragment extends
             adapterNotOpenMyAddRecordHead.setVisibility(View.GONE);
             adapterNotOpenWinHead.setVisibility(View.VISIBLE);
             addListNotOpenWinHead();
+
+            TextView lgoinOkTv = adapterNotOpenWinHead.findViewById(R.id.mine_tv_djgb);
+            TextView lgoinBut = adapterNotOpenWinHead.findViewById(R.id.mine_tv_login);
+            LinearLayout myAddll = adapterNotOpenWinHead.findViewById(R.id.mine_win_code_win_connect_layout);
+            if (loginStatus) {
+                myAddll.setVisibility(View.VISIBLE);
+                lgoinOkTv.setVisibility(View.VISIBLE);
+                lgoinBut.setVisibility(View.GONE);
+                //显示我的参与记录
+                if (mViewModel.detailLivData.getValue() != null) {
+                    mViewModel.addAddToGoods( //添加参与商品
+                            adapterNotOpenWinHead, true);
+                }
+            } else {
+                myAddll.setVisibility(View.GONE);
+                lgoinOkTv.setVisibility(View.GONE);
+                lgoinBut.setVisibility(View.VISIBLE);
+                lgoinBut.setOnClickListener(v -> {
+                    RouterActivityPath.LoginProvider.getLoginProvider()
+                            .loginWX(this.toString(), "开奖页>登录按钮");
+                });
+            }
             mViewModel.updateCountDownUI(timeHH, timeMM, timeSS);
             if (!isInitCommData) {
                 isInitCommData = true;
