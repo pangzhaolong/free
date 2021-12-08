@@ -1,32 +1,36 @@
+/**
+ * 额外获得奖励的弹窗
+ *
+ * @author hegai
+ * @version v1.0
+ * @date 2021/12/8
+ */
+
 package com.module.lottery.dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 
-import com.module.lottery.model.LotteryModel;
-import com.module_lottery.R;
+
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 public abstract class BaseDialog<V extends ViewDataBinding> extends Dialog {
     protected V mDataBinding;
     private static final String LOTTERY_PS = "Lottery_BaseDialog";
-
-
 
 
     private SharedPreferences mSharedPreferences;
@@ -59,6 +63,15 @@ public abstract class BaseDialog<V extends ViewDataBinding> extends Dialog {
 
     }
 
+    public void show(Context context) {
+        if (context != null && context instanceof Activity && !((Activity) (context)).isFinishing() && !((Activity) (context)).isDestroyed()) {
+            super.show();
+        }
+    }
+
+    public void dismiss() {
+        super.dismiss();
+    }
 
     public SharedPreferences.Editor getEditor() {
         if (mSharedPreferences != null) {
@@ -70,6 +83,7 @@ public abstract class BaseDialog<V extends ViewDataBinding> extends Dialog {
     public SharedPreferences getSharedPreferences() {
         return mSharedPreferences;
     }
+
     @Override
     public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
         return true;
@@ -77,5 +91,21 @@ public abstract class BaseDialog<V extends ViewDataBinding> extends Dialog {
 
 
     public abstract float setSize();
+
+
+    private CompositeDisposable mCompositeDisposable;
+
+    public void addDisposable(Disposable disposable) {
+        if (mCompositeDisposable == null) {
+            mCompositeDisposable = new CompositeDisposable();
+        }
+        mCompositeDisposable.add(disposable);
+    }
+
+    public void unDisposable() {
+        if (mCompositeDisposable != null && mCompositeDisposable.isDisposed()) {
+            mCompositeDisposable.clear();
+        }
+    }
 
 }
