@@ -4,11 +4,10 @@ import static com.module.lottery.dialog.ReturnInterceptDialog.TYPE_1;
 import static com.module.lottery.dialog.ReturnInterceptDialog.TYPE_2;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -382,6 +381,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     private void showGenerateCodeDialog() {
         try {
             GenerateCodeDialog generateCodeDialog = new GenerateCodeDialog(LotteryActivity.this, mGoodsId);
+            generateCodeDialog.setOwnerActivity(LotteryActivity.this);
             generateCodeDialog.setStateListener(new GenerateCodeDialog.OnStateListener() {
                 @Override
                 public void onFinish() {
@@ -391,7 +391,10 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 @Override
                 public void onJump(GenerateCodeBean generateCodeBean) {
                     //不跳转广告 展示生成的随机抽奖码
-                    generateCodeDialog.dismiss();
+                    Activity activity = generateCodeDialog.getOwnerActivity();
+                    if (activity != null && !activity.isFinishing()) {
+                        generateCodeDialog.dismiss();
+                    }
 
                     if (generateCodeBean == null) {
                         Toast.makeText(LotteryActivity.this, "生成抽奖码失败", Toast.LENGTH_SHORT).show();
