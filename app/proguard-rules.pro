@@ -635,8 +635,8 @@ public static final int *;
 -keep enum org.greenrobot.eventbus.ThreadMode { *; }
 
 
--keep class * extends com.dn.sdk.sdk.bean.BaseAdIdConfigBean{*;}
--keep class * extends com.dn.sdk.sdk.bean.RequestInfo{*;}
+-keep class * extends com.dn.sdk.bean.BaseAdIdConfigBean{*;}
+-keep class * extends com.dn.sdk.sdk.bean.RequestInfoV2{*;}
 
 
 

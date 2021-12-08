@@ -166,7 +166,7 @@ public class MainActivity
         if (status.getStatus() == 1 && AppInfo.checkIsWXLogin()) {
             //登录刷新广告id
             String url = HttpConfigUtilsKt.withConfigParams(BuildConfig.AD_ID_CONFIG, false);
-            AdManager.INSTANCE.initAdIdConfig(url);
+            AdManager.INSTANCE.init();
         }
     }
 

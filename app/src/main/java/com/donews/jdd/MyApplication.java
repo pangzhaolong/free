@@ -61,6 +61,7 @@ public class MyApplication extends BaseApplication {
 
             // 初始化需要初始化的组件
             ModuleLifecycleConfig.getInstance().initModuleAhead(this);
+
             //错误日志收集
             CrashHandlerUtil.getInstance().init(this);
             // 集成bugly

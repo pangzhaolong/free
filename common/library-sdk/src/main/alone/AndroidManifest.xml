@@ -3,66 +3,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.dn.sdk">
 
-    <!--    com.dn.sdk-->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.REORDER_TASKS" />
+    <!--region DNSDK 权限 -->
+    <!-- 基础权限，广告平台需要增加的权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <!-- 如果有视频相关的广告且使用textureView播放，请务必添加，否则黑屏 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- 建议配置权限，这些权限对eCPM有提升 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-    <application
-        android:name=".TestApplication"
-        android:label="@string/sdk_module_app_name"
-        android:theme="@style/Theme.Design.Light.NoActionBar"
-        tools:replace="android:label">
-        <activity
-            android:name=".test.TestActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.Design.Light.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+    <!--endregion -->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+    <uses-sdk
+        android:minSdkVersion="21"
+        android:targetSdkVersion="28" />
 
-        </activity>
-        <activity android:name=".test.NewsFeedCustomerRenderActivity" />
+    <application android:requestLegacyExternalStorage="true" />
 
-
-        <activity
-            android:name=".ui.LockerActivity"
-            android:excludeFromRecents="true"
-            android:launchMode="singleTask"
-            android:taskAffinity="com.downs.LockerActivity"
-            android:theme="@style/LockerTheme" />
-
-
-        <activity
-            android:name=".ui.PopupVideoActivity"
-            android:excludeFromRecents="true"
-            android:taskAffinity="com.donews.PopupVideoActivity"
-            android:launchMode="standard"
-            android:theme="@style/TransStyle"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
-
-        <activity
-            android:name=".dialog.AppDialog"
-            android:excludeFromRecents="true"
-            android:launchMode="singleTask"
-            android:taskAffinity="com.downs.AppDialog"
-            android:theme="@style/AppDialogTheme">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT" />
-                <action android:name="android.intent.action.VIEW" />
-                <data
-                    android:host="com.dn.dialog"
-                    android:path="/appDialog"
-                    android:scheme="donews" />
-            </intent-filter>
-
-
-        </activity>
-
-        <service android:name=".service.AdDaemonService" />
-    </application>
 
 </manifest>

@@ -4,12 +4,12 @@ import android.content.Intent
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.alibaba.android.arouter.launcher.ARouter
-import com.dn.sdk.sdk.interfaces.listener.impl.SimpleInterstListener
-import com.dn.sdk.sdk.interfaces.listener.impl.SimpleRewardVideoListener
+import com.dn.sdk.listener.impl.SimpleInterstitialListener
+import com.dn.sdk.listener.impl.SimpleRewardVideoListener
 import com.donews.base.base.AppManager
 import com.donews.base.base.AppStatusConstant
 import com.donews.base.base.AppStatusManager
-import com.donews.common.ad.business.callback.JddAdConfigManager
+import com.donews.common.ad.business.manager.JddAdConfigManager
 import com.donews.common.ad.business.loader.AdManager
 import com.donews.common.ad.business.monitor.LotteryAdCount
 import com.donews.common.router.RouterActivityPath
@@ -563,9 +563,10 @@ object ExitInterceptUtils {
             val jddAdConfigBean = JddAdConfigManager.jddAdConfigBean
             if (jddAdConfigBean.notLotteryExitAppDialogAdEnable) {
                 if (jddAdConfigBean.notLotteryExitAppDialogAdType == 1) {
-                    AdManager.loadInterstitialAd(activity, object : SimpleInterstListener() {
-                        override fun onError(code: Int, msg: String?) {
-                            super.onError(code, msg)
+                    AdManager.loadInterstitialAd(activity, object : SimpleInterstitialListener() {
+
+                        override fun onAdError(code: Int, errorMsg: String?) {
+                            super.onAdError(code, errorMsg)
                             if (jddAdConfigBean.notLotteryExitAppDialogAdMutex) {
                                 realExitApp(activity)
                             } else {
@@ -584,8 +585,9 @@ object ExitInterceptUtils {
                     })
                 } else {
                     AdManager.loadRewardVideoAd(activity, object : SimpleRewardVideoListener() {
-                        override fun onError(code: Int, msg: String?) {
-                            super.onError(code, msg)
+
+                        override fun onAdError(code: Int, errorMsg: String?) {
+                            super.onAdError(code, errorMsg)
                             if (jddAdConfigBean.notLotteryExitAppDialogAdMutex) {
                                 realExitApp(activity)
                             } else {
@@ -593,8 +595,8 @@ object ExitInterceptUtils {
                             }
                         }
 
-                        override fun onRewardedClosed() {
-                            super.onRewardedClosed()
+                        override fun onAdClose() {
+                            super.onAdClose()
                             if (jddAdConfigBean.notLotteryExitAppDialogAdMutex) {
                                 realExitApp(activity)
                             } else {
@@ -622,11 +624,13 @@ object ExitInterceptUtils {
             if (times >= jddAdConfigBean.notLotteryExitAppTimes) {
                 LotteryAdCount.resetExitAppWithNotLotteryTimes()
                 if (jddAdConfigBean.notLotteryExitAppAdType == 1) {
-                    AdManager.loadInterstitialAd(activity, object : SimpleInterstListener() {
-                        override fun onError(code: Int, msg: String?) {
-                            super.onError(code, msg)
+                    AdManager.loadInterstitialAd(activity, object : SimpleInterstitialListener() {
+
+                        override fun onAdError(code: Int, errorMsg: String?) {
+                            super.onAdError(code, errorMsg)
                             realExitApp(activity)
                         }
+
 
                         override fun onAdClosed() {
                             super.onAdClosed()
@@ -635,13 +639,13 @@ object ExitInterceptUtils {
                     })
                 } else {
                     AdManager.loadRewardVideoAd(activity, object : SimpleRewardVideoListener() {
-                        override fun onError(code: Int, msg: String?) {
-                            super.onError(code, msg)
+                        override fun onAdError(code: Int, errorMsg: String?) {
+                            super.onAdError(code, errorMsg)
                             realExitApp(activity)
                         }
 
-                        override fun onRewardedClosed() {
-                            super.onRewardedClosed()
+                        override fun onAdClose() {
+                            super.onAdClose()
                             realExitApp(activity)
                         }
                     })

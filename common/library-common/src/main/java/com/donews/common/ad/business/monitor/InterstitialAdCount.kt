@@ -1,6 +1,6 @@
 package com.donews.common.ad.business.monitor
 
-import com.donews.common.ad.business.callback.JddAdConfigManager
+import com.donews.common.ad.business.manager.JddAdConfigManager
 import com.tencent.mmkv.MMKV
 import java.text.SimpleDateFormat
 import java.util.*

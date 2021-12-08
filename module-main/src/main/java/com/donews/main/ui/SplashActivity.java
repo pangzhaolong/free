@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.blankj.utilcode.util.LogUtils;
@@ -23,13 +24,17 @@ import com.dn.sdk.sdk.interfaces.listener.impl.SimpleInterstListener;
 import com.dn.sdk.sdk.interfaces.listener.impl.SimpleRewardVideoListener;
 import com.dn.sdk.sdk.interfaces.listener.impl.SimpleSplashListener;
 import com.donews.base.base.AppManager;
+import com.dn.sdk.listener.IAdSplashListener;
+import com.dn.sdk.listener.impl.SimpleInterstitialListener;
+import com.dn.sdk.listener.impl.SimpleRewardVideoListener;
+import com.dn.sdk.listener.impl.SimpleSplashListener;
 import com.donews.base.base.AppStatusConstant;
 import com.donews.base.base.AppStatusManager;
 import com.donews.base.fragmentdialog.AbstractFragmentDialog;
 import com.donews.base.utils.ToastUtil;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.common.ad.business.bean.JddAdConfigBean;
-import com.donews.common.ad.business.callback.JddAdConfigManager;
+import com.donews.common.ad.business.manager.JddAdConfigManager;
 import com.donews.common.ad.business.loader.AdManager;
 import com.donews.common.ad.business.monitor.LotteryAdCount;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
@@ -275,26 +280,16 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
     private void loadSplash(boolean halfScreen, boolean doubleSplash) {
         IAdSplashListener listener = new SimpleSplashListener() {
             @Override
-            public void onError(int code, String msg) {
-                super.onError(code, msg);
-                goToMain();
-            }
-
-            @Override
-            public void onLoad() {
-                super.onLoad();
-            }
-
-            @Override
             public void onAdShow() {
                 super.onAdShow();
                 stopProgressAnim();
             }
 
             @Override
-            public void onAdShowFail(int code, String error) {
-                super.onAdShowFail(code, error);
-                Logger.d(error);
+            public void onAdError(int code, @Nullable String errorMsg) {
+                super.onAdError(code, errorMsg);
+                Logger.d("code = " + code + "  msg = " + errorMsg);
+                goToMain();
             }
 
             @Override
@@ -354,12 +349,14 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
     }
 
     private void loadDisagreePrivacyPolicyInters() {
-        AdManager.INSTANCE.loadInterstitialAd(this, new SimpleInterstListener() {
+        AdManager.INSTANCE.loadInterstitialAd(this, new SimpleInterstitialListener() {
+
             @Override
-            public void onError(int code, String msg) {
-                super.onError(code, msg);
+            public void onAdError(int code, @Nullable String errorMsg) {
+                super.onAdError(code, errorMsg);
                 finish();
             }
+
 
             @Override
             public void onAdShow() {
@@ -377,15 +374,16 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
 
     private void loadDisagreePrivacyPolicyRewardVideo() {
         AdManager.INSTANCE.loadInvalidRewardVideoAd(this, new SimpleRewardVideoListener() {
+
             @Override
-            public void onError(int code, String msg) {
-                super.onError(code, msg);
+            public void onAdError(int code, @Nullable String errorMsg) {
+                super.onAdError(code, errorMsg);
                 finish();
             }
 
             @Override
-            public void onRewardAdShow() {
-                super.onRewardAdShow();
+            public void onAdShow() {
+                super.onAdShow();
                 stopProgressAnim();
             }
 
@@ -447,6 +445,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
             }
         }
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {

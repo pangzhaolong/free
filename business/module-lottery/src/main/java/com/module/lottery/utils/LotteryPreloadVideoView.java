@@ -1,30 +1,35 @@
 package com.module.lottery.utils;
 
-import com.dn.sdk.sdk.interfaces.view.PreloadVideoView;
+import com.dn.sdk.bean.preload.PreloadRewardVideoAd;
 
 /**
  * @author XuShuai
  * @version v1.0
  * @date 2021/9/26 17:31
  */
-public class  LotteryPreloadVideoView   {
-    public PreloadVideoView getPreloadVideoView() {
+public class LotteryPreloadVideoView {
+    public PreloadRewardVideoAd getPreloadVideoView() {
         return mPreloadVideoView;
     }
-    public void setPreloadVideoView(PreloadVideoView mPreloadVideoView) {
+
+    public void setPreloadVideoView(PreloadRewardVideoAd mPreloadVideoView) {
         this.mPreloadVideoView = mPreloadVideoView;
     }
 
-    PreloadVideoView mPreloadVideoView;
+    PreloadRewardVideoAd mPreloadVideoView;
 
 
     private IAdStateListener iAdStateListener;
 
-    public  interface IAdStateListener {
+    public interface IAdStateListener {
         public void onRewardAdShow();
+
         public void onRewardedClosed();
+
         public void onRewardVerify(boolean result);
+
         public void onRewardVideoComplete();
+
         public void onError(int code, String msg);
     }
 

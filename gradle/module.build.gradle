@@ -19,7 +19,9 @@ android {
         targetSdkVersion rootProject.ext.android_version.targetSdkVersion
         versionCode rootProject.ext.android_version.versionCode
         versionName rootProject.ext.android_version.versionName
-        consumerProguardFiles 'consumer-rules.pro'
+
+        consumerProguardFiles 'consumer-rules.pro', 'proguard-rules.pro'
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
@@ -35,25 +37,16 @@ android {
         }
 
     }
-    /*signingConfigs {
-        release {
-            keyAlias 'key0'
-            keyPassword '123456'
-            storeFile rootProject.file('keystore/jkzaaaa.jks')
-            storePassword '123456'
-        }
-    }*/
+
     buildTypes {
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//            signingConfig signingConfigs.release
 
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//            signingConfig signingConfigs.release
         }
     }
     sourceSets {
@@ -76,6 +69,8 @@ android {
                 manifest.srcFile 'src/main/AndroidManifest.xml'
                 java.srcDirs = ['src/main/java']
             }
+
+            jniLibs.srcDirs = ['libs',"src/main/jniLibs"]
         }
     }
     //开启dataBinding
@@ -97,5 +92,11 @@ android {
 
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
     }
 }
