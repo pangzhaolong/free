@@ -1,7 +1,5 @@
 package com.donews.main.entitys.resps
 
-import com.donews.base.model.BaseLiveDataModel
-import com.donews.base.viewmodel.BaseLiveDataViewModel
 import com.donews.common.contract.BaseCustomViewModel
 import com.google.gson.annotations.SerializedName
 

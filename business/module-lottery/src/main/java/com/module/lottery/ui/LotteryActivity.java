@@ -502,7 +502,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         }
     }
 
-
     private void showLessMaxDialog() {
         LessMaxDialog lessMaxDialog = new LessMaxDialog(LotteryActivity.this, mLotteryCodeBean);
         lessMaxDialog.setFinishListener(new LessMaxDialog.OnFinishListener() {
