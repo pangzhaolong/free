@@ -7,9 +7,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
@@ -195,21 +192,15 @@ public class PlayAdUtilsTool {
     private void addVideoViewToast() {
         try {
             Activity activity = AppManager.getInstance().getTopActivity();
-            if (activity != null) {
+            if (activity != null && !activity.getClass().getSimpleName().equals("MainActivity") && !activity.getClass().getSimpleName().equals("LotteryActivity")) {
                 if (ABSwitch.Ins().isOpenVideoToast()) {
-                    ScaleAnimation mScaleAnimation = new ScaleAnimation(1.1f, 0.88f, 1.1f, 0.88f,
-                            Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                    mScaleAnimation.setInterpolator(new LinearInterpolator());
-                    mScaleAnimation.setRepeatMode(Animation.REVERSE);
-                    mScaleAnimation.setRepeatCount(Animation.INFINITE);
-                    mScaleAnimation.setDuration(1000);
                     View view = LayoutInflater.from(mContext).inflate(R.layout.pop_ups_layout, null);
                     LinearLayout linearLayout = view.findViewById(R.id.toast_view);
                     View decorView = activity.getWindow().getDecorView();
                     FrameLayout contentParent =
                             (FrameLayout) decorView.findViewById(android.R.id.content);
                     contentParent.addView(view);
-                    linearLayout.setAnimation(mScaleAnimation);
+                    linearLayout.setAnimation(LotteryAnimationUtils.setScaleAnimation(1000));
                 }
             } else {
                 ToastUtil.showShort(mContext, "完整观看视频即可获得抽奖码");

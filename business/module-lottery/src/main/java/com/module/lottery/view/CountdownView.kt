@@ -13,10 +13,11 @@ import java.util.*
 
 class CountdownView : LinearLayout {
 
-    private var mTime: Timer? = null;
     private var period: Long = 0;
 
     private var frequency: Long = 20;
+
+    private var complete: Boolean = false
 
     private var minute: TextView? = null;
     private var second: TextView? = null;
@@ -26,6 +27,7 @@ class CountdownView : LinearLayout {
     private var mICountdownViewListener: ICountdownViewListener? = null
 
     private var elapsedRealtime: Long = 0L;
+
 
     constructor(context: Context?) : this(context, null) {}
     constructor(context: Context?, attrs: AttributeSet?) : this(context, attrs, 0) {}
@@ -99,6 +101,7 @@ class CountdownView : LinearLayout {
                     //总倒计时时间- 经过的时间=剩余的时间
                     var timestamp = reference?.get()?.period!! - time;
                     if (timestamp > 0) {
+                        reference?.get()?.complete = false
                         //修改时间
                         reference?.get()?.getTimeFormat(timestamp)
                         var message = Message();
@@ -106,6 +109,7 @@ class CountdownView : LinearLayout {
                         sendMessageDelayed(message, reference?.get()?.frequency!!)
 
                     } else {
+                        reference?.get()?.complete = true
                         //倒计时结束
                         if (reference?.get()?.mICountdownViewListener != null) {
                             reference?.get()?.mICountdownViewListener!!.onCountdownCompleted()
@@ -133,12 +137,8 @@ class CountdownView : LinearLayout {
         pauseTimer();
     }
 
-    public fun getPeriod(): Long {
-        return period
-    }
-
-    public fun setPeriod(test: Long) {
-        this.period = test
+    public fun isComplete(): Boolean {
+        return complete
     }
 
     @SuppressLint("SetTextI18n")

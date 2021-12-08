@@ -241,7 +241,9 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         mDataBinding.jsonAnimationRound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                luckyDrawEntrance();
+                if (ClickDoubleUtil.isFastClick()) {
+                    luckyDrawEntrance();
+                }
             }
         });
         mDataBinding.share.setOnClickListener(new View.OnClickListener() {
@@ -454,6 +456,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                         generateCodeDialog.dismiss();
                     }
                 }
+
                 @Override
                 public void onJump(GenerateCodeBean generateCodeBean) {
                     //不跳转广告 展示生成的随机抽奖码
