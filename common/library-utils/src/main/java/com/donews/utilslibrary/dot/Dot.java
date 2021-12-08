@@ -163,6 +163,8 @@ public class Dot {
     public final static String But_Rp_Rule = "But_Rp_Rule";
     //红包按钮(报第几个红包)
     public final static String But_Rp_Click = "But_Rp_Click";
+    //双倍领取红包
+    public final static String But_Rp_Double = "But_Rp_Double";
     //标签页按钮
     public final static String But_Category_Click = "But_Category_Click";
 
@@ -174,5 +176,7 @@ public class Dot {
     //-- 0元抽奖
     //
     public final static String But_Goto_Lottery = "But_Goto_Lottery";
+    public final static String PAY_SUCC = "pay";
+    public final static String PAY_FAIL = "pay_fail";
 
 }

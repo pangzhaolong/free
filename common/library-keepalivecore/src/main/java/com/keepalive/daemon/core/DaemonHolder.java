@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.donews.base.base.AppManager;
 import com.donews.keepalive.global.KeepAliveGlobalConfig;
 import com.keepalive.daemon.core.component.DaemonInstrumentation;
 import com.keepalive.daemon.core.component.DaemonReceiver;
@@ -26,7 +27,7 @@ public class DaemonHolder {
     //公共的notification通知
     private Notification notification;
 
-    private static Map<Activity, ServiceConnection> connCache = new HashMap<>();
+    public static Map<Activity, ServiceConnection> connCache = new HashMap<>();
 
     private android.os.Handler mHandler;
 
@@ -62,12 +63,16 @@ public class DaemonHolder {
             @Override
             public void onActivityCreated(final Activity activity, Bundle savedInstanceState) {
                 Logger.v(Logger.TAG, String.format("====> [%s] created", activity.getLocalClassName()));
-                ServiceHolder.getInstance().bindService(activity, DaemonService.class,
-                        (connection, isConnected) -> {
-                            if (isConnected) {
-                                connCache.put(activity, connection);
-                            }
-                        });
+                try {
+                    ServiceHolder.getInstance().bindService(activity, DaemonService.class,
+                            (connection, isConnected) -> {
+                                if (isConnected) {
+                                    connCache.put(activity, connection);
+                                }
+                            });
+                } catch (Exception e) {
+
+                }
             }
 
             @Override

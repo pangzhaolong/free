@@ -76,8 +76,8 @@ public class NotifyLuncherConfigManager {
                             if (mHandler.hasMessages(0)) {
                                 mHandler.removeMessages(0);
                             }
-
                         }
+
                         int refreshInterval = getInstance().getAppGlobalConfigBean().refreshInterval;
                         if (bean != null) {
                             refreshInterval = bean.refreshInterval;

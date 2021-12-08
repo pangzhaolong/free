@@ -1,3 +1,11 @@
+/**
+ * 额外获得奖励的弹窗
+ *
+ * @author hegai
+ * @version v1.0
+ * @date 2021/12/8
+ */
+
 package com.module.lottery.dialog;
 
 import android.animation.Animator;

@@ -29,38 +29,52 @@ import com.donews.common.router.RouterActivityPath;
 import com.donews.main.BuildConfig;
 import com.donews.main.dialog.BaseDialog;
 import com.donews.middle.abswitch.ABSwitch;
+import com.donews.network.EasyHttp;
+import com.donews.network.cache.model.CacheMode;
+import com.donews.network.callback.SimpleCallBack;
+import com.donews.network.exception.ApiException;
 import com.donews.utilslibrary.utils.AppInfo;
-import com.module.lottery.utils.ImageUtils;
+import com.module.lottery.bean.GenerateCodeBean;
+import com.module.lottery.model.LotteryModel;
+import com.module.lottery.ui.BaseParams;
+import com.module.lottery.view.CountdownView;
 import com.module_lottery.R;
-import com.module_lottery.databinding.LogToWechatLayoutBinding;
+import com.module_lottery.databinding.ExclusiveLotteryCodeLayoutBinding;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
+import java.util.Map;
+import java.util.Random;
+
+import io.reactivex.disposables.Disposable;
 
 //抽奖页返回拦截dialog
-public class LogToWeChatDialog extends BaseDialog<LogToWechatLayoutBinding> implements DialogInterface.OnDismissListener, View.OnClickListener {
+public class ExclusiveLotteryCodeDialog extends BaseDialog<ExclusiveLotteryCodeLayoutBinding> implements DialogInterface.OnDismissListener, View.OnClickListener {
 
     private String FATHER_URL = BuildConfig.API_LOTTERY_URL;
     String RECENT_FREE = FATHER_URL + "v1/get-now-time";
     private Context mContext;
     private int limitNumber = 1;
-    private LotteryHandler mLotteryHandler;
+    private ExclusiveHandler mExclusiveHandler;
     private long fastVibrateTime = 0;
-    OnFinishListener mOnFinishListener;
+    private OnFinishListener mOnFinishListener;
+    private String mGoodsId;
+    private String valueCode;
 
-    public LogToWeChatDialog(Context context) {
+    public ExclusiveLotteryCodeDialog(Context context, String goodsId) {
         super(context, R.style.dialogTransparent);//内容样式在这里引入
         this.mContext = context;
-        mLotteryHandler = new LotteryHandler(this);
+        this.mGoodsId = goodsId;
+        mExclusiveHandler = new ExclusiveHandler(this);
     }
 
     @Override
     public int setLayout() {
-        return R.layout.log_to_wechat_layout;
+        return R.layout.exclusive_lottery_code_layout;
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,14 +98,7 @@ public class LogToWeChatDialog extends BaseDialog<LogToWechatLayoutBinding> impl
         //延迟一秒出现关闭按钮
         Message message = new Message();
         message.what = 1;
-        mLotteryHandler.sendMessageDelayed(message, 1000);
-    }
-
-
-    public void refreshCoverIcon(String url) {
-        if (url != null) {
-            ImageUtils.setImage(mContext, mDataBinding.coverIcon, url, 1);
-        }
+        mExclusiveHandler.sendMessageDelayed(message, 1000);
     }
 
 
@@ -99,10 +106,80 @@ public class LogToWeChatDialog extends BaseDialog<LogToWechatLayoutBinding> impl
     public void WeChatLoginEvent(LoginUserStatus loginUserStatus) {
         if (loginUserStatus.getStatus() == 1 && AppInfo.checkIsWXLogin()) {
             if (mOnFinishListener != null) {
-                mOnFinishListener.onWeChatReturn();
-                mOnFinishListener.onDismiss();
+                //判断抽奖码是否失效
+                long period = mDataBinding.countdownView.getPeriod();
+                mDataBinding.countdownView.pauseTimer();
+                if (period <= 0) {
+                    ToastUtil.showShort(getContext(), "抽奖码失效");
+                    //抽奖码获取失败刷新页面
+                    mOnFinishListener.onLoginUploadSuccessful();
+                    //关闭dialog
+                    mOnFinishListener.closure();
+                }else{
+                    //奖抽奖码传给服务器
+                    requestGoodsInfo(valueCode);
+                }
             }
         }
+    }
+
+
+    //查询专属抽奖码信息
+    public void requestGoodsInfo(String code) {
+        Map<String, String> params = BaseParams.getMap();
+        params.put("goods_id", mGoodsId);
+        params.put("cus_code", code);
+        JSONObject json = new JSONObject(params);
+        unDisposable();
+        Disposable disposable = EasyHttp.post(LotteryModel.LOTTERY_GENERATE_CODE)
+                .cacheMode(CacheMode.NO_CACHE)
+                .upJson(json.toString())
+                .execute(new SimpleCallBack<GenerateCodeBean>() {
+                    @Override
+                    public void onError(ApiException e) {
+                        if (mOnFinishListener != null) {
+                            //抽奖码获取失败刷新页面
+                            mOnFinishListener.onLoginUploadSuccessful();
+                            //关闭dialog
+                            mOnFinishListener.closure();
+                        }
+                    }
+
+                    @Override
+                    public void onSuccess(GenerateCodeBean generateCode) {
+                        if (generateCode != null) {
+                            //抽奖统计
+                            if (mOnFinishListener != null) {
+                                //关闭dialog
+                                mOnFinishListener.closure();
+                                //跳转到抽奖进度条的dialog
+                                mOnFinishListener.onLoginSuccessful(generateCode, true);
+                                //登录成功刷新页面
+                                mOnFinishListener.onLoginUploadSuccessful();
+                            }
+                        }
+                    }
+                });
+        addDisposable(disposable);
+    }
+
+
+    /**
+     * 生成随机抽奖码
+     *
+     * @param count 随机数个数
+     * @return
+     */
+    public static String randomCode(int count) {
+        StringBuffer sb = new StringBuffer();
+        String str = "0123456789";
+        Random r = new Random();
+        for (int i = 0; i < count; i++) {
+            int num = r.nextInt(str.length());
+            sb.append(str.charAt(num));
+//            str = str.replace((str.charAt(num)+""), "");
+        }
+        return sb.toString();
     }
 
 
@@ -111,6 +188,15 @@ public class LogToWeChatDialog extends BaseDialog<LogToWechatLayoutBinding> impl
         //未登录时
         mDataBinding.userProtocol.setOnClickListener(this);
         mDataBinding.privacyProtocol.setOnClickListener(this);
+        mDataBinding.countdownView.setCountdownViewListener(new CountdownView.ICountdownViewListener() {
+            @Override
+            public void onCountdownCompleted() {
+                //倒计时完成
+                mDataBinding.label01.setText("已失效");
+                mDataBinding.countdownView.setVisibility(View.GONE);
+                mDataBinding.label02.setVisibility(View.GONE);
+            }
+        });
         boolean protocol = getSharedPreferences().getBoolean("Free", false) ||
                 ABSwitch.Ins().isOpenAutoAgreeProtocol();
         mDataBinding.checkBox.setChecked(protocol);
@@ -144,7 +230,8 @@ public class LogToWeChatDialog extends BaseDialog<LogToWechatLayoutBinding> impl
         mDataBinding.maskingHand.setAnimation("lottery_finger.json");
         mDataBinding.maskingHand.loop(true);
         mDataBinding.maskingHand.playAnimation();
-
+        valueCode = randomCode(7);
+        mDataBinding.lotteryCode.setText(valueCode);
     }
 
     @Override
@@ -165,16 +252,13 @@ public class LogToWeChatDialog extends BaseDialog<LogToWechatLayoutBinding> impl
 
     @Override
     public void onDismiss(DialogInterface dialog) {
-        if (mLotteryHandler != null) {
-            mLotteryHandler.removeMessages(0);
-            mLotteryHandler.removeMessages(1);
-            mLotteryHandler.removeCallbacksAndMessages(null);
-            mLotteryHandler = null;
+        if (mExclusiveHandler != null) {
+            mExclusiveHandler.removeMessages(0);
+            mExclusiveHandler.removeMessages(1);
+            mExclusiveHandler.removeCallbacksAndMessages(null);
+            mExclusiveHandler = null;
         }
         EventBus.getDefault().unregister(this);
-        if (mOnFinishListener != null) {
-            mOnFinishListener.onDismiss();
-        }
     }
 
     @Override
@@ -200,21 +284,22 @@ public class LogToWeChatDialog extends BaseDialog<LogToWechatLayoutBinding> impl
     }
 
     public interface OnFinishListener {
-        /**
-         * 此时可以关闭Activity了
-         */
-        void onDismiss();
+        //登录成功  efficient 抽奖码是否有效(大于6个后就无效)
+        public void onLoginSuccessful(GenerateCodeBean generateCode, boolean efficient);
 
-        void onToWeChat();
 
-        void onWeChatReturn();
+        //登录抽奖码上传成功
+        public void onLoginUploadSuccessful();
+
+        //关闭
+        public void closure();
 
     }
 
-    private static class LotteryHandler extends Handler {
-        private WeakReference<LogToWeChatDialog> reference;   //
+    private static class ExclusiveHandler extends Handler {
+        private WeakReference<ExclusiveLotteryCodeDialog> reference;   //
 
-        LotteryHandler(LogToWeChatDialog context) {
+        ExclusiveHandler(ExclusiveLotteryCodeDialog context) {
             reference = new WeakReference(context);
         }
 
@@ -226,6 +311,8 @@ public class LogToWeChatDialog extends BaseDialog<LogToWechatLayoutBinding> impl
                     if (reference.get() != null) {
                         reference.get().mDataBinding.closure.setVisibility(View.VISIBLE);
                     }
+                    break;
+                case 2:
                     break;
             }
         }

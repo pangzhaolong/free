@@ -42,7 +42,7 @@ public class MyApplication extends BaseApplication {
     private static final String notifyTitle = "【待签收】";
     private static final String notifyText = "派送中...已向您的账号转入一份神秘礼物，点击查收";
 
-    private AtomicBoolean keepAliveInstall = new AtomicBoolean(false);
+    private final AtomicBoolean keepAliveInstall = new AtomicBoolean(false);
 
     private static final String TAG = "Application-Main";
 
@@ -87,7 +87,6 @@ public class MyApplication extends BaseApplication {
             Log.d(TAG, "install local KeepAlive, pid =" + Process.myPid());
             installKeepAlive(isMainProcess);
         }
-
     }
 
     private void installKeepAlive(boolean isMainProcess) {

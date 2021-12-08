@@ -4,11 +4,10 @@ import static com.module.lottery.dialog.ReturnInterceptDialog.TYPE_1;
 import static com.module.lottery.dialog.ReturnInterceptDialog.TYPE_2;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +37,7 @@ import com.donews.common.ad.business.utils.JddAdUnits;
 import com.donews.common.provider.IDetailProvider;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
+import com.donews.common.services.config.ServicesConfig;
 import com.donews.middle.abswitch.ABSwitch;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
@@ -48,6 +48,7 @@ import com.module.lottery.bean.CommodityBean;
 import com.module.lottery.bean.GenerateCodeBean;
 import com.module.lottery.bean.LotteryCodeBean;
 import com.module.lottery.dialog.CongratulationsDialog;
+import com.module.lottery.dialog.ExclusiveLotteryCodeDialog;
 import com.module.lottery.dialog.ExhibitCodeStartsDialog;
 import com.module.lottery.dialog.GenerateCodeDialog;
 import com.module.lottery.dialog.LessMaxDialog;
@@ -58,6 +59,7 @@ import com.module.lottery.dialog.ReturnInterceptDialog;
 import com.module.lottery.model.LotteryModel;
 import com.module.lottery.utils.ClickDoubleUtil;
 import com.module.lottery.utils.GridSpaceItemDecoration;
+import com.module.lottery.utils.PlayAdUtilsTool;
 import com.module.lottery.viewModel.LotteryViewModel;
 import com.module_lottery.R;
 import com.module_lottery.databinding.GuesslikeHeadLayoutBinding;
@@ -69,7 +71,13 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * 额外获得奖励的弹窗
+ *
+ * @author hegai
+ * @version v1.0
+ * @date 2021/12/8
+ */
 @Route(path = RouterFragmentPath.Lottery.PAGER_LOTTERY)
 public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, LotteryViewModel> {
     private static final String TAG = "LotteryActivity";
@@ -98,6 +106,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     @Autowired(name = RouterActivityPath.GoodsDetail.GOODS_DETAIL_PROVIDER)
     public IDetailProvider detailProvider;
     private LogToWeChatDialog mLogToWeChatDialog;
+    PlayAdUtilsTool mPlayAdUtilsTool;
 
     @Override
     protected int getLayoutId() {
@@ -120,6 +129,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 }
             }
         });
+        mPlayAdUtilsTool = new PlayAdUtilsTool(LotteryActivity.this);
         guessAdapter = new GuessAdapter(LotteryActivity.this);
         guessAdapter.getLayout(R.layout.guesslike_item_layout);
         mDataBinding.lotteryGridview.setLayoutManager(gridLayoutManager);
@@ -192,15 +202,23 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
 
     public void luckyDrawEntrance() {
+        if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() >= 6) {
+            return;
+        }
         boolean logType = AppInfo.checkIsWXLogin();
-        if (logType) {
-            if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() >= 6) {
-                return;
+        //走中台配置流程
+        //0没有登录需要先登录
+        if (ABSwitch.Ins().getLotteryLine() == 0 || logType) {
+            if (logType) {
+                startLottery();
+            } else {
+                showLogToWeChatDialog();
             }
-            startLottery();
         } else {
-            showLogToWeChatDialog();
-
+            if (ABSwitch.Ins().getLotteryLine() == 1) {
+                //可以直接开始抽奖
+                startLottery();
+            }
         }
     }
 
@@ -307,25 +325,12 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             LotteryCodeStartsDialog lotteryCodeStartsDialog = new LotteryCodeStartsDialog(LotteryActivity.this);
             lotteryCodeStartsDialog.setStateListener(new LotteryCodeStartsDialog.OnStateListener() {
                 @Override
-                public void onFinish() {
-                    try {
-                        if (!LotteryActivity.this.isFinishing() && lotteryCodeStartsDialog != null && lotteryCodeStartsDialog.isShowing()) {
-                            lotteryCodeStartsDialog.dismiss();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onJumpAdFinish() {
-                    //弹起生成抽奖码的dialog
-                    Logger.d(TAG + "showGenerateCodeDialog");
-                    showGenerateCodeDialog();
+                public void onLoadAd() {
+                    loadAdAndStatusCallback(lotteryCodeStartsDialog);
                 }
             });
             lotteryCodeStartsDialog.create();
-            lotteryCodeStartsDialog.show();
+            lotteryCodeStartsDialog.show(LotteryActivity.this);
         } else {
             //判断是否支持抽奖
             if (DateManager.getInstance().timesLimit(DateManager.LOTTERY_KEY, DateManager.NUMBER_OF_DRAWS, 24)) {
@@ -336,6 +341,66 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         }
 
     }
+
+
+    /**
+     * 用来加载并显示广告和接收广告状态的回调
+     */
+
+    private void loadAdAndStatusCallback(final Dialog dialog) {
+        if (mPlayAdUtilsTool != null) {
+            mPlayAdUtilsTool.showRewardVideo(dialog);
+            mPlayAdUtilsTool.setIStateListener(new PlayAdUtilsTool.IStateListener() {
+                @Override
+                public void onComplete() {
+                    //广告有效播放完成可以显示抽奖码的弹框
+                    Logger.d(TAG + "showGenerateCodeDialog");
+                    showGenerateCodeDialog();
+                }
+            });
+        }
+    }
+
+
+    //显示专属抽奖码弹框
+    private void showExclusiveCodeDialog() {
+        ExclusiveLotteryCodeDialog exclusiveLotteryCodeDialog = new ExclusiveLotteryCodeDialog(LotteryActivity.this, mGoodsId);
+        exclusiveLotteryCodeDialog.setFinishListener(new ExclusiveLotteryCodeDialog.OnFinishListener() {
+            @Override
+            public void onLoginSuccessful(GenerateCodeBean generateCode, boolean efficient) {
+                if (efficient && generateCode != null) {
+                    showExhibitCodeDialog(generateCode);
+                }
+            }
+
+
+            @Override
+            public void onLoginUploadSuccessful() {
+                //加载抽奖商品详情信息
+                //刷新
+                lotteryInfo();
+            }
+
+            @Override
+            public void closure() {
+                if (exclusiveLotteryCodeDialog != null && exclusiveLotteryCodeDialog.isShowing()) {
+                    exclusiveLotteryCodeDialog.dismiss();
+                }
+            }
+        });
+        exclusiveLotteryCodeDialog.show();
+    }
+
+
+//    boolean logType = AppInfo.checkIsWXLogin();
+//                    if (ABSwitch.Ins().getLotteryLine() == 0 && logType) {
+//
+//    } else {
+//        //显示专属抽奖码弹框
+//        showExclusiveCodeDialog();
+//
+//    }
+//
 
 
     private void showLogToWeChatDialog() {
@@ -385,14 +450,17 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             generateCodeDialog.setStateListener(new GenerateCodeDialog.OnStateListener() {
                 @Override
                 public void onFinish() {
-                    generateCodeDialog.dismiss();
+                    if (generateCodeDialog != null && !LotteryActivity.this.isFinishing()) {
+                        generateCodeDialog.dismiss();
+                    }
                 }
-
                 @Override
                 public void onJump(GenerateCodeBean generateCodeBean) {
                     //不跳转广告 展示生成的随机抽奖码
-                    generateCodeDialog.dismiss();
+                    if (generateCodeDialog != null && !LotteryActivity.this.isFinishing()) {
+                        generateCodeDialog.dismiss();
 
+                    }
                     if (generateCodeBean == null) {
                         Toast.makeText(LotteryActivity.this, "生成抽奖码失败", Toast.LENGTH_SHORT).show();
                         return;
@@ -402,10 +470,19 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                     lotteryInfo();
                     showExhibitCodeDialog(generateCodeBean);
                 }
+
+                @Override
+                public void onExclusiveBulletFrame() {
+                    if (generateCodeDialog != null && !LotteryActivity.this.isFinishing()) {
+                        generateCodeDialog.dismiss();
+
+                    }
+                    showExclusiveCodeDialog();
+                }
             });
             generateCodeDialog.create();
             if (!LotteryActivity.this.isFinishing()) {
-                generateCodeDialog.show();
+                generateCodeDialog.show(LotteryActivity.this);
             }
         } catch (Exception e) {
             Logger.e("" + e.getMessage());
@@ -426,7 +503,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 luckyDrawEntrance();
             }
         });
-        lessMaxDialog.show();
+        lessMaxDialog.show(LotteryActivity.this);
     }
 
     //提示还差多少个抽奖码Dialog
@@ -452,7 +529,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 }
             });
             receiveLottery.create();
-            receiveLottery.show();
+            receiveLottery.show(LotteryActivity.this);
         }
     }
 
@@ -467,7 +544,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             }
         });
         mNoDrawDialog.create();
-        mNoDrawDialog.show();
+        mNoDrawDialog.show(LotteryActivity.this);
     }
 
     private void finishReturn() {
@@ -485,6 +562,10 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     protected void onDestroy() {
         super.onDestroy();
         mDataBinding.lotteryTips.clearAnimation();
+        if (mPlayAdUtilsTool != null) {
+            mPlayAdUtilsTool.setIStateListener(null);
+            mPlayAdUtilsTool = null;
+        }
     }
 
     //展示生成的抽奖码
@@ -525,7 +606,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         try {
             exhibitCodeStartsDialog.create();
             if (!this.isFinishing() && !this.isDestroyed()) {
-                exhibitCodeStartsDialog.show();
+                exhibitCodeStartsDialog.show(LotteryActivity.this);
             }
         } catch (Exception ignored) {
         }
@@ -800,7 +881,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             }
         });
         mReturnInterceptDialog.create();
-        mReturnInterceptDialog.show();
+        mReturnInterceptDialog.show(LotteryActivity.this);
         return;
     }
 

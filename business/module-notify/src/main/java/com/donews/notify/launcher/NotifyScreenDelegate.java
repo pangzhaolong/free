@@ -37,11 +37,15 @@ public class NotifyScreenDelegate {
 
     private Runnable mShowNotifyRunnable = null;
 
-    /** 解决多次解锁时，间隙，cd时间默认为10秒内不出 */
+    /**
+     * 解决多次解锁时，间隙，cd时间默认为10秒内不出
+     */
     private long mIntervalLockShowTime = 10 * 1000;
     private long mLastShowTime = 0;
 
-    /** 网络变换 */
+    /**
+     * 网络变换
+     */
     private int mCurruntCount = 0;
 
     private Runnable getShowNotifyRunnable(Context context) {
@@ -49,7 +53,7 @@ public class NotifyScreenDelegate {
             mShowNotifyRunnable = () -> {
                 Log.i(NotifyInitProvider.TAG, "NotifyScreenDelegate excute Runnable");
                 NotifyActionActivity.destroy();
-                if(canOpen(context) && isLoaded){
+                if (canOpen(context) && isLoaded) {
                     NotifyActivity.actionStart(context);
                     isOpen = true;
                 }
@@ -78,7 +82,7 @@ public class NotifyScreenDelegate {
                     tryLoadNewImg(context);
                     long delayTime = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyDelayShowTime;
                     mLastShowTime = System.currentTimeMillis();
-                    Log.w(NotifyInitProvider.TAG, action + " show , delayTime="+delayTime);
+                    Log.w(NotifyInitProvider.TAG, action + " show , delayTime=" + delayTime);
                     mHandler.postDelayed(getShowNotifyRunnable(context), delayTime);
                 } else {
                     Log.w(NotifyInitProvider.TAG, action + " can't show");
@@ -96,7 +100,7 @@ public class NotifyScreenDelegate {
                     if (canShowNotify()) {
                         tryLoadNewImg(context);
                         long delayTime = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyDelayShowTime;
-                        Log.w(NotifyInitProvider.TAG, action + " show , delayTime="+delayTime);
+                        Log.w(NotifyInitProvider.TAG, action + " show , delayTime=" + delayTime);
                         mHandler.postDelayed(getShowNotifyRunnable(context), delayTime);
                     } else {
                         Log.w(NotifyInitProvider.TAG, action + " can't show");
@@ -116,23 +120,23 @@ public class NotifyScreenDelegate {
             @Override
             public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                 isLoaded = true;
-                if(!isOpen){
+                if (!isOpen) {
                     getShowNotifyRunnable(context);
                 }
-                Log.d(NotifyInitProvider.TAG, "tryLoadNewImg success , url = "+url);
+                Log.d(NotifyInitProvider.TAG, "tryLoadNewImg success , url = " + url);
             }
 
             @Override
             public void onLoadCleared(@Nullable Drawable placeholder) {
                 isLoaded = true;
-                Log.d(NotifyInitProvider.TAG, "tryLoadNewImg onLoadCleared , url = "+url);
+                Log.d(NotifyInitProvider.TAG, "tryLoadNewImg onLoadCleared , url = " + url);
             }
 
             @Override
             public void onLoadFailed(@Nullable Drawable errorDrawable) {
                 super.onLoadFailed(errorDrawable);
                 isLoaded = true;
-                Log.d(NotifyInitProvider.TAG, "tryLoadNewImg onLoadFailed , url = "+url);
+                Log.d(NotifyInitProvider.TAG, "tryLoadNewImg onLoadFailed , url = " + url);
             }
         });
 
@@ -141,28 +145,28 @@ public class NotifyScreenDelegate {
     private boolean canOpen(Context context) {
         boolean alwaysShow = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyAlwaysShow;
         boolean showCount = showCountLimit(context);
-        if(alwaysShow && showCount){
+        if (alwaysShow && showCount) {
             return true;
-        }else{
-            if(!MmkvHelper.isInit()){
+        } else {
+            if (!MmkvHelper.isInit()) {
                 MmkvHelper.init(context);
             }
             // 初次没写入则有可能为0
-            long lastOpenTime = MmkvHelper.getInstance().getMmkv().decodeLong(KEY_NOTIFYOPEN_TIME,0);
+            long lastOpenTime = MmkvHelper.getInstance().getMmkv().decodeLong(KEY_NOTIFYOPEN_TIME, 1);
             long todayZero = getTodayZeroTime();
-            boolean result = (todayZero > lastOpenTime) && lastOpenTime >0;
-            Log.w(NotifyInitProvider.TAG,"lastOpenTime result = "+result);
+            boolean result = (todayZero > lastOpenTime) && lastOpenTime > 0;
+            Log.w(NotifyInitProvider.TAG, "lastOpenTime result = " + result);
             result &= showCount;
 
-            Log.w(NotifyInitProvider.TAG,"final result = "+result);
+            Log.w(NotifyInitProvider.TAG, "final result = " + result);
             return result;
         }
     }
 
-    private boolean showCountLimit(Context context){
+    private boolean showCountLimit(Context context) {
         long notifyShowMaxCount = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyShowMaxCount;
         long curruntNotifyCount = getTodayShowCount(context);
-        Log.w(NotifyInitProvider.TAG,"curruntNotifyCount = "+curruntNotifyCount+"，notifyShowMaxCount = "+notifyShowMaxCount);
+        Log.w(NotifyInitProvider.TAG, "curruntNotifyCount = " + curruntNotifyCount + "，notifyShowMaxCount = " + notifyShowMaxCount);
         return curruntNotifyCount < notifyShowMaxCount;
     }
 
@@ -173,15 +177,15 @@ public class NotifyScreenDelegate {
         //时间，比如12代表12点
         int time1 = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyTimeStart1;
         int time2 = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyTimeStart2;
-        Log.w(NotifyInitProvider.TAG,"canShowNotify time1 = "+time1);
-        Log.w(NotifyInitProvider.TAG,"canShowNotify time2 = "+time2);
+        Log.w(NotifyInitProvider.TAG, "canShowNotify time1 = " + time1);
+        Log.w(NotifyInitProvider.TAG, "canShowNotify time2 = " + time2);
 
         boolean result = isRangeTime(time1) || isRangeTime(time2);
 
         long now = System.currentTimeMillis();
         boolean canShow = (now - mLastShowTime > mIntervalLockShowTime);
 
-        Log.w(NotifyInitProvider.TAG,"result = "+result+",canShow = "+canShow);
+        Log.w(NotifyInitProvider.TAG, "result = " + result + ",canShow = " + canShow);
         result = result && canShow;
         return result;
     }
@@ -204,17 +208,17 @@ public class NotifyScreenDelegate {
     public long getTodayZeroTime() {
         long currentTimestamps = System.currentTimeMillis();
         String today = SIMPLE_DATE_FORMAT.format(new Date());
-        try{
+        try {
             return SIMPLE_DATE_FORMAT.parse(today).getTime();
-        }catch (Throwable t){
-        	t.printStackTrace();
+        } catch (Throwable t) {
+            t.printStackTrace();
         }
         //加上8小时的毫秒数是因为毫秒时间戳是从北京时间1970年01月01日08时00分00秒开始算的
         return currentTimestamps - (currentTimestamps + HOUR * 8) % DAY;
     }
 
-    public static void putTodayShowCount(Context context){
-        if(!MmkvHelper.isInit()){
+    public static void putTodayShowCount(Context context) {
+        if (!MmkvHelper.isInit()) {
             MmkvHelper.init(context);
         }
         String today = SIMPLE_DATE_FORMAT.format(new Date());
@@ -222,12 +226,12 @@ public class NotifyScreenDelegate {
         long curruntNotifyCount = MmkvHelper.getInstance().getMmkv().decodeLong(today + "_" + KEY_NOTIFYCOUNT_LIMIT, 0);
         curruntNotifyCount += 1;
 
-        Log.w(NotifyInitProvider.TAG, "putTodayShowCount ="+curruntNotifyCount);
+        Log.w(NotifyInitProvider.TAG, "putTodayShowCount =" + curruntNotifyCount);
         MmkvHelper.getInstance().getMmkv().encode(today + "_" + KEY_NOTIFYCOUNT_LIMIT, curruntNotifyCount);
     }
 
-    public static long getTodayShowCount(Context context){
-        if(!MmkvHelper.isInit()){
+    public static long getTodayShowCount(Context context) {
+        if (!MmkvHelper.isInit()) {
             MmkvHelper.init(context);
         }
         String today = SIMPLE_DATE_FORMAT.format(new Date());

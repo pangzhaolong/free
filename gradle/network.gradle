@@ -5,8 +5,8 @@ ext {
     //版本号，版本名称 版本号对应于版本名称，
     // 例如：1.2.1->12010;1.3.2->13020
     //对应版本名称向右补0
-    VERSION_CODE = 13040
-    VERSION_NAME = "1.3.4"
+    VERSION_CODE = 13060
+    VERSION_NAME = "1.3.6"
     // app标识identification
     APP_IDENTIFICATION = "plus"
 

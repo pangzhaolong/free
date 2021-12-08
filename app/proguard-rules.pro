@@ -584,7 +584,21 @@ public static final int *;
 
 # keeplive模块
 -keep class  com.donews.alive.bean.**{*;}
--keep class com.donews.alive.KeepAlive{*;}
+-keep class com.donews.alive.KeepAlive.**{*;}
+-keep class com.keepalive.daemon.core.**{*;}
+-keep class com.donews.keepalive.accountsync.**{*;}
+-keep class com.donews.keepalive.global.**{*;}
+-keep class com.donews.notify.launcher.**{*;}
+
+-keep class com.keepalive.daemon.core.**{*; }
+-keep class com.keepalive.daemon.core.component.**{*; }
+-keep class com.keepalive.daemon.core.notification.**{*; }
+-keep class com.keepalive.daemon.core.receiver.**{*; }
+-keep class com.keepalive.daemon.core.scheduler.**{*; }
+-keep class com.keepalive.daemon.core.utils.**{*; }
+
+-keep class com.donews.notify.launcher.**{*; }
+-keep class com.donews.common.bean.**{*; }
 
 #sdk模块
 -keep class com.dn.sdk.bean.**{*;}

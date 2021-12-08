@@ -5,7 +5,7 @@
 
 
     <application
-        android:name="debug.TestApplication"
+        android:name="debug.TestApplication11"
         android:allowBackup="true"
         android:icon="@android:drawable/btn_plus"
         android:label="@string/app_name"
@@ -19,7 +19,7 @@
             android:multiprocess="true"/>
 
 
-        <activity android:name="debug.TestActivity">
+        <activity android:name="debug.TestActivity11">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

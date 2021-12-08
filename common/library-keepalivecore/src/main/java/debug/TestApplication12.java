@@ -15,13 +15,13 @@ import com.donews.common.NotifyLuncherConfigManager;
 import com.donews.crashhandler.core.CrashCoreHandler;
 import com.donews.keepalive.Dazzle;
 import com.donews.keepalive.DazzleCallback;
+import com.donews.keepalive.ForegroundNotificationClickListener;
 import com.donews.keepalive.NotificationClickReceiver;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.converter.GsonDiskConverter;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.cookie.CookieManger;
 import com.donews.network.model.HttpHeaders;
-import com.donews.notify.launcher.NotificationApiCompat;
 import com.donews.utilslibrary.base.UtilsConfig;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.KeyConstant;
@@ -40,7 +40,7 @@ import java.util.List;
  * @date 2021/4/7 17:30
  * @since v1.0
  */
-public class TestApplication extends BaseApplication {
+public class TestApplication12 extends BaseApplication {
     public static final String TAG = "keepalive-test";
 
     @Override
@@ -50,13 +50,13 @@ public class TestApplication extends BaseApplication {
 
         CrashCoreHandler.install(true);
 
+        DaemonHolder.setGlobalNotifycation(createNotification());
+        DaemonHolder.getInstance().attach( this);
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        DaemonHolder.setGlobalNotifycation(createNotification());
-        DaemonHolder.getInstance().attach( this);
         String process = getProcessName(this);
         Log.d(TAG, "application onCreate,processName = " + process);
         if (!TextUtils.isEmpty(process) && process.equals(getPackageName())) {
@@ -83,19 +83,13 @@ public class TestApplication extends BaseApplication {
 
 
             initDazzle();
-
         }
     }
-
-
 
     private Notification createNotification(){
         NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         Intent intent = new Intent(this, NotificationClickReceiver.class);
-        intent.setAction(NotificationClickReceiver.ACTION_CLICK_NOTIFICATION);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, -1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-
         Notification notification = new NotificationApiCompat.Builder(this,
                 nm,
                 "kxyd_channel_red",
@@ -104,6 +98,7 @@ public class TestApplication extends BaseApplication {
                 .setContentText("热门活动等待你的参与，参与即送金币~")
                 .setAutoCancel(false)
                 .setContentIntent(pendingIntent)
+//                .setStyle()
                 .setCategory()
                 .setTicker(getString(R.string.app_name))
                 .setOngoing(true)
@@ -118,23 +113,30 @@ public class TestApplication extends BaseApplication {
     private void initDazzle(){
 
         int NOTIFY_KEEP_ID = Dazzle.NOTIFICATION_KEEPALIVE;//要与保活sdk中的id保持一致
-        Dazzle.init(this, false, createNotification(), NOTIFY_KEEP_ID, new DazzleCallback() {
+        Dazzle.init(this, true, createNotification(), NOTIFY_KEEP_ID, new DazzleCallback() {
 
             @Override
             public void onWorking() {
-                Log.d(TAG,"onWorking");
+                System.out.println("onWorking");
             }
 
             @Override
             public void onStop() {
-                Log.d(TAG,"onStop");
+
             }
 
             @Override
             public void doReport(String type, int pid, long usageTime, long intervalTime) {
-                Log.d(TAG,"doReport,type = "+type);
+                System.out.println("doReport : type = " + type + " pid = " + pid + " usageTime = " + usageTime + " intervalTime" +
+                        " = " + intervalTime);
             }
-        }, (context, intent) -> Log.w(TAG,"foregroundNotificationClick"));
+        }, new ForegroundNotificationClickListener() {
+
+            @Override
+            public void foregroundNotificationClick(Context context, Intent intent) {
+                System.out.println("foregroundNotificationClick");
+            }
+        });
     }
 
     private static String getProcessName(Application app) {

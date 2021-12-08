@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+
+    <declare-styleable name="CountdownView" tools:ignore="ResourceName">
+        <attr name="time" format="integer" /><!--倒计时总时间-->
+        <attr name="automatically" format="boolean" /><!--倒计时总时间-->
+
+    </declare-styleable>
+
+
+</resources>

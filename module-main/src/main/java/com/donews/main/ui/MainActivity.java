@@ -521,7 +521,7 @@ public class MainActivity
             }
 
             AnAdditionalDialog mDrawDialog = new AnAdditionalDialog(
-                    String.valueOf(doubleRedPacketBean.getScore()),4);
+                    String.valueOf(doubleRedPacketBean.getScore()), 4);
             mDrawDialog.setEventListener(() -> {
                 if (mDrawDialog.isAdded()) {
                     mDrawDialog.dismiss();
@@ -529,6 +529,7 @@ public class MainActivity
             });
             mDrawDialog.show(getSupportFragmentManager(), "AnAddDialog");
             EventBus.getDefault().post(new WalletRefreshEvent(0));
+            AnalysisUtils.onEventEx(this, Dot.But_Rp_Double);
         });
     }
 }

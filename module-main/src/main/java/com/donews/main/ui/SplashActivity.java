@@ -7,9 +7,13 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.dn.events.events.LoginUserStatus;
@@ -18,6 +22,7 @@ import com.dn.sdk.sdk.interfaces.listener.IAdSplashListener;
 import com.dn.sdk.sdk.interfaces.listener.impl.SimpleInterstListener;
 import com.dn.sdk.sdk.interfaces.listener.impl.SimpleRewardVideoListener;
 import com.dn.sdk.sdk.interfaces.listener.impl.SimpleSplashListener;
+import com.donews.base.base.AppManager;
 import com.donews.base.base.AppStatusConstant;
 import com.donews.base.base.AppStatusManager;
 import com.donews.base.fragmentdialog.AbstractFragmentDialog;
@@ -39,6 +44,7 @@ import com.donews.utilslibrary.analysis.AnalysisHelp;
 import com.donews.utilslibrary.base.SmSdkConfig;
 import com.donews.utilslibrary.base.UtilsConfig;
 import com.donews.utilslibrary.utils.KeySharePreferences;
+import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.NetworkUtils;
 import com.donews.utilslibrary.utils.SPUtils;
 import com.orhanobut.logger.Logger;
@@ -69,7 +75,12 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
      * @param act activity
      */
     public static void toForeGround(Activity act) {
-        if (act.getClass() == SplashActivity.class) {
+        Log.e("SplashActivity", "toForeGround");
+        Log.e("SplashActivity", act.getClass().getName());
+        if (act.getClass() == SplashActivity.class
+                || act.getClass().getName().equalsIgnoreCase("com.donews.notify.launcher.NotifyActivity")
+                || act.getClass().getName().equalsIgnoreCase("com.donews.notify.launcher.NotifyActionActivity")
+                || act.getClass().getName().equalsIgnoreCase("com.donews.keepalive.DazzleActivity")) {
             return; //自己调用的话。终止操作，因为可能会导致广告和中间的流程跳过直接到首页
         }
         Intent intent = new Intent(act, SplashActivity.class);
@@ -119,10 +130,26 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
     @Override
     protected void onResume() {
         super.onResume();
+        Log.e("SplashActivity", "onResume");
         showPersonGuideDialog();
+        Uri referrer = this.getReferrer();
+
+        /*Log.e("Notify", "----------------->");
+        if (referrer != null) {
+            try {
+
+                Log.e("Notify", referrer.toString());
+                Log.e("Notify", referrer.getPath());
+                Log.e("Notify", referrer.getLastPathSegment());
+            } catch (Exception e) {
+
+            }
+        }
+        Log.e("Notify", "-----------------<");*/
     }
 
     @Subscribe //网络状态变化监听
@@ -141,6 +168,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
 
     @Override
     protected void onDestroy() {
+        Log.e("SplashActivity", "onDestroy");
         //设置为之后启动为非冷启动模式
 //        SplashUtils.INSTANCE.setColdStart(false);
         EventBus.getDefault().unregister(this);
@@ -371,13 +399,19 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
 
     private void goToMain() {
         stopProgressAnim();
-//        Log.e("xxxx", "xxx" + mIsBackgroundToFore);
+        Log.e("xxxx", "xxx" + mIsBackgroundToFore);
         if (!mIsBackgroundToFore) {
-//            Log.e("xxxx", "xxx111111111111");
+            Log.e("xxxx", "xxx111111111111");
             if (AppStatusManager.getInstance().getAppStatus() != AppStatusConstant.STATUS_NORMAL) {
 //                Log.e("xxxx", "xxx222222222222222");
                 LotteryAdCount.INSTANCE.init();
                 GuideActivity.start(this);
+            }
+        } else {
+            Log.e("xxxx", "xxx22222222222222");
+            if (AppManager.getInstance().getActivity(MainActivity.class) == null) {
+                Log.e("xxxx", "xxx33333333333333333333");
+                MainActivity.start(this);
             }
         }
         finish();
