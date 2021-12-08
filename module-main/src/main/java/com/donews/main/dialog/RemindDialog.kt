@@ -26,7 +26,8 @@ import java.util.*
  * @version v1.0
  * @date 2021/10/20 20:31
  */
-class RemindDialog : AbstractFragmentDialog<MainExitDialogRemindBinding>(), EasyPermissions.PermissionCallbacks {
+class RemindDialog : AbstractFragmentDialog<MainExitDialogRemindBinding>(),
+    EasyPermissions.PermissionCallbacks {
 
     companion object {
         private const val CALENDAR_TITLE = "奖多多开奖提醒"
@@ -47,6 +48,8 @@ class RemindDialog : AbstractFragmentDialog<MainExitDialogRemindBinding>(), Easy
 
     private lateinit var remindConfig: RemindConfig
     private val handler = Handler(Looper.getMainLooper())
+    private var timeTask: Runnable? = null
+    private var timeCount = 3
 
 
     override fun onAttach(context: Context) {
@@ -66,10 +69,34 @@ class RemindDialog : AbstractFragmentDialog<MainExitDialogRemindBinding>(), Easy
         dataBinding.remindConfig = remindConfig
         dataBinding.eventListener = EventListener()
 
-        dataBinding.btnNext.visibility = if (checkPermission()) View.GONE else View.VISIBLE
+        if (checkPermission()) {
+            dataBinding.btnNext.visibility = View.GONE
+            dataBinding.btnClose.visibility = View.VISIBLE
+            timeTask = Runnable {
+                timeCount--
+                dataBinding.tvCloseTime.text = "($timeCount)"
+                if (timeCount <= 0) {
+                    handler.removeCallbacks(timeTask!!)
+                    handler.removeCallbacksAndMessages(null)
+                    dataBinding.btnClose.performClick()
+                } else {
+                    handler.postDelayed(timeTask!!, 1000)
+                }
+            }
+            handler.postDelayed(timeTask!!, 1000)
+        } else {
+            dataBinding.btnNext.visibility = View.VISIBLE
+        }
         showCloseBtn()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        timeTask?.apply {
+            handler.removeCallbacks(this)
+            handler.removeCallbacksAndMessages(null)
+        }
+    }
 
     override fun isUseDataBinding(): Boolean {
         return true
@@ -78,7 +105,9 @@ class RemindDialog : AbstractFragmentDialog<MainExitDialogRemindBinding>(), Easy
     private fun showCloseBtn() {
         handler.postDelayed(Runnable {
             dataBinding.ivClose.visibility = View.VISIBLE
-            dataBinding.tvOk.visibility = View.VISIBLE
+            if (!checkPermission()) {
+                dataBinding.tvOk.visibility = View.VISIBLE
+            }
         }, remindConfig.closeBtnLazyShow * 1000L)
     }
 
@@ -96,6 +125,7 @@ class RemindDialog : AbstractFragmentDialog<MainExitDialogRemindBinding>(), Easy
 
     override fun onPermissionsGranted(requestCode: Int, perms: List<String>) {
         addEvent()
+        onLaterListener?.onClose()
     }
 
     private fun requiresPermission() {
@@ -137,7 +167,6 @@ class RemindDialog : AbstractFragmentDialog<MainExitDialogRemindBinding>(), Easy
                 10
             )
         }
-        onCancelListener?.onCancel()
     }
 
 
@@ -153,13 +182,17 @@ class RemindDialog : AbstractFragmentDialog<MainExitDialogRemindBinding>(), Easy
         }
 
         fun clickIvClose(view: View) {
-            if(view.visibility == View.VISIBLE) {
+            if (view.visibility == View.VISIBLE) {
+                timeTask?.apply {
+                    handler.removeCallbacks(this)
+                    handler.removeCallbacksAndMessages(null)
+                }
                 onCloseListener?.onClose()
             }
         }
 
         fun laterClose(view: View) {
-            if(view.visibility == View.VISIBLE) {
+            if (view.visibility == View.VISIBLE) {
                 onLaterListener?.onClose()
             }
         }

@@ -74,6 +74,8 @@ public class HttpHeaders implements Serializable {
     public static final String HEAD_KEY_SET_COOKIE = "Set-Cookie";
     public static final String HEAD_KEY_SET_COOKIE2 = "Set-Cookie2";
     public static final String HEAD_AUTHORIZATION = "Authorization";
+    //加解密的标记
+    public static final String HEAD_KEY_ENCRYP_AND_DECRYP = "X-AuthToken";
     public static final String HEAD_PACKAGENMAE = "PackageName";
     public static final String TOKEN = "Token";
 

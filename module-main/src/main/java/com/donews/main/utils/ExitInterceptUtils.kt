@@ -531,12 +531,10 @@ object ExitInterceptUtils {
                     }
                     setOnSureListener {
                         disMissDialog()
-                        exitApp(activity)
                     }
 
                     setOnCancelListener {
                         disMissDialog()
-                        exitApp(activity)
                     }
 
                     setOnCloseListener {
