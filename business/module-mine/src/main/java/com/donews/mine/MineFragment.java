@@ -285,7 +285,7 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
                     Bundle bundle = new Bundle();
 //                    bundle.putString("url",
 //                            "https://i.iwanbei.cn/activities?appKey=c0d8e103601c4bc49abb501c59718143&appEntrance=1&business=money");
-                    bundle.putString("url", "https://p.pinduoduo.com/vEY44O05");
+                    bundle.putString("url", "https://p.pinduoduo.com/yIH46n8T");
                     bundle.putString("title", "天降豪礼");
                     ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
                 }
