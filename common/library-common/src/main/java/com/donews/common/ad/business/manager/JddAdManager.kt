@@ -66,7 +66,12 @@ object JddAdManager : BaseAdConfigManager() {
 
 
     fun initAdIdConfig() {
-        EasyHttp.get(BuildConfig.AD_ID_CONFIG.withConfigParams())
+        var configUrl = BuildConfig.AD_ID_CONFIG
+        if (mAdConfigBean.userLevelStrategy) {
+            configUrl = BuildConfig.AD_ID_LEVEL_CONFIG;
+        }
+
+        EasyHttp.get(configUrl.withConfigParams())
             .cacheMode(CacheMode.NO_CACHE)
             .execute(object : SimpleCallBack<JddAdIdConfigBean>() {
 

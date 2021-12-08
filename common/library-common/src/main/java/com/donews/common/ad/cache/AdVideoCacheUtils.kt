@@ -199,23 +199,24 @@ object AdVideoCacheUtils {
             }
 
             override fun onAdError(code: Int, errorMsg: String?) {
-                mRewardVideoListener?.onAdError(code, errorMsg)
                 mPreloadVideoView = null
-                //这是错误汇总，可能出现预加载成功，但是播放失败出现此问题
                 if (mPreLoading) {
                     mPreLoading = false
                     mPreLoadSuccess = false
-                    //如果不是云控关闭了广告，则需要重试加载广告,最多3次
                     if (code != AdCustomError.CloseAd.code) {
+                        //如果不是关闭广告，则需要重试继续预加载
                         mRetry++
                         if (mRetry < MAX_RETRY_NUMBER) {
+                            tag("预加载激励视频出现错误-----------onError($code,$errorMsg),重新预加载。重试次数$mRetry")
                             preload()
+                        } else {
+                            mRewardVideoListener?.onAdError(code, errorMsg)
                         }
+                    } else {
+                        mRewardVideoListener?.onAdError(code, errorMsg)
                     }
                 }
-                tag("预加载激励视频出现错误-----------onError($code,$errorMsg)")
             }
-
         }
 
         if (!invalid) {

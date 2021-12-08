@@ -52,6 +52,10 @@ abstract class PreloadAd {
         return mNeedShow
     }
 
+    fun getLoadState(): PreloadAdState {
+        return mLoadState
+    }
+
     fun setLoadState(state: PreloadAdState) {
         mLoadState = state
     }

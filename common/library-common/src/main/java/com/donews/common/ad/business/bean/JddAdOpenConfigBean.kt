@@ -15,5 +15,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class JddAdOpenConfigBean(
     @SerializedName("openAd")
-    var openAd: Boolean = false
+    var openAd: Boolean = true,
+    @SerializedName("userLevelStrategy")
+    var userLevelStrategy: Boolean = false
 ) : Parcelable

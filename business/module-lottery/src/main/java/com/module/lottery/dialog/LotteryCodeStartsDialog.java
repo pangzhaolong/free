@@ -183,6 +183,11 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
     private void loadAd() {
         IAdRewardVideoListener listener = new IAdRewardVideoListener() {
             @Override
+            public void onAdStartLoad() {
+
+            }
+
+            @Override
             public void onAdStatus(int code, @Nullable Object any) {
 
             }

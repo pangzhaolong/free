@@ -49,7 +49,7 @@ class LoggerInterstitialListenerProxy(
 
     override fun onAdClosed() {
         AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "Interstitial onAdClosed()"))
-        listener?.onAdClicked()
+        listener?.onAdClosed()
     }
 
     override fun onAdError(code: Int, errorMsg: String?) {

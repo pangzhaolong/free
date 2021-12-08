@@ -14,9 +14,9 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 class JddAdIdConfigBean : BaseAdIdConfigBean(), Parcelable {
     init {
-        splashId = "92914"
-        interstitialId = "92513"
-        rewardVideoId = "91918"
-        invalidRewardVideoId = "92540"
+        splashId = "158534"
+        interstitialId = "158536"
+        rewardVideoId = "158530"
+        invalidRewardVideoId = "158532"
     }
 }

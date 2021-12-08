@@ -1,6 +1,7 @@
 package com.donews.common.ad.business.proxy
 
 import com.dn.sdk.listener.IAdInterstitialListener
+import com.dn.sdk.utils.AdLoggerUtils
 import com.donews.common.ad.business.monitor.InterstitialAdCount
 
 /**
@@ -17,7 +18,7 @@ class JddInterstitialListenerProxy(val listener: IAdInterstitialListener? = null
 
 
     override fun onAdStatus(code: Int, any: Any?) {
-
+        listener?.onAdStatus(code, any)
     }
 
 
@@ -33,6 +34,7 @@ class JddInterstitialListenerProxy(val listener: IAdInterstitialListener? = null
     }
 
     override fun onAdError(code: Int, errorMsg: String?) {
+        listener?.onAdError(code, errorMsg)
         InterstitialAdCount.updateCloseAdTime()
         InterstitialAdCount.closeAd()
     }

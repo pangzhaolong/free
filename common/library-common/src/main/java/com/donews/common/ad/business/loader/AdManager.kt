@@ -20,6 +20,8 @@ import com.donews.common.ad.business.constant.NEW_REWARD_VIDEO_ID
 import com.donews.common.ad.business.constant.NEW_SPLASH_ID
 import com.donews.common.ad.business.manager.JddAdManager
 import com.donews.common.ad.business.monitor.InterstitialAdCount
+import com.donews.common.ad.business.proxy.JddAdRewardVideoListenerProxy
+import com.donews.common.ad.business.proxy.JddInterstitialListenerProxy
 import com.donews.utilslibrary.utils.DensityUtils
 
 /**
@@ -30,114 +32,8 @@ import com.donews.utilslibrary.utils.DensityUtils
  * @date 2021/10/25 17:16
  */
 object AdManager : IAdLoadManager, ISdkManager by AdSdkManager, IAdConfigManager by JddAdManager {
-    override fun loadInvalidRewardVideoAd(activity: Activity, listener: IAdRewardVideoListener?) {
-        addInitListener(object : IAdConfigInitListener {
-            override fun initSuccess() {
-                val key = NEW_INVALID_REWARD_VIDEO_ID
-                val adRequest = AdRequest(AdType.REWARD_VIDEO)
-                adRequest.mPlatform = getPlatform()
-                adRequest.mAdId = adRequest.mPlatform.getAdIdByKey(key)
-                adRequest.mAdKey = key
-                adRequest.mPlatform.getLoader().loadAndShowRewardVideoAd(activity, adRequest, listener)
-            }
-        })
-    }
 
-    override fun preloadInvalidRewardVideoAd(
-        activity: Activity,
-        preloadAdListener: IPreloadAdListener,
-        listener: IAdRewardVideoListener?
-    ) {
-
-        addInitListener(object : IAdConfigInitListener {
-            override fun initSuccess() {
-                val key = NEW_INVALID_REWARD_VIDEO_ID
-                val adRequest = AdRequest(AdType.REWARD_VIDEO)
-                adRequest.mPlatform = getPlatform()
-                adRequest.mAdId = adRequest.mPlatform.getAdIdByKey(key)
-                adRequest.mAdKey = key
-                adRequest.mAdPreload = true
-                val preloadAd = adRequest.mPlatform.getLoader().preloadRewardVideoAd(activity, adRequest, listener)
-                preloadAdListener.preloadAd(preloadAd)
-            }
-        })
-    }
-
-
-    override fun loadFullScreenSplashAd(activity: Activity, container: ViewGroup, listener: IAdSplashListener?) {
-        addInitListener(object : IAdConfigInitListener {
-            override fun initSuccess() {
-                val key = NEW_SPLASH_ID
-                val adRequest = AdRequest(AdType.SPLASH)
-                adRequest.mPlatform = getPlatform()
-//                adRequest.mAdId = adRequest.mPlatform.getAdIdByKey(key)
-                adRequest.mAdId = "158533"
-                adRequest.mAdKey = key
-                adRequest.mAdContainer = container
-                adRequest.mWidthDp = DensityUtils.px2dp(DensityUtils.getScreenWidth().toFloat())
-                adRequest.mHeightDp = DensityUtils.px2dp(DensityUtils.getScreenHeight().toFloat())
-                adRequest.mPlatform.getLoader().loadAndShowSplashAd(activity, adRequest, listener)
-            }
-        })
-    }
-
-    override fun loadHalfScreenSplashAd(activity: Activity, container: ViewGroup, listener: IAdSplashListener?) {
-        AdLoggerUtils.d("loadHalfScreenSplashAd")
-        addInitListener(object : IAdConfigInitListener {
-            override fun initSuccess() {
-                val key = NEW_SPLASH_ID
-                val adRequest = AdRequest(AdType.SPLASH)
-                adRequest.mPlatform = getPlatform()
-//                adRequest.mAdId = adRequest.mPlatform.getAdIdByKey(key)
-                adRequest.mAdId = "158534"
-                adRequest.mAdKey = key
-                adRequest.mAdContainer = container
-
-                if (container.layoutParams.width > 0) {
-                    adRequest.mWidthDp = DensityUtils.px2dp(container.layoutParams.width.toFloat())
-                    adRequest.mHeightDp = DensityUtils.px2dp(container.layoutParams.height.toFloat()) - 96
-                } else {
-                    adRequest.mWidthDp = DensityUtils.px2dp(ScreenUtils.getScreenWidth().toFloat())
-                    adRequest.mHeightDp = DensityUtils.px2dp(ScreenUtils.getScreenHeight().toFloat()) - 96
-                }
-                adRequest.mPlatform.getLoader().loadAndShowSplashAd(activity, adRequest, listener)
-            }
-        })
-    }
-
-    override fun loadRewardVideoAd(activity: Activity, listener: IAdRewardVideoListener?) {
-        addInitListener(object : IAdConfigInitListener {
-            override fun initSuccess() {
-                val key = NEW_REWARD_VIDEO_ID
-                val adRequest = AdRequest(AdType.REWARD_VIDEO)
-                adRequest.mPlatform = getPlatform()
-                adRequest.mAdId = adRequest.mPlatform.getAdIdByKey(key)
-                adRequest.mAdKey = key
-                adRequest.mPlatform.getLoader().loadAndShowRewardVideoAd(activity, adRequest, listener)
-            }
-        })
-    }
-
-    override fun preloadRewardVideoAd(
-        activity: Activity,
-        preloadAdListener: IPreloadAdListener,
-        listener: IAdRewardVideoListener?
-    ) {
-        addInitListener(object : IAdConfigInitListener {
-            override fun initSuccess() {
-                val key = NEW_REWARD_VIDEO_ID
-                val adRequest = AdRequest(AdType.REWARD_VIDEO)
-                adRequest.mPlatform = getPlatform()
-//                adRequest.mAdId = adRequest.mPlatform.getAdIdByKey(key)
-                adRequest.mAdId = "158592"
-                adRequest.mAdKey = key
-                adRequest.mAdPreload = true
-                val preloadAd = adRequest.mPlatform.getLoader().preloadRewardVideoAd(activity, adRequest, listener)
-                preloadAdListener.preloadAd(preloadAd)
-            }
-        })
-    }
-
+    /** 加载插屏广告 */
     override fun loadInterstitialAd(activity: Activity, listener: IAdInterstitialListener?) {
         if (InterstitialAdCount.isCanShowInters()) {
             //先更新一次显示时间
@@ -157,7 +53,8 @@ object AdManager : IAdLoadManager, ISdkManager by AdSdkManager, IAdConfigManager
                     val marginWidth = DensityUtils.dip2px(30f) * 2
                     adRequest.mWidthDp = DensityUtils.px2dp((pxScreenWidth - marginWidth).toFloat())
                     adRequest.mHeightDp = adRequest.mWidthDp / 2f * 3
-                    adRequest.mPlatform.getLoader().loadAndShowInterstitialAd(activity, adRequest, listener)
+                    val proxyListener = JddInterstitialListenerProxy(listener)
+                    adRequest.mPlatform.getLoader().loadAndShowInterstitialAd(activity, adRequest, proxyListener)
                 }
             })
         } else {
@@ -166,6 +63,123 @@ object AdManager : IAdLoadManager, ISdkManager by AdSdkManager, IAdConfigManager
                 AdCustomError.InterstitialIntervalError.errorMsg
             )
         }
+    }
+
+    /** 加载全屏的开屏广告 */
+    override fun loadFullScreenSplashAd(activity: Activity, container: ViewGroup, listener: IAdSplashListener?) {
+        addInitListener(object : IAdConfigInitListener {
+            override fun initSuccess() {
+                val key = NEW_SPLASH_ID
+                val adRequest = AdRequest(AdType.SPLASH)
+                adRequest.mPlatform = getPlatform()
+                adRequest.mAdId = adRequest.mPlatform.getAdIdByKey(key)
+                adRequest.mAdKey = key
+                adRequest.mAdContainer = container
+                adRequest.mWidthDp = DensityUtils.px2dp(DensityUtils.getScreenWidth().toFloat())
+                adRequest.mHeightDp = DensityUtils.px2dp(DensityUtils.getScreenHeight().toFloat())
+                adRequest.mPlatform.getLoader().loadAndShowSplashAd(activity, adRequest, listener)
+            }
+        })
+    }
+
+    /** 加载半屏的开屏广告 */
+    override fun loadHalfScreenSplashAd(activity: Activity, container: ViewGroup, listener: IAdSplashListener?) {
+        AdLoggerUtils.d("loadHalfScreenSplashAd")
+        addInitListener(object : IAdConfigInitListener {
+            override fun initSuccess() {
+                val key = NEW_SPLASH_ID
+                val adRequest = AdRequest(AdType.SPLASH)
+                adRequest.mPlatform = getPlatform()
+                adRequest.mAdId = adRequest.mPlatform.getAdIdByKey(key)
+                adRequest.mAdKey = key
+                adRequest.mAdContainer = container
+
+                if (container.layoutParams.width > 0) {
+                    adRequest.mWidthDp = DensityUtils.px2dp(container.layoutParams.width.toFloat())
+                    adRequest.mHeightDp = DensityUtils.px2dp(container.layoutParams.height.toFloat()) - 96
+                } else {
+                    adRequest.mWidthDp = DensityUtils.px2dp(ScreenUtils.getScreenWidth().toFloat())
+                    adRequest.mHeightDp = DensityUtils.px2dp(ScreenUtils.getScreenHeight().toFloat()) - 96
+                }
+                adRequest.mPlatform.getLoader().loadAndShowSplashAd(activity, adRequest, listener)
+            }
+        })
+    }
+
+    /** 直接加载激励视频 */
+    override fun loadRewardVideoAd(activity: Activity, listener: IAdRewardVideoListener?) {
+        addInitListener(object : IAdConfigInitListener {
+            override fun initSuccess() {
+                val key = NEW_REWARD_VIDEO_ID
+                val adRequest = AdRequest(AdType.REWARD_VIDEO)
+                adRequest.mPlatform = getPlatform()
+                adRequest.mAdId = adRequest.mPlatform.getAdIdByKey(key)
+                adRequest.mAdKey = key
+                val proxyListener = JddAdRewardVideoListenerProxy(activity, listener)
+                adRequest.mPlatform.getLoader().loadAndShowRewardVideoAd(activity, adRequest, proxyListener)
+            }
+        })
+    }
+
+    /** 使用无效广告位加载激励视频 */
+    override fun loadInvalidRewardVideoAd(activity: Activity, listener: IAdRewardVideoListener?) {
+        addInitListener(object : IAdConfigInitListener {
+            override fun initSuccess() {
+                val key = NEW_INVALID_REWARD_VIDEO_ID
+                val adRequest = AdRequest(AdType.REWARD_VIDEO)
+                adRequest.mPlatform = getPlatform()
+                adRequest.mAdId = adRequest.mPlatform.getAdIdByKey(key)
+                adRequest.mAdKey = key
+                adRequest.mPlatform.getLoader().loadAndShowRewardVideoAd(activity, adRequest, listener)
+            }
+        })
+    }
+
+
+    /** 预加载激励视频 */
+    override fun preloadRewardVideoAd(
+        activity: Activity,
+        preloadAdListener: IPreloadAdListener,
+        listener: IAdRewardVideoListener?
+    ) {
+        addInitListener(object : IAdConfigInitListener {
+            override fun initSuccess() {
+                val key = NEW_REWARD_VIDEO_ID
+                val adRequest = AdRequest(AdType.REWARD_VIDEO)
+                adRequest.mPlatform = getPlatform()
+                adRequest.mAdId = adRequest.mPlatform.getAdIdByKey(key)
+                adRequest.mAdKey = key
+                adRequest.mAdPreload = true
+                val proxyListener = JddAdRewardVideoListenerProxy(activity, listener)
+                val preloadAd = adRequest.mPlatform.getLoader().preloadRewardVideoAd(activity, adRequest, proxyListener)
+                preloadAdListener.preloadAd(preloadAd)
+            }
+        })
+    }
+
+
+    /** 使用无效广告位预加载激励视频 */
+    override fun preloadInvalidRewardVideoAd(
+        activity: Activity,
+        preloadAdListener: IPreloadAdListener,
+        listener: IAdRewardVideoListener?
+    ) {
+
+        addInitListener(object : IAdConfigInitListener {
+            override fun initSuccess() {
+                val key = NEW_INVALID_REWARD_VIDEO_ID
+                val adRequest = AdRequest(AdType.REWARD_VIDEO)
+                adRequest.mPlatform = getPlatform()
+                adRequest.mAdId = adRequest.mPlatform.getAdIdByKey(key)
+                adRequest.mAdKey = key
+                adRequest.mAdPreload = true
+
+//                val proxyListener = JddAdRewardVideoListenerProxy(activity, listener)
+//                val preloadAd = adRequest.mPlatform.getLoader().preloadRewardVideoAd(activity, adRequest, proxyListener)
+                val preloadAd = adRequest.mPlatform.getLoader().preloadRewardVideoAd(activity, adRequest, listener)
+                preloadAdListener.preloadAd(preloadAd)
+            }
+        })
     }
 
 }

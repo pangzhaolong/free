@@ -81,7 +81,7 @@ object DoNewsRewardVideoLoadHelper : BaseHelper() {
             .setOrientation(adRequest.mOrientation)
             .setTimeOut(adRequest.mAdRequestTimeOut)
             .build()
-
+        listener?.onAdStartLoad()
         doNewsAdNative.loadRewardVideo(activity, doNewsAd, doNewsRewardVideoListener)
     }
 
@@ -155,6 +155,7 @@ object DoNewsRewardVideoLoadHelper : BaseHelper() {
             .setOrientation(adRequest.mOrientation)
             .setTimeOut(adRequest.mAdRequestTimeOut)
             .build()
+        listener?.onAdStartLoad()
         doNewsAdNative.loadRewardVideo(activity, doNewsAd, doNewsRewardVideoListener)
         return preloadRewardVideoAd
     }
