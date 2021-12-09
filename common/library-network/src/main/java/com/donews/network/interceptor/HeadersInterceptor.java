@@ -1,5 +1,5 @@
 /*
-*
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,6 +16,7 @@
 package com.donews.network.interceptor;
 
 
+import com.blankj.utilcode.util.AppUtils;
 import com.donews.network.model.HttpHeaders;
 import com.donews.network.utils.HttpLog;
 
@@ -44,6 +45,7 @@ public class HeadersInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request.Builder builder = chain.request().newBuilder();
+        builder.addHeader("X-Version", "" + AppUtils.getAppVersionCode());
         if (headers.headersMap.isEmpty()) return chain.proceed(builder.build());
         try {
             for (Map.Entry<String, String> entry : headers.headersMap.entrySet()) {
