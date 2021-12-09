@@ -1,8 +1,12 @@
 package com.donews.main.utils
 
+import android.app.Activity
 import androidx.fragment.app.FragmentActivity
+import com.dn.sdk.utils.AdLoggerUtils
 import com.donews.base.base.AppManager
+import com.donews.common.base.MvvmBaseLiveDataActivity
 import com.donews.main.dialog.HotStartDialog
+import com.orhanobut.logger.Logger
 
 /**
  *
@@ -16,13 +20,9 @@ object HotStartCacheUtils {
     private var mHotStartDialog: HotStartDialog? = null
 
     fun addHotStartAdDialog() {
-        var activity = AppManager.getInstance().topActivity
-        if (activity !is FragmentActivity) {
+        val activity = AppManager.getInstance().topActivity
+        if (activity !is MvvmBaseLiveDataActivity<*, *>) {
             return
-//            activity = AppManager.getInstance().secondActivity
-//            if (activity !is FragmentActivity) {
-//                return
-//            }
         }
 
         if (mHotStartDialog != null && mHotStartDialog?.dialog != null && mHotStartDialog?.dialog?.isShowing == true) {
@@ -51,10 +51,23 @@ object HotStartCacheUtils {
         if (mHotStartDialog == null) {
             return
         }
-        mHotStartDialog!!.dismiss()
+        mHotStartDialog!!.dismissAllowingStateLoss()
     }
 
     fun clear() {
         mHotStartDialog = null
+    }
+
+    fun checkActivity(activity: Activity) {
+        val name: String = activity::class.java.name
+        if (name.equals("com.donews.notify.launcher.NotifyActivity", true)) {
+            activity.finish()
+        }
+        if (name.equals("com.donews.notify.launcher.NotifyActionActivity", true)) {
+            activity.finish()
+        }
+        if (name.equals("com.donews.keepalive.DazzleActivity", true)) {
+            activity.finish()
+        }
     }
 }
