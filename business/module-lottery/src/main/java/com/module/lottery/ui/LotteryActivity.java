@@ -31,6 +31,7 @@ import com.airbnb.lottie.value.SimpleLottieValueCallback;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.LotteryStatusEvent;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.business.manager.JddAdManager;
@@ -47,6 +48,7 @@ import com.module.lottery.adapter.GuessAdapter;
 import com.module.lottery.bean.CommodityBean;
 import com.module.lottery.bean.GenerateCodeBean;
 import com.module.lottery.bean.LotteryCodeBean;
+import com.module.lottery.bean.RedEnvelopeUnlockBean;
 import com.module.lottery.dialog.CongratulationsDialog;
 import com.module.lottery.dialog.ExclusiveLotteryCodeDialog;
 import com.module.lottery.dialog.ExhibitCodeStartsDialog;
@@ -67,6 +69,8 @@ import com.module_lottery.databinding.LotteryMainLayoutBinding;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 import java.util.Map;
@@ -83,6 +87,9 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     private static final String TAG = "LotteryActivity";
     private static final String LOTTERY_ACTIVITY = "LOTTERY_ACTIVITY";
     private static final String FIRST_SHOW = "first_show";
+    public static final int RED_ENVELOPE_UNLOCK = 200;
+
+
     @Autowired(name = "goods_id")
     public String mGoodsId;
     private SharedPreferences mSharedPreferences;
@@ -124,6 +131,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         super.onCreate(savedInstanceState);
         mSharedPreferences = this.getSharedPreferences(LOTTERY_ACTIVITY, 0);
         ARouter.getInstance().inject(this);
+        EventBus.getDefault().register(this);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
@@ -165,15 +173,15 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             ifOpenAutoLotteryAndCount();
         }
         mStart_lottery = false;
-
+        EventBus.getDefault().post(RED_ENVELOPE_UNLOCK);
     }
+
 
     /**
      * 判断是否需要自动抽奖,并且是否大于了中台控制次数
      */
     private void ifOpenAutoLotteryAndCount() {
         if (privilege) {
-            privilege = false;
             luckyDrawEntrance();
             return;
         }
@@ -462,6 +470,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             generateCodeDialog.setStateListener(new GenerateCodeDialog.OnStateListener() {
                 @Override
                 public void onFinish() {
+                    privilege = false;
                     if (generateCodeDialog != null && !LotteryActivity.this.isFinishing()) {
                         generateCodeDialog.dismiss();
                     }
@@ -475,6 +484,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
                     }
                     if (generateCodeBean == null) {
+                        privilege = false;
                         Toast.makeText(LotteryActivity.this, "生成抽奖码失败", Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -573,6 +583,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         mDataBinding.lotteryTips.clearAnimation();
         if (mPlayAdUtilsTool != null) {
             mPlayAdUtilsTool.setIStateListener(null);
@@ -583,6 +594,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     //展示生成的抽奖码
     private void showExhibitCodeDialog(GenerateCodeBean generateCodeBean) {
         if (generateCodeBean == null) {
+            privilege = false;
             Toast.makeText(LotteryActivity.this, "生成抽奖码失败", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -618,6 +630,12 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         try {
             exhibitCodeStartsDialog.create();
             if (!this.isFinishing() && !this.isDestroyed()) {
+                if (privilege) {
+                    Toast.makeText(LotteryActivity.this, "红包已解锁", Toast.LENGTH_SHORT).show();
+                    //通知首页更新
+                    EventBus.getDefault().post(new RedEnvelopeUnlockBean(RED_ENVELOPE_UNLOCK));
+                    privilege = false;
+                }
                 exhibitCodeStartsDialog.show(LotteryActivity.this);
             }
         } catch (Exception ignored) {
@@ -643,6 +661,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        privilege = false;
         setIntent(intent);
         ARouter.getInstance().inject(this);
         if (mAction != null && mAction.equals("newAction")) {
