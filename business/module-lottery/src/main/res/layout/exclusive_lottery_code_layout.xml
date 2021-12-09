@@ -108,6 +108,16 @@
                                 android:textSize="18dp"
                                 android:textStyle="bold" />
 
+                            <com.module.lottery.view.CountdownView
+                                android:id="@+id/countdown_view"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:layout_marginTop="2dp"
+                                android:layout_marginEnd="4dp"
+                                app:automatically="true"
+                                app:time="5" />
+
                             <TextView
                                 android:id="@+id/label_02"
                                 android:layout_width="wrap_content"
@@ -137,16 +147,6 @@
                             android:textColor="#D17500"
                             android:textSize="27dp"
                             android:textStyle="bold" />
-
-                        <com.module.lottery.view.CountdownView
-                            android:id="@+id/countdown_view"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
-                            android:layout_marginTop="2dp"
-                            android:layout_marginEnd="4dp"
-                            app:automatically="true"
-                            app:time="5" />
 
 
                     </LinearLayout>
