@@ -58,7 +58,7 @@ public abstract class MvvmBaseLiveDataActivity<V extends ViewDataBinding, VM ext
         rootView = (FrameLayout) findViewById(android.R.id.content);
     }
 
-    protected void showLoading() {
+    public void showLoading() {
         if (loadingHintDialog != null) {
             hideLoading();
         }
@@ -68,17 +68,17 @@ public abstract class MvvmBaseLiveDataActivity<V extends ViewDataBinding, VM ext
                 .show(getSupportFragmentManager(), "user_cancellation");
     }
 
-    protected void showLoading(String msg) {
+    public void showLoading(String msg) {
         if (loadingHintDialog != null) {
             hideLoading();
         }
         loadingHintDialog = new LoadingHintDialog();
         loadingHintDialog.setDismissOnBackPressed(false)
                 .setDescription(msg)
-                .show(getSupportFragmentManager(), "user_cancellation");
+                .showAllowingStateLoss(getSupportFragmentManager(), "user_cancellation");
     }
 
-    protected void hideLoading() {
+    public void hideLoading() {
         if (loadingHintDialog != null) {
             loadingHintDialog.disMissDialog();
         }

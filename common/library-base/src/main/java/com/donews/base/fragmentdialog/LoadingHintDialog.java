@@ -5,8 +5,14 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.donews.base.R;
 import com.donews.base.databinding.BaseLoadingDialogBinding;
+
+import java.lang.reflect.Field;
 
 /**
  * @author by SnowDragon
@@ -19,7 +25,8 @@ public class LoadingHintDialog extends AbstractFragmentDialog<BaseLoadingDialogB
      */
     private String description;
     private ShapeBuilder shapeBuilder;
-    public LoadingHintDialog(){
+
+    public LoadingHintDialog() {
         shapeBuilder = new ShapeBuilder();
     }
 
@@ -104,4 +111,22 @@ public class LoadingHintDialog extends AbstractFragmentDialog<BaseLoadingDialogB
         return this;
     }
 
+    public void showAllowingStateLoss(FragmentManager manager, String tag) {
+        try {
+            Field dismissed = DialogFragment.class.getDeclaredField("mDismissed");
+            dismissed.setAccessible(true);
+            dismissed.set(this, false);
+            Field shown = DialogFragment.class.getDeclaredField("mShownByMe");
+            shown.setAccessible(true);
+            shown.set(this, true);
+
+            FragmentTransaction ft = manager.beginTransaction();
+            ft.add(this, tag);
+            ft.commitAllowingStateLoss();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
 }

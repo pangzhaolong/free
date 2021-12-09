@@ -35,6 +35,16 @@ object InterstitialAdCount {
 
     private var mShowAd = false
 
+
+    fun reset() {
+        mmkv?.let {
+            it.removeValueForKey(KEY_NEW_INTERSTITIAL_AD_TIME)
+            it.removeValueForKey(KEY_NEW_START_INTERSTITIAL_AD_TIME)
+            it.removeValueForKey(KEY_NEW_CLOSE_INTERSTITIAL_AD_TIME)
+        }
+        mShowAd = false
+    }
+
     fun showInterstitialAd() {
         mmkv?.let {
             var totalNumber = it.decodeInt(KEY_TOTAL_INTERSTITIAL_AD, 0)

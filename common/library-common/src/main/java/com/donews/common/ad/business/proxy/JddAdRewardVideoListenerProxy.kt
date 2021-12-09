@@ -11,6 +11,7 @@ import com.donews.common.ad.business.manager.JddAdConfigManager
 import com.donews.common.ad.business.manager.JddAdManager
 import com.donews.common.ad.business.monitor.RewardVideoCount
 import com.donews.common.ad.business.utils.InterstitialUtils
+import com.donews.common.base.MvvmBaseLiveDataActivity
 
 /**
  * 激励视频回调代理
@@ -77,17 +78,24 @@ class JddAdRewardVideoListenerProxy(
 
     private fun loadAd() {
         var resultActivity = AppManager.getInstance().topActivity
-        if (resultActivity !is FragmentActivity) {
+        if (resultActivity !is MvvmBaseLiveDataActivity<*, *>) {
             resultActivity = AppManager.getInstance().secondActivity
-            if (resultActivity !is FragmentActivity) {
+            if (resultActivity !is MvvmBaseLiveDataActivity<*, *>) {
                 listener?.onAdClose()
                 return
             }
         }
+        (resultActivity).showLoading("加载中...")
         AdManager.loadInterstitialAd(resultActivity, object : SimpleInterstitialListener() {
+
+            override fun onAdShow() {
+                super.onAdShow()
+                resultActivity.hideLoading()
+            }
 
             override fun onAdError(code: Int, errorMsg: String?) {
                 super.onAdError(code, errorMsg)
+                resultActivity.hideLoading()
                 listener?.onAdClose()
             }
 
