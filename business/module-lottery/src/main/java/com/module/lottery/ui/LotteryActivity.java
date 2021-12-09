@@ -72,7 +72,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 额外获得奖励的弹窗
+ * 抽奖页面
  *
  * @author hegai
  * @version v1.0
@@ -126,7 +126,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         super.onCreate(savedInstanceState);
         mSharedPreferences = this.getSharedPreferences(LOTTERY_ACTIVITY, 0);
         ARouter.getInstance().inject(this);
-        EventBus.getDefault().register(this);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
@@ -577,7 +576,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
         mDataBinding.lotteryTips.clearAnimation();
         if (mPlayAdUtilsTool != null) {
             mPlayAdUtilsTool.setIStateListener(null);
