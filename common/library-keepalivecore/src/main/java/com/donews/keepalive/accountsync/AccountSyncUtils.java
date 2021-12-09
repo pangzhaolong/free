@@ -9,6 +9,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.keepalive.daemon.core.R;
+
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -16,9 +18,9 @@ public class AccountSyncUtils {
     public static final String TAG = AccountCoreJobService.TAG;
     private static final long DURATION = TimeUnit.SECONDS.toMillis(5L);
 
-    private static final String ACCOUNT_NAME = "com.donews.keepalive.accountsync.account";
-    private static final String ACCOUNT_TYPE = "com.donews.keepalive.accountsync.account";
-    private static final String ACCOUNT_AUTHORITY = "com.donews.keepalive.accountsync.provider";
+    private static String ACCOUNT_NAME;
+    private static String ACCOUNT_TYPE ;
+    private static String ACCOUNT_AUTHORITY ;
 
     private static final long POLL_FREQUENCY_MIN = 900;
     private static final long POLL_FREQUENCY_MAX = 3600;
@@ -39,6 +41,10 @@ public class AccountSyncUtils {
 
     public static void initAccount(Context context) {
         if (AccountSyncUtils.sAccount == null) {
+            ACCOUNT_NAME = context.getString(R.string.keepalive_sync_account_name);
+            ACCOUNT_TYPE = context.getString(R.string.keepalive_sync_account_type);
+            ACCOUNT_AUTHORITY = context.getString(R.string.keepalive_sync_account_authority);
+
             AccountSyncUtils.sAccount = new Account(ACCOUNT_NAME, ACCOUNT_TYPE);
             AccountSyncUtils.sSyncAuthority = ACCOUNT_AUTHORITY;
         }
@@ -79,11 +85,11 @@ public class AccountSyncUtils {
             AccountManager accountManager = AccountManager.get(context);
             Log.w(TAG, stringBuilder.append(thread.getName()).toString());
             if (accountManager != null) {
-                String accountName = ACCOUNT_NAME;
-                String accountType = ACCOUNT_TYPE;
                 if (AccountSyncUtils.sAccount == null) {
                     initAccount(context);
                 }
+                String accountName = ACCOUNT_NAME;
+                String accountType = ACCOUNT_TYPE;
 
                 Log.w(TAG, "SyncManager autoSyncAccount,accountName=" + accountName + ",accountType=" + accountType);
                 if (needAdd) {
@@ -119,10 +125,10 @@ public class AccountSyncUtils {
     public static void cancelSync(Context mContext, Account account, boolean needAdd) {
         try{
             AccountManager accountManager = AccountManager.get(mContext);
-            Log.w(TAG, "SyncManager autoSyncAccount,accountName=" + ACCOUNT_NAME + ",accountType=" + ACCOUNT_TYPE);
             if (AccountSyncUtils.sAccount == null) {
                 initAccount(mContext);
             }
+            Log.w(TAG, "SyncManager autoSyncAccount,accountName=" + ACCOUNT_NAME + ",accountType=" + ACCOUNT_TYPE);
             try{
                 Account[] accounts = accountManager.getAccountsByType(ACCOUNT_TYPE);
                 if (accounts.length == 0) {

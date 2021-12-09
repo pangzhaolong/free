@@ -289,7 +289,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             setLottieAnimation(true);
         }
         boolean first_show = mSharedPreferences.getBoolean(FIRST_SHOW, true);
-        if (first_show) {
+        if (first_show && privilege == false) {
             mSharedPreferences.edit().putBoolean(FIRST_SHOW, false).commit();
             mDataBinding.maskingLayout.setVisibility(View.VISIBLE);
             //圆 新手引导遮罩层
@@ -501,7 +501,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             Logger.e("" + e.getMessage());
         }
     }
-
 
     private void showLessMaxDialog() {
         LessMaxDialog lessMaxDialog = new LessMaxDialog(LotteryActivity.this, mLotteryCodeBean);
