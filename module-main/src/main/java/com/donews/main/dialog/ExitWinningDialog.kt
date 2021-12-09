@@ -172,7 +172,7 @@ class ExitWinningDialog : AbstractFragmentDialog<MainExitDialogWinningOpenBindin
                 it.toString()
             }
         }
-        dataBinding.tvFailure.text = "00:$f:$m"
+        dataBinding.tvFailure.text = "$f:$m"
     }
 
     override fun isUseDataBinding(): Boolean {
