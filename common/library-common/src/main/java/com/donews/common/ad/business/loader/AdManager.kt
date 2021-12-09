@@ -82,6 +82,29 @@ object AdManager : IAdLoadManager, ISdkManager by AdSdkManager, IAdConfigManager
         })
     }
 
+    override fun preloadFullScreenSplashAd(
+        activity: Activity,
+        container: ViewGroup,
+        preloadAdListener: IPreloadAdListener,
+        listener: IAdSplashListener?
+    ) {
+        addInitListener(object : IAdConfigInitListener {
+            override fun initSuccess() {
+                val key = NEW_SPLASH_ID
+                val adRequest = AdRequest(AdType.SPLASH)
+                adRequest.mPlatform = getPlatform()
+                adRequest.mAdId = adRequest.mPlatform.getAdIdByKey(key)
+                adRequest.mAdKey = key
+                adRequest.mAdContainer = container
+                adRequest.mWidthDp = DensityUtils.px2dp(DensityUtils.getScreenWidth().toFloat())
+                adRequest.mHeightDp = DensityUtils.px2dp(DensityUtils.getScreenHeight().toFloat())
+                val preloadAd = adRequest.mPlatform.getLoader().preloadSplashAd(activity, adRequest, listener)
+                preloadAdListener.preloadAd(preloadAd)
+            }
+        })
+    }
+
+
     /** 加载半屏的开屏广告 */
     override fun loadHalfScreenSplashAd(activity: Activity, container: ViewGroup, listener: IAdSplashListener?) {
         AdLoggerUtils.d("loadHalfScreenSplashAd")
@@ -102,6 +125,33 @@ object AdManager : IAdLoadManager, ISdkManager by AdSdkManager, IAdConfigManager
                     adRequest.mHeightDp = DensityUtils.px2dp(ScreenUtils.getScreenHeight().toFloat()) - 96
                 }
                 adRequest.mPlatform.getLoader().loadAndShowSplashAd(activity, adRequest, listener)
+            }
+        })
+    }
+
+    override fun preloadHalfScreenSplashAd(
+        activity: Activity,
+        container: ViewGroup,
+        preloadAdListener: IPreloadAdListener,
+        listener: IAdSplashListener?
+    ) {
+        addInitListener(object : IAdConfigInitListener {
+            override fun initSuccess() {
+                val key = NEW_SPLASH_ID
+                val adRequest = AdRequest(AdType.SPLASH)
+                adRequest.mPlatform = getPlatform()
+                adRequest.mAdId = adRequest.mPlatform.getAdIdByKey(key)
+                adRequest.mAdKey = key
+                adRequest.mAdContainer = container
+                if (container.layoutParams.width > 0) {
+                    adRequest.mWidthDp = DensityUtils.px2dp(container.layoutParams.width.toFloat())
+                    adRequest.mHeightDp = DensityUtils.px2dp(container.layoutParams.height.toFloat()) - 96
+                } else {
+                    adRequest.mWidthDp = DensityUtils.px2dp(ScreenUtils.getScreenWidth().toFloat())
+                    adRequest.mHeightDp = DensityUtils.px2dp(ScreenUtils.getScreenHeight().toFloat()) - 96
+                }
+                val preloadAd = adRequest.mPlatform.getLoader().preloadSplashAd(activity, adRequest, listener)
+                preloadAdListener.preloadAd(preloadAd)
             }
         })
     }

@@ -26,7 +26,6 @@ import androidx.annotation.Nullable;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.BarUtils;
-import com.dn.events.events.DoubleRpEvent;
 import com.dn.events.events.FrontScrollEvent;
 import com.dn.events.events.LoginLodingStartStatus;
 import com.dn.events.events.RedPackageStatus;
@@ -468,11 +467,15 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mDataBinding.frontRpTv2.setTextColor(color);
             mDataBinding.frontRpTv3.setTextColor(color);
             mDataBinding.frontRpTv4.setTextColor(color);
-            mDataBinding.frontRpTv1.setText("抽奖1次");
+            mDataBinding.frontRpTv1.setText("待开启");
             mDataBinding.frontRpTv2.setText("抽奖3次");
             mDataBinding.frontRpTv3.setText("抽奖5次");
             mDataBinding.frontRpTv4.setText("抽奖7次");
             mDataBinding.frontRpTv5.setText("抽奖10次");
+
+            if (mDataBinding.frontRpOpenFl1.getAnimation() == null) {
+                mDataBinding.frontRpOpenFl1.startAnimation(mScaleAnimation);
+            }
 
             startTimer();
 
@@ -546,6 +549,11 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             } else if (rpBean.getHadLotteryTotal() < rpBean.getLotteryTotal()) {
                 tv.setText("抽奖" + rpBean.getLotteryTotal() + "次");
                 iv.setBackgroundResource(R.drawable.front_rp_wait);
+                if (index == 1) {
+                    if (fl.getAnimation() == null) {
+                        fl.startAnimation(mScaleAnimation);
+                    }
+                }
             }
         }
         fl.postInvalidate();
@@ -710,16 +718,16 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
 //        EventBus.getDefault().post(new DoubleRpEvent(1, "123"));
 
-        /*if (mFirstGuidLotteryDialog == null) {
+        if (mFirstGuidLotteryDialog == null) {
             mFirstGuidLotteryDialog = new FirstGuidLotteryDialog(this.getContext(), this.requireActivity());
         }
-        mFirstGuidLotteryDialog.showEx();*/
+        mFirstGuidLotteryDialog.showEx();
 
         /*if (mLotteryMore4RpDialog == null) {
             mLotteryMore4RpDialog = new LotteryMore4RpDialog(this.getContext(), this.requireActivity());
         }
         mLotteryMore4RpDialog.showEx();*/
-        if (!AppInfo.checkIsWXLogin()) {
+        /*if (!AppInfo.checkIsWXLogin()) {
             ARouter.getInstance()
                     .build(RouterActivityPath.User.PAGER_LOGIN)
                     .navigation();
@@ -749,7 +757,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         int index = (int) v.getTag(R.id.tag_first);
         AnalysisUtils.onEventEx(mContext, Dot.But_Rp_Click, String.valueOf(index));
 
-        openRp();
+        openRp();*/
     }
 
     private void openRp() {

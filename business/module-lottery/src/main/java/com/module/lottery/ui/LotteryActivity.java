@@ -37,8 +37,8 @@ import com.donews.common.ad.business.manager.JddAdManager;
 import com.donews.common.provider.IDetailProvider;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
-import com.donews.common.services.config.ServicesConfig;
 import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.bean.RedEnvelopeUnlockBean;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
@@ -72,7 +72,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 额外获得奖励的弹窗
+ * 抽奖页面
  *
  * @author hegai
  * @version v1.0
@@ -83,6 +83,8 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     private static final String TAG = "LotteryActivity";
     private static final String LOTTERY_ACTIVITY = "LOTTERY_ACTIVITY";
     private static final String FIRST_SHOW = "first_show";
+
+
     @Autowired(name = "goods_id")
     public String mGoodsId;
     private SharedPreferences mSharedPreferences;
@@ -165,15 +167,14 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             ifOpenAutoLotteryAndCount();
         }
         mStart_lottery = false;
-
     }
+
 
     /**
      * 判断是否需要自动抽奖,并且是否大于了中台控制次数
      */
     private void ifOpenAutoLotteryAndCount() {
         if (privilege) {
-            privilege = false;
             luckyDrawEntrance();
             return;
         }
@@ -462,6 +463,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             generateCodeDialog.setStateListener(new GenerateCodeDialog.OnStateListener() {
                 @Override
                 public void onFinish() {
+                    privilege = false;
                     if (generateCodeDialog != null && !LotteryActivity.this.isFinishing()) {
                         generateCodeDialog.dismiss();
                     }
@@ -475,6 +477,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
                     }
                     if (generateCodeBean == null) {
+                        privilege = false;
                         Toast.makeText(LotteryActivity.this, "生成抽奖码失败", Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -583,6 +586,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     //展示生成的抽奖码
     private void showExhibitCodeDialog(GenerateCodeBean generateCodeBean) {
         if (generateCodeBean == null) {
+            privilege = false;
             Toast.makeText(LotteryActivity.this, "生成抽奖码失败", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -618,6 +622,12 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         try {
             exhibitCodeStartsDialog.create();
             if (!this.isFinishing() && !this.isDestroyed()) {
+                if (privilege) {
+                    Toast.makeText(LotteryActivity.this, "红包已解锁", Toast.LENGTH_SHORT).show();
+                    //通知首页更新
+                    EventBus.getDefault().post(new RedEnvelopeUnlockBean(200));
+                    privilege = false;
+                }
                 exhibitCodeStartsDialog.show(LotteryActivity.this);
             }
         } catch (Exception ignored) {
@@ -643,6 +653,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        privilege = false;
         setIntent(intent);
         ARouter.getInstance().inject(this);
         if (mAction != null && mAction.equals("newAction")) {

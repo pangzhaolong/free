@@ -1,11 +1,16 @@
 package com.donews.common.ad.business.proxy
 
 import android.app.Activity
+import androidx.fragment.app.FragmentActivity
 import com.dn.sdk.listener.IAdRewardVideoListener
 import com.dn.sdk.listener.impl.SimpleInterstitialListener
+import com.dn.sdk.manager.config.IAdConfigInitListener
 import com.donews.base.base.AppManager
 import com.donews.common.ad.business.loader.AdManager
+import com.donews.common.ad.business.manager.JddAdConfigManager
+import com.donews.common.ad.business.manager.JddAdManager
 import com.donews.common.ad.business.monitor.RewardVideoCount
+import com.donews.common.ad.business.utils.InterstitialUtils
 
 /**
  * 激励视频回调代理
@@ -41,22 +46,20 @@ class JddAdRewardVideoListenerProxy(
 
     override fun onAdClose() {
         RewardVideoCount.playRewardVideoSuccess()
-        listener?.onAdClose()
-
-//        JddAdManager.addInitListener(object : IAdConfigInitListener {
-//            override fun initSuccess() {
-//                val jddAdConfigBean = JddAdConfigManager.jddAdConfigBean
-//                if (jddAdConfigBean.playRewardVideoTimes <= RewardVideoCount.todayPlayRewardVideoTimes()) {
-//                    if (InterstitialUtils.checkOpenAd(jddAdConfigBean)) {
-//                        loadAd()
-//                    } else {
-//                        listener?.onAdClose()
-//                    }
-//                } else {
-//                    listener?.onAdClose()
-//                }
-//            }
-//        })
+        JddAdManager.addInitListener(object : IAdConfigInitListener {
+            override fun initSuccess() {
+                val jddAdConfigBean = JddAdConfigManager.jddAdConfigBean
+                if (jddAdConfigBean.playRewardVideoTimes <= RewardVideoCount.todayPlayRewardVideoTimes()) {
+                    if (InterstitialUtils.checkOpenAd(jddAdConfigBean)) {
+                        loadAd()
+                    } else {
+                        listener?.onAdClose()
+                    }
+                } else {
+                    listener?.onAdClose()
+                }
+            }
+        })
     }
 
     override fun onVideoCached() {
@@ -73,12 +76,19 @@ class JddAdRewardVideoListenerProxy(
 
 
     private fun loadAd() {
-        val activity = AppManager.getInstance().topActivity
-        AdManager.loadInterstitialAd(activity, object : SimpleInterstitialListener() {
+        var resultActivity = AppManager.getInstance().topActivity
+        if (resultActivity !is FragmentActivity) {
+            resultActivity = AppManager.getInstance().secondActivity
+            if (resultActivity !is FragmentActivity) {
+                listener?.onAdClose()
+                return
+            }
+        }
+        AdManager.loadInterstitialAd(resultActivity, object : SimpleInterstitialListener() {
 
             override fun onAdError(code: Int, errorMsg: String?) {
                 super.onAdError(code, errorMsg)
-                listener?.onAdError(code, errorMsg)
+                listener?.onAdClose()
             }
 
 

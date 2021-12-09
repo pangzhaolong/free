@@ -25,7 +25,21 @@ interface IAdLoadManager {
 
     fun loadFullScreenSplashAd(activity: Activity, container: ViewGroup, listener: IAdSplashListener?)
 
+    fun preloadFullScreenSplashAd(
+        activity: Activity,
+        container: ViewGroup,
+        preloadAdListener: IPreloadAdListener,
+        listener: IAdSplashListener?
+    )
+
     fun loadHalfScreenSplashAd(activity: Activity, container: ViewGroup, listener: IAdSplashListener?)
+
+    fun preloadHalfScreenSplashAd(
+        activity: Activity,
+        container: ViewGroup,
+        preloadAdListener: IPreloadAdListener,
+        listener: IAdSplashListener??
+    )
 
     fun loadRewardVideoAd(activity: Activity, listener: IAdRewardVideoListener?)
 

@@ -15,8 +15,10 @@ import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.donews.base.base.AppManager;
 import com.donews.base.storage.MmkvHelper;
 import com.donews.common.NotifyLuncherConfigManager;
+import com.donews.utilslibrary.utils.AppStatusUtils;
 import com.donews.utilslibrary.utils.KeySharePreferences;
 
 import java.text.SimpleDateFormat;
@@ -78,7 +80,7 @@ public class NotifyScreenDelegate {
             case Intent.ACTION_USER_PRESENT:
                 NotifyActionActivity.destroy();
 
-                if (canShowNotify()) {
+                if (canShowNotify() && canShowAct()) {
                     tryLoadNewImg(context);
                     long delayTime = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyDelayShowTime;
                     mLastShowTime = System.currentTimeMillis();
@@ -97,7 +99,7 @@ public class NotifyScreenDelegate {
             case ConnectivityManager.CONNECTIVITY_ACTION://网络状态发生变化
                 if (mCurruntCount > 2) {
                     NotifyActionActivity.destroy();
-                    if (canShowNotify()) {
+                    if (canShowNotify() && canShowAct()) {
                         tryLoadNewImg(context);
                         long delayTime = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyDelayShowTime;
                         Log.w(NotifyInitProvider.TAG, action + " show , delayTime=" + delayTime);
@@ -180,7 +182,8 @@ public class NotifyScreenDelegate {
         Log.w(NotifyInitProvider.TAG, "canShowNotify time1 = " + time1);
         Log.w(NotifyInitProvider.TAG, "canShowNotify time2 = " + time2);
 
-        boolean result = isRangeTime(time1) || isRangeTime(time2);
+        //增加新用户延迟判断isOutDelayTime4NewUser
+        boolean result = isRangeTime(time1) || isRangeTime(time2) || isOutDelayTime4NewUser();
 
         long now = System.currentTimeMillis();
         boolean canShow = (now - mLastShowTime > mIntervalLockShowTime);
@@ -188,6 +191,11 @@ public class NotifyScreenDelegate {
         Log.w(NotifyInitProvider.TAG, "result = " + result + ",canShow = " + canShow);
         result = result && canShow;
         return result;
+    }
+
+    private boolean canShowAct() {
+        Log.w(NotifyInitProvider.TAG, "App  Activity Stack Size: " + AppManager.getInstance().getActivitySize());
+        return AppManager.getInstance().getActivitySize() <= 0;
     }
 
     private boolean isRangeTime(int time) {
@@ -203,6 +211,18 @@ public class NotifyScreenDelegate {
         long now = System.currentTimeMillis();
 
         return now >= todayStartTime1 && now <= todayEndTime1;
+    }
+
+    //是否超过新用户延迟时间
+    private boolean isOutDelayTime4NewUser() {
+        long delayTime = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyDelay4NewUser * 1000L;
+        if (System.currentTimeMillis() - AppStatusUtils.getAppInstallTime() > delayTime) {
+            Log.w(NotifyInitProvider.TAG, "out delay time 4 new user: true");
+            return true;
+        }
+
+        Log.w(NotifyInitProvider.TAG, "out delay time 4 new user: false");
+        return false;
     }
 
     public long getTodayZeroTime() {

@@ -3,6 +3,8 @@ package com.donews.main.application;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.donews.common.ad.business.bean.JddAdConfigBean;
 import com.donews.common.ad.business.manager.JddAdConfigManager;
@@ -12,6 +14,7 @@ import com.donews.base.base.BaseApplication;
 import com.donews.common.IModuleInit;
 import com.donews.common.adapter.ScreenAutoAdapter;
 import com.donews.main.utils.ExitInterceptUtils;
+import com.donews.main.utils.HotStartCacheUtils;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.converter.GsonDiskConverter;
 import com.donews.network.cache.model.CacheMode;
@@ -36,6 +39,7 @@ public class MainModuleInit implements IModuleInit {
     private int appCount;
     private long stopTime;
 
+    private final Handler mHandler = new Handler(Looper.myLooper());
     private Application.ActivityLifecycleCallbacks callbacks = new Application.ActivityLifecycleCallbacks() {
 
 
@@ -66,6 +70,7 @@ public class MainModuleInit implements IModuleInit {
             appCount--;
             if (appCount == 0) {
                 stopTime = System.currentTimeMillis();
+                delayLoadAd(activity);
             }
 
         }
@@ -96,8 +101,29 @@ public class MainModuleInit implements IModuleInit {
         LogUtil.d("toForeGround: seconds:" + seconds);
         LogUtil.e(activity.getClass().getName());
         if (seconds > backGroundInt) {
-            SplashActivity.toForeGround(activity);
+            HotStartCacheUtils.INSTANCE.showAd();
+//            SplashActivity.toForeGround(activity);
+        } else {
+            HotStartCacheUtils.INSTANCE.dismiss();
         }
+    }
+
+
+    private void delayLoadAd(Activity activity) {
+        JddAdConfigBean bean = JddAdConfigManager.INSTANCE.getJddAdConfigBean();
+        int backGroundInt = bean.getHotStartSplashInterval();
+        if (activity instanceof SplashActivity || backGroundInt == 0) {
+            return;
+        }
+        HotStartCacheUtils.INSTANCE.addHotStartAdDialog();
+        mHandler.removeCallbacksAndMessages(null);
+        //在满足后台时间的需求后再加载广告
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                HotStartCacheUtils.INSTANCE.loadAd();
+            }
+        }, backGroundInt * 1000L);
     }
 
     @Override

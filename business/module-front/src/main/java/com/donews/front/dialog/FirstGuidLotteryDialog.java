@@ -3,7 +3,6 @@ package com.donews.front.dialog;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -11,7 +10,6 @@ import android.view.KeyEvent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -68,7 +66,7 @@ public class FirstGuidLotteryDialog extends BaseDialog<FrontFirstGuidLotteryDial
             }
         });
 
-        mDataBinding.frontFirstGuidLotteryBtnFl.setOnClickListener(v -> {
+        mDataBinding.frontFirstGuidLotteryBtnTv.setOnClickListener(v -> {
             try {
                 ARouter.getInstance()
                         .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
@@ -83,17 +81,6 @@ public class FirstGuidLotteryDialog extends BaseDialog<FrontFirstGuidLotteryDial
                 dismiss();
             }
         });
-
-        initLottie(mDataBinding.mainEnterDialogLottie, "lottery_finger.json");
-    }
-
-    private void initLottie(LottieAnimationView view, String json) {
-        if (view != null && !view.isAnimating()) {
-            view.setImageAssetsFolder("images");
-            view.setAnimation(json);
-            view.loop(true);
-            view.playAnimation();
-        }
     }
 
     public void showEx() {
@@ -146,15 +133,6 @@ public class FirstGuidLotteryDialog extends BaseDialog<FrontFirstGuidLotteryDial
                             return false;
                         }
                     }).preload();
-        }
-        mDataBinding.frontFirstGuidLotteryDescTv.setText(mGoods.getTitle());
-        mDataBinding.frontFirstGuidLotteryCouponPriceTv.setText(String.format("￥%.0f", mGoods.getDisplayPrice()));
-        mDataBinding.frontFirstGuidLotteryOriginPriceTv.setText(String.format("￥%.0f", mGoods.getOriginalPrice()));
-        mDataBinding.frontFirstGuidLotteryOriginPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
-        if (mGoods.getTotalPeople() > 10000) {
-            mDataBinding.frontFirstGuidLotteryInfoTv.setText(String.format("累计%.02f万人参与抢购", mGoods.getTotalPeople() / 10000f));
-        } else {
-            mDataBinding.frontFirstGuidLotteryInfoTv.setText(String.format("累计%d人参与抢购", mGoods.getTotalPeople()));
         }
     }
 

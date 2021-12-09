@@ -53,7 +53,6 @@ public class NotifyResidentService extends KeepAliveService {
 
         ServiceHolder.getInstance().bindService(this, DaemonService.class, null);
 
-
         return super.onStartCommand(intent, flags, startId);
     }
 

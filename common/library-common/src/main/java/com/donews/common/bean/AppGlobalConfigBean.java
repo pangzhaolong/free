@@ -58,4 +58,5 @@ public class AppGlobalConfigBean {
 
     public String notifyBarImg;
 
+    public int notifyDelay4NewUser;
 }

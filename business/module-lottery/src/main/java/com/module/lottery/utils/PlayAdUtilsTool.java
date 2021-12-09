@@ -39,6 +39,7 @@ public class PlayAdUtilsTool {
 
 
     public void showRewardVideo(final Dialog dialog) {
+        aAState=false;
         IAdRewardVideoListener listener = new IAdRewardVideoListener() {
             @Override
             public void onAdStartLoad() {
