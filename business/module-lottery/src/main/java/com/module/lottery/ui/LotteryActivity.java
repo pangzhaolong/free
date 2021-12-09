@@ -31,15 +31,14 @@ import com.airbnb.lottie.value.SimpleLottieValueCallback;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.LotteryStatusEvent;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.business.manager.JddAdManager;
 import com.donews.common.provider.IDetailProvider;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
-import com.donews.common.services.config.ServicesConfig;
 import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.bean.RedEnvelopeUnlockBean;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
@@ -48,7 +47,6 @@ import com.module.lottery.adapter.GuessAdapter;
 import com.module.lottery.bean.CommodityBean;
 import com.module.lottery.bean.GenerateCodeBean;
 import com.module.lottery.bean.LotteryCodeBean;
-import com.module.lottery.bean.RedEnvelopeUnlockBean;
 import com.module.lottery.dialog.CongratulationsDialog;
 import com.module.lottery.dialog.ExclusiveLotteryCodeDialog;
 import com.module.lottery.dialog.ExhibitCodeStartsDialog;
@@ -69,8 +67,6 @@ import com.module_lottery.databinding.LotteryMainLayoutBinding;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 import java.util.Map;
@@ -87,7 +83,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     private static final String TAG = "LotteryActivity";
     private static final String LOTTERY_ACTIVITY = "LOTTERY_ACTIVITY";
     private static final String FIRST_SHOW = "first_show";
-    public static final int RED_ENVELOPE_UNLOCK = 200;
 
 
     @Autowired(name = "goods_id")
@@ -173,7 +168,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             ifOpenAutoLotteryAndCount();
         }
         mStart_lottery = false;
-        EventBus.getDefault().post(RED_ENVELOPE_UNLOCK);
     }
 
 
@@ -633,7 +627,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 if (privilege) {
                     Toast.makeText(LotteryActivity.this, "红包已解锁", Toast.LENGTH_SHORT).show();
                     //通知首页更新
-                    EventBus.getDefault().post(new RedEnvelopeUnlockBean(RED_ENVELOPE_UNLOCK));
+                    EventBus.getDefault().post(new RedEnvelopeUnlockBean(200));
                     privilege = false;
                 }
                 exhibitCodeStartsDialog.show(LotteryActivity.this);

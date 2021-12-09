@@ -1,6 +1,7 @@
-package com.module.lottery.bean
+package com.donews.middle.bean
 
 class RedEnvelopeUnlockBean internal constructor(status: Int) {
+
     /**
      * 抽奖码解锁状态
      * 200解锁成功
