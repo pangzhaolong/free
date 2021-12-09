@@ -118,6 +118,13 @@ public class AppManager {
         return null;
     }
 
+    public Activity getSecondActivity() {
+        if (activityStack != null && activityStack.size() > 1) {
+            return activityStack.get(activityStack.size() - 2);
+        }
+        return null;
+    }
+
 
     /**
      * 结束所有Activity
