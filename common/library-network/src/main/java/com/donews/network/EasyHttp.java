@@ -25,7 +25,6 @@ import com.donews.network.cache.converter.SerializableDiskConverter;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.cookie.CookieManger;
 import com.donews.network.https.HttpsUtils;
-import com.donews.network.interceptor.EncrypAndDecryptiontionInterceptor;
 import com.donews.network.interceptor.HttpLoggingInterceptor;
 import com.donews.network.model.HttpHeaders;
 import com.donews.network.model.HttpParams;
@@ -114,13 +113,10 @@ public final class EasyHttp {
         rxCacheBuilder = new RxCache.Builder().init(sContext)
                 .diskConverter(new SerializableDiskConverter());      //目前只支持Serializable和Gson缓存其它可以自己扩展
 
-        //添加加解密的拦截器(为了防止其他拦截器出现乱码。所以放在第一个)
         if(BuildConfig.DEBUG){
             //添加代理调试
             okHttpClientBuilder.addInterceptor(new OkHttpProfilerInterceptor());
         }
-        //添加加解密的拦截器(放在日志之后。让日志打印不出现乱码)
-        okHttpClientBuilder.addInterceptor(new EncrypAndDecryptiontionInterceptor());
     }
 
     public static EasyHttp getInstance() {
