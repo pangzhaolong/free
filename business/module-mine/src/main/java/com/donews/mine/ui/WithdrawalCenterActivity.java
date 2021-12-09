@@ -6,10 +6,8 @@ import android.view.View;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.events.WalletRefreshEvent;
-import com.donews.base.fragmentdialog.LoadingHintDialog;
 import com.donews.base.utils.ToastUtil;
-import com.donews.common.ad.business.callback.JddAdIdConfigManager;
-import com.donews.common.ad.business.utils.JddAdUnits;
+import com.donews.common.ad.business.manager.JddAdManager;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.UserInfoBean;
@@ -66,7 +64,7 @@ public class WithdrawalCenterActivity extends
                     .navigation();
         });
         mDataBinding.mineDrawSubmit.setOnClickListener(v -> {
-            if (!JddAdUnits.INSTANCE.isOpenAd()) {
+            if (!JddAdManager.INSTANCE.isOpenAd()) {
                 ToastUtil.showShort(this, "账户升级中，请稍后再试");
                 return;
             }

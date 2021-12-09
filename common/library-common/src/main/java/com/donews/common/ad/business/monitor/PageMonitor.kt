@@ -10,12 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
-import com.donews.common.ad.business.callback.JddAdConfigManager
+import com.dn.sdk.listener.impl.SimpleInterstitialListener
+import com.donews.common.ad.business.manager.JddAdConfigManager
 import com.donews.common.ad.business.loader.AdManager
-import com.dn.sdk.sdk.interfaces.listener.impl.SimpleInterstListener
 import com.donews.common.ad.business.utils.InterstitialUtils
 import com.donews.common.contract.LoginHelp
-import com.donews.utilslibrary.utils.AppInfo
 import com.donews.utilslibrary.utils.AppStatusUtils
 import com.orhanobut.logger.Logger
 import java.lang.reflect.InvocationHandler
@@ -179,13 +178,12 @@ class PageMonitor : LifecycleObserver {
         //显示次数小于最大显示次数
         val activity = mActivity ?: mFragment?.activity
         activity?.let {
-            AdManager.loadInterstitialAd(it, object : SimpleInterstListener() {
-                override fun onError(code: Int, msg: String?) {
-                    super.onError(code, msg)
-                    Logger.d("${mTag}加载广告错误---- code = $code ,msg =  $msg ");
+            AdManager.loadInterstitialAd(it, object : SimpleInterstitialListener() {
+                override fun onAdError(code: Int, errorMsg: String?) {
+                    super.onAdError(code, errorMsg)
+                    Logger.d("${mTag}加载广告错误---- code = $code ,msg =  $errorMsg ");
                     checkSendMessage()
                 }
-
 
                 override fun onAdClosed() {
                     super.onAdClosed()

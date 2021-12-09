@@ -166,7 +166,7 @@ public class MainActivity
         if (status.getStatus() == 1 && AppInfo.checkIsWXLogin()) {
             //登录刷新广告id
             String url = HttpConfigUtilsKt.withConfigParams(BuildConfig.AD_ID_CONFIG, false);
-            AdManager.INSTANCE.initAdIdConfig(url);
+            AdManager.INSTANCE.init();
         }
     }
 
@@ -523,13 +523,27 @@ public class MainActivity
             AnAdditionalDialog mDrawDialog = new AnAdditionalDialog(
                     String.valueOf(doubleRedPacketBean.getScore()), 4);
             mDrawDialog.setEventListener(() -> {
-                if (mDrawDialog.isAdded()) {
-                    mDrawDialog.dismiss();
+                try {
+                    if (mDrawDialog.isAdded() && !MainActivity.this.isFinishing()) {
+                        mDrawDialog.dismiss();
+                    }
+                } catch (Exception e) {
                 }
             });
             mDrawDialog.show(getSupportFragmentManager(), "AnAddDialog");
             EventBus.getDefault().post(new WalletRefreshEvent(0));
             AnalysisUtils.onEventEx(this, Dot.But_Rp_Double);
         });
+        /*AnAdditionalDialog mDrawDialog = new AnAdditionalDialog(
+                String.valueOf(3.09), 4);
+        mDrawDialog.setEventListener(() -> {
+            try {
+                if (mDrawDialog.isAdded() && !MainActivity.this.isFinishing()) {
+                    mDrawDialog.dismiss();
+                }
+            } catch (Exception e) {
+            }
+        });
+        mDrawDialog.show(getSupportFragmentManager(), "AnAddDialog");*/
     }
 }

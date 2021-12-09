@@ -37,6 +37,7 @@ import com.donews.utilslibrary.utils.AppInfo;
 import com.module.lottery.bean.GenerateCodeBean;
 import com.module.lottery.model.LotteryModel;
 import com.module.lottery.ui.BaseParams;
+import com.module.lottery.utils.LotteryAnimationUtils;
 import com.module.lottery.view.CountdownView;
 import com.module_lottery.R;
 import com.module_lottery.databinding.ExclusiveLotteryCodeLayoutBinding;
@@ -107,9 +108,9 @@ public class ExclusiveLotteryCodeDialog extends BaseDialog<ExclusiveLotteryCodeL
         if (loginUserStatus.getStatus() == 1 && AppInfo.checkIsWXLogin()) {
             if (mOnFinishListener != null) {
                 //判断抽奖码是否失效
-                long period = mDataBinding.countdownView.getPeriod();
+                Boolean isComplete = mDataBinding.countdownView.isComplete();
                 mDataBinding.countdownView.pauseTimer();
-                if (period <= 0) {
+                if (isComplete) {
                     ToastUtil.showShort(getContext(), "抽奖码失效");
                     //抽奖码获取失败刷新页面
                     mOnFinishListener.onLoginUploadSuccessful();
@@ -200,6 +201,7 @@ public class ExclusiveLotteryCodeDialog extends BaseDialog<ExclusiveLotteryCodeL
         boolean protocol = getSharedPreferences().getBoolean("Free", false) ||
                 ABSwitch.Ins().isOpenAutoAgreeProtocol();
         mDataBinding.checkBox.setChecked(protocol);
+        mDataBinding.jumpButton.setAnimation(LotteryAnimationUtils.setScaleAnimation(1000));
         mDataBinding.jumpButton.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("MissingPermission")
             @Override
@@ -224,12 +226,6 @@ public class ExclusiveLotteryCodeDialog extends BaseDialog<ExclusiveLotteryCodeL
                 }
             }
         });
-
-        //手
-        mDataBinding.maskingHand.setImageAssetsFolder("images");
-        mDataBinding.maskingHand.setAnimation("lottery_finger.json");
-        mDataBinding.maskingHand.loop(true);
-        mDataBinding.maskingHand.playAnimation();
         valueCode = randomCode(7);
         mDataBinding.lotteryCode.setText(valueCode);
     }
@@ -259,6 +255,7 @@ public class ExclusiveLotteryCodeDialog extends BaseDialog<ExclusiveLotteryCodeL
             mExclusiveHandler = null;
         }
         EventBus.getDefault().unregister(this);
+        mDataBinding.jumpButton.clearAnimation();
     }
 
     @Override

@@ -4,9 +4,11 @@ android {
     defaultConfig {
         buildConfigField("boolean", "OPEN_AD_LOGGER", "${rootProject.OPEN_AD_LOGGER}")
         ndk {
-            abiFilters "armeabi-v7a"
+            abiFilters "armeabi-v7a", "arm64-v8a"
         }
     }
+    //广告可能需要
+    useLibrary 'org.apache.http.legacy'
 }
 
 repositories {
@@ -16,9 +18,42 @@ repositories {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
-    //使用其中的大数据
-    implementation project(path: ':common:library-utils')
+    //广告相关sdk 需要使用的依赖
     implementation rootProject.ext.androidx["androidx-appcompat"]
     api 'androidx.legacy:legacy-support-v4:1.0.0'
+    //快手sdk特殊需要
+    api 'androidx.legacy:legacy-support-core-ui:1.0.0'
+
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+
+//    //多牛SDK1.0版本aar
+//    implementation(name: 'donews_ad_dnsdk_1.0.0', ext: 'aar')
+//    //多牛SDK适配穿山甲SDK的aar
+//    implementation(name: 'donews_ad_adapter_csj_3.9.0.0', ext: 'aar')
+//    //多牛SDK适配优量汇SDK的aar
+//    implementation(name: 'donews_ad_adapter_gdt_4.391.1261', ext: 'aar')
+//    //多牛SDK适配快手SDK的aar
+//    implementation(name: 'donews_ad_adapter_ks_3.3.13', ext: 'aar')
+//    //多牛SDK适配GroMoreSDK的aar
+//    implementation(name: 'donews_ad_adapter_gromore_2.9.1.1', ext: 'aar')
+//    //多牛SDK适配Opt广告的aar
+//    implementation(name: 'donews_ad_adapter_opt_1.0.0', ext: 'aar')
+//    //多牛SDK用于测试的兜底SDK，用以app测试 如果app已经上线，申请到正式广告，此aar可以不加
+//    implementation(name: 'donews_ad_adapter_base_1.0.0', ext: 'aar')
+//
+//
+//    //穿山甲GrMoreSDK以及对应的adapter
+//    implementation(name: 'mediation_ad_sdk_2.9.1.1', ext: 'aar')
+//
+//    implementation(name: 'ks_adapter_3.3.13.0', ext: 'aar')
+//
+//    implementation(name: 'gdt_adapter_4.391.1261.1', ext: 'aar')
+//    //优量汇SDK
+//    implementation(name: 'GDTSDK.unionNormal.4.391.1261', ext: 'aar')
+//    //穿山甲SDK
+//    implementation(name: 'open_ad_sdk3900', ext: 'aar')
+//    //快手SDK
+//    implementation(name: 'kssdk-ad--3.3.13', ext: 'aar')
+//    //移动安全联盟OAID
+//    implementation(name: 'oaid_sdk_1.0.23', ext: 'aar')
 }

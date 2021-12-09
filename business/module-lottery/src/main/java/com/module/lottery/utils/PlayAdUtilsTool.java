@@ -7,16 +7,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.dn.sdk.sdk.interfaces.listener.IAdRewardVideoListener;
+import com.dn.sdk.listener.IAdRewardVideoListener;
 import com.donews.base.base.AppManager;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.cache.AdVideoCacheUtils;
@@ -43,33 +41,22 @@ public class PlayAdUtilsTool {
     public void showRewardVideo(final Dialog dialog) {
         IAdRewardVideoListener listener = new IAdRewardVideoListener() {
             @Override
-            public void onError(int code, String msg) {
-                loadError(dialog);
-                Logger.e(TAG + msg + "");
-            }
-
-            @Override
-            public void onLoadCached() {
+            public void onAdStartLoad() {
 
             }
 
             @Override
-            public void onLoad() {
+            public void onAdStatus(int code, @Nullable Object any) {
 
             }
 
             @Override
-            public void onLoadFail(int code, String error) {
+            public void onAdLoad() {
 
             }
 
             @Override
-            public void onLoadTimeout() {
-
-            }
-
-            @Override
-            public void onRewardAdShow() {
+            public void onAdShow() {
                 //关闭dialog
                 dismissDialog(dialog);
                 //广告显示成功  延时出现页面提示Toast
@@ -77,29 +64,7 @@ public class PlayAdUtilsTool {
             }
 
             @Override
-            public void onRewardBarClick() {
-
-            }
-
-            //点击关闭视频
-            @Override
-            public void onRewardedClosed() {
-                closedVideoViewToast();
-            }
-
-            //视屏播放完成
-            @Override
-            public void onRewardVideoComplete() {
-                onVideoComplete();
-            }
-
-            @Override
-            public void onRewardVideoError() {
-
-            }
-
-            @Override
-            public void onRewardVideoAdShowFail(int code, String message) {
+            public void onAdVideoClick() {
 
             }
 
@@ -111,10 +76,25 @@ public class PlayAdUtilsTool {
                 aAState = result;
             }
 
-            //点击跳过
             @Override
-            public void onSkippedRewardVideo() {
-                onVideoComplete();
+            public void onAdClose() {
+                closedVideoViewToast();
+            }
+
+            @Override
+            public void onVideoCached() {
+
+            }
+
+            @Override
+            public void onVideoComplete() {
+                videoComplete();
+            }
+
+            @Override
+            public void onAdError(int code, @Nullable String errorMsg) {
+                loadError(dialog);
+                Logger.e(TAG + errorMsg + "");
             }
         };
 
@@ -122,7 +102,7 @@ public class PlayAdUtilsTool {
     }
 
 
-    private void onVideoComplete() {
+    private void videoComplete() {
         if (ABSwitch.Ins().isOpenVideoToast()) {
             try {
                 Activity activity = AppManager.getInstance().getTopActivity();
@@ -195,21 +175,15 @@ public class PlayAdUtilsTool {
     private void addVideoViewToast() {
         try {
             Activity activity = AppManager.getInstance().getTopActivity();
-            if (activity != null) {
+            if (activity != null && !activity.getClass().getSimpleName().equals("MainActivity") && !activity.getClass().getSimpleName().equals("LotteryActivity")) {
                 if (ABSwitch.Ins().isOpenVideoToast()) {
-                    ScaleAnimation mScaleAnimation = new ScaleAnimation(1.1f, 0.88f, 1.1f, 0.88f,
-                            Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                    mScaleAnimation.setInterpolator(new LinearInterpolator());
-                    mScaleAnimation.setRepeatMode(Animation.REVERSE);
-                    mScaleAnimation.setRepeatCount(Animation.INFINITE);
-                    mScaleAnimation.setDuration(1000);
                     View view = LayoutInflater.from(mContext).inflate(R.layout.pop_ups_layout, null);
                     LinearLayout linearLayout = view.findViewById(R.id.toast_view);
                     View decorView = activity.getWindow().getDecorView();
                     FrameLayout contentParent =
                             (FrameLayout) decorView.findViewById(android.R.id.content);
                     contentParent.addView(view);
-                    linearLayout.setAnimation(mScaleAnimation);
+                    linearLayout.setAnimation(LotteryAnimationUtils.setScaleAnimation(1000));
                 }
             } else {
                 ToastUtil.showShort(mContext, "完整观看视频即可获得抽奖码");

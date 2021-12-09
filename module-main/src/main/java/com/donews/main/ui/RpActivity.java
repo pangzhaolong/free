@@ -7,11 +7,13 @@ import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.ScaleAnimation;
 
+import androidx.annotation.Nullable;
+
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.events.DoubleRpEvent;
-import com.dn.sdk.sdk.interfaces.listener.IAdRewardVideoListener;
+import com.dn.sdk.listener.IAdRewardVideoListener;
 import com.donews.base.utils.ToastUtil;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.common.ad.cache.AdVideoCacheUtils;
@@ -63,7 +65,8 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
             doubleRp();
         });
         if (mScaleAnimation == null) {
-            mScaleAnimation = new ScaleAnimation(1.15f, 0.9f, 1.15f, 0.9f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            mScaleAnimation = new ScaleAnimation(1.15f, 0.9f, 1.15f, 0.9f, Animation.RELATIVE_TO_SELF, 0.5f,
+                    Animation.RELATIVE_TO_SELF, 0.5f);
             mScaleAnimation.setInterpolator(new LinearInterpolator());
             mScaleAnimation.setRepeatMode(Animation.REVERSE);
             mScaleAnimation.setRepeatCount(Animation.INFINITE);
@@ -89,57 +92,31 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
     }
 
     private void doubleRp() {
+
         IAdRewardVideoListener listener = new IAdRewardVideoListener() {
             @Override
-            public void onError(int code, String msg) {
-            }
-
-            @Override
-            public void onLoadCached() {
+            public void onAdStartLoad() {
 
             }
 
             @Override
-            public void onLoad() {
+            public void onAdStatus(int code, @Nullable Object any) {
 
             }
 
             @Override
-            public void onLoadFail(int code, String error) {
-                ToastUtil.showShort(mContext, "视频加载失败，点击翻倍领取重试");
-            }
-
-            @Override
-            public void onLoadTimeout() {
+            public void onAdLoad() {
 
             }
 
             @Override
-            public void onRewardAdShow() {
-            }
-
-            @Override
-            public void onRewardBarClick() {
-
-            }
-
-            //点击关闭视频
-            @Override
-            public void onRewardedClosed() {
-            }
-
-            //视屏播放完成
-            @Override
-            public void onRewardVideoComplete() {
-            }
-
-            @Override
-            public void onRewardVideoError() {
+            public void onAdShow() {
 
             }
 
             @Override
-            public void onRewardVideoAdShowFail(int code, String message) {
+            public void onAdVideoClick() {
+
             }
 
             @Override
@@ -151,9 +128,24 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
                 }
             }
 
-            //点击跳过
             @Override
-            public void onSkippedRewardVideo() {
+            public void onAdClose() {
+
+            }
+
+            @Override
+            public void onVideoCached() {
+
+            }
+
+            @Override
+            public void onVideoComplete() {
+
+            }
+
+            @Override
+            public void onAdError(int code, @Nullable String errorMsg) {
+                ToastUtil.showShort(mContext, "视频加载失败，点击翻倍领取重试");
             }
         };
 

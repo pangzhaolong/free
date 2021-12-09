@@ -4,12 +4,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import com.dn.sdk.sdk.ErrorConstant
-import com.dn.sdk.sdk.interfaces.listener.IAdRewardVideoListener
-import com.dn.sdk.sdk.interfaces.listener.preload.IAdPreloadVideoViewListener
-import com.dn.sdk.sdk.interfaces.view.PreloadVideoView
-import com.donews.common.ad.business.callback.JddAdConfigManager
+import com.dn.sdk.AdCustomError
+import com.dn.sdk.bean.preload.PreloadAd
+import com.dn.sdk.listener.IAdRewardVideoListener
+import com.dn.sdk.manager.config.IAdConfigInitListener
 import com.donews.common.ad.business.loader.AdManager
+import com.donews.common.ad.business.loader.IPreloadAdListener
+import com.donews.common.ad.business.manager.JddAdConfigManager
+import com.donews.common.ad.business.manager.JddAdManager
 import com.donews.common.ad.business.monitor.LotteryAdCount
 import com.orhanobut.logger.Logger
 
@@ -37,7 +39,7 @@ object AdVideoCacheUtils {
 
 
     private var mActivity: AppCompatActivity? = null
-    private var mPreloadVideoView: PreloadVideoView? = null
+    private var mPreloadVideoView: PreloadAd? = null
 
     /** 是否正在预加载 */
     private var mPreLoading: Boolean = false
@@ -84,7 +86,7 @@ object AdVideoCacheUtils {
             }
         } else {
             if (mPreLoadSuccess) {
-                mPreloadVideoView?.show()
+                mPreloadVideoView?.showAd()
                 return
             }
             if (!mPreLoading) {
@@ -97,7 +99,10 @@ object AdVideoCacheUtils {
                 val duration = System.currentTimeMillis() - mStartPreloadTime
                 if (duration >= TINE_OUT) {
                     //直接返回错误，并且重新预加载一个视频
-                    mRewardVideoListener?.onError(ErrorConstant.ERROR_LOADING_TIME, "预加载时间过长")
+                    mRewardVideoListener?.onAdError(
+                        AdCustomError.PreloadTimesError.code,
+                        AdCustomError.PreloadTimesError.errorMsg
+                    )
                     mRewardVideoListener = null
                     mRetry = 0
                     mNeedShow = false
@@ -106,7 +111,7 @@ object AdVideoCacheUtils {
                     tag("在加载状态,$duration 预加载时间过长。")
                 } else {
                     tag("在加载状态,时间过短,$duration 可以等待。")
-                    mPreloadVideoView?.show()
+                    mPreloadVideoView?.showAd()
                 }
             }
         }
@@ -133,79 +138,46 @@ object AdVideoCacheUtils {
         mPreLoadSuccess = false
         tag("预加载激励视频开始-----")
 
-        val preloadViewListener: IAdPreloadVideoViewListener = IAdPreloadVideoViewListener { videoView ->
-            mPreloadVideoView = videoView
-            if (mNeedShow) {
-                mPreloadVideoView?.show()
-                mNeedShow = false
+        val preloadViewListener: IPreloadAdListener = object : IPreloadAdListener {
+            override fun preloadAd(ad: PreloadAd) {
+                mPreloadVideoView = ad
+                if (mNeedShow) {
+                    mPreloadVideoView?.showAd()
+                    mNeedShow = false
+                }
             }
         }
 
         val adRewardVideoListener: IAdRewardVideoListener = object : IAdRewardVideoListener {
-            override fun onLoad() {
+
+            override fun onAdStatus(code: Int, any: Any?) {
+
+            }
+
+            override fun onAdLoad() {
+                //加载成功,则重置加载次数
+                mRewardVideoListener?.onAdLoad()
+                tag("预加载激励视频成功------onAdLoad()")
+            }
+
+            override fun onVideoCached() {
                 //加载成功,则重置加载次数
                 mPreLoading = false
                 mPreLoadSuccess = true
                 mRetry = 0
-                tag("预加载激励视频成功------onLoad()")
-                mRewardVideoListener?.onLoad()
+                tag("预加载激励视频成功------onVideoCached()")
+                mRewardVideoListener?.onVideoCached()
             }
 
-            override fun onLoadFail(code: Int, error: String?) {
-                mPreLoading = false
-                mPreLoadSuccess = false
-                mPreloadVideoView = null
-                mRewardVideoListener?.onLoadFail(code, error)
-                tag("预加载激励视频失败---onLoadFail($code,$error)")
+            override fun onAdShow() {
+                mRewardVideoListener?.onAdShow()
+                tag("预加载激励视频展示------onAdShow()")
+
             }
 
-            override fun onLoadTimeout() {
-                mPreLoading = false
-                mPreLoadSuccess = false
-                mPreloadVideoView = null
-                mRewardVideoListener?.onLoadTimeout()
-                tag("预加载激励视频失败---onLoadTimeout()")
-            }
-
-            override fun onLoadCached() {
-                mRewardVideoListener?.onLoadCached()
-                tag("预加载激励视频缓存成功--------onLoadCached（）")
-            }
-
-            override fun onRewardAdShow() {
-                mRewardVideoListener?.onRewardAdShow()
-                tag("预加载激励视频展示----------onRewardAdShow()")
-            }
-
-            override fun onRewardBarClick() {
-                mRewardVideoListener?.onRewardBarClick()
-                tag("预加载激励视频被点击-----------onRewardBarClick()")
-            }
-
-            override fun onRewardedClosed() {
-                mRewardVideoListener?.onRewardedClosed()
-                mRewardVideoListener = null
-                mPreloadVideoView = null
-
-                tag("预加载激励视频关闭-----------onRewardedClosed()")
-
-                //加载下一个激励视频
-                preload()
-            }
-
-            override fun onRewardVideoComplete() {
-                mRewardVideoListener?.onRewardVideoComplete()
-                tag("预加载激励视频播放完成-----------onRewardVideoComplete()")
-            }
-
-            override fun onRewardVideoError() {
-                mRewardVideoListener?.onRewardVideoError()
-                tag("预加载激励视频错误-----------onRewardVideoError()")
-            }
-
-            override fun onRewardVideoAdShowFail(code: Int, message: String?) {
-                mRewardVideoListener?.onRewardVideoAdShowFail(code, message)
-                tag("预加载激励视频展示错误-----------onRewardVideoAdShowFail($code,$message)")
+            override fun onAdVideoClick() {
+                mRewardVideoListener?.onAdVideoClick()
+                tag("预加载激励视频被点击-----------onAdVideoClick()")
             }
 
             override fun onRewardVerify(result: Boolean) {
@@ -213,27 +185,39 @@ object AdVideoCacheUtils {
                 tag("预加载激励视频获取奖励回调-----------onRewardVerify($result)")
             }
 
-            override fun onSkippedRewardVideo() {
-                mRewardVideoListener?.onSkippedRewardVideo()
-                tag("预加载激励视频被跳过-----------onSkippedRewardVideo()")
+            override fun onAdClose() {
+                mRewardVideoListener?.onAdClose()
+                mRewardVideoListener = null
+                mPreloadVideoView = null
+                tag("预加载激励视频关闭-----------onAdClose()")
+                //加载下一个激励视频
+                refreshIdAndPreload()
             }
 
-            override fun onError(code: Int, msg: String?) {
-                mRewardVideoListener?.onError(code, msg)
+
+            override fun onVideoComplete() {
+                mRewardVideoListener?.onVideoComplete()
+                tag("预加载激励视频播放完成-----------onVideoComplete()")
+            }
+
+            override fun onAdError(code: Int, errorMsg: String?) {
                 mPreloadVideoView = null
-                //这是错误汇总，可能出现预加载成功，但是播放失败出现此问题
                 if (mPreLoading) {
                     mPreLoading = false
                     mPreLoadSuccess = false
-                    //如果不是云控关闭了广告，则需要重试加载广告,最多3次
-                    if (code != ErrorConstant.ERROR_CODE_NO_AD) {
+                    if (code != AdCustomError.CloseAd.code) {
+                        //如果不是关闭广告，则需要重试继续预加载
                         mRetry++
                         if (mRetry < MAX_RETRY_NUMBER) {
+                            tag("预加载激励视频出现错误-----------onError($code,$errorMsg),重新预加载。重试次数$mRetry")
                             preload()
+                        } else {
+                            mRewardVideoListener?.onAdError(code, errorMsg)
                         }
+                    } else {
+                        mRewardVideoListener?.onAdError(code, errorMsg)
                     }
                 }
-                tag("预加载激励视频出现错误-----------onError($code,$msg)")
             }
         }
 
@@ -254,4 +238,18 @@ object AdVideoCacheUtils {
         }
     }
 
+    /** 刷新接口后再预加载 */
+    private fun refreshIdAndPreload() {
+        if (JddAdManager.mAdConfigBean.userLevelStrategy) {
+            JddAdManager.resetInit()
+            JddAdManager.addInitListener(object : IAdConfigInitListener {
+                override fun initSuccess() {
+                    preload()
+                }
+            })
+            JddAdManager.refreshAdIdConfig()
+        } else {
+            preload()
+        }
+    }
 }

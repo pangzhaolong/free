@@ -1,6 +1,7 @@
 package com.donews.common.ad.business.proxy
 
-import com.dn.sdk.sdk.interfaces.listener.IAdInterstitialListener
+import com.dn.sdk.listener.IAdInterstitialListener
+import com.dn.sdk.utils.AdLoggerUtils
 import com.donews.common.ad.business.monitor.InterstitialAdCount
 
 /**
@@ -11,27 +12,15 @@ import com.donews.common.ad.business.monitor.InterstitialAdCount
  * @date 2021/11/2 15:09
  */
 class JddInterstitialListenerProxy(val listener: IAdInterstitialListener? = null) : IAdInterstitialListener {
-    override fun onLoad() {
-        listener?.onLoad()
+    override fun onAdLoad() {
+        listener?.onAdLoad()
     }
 
-    override fun onLoadFail(code: Int, error: String?) {
-        listener?.onLoadFail(code, error)
-        InterstitialAdCount.updateCloseAdTime()
-        InterstitialAdCount.closeAd()
+
+    override fun onAdStatus(code: Int, any: Any?) {
+        listener?.onAdStatus(code, any)
     }
 
-    override fun onLoadTimeout() {
-        listener?.onLoadTimeout()
-        InterstitialAdCount.updateCloseAdTime()
-        InterstitialAdCount.closeAd()
-    }
-
-    override fun onError(code: Int, msg: String?) {
-        listener?.onError(code, msg)
-        InterstitialAdCount.updateCloseAdTime()
-        InterstitialAdCount.closeAd()
-    }
 
     override fun onAdShow() {
         listener?.onAdShow()
@@ -44,25 +33,18 @@ class JddInterstitialListenerProxy(val listener: IAdInterstitialListener? = null
         InterstitialAdCount.closeAd()
     }
 
-    override fun onAdClicked() {
-        listener?.onAdClicked()
-    }
-
-    override fun onAdShowFail(code: Int, msg: String?) {
-        listener?.onAdShowFail(code, msg)
+    override fun onAdError(code: Int, errorMsg: String?) {
+        listener?.onAdError(code, errorMsg)
         InterstitialAdCount.updateCloseAdTime()
         InterstitialAdCount.closeAd()
+    }
+
+    override fun onAdClicked() {
+        listener?.onAdClicked()
     }
 
     override fun onAdExposure() {
         listener?.onAdExposure()
     }
 
-    override fun onAdOpened() {
-        listener?.onAdOpened()
-    }
-
-    override fun onAdLeftApplication() {
-        listener?.onAdLeftApplication()
-    }
 }

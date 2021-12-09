@@ -26,6 +26,7 @@ import androidx.annotation.Nullable;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.BarUtils;
+import com.dn.events.events.DoubleRpEvent;
 import com.dn.events.events.FrontScrollEvent;
 import com.dn.events.events.LoginLodingStartStatus;
 import com.dn.events.events.RedPackageStatus;
@@ -36,6 +37,8 @@ import com.donews.common.router.RouterFragmentPath;
 import com.donews.front.adapter.FragmentAdapter;
 import com.donews.front.databinding.FrontFragmentBinding;
 import com.donews.front.dialog.ActivityRuleDialog;
+import com.donews.front.dialog.FirstGuidLotteryDialog;
+import com.donews.front.dialog.LotteryMore4RpDialog;
 import com.donews.front.viewModel.FrontViewModel;
 import com.donews.middle.bean.WalletBean;
 import com.donews.middle.bean.front.LotteryCategoryBean;
@@ -80,7 +83,9 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
     private FrontHandler mFrontHandler = null;
 
-    ActivityRuleDialog mRuleDialog = null;
+    private ActivityRuleDialog mRuleDialog = null;
+    private FirstGuidLotteryDialog mFirstGuidLotteryDialog = null;
+    private LotteryMore4RpDialog mLotteryMore4RpDialog = null;
 
     private int mCurSelectPosition = 0;
 
@@ -671,8 +676,16 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         }
 
         if (mRuleDialog != null) {
-            mRuleDialog.dismiss();
+            if (mRuleDialog.isShowing()) {
+                mRuleDialog.dismiss();
+            }
             mRuleDialog = null;
+        }
+        if (mFirstGuidLotteryDialog != null) {
+            if (mFirstGuidLotteryDialog.isShowing()) {
+                mFirstGuidLotteryDialog.dismiss();
+            }
+            mFirstGuidLotteryDialog = null;
         }
 
         stopTimer();
@@ -695,6 +708,17 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             return;
         }
 
+//        EventBus.getDefault().post(new DoubleRpEvent(1, "123"));
+
+        /*if (mFirstGuidLotteryDialog == null) {
+            mFirstGuidLotteryDialog = new FirstGuidLotteryDialog(this.getContext(), this.requireActivity());
+        }
+        mFirstGuidLotteryDialog.showEx();*/
+
+        /*if (mLotteryMore4RpDialog == null) {
+            mLotteryMore4RpDialog = new LotteryMore4RpDialog(this.getContext(), this.requireActivity());
+        }
+        mLotteryMore4RpDialog.showEx();*/
         if (!AppInfo.checkIsWXLogin()) {
             ARouter.getInstance()
                     .build(RouterActivityPath.User.PAGER_LOGIN)

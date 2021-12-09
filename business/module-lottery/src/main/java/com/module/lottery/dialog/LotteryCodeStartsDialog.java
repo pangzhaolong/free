@@ -21,23 +21,18 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.dn.sdk.sdk.interfaces.listener.IAdRewardVideoListener;
-import com.dn.sdk.sdk.interfaces.listener.impl.SimpleRewardVideoListener;
-import com.dn.sdk.sdk.interfaces.view.PreloadVideoView;
+import com.dn.sdk.listener.IAdRewardVideoListener;
 import com.donews.base.base.AppManager;
 import com.donews.base.utils.ToastUtil;
-import com.donews.common.ad.business.loader.AdManager;
 import com.donews.common.ad.cache.AdVideoCacheUtils;
 import com.donews.middle.abswitch.ABSwitch;
 import com.donews.utilslibrary.utils.DateManager;
 import com.module.lottery.ui.LotteryActivity;
-import com.module.lottery.utils.LotteryPreloadVideoView;
 import com.module_lottery.R;
 import com.module_lottery.databinding.LotteryStartDialogLayoutBinding;
 import com.orhanobut.logger.Logger;
@@ -138,7 +133,6 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
         mDataBinding.lotteryText04.destroy();
         if (mLotteryHandler != null) {
             mLotteryHandler.removeMessages(0);
-            mLotteryHandler.removeMessages(3);
             mLotteryHandler.removeCallbacksAndMessages(null);
         }
     }

@@ -14,7 +14,7 @@ ext {
     APPLICATION_ID = "com.cdyfnts.lottery.jdd.plus"
 
     //打开广告日志,true 打开日志，false 关闭日志
-    OPEN_AD_LOGGER = "false"
+    OPEN_AD_LOGGER = "true"
 
     // 正式环境base Url
     API_BASE_URL_REALSE = "https://lottery.xg.tagtic.cn/"
@@ -88,6 +88,9 @@ ext {
 
     //广告id配置
     AD_ID_CONFIG = BASE_CONFIG_URL + APP_IDENTIFICATION + "-adIdNewConfig" + BASE_RULE
+
+    //用户分层的广告配置策略
+    AD_ID_LEVEL_CONFIG = BASE_CONFIG_URL + APP_IDENTIFICATION + "-adLayering" + BASE_RULE
 
     //groMore平台 app id
     APP_ID_GROMORE = "5228725"

@@ -33,7 +33,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.events.LotteryStatusEvent;
 import com.donews.base.utils.ToastUtil;
-import com.donews.common.ad.business.utils.JddAdUnits;
+import com.donews.common.ad.business.manager.JddAdManager;
 import com.donews.common.provider.IDetailProvider;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
@@ -89,6 +89,12 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     // 是否自动开始抽奖 true 进入页面自动开始 false
     @Autowired(name = "start_lottery")
     public boolean mStart_lottery = false;
+
+    //特权自动抽奖 不受中台控制
+    @Autowired(name = "privilege")
+    public boolean privilege = false;
+
+
     @Autowired(name = "position")
     int mPosition;
     @Autowired(name = "needLotteryEvent")
@@ -155,16 +161,22 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         //设置下拉，和上拉的监听
         setSmartRefresh();
         //自动开始抽奖
-        if (mStart_lottery && ABSwitch.Ins().isOpenAutoLottery()) {
+        if (mStart_lottery && ABSwitch.Ins().isOpenAutoLottery() || privilege) {
             ifOpenAutoLotteryAndCount();
         }
         mStart_lottery = false;
+
     }
 
     /**
      * 判断是否需要自动抽奖,并且是否大于了中台控制次数
      */
     private void ifOpenAutoLotteryAndCount() {
+        if (privilege) {
+            privilege = false;
+            luckyDrawEntrance();
+            return;
+        }
         if (ABSwitch.Ins().isOpenAutoLottery()) {
             //获取配置的最低次数
             int configurationCount = ABSwitch.Ins().getOpenAutoLotteryCount();
@@ -241,7 +253,9 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         mDataBinding.jsonAnimationRound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                luckyDrawEntrance();
+                if (ClickDoubleUtil.isFastClick()) {
+                    luckyDrawEntrance();
+                }
             }
         });
         mDataBinding.share.setOnClickListener(new View.OnClickListener() {
@@ -275,7 +289,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             setLottieAnimation(true);
         }
         boolean first_show = mSharedPreferences.getBoolean(FIRST_SHOW, true);
-        if (first_show) {
+        if (first_show && privilege == false) {
             mSharedPreferences.edit().putBoolean(FIRST_SHOW, false).commit();
             mDataBinding.maskingLayout.setVisibility(View.VISIBLE);
             //圆 新手引导遮罩层
@@ -318,7 +332,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     private void startLottery() {
         AnalysisUtils.onEventEx(this, Dot.Btn_LotteryNow);
         //判断是否打开了视频广告
-        boolean isOpenAd = JddAdUnits.INSTANCE.isOpenAd();
+        boolean isOpenAd = JddAdManager.INSTANCE.isOpenAd();
         if (isOpenAd) {
             //开始抽奖
             //弹框抽奖码生成dialog
@@ -404,41 +418,39 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
 
     private void showLogToWeChatDialog() {
-        if (ClickDoubleUtil.Companion.isFastClick()) {
-            if (mLogToWeChatDialog == null) {
-                mLogToWeChatDialog = new LogToWeChatDialog(LotteryActivity.this);
-                mLogToWeChatDialog.setFinishListener(new LogToWeChatDialog.OnFinishListener() {
-                    @Override
-                    public void onDismiss() {
-                        if (mLogToWeChatDialog != null && mLogToWeChatDialog.isShowing() && !LotteryActivity.this.isFinishing()) {
-                            mLogToWeChatDialog.dismiss();
-                        }
-                        mLogToWeChatDialog = null;
+        if (mLogToWeChatDialog == null) {
+            mLogToWeChatDialog = new LogToWeChatDialog(LotteryActivity.this);
+            mLogToWeChatDialog.setFinishListener(new LogToWeChatDialog.OnFinishListener() {
+                @Override
+                public void onDismiss() {
+                    if (mLogToWeChatDialog != null && mLogToWeChatDialog.isShowing() && !LotteryActivity.this.isFinishing()) {
+                        mLogToWeChatDialog.dismiss();
                     }
-
-                    @Override
-                    public void onToWeChat() {
-                        RouterActivityPath.LoginProvider.getLoginProvider()
-                                .loginWX(null, "抽奖页>抽奖按钮>未登录弹窗");
-                    }
-
-                    @Override
-                    public void onWeChatReturn() {
-                        //登录成功 刷新页面
-                        clearState();
-                        //加载抽奖商品详情信息
-                        lotteryInfo();
-                        //读取中台控制自动开始抽奖
-                        if (ABSwitch.Ins().isOpenAutoLotteryAfterLoginWx()) {
-                            luckyDrawEntrance();
-                        }
-
-                    }
-                });
-                mLogToWeChatDialog.show();
-                if (guessAdapter != null && guessAdapter.getCommodityBean() != null) {
-                    mLogToWeChatDialog.refreshCoverIcon(guessAdapter.getCommodityBean().getMainPic());
+                    mLogToWeChatDialog = null;
                 }
+
+                @Override
+                public void onToWeChat() {
+                    RouterActivityPath.LoginProvider.getLoginProvider()
+                            .loginWX(null, "抽奖页>抽奖按钮>未登录弹窗");
+                }
+
+                @Override
+                public void onWeChatReturn() {
+                    //登录成功 刷新页面
+                    clearState();
+                    //加载抽奖商品详情信息
+                    lotteryInfo();
+                    //读取中台控制自动开始抽奖
+                    if (ABSwitch.Ins().isOpenAutoLotteryAfterLoginWx()) {
+                        luckyDrawEntrance();
+                    }
+
+                }
+            });
+            mLogToWeChatDialog.show();
+            if (guessAdapter != null && guessAdapter.getCommodityBean() != null) {
+                mLogToWeChatDialog.refreshCoverIcon(guessAdapter.getCommodityBean().getMainPic());
             }
         }
     }
@@ -454,6 +466,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                         generateCodeDialog.dismiss();
                     }
                 }
+
                 @Override
                 public void onJump(GenerateCodeBean generateCodeBean) {
                     //不跳转广告 展示生成的随机抽奖码
@@ -488,7 +501,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             Logger.e("" + e.getMessage());
         }
     }
-
 
     private void showLessMaxDialog() {
         LessMaxDialog lessMaxDialog = new LessMaxDialog(LotteryActivity.this, mLotteryCodeBean);
