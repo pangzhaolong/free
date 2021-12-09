@@ -122,7 +122,7 @@ object AdVideoCacheUtils {
         JddAdConfigManager.addListener {
             val number = LotteryAdCount.getTodayLotteryCount()
             val settingNumber = JddAdConfigManager.jddAdConfigBean.useInvalidRewardVideoIdWhenLotteryNumber
-            preloadRewardVideo(number > settingNumber)
+            preloadRewardVideo(false)
         }
     }
 
@@ -212,6 +212,7 @@ object AdVideoCacheUtils {
                             tag("预加载激励视频出现错误-----------onError($code,$errorMsg),重新预加载。重试次数$mRetry")
                             preload()
                         } else {
+                            tag("预加载激励视频出现错误-----------onError($code,$errorMsg),重新预加载。重试次数$mRetry")
                             mRewardVideoListener?.onAdError(code, errorMsg)
                         }
                     } else {
