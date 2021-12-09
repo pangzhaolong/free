@@ -31,6 +31,10 @@ abstract class BaseAdConfigManager : IAdConfigManager {
         mInit = true
     }
 
+    fun resetInit(){
+        mInit = false
+    }
+
     fun callListener() {
         if (!isInitSuccess()) {
             return

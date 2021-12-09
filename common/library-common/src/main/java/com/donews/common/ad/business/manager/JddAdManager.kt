@@ -29,7 +29,7 @@ object JddAdManager : BaseAdConfigManager() {
     private const val KEY_JDD_AD_OPEN_CONFIG = "KEY_JDD_AD_OPEN_CONFIG"
     private const val KEY_JDD_AD_ID_CONFIG = "KEY_JDD_AD_ID_CONFIG"
 
-    private var mAdConfigBean: JddAdOpenConfigBean = getDefaultAdConfig()
+    var mAdConfigBean: JddAdOpenConfigBean = getDefaultAdConfig()
     private var mAdIdConfigBean: JddAdIdConfigBean = getDefaultAdIdConfig()
 
     private val noAdPlatform = NoAdPlatform()
@@ -91,6 +91,10 @@ object JddAdManager : BaseAdConfigManager() {
                     callListener()
                 }
             })
+    }
+
+    fun refreshAdIdConfig() {
+        initAdIdConfig()
     }
 
     fun getDefaultAdConfig(): JddAdOpenConfigBean {

@@ -7,9 +7,11 @@ import androidx.lifecycle.LifecycleOwner
 import com.dn.sdk.AdCustomError
 import com.dn.sdk.bean.preload.PreloadAd
 import com.dn.sdk.listener.IAdRewardVideoListener
+import com.dn.sdk.manager.config.IAdConfigInitListener
 import com.donews.common.ad.business.loader.AdManager
 import com.donews.common.ad.business.loader.IPreloadAdListener
 import com.donews.common.ad.business.manager.JddAdConfigManager
+import com.donews.common.ad.business.manager.JddAdManager
 import com.donews.common.ad.business.monitor.LotteryAdCount
 import com.orhanobut.logger.Logger
 
@@ -189,7 +191,7 @@ object AdVideoCacheUtils {
                 mPreloadVideoView = null
                 tag("预加载激励视频关闭-----------onAdClose()")
                 //加载下一个激励视频
-                preload()
+                refreshIdAndPreload()
             }
 
 
@@ -236,4 +238,18 @@ object AdVideoCacheUtils {
         }
     }
 
+    /** 刷新接口后再预加载 */
+    private fun refreshIdAndPreload() {
+        if (JddAdManager.mAdConfigBean.userLevelStrategy) {
+            JddAdManager.resetInit()
+            JddAdManager.addInitListener(object : IAdConfigInitListener {
+                override fun initSuccess() {
+                    preload()
+                }
+            })
+            JddAdManager.refreshAdIdConfig()
+        } else {
+            preload()
+        }
+    }
 }
