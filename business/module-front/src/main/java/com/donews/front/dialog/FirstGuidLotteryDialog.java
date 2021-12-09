@@ -17,6 +17,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.donews.base.utils.ToastUtil;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.front.BuildConfig;
 import com.donews.front.R;
@@ -24,11 +25,14 @@ import com.donews.front.databinding.FrontFirstGuidLotteryDialogBinding;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoods;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoodsResp;
 import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.bean.rp.PreRpBean;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
 import com.donews.utilslibrary.utils.HttpConfigUtilsKt;
+import com.donews.utilslibrary.utils.KeySharePreferences;
+import com.donews.utilslibrary.utils.SPUtils;
 import com.donews.utilslibrary.utils.UrlUtils;
 
 public class FirstGuidLotteryDialog extends BaseDialog<FrontFirstGuidLotteryDialogBinding> {
@@ -84,12 +88,39 @@ public class FirstGuidLotteryDialog extends BaseDialog<FrontFirstGuidLotteryDial
     }
 
     public void showEx() {
-        requestGoodsInfo();
+        requestPreRp();
+//        requestGoodsInfo();
+    }
+
+    private void requestPreRp() {
+        EasyHttp.post(HttpConfigUtilsKt.withConfigParams(BuildConfig.API_WALLET_URL + "v1/pre-red-packet", true))
+                .cacheMode(CacheMode.NO_CACHE)
+                .upJson("{}")
+                .execute(new SimpleCallBack<PreRpBean>() {
+                    @Override
+                    public void onError(ApiException e) {
+
+                    }
+
+                    @SuppressLint("DefaultLocale")
+                    @Override
+                    public void onSuccess(PreRpBean bean) {
+                        if (bean == null) {
+                            mDataBinding.frontFirstLotteryMoneyTv.setText("");
+                            ToastUtil.showShort(getContext(), "获取红包失败，请重试");
+                            dismiss();
+                        } else {
+                            mDataBinding.frontFirstLotteryMoneyTv.setText(String.format("%.2f元", bean.getPre_score()));
+                            SPUtils.setInformain(KeySharePreferences.FIRST_RP_OPEN_PRE_ID, bean.getPre_id());
+                            SPUtils.setInformain(KeySharePreferences.FIRST_RP_OPEN_PRE_SCORE, bean.getPre_score());
+                            requestGoodsInfo();
+                        }
+                    }
+                });
     }
 
     private void requestGoodsInfo() {
-        String url = "";
-        url = HttpConfigUtilsKt.withConfigParams(BuildConfig.API_LOTTERY_URL + "v1/recommend-goods-list", true)
+        String url = HttpConfigUtilsKt.withConfigParams(BuildConfig.API_LOTTERY_URL + "v1/recommend-goods-list", true)
                 + "&limit=1&first=false";
 
         EasyHttp.get(url)

@@ -86,10 +86,10 @@ public class MainModel extends BaseLiveDataModel {
         return disop;
     }
 
-    public MutableLiveData<DoubleRedPacketBean> postDoubleRp(String restId) {
+    public MutableLiveData<DoubleRedPacketBean> postDoubleRp(String restId, String preId) {
         MutableLiveData<DoubleRedPacketBean> mutableLiveData = new MutableLiveData<>();
         addDisposable(EasyHttp.post(BuildConfig.API_WALLET_URL + "v1/double-red-packet")
-                .upObject(new RestIdBean(restId))
+                .upObject(new RestIdBean(restId, preId))
                 .cacheMode(CacheMode.NO_CACHE)
                 .isShowToast(false)
                 .execute(new SimpleCallBack<DoubleRedPacketBean>() {

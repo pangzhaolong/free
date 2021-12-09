@@ -40,6 +40,12 @@ public class KeySharePreferences {
 
     public final static String STEPS_TO_GOLD_RED_PACKAGE_COUNTS = "steps_to_gold_red_package_counts";
 
+    //第一个红包是否开启
+    public final static String FIRST_RP_IS_OPEN = "first_rp_is_open";
+    public final static String FIRST_RP_OPEN_PRE_ID = "first_rp_open_pre_id";
+    public final static String FIRST_RP_OPEN_PRE_SCORE = "first_rp_open_pre_score";
+
+
     public final static String SHOW_DIALOG_WHEN_LAUNCH = "show_dialog_when_launch";
 
 

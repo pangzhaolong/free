@@ -10,8 +10,16 @@ import android.os.Looper
 import android.view.View
 import android.view.animation.LinearInterpolator
 import com.donews.base.fragmentdialog.AbstractFragmentDialog
+import com.donews.base.utils.ToastUtil
+import com.donews.main.BuildConfig
 import com.donews.main.R
 import com.donews.main.databinding.AnAdditionalDialogLayoutBinding
+import com.donews.middle.bean.RestIdBean
+import com.donews.middle.bean.front.DoubleRedPacketBean
+import com.donews.network.EasyHttp
+import com.donews.network.cache.model.CacheMode
+import com.donews.network.callback.SimpleCallBack
+import com.donews.network.exception.ApiException
 import com.donews.utilslibrary.utils.SoundHelp
 import com.vmadalin.easypermissions.EasyPermissions
 
@@ -25,7 +33,10 @@ import com.vmadalin.easypermissions.EasyPermissions
  */
 class AnAdditionalDialog(
         /** 金额 */
-        var number: String = "1.8",
+        var restId: String,
+        var preId: String,
+        var score: Float,
+        var number: Float,
         var count: Int = 4 //倒计时三秒
 ) : AbstractFragmentDialog<AnAdditionalDialogLayoutBinding>(),
         EasyPermissions.PermissionCallbacks {
@@ -50,13 +61,15 @@ class AnAdditionalDialog(
             if (count > 0) {
                 handler.postDelayed(timeTask!!, 1000)
             } else {
-//                dismiss()
+                doubleGetRp()
+                dismiss()
             }
         }
         handler.post(timeTask!!)
         SoundHelp.newInstance().init(context)
         SoundHelp.newInstance().onStart()
-        dataBinding.tvNum.text = number
+        dataBinding.tvNum.text = score.toString()
+        dataBinding.mainDoubleAddCoinsTv.text = number.toString()
         setOnDismissListener {
             handler.removeCallbacksAndMessages(null)
             timeTask?.apply {
@@ -67,6 +80,7 @@ class AnAdditionalDialog(
             }
         }
         dataBinding.mainDoubleGetTv.setOnClickListener {
+            doubleGetRp()
             SoundHelp.newInstance().onRelease()
             dismiss()
         }
@@ -74,35 +88,6 @@ class AnAdditionalDialog(
             SoundHelp.newInstance().onRelease()
             dismiss()
         }
-        /*handler.postDelayed({
-            val arr = arrayOf(dataBinding.ivYh0, dataBinding.ivYh1)
-            var pd = 100L
-            for (imageView in arr) {
-                handler.postDelayed({
-                    if (activity != null) {
-                        val anim = AnimationUtils.loadAnimation(
-                                activity,
-                                R.anim.anim_yh_in
-                        )
-                        anim.setAnimationListener(object : Animation.AnimationListener {
-                            override fun onAnimationStart(animation: Animation?) {
-                            }
-
-                            override fun onAnimationEnd(animation: Animation?) {
-                                imageView.visibility = View.INVISIBLE
-                            }
-
-                            override fun onAnimationRepeat(animation: Animation?) {
-                            }
-                        })
-                        anim.repeatCount = 1
-                        imageView.startAnimation(anim)
-                        imageView.visibility = View.VISIBLE
-                    }
-                }, pd)
-                pd += Random().nextInt(200) + 1000
-            }
-        }, 150)*/
 
         val addCoinsAnim: ObjectAnimator = ObjectAnimator.ofFloat(dataBinding.mainDoubleAddCoinsTv, "translationY", 0f, -200f)
         addCoinsAnim.addListener(object : Animator.AnimatorListener {
@@ -111,6 +96,8 @@ class AnAdditionalDialog(
 
             override fun onAnimationEnd(animation: Animator?) {
                 dataBinding.mainDoubleAddCoinsTv.visibility = View.GONE
+                var total = score + number
+                dataBinding.tvNum.text = String.format("%.02f", total)
             }
 
             override fun onAnimationCancel(animation: Animator?) {
@@ -122,6 +109,21 @@ class AnAdditionalDialog(
         addCoinsAnim.interpolator = LinearInterpolator()
         addCoinsAnim.duration = 2000
         addCoinsAnim.start()
+    }
+
+    fun doubleGetRp() {
+        EasyHttp.post(BuildConfig.API_WALLET_URL + "v1/double-red-packet")
+                .upObject(RestIdBean(restId, preId))
+                .cacheMode(CacheMode.NO_CACHE)
+                .isShowToast(false)
+                .execute(object : SimpleCallBack<DoubleRedPacketBean?>() {
+                    override fun onError(e: ApiException) {
+                    }
+
+                    override fun onSuccess(t: DoubleRedPacketBean?) {
+                        ToastUtil.show(context, "双倍红包领取成功")
+                    }
+                })
     }
 
     override fun onDismiss(dialog: DialogInterface) {

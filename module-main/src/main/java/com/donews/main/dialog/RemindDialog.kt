@@ -6,14 +6,12 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import android.widget.Toast
 import com.donews.base.fragmentdialog.AbstractFragmentDialog
 import com.donews.main.R
 import com.donews.main.databinding.MainExitDialogRemindBinding
 import com.donews.main.entitys.resps.RemindConfig
 import com.donews.main.utils.ExitInterceptUtils
 import com.donews.utilslibrary.utils.CalendarUtils
-import com.orhanobut.logger.Logger
 import com.vmadalin.easypermissions.EasyPermissions
 import java.text.SimpleDateFormat
 import java.util.*
@@ -27,7 +25,7 @@ import java.util.*
  * @date 2021/10/20 20:31
  */
 class RemindDialog : AbstractFragmentDialog<MainExitDialogRemindBinding>(),
-    EasyPermissions.PermissionCallbacks {
+        EasyPermissions.PermissionCallbacks {
 
     companion object {
         private const val CALENDAR_TITLE = "奖多多开奖提醒"
@@ -42,6 +40,10 @@ class RemindDialog : AbstractFragmentDialog<MainExitDialogRemindBinding>(),
             val fragment = RemindDialog()
             fragment.arguments = args
             return fragment
+        }
+
+        fun newInstance(): RemindDialog {
+            return RemindDialog()
         }
 
     }
@@ -113,9 +115,9 @@ class RemindDialog : AbstractFragmentDialog<MainExitDialogRemindBinding>(),
 
     private fun checkPermission(): Boolean {
         return EasyPermissions.hasPermissions(
-            context,
-            Manifest.permission.READ_CALENDAR,
-            Manifest.permission.WRITE_CALENDAR
+                context,
+                Manifest.permission.READ_CALENDAR,
+                Manifest.permission.WRITE_CALENDAR
         )
     }
 
@@ -130,11 +132,11 @@ class RemindDialog : AbstractFragmentDialog<MainExitDialogRemindBinding>(),
 
     private fun requiresPermission() {
         EasyPermissions.requestPermissions(
-            this,
-            "提醒需要日历权限",
-            REQUEST_PER_CODE,
-            Manifest.permission.READ_CALENDAR,
-            Manifest.permission.WRITE_CALENDAR
+                this,
+                "提醒需要日历权限",
+                REQUEST_PER_CODE,
+                Manifest.permission.READ_CALENDAR,
+                Manifest.permission.WRITE_CALENDAR
         )
 
     }
@@ -158,13 +160,13 @@ class RemindDialog : AbstractFragmentDialog<MainExitDialogRemindBinding>(),
             calendar.set(year, month, day, hour, m, s)
             val time = calendar.timeInMillis
             CalendarUtils.addCalendarEvent(
-                it,
-                CALENDAR_TITLE,
-                "打开app进行开奖",
-                time,
-                ExitInterceptUtils.exitInterceptConfig.calendarRemindDuration.toLong(),
-                "FREQ=DAILY;INTERVAL=1",
-                10
+                    it,
+                    CALENDAR_TITLE,
+                    "打开app进行开奖",
+                    time,
+                    ExitInterceptUtils.exitInterceptConfig.calendarRemindDuration.toLong(),
+                    "FREQ=DAILY;INTERVAL=1",
+                    10
             )
         }
     }

@@ -41,11 +41,13 @@ import com.donews.main.dialog.AnAdditionalDialog;
 import com.donews.main.dialog.DrawDialog;
 import com.donews.main.dialog.EnterShowDialog;
 import com.donews.main.dialog.FreePanicBuyingDialog;
+import com.donews.main.dialog.RemindDialog;
 import com.donews.main.utils.ExitInterceptUtils;
 import com.donews.main.viewModel.MainViewModel;
 import com.donews.main.views.CornerMarkUtils;
 import com.donews.main.views.MainBottomTanItem;
 import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.bean.RedEnvelopeUnlockBean;
 import com.donews.utilslibrary.analysis.AnalysisHelp;
 import com.donews.utilslibrary.analysis.AnalysisParam;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
@@ -509,19 +511,54 @@ public class MainActivity
     public void onDoubleRpEvent(DoubleRpEvent event) {
         if (event.getEvent() == 1) {
             //双倍领取红包ok
-            postGotDoubleRp(event.getRestId());
+            postGotDoubleRp(event.getRestId(), event.getPreId(), event.getScore());
+        } else if (event.getEvent() == 2) {
+            postGotDoubleRp(event.getRestId(), event.getPreId(), event.getScore());
+        } else if (event.getEvent() == 3) {
+            RemindDialog remindDialog = new RemindDialog();
+            remindDialog.setOnCloseListener(remindDialog::dismiss);
+            remindDialog.setOnSureListener(remindDialog::dismiss);
+            remindDialog.setOnLaterListener(remindDialog::dismiss);
+            remindDialog.show(this.getSupportFragmentManager(), "");
         }
     }
 
-    private void postGotDoubleRp(String restId) {
-        mViewModel.postDoubleRp(restId).observe(this, doubleRedPacketBean -> {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onGetDoubleRpFromLottery(RedEnvelopeUnlockBean event) {
+        if (event.getMStatus() != 200) {
+            return;
+        }
+
+        String preId = SPUtils.getInformain(KeySharePreferences.FIRST_RP_OPEN_PRE_ID, "");
+        if (preId.equalsIgnoreCase("")) {
+            return;
+        }
+//        float preScore = SPUtils.getInformain(KeySharePreferences.FIRST_RP_OPEN_PRE_SCORE, 0f);
+
+        mViewModel.postDoubleRp("", preId).observe(this, doubleRedPacketBean -> {
             if (doubleRedPacketBean == null) {
                 ToastUtil.showShort(MainActivity.this, "获取双倍奖励失败");
                 return;
             }
 
-            AnAdditionalDialog mDrawDialog = new AnAdditionalDialog(
-                    String.valueOf(doubleRedPacketBean.getScore()), 4);
+            ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
+                    .withFloat("score", doubleRedPacketBean.getScore())
+                    .withString("restId", doubleRedPacketBean.getRestId())
+                    .navigation();
+            //todo
+            AnalysisUtils.onEventEx(this, Dot.But_Rp_Double);
+        });
+    }
+
+    private void postGotDoubleRp(String restId, String preId, float score) {
+        mViewModel.postDoubleRp(restId, preId).observe(this, doubleRedPacketBean -> {
+            if (doubleRedPacketBean == null) {
+                ToastUtil.showShort(MainActivity.this, "获取双倍奖励失败");
+                return;
+            }
+
+            AnAdditionalDialog mDrawDialog = new AnAdditionalDialog(restId, preId, score,
+                    doubleRedPacketBean.getScore(), 400);
             mDrawDialog.setEventListener(() -> {
                 try {
                     if (mDrawDialog.isAdded() && !MainActivity.this.isFinishing()) {
@@ -534,16 +571,5 @@ public class MainActivity
             EventBus.getDefault().post(new WalletRefreshEvent(0));
             AnalysisUtils.onEventEx(this, Dot.But_Rp_Double);
         });
-        /*AnAdditionalDialog mDrawDialog = new AnAdditionalDialog(
-                String.valueOf(3.09), 4);
-        mDrawDialog.setEventListener(() -> {
-            try {
-                if (mDrawDialog.isAdded() && !MainActivity.this.isFinishing()) {
-                    mDrawDialog.dismiss();
-                }
-            } catch (Exception e) {
-            }
-        });
-        mDrawDialog.show(getSupportFragmentManager(), "AnAddDialog");*/
     }
 }

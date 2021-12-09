@@ -78,10 +78,10 @@ public class FrontModel extends BaseLiveDataModel {
         return mutableLiveData;
     }
 
-    public MutableLiveData<DoubleRedPacketBean> openRpData(String restId) {
+    public MutableLiveData<DoubleRedPacketBean> openRpData(String restId, String preId) {
         MutableLiveData<DoubleRedPacketBean> mutableLiveData = new MutableLiveData<>();
         addDisposable(EasyHttp.post(FrontApi.walletOpenRedPacketUrl_New)
-                .upObject(new RestIdBean(restId))
+                .upObject(new RestIdBean(restId, preId))
                 .cacheMode(CacheMode.NO_CACHE)
                 .isShowToast(false)
                 .execute(new SimpleCallBack<DoubleRedPacketBean>() {

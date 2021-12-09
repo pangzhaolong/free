@@ -40,6 +40,9 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
     float score;
     @Autowired
     String restId;
+    @Autowired
+    String preId;
+
 
     @SuppressLint("DefaultLocale")
     @Override
@@ -123,7 +126,7 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
             public void onRewardVerify(boolean result) {
                 if (result) {
                     // 完整观看视频
-                    EventBus.getDefault().post(new DoubleRpEvent(1, restId));
+                    EventBus.getDefault().post(new DoubleRpEvent(1, score, restId == null ? "" : restId, preId == null ? "" : preId));
                     finish();
                 }
             }

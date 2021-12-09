@@ -35,10 +35,17 @@ public class LotteryMore4RpDialog extends BaseDialog<FrontLotteryMore4RpDialogBi
 
     private ExitDialogRecommendGoods mGoods;
 
+    private int mNeedLotteryCounts = 0;
+
     public LotteryMore4RpDialog(Context context, Activity activity) {
         super(context, R.style.dialogTransparent);
         setOwnerActivity(activity);
         create();
+    }
+
+    public void refreshCounts(int nCounts) {
+        mNeedLotteryCounts = nCounts;
+        mDataBinding.frontLotteryMore4RpCountsTv.setText(String.valueOf(mNeedLotteryCounts));
     }
 
     @Override
@@ -85,6 +92,8 @@ public class LotteryMore4RpDialog extends BaseDialog<FrontLotteryMore4RpDialogBi
         });
 
         mDataBinding.frontLotteryMore4RpLotteryTv.setAnimation(AnimationUtils.setScaleAnimation(1000));
+
+        mDataBinding.frontLotteryMore4RpCountsTv.setText(String.valueOf(mNeedLotteryCounts));
     }
 
     public void showEx() {

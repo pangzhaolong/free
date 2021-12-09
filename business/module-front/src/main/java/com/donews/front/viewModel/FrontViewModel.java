@@ -29,8 +29,8 @@ public class FrontViewModel extends BaseLiveDataViewModel<FrontModel> {
         return mModel.getRpData();
     }
 
-    public MutableLiveData<DoubleRedPacketBean> openRpData(String restId) {
-        return mModel.openRpData(restId);
+    public MutableLiveData<DoubleRedPacketBean> openRpData(String restId, String preId) {
+        return mModel.openRpData(restId, preId);
     }
 
     public MutableLiveData<AwardBean> getAwardList() {

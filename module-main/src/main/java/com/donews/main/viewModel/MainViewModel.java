@@ -114,7 +114,7 @@ public class MainViewModel extends BaseLiveDataViewModel<MainModel> {
         return new MainModel();
     }
 
-    public MutableLiveData<DoubleRedPacketBean> postDoubleRp(String restId) {
-        return mModel.postDoubleRp(restId);
+    public MutableLiveData<DoubleRedPacketBean> postDoubleRp(String restId, String preId) {
+        return mModel.postDoubleRp(restId, preId);
     }
 }

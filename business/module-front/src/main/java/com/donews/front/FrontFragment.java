@@ -26,6 +26,7 @@ import androidx.annotation.Nullable;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.BarUtils;
+import com.dn.events.events.DoubleRpEvent;
 import com.dn.events.events.FrontScrollEvent;
 import com.dn.events.events.LoginLodingStartStatus;
 import com.dn.events.events.RedPackageStatus;
@@ -87,12 +88,11 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     private LotteryMore4RpDialog mLotteryMore4RpDialog = null;
 
     private int mCurSelectPosition = 0;
-
     private boolean mFindFirstReadyRp = false;
-
     private long mPreClickRpTime = 0;
-
     private boolean mHasRefreshed = false;
+
+    private WalletBean mWalletBean;
 
     private Context mContext;
 
@@ -547,7 +547,11 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                     mFindFirstReadyRp = true;
                 }
             } else if (rpBean.getHadLotteryTotal() < rpBean.getLotteryTotal()) {
-                tv.setText("抽奖" + rpBean.getLotteryTotal() + "次");
+                if (index == 1) {
+                    tv.setText("待开启");
+                } else {
+                    tv.setText("抽奖" + rpBean.getLotteryTotal() + "次");
+                }
                 iv.setBackgroundResource(R.drawable.front_rp_wait);
                 if (index == 1) {
                     if (fl.getAnimation() == null) {
@@ -582,6 +586,11 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         if (rpBean == null) {
             return;
         }
+
+        mWalletBean = walletBean;
+
+        SPUtils.setInformain(KeySharePreferences.FIRST_RP_IS_OPEN, rpBean.getOpened());
+
         nCloseRpCounts = 0;
         mFindFirstReadyRp = false;
         int topColor = Color.parseColor("#764D38");
@@ -716,25 +725,68 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             return;
         }
 
-//        EventBus.getDefault().post(new DoubleRpEvent(1, "123"));
-
-        if (mFirstGuidLotteryDialog == null) {
-            mFirstGuidLotteryDialog = new FirstGuidLotteryDialog(this.getContext(), this.requireActivity());
+        if (!AppInfo.checkIsWXLogin()) {
+            if (mFirstGuidLotteryDialog == null) {
+                mFirstGuidLotteryDialog = new FirstGuidLotteryDialog(this.getContext(), this.requireActivity());
+            }
+            mFirstGuidLotteryDialog.showEx();
+            return;
         }
-        mFirstGuidLotteryDialog.showEx();
 
-        /*if (mLotteryMore4RpDialog == null) {
-            mLotteryMore4RpDialog = new LotteryMore4RpDialog(this.getContext(), this.requireActivity());
+        if (mWalletBean == null || mWalletBean.getList() == null || mWalletBean.getList().size() <= 0) {
+            return;
         }
-        mLotteryMore4RpDialog.showEx();*/
-        /*if (!AppInfo.checkIsWXLogin()) {
+
+        WalletBean.RpBean bean = mWalletBean.getList().get(0);
+        if (!bean.getOpened()) {
+            if (mFirstGuidLotteryDialog == null) {
+                mFirstGuidLotteryDialog = new FirstGuidLotteryDialog(this.getContext(), this.requireActivity());
+            }
+            mFirstGuidLotteryDialog.showEx();
+            AnalysisUtils.onEventEx(mContext, Dot.But_Rp_Click, String.valueOf(1));
+            return;
+        }
+
+        if (!AppInfo.checkIsWXLogin()) {
             ARouter.getInstance()
                     .build(RouterActivityPath.User.PAGER_LOGIN)
                     .navigation();
             return;
         }
 
-        WalletBean.RpBean rpBean = (WalletBean.RpBean) v.getTag();
+        boolean allOpened = false;
+        for (int i = 1; i < mWalletBean.getList().size(); i++) {
+            WalletBean.RpBean bean1 = mWalletBean.getList().get(i);
+            if (bean1 == null) {
+                continue;
+            }
+            if (bean1.getOpened()) {
+                if (i == mWalletBean.getList().size() - 1) {
+                    allOpened = true;
+                }
+                continue;
+            }
+            if (bean1.getLotteryTotal() <= bean1.getHadLotteryTotal()) {
+                AnalysisUtils.onEventEx(mContext, Dot.But_Rp_Click, String.valueOf(i + 1));
+                openRp();
+                break;
+            }
+            int nCounts = bean1.getLotteryTotal() - bean1.getHadLotteryTotal();
+            if (nCounts > 0) {
+                if (mLotteryMore4RpDialog == null) {
+                    mLotteryMore4RpDialog = new LotteryMore4RpDialog(this.getContext(), this.requireActivity());
+                }
+                mLotteryMore4RpDialog.refreshCounts(nCounts);
+                mLotteryMore4RpDialog.showEx();
+                break;
+            }
+        }
+
+        if (allOpened) {
+            EventBus.getDefault().post(new DoubleRpEvent(3, 0f, "", ""));
+        }
+
+        /*WalletBean.RpBean rpBean = (WalletBean.RpBean) v.getTag();
         if (rpBean == null) {
             return;
         }
@@ -761,13 +813,13 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     }
 
     private void openRp() {
-        mViewModel.openRpData("").observe(this.getViewLifecycleOwner(), doubleRedPacketBean -> {
+        mViewModel.openRpData("", "").observe(this.getViewLifecycleOwner(), doubleRedPacketBean -> {
             if (doubleRedPacketBean == null) {
                 Toast.makeText(this.getContext(), "开启红包失败，请稍后再试或者反馈给我们，谢谢！", Toast.LENGTH_SHORT).show();
                 return;
             }
             ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
-                    .withFloat("score", doubleRedPacketBean.getRestScore())
+                    .withFloat("score", doubleRedPacketBean.getScore())
                     .withString("restId", doubleRedPacketBean.getRestId())
                     .navigation();
             loadRpData();

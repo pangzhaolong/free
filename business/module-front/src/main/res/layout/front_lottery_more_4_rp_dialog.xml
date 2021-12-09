@@ -48,6 +48,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/front_lottery_more_4_rp_counts_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="bottom"
