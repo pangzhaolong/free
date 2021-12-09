@@ -2,7 +2,9 @@ package com.donews.main.dialog
 
 import android.animation.Animator
 import android.animation.ValueAnimator
+import android.content.DialogInterface
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +15,7 @@ import androidx.fragment.app.FragmentTransaction
 import com.dn.sdk.bean.PreloadAdState
 import com.dn.sdk.bean.preload.PreloadAd
 import com.dn.sdk.listener.impl.SimpleSplashListener
+import com.donews.base.base.AppManager
 import com.donews.common.ad.business.loader.AdManager
 import com.donews.common.ad.business.loader.IPreloadAdListener
 import com.donews.common.ad.business.manager.JddAdConfigManager
@@ -31,7 +34,7 @@ import java.lang.reflect.Field
  * @version v1.0
  * @date 2021/12/9 10:01
  */
-class HotStartDialog : DialogFragment() {
+class HotStartDialog : DialogFragment(), DialogInterface.OnKeyListener {
 
     companion object {
         fun newInstance(): HotStartDialog {
@@ -68,7 +71,9 @@ class HotStartDialog : DialogFragment() {
         initView()
         dialog?.setOnDismissListener {
             HotStartCacheUtils.clear()
+            HotStartCacheUtils.checkActivity(AppManager.getInstance().topActivity)
         }
+        dialog?.setOnKeyListener(this)
     }
 
     override fun onResume() {
@@ -335,5 +340,9 @@ class HotStartDialog : DialogFragment() {
 
     fun stopProgress() {
         progressAnim?.cancel()
+    }
+
+    override fun onKey(dialog: DialogInterface?, keyCode: Int, event: KeyEvent?): Boolean {
+        return keyCode == KeyEvent.KEYCODE_BACK
     }
 }
