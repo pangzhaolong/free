@@ -663,6 +663,31 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         }
     }
 
+
+    private void refreshCoupon(CommodityBean commodityBean) {
+        if (commodityBean.getItemLink() != null) {
+            if (commodityBean.getItemLink().equals("")) {
+                mDataBinding.buyCopywritingIcon.setVisibility(View.VISIBLE);
+                mDataBinding.buyCopywriting.setText("购买");
+                mDataBinding.couponLayout.setVisibility(View.GONE);
+            } else if (commodityBean.getCoupon_price() > 0) {
+                mDataBinding.buyCopywriting.setText("领券购");
+                mDataBinding.couponLayout.setVisibility(View.VISIBLE);
+                mDataBinding.discountedPrice.setText(commodityBean.getCoupon_price() + "");
+                mDataBinding.buyCopywritingIcon.setVisibility(View.GONE);
+
+            } else {
+                mDataBinding.buyCopywritingIcon.setVisibility(View.VISIBLE);
+                mDataBinding.buyCopywriting.setText("购买");
+                mDataBinding.couponLayout.setVisibility(View.GONE);
+            }
+        }else{
+            mDataBinding.buyCopywritingIcon.setVisibility(View.VISIBLE);
+            mDataBinding.buyCopywriting.setText("购买");
+            mDataBinding.couponLayout.setVisibility(View.GONE);
+        }
+    }
+
     public void setObserveList() {
         //观察商品数据顶部
         mViewModel.getMutableLiveData().observe(this, CommodityBean -> {
@@ -672,6 +697,8 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             if (CommodityBean == null) {
                 return;
             }
+            //刷新优惠券按钮展示
+            refreshCoupon(CommodityBean);
             //刷新登录弹框
             refreshLogToWeChatDialog(CommodityBean.getMainPic());
             guessAdapter.setCommodityBean(CommodityBean);

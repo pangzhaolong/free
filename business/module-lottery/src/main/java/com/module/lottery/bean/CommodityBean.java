@@ -26,6 +26,12 @@ public class CommodityBean extends BaseCustomViewModel {
     private Integer displayPrice;
     @SerializedName("period")
     private Integer period;
+
+
+
+    @SerializedName("coupon_price")
+    private Integer coupon_price;
+
     @SerializedName("item_link")
     private String itemLink;
     private ParticipateBean participateBean;
@@ -64,7 +70,13 @@ public class CommodityBean extends BaseCustomViewModel {
         this.participateBean = participateBean;
     }
 
+    public Integer getCoupon_price() {
+        return coupon_price;
+    }
 
+    public void setCoupon_price(Integer coupon_price) {
+        this.coupon_price = coupon_price;
+    }
     public String getId() {
         return id;
     }
