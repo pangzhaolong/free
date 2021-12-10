@@ -795,7 +795,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     private void openRp() {
         mViewModel.openRpData("", "").observe(this.getViewLifecycleOwner(), doubleRedPacketBean -> {
             if (doubleRedPacketBean == null) {
-                Toast.makeText(this.getContext(), "开启红包失败，请稍后再试或者反馈给我们，谢谢！", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this.getContext(), "开启红包失败，请稍后再试或者反馈给我们，谢谢！", Toast.LENGTH_SHORT).show();
                 return;
             }
             ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)

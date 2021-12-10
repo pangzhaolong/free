@@ -1,12 +1,9 @@
 package com.donews.main.utils
 
 import android.app.Activity
-import androidx.fragment.app.FragmentActivity
-import com.dn.sdk.utils.AdLoggerUtils
 import com.donews.base.base.AppManager
 import com.donews.common.base.MvvmBaseLiveDataActivity
 import com.donews.main.dialog.HotStartDialog
-import com.orhanobut.logger.Logger
 
 /**
  *
@@ -51,7 +48,10 @@ object HotStartCacheUtils {
         if (mHotStartDialog == null) {
             return
         }
-        mHotStartDialog!!.dismissAllowingStateLoss()
+        try {
+            mHotStartDialog!!.dismissAllowingStateLoss()
+        } catch (e: Exception) {
+        }
     }
 
     fun clear() {

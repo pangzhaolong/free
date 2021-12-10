@@ -280,7 +280,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 } else {
                     ToastUtil.showShort(getApplicationContext(), "该商品暂不支持购买");
                 }
-
             }
         });
         //当抽奖码大于等于6时显示等待开奖
@@ -290,8 +289,8 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             setLottieAnimation(true);
         }
         boolean first_show = mSharedPreferences.getBoolean(FIRST_SHOW, true);
-        if (first_show && privilege == false) {
-            mSharedPreferences.edit().putBoolean(FIRST_SHOW, false).commit();
+        if (first_show && !privilege) {
+            mSharedPreferences.edit().putBoolean(FIRST_SHOW, false).apply();
             mDataBinding.maskingLayout.setVisibility(View.VISIBLE);
             //圆 新手引导遮罩层
             initLottie(mDataBinding.maskingButton, "lottery_round.json");
@@ -299,6 +298,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             initLottie(mDataBinding.maskingHand, "lottery_finger.json");
         } else {
             mDataBinding.maskingLayout.setVisibility(View.GONE);
+            mSharedPreferences.edit().putBoolean(FIRST_SHOW, false).apply();
         }
     }
 
