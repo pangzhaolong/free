@@ -19,6 +19,7 @@ import com.donews.common.router.RouterFragmentPath
 import com.donews.main.BuildConfig
 import com.donews.main.dialog.*
 import com.donews.main.entitys.resps.ExitInterceptConfig
+import com.donews.main.ui.RpActivity
 import com.donews.middle.abswitch.ABSwitch
 import com.donews.middle.bean.HighValueGoodsBean
 import com.donews.middle.cache.GoodsCache
@@ -698,6 +699,9 @@ object ExitInterceptUtils {
      */
     @JvmStatic
     fun closeExitDialog(act: Activity) {
+        if(RpActivity.isShowInnerAd){
+            RpActivity.isShowInnerAd = false
+        }
         AdManager.loadInterstitialAd(act, object : SimpleInterstitialListener() {
             override fun onAdError(code: Int, errorMsg: String?) {
                 super.onAdError(code, errorMsg)

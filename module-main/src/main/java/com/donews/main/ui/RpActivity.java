@@ -49,6 +49,9 @@ import org.greenrobot.eventbus.ThreadMode;
 @Route(path = RouterActivityPath.Rp.PAGE_RP)
 public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, BaseLiveDataViewModel> {
 
+    //此页面退出的。是否显示插屏广告
+    public static boolean isShowInnerAd = false;
+
     private Context mContext;
 
     private Animation mScaleAnimation;
@@ -88,6 +91,7 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
                 mCountDownTimer.cancel();
                 mCountDownTimer = null;
             }*/
+            isShowInnerAd = true;
             finish();
         });
         mDataBinding.mainRpDouble.setOnClickListener(v -> {

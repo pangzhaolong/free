@@ -1,6 +1,7 @@
 package com.donews.main.dialog;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import com.donews.main.BuildConfig;
 import com.donews.main.R;
 import com.donews.main.bean.NowTimeBean;
 import com.donews.main.databinding.FreePanicDialogLayoutBinding;
+import com.donews.main.utils.ExitInterceptUtils;
 import com.donews.middle.abswitch.ABSwitch;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
@@ -72,6 +74,9 @@ public class FreePanicBuyingDialog extends BaseDialog<FreePanicDialogLayoutBindi
             @Override
             public void onClick(View v) {
                 dismiss();
+                if(getContext() instanceof Activity) {
+                    ExitInterceptUtils.closeExitDialog(getOwnerActivity());
+                }
             }
         });
         mDataBinding.protocolLayout.setOnClickListener(new View.OnClickListener() {

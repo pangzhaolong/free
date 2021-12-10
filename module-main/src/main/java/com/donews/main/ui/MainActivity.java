@@ -150,6 +150,9 @@ public class MainActivity
     @Override
     protected void onResume() {
         super.onResume();
+        if (RpActivity.isShowInnerAd) {
+            ExitInterceptUtils.closeExitDialog(this);
+        }
 
         if (SPUtils.getInformain(KeySharePreferences.FIRST_RP_CAN_OPEN, false)) {
             SPUtils.setInformain(KeySharePreferences.FIRST_RP_CAN_OPEN, false);
@@ -186,7 +189,6 @@ public class MainActivity
         }
     }
 
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onLoginEvent(LoginUserStatus status) {
         if (status.getStatus() == 1 && AppInfo.checkIsWXLogin()) {
@@ -195,7 +197,6 @@ public class MainActivity
             AdManager.INSTANCE.init();
         }
     }
-
 
     /**
      * 显示开奖弹框
