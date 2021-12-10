@@ -1,11 +1,11 @@
 ext {
     // true 表示测试环境，false表示正式环境
-    DEBUG = true
+    DEBUG = false
 
     //版本号，版本名称 版本号对应于版本名称，
     // 例如：1.2.1->12010;1.3.2->13020
     //对应版本名称向右补0
-    VERSION_CODE = 13061
+    VERSION_CODE = 13062
     VERSION_NAME = "1.3.6"
     // app标识identification
     APP_IDENTIFICATION = "plus"
