@@ -84,7 +84,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     private FrontHandler mFrontHandler = null;
 
     private ActivityRuleDialog mRuleDialog = null;
-    private FirstGuidLotteryDialog mFirstGuidLotteryDialog = null;
+    //    private FirstGuidLotteryDialog mFirstGuidLotteryDialog = null;
     private LotteryMore4RpDialog mLotteryMore4RpDialog = null;
 
     private int mCurSelectPosition = 0;
@@ -677,6 +677,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     public void onDestroyView() {
         super.onDestroyView();
 
+        stopTimer();
+
         EventBus.getDefault().unregister(this);
 
         mDataBinding.frontBarrageView.stopScroll();
@@ -698,14 +700,18 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             }
             mRuleDialog = null;
         }
-        if (mFirstGuidLotteryDialog != null) {
+        /*if (mFirstGuidLotteryDialog != null) {
             if (mFirstGuidLotteryDialog.isShowing()) {
                 mFirstGuidLotteryDialog.dismiss();
             }
             mFirstGuidLotteryDialog = null;
+        }*/
+        if (mLotteryMore4RpDialog != null) {
+            if (mLotteryMore4RpDialog.isShowing()) {
+                mLotteryMore4RpDialog.dismiss();
+            }
+            mLotteryMore4RpDialog = null;
         }
-
-        stopTimer();
     }
 
     boolean isDoubleClick() {
@@ -726,10 +732,13 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         }
 
         if (!AppInfo.checkIsWXLogin()) {
-            if (mFirstGuidLotteryDialog == null) {
+            /*if (mFirstGuidLotteryDialog == null) {
                 mFirstGuidLotteryDialog = new FirstGuidLotteryDialog(this.getContext(), this.requireActivity());
             }
-            mFirstGuidLotteryDialog.showEx();
+            mFirstGuidLotteryDialog.showEx();*/
+            ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
+                    .withString("from", "privilege")
+                    .navigation();
             return;
         }
 
@@ -739,20 +748,23 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
         WalletBean.RpBean bean = mWalletBean.getList().get(0);
         if (!bean.getOpened()) {
-            if (mFirstGuidLotteryDialog == null) {
+            /*if (mFirstGuidLotteryDialog == null) {
                 mFirstGuidLotteryDialog = new FirstGuidLotteryDialog(this.getContext(), this.requireActivity());
             }
-            mFirstGuidLotteryDialog.showEx();
+            mFirstGuidLotteryDialog.showEx();*/
+            ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
+                    .withString("from", "privilege")
+                    .navigation();
             AnalysisUtils.onEventEx(mContext, Dot.But_Rp_Click, String.valueOf(1));
             return;
         }
-
+/*
         if (!AppInfo.checkIsWXLogin()) {
             ARouter.getInstance()
                     .build(RouterActivityPath.User.PAGER_LOGIN)
                     .navigation();
             return;
-        }
+        }*/
 
         boolean allOpened = false;
         for (int i = 1; i < mWalletBean.getList().size(); i++) {

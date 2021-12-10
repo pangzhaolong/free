@@ -25,13 +25,13 @@
                 android:src="@drawable/main_rp_dlg_title" />
 
             <ImageView
+                android:id="@+id/main_rp_close_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="50dp"
-                android:src="@drawable/icon_shut_down"
-                android:visibility="gone" />
+                android:src="@drawable/icon_shut_down" />
         </FrameLayout>
 
         <FrameLayout
@@ -119,6 +119,7 @@
                     android:src="@drawable/main_rp_play_icon" />
 
                 <TextView
+                    android:id="@+id/main_rp_double_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"

@@ -44,6 +44,7 @@ public class KeySharePreferences {
     public final static String FIRST_RP_IS_OPEN = "first_rp_is_open";
     public final static String FIRST_RP_OPEN_PRE_ID = "first_rp_open_pre_id";
     public final static String FIRST_RP_OPEN_PRE_SCORE = "first_rp_open_pre_score";
+    public final static String FIRST_RP_CAN_OPEN = "first_rp_can_open";
 
 
     public final static String SHOW_DIALOG_WHEN_LAUNCH = "show_dialog_when_launch";

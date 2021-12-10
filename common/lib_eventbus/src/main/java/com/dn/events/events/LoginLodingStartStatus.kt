@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData
  * Description:
  *  用户开始发起登录的通知,此通知只会再发起登录时候调用一次。后续的状态更新则是需要再[loginLoadingLiveData]属性中更新
  */
-class LoginLodingStartStatus{
+class LoginLodingStartStatus {
 
     /**
      * 登录发起过程的监听通知(每次请求都会有一个通知对象)
@@ -22,14 +22,12 @@ class LoginLodingStartStatus{
     /**
      * tag标记。用于标识此通知属于谁。给这个通知的唯一标记
      */
-    val tag: String by lazy {
-        this.toString()
+    var tag: String = this.toString()
+
+    constructor() {
     }
 
-    constructor(){
-    }
-
-    constructor(tag: String){
-
+    constructor(tag: String) {
+        this.tag = tag
     }
 }

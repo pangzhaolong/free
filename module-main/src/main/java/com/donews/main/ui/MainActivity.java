@@ -41,7 +41,6 @@ import com.donews.main.dialog.AnAdditionalDialog;
 import com.donews.main.dialog.DrawDialog;
 import com.donews.main.dialog.EnterShowDialog;
 import com.donews.main.dialog.FreePanicBuyingDialog;
-import com.donews.main.dialog.RemindDialog;
 import com.donews.main.dialog.RemindDialogExt;
 import com.donews.main.utils.ExitInterceptUtils;
 import com.donews.main.viewModel.MainViewModel;
@@ -151,6 +150,30 @@ public class MainActivity
     @Override
     protected void onResume() {
         super.onResume();
+
+        if (SPUtils.getInformain(KeySharePreferences.FIRST_RP_CAN_OPEN, false)) {
+            SPUtils.setInformain(KeySharePreferences.FIRST_RP_CAN_OPEN, false);
+            String preId = SPUtils.getInformain(KeySharePreferences.FIRST_RP_OPEN_PRE_ID, "");
+            if (preId.equalsIgnoreCase("")) {
+                ToastUtil.showShort(MainActivity.this, "获取奖励失败");
+                return;
+            }
+//        float preScore = SPUtils.getInformain(KeySharePreferences.FIRST_RP_OPEN_PRE_SCORE, 0f);
+
+            mViewModel.postDoubleRp("", preId).observe(this, doubleRedPacketBean -> {
+                if (doubleRedPacketBean == null) {
+                    ToastUtil.showShort(MainActivity.this, "获取双倍奖励失败");
+                    return;
+                }
+
+                ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
+                        .withFloat("score", doubleRedPacketBean.getScore())
+                        .withString("restId", doubleRedPacketBean.getRestId())
+                        .navigation();
+                //todo
+                AnalysisUtils.onEventEx(this, Dot.But_Rp_Double);
+            });
+        }
     }
 
     //上报测试多参数事件
@@ -530,25 +553,7 @@ public class MainActivity
             return;
         }
 
-        String preId = SPUtils.getInformain(KeySharePreferences.FIRST_RP_OPEN_PRE_ID, "");
-        if (preId.equalsIgnoreCase("")) {
-            return;
-        }
-//        float preScore = SPUtils.getInformain(KeySharePreferences.FIRST_RP_OPEN_PRE_SCORE, 0f);
-
-        mViewModel.postDoubleRp("", preId).observe(this, doubleRedPacketBean -> {
-            if (doubleRedPacketBean == null) {
-                ToastUtil.showShort(MainActivity.this, "获取双倍奖励失败");
-                return;
-            }
-
-            ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
-                    .withFloat("score", doubleRedPacketBean.getScore())
-                    .withString("restId", doubleRedPacketBean.getRestId())
-                    .navigation();
-            //todo
-            AnalysisUtils.onEventEx(this, Dot.But_Rp_Double);
-        });
+        SPUtils.setInformain(KeySharePreferences.FIRST_RP_CAN_OPEN, true);
     }
 
     private void postGotDoubleRp(String restId, String preId, float score) {
