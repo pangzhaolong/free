@@ -159,6 +159,7 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void loginStatusEvent(LoginLodingStartStatus event) {
+//        LogUtil.e(event.getTag() + "********************");
         if (!event.getTag().equalsIgnoreCase("Front_Rp")) {
             return;
         }
