@@ -108,12 +108,19 @@
                                 android:textSize="18dp"
                                 android:textStyle="bold" />
 
-                            <com.module.lottery.view.CountdownView
+                            <com.donews.common.views.CountdownView
                                 android:id="@+id/countdown_view"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="4dp"
                                 android:layout_marginTop="2dp"
+                                app:text_view_minute_bg="@drawable/countdown_shape_bg"
+                                app:text_view_second_bg="@drawable/countdown_shape_bg"
+                                app:text_view_millisecond_bg="@drawable/countdown_shape_bg"
+                                app:text_view_millisecond_color="#FFFFFF"
+                                app:text_view_second_color="#FFFFFF"
+                                app:colon_color="#985315"
+                                app:text_view_minute_color="#FFFFFF"
                                 android:layout_marginEnd="4dp"
                                 app:automatically="true"
                                 app:time="5" />

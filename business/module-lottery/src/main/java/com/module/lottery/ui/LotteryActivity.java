@@ -478,6 +478,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                     }
                     if (generateCodeBean == null) {
                         privilege = false;
+                        AnalysisUtils.onEventEx(LotteryActivity.this, Dot.PAY_FAIL);
                         Toast.makeText(LotteryActivity.this, "生成抽奖码失败", Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -681,7 +682,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 mDataBinding.buyCopywriting.setText("购买");
                 mDataBinding.couponLayout.setVisibility(View.GONE);
             }
-        }else{
+        } else {
             mDataBinding.buyCopywritingIcon.setVisibility(View.VISIBLE);
             mDataBinding.buyCopywriting.setText("购买");
             mDataBinding.couponLayout.setVisibility(View.GONE);
