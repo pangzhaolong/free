@@ -83,7 +83,7 @@ public class DazzleService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d(TAG,"DazzleService onCreate...");
+        Log.d(TAG, "DazzleService onCreate...");
         CommonNotification.startForeground(this);
     }
 
@@ -104,8 +104,12 @@ public class DazzleService extends Service {
     public void onDestroy() {
         super.onDestroy();
         DazzleReal.unregReceiver(this);
-        DazzleReal.callback.onStop();
-        handler.removeCallbacksAndMessages(null);
+        if (DazzleReal.callback != null) {
+            DazzleReal.callback.onStop();
+        }
+        if (handler != null) {
+            handler.removeCallbacksAndMessages(null);
+        }
     }
 
     void playMusic() {
@@ -150,12 +154,12 @@ public class DazzleService extends Service {
                 intent.putExtra("time", start);
 
                 if (Build.VERSION.SDK_INT >= 26) {
-                    JobHeartService.enqueueWork(context,intent);
+                    JobHeartService.enqueueWork(context, intent);
                 } else {
                     intent.setComponent(new ComponentName(context, HeartService.class));
                     context.startService(intent);
                 }
-                sendMessageDelayed(obtainMessage(0, list),DELAY);
+                sendMessageDelayed(obtainMessage(0, list), DELAY);
             }
         }
     }

@@ -60,7 +60,7 @@
         <activity
             android:name=".ui.RpActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/main_transparent_style" />
+            android:theme="@style/main_rp_transparent_style" />
     </application>
 
 </manifest>

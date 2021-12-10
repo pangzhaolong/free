@@ -565,7 +565,7 @@ public class MainActivity
             }
 
             AnAdditionalDialog mDrawDialog = new AnAdditionalDialog(restId, preId, score,
-                    doubleRedPacketBean.getScore(), 400);
+                    doubleRedPacketBean.getScore(), 4);
             mDrawDialog.setEventListener(() -> {
                 try {
                     if (mDrawDialog.isAdded() && !MainActivity.this.isFinishing()) {

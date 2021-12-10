@@ -37,7 +37,6 @@ import com.donews.common.router.RouterFragmentPath;
 import com.donews.front.adapter.FragmentAdapter;
 import com.donews.front.databinding.FrontFragmentBinding;
 import com.donews.front.dialog.ActivityRuleDialog;
-import com.donews.front.dialog.FirstGuidLotteryDialog;
 import com.donews.front.dialog.LotteryMore4RpDialog;
 import com.donews.front.viewModel.FrontViewModel;
 import com.donews.middle.bean.WalletBean;
@@ -314,7 +313,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         mHasRefreshed = true;
         loadCategoryData();
 //            loadAwardList();
-        loadRpData();
+        loadRpData(false);
         loadServerTime();
 //        loadLotteryRecord();
         reloadNorData(mCurSelectPosition);
@@ -428,7 +427,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     }
 
     @SuppressLint("SetTextI18n")
-    private void loadRpData() {
+    private void loadRpData(boolean autoGetRp) {
         mDataBinding.tomorrow01.setVisibility(View.GONE);
         mDataBinding.tomorrow02.setVisibility(View.GONE);
         mDataBinding.tomorrow03.setVisibility(View.GONE);
@@ -483,9 +482,11 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             return;
         }
 
-        WalletBean bean = GoodsCache.readGoodsBean(WalletBean.class, "front");
-        if (bean != null && bean.getList() != null && bean.getList().size() == 5) {
-            showRpData(bean);
+        if (!autoGetRp) {
+            WalletBean bean = GoodsCache.readGoodsBean(WalletBean.class, "front");
+            if (bean != null && bean.getList() != null && bean.getList().size() == 5) {
+                showRpData(bean, false);
+            }
         }
 
         mViewModel.getRpData().observe(this.getViewLifecycleOwner(), walletBean -> {
@@ -493,7 +494,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                 return;
             }
 
-            showRpData(walletBean);
+            showRpData(walletBean, autoGetRp);
             GoodsCache.saveGoodsBean(walletBean, "front");
         });
     }
@@ -581,7 +582,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     int nCloseRpCounts = 0;
 
     @SuppressLint("SetTextI18n")
-    private void showRpData(WalletBean walletBean) {
+    private void showRpData(WalletBean walletBean, boolean autoGetRp) {
         WalletBean.RpBean rpBean = walletBean.getList().get(0);
         if (rpBean == null) {
             return;
@@ -648,6 +649,10 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                 SPUtils.setInformain(KeySharePreferences.LOTTERY_COUNTS, rpBean.getHadLotteryTotal());
             }
         }
+
+        if (autoGetRp) {
+            openRedPackage();
+        }
     }
 
     @Override
@@ -657,7 +662,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mDataBinding.frontBarrageView.resumeScroll();
         }
 
-        loadRpData();
+        loadRpData(false);
 
         mIsFragmentActive = true;
     }
@@ -700,12 +705,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             }
             mRuleDialog = null;
         }
-        /*if (mFirstGuidLotteryDialog != null) {
-            if (mFirstGuidLotteryDialog.isShowing()) {
-                mFirstGuidLotteryDialog.dismiss();
-            }
-            mFirstGuidLotteryDialog = null;
-        }*/
         if (mLotteryMore4RpDialog != null) {
             if (mLotteryMore4RpDialog.isShowing()) {
                 mLotteryMore4RpDialog.dismiss();
@@ -725,20 +724,16 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         return false;
     }
 
-    @Override
-    public void onClick(View v) {
+    private void openRedPackage() {
         if (isDoubleClick()) {
             return;
         }
 
         if (!AppInfo.checkIsWXLogin()) {
-            /*if (mFirstGuidLotteryDialog == null) {
-                mFirstGuidLotteryDialog = new FirstGuidLotteryDialog(this.getContext(), this.requireActivity());
-            }
-            mFirstGuidLotteryDialog.showEx();*/
             ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
                     .withString("from", "privilege")
                     .navigation();
+
             return;
         }
 
@@ -748,23 +743,16 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
         WalletBean.RpBean bean = mWalletBean.getList().get(0);
         if (!bean.getOpened()) {
-            /*if (mFirstGuidLotteryDialog == null) {
-                mFirstGuidLotteryDialog = new FirstGuidLotteryDialog(this.getContext(), this.requireActivity());
+            if (bean.getHadLotteryTotal() < bean.getLotteryTotal()) {
+                ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
+                        .withString("from", "privilege")
+                        .navigation();
+                AnalysisUtils.onEventEx(mContext, Dot.But_Rp_Click, String.valueOf(1));
+            } else {
+                openRp();
             }
-            mFirstGuidLotteryDialog.showEx();*/
-            ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
-                    .withString("from", "privilege")
-                    .navigation();
-            AnalysisUtils.onEventEx(mContext, Dot.But_Rp_Click, String.valueOf(1));
             return;
         }
-/*
-        if (!AppInfo.checkIsWXLogin()) {
-            ARouter.getInstance()
-                    .build(RouterActivityPath.User.PAGER_LOGIN)
-                    .navigation();
-            return;
-        }*/
 
         boolean allOpened = false;
         for (int i = 1; i < mWalletBean.getList().size(); i++) {
@@ -797,31 +785,11 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         if (allOpened) {
             EventBus.getDefault().post(new DoubleRpEvent(3, 0f, "", ""));
         }
+    }
 
-        /*WalletBean.RpBean rpBean = (WalletBean.RpBean) v.getTag();
-        if (rpBean == null) {
-            return;
-        }
-
-        if (rpBean.getOpened()) {
-            Toast.makeText(this.getContext(), "这个红包已经开过了哦！", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (rpBean.getHadLotteryTotal() != -1 && rpBean.getHadLotteryTotal() < rpBean.getLotteryTotal()) {
-            Toast.makeText(this.getContext(), "快去抽奖赚取开启红包次数吧！", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (rpBean.getHadLotteryTotal() == -1) {
-            Toast.makeText(this.getContext(), "前面还有红包未开启哦！", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        int index = (int) v.getTag(R.id.tag_first);
-        AnalysisUtils.onEventEx(mContext, Dot.But_Rp_Click, String.valueOf(index));
-
-        openRp();*/
+    @Override
+    public void onClick(View v) {
+        openRedPackage();
     }
 
     private void openRp() {
@@ -834,7 +802,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                     .withFloat("score", doubleRedPacketBean.getScore())
                     .withString("restId", doubleRedPacketBean.getRestId())
                     .navigation();
-            loadRpData();
+            loadRpData(false);
             EventBus.getDefault().post(new WalletRefreshEvent(0));
         });
     }
@@ -885,10 +853,15 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     @Subscribe //用户登录状态变化
     public void loginStatusEvent(LoginLodingStartStatus event) {
         event.getLoginLoadingLiveData().observe(this, result -> {
-//            if (result == 1 || result == 2) {
-            LogUtil.e("loginStatusEvent " + result);
             refreshFront();
-//            }
+            /*if (result != 1 && result != 2) {
+                return;
+            }
+            if (event.getTag().equalsIgnoreCase("Front_Rp")) {
+                loadRpData(true);
+            } else {
+                refreshFront();
+            }*/
         });
     }
 

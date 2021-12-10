@@ -35,6 +35,7 @@ import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
 import com.donews.utilslibrary.utils.AppInfo;
+import com.donews.utilslibrary.utils.DeviceUtils;
 import com.donews.utilslibrary.utils.HttpConfigUtilsKt;
 import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.SPUtils;
@@ -56,8 +57,6 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
 
     private Animation mScaleAnimation;
     private ExitDialogRecommendGoods mGoods;
-
-//    private CountDownTimer mCountDownTimer = null;
 
     @Autowired
     String from;
@@ -83,14 +82,12 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
 
         mDataBinding.mainRpDlgCashTv.setText(String.format("%.2f", score));
         mDataBinding.mainRpGiveUp.setOnClickListener(v -> {
-            SoundHelp.newInstance().onStart();
-            finish();
+            if (!isFromPrivilege()) {
+                SoundHelp.newInstance().onStart();
+                finish();
+            }
         });
         mDataBinding.mainRpCloseIv.setOnClickListener(v -> {
-            /*if (mCountDownTimer != null) {
-                mCountDownTimer.cancel();
-                mCountDownTimer = null;
-            }*/
             isShowInnerAd = true;
             finish();
         });
@@ -129,34 +126,14 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
                 mDataBinding.mainRpDoubleTv.setText("抽奖领红包");
             } else {
                 mDataBinding.mainRpGiveUp.setVisibility(View.INVISIBLE);
+                mDataBinding.mainRpPlayIv.setVisibility(View.GONE);
                 mDataBinding.mainRpDoubleTv.setText("登录领红包");
             }
-            /*if (mCountDownTimer == null) {
-                mCountDownTimer = new CountDownTimer(10000, 1000) {
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                        mDataBinding.mainRpGiveUp.setText(String.format("自动为您随机抽奖(%d)", millisUntilFinished / 1000));
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        ARouter.getInstance()
-                                .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
-                                .withString("goods_id", mGoods.getGoodsId())
-                                .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
-                                .withBoolean("privilege", true)
-                                .navigation();
-                        finish();
-                    }
-                };
-            }
-            mCountDownTimer.start();*/
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void loginStatusEvent(LoginLodingStartStatus event) {
-//        LogUtil.e(event.getTag() + "********************");
         if (!event.getTag().equalsIgnoreCase("Front_Rp")) {
             return;
         }
@@ -262,7 +239,7 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
     private void requestPreRp() {
         EasyHttp.post(HttpConfigUtilsKt.withConfigParams(BuildConfig.API_WALLET_URL + "v1/pre-red-packet", true))
                 .cacheMode(CacheMode.NO_CACHE)
-                .upJson("{}")
+                .upJson("{\"suuid\":\"" + DeviceUtils.getMyUUID() + "\"}")
                 .execute(new SimpleCallBack<PreRpBean>() {
                     @Override
                     public void onError(ApiException e) {
@@ -311,11 +288,6 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        /*if (mCountDownTimer != null) {
-            mCountDownTimer.cancel();
-            mCountDownTimer = null;
-        }*/
 
         if (mDataBinding.mainRpDouble.getAnimation() != null) {
             mDataBinding.mainRpDouble.clearAnimation();

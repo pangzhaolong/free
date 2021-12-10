@@ -51,7 +51,6 @@ public class NotifyAnimationView extends LinearLayout {
         if(hideDuration >=0){
             this.mHideDuration = hideDuration;
         }
-
     }
 
     public void setShowAniTime(int showAniTime) {
