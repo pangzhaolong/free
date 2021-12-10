@@ -36,7 +36,6 @@ object JddAdConfigManager {
         }
     }
 
-
     fun init() {
         EasyHttp.get(BuildConfig.AD_CONFIG.withConfigParams(false))
             .cacheMode(CacheMode.NO_CACHE)

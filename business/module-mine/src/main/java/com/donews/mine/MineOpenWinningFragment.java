@@ -503,6 +503,7 @@ public class MineOpenWinningFragment extends
             TextView lgoinOkTv = adapterNotOpenWinHead.findViewById(R.id.mine_tv_djgb);
             TextView lgoinBut = adapterNotOpenWinHead.findViewById(R.id.mine_tv_login);
             LinearLayout myAddll = adapterNotOpenWinHead.findViewById(R.id.mine_win_code_win_connect_layout);
+            loginStatus = AppInfo.checkIsWXLogin();
             if (loginStatus) {
                 myAddll.setVisibility(View.VISIBLE);
                 lgoinOkTv.setVisibility(View.VISIBLE);
