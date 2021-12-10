@@ -219,7 +219,25 @@
                     android:text=""
                     android:textColor="@color/white"
                     android:textSize="15sp"
-                    tools:visibility="visible" />
+                    tools:visibility="visible"
+                    android:visibility="gone"/>
+                <com.donews.common.views.CountdownView
+                    android:id="@+id/countdown_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="2dp"
+                    app:text_view_minute_bg="@color/transparent"
+                    app:text_view_second_bg="@color/transparent"
+                    app:text_view_millisecond_bg="@color/transparent"
+                    app:text_view_millisecond_color="#FFFFFF"
+                    app:text_view_second_color="#FFFFFF"
+                    app:colon_color="@color/white"
+                    app:c_text_size="@dimen/textSize_15"
+                    app:text_view_minute_color="#FFFFFF"
+                    android:layout_marginEnd="4dp"
+                    app:automatically="true"
+                    app:time="5" />
             </LinearLayout>
 
             <com.airbnb.lottie.LottieAnimationView

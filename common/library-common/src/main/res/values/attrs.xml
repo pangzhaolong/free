@@ -51,6 +51,7 @@
     <declare-styleable name="CountdownView" >
         <attr name="time" format="integer" /><!--倒计时总时间-->
         <attr name="automatically" format="boolean" /><!--倒计时总时间-->
+        <attr name="c_text_size" format="reference" /><!--时间的文字大小-->
         <attr name="text_view_minute_bg" format="reference" /><!--分钟背景颜色-->
         <attr name="text_view_second_bg" format="reference" /><!--秒背景颜色-->
         <attr name="text_view_millisecond_bg" format="reference" /><!--毫秒背景颜色-->

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
+import android.text.Html
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.AbsoluteSizeSpan
@@ -58,12 +59,12 @@ class ContinueLotteryDialog : AbstractFragmentDialog<MainExitDialogContinueLotte
     private val times: CountDownTimer = object : CountDownTimer(4000L, 1000L) {
         override fun onTick(millisUntilFinished: Long) {
             //倒计时3秒
-            dataBinding.btnLottery.text = "抽奖得现金红包(${millisUntilFinished / 1000})"
+            dataBinding.btnLottery.text = "立即免费领 (${millisUntilFinished / 1000})"
         }
 
         override fun onFinish() {
             try {
-                dataBinding.btnLottery.text = "抽奖得现金红包(0)"
+                dataBinding.btnLottery.text = "立即免费领 (0)"
                 dataBinding.eventListener?.clickLottery(dataBinding.btnLottery)
             } catch (e: Exception) {
             }
@@ -151,16 +152,16 @@ class ContinueLotteryDialog : AbstractFragmentDialog<MainExitDialogContinueLotte
 
 
     private fun setTitle() {
-        val prob = "3千+"//Random.nextInt(300).toString()
-        val result = "已有${prob}人获得免单奖"
-        val spannable: SpannableString = SpannableString(result)
-        spannable.setSpan(
-                AbsoluteSizeSpan(DensityUtils.dip2px(28f)),
-                2,
-                2 + prob.length,
-                Spannable.SPAN_INCLUSIVE_EXCLUSIVE
-        )
-        dataBinding.title = spannable
+//        val prob = "3千+"//Random.nextInt(300).toString()
+        val result = "全场商品<font color='#FFE8AC'>免费</font>领"
+//        val spannable: SpannableString = SpannableString(result)
+//        spannable.setSpan(
+//                AbsoluteSizeSpan(DensityUtils.dip2px(28f)),
+//                2,
+//                2 + prob.length,
+//                Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+//        )
+        dataBinding.tvTitleDesc.text = Html.fromHtml(result)
     }
 
     private fun requestGoodsInfo() {

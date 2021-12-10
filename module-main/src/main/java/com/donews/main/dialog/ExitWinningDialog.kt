@@ -68,6 +68,11 @@ class ExitWinningDialog : AbstractFragmentDialog<MainExitDialogWinningOpenBindin
                 onLaterListener.onClose()
             }
         }
+        dataBinding.countdownView.setOnClickListener {
+            if (it.visibility == View.VISIBLE) {
+                onLaterListener.onClose()
+            }
+        }
         showAnimUI()
     }
 
@@ -75,7 +80,8 @@ class ExitWinningDialog : AbstractFragmentDialog<MainExitDialogWinningOpenBindin
     private fun showAnimUI() {
         dataBinding.tvTitle.text = "抽取大奖中..."
         dataBinding.llBut.visibility = View.INVISIBLE
-        dataBinding.tvFailure.visibility = View.INVISIBLE
+        dataBinding.tvFailure.visibility = View.GONE
+        dataBinding.countdownView.visibility = View.INVISIBLE
         dataBinding.ivIconBy.visibility = View.INVISIBLE
         dataBinding.tvGoodsTitle.visibility = View.INVISIBLE
         if (goods?.list?.isNotEmpty() == true) {
@@ -135,7 +141,8 @@ class ExitWinningDialog : AbstractFragmentDialog<MainExitDialogWinningOpenBindin
         }
         dataBinding.tvTitle.text = "恭喜选中超值大奖"
         dataBinding.llBut.visibility = View.VISIBLE
-        dataBinding.tvFailure.visibility = View.VISIBLE
+        dataBinding.tvFailure.visibility = View.GONE
+        dataBinding.countdownView.visibility = View.VISIBLE
         dataBinding.ivIconBy.visibility = View.VISIBLE
         dataBinding.tvGoodsTitle.visibility = View.VISIBLE
         dataBinding.scroView.visibility = View.GONE
@@ -148,7 +155,7 @@ class ExitWinningDialog : AbstractFragmentDialog<MainExitDialogWinningOpenBindin
             }
             countTime--
         }
-        runnableTask!!.run()
+//        runnableTask!!.run()
         showCloseBtn()
         //手
         dataBinding.maskingHand.imageAssetsFolder = "images"

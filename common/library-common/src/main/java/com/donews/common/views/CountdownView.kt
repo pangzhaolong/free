@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable
 import android.os.Message
 import android.os.SystemClock
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.donews.common.R
@@ -67,6 +68,13 @@ class CountdownView : LinearLayout {
             var millisecondBg =
                 typedArray.getDrawable(R.styleable.CountdownView_text_view_millisecond_bg)
             millisecond?.background = millisecondBg
+            var txSize =
+                typedArray.getDimension(R.styleable.CountdownView_c_text_size,0F)
+            if(txSize != 0F){
+                minute?.setTextSize(TypedValue.COMPLEX_UNIT_PX,txSize)
+                second?.setTextSize(TypedValue.COMPLEX_UNIT_PX,txSize)
+                millisecond?.setTextSize(TypedValue.COMPLEX_UNIT_PX,txSize)
+            }
             //设置背景
             var minuteColor =
                 typedArray.getColor(R.styleable.CountdownView_text_view_minute_color, defaultColor)

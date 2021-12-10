@@ -38,6 +38,16 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+                android:id="@+id/iv_exit_lot_title"
+                android:layout_width="124dp"
+                android:layout_height="35dp"
+                android:src="@drawable/exit_main_not_pack_zy"
+                app:layout_constraintLeft_toLeftOf="@+id/iv_window"
+                app:layout_constraintRight_toRightOf="@+id/iv_window"
+                app:layout_constraintBottom_toTopOf="@+id/iv_window_title"
+                android:layout_marginBottom="21dp"/>
+
+            <ImageView
                 android:id="@+id/iv_window"
                 android:layout_width="267dp"
                 android:layout_height="294dp"
@@ -62,7 +72,7 @@
                 android:id="@+id/iv_close"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="23dp"
+                android:layout_marginBottom="60dp"
                 android:onClick="@{eventListener::clickClose}"
                 android:src="@drawable/common_close"
                 android:visibility="invisible"
@@ -88,9 +98,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
-                android:text="@{title}"
                 android:textColor="@color/white"
-                android:textSize="18sp"
+                android:textSize="23sp"
                 app:layout_constraintEnd_toEndOf="@id/iv_window"
                 app:layout_constraintStart_toStartOf="@id/iv_window"
                 app:layout_constraintTop_toBottomOf="@+id/tv_title"
@@ -190,10 +199,10 @@
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/main_bg_guide_but"
                 android:onClick="@{eventListener::clickLottery}"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
                 android:paddingBottom="1dp"
-                android:text="抽奖得现金红包(3)"
+                android:text="立即免费领 (3)"
                 android:textColor="#D82D2A"
                 android:textSize="20sp"
                 android:textStyle="bold"
