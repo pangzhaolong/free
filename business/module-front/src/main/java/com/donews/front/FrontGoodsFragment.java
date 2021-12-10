@@ -38,7 +38,7 @@ import java.util.List;
 public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmentBinding, NorViewModel> implements FrontClickListener {
 
     private FrontGoodsAdapter mNorGoodsAdapter;
-    LotteryCategoryBean.categoryBean mCategoryBean;
+    private LotteryCategoryBean.categoryBean mCategoryBean;
     private int mPageId = 0;
     private RecyclerView.ItemDecoration mItemDecoration;
     private int mRvScrollLength = 0;

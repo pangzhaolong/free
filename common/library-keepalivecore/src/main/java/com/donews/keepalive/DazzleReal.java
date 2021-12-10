@@ -23,7 +23,6 @@ public class DazzleReal {
     static Application application;
     static boolean serviceStart = false;
 
-
     static String[] STATE_INTENTS = new String[]{
             "android.intent.action.PHONE_STATE",
             "android.intent.action.PHONE_STATE_2",
@@ -53,7 +52,7 @@ public class DazzleReal {
     private static final ScreenStateReceiver sScreenStateReceiver = new ScreenStateReceiver();
     private static final SystemNotifyReceiver mSystemNotifyReceiver = new SystemNotifyReceiver();
 
-    public static void init(Application context, Boolean debug, Notification notification, int id, RealCallback callback,ForegroundNotificationClickListener listener) {
+    public static void init(Application context, Boolean debug, Notification notification, int id, RealCallback callback, ForegroundNotificationClickListener listener) {
 
         if (init || !isMainProcess(context)) {
             return;
@@ -128,15 +127,15 @@ public class DazzleReal {
     }
 
     public static void unregReceiver(Context context) {
-        try{
+        try {
             context.unregisterReceiver(sScreenStateReceiver);
-        }catch (Throwable t){
-        	t.printStackTrace();
+        } catch (Throwable t) {
+            t.printStackTrace();
         }
-        try{
+        try {
             context.unregisterReceiver(mSystemNotifyReceiver);
-        }catch (Throwable t){
-        	t.printStackTrace();
+        } catch (Throwable t) {
+            t.printStackTrace();
         }
     }
 
@@ -153,8 +152,6 @@ public class DazzleReal {
                     break;
                 }
             }
-
-
         } catch (Throwable t) {
             t.printStackTrace();
         }

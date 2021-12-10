@@ -23,6 +23,16 @@
         </item> <!-- 窗口样式Dialog -->
     </style>
 
+    <style name="main_rp_transparent_style" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@color/transparent</item> <!-- 背景色透明度 -->
+        <item name="android:windowNoTitle">true</item><!-- 无标题 -->
+        <item name="android:windowIsTranslucent">true</item><!-- 半透明,设置为false无透明效果 -->
+        <item name="android:backgroundDimEnabled">true</item><!-- 模糊 -->
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog
+        </item>
+    </style>
     <style name="BaseDialogTheme" parent="Theme.MaterialComponents.DayNight.Dialog.Bridge">
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowBackground">@android:color/transparent</item>
