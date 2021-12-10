@@ -417,7 +417,7 @@ object ExitInterceptUtils {
                             showOpenRedPacketDialog(activity)
                         } else {
                             //红包已全部开启(显示开奖提醒)
-                            showRemindDialog(activity)
+                            showRedPacketAllOpenDialog(activity)
                         }
                     }
                     setOnLaterListener {
