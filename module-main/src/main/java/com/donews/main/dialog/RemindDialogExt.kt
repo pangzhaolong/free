@@ -8,7 +8,7 @@ import android.os.Looper
 import android.view.View
 import com.donews.base.fragmentdialog.AbstractFragmentDialog
 import com.donews.main.R
-import com.donews.main.databinding.MainExitDialogRemindBinding
+import com.donews.main.databinding.MainExitDialogRemindExtBinding
 import com.donews.main.entitys.resps.RemindConfig
 import com.donews.main.utils.ExitInterceptUtils
 import com.donews.utilslibrary.utils.CalendarUtils
@@ -18,14 +18,13 @@ import java.util.*
 
 
 /**
- * 温馨提示弹出框
+ * 日历权限开启/未开启的弹窗
  *
- * @author XuShuai
+ * @author lcl
  * @version v1.0
- * @date 2021/10/20 20:31
  */
-class RemindDialog : AbstractFragmentDialog<MainExitDialogRemindBinding>(),
-        EasyPermissions.PermissionCallbacks {
+class RemindDialogExt : AbstractFragmentDialog<MainExitDialogRemindExtBinding>(),
+    EasyPermissions.PermissionCallbacks {
 
     companion object {
         private const val CALENDAR_TITLE = "奖多多开奖提醒"
@@ -34,16 +33,12 @@ class RemindDialog : AbstractFragmentDialog<MainExitDialogRemindBinding>(),
 
         val PAR = arrayListOf(Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR)
 
-        fun newInstance(remindConfig: RemindConfig): RemindDialog {
+        fun newInstance(remindConfig: RemindConfig): RemindDialogExt {
             val args = Bundle()
             args.putSerializable(PARAMS_CONFIG, remindConfig)
-            val fragment = RemindDialog()
+            val fragment = RemindDialogExt()
             fragment.arguments = args
             return fragment
-        }
-
-        fun newInstance(): RemindDialog {
-            return RemindDialog()
         }
 
     }
@@ -64,7 +59,7 @@ class RemindDialog : AbstractFragmentDialog<MainExitDialogRemindBinding>(),
     }
 
     override fun getLayoutId(): Int {
-        return R.layout.main_exit_dialog_remind
+        return R.layout.main_exit_dialog_remind_ext
     }
 
     override fun initView() {
@@ -85,7 +80,7 @@ class RemindDialog : AbstractFragmentDialog<MainExitDialogRemindBinding>(),
                     handler.postDelayed(timeTask!!, 1000)
                 }
             }
-//            handler.postDelayed(timeTask!!, 1000)
+            handler.postDelayed(timeTask!!, 1000)
         } else {
             dataBinding.btnNext.visibility = View.VISIBLE
         }
@@ -115,9 +110,9 @@ class RemindDialog : AbstractFragmentDialog<MainExitDialogRemindBinding>(),
 
     private fun checkPermission(): Boolean {
         return EasyPermissions.hasPermissions(
-                context,
-                Manifest.permission.READ_CALENDAR,
-                Manifest.permission.WRITE_CALENDAR
+            context,
+            Manifest.permission.READ_CALENDAR,
+            Manifest.permission.WRITE_CALENDAR
         )
     }
 
@@ -132,11 +127,11 @@ class RemindDialog : AbstractFragmentDialog<MainExitDialogRemindBinding>(),
 
     private fun requiresPermission() {
         EasyPermissions.requestPermissions(
-                this,
-                "提醒需要日历权限",
-                REQUEST_PER_CODE,
-                Manifest.permission.READ_CALENDAR,
-                Manifest.permission.WRITE_CALENDAR
+            this,
+            "提醒需要日历权限",
+            REQUEST_PER_CODE,
+            Manifest.permission.READ_CALENDAR,
+            Manifest.permission.WRITE_CALENDAR
         )
 
     }
@@ -160,13 +155,13 @@ class RemindDialog : AbstractFragmentDialog<MainExitDialogRemindBinding>(),
             calendar.set(year, month, day, hour, m, s)
             val time = calendar.timeInMillis
             CalendarUtils.addCalendarEvent(
-                    it,
-                    CALENDAR_TITLE,
-                    "打开app进行开奖",
-                    time,
-                    ExitInterceptUtils.exitInterceptConfig.calendarRemindDuration.toLong(),
-                    "FREQ=DAILY;INTERVAL=1",
-                    10
+                it,
+                CALENDAR_TITLE,
+                "打开app进行开奖",
+                time,
+                ExitInterceptUtils.exitInterceptConfig.calendarRemindDuration.toLong(),
+                "FREQ=DAILY;INTERVAL=1",
+                10
             )
         }
     }

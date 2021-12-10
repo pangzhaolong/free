@@ -58,6 +58,8 @@ public class ExitNotLoginDialog extends BaseDialog<MainInterceptDialogLayoutBind
     private LotteryHandler mLotteryHandler;
     private long fastVibrateTime = 0;
 
+    public Runnable closeListener = null;
+
     public ExitNotLoginDialog(Activity context) {
         super(context, R.style.dialogTransparent);//内容样式在这里引入
         this.mContext = context;
@@ -81,7 +83,12 @@ public class ExitNotLoginDialog extends BaseDialog<MainInterceptDialogLayoutBind
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mDataBinding.closure.setOnClickListener(v -> dismiss());
+        mDataBinding.closure.setOnClickListener(v -> {
+            dismiss();
+            if (closeListener != null){
+                closeListener.run();
+            }
+        });
         mDataBinding.tvNextLk.setOnClickListener(v -> {
             if (v.getVisibility() == View.VISIBLE) {
                 ExitInterceptUtils.exitApp((AppCompatActivity) mContext);
@@ -119,7 +126,9 @@ public class ExitNotLoginDialog extends BaseDialog<MainInterceptDialogLayoutBind
         }
 
     }
+
     private boolean isSendCloseEvent = true;
+
     // 1 表示未登录 2 表示登录未抽奖
     private void initView() {
         if (mType == TYPE_1) {
@@ -212,7 +221,7 @@ public class ExitNotLoginDialog extends BaseDialog<MainInterceptDialogLayoutBind
 
     @Override
     public void onDismiss(DialogInterface dialog) {
-        if(isSendCloseEvent){
+        if (isSendCloseEvent) {
             AnalysisUtils.onEventEx(mContext, Dot.But_Home_Exit_Not_Login_Close);
         }
         if (mLotteryHandler != null) {

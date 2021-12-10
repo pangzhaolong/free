@@ -11,7 +11,7 @@
 
         <variable
             name="eventListener"
-            type="com.donews.main.dialog.RemindDialog.EventListener" />
+            type="com.donews.main.dialog.RemindDialogExt.EventListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -126,7 +126,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text=""
+                android:text="(3)"
                 android:textColor="#D82D2A"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -160,7 +160,6 @@
             android:id="@+id/iv_top_text"
             android:layout_width="275dp"
             android:layout_height="93dp"
-            android:visibility="gone"
             android:layout_marginBottom="15dp"
             android:src="@drawable/main_exit_all_open_next"
             app:layout_constraintBottom_toTopOf="@+id/iv_top_icon"

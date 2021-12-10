@@ -42,6 +42,7 @@ import com.donews.main.dialog.DrawDialog;
 import com.donews.main.dialog.EnterShowDialog;
 import com.donews.main.dialog.FreePanicBuyingDialog;
 import com.donews.main.dialog.RemindDialog;
+import com.donews.main.dialog.RemindDialogExt;
 import com.donews.main.utils.ExitInterceptUtils;
 import com.donews.main.viewModel.MainViewModel;
 import com.donews.main.views.CornerMarkUtils;
@@ -515,7 +516,7 @@ public class MainActivity
         } else if (event.getEvent() == 2) {
             postGotDoubleRp(event.getRestId(), event.getPreId(), event.getScore());
         } else if (event.getEvent() == 3) {
-            RemindDialog remindDialog = new RemindDialog();
+            RemindDialogExt remindDialog = new RemindDialogExt();
             remindDialog.setOnCloseListener(remindDialog::dismiss);
             remindDialog.setOnSureListener(remindDialog::dismiss);
             remindDialog.setOnLaterListener(remindDialog::dismiss);
