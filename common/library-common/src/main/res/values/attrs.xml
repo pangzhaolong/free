@@ -46,4 +46,22 @@
         <attr name="centerProgressTextColor" format="color" />
         <attr name="centerProgressTextSize" format="dimension" />
     </declare-styleable>
+
+
+    <declare-styleable name="CountdownView" >
+        <attr name="time" format="integer" /><!--倒计时总时间-->
+        <attr name="automatically" format="boolean" /><!--倒计时总时间-->
+        <attr name="text_view_minute_bg" format="reference" /><!--分钟背景颜色-->
+        <attr name="text_view_second_bg" format="reference" /><!--秒背景颜色-->
+        <attr name="text_view_millisecond_bg" format="reference" /><!--毫秒背景颜色-->
+        <!--  设置文字颜色-->
+        <attr name="text_view_second_color" format="reference|color" /><!--秒 文字颜色-->
+        <attr name="text_view_minute_color" format="reference|color" /><!--秒 文字颜色-->
+        <attr name="text_view_millisecond_color" format="reference|color" /><!--毫秒 文字颜色-->
+        <!-- 冒号颜色-->
+        <attr name="colon_color" format="reference|color" /><!--毫秒 文字颜色-->
+
+    </declare-styleable>
+
+
 </resources>
