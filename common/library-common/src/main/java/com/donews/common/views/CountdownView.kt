@@ -1,13 +1,15 @@
-package com.module.lottery.view
+package com.donews.common.views
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.os.Message
 import android.os.SystemClock
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import android.widget.TextView
-import com.module_lottery.R
+import com.donews.common.R
 import java.lang.ref.WeakReference
 import java.util.*
 
@@ -23,14 +25,21 @@ class CountdownView : LinearLayout {
     private var second: TextView? = null;
     private var millisecond: TextView? = null;
 
+
+    private var colonOne: TextView? = null;
+    private var colonTwo: TextView? = null;
+
+
     private var mHandler = CountdownViewHandler(this);
     private var mICountdownViewListener: ICountdownViewListener? = null
 
     private var elapsedRealtime: Long = 0L;
-
+    private var defaultColor = Color.parseColor("#FFFFFF");
 
     constructor(context: Context?) : this(context, null) {}
     constructor(context: Context?, attrs: AttributeSet?) : this(context, attrs, 0) {}
+
+    @SuppressLint("ResourceAsColor")
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(
         context,
         attrs,
@@ -38,17 +47,45 @@ class CountdownView : LinearLayout {
     ) {
 
 
-        var view = LinearLayout.inflate(context, R.layout.countdown_layout, this);
+        var view = LinearLayout.inflate(context, R.layout.common_countdown_layout, this);
         minute = view.findViewById(R.id.minute);
         second = view.findViewById(R.id.second);
+        colonOne = view.findViewById(R.id.colon_one);
+        colonTwo = view.findViewById(R.id.colon_two);
         millisecond = view.findViewById(R.id.millisecond);
-
         var typedArray = context?.obtainStyledAttributes(attrs, R.styleable.CountdownView)
-
         if (typedArray != null) {
             var mAutomatically =
                 typedArray.getBoolean(R.styleable.CountdownView_automatically, false);
             var timestamp = typedArray.getInt(R.styleable.CountdownView_time, 0);
+            //设置背景
+            var minuteBg = typedArray.getDrawable(R.styleable.CountdownView_text_view_minute_bg)
+            minute?.background = minuteBg
+
+            var secondBg = typedArray.getDrawable(R.styleable.CountdownView_text_view_second_bg)
+            second?.background = secondBg
+            var millisecondBg =
+                typedArray.getDrawable(R.styleable.CountdownView_text_view_millisecond_bg)
+            millisecond?.background = millisecondBg
+            //设置背景
+            var minuteColor =
+                typedArray.getColor(R.styleable.CountdownView_text_view_minute_color, defaultColor)
+
+            minute?.setTextColor(minuteColor)
+            var secondColor =
+                typedArray.getColor(R.styleable.CountdownView_text_view_second_color, defaultColor)
+            second?.setTextColor(secondColor)
+            var millisecondColor = typedArray.getColor(
+                R.styleable.CountdownView_text_view_millisecond_color,
+                defaultColor
+            )
+            millisecond?.setTextColor(millisecondColor)
+            //冒号颜色
+            var colonColor =
+                typedArray.getColor(R.styleable.CountdownView_colon_color, defaultColor)
+            colonOne?.setTextColor(colonColor)
+            colonTwo?.setTextColor(colonColor)
+
             //需要倒计时的毫秒
             period = timestamp * 60L * 1000L
             if (mAutomatically && timestamp > 0) {

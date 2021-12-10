@@ -26,6 +26,7 @@ import com.dn.drouter.ARouteHelper;
 import com.dn.events.events.LoginUserStatus;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.router.RouterActivityPath;
+import com.donews.common.views.CountdownView;
 import com.donews.main.BuildConfig;
 import com.donews.main.dialog.BaseDialog;
 import com.donews.middle.abswitch.ABSwitch;
@@ -38,7 +39,6 @@ import com.module.lottery.bean.GenerateCodeBean;
 import com.module.lottery.model.LotteryModel;
 import com.module.lottery.ui.BaseParams;
 import com.module.lottery.utils.LotteryAnimationUtils;
-import com.module.lottery.view.CountdownView;
 import com.module_lottery.R;
 import com.module_lottery.databinding.ExclusiveLotteryCodeLayoutBinding;
 
