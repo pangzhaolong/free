@@ -3,6 +3,7 @@ package com.donews.main.ui;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
@@ -57,6 +58,8 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
 
     private Animation mScaleAnimation;
     private ExitDialogRecommendGoods mGoods;
+
+    private CountDownTimer mCountDownTimer;
 
     @Autowired
     String from;
@@ -130,6 +133,25 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
                 mDataBinding.mainRpDoubleTv.setText("登录领红包");
             }
         }
+
+        if (mCountDownTimer == null) {
+            mCountDownTimer = new CountDownTimer(1000, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+
+                }
+
+                @Override
+                public void onFinish() {
+                    try {
+                        mDataBinding.mainRpCloseIv.setVisibility(View.VISIBLE);
+                    } catch (Exception e) {
+
+                    }
+                }
+            };
+        }
+        mCountDownTimer.start();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -288,6 +310,11 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        if (mCountDownTimer != null) {
+            mCountDownTimer.cancel();
+            mCountDownTimer = null;
+        }
 
         if (mDataBinding.mainRpDouble.getAnimation() != null) {
             mDataBinding.mainRpDouble.clearAnimation();
