@@ -96,6 +96,21 @@ public class AppManager {
     }
 
     /**
+     * 结束指定类名的Activity.队列中所以后的指定class的页面
+     */
+    public void finishAllActivity(Class<?> cls) {
+        Stack<Activity> activityStackLo = new Stack<>();
+        for (Activity activity : activityStack) {
+            activityStackLo.add(activity);
+        }
+        for (Activity activity : activityStackLo) {
+            if (activity.getClass().equals(cls)) {
+                finishActivity(activity);
+            }
+        }
+    }
+
+    /**
      * 获取activity数量
      */
     public int getActivitySize() {

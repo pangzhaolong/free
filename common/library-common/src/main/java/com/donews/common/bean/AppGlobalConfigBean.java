@@ -53,6 +53,8 @@ public class AppGlobalConfigBean {
 
     public int notifyShowMaxCount = -1;
 
+    public int notifyProbabilityOpen = 75;
+
 
     public String notifyLauncherImg;
 

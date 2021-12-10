@@ -16,6 +16,8 @@ import androidx.annotation.Nullable;
 
 import com.donews.common.NotifyLuncherConfigManager;
 import com.donews.keepalive.LaunchStart;
+import com.donews.notify.R;
+import com.gyf.immersionbar.ImmersionBar;
 
 import java.lang.ref.WeakReference;
 
@@ -36,6 +38,11 @@ public class NotifyActionActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ImmersionBar.with(this)
+                .statusBarColor(R.color.transparent)
+                .fitsSystemWindows(false)
+                .autoDarkModeEnable(false)
+                .init();
         View view = new View(this);
         view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));

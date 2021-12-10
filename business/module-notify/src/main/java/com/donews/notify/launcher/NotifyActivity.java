@@ -23,13 +23,16 @@ import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.donews.base.base.AppManager;
 import com.donews.common.NotifyLuncherConfigManager;
 import com.donews.keepalive.LaunchStart;
 import com.donews.notify.R;
 import com.donews.utilslibrary.analysis.AnalysisParam;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.gyf.immersionbar.ImmersionBar;
 
 import java.lang.ref.WeakReference;
+import java.util.Random;
 
 public class NotifyActivity extends Activity {
     public static final String TAG = NotifyInitProvider.TAG;
@@ -56,7 +59,7 @@ public class NotifyActivity extends Activity {
                     destroy();
                     break;
                 case 2:
-                    schemeOpen();
+                    schemeOpen(true);
                     break;
             }
         }
@@ -102,7 +105,7 @@ public class NotifyActivity extends Activity {
         mNotifyAnimationView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                schemeOpen();
+                schemeOpen(false);
             }
         });
         String url = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyLauncherImg;
@@ -135,6 +138,12 @@ public class NotifyActivity extends Activity {
             mNotifyAnimationView.start();
         }
         launchStart.cancel();
+
+        ImmersionBar.with(this)
+                .statusBarColor(R.color.transparent)
+                .fitsSystemWindows(true)
+                .autoDarkModeEnable(false)
+                .init();
     }
 
     @Override
@@ -146,6 +155,8 @@ public class NotifyActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        //关闭队列中的所有当前页面类型的页面
+        AppManager.getInstance().finishAllActivity(getClass());
         Log.d(TAG, "NotifyActivity onDestroy");
     }
 
@@ -188,7 +199,20 @@ public class NotifyActivity extends Activity {
         }
     }
 
-    private void schemeOpen() {
+    /**
+     *
+     * @param isProbability T:启用概率
+     */
+    private void schemeOpen(boolean isProbability) {
+        //打开应用的概率
+        int po = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyProbabilityOpen;
+        if(isProbability){
+            int gernPo = new Random().nextInt(100);
+            if(gernPo > po){
+                mNotifyAnimationView.hide();
+                return; //小于中台配置的概率。所以需要取大于此值得部分
+            }
+        }
         try {
             AnalysisUtils.onEvent(NotifyActivity.this, AnalysisParam.DESKTOP_DISPLAY_CLICK);
         } catch (Throwable t) {

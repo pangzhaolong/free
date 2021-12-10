@@ -50,9 +50,11 @@ public class MainModuleInit implements IModuleInit {
 
         @Override
         public void onActivityStarted(@NotNull Activity activity) {
-            HotStartCacheUtils.INSTANCE.checkActivity(activity);
             if (appCount <= 0) {
                 toForeGround(activity);
+                HotStartCacheUtils.INSTANCE.checkNotifyActivity(activity);
+            }else{
+                HotStartCacheUtils.INSTANCE.checkActivity(activity);
             }
             appCount++;
         }

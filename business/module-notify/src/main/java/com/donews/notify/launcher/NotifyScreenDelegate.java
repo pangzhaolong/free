@@ -136,6 +136,7 @@ public class NotifyScreenDelegate {
 
             @Override
             public void onLoadFailed(@Nullable Drawable errorDrawable) {
+
                 super.onLoadFailed(errorDrawable);
                 isLoaded = true;
                 Log.d(NotifyInitProvider.TAG, "tryLoadNewImg onLoadFailed , url = " + url);
@@ -183,7 +184,7 @@ public class NotifyScreenDelegate {
         Log.w(NotifyInitProvider.TAG, "canShowNotify time2 = " + time2);
 
         //增加新用户延迟判断isOutDelayTime4NewUser
-        boolean result = isRangeTime(time1) || isRangeTime(time2) || isOutDelayTime4NewUser();
+        boolean result = isOutDelayTime4NewUser() && (isRangeTime(time1) || isRangeTime(time2));
 
         long now = System.currentTimeMillis();
         boolean canShow = (now - mLastShowTime > mIntervalLockShowTime);

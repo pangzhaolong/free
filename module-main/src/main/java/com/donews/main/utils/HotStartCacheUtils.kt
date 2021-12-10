@@ -70,4 +70,18 @@ object HotStartCacheUtils {
             activity.finish()
         }
     }
+
+    /**
+     * 扣除通知页面。防止通知页面被关闭
+     * @param activity Activity
+     */
+    fun checkNotifyActivity(activity: Activity) {
+        val name: String = activity::class.java.name
+        if (name.equals("com.donews.notify.launcher.NotifyActionActivity", true)) {
+            activity.finish()
+        }
+        if (name.equals("com.donews.keepalive.DazzleActivity", true)) {
+            activity.finish()
+        }
+    }
 }
