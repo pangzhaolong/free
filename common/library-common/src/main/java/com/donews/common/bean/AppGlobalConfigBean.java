@@ -55,6 +55,7 @@ public class AppGlobalConfigBean {
 
     public int notifyProbabilityOpen = 75;
 
+    public int notifyClickLastOpenInterval = 600;
 
     public String notifyLauncherImg;
 

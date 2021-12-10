@@ -12,6 +12,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -80,7 +81,7 @@ public class NotifyScreenDelegate {
             case Intent.ACTION_USER_PRESENT:
                 NotifyActionActivity.destroy();
 
-                if (canShowNotify() && canShowAct()) {
+                if (canShowNotify() && canShowAct() && canShowFastClick()) {
                     tryLoadNewImg(context);
                     long delayTime = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyDelayShowTime;
                     mLastShowTime = System.currentTimeMillis();
@@ -197,6 +198,13 @@ public class NotifyScreenDelegate {
     private boolean canShowAct() {
         Log.w(NotifyInitProvider.TAG, "App  Activity Stack Size: " + AppManager.getInstance().getActivitySize());
         return AppManager.getInstance().getActivitySize() <= 0;
+    }
+
+    //检查是否距离上一次点击进入应用达到了足够值,T:已达到间隔时间，F:还未达到间隔时间
+    private boolean canShowFastClick() {
+        int po = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyClickLastOpenInterval * 1000;
+        long lastClickTime = SPUtils.getInstance().getLong("notifyClickLastOpenInterval", 0);
+        return System.currentTimeMillis() - lastClickTime > po;
     }
 
     private boolean isRangeTime(int time) {

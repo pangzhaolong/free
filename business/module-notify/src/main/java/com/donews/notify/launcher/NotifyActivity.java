@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -50,7 +51,7 @@ public class NotifyActivity extends Activity {
         if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
             //if else
             int action = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyActionType;
-            Log.w(TAG,"open action = "+action);
+            Log.w(TAG, "open action = " + action);
             switch (action) {
                 case 0:
                     mNotifyAnimationView.hide();
@@ -194,21 +195,22 @@ public class NotifyActivity extends Activity {
             intent.setData(Uri.parse(uri));
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             activity.startActivity(intent);
+            //报错上一次点击进入的时间
+            SPUtils.getInstance().put("notifyClickLastOpenInterval", System.currentTimeMillis());
         } catch (Throwable t) {
             t.printStackTrace();
         }
     }
 
     /**
-     *
      * @param isProbability T:启用概率
      */
     private void schemeOpen(boolean isProbability) {
         //打开应用的概率
         int po = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyProbabilityOpen;
-        if(isProbability){
+        if (isProbability) {
             int gernPo = new Random().nextInt(100);
-            if(gernPo > po){
+            if (gernPo > po) {
                 mNotifyAnimationView.hide();
                 return; //小于中台配置的概率。所以需要取大于此值得部分
             }
