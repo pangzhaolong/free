@@ -5,6 +5,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import com.dn.sdk.AdCustomError
+import com.dn.sdk.bean.PreloadAdState
 import com.dn.sdk.bean.preload.PreloadAd
 import com.dn.sdk.listener.IAdRewardVideoListener
 import com.dn.sdk.manager.config.IAdConfigInitListener
@@ -86,7 +87,12 @@ object AdVideoCacheUtils {
             }
         } else {
             if (mPreLoadSuccess) {
-                mPreloadVideoView?.showAd()
+                if (mPreloadVideoView?.getLoadState() == PreloadAdState.Shown) {
+                    mPreloadVideoView = null
+                    showRewardVideo(rewardVideoListener)
+                } else {
+                    mPreloadVideoView?.showAd()
+                }
                 return
             }
             if (!mPreLoading) {
@@ -100,8 +106,8 @@ object AdVideoCacheUtils {
                 if (duration >= TINE_OUT) {
                     //直接返回错误，并且重新预加载一个视频
                     mRewardVideoListener?.onAdError(
-                        AdCustomError.PreloadTimesError.code,
-                        AdCustomError.PreloadTimesError.errorMsg
+                            AdCustomError.PreloadTimesError.code,
+                            AdCustomError.PreloadTimesError.errorMsg
                     )
                     mRewardVideoListener = null
                     mRetry = 0
@@ -235,7 +241,7 @@ object AdVideoCacheUtils {
     private fun tag(msg: String) {
         if (logger) {
             Logger.t(TAG)
-                .d(msg)
+                    .d(msg)
         }
     }
 

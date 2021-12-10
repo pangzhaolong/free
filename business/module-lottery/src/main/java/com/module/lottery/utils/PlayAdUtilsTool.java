@@ -37,9 +37,8 @@ public class PlayAdUtilsTool {
         this.mContext = context;
     }
 
-
     public void showRewardVideo(final Dialog dialog) {
-        aAState=false;
+        aAState = false;
         IAdRewardVideoListener listener = new IAdRewardVideoListener() {
             @Override
             public void onAdStartLoad() {

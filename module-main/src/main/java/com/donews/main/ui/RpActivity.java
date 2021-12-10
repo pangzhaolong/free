@@ -97,12 +97,14 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
         mDataBinding.mainRpDouble.setOnClickListener(v -> {
             if (isFromPrivilege()) {
                 if (AppInfo.checkIsWXLogin()) {
-                    ARouter.getInstance()
-                            .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
-                            .withString("goods_id", mGoods.getGoodsId())
-                            .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
-                            .withBoolean("privilege", true)
-                            .navigation();
+                    if (mGoods != null) {
+                        ARouter.getInstance()
+                                .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
+                                .withString("goods_id", mGoods.getGoodsId())
+                                .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
+                                .withBoolean("privilege", true)
+                                .navigation();
+                    }
                     finish();
                 } else {
                     RouterActivityPath.LoginProvider.getLoginProvider()
@@ -163,12 +165,14 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
         MutableLiveData<Integer> mld = event.getLoginLoadingLiveData();
         mld.observe(this, d -> {
             if (d == 2) {
-                ARouter.getInstance()
-                        .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
-                        .withString("goods_id", mGoods.getGoodsId())
-                        .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
-                        .withBoolean("privilege", true)
-                        .navigation();
+                if (mGoods != null) {
+                    ARouter.getInstance()
+                            .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
+                            .withString("goods_id", mGoods.getGoodsId())
+                            .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
+                            .withBoolean("privilege", true)
+                            .navigation();
+                }
                 finish();
             } else if (d == -1) {
                 ToastUtil.showShort(this, "微信登录失败，请重试!");

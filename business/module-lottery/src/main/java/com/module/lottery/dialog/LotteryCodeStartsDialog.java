@@ -161,7 +161,6 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
                         reference.get().mOnFinishListener.onLoadAd();
                     }
                     break;
-
                 case 3:
                     if (reference.get() != null) {
                         if (reference.get().isShowing() && reference.get().mOnFinishListener != null) {
