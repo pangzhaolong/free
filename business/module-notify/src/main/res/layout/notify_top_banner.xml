@@ -9,16 +9,14 @@
         android:id="@+id/layout_notifyanimation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dip"
-        android:layout_marginRight="8dip">
+        android:padding="10dp">
 
         <ImageView
             android:id="@+id/img_notify"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dip"
-            android:scaleType="fitXY"
+            android:scaleType="centerInside"
             android:src="@drawable/launcher_notify_small" />
 
     </com.donews.notify.launcher.NotifyAnimationView>
