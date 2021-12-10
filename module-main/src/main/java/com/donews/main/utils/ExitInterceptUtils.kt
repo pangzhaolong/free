@@ -119,8 +119,6 @@ object ExitInterceptUtils {
                 mFirstClickBackTime = System.currentTimeMillis()
             }
         } else {
-            showRemindDialog(activity)
-            return
             if (isFinishBack) {
                 if (duration < CLICK_INTERVAL) {
                     exitApp(activity)
