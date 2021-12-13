@@ -111,6 +111,11 @@ public class MineOpenWinningFragment extends
                 if (fastType == 0 || mViewModel.openWinCountdown.getValue() > 0) {
                     //当前状态为未开奖。那么刷新UI
                     updateUI(fastType);
+                    try {
+                        mDataBinding.mainWinCodeRefresh.autoRefresh();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         } else {
