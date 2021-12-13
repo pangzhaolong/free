@@ -12,6 +12,7 @@ import androidx.multidex.MultiDex;
 
 import com.donews.base.BuildConfig;
 import com.donews.utilslibrary.base.UtilsConfig;
+import com.donews.utilslibrary.utils.Utils;
 
 import java.util.List;
 
@@ -35,7 +36,9 @@ public class BaseApplication extends Application {
         super.onCreate();
         setApplication(this);
         ContextHolder.getInstance().setAppContext(this);
-        UtilsConfig.init(this);
+        if (Utils.isMainProcess(this)) {
+            UtilsConfig.init(this);
+        }
         setsDebug(BuildConfig.DEBUG);
     }
 

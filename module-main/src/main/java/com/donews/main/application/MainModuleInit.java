@@ -6,13 +6,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.donews.common.ad.business.bean.JddAdConfigBean;
-import com.donews.common.ad.business.manager.JddAdConfigManager;
-import com.donews.main.BuildConfig;
-import com.donews.main.ui.SplashActivity;
 import com.donews.base.base.BaseApplication;
 import com.donews.common.IModuleInit;
+import com.donews.common.ad.business.bean.JddAdConfigBean;
+import com.donews.common.ad.business.manager.JddAdConfigManager;
 import com.donews.common.adapter.ScreenAutoAdapter;
+import com.donews.main.BuildConfig;
+import com.donews.main.ui.SplashActivity;
 import com.donews.main.utils.ExitInterceptUtils;
 import com.donews.main.utils.HotStartCacheUtils;
 import com.donews.network.EasyHttp;
@@ -53,7 +53,7 @@ public class MainModuleInit implements IModuleInit {
             if (appCount <= 0) {
                 toForeGround(activity);
                 HotStartCacheUtils.INSTANCE.checkNotifyActivity(activity);
-            }else{
+            } else {
                 HotStartCacheUtils.INSTANCE.checkActivity(activity);
             }
             appCount++;

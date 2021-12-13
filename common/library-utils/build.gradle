@@ -24,7 +24,8 @@ dependencies {
 //    api (name: 'DonewsBISdk', ext: 'aar')
 //    api (name: 'smantifraud', ext: 'aar')
 
-    api project(path: ':common:library-sdk')
+//    implementation(name: 'donewsBISdk', ext: 'aar')//donewsBISdk.aar 多牛统计SDK
+//    implementation(name: 'oaid_sdk_1.0.23', ext: 'aar')
 
     implementation rootProject.ext.androidx["androidx-appcompat"]
     implementation 'com.android.support:multidex:1.0.3'

@@ -40,6 +40,9 @@ public class AnalysisHelp {
     public static boolean analysisRegister = false;
 
     public static void init(Application application) {
+        if (LogUtil.allow) {
+            DonewsConfigure.setLogEnabled(true);
+        }
         DonewsConfigure.init(application, DeviceUtils.getChannelName(), KeyConstant.getANALYSIS_DATA());
         DonewsConfigure.setLogEnabled(BuildConfig.DEBUG);
         register(application);

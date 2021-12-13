@@ -19,8 +19,11 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- 读取一些SDK的BI数据用于上报 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!-- Android11手机读取SD卡的存储权限 -->
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
     <!--通过获取位置信息，为开发者提供反作弊功能，剔除作弊设备；同时校正用户的地域分布数据，使报表数据更加准确。-->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!--通过获取位置信息，为开发者提供反作弊功能，剔除作弊设备；同时校正用户的地域分布数据，使报表数据更加准确。-->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
 </manifest>

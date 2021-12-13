@@ -1,12 +1,13 @@
 package com.donews.common.ad.business.application
 
 import com.dn.sdk.BuildConfig
-import com.donews.common.ad.business.manager.JddAdConfigManager
-import com.donews.common.ad.business.loader.AdManager
 import com.donews.base.base.BaseApplication
 import com.donews.common.IModuleInit
+import com.donews.common.ad.business.loader.AdManager
+import com.donews.common.ad.business.manager.JddAdConfigManager
 import com.donews.common.ad.business.manager.JddAdManager
 import com.donews.utilslibrary.utils.DeviceUtils
+import com.donews.utilslibrary.utils.Utils
 
 /**
  * 广告Sdk初始化

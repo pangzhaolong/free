@@ -1,5 +1,7 @@
 package com.donews.utilslibrary.utils;
 
+import static android.content.Context.BATTERY_SERVICE;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -23,14 +25,9 @@ import android.view.WindowManager;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 
-import com.dn.sdk.manager.sdk.AdSdkManager;
-import com.dn.sdk.platform.donews.DoNewsAdLoader;
-import com.dnstatistics.sdk.agent.DonewsAgent;
+import com.donews.ads.mediation.v2.suuid.api.DnSuuid;
 import com.donews.utilslibrary.BuildConfig;
 import com.donews.utilslibrary.base.UtilsConfig;
-import com.donews.utilslibrary.utils.KeySharePreferences;
-import com.donews.utilslibrary.utils.LogUtil;
-import com.donews.utilslibrary.utils.SPUtils;
 import com.ishumei.smantifraud.SmAntiFraud;
 import com.meituan.android.walle.ChannelInfo;
 import com.meituan.android.walle.WalleChannelReader;
@@ -42,8 +39,6 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.UUID;
-
-import static android.content.Context.BATTERY_SERVICE;
 
 /**
  * @Author: honeylife
@@ -229,15 +224,27 @@ public class DeviceUtils {
     }
 
     // suuid获取,保存在sp中，不然每次返回都是不一样的suuid
+/*
     public static String getMyUUID() {
         String key = "SUUID";
         String appSuuid = SPUtils.getInformain(key, "");
         if (TextUtils.isEmpty(appSuuid.trim())) {
+            String suuid = DnSuuid.getInstance().getSuuid(UtilsConfig.getApplication());
 //            String suuid = DonewsAgent.obtainSuuid(UtilsConfig.getApplication());
-            String suuid = AdSdkManager.INSTANCE.getSuuid();
             SPUtils.setInformain(key, suuid);
             appSuuid = suuid;
         }
+        return appSuuid;
+    }
+*/
+
+    // suuid获取,保存在sp中，不然每次返回都是不一样的suuid
+    public static String getMyUUID() {
+        String appSuuid = DnSuuid.getInstance().getSuuid(UtilsConfig.getApplication());
+        if (TextUtils.isEmpty(appSuuid.trim())) {
+            appSuuid = DnSuuid.getInstance().getSuuid(UtilsConfig.getApplication());
+        }
+//        LogUtil.e("suuid:" + appSuuid);
         return appSuuid;
     }
 

@@ -44,8 +44,4 @@ object AdSdkManager : ISdkManager {
         DoNewsAdManagerHolder.setChannel(channelName)
         DoNewsAdManagerHolder.init(context)
     }
-
-    fun getSuuid(): String {
-        return DoNewsAdManagerHolder.getSuuid()
-    }
 }
