@@ -40,7 +40,7 @@ public class JsonUtils {
 
     /**
      * bd显示参数
-     * */
+     */
     public static String getCommonJson4BD() {
         try {
             JSONObject device = new JSONObject();
@@ -52,11 +52,12 @@ public class JsonUtils {
             device.put("os", "ANDROID");
             device.put("oaid", DeviceUtils.getOaid());
             device.put("smid", DeviceUtils.getShuMeiDeviceId());
-            device.put("device", device);
             device.put("channel", DeviceUtils.getChannelName());
             device.put("versionCode", DeviceUtils.getAppVersionCode() + "");
             device.put("packageName", DeviceUtils.getPackage());
+            device.put("userId", AppInfo.getUserId());
             device.put("token", AppInfo.getToken());
+
             return device.toString();
         } catch (Throwable e) {
             e.printStackTrace();

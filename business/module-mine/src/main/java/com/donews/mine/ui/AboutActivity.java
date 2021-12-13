@@ -2,6 +2,9 @@ package com.donews.mine.ui;
 
 import static com.donews.common.router.RouterActivityPath.Mine.PAGER_MINE_ABOUT_ACTIVITY;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -61,6 +64,13 @@ public class AboutActivity extends MvvmBaseLiveDataActivity<MineActivityAboutBin
             if (mBDCounts == 10) {
                 mDataBinding.mineAboutBd.setText(JsonUtils.getCommonJson4BD());
             }
+        });
+
+        mDataBinding.mineAboutTitle.setOnClickListener(v -> {
+            ClipboardManager clipboardManager = (ClipboardManager) AboutActivity.this.getApplication().getSystemService(
+                    Context.CLIPBOARD_SERVICE);
+            ClipData clipData = ClipData.newPlainText(null, mDataBinding.mineAboutBd.getText());
+            clipboardManager.setPrimaryClip(clipData);
         });
     }
 
