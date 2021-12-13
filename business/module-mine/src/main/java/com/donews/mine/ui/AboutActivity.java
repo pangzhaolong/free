@@ -7,14 +7,15 @@ import android.os.Bundle;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.AppUtils;
 import com.dn.drouter.ARouteHelper;
-import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.common.adapter.ScreenAutoAdapter;
+import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.mine.R;
 import com.donews.mine.databinding.MineActivityAboutBinding;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
+import com.donews.utilslibrary.utils.JsonUtils;
 import com.gyf.immersionbar.ImmersionBar;
 
 /**
@@ -24,6 +25,8 @@ import com.gyf.immersionbar.ImmersionBar;
  */
 @Route(path = PAGER_MINE_ABOUT_ACTIVITY)
 public class AboutActivity extends MvvmBaseLiveDataActivity<MineActivityAboutBinding, BaseLiveDataViewModel> {
+
+    private int mBDCounts = 0;
 
     @Override
     protected int getLayoutId() {
@@ -52,8 +55,14 @@ public class AboutActivity extends MvvmBaseLiveDataActivity<MineActivityAboutBin
             bundle.putString("title", "客服");
             ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
         });
-    }
 
+        mDataBinding.mineAboutIcon.setOnClickListener(v -> {
+            mBDCounts++;
+            if (mBDCounts == 10) {
+                mDataBinding.mineAboutBd.setText(JsonUtils.getCommonJson4BD());
+            }
+        });
+    }
 
     @Override
     protected void onResume() {
@@ -73,5 +82,6 @@ public class AboutActivity extends MvvmBaseLiveDataActivity<MineActivityAboutBin
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mBDCounts = 0;
     }
 }

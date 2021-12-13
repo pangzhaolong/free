@@ -23,9 +23,14 @@ import android.view.WindowManager;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 
+import com.dn.sdk.manager.sdk.AdSdkManager;
+import com.dn.sdk.platform.donews.DoNewsAdLoader;
 import com.dnstatistics.sdk.agent.DonewsAgent;
 import com.donews.utilslibrary.BuildConfig;
 import com.donews.utilslibrary.base.UtilsConfig;
+import com.donews.utilslibrary.utils.KeySharePreferences;
+import com.donews.utilslibrary.utils.LogUtil;
+import com.donews.utilslibrary.utils.SPUtils;
 import com.ishumei.smantifraud.SmAntiFraud;
 import com.meituan.android.walle.ChannelInfo;
 import com.meituan.android.walle.WalleChannelReader;
@@ -228,7 +233,8 @@ public class DeviceUtils {
         String key = "SUUID";
         String appSuuid = SPUtils.getInformain(key, "");
         if (TextUtils.isEmpty(appSuuid.trim())) {
-            String suuid = DonewsAgent.obtainSuuid(UtilsConfig.getApplication());
+//            String suuid = DonewsAgent.obtainSuuid(UtilsConfig.getApplication());
+            String suuid = AdSdkManager.INSTANCE.getSuuid();
             SPUtils.setInformain(key, suuid);
             appSuuid = suuid;
         }

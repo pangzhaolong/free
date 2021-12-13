@@ -17,7 +17,6 @@ package com.donews.network.request;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.donews.network.BuildConfig;
 import com.donews.network.EasyHttp;
@@ -38,8 +37,6 @@ import com.donews.network.utils.HttpLog;
 import com.donews.network.utils.RxUtil;
 import com.donews.network.utils.Utils;
 import com.donews.utilslibrary.utils.DeviceUtils;
-import com.donews.utilslibrary.utils.KeySharePreferences;
-import com.donews.utilslibrary.utils.SPUtils;
 import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor;
 
 import java.io.File;

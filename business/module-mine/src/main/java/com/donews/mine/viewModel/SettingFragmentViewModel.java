@@ -20,7 +20,6 @@ import com.donews.common.contract.UserInfoBean;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.middle.abswitch.ABSwitch;
 import com.donews.mine.Api.MineHttpApi;
-import com.donews.mine.BuildConfig;
 import com.donews.mine.databinding.MineSettingFragmentBinding;
 import com.donews.mine.model.SettingModel;
 import com.donews.share.ShareManager;

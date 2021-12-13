@@ -15,7 +15,6 @@ import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.common.services.config.ServicesConfig;
 import com.donews.login.api.LoginApi;
-import com.donews.login.providers.RouterLoginProvider;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;

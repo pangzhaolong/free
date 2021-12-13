@@ -3,7 +3,6 @@ package com.donews.main.dialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
@@ -13,8 +12,6 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.dn.drouter.ARouteHelper;
-import com.donews.main.BuildConfig;
 import com.donews.main.R;
 import com.donews.main.databinding.MainDialogPeopleGuideBinding;
 import com.donews.base.fragmentdialog.AbstractFragmentDialog;
@@ -24,8 +21,6 @@ import com.donews.middle.abswitch.ABSwitch;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.DeviceUtils;
-
-import java.util.Objects;
 
 /**
  * @author by SnowDragon

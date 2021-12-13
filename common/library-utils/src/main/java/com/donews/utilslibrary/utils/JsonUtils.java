@@ -39,6 +39,33 @@ public class JsonUtils {
     }
 
     /**
+     * bd显示参数
+     * */
+    public static String getCommonJson4BD() {
+        try {
+            JSONObject device = new JSONObject();
+            device.put("imei", DeviceUtils.getDeviceId());
+            device.put("idfa", "");
+            device.put("androidId", DeviceUtils.getAndroidID());
+            device.put("suuid", DeviceUtils.getMyUUID());
+            device.put("mac", DeviceUtils.getMacAddress());
+            device.put("os", "ANDROID");
+            device.put("oaid", DeviceUtils.getOaid());
+            device.put("smid", DeviceUtils.getShuMeiDeviceId());
+            device.put("device", device);
+            device.put("channel", DeviceUtils.getChannelName());
+            device.put("versionCode", DeviceUtils.getAppVersionCode() + "");
+            device.put("packageName", DeviceUtils.getPackage());
+            device.put("token", AppInfo.getToken());
+            return device.toString();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+
+    /**
      * 郭威阳  充电小游戏需要的参数 一个字坑，
      * 每个人用一趟，真是烦
      *

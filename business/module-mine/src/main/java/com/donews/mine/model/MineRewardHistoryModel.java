@@ -9,10 +9,6 @@ import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
-import com.donews.utilslibrary.utils.AppInfo;
-import com.donews.utilslibrary.utils.DeviceUtils;
-
-import io.reactivex.disposables.Disposable;
 
 /**
  * <p> </p>

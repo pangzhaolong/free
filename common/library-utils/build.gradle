@@ -24,6 +24,8 @@ dependencies {
 //    api (name: 'DonewsBISdk', ext: 'aar')
 //    api (name: 'smantifraud', ext: 'aar')
 
+    api project(path: ':common:library-sdk')
+
     implementation rootProject.ext.androidx["androidx-appcompat"]
     implementation 'com.android.support:multidex:1.0.3'
     api 'com.meituan.android.walle:library:1.1.7'
