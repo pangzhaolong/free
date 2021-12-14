@@ -14,6 +14,7 @@ import com.donews.common.ad.business.loader.IPreloadAdListener
 import com.donews.common.ad.business.manager.JddAdConfigManager
 import com.donews.common.ad.business.manager.JddAdManager
 import com.donews.common.ad.business.monitor.LotteryAdCount
+import com.donews.common.ad.business.monitor.RewardVideoCount
 import com.orhanobut.logger.Logger
 
 /**
@@ -32,12 +33,9 @@ object AdVideoCacheUtils {
     /** 日志tag */
     private const val TAG = "RewardVideoPreload"
 
-    /** 最大重试次数 */
-    private const val MAX_RETRY_NUMBER = 3
 
     /** 超时时间 */
     private const val TINE_OUT = 20000
-
 
     private var mActivity: AppCompatActivity? = null
     private var mPreloadVideoView: PreloadAd? = null
@@ -46,11 +44,8 @@ object AdVideoCacheUtils {
     private var mPreLoading: Boolean = false
     private var mPreLoadSuccess: Boolean = false
 
-    /** 用于标记是否直接拨付，用于可能还没预加载完成就调用播放功能 */
+    /** 用于标记是否直接播放，用于可能还没预加载完成就调用播放功能 */
     private var mNeedShow: Boolean = false
-
-    /** 当前预加载次数 */
-    private var mRetry: Int = 0
 
     private var mStartPreloadTime: Long = 0
 
@@ -72,15 +67,20 @@ object AdVideoCacheUtils {
     }
 
     fun showRewardVideo(rewardVideoListener: IAdRewardVideoListener?) {
-        mRewardVideoListener = rewardVideoListener
         tag("调用了展示激励视频广告-------showRewardVideo（）")
+        mRewardVideoListener = rewardVideoListener
+        if (!RewardVideoCount.checkShouldLoadAd()) {
+            tag("已经被限制广告,返回错误")
+            mRewardVideoListener?.onAdError(AdCustomError.LimitAdError.code, AdCustomError.LimitAdError.errorMsg)
+            return
+        }
+
         if (mPreloadVideoView == null) {
             //可能正在加载，还没有返回
             if (mPreLoading) {
                 mNeedShow = true
                 tag("调用了展示激励视频广告,当前预加载对象为null,但在预加载状态中")
             } else {
-                mRetry = 0
                 mNeedShow = true
                 preload()
                 tag("调用了展示激励视频广告,当前预加载对象为null,且不在预加载中,重置错误次数,重新启用预加载")
@@ -89,6 +89,8 @@ object AdVideoCacheUtils {
             if (mPreLoadSuccess) {
                 if (mPreloadVideoView?.getLoadState() == PreloadAdState.Shown) {
                     mPreloadVideoView = null
+                    mPreLoading = false
+                    mPreLoadSuccess = false
                     showRewardVideo(rewardVideoListener)
                 } else {
                     mPreloadVideoView?.showAd()
@@ -96,7 +98,6 @@ object AdVideoCacheUtils {
                 return
             }
             if (!mPreLoading) {
-                mRetry = 0
                 mNeedShow = true
                 mPreloadVideoView = null
                 preload()
@@ -106,11 +107,10 @@ object AdVideoCacheUtils {
                 if (duration >= TINE_OUT) {
                     //直接返回错误，并且重新预加载一个视频
                     mRewardVideoListener?.onAdError(
-                            AdCustomError.PreloadTimesError.code,
-                            AdCustomError.PreloadTimesError.errorMsg
+                        AdCustomError.PreloadTimesError.code,
+                        AdCustomError.PreloadTimesError.errorMsg
                     )
                     mRewardVideoListener = null
-                    mRetry = 0
                     mNeedShow = false
                     mPreloadVideoView = null
                     preload()
@@ -126,24 +126,30 @@ object AdVideoCacheUtils {
 
     private fun preload() {
         JddAdConfigManager.addListener {
-            val number = LotteryAdCount.getTodayLotteryCount()
-            val settingNumber = JddAdConfigManager.jddAdConfigBean.useInvalidRewardVideoIdWhenLotteryNumber
-            preloadRewardVideo(false)
+            if (RewardVideoCount.checkShouldLoadAd()) {
+                preloadRewardVideo(false)
+            } else {
+                callLimitError()
+            }
         }
     }
+
 
     private fun preloadRewardVideo(invalid: Boolean) {
         if (mActivity == null) {
             tag("预加载激励视频错误-----mActivity为null")
             mPreLoading = false
             mPreLoadSuccess = false
+            mRewardVideoListener?.onAdError(
+                AdCustomError.ContextError.code,
+                AdCustomError.ContextError.errorMsg
+            )
             return
         }
         val mRealActivity = mActivity!!
         mPreLoading = true
         mPreLoadSuccess = false
         tag("预加载激励视频开始-----")
-
         val preloadViewListener: IPreloadAdListener = object : IPreloadAdListener {
             override fun preloadAd(ad: PreloadAd) {
                 mPreloadVideoView = ad
@@ -170,7 +176,6 @@ object AdVideoCacheUtils {
                 //加载成功,则重置加载次数
                 mPreLoading = false
                 mPreLoadSuccess = true
-                mRetry = 0
                 tag("预加载激励视频成功------onVideoCached()")
                 mRewardVideoListener?.onVideoCached()
             }
@@ -178,7 +183,6 @@ object AdVideoCacheUtils {
             override fun onAdShow() {
                 mRewardVideoListener?.onAdShow()
                 tag("预加载激励视频展示------onAdShow()")
-
             }
 
             override fun onAdVideoClick() {
@@ -193,8 +197,8 @@ object AdVideoCacheUtils {
 
             override fun onAdClose() {
                 mRewardVideoListener?.onAdClose()
-                mRewardVideoListener = null
                 mPreloadVideoView = null
+                mRewardVideoListener = null
                 tag("预加载激励视频关闭-----------onAdClose()")
                 //加载下一个激励视频
                 refreshIdAndPreload()
@@ -213,13 +217,11 @@ object AdVideoCacheUtils {
                     mPreLoadSuccess = false
                     if (code != AdCustomError.CloseAd.code) {
                         //如果不是关闭广告，则需要重试继续预加载
-                        mRetry++
-                        if (mRetry < MAX_RETRY_NUMBER) {
-                            tag("预加载激励视频出现错误-----------onError($code,$errorMsg),重新预加载。重试次数$mRetry")
-                            preload()
-                        } else {
-                            tag("预加载激励视频出现错误-----------onError($code,$errorMsg),重新预加载。重试次数$mRetry")
+                        if (invalid) {
                             mRewardVideoListener?.onAdError(code, errorMsg)
+                        } else {
+                            tag("预加载激励视频出现错误-----------onError($code,$errorMsg),重新预加载。")
+                            preloadRewardVideo(true)
                         }
                     } else {
                         mRewardVideoListener?.onAdError(code, errorMsg)
@@ -245,7 +247,7 @@ object AdVideoCacheUtils {
     private fun tag(msg: String) {
         if (logger) {
             Logger.t(TAG)
-                    .d(msg)
+                .d(msg)
         }
     }
 
@@ -262,5 +264,12 @@ object AdVideoCacheUtils {
         } else {
             preload()
         }
+    }
+
+    private fun callLimitError() {
+        mRewardVideoListener?.onAdError(
+            AdCustomError.LimitAdError.code,
+            AdCustomError.LimitAdError.errorMsg
+        )
     }
 }

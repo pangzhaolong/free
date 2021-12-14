@@ -9,6 +9,8 @@ package com.dn.sdk
  */
 enum class AdCustomError(val code: Int, val errorMsg: String) {
 
+    ContextError(-10007, "Activity或者Context 为null"),
+
     LimitAdError(-10008, "暂无新视频，请稍后再试"),
 
     CloseAd(-10009, "中台已关闭广告"),
