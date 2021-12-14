@@ -32,6 +32,7 @@ import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.common.updatedialog.UpdateManager;
 import com.donews.common.updatedialog.UpdateReceiver;
+import com.donews.common.views.FrontFloatingBtn;
 import com.donews.main.BuildConfig;
 import com.donews.main.R;
 import com.donews.main.adapter.MainPageAdapter;
@@ -344,6 +345,7 @@ public class MainActivity
                 mDataBinding.cvContentView.setCurrentItem(0);
                 mPosition = 0;
             });
+//            mDataBinding.mainFloatingBtn.setModel(FrontFloatingBtn.CRITICAL_HIT_MODEL);
         }
 
         int intoFrontCounts = SPUtils.getInformain(KeySharePreferences.INTO_FRONT_COUNTS, 0);

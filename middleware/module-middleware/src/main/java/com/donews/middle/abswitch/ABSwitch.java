@@ -69,6 +69,14 @@ public class ABSwitch {
         return mAbBean.getLotteryLine();
     }
 
+    public int getOpenCritModelByLotteryCount() {
+        return mAbBean.getOpenCritModelByLotteryCount();
+    }
+
+    public int getCritModelSwitch() {
+        return mAbBean.getCritModelSwitch();
+    }
+
     public void initAbSwitch() {
         EasyHttp.get(HttpConfigUtilsKt.withConfigParams(BuildConfig.BASE_CONFIG_URL + "plus-abswitch" + BuildConfig.BASE_RULE_URL, true))
                 .cacheMode(CacheMode.NO_CACHE)

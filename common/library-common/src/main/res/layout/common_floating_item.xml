@@ -1,50 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:cpbv="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:gravity="center"
-    android:orientation="vertical">
+    android:gravity="center">
 
-    <FrameLayout
-        android:id="@+id/common_floating_fl"
+    <ImageView
+        android:id="@+id/common_critical_hit_iv"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@drawable/common_critical_hit"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/common_rp_ll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@drawable/common_floating_bg">
+        android:orientation="vertical"
+        android:visibility="visible">
 
-        <com.donews.common.views.CircleProgressBarView
-            android:id="@+id/common_floating_progress"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+        <FrameLayout
+            android:id="@+id/common_floating_fl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="2dp"
-            app:circleBgColor="@color/transparent"
-            app:progressColor="#FFCE31"
-            cpbv:circleBgStrokeWidth="2dp"
-            cpbv:isDrawCenterProgressText="false"
-            cpbv:progressStrokeWidth="2dp" />
+            android:background="@drawable/common_floating_bg">
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center"
-            android:src="@drawable/front_floating_rp" />
-    </FrameLayout>
+            <com.donews.common.views.CircleProgressBarView
+                android:id="@+id/common_floating_progress"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:layout_margin="2dp"
+                app:circleBgColor="@color/transparent"
+                app:progressColor="#FFCE31"
+                cpbv:circleBgStrokeWidth="2dp"
+                cpbv:isDrawCenterProgressText="false"
+                cpbv:progressStrokeWidth="2dp" />
 
-    <TextView
-        android:id="@+id/common_floating_tv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/common_floating_text_bg"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:paddingStart="4dp"
-        android:paddingEnd="4dp"
-        android:text="明日再来"
-        android:textColor="@color/white"
-        android:textSize="8sp" />
-</LinearLayout>
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:src="@drawable/front_floating_rp" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/common_floating_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/common_floating_text_bg"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:text="明日再来"
+            android:textColor="@color/white"
+            android:textSize="8sp" />
+    </LinearLayout>
+
+</FrameLayout>
