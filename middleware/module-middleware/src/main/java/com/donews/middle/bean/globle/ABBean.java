@@ -24,6 +24,18 @@ public class ABBean extends BaseCustomViewModel {
     private boolean openGuidGif = false;
     @SerializedName("lotteryLine")
     private int lotteryLine = 0;
+    @SerializedName("openCritModelByLotteryCount")
+    private int openCritModelByLotteryCount = 1;
+    @SerializedName("critModelSwitch")
+    private int critModelSwitch = 1;
+
+    public int getOpenCritModelByLotteryCount() {
+        return openCritModelByLotteryCount;
+    }
+
+    public int getCritModelSwitch() {
+        return critModelSwitch;
+    }
 
     public int getLotteryLine() {
         return lotteryLine;
