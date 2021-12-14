@@ -90,7 +90,7 @@ object RewardVideoCount {
         }
 
         if (hourNumber == 0) {
-            log()
+            log(1)
             return
         }
 
@@ -103,7 +103,7 @@ object RewardVideoCount {
                 }
             }
         }
-        log()
+        log(1)
     }
 
     /** 激励视频点击 */
@@ -132,7 +132,7 @@ object RewardVideoCount {
                 }
             }
         }
-        log()
+        log(2)
     }
 
     /** 今天播放激励视频次数 */
@@ -171,12 +171,12 @@ object RewardVideoCount {
         val jddAdConfigBean = JddAdConfigManager.jddAdConfigBean
         //每日达到最大播放次数
         if (todayNumber >= jddAdConfigBean.todayMaxRewardVideoNumber) {
-            log()
+            log(3)
             return false
         }
 
         if (hourNumber == 0) {
-            log()
+            log(3)
             return true
         }
 
@@ -185,10 +185,10 @@ object RewardVideoCount {
             //判断限制时间是否已经过了
             val limitStartTime = mmkv.decodeLong(REWARD_VIDEO_HOUR_PLAY_NUMBER_LIMIT_TIME, 0L)
             if (currentTime - limitStartTime > jddAdConfigBean.hourLimitTime) {
-                log()
+                log(3)
                 return true
             }
-            log()
+            log(3)
             return false
         }
 
@@ -201,19 +201,19 @@ object RewardVideoCount {
                 //判断禁用时间是否超时
                 val limitStartTime = mmkv.decodeLong(REWARD_VIDEO_HOUR_CLICK_LIMIT_TIME, 0)
                 if (currentTime - limitStartTime > jddAdConfigBean.hourClickLimitTime) {
-                    log()
+                    log(3)
                     return true
                 }
-                log()
+                log(3)
                 return false
             }
         }
-        log()
+        log(3)
         return true
     }
 
 
-    private fun log() {
+    private fun log(type: Int) {
         val totalPlayNumber = mmkv.decodeInt(REWARD_VIDEO_TODAY_PLAY_NUMBER, 0)
         val hourStartShowTime = mmkv.decodeLong(REWARD_VIDEO_HOUR_START_PLAY_TIME, 0L)
         val hourNumber = mmkv.decodeInt(REWARD_VIDEO_HOUR_PLAY_NUMBER, 0)
@@ -223,17 +223,31 @@ object RewardVideoCount {
 
         val stringBuilder = StringBuilder()
             .apply {
-                append("今日播放次数： ${totalPlayNumber},")
-                append("1小时开始计时时间：${hourStartShowTime.toDataString()},")
-                append("1小时播放量：${hourNumber},")
-                append("1小时播放量开始限制时间：${hourPlayLimitTime.toDataString()},")
-                append("点击量：${clickNumber},")
-                if (hourNumber != 0) {
-                    append("点击率：${clickNumber / hourNumber},")
-                } else {
-                    append("点击率：0,")
+
+                when (type) {
+                    1 -> {
+                        append("playRewardVideoSuccess {\n")
+                    }
+                    2 -> {
+                        append("rewardVideoClick {\n")
+                    }
+                    3 -> {
+                        append("loadCheckShouldLoadAd {\n")
+                    }
                 }
-                append("点击限制开始时间：${clickPlayLimitTime.toDataString()}")
+
+                append("  今日播放次数： ${totalPlayNumber},\n")
+                append("  1小时开始计时时间：${hourStartShowTime.toDataString()},\n")
+                append("  1小时播放量：${hourNumber},\n")
+                append("  1小时播放量开始限制时间：${hourPlayLimitTime.toDataString()},\n")
+                append("  点击量：${clickNumber},\n")
+                if (hourNumber != 0) {
+                    append("  点击率：${clickNumber / hourNumber},\n")
+                } else {
+                    append("  点击率：0,\n")
+                }
+                append("  点击限制开始时间：${clickPlayLimitTime.toDataString()}\n")
+                append("}")
             }
 
         AdLoggerUtils.d(stringBuilder.toString())

@@ -4,11 +4,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
+import com.blankj.utilcode.util.ToastUtils
 import com.dn.sdk.AdCustomError
 import com.dn.sdk.bean.PreloadAdState
 import com.dn.sdk.bean.preload.PreloadAd
 import com.dn.sdk.listener.IAdRewardVideoListener
 import com.dn.sdk.manager.config.IAdConfigInitListener
+import com.dn.sdk.utils.AdLoggerUtils
 import com.donews.common.ad.business.loader.AdManager
 import com.donews.common.ad.business.loader.IPreloadAdListener
 import com.donews.common.ad.business.manager.JddAdConfigManager
@@ -71,6 +73,8 @@ object AdVideoCacheUtils {
         mRewardVideoListener = rewardVideoListener
         if (!RewardVideoCount.checkShouldLoadAd()) {
             tag("已经被限制广告,返回错误")
+            ToastUtils.showShort("暂无新视频，请稍后再试")
+            AdLoggerUtils.d("onAdError(${AdCustomError.LimitAdError.code},${AdCustomError.LimitAdError.errorMsg}")
             mRewardVideoListener?.onAdError(AdCustomError.LimitAdError.code, AdCustomError.LimitAdError.errorMsg)
             return
         }
@@ -223,6 +227,7 @@ object AdVideoCacheUtils {
                                 AdCustomError.PreloadAdEmptyError.errorMsg
                             )
                         } else {
+                            AdLoggerUtils.d("正式激励加载失败，启用无效激励")
                             tag("预加载激励视频出现错误-----------onError($code,$errorMsg),重新预加载。")
                             preloadRewardVideo(true)
                         }

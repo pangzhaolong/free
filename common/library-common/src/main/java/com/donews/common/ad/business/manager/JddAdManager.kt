@@ -44,7 +44,7 @@ object JddAdManager : BaseAdConfigManager() {
                         mmkv.encode(KEY_JDD_AD_OPEN_CONFIG, t)
                     }
                     mAdConfigBean = t ?: getDefaultAdConfig()
-                   AdLoggerUtils.d("广告开关：$mAdConfigBean")
+                    AdLoggerUtils.d("广告开关：$mAdConfigBean")
                     if (mAdConfigBean.openAd) {
                         initAdIdConfig()
                     } else {
@@ -81,6 +81,8 @@ object JddAdManager : BaseAdConfigManager() {
                         mmkv.encode(KEY_JDD_AD_ID_CONFIG, it)
                     }
                     mAdIdConfigBean = t ?: getDefaultAdIdConfig()
+                    doNewsPlatform = DoNewsPlatform(mAdIdConfigBean)
+
                     AdLoggerUtils.d("广告id:$mAdIdConfigBean")
                     setInitSuccess()
                     callListener()
@@ -88,6 +90,7 @@ object JddAdManager : BaseAdConfigManager() {
 
                 override fun onError(e: ApiException) {
                     mAdIdConfigBean = getDefaultAdIdConfig()
+                    doNewsPlatform = DoNewsPlatform(mAdIdConfigBean)
                     AdLoggerUtils.d("广告id:$mAdIdConfigBean")
                     setInitSuccess()
                     callListener()
