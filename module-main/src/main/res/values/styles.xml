@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!--StartActivity Style 冷启动效果-->
     <style name="main_AppTheme.Start" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/welcome_layer_drawable</item>
@@ -54,5 +54,15 @@
     <style name="BaseDialogTheme.FullScreen">
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="Dialog_BottomToTopAnim" parent="android:Animation" tools:ignore="ResourceName">
+        <item name="android:windowEnterAnimation">@anim/bottom_anim_enter</item>
+        <item name="android:windowExitAnimation">@anim/bottom_anim_exit</item>
+    </style>
+
+    <!-- 进度条效果样式 -->
+    <style name="CritProgressBar" parent="@android:style/Widget.ProgressBar.Horizontal" tools:ignore="ResourceName">
+        <item name="android:progressDrawable">@drawable/main_ext_crit_pro_bg</item>
     </style>
 </resources>
