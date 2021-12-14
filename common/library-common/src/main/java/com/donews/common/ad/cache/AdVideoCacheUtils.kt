@@ -218,7 +218,10 @@ object AdVideoCacheUtils {
                     if (code != AdCustomError.CloseAd.code) {
                         //如果不是关闭广告，则需要重试继续预加载
                         if (invalid) {
-                            mRewardVideoListener?.onAdError(code, errorMsg)
+                            mRewardVideoListener?.onAdError(
+                                AdCustomError.PreloadAdEmptyError.code,
+                                AdCustomError.PreloadAdEmptyError.errorMsg
+                            )
                         } else {
                             tag("预加载激励视频出现错误-----------onError($code,$errorMsg),重新预加载。")
                             preloadRewardVideo(true)
