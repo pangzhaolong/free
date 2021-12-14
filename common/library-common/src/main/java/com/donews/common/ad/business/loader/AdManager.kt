@@ -3,6 +3,7 @@ package com.donews.common.ad.business.loader
 import android.app.Activity
 import android.view.ViewGroup
 import com.blankj.utilcode.util.ScreenUtils
+import com.blankj.utilcode.util.ToastUtils
 import com.dn.sdk.AdCustomError
 import com.dn.sdk.bean.AdRequest
 import com.dn.sdk.bean.AdType
@@ -20,6 +21,7 @@ import com.donews.common.ad.business.constant.NEW_REWARD_VIDEO_ID
 import com.donews.common.ad.business.constant.NEW_SPLASH_ID
 import com.donews.common.ad.business.manager.JddAdManager
 import com.donews.common.ad.business.monitor.InterstitialAdCount
+import com.donews.common.ad.business.monitor.RewardVideoCount
 import com.donews.common.ad.business.proxy.JddAdRewardVideoListenerProxy
 import com.donews.common.ad.business.proxy.JddInterstitialListenerProxy
 import com.donews.utilslibrary.utils.DensityUtils
@@ -158,6 +160,11 @@ object AdManager : IAdLoadManager, ISdkManager by AdSdkManager, IAdConfigManager
 
     /** 直接加载激励视频 */
     override fun loadRewardVideoAd(activity: Activity, listener: IAdRewardVideoListener?) {
+        if (!RewardVideoCount.checkShouldLoadAd()) {
+            ToastUtils.showShort("暂无新视频，请稍后再试")
+            listener?.onAdError(AdCustomError.LimitAdError.code, AdCustomError.LimitAdError.errorMsg)
+            return
+        }
         addInitListener(object : IAdConfigInitListener {
             override fun initSuccess() {
                 val key = NEW_REWARD_VIDEO_ID
@@ -173,6 +180,11 @@ object AdManager : IAdLoadManager, ISdkManager by AdSdkManager, IAdConfigManager
 
     /** 使用无效广告位加载激励视频 */
     override fun loadInvalidRewardVideoAd(activity: Activity, listener: IAdRewardVideoListener?) {
+        if (!RewardVideoCount.checkShouldLoadAd()) {
+            ToastUtils.showShort("暂无新视频，请稍后再试")
+            listener?.onAdError(AdCustomError.LimitAdError.code, AdCustomError.LimitAdError.errorMsg)
+            return
+        }
         addInitListener(object : IAdConfigInitListener {
             override fun initSuccess() {
                 val key = NEW_INVALID_REWARD_VIDEO_ID
@@ -183,6 +195,7 @@ object AdManager : IAdLoadManager, ISdkManager by AdSdkManager, IAdConfigManager
                 adRequest.mPlatform.getLoader().loadAndShowRewardVideoAd(activity, adRequest, listener)
             }
         })
+
     }
 
 
@@ -192,6 +205,13 @@ object AdManager : IAdLoadManager, ISdkManager by AdSdkManager, IAdConfigManager
         preloadAdListener: IPreloadAdListener,
         listener: IAdRewardVideoListener?
     ) {
+
+        if (!RewardVideoCount.checkShouldLoadAd()) {
+            ToastUtils.showShort("暂无新视频，请稍后再试")
+            listener?.onAdError(AdCustomError.LimitAdError.code, AdCustomError.LimitAdError.errorMsg)
+            return
+        }
+
         addInitListener(object : IAdConfigInitListener {
             override fun initSuccess() {
                 val key = NEW_REWARD_VIDEO_ID
@@ -201,12 +221,12 @@ object AdManager : IAdLoadManager, ISdkManager by AdSdkManager, IAdConfigManager
                 adRequest.mAdKey = key
                 adRequest.mAdPreload = true
                 val proxyListener = JddAdRewardVideoListenerProxy(activity, listener)
-                val preloadAd = adRequest.mPlatform.getLoader().preloadRewardVideoAd(activity, adRequest, proxyListener)
+                val preloadAd =
+                    adRequest.mPlatform.getLoader().preloadRewardVideoAd(activity, adRequest, proxyListener)
                 preloadAdListener.preloadAd(preloadAd)
             }
         })
     }
-
 
     /** 使用无效广告位预加载激励视频 */
     override fun preloadInvalidRewardVideoAd(
@@ -215,6 +235,11 @@ object AdManager : IAdLoadManager, ISdkManager by AdSdkManager, IAdConfigManager
         listener: IAdRewardVideoListener?
     ) {
 
+        if (!RewardVideoCount.checkShouldLoadAd()) {
+            ToastUtils.showShort("暂无新视频，请稍后再试")
+            listener?.onAdError(AdCustomError.LimitAdError.code, AdCustomError.LimitAdError.errorMsg)
+            return
+        }
         addInitListener(object : IAdConfigInitListener {
             override fun initSuccess() {
                 val key = NEW_INVALID_REWARD_VIDEO_ID
@@ -224,12 +249,12 @@ object AdManager : IAdLoadManager, ISdkManager by AdSdkManager, IAdConfigManager
                 adRequest.mAdKey = key
                 adRequest.mAdPreload = true
 
-//                val proxyListener = JddAdRewardVideoListenerProxy(activity, listener)
-//                val preloadAd = adRequest.mPlatform.getLoader().preloadRewardVideoAd(activity, adRequest, proxyListener)
-                val preloadAd = adRequest.mPlatform.getLoader().preloadRewardVideoAd(activity, adRequest, listener)
+                val proxyListener = JddAdRewardVideoListenerProxy(activity, listener)
+                val preloadAd =
+                    adRequest.mPlatform.getLoader().preloadRewardVideoAd(activity, adRequest, proxyListener)
+//                val preloadAd = adRequest.mPlatform.getLoader().preloadRewardVideoAd(activity, adRequest, listener)
                 preloadAdListener.preloadAd(preloadAd)
             }
         })
     }
-
 }

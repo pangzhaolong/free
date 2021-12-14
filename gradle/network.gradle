@@ -77,6 +77,12 @@ ext {
     HTTP_GAME_URL = ext.DEBUG ? ext.GAME_OFF_LINE_URL : ext.GAME_ON_LINE_URL
 
 
+    ECPM_DEBUG_URL = "http://ecpm-customer.dev.tagtic.cn/"
+    ECPM_RELEASE_URL = "http://ecpm-customer.xg.tagtic.cn/"
+
+    ECPM_BASE_URL = ext.DEBUG?ECPM_DEBUG_URL:ECPM_RELEASE_URL
+
+
     //App独有公共配置
     APP_COMMON_CONFIG = BASE_CONFIG_URL + APP_IDENTIFICATION + "-commonConfig" + BASE_RULE
 

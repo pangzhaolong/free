@@ -2,14 +2,21 @@ package com.dn.sdk.platform.donews.helper
 
 import android.app.Activity
 import com.dn.sdk.AdCustomError
+import com.dn.sdk.BuildConfig
 import com.dn.sdk.bean.AdRequest
 import com.dn.sdk.bean.PreloadAdState
 import com.dn.sdk.bean.preload.PreloadRewardVideoAd
 import com.dn.sdk.listener.IAdRewardVideoListener
 import com.dn.sdk.platform.donews.preloadad.DoNewsPreloadRewardVideoAd
+import com.dn.sdk.utils.AdLoggerUtils
 import com.donews.ads.mediation.v2.api.DoNewsAdManagerHolder
 import com.donews.ads.mediation.v2.api.DoNewsAdNative
+import com.donews.ads.mediation.v2.framework.bean.DnUnionBean
 import com.donews.ads.mediation.v2.framework.bean.DoNewsAD
+import com.donews.network.EasyHttp
+import com.donews.network.callback.SimpleCallBack
+import com.donews.network.exception.ApiException
+import org.json.JSONObject
 
 /**
  * 多牛v2 激励视频广告加载
@@ -37,6 +44,35 @@ object DoNewsRewardVideoLoadHelper : BaseHelper() {
 
             override fun onAdStatus(code: Int, any: Any?) {
                 listener?.onAdStatus(code, any)
+                if (code == 10 && any is DnUnionBean) {
+                    if (any.platFormType == "2" || any.platFormType == "3") {
+
+                        val ecpm = any.currentEcpm
+                        val params = JSONObject()
+                        params.put("req_id", any.reqId)
+                        params.put("ecpm", ecpm)
+
+                        val jsonString = params.toString()
+
+                        AdLoggerUtils.d("开始Ecpm上报:$jsonString")
+                        EasyHttp.post(BuildConfig.ECPM_BASE_URL + "ecpm/report")
+                            .upJson(jsonString)
+                            .execute(object : SimpleCallBack<String>() {
+                                override fun onError(e: ApiException?) {
+                                    AdLoggerUtils.d("上报ecpm 错误:$e")
+                                }
+
+                                override fun onSuccess(t: String?) {
+                                    AdLoggerUtils.d("上报ecpm 成功:$t")
+                                }
+                            })
+
+                    } else {
+                        AdLoggerUtils.d("当前广告platFormType: ${any.platFormType}无法进行ecpm进行上报")
+                    }
+                } else {
+                    AdLoggerUtils.d("当前广告code: ${code}无法进行ecpm进行上报")
+                }
             }
 
             override fun onAdLoad() {

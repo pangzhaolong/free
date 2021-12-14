@@ -26,7 +26,7 @@ data class JddAdConfigBean(
     var coldStartDoubleSplashOpen: Boolean = true,
     /** 冷启动使用双开屏策略时间，用户注册48小时后 */
     @SerializedName("coldStartDoubleSplash")
-    var coldStartDoubleSplash: Int = 48*60,
+    var coldStartDoubleSplash: Int = 48 * 60,
 
     /** 热启动广告开关 */
     var hotStartAdEnable: Boolean = true,
@@ -41,7 +41,7 @@ data class JddAdConfigBean(
     var hotStartDoubleSplashOpen: Boolean = true,
     /** 热启动使用双开屏策略时间，用户注册48小时后 */
     @SerializedName("hotStartDoubleSplash")
-    var hotStartDoubleSplash: Int = 48*60,
+    var hotStartDoubleSplash: Int = 48 * 60,
 
 
     /** 无效用户不同意隐私协议最终拒绝的时候广告开关*/
@@ -94,6 +94,29 @@ data class JddAdConfigBean(
     var notLotteryExitAppDialogAdMutex: Boolean = false,
     /**  用户未抽奖时退出app弹出框关闭按钮点击时出现的广告类型 ，1插屏，2全屏视频   */
     @SerializedName("notLotteryExitAppDialogAdType")
-    var notLotteryExitAppDialogAdType: Int = 1
+    var notLotteryExitAppDialogAdType: Int = 1,
 
+    /**  用户每日最大观看激励视频次数*/
+    @SerializedName("todayMaxRewardVideoNumber")
+    var todayMaxRewardVideoNumber: Int = 100,
+
+    /**  用户每小时最大观看次数*/
+    @SerializedName("hourRewardVideoNumber")
+    var hourRewardVideoNumber: Int = 30,
+
+    /** 达到次数则限制 x 时长 （单位毫秒，默认30分钟） */
+    @SerializedName("hourLimitTime")
+    var hourLimitTime: Long = 1800000,
+
+    /**  用户每小时观看次数 */
+    @SerializedName("hourClickAdMaxNumber")
+    var hourClickAdMaxNumber: Int = 20,
+
+    /** 点击率 */
+    @SerializedName("hourClickRate")
+    var hourClickRate: Float = 0.35f,
+
+    /** 用户每天次数大于 HourClickAdMaxNumber 并且点击率 大于 HourClickRate ，则限制 x 时长 （单位毫秒,默认30分） */
+    @SerializedName("hourClickLimitTime")
+    var hourClickLimitTime: Long = 1800000
 ) : BaseCustomViewModel(), Parcelable

@@ -24,6 +24,8 @@ dependencies {
     //快手sdk特殊需要
     api 'androidx.legacy:legacy-support-core-ui:1.0.0'
 
+    implementation project(':common:library-network')
+
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 
 //    //多牛SDK1.0版本aar

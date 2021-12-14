@@ -9,8 +9,9 @@ package com.dn.sdk
  */
 enum class AdCustomError(val code: Int, val errorMsg: String) {
 
-    CloseAd(-10009, "中台已关闭广告"),
+    LimitAdError(-10008, "暂无新视频，请稍后再试"),
 
+    CloseAd(-10009, "中台已关闭广告"),
 
     ParamsAdIdNullOrBlank(-10010, "请求参数错误,传入广告id为 null 或者 \"\""),
 

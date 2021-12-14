@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentActivity
 import com.dn.sdk.listener.IAdRewardVideoListener
 import com.dn.sdk.listener.impl.SimpleInterstitialListener
 import com.dn.sdk.manager.config.IAdConfigInitListener
+import com.dn.sdk.platform.donews.natives.DoNewsNativeData
 import com.donews.base.base.AppManager
 import com.donews.common.ad.business.loader.AdManager
 import com.donews.common.ad.business.manager.JddAdConfigManager
@@ -35,10 +36,12 @@ class JddAdRewardVideoListenerProxy(
 
     override fun onAdShow() {
         listener?.onAdShow()
+        RewardVideoCount.playRewardVideoSuccess()
     }
 
     override fun onAdVideoClick() {
         listener?.onAdVideoClick()
+        RewardVideoCount.rewardVideoClick()
     }
 
     override fun onRewardVerify(result: Boolean) {
@@ -46,7 +49,6 @@ class JddAdRewardVideoListenerProxy(
     }
 
     override fun onAdClose() {
-        RewardVideoCount.playRewardVideoSuccess()
         JddAdManager.addInitListener(object : IAdConfigInitListener {
             override fun initSuccess() {
                 val jddAdConfigBean = JddAdConfigManager.jddAdConfigBean
