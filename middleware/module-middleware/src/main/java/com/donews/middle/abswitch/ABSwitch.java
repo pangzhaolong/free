@@ -77,6 +77,10 @@ public class ABSwitch {
         return mAbBean.getCritModelSwitch();
     }
 
+    public boolean getOpenCritModel() {
+        return mAbBean.isOpenCritModel();
+    }
+
     public void initAbSwitch() {
         EasyHttp.get(HttpConfigUtilsKt.withConfigParams(BuildConfig.BASE_CONFIG_URL + "plus-abswitch" + BuildConfig.BASE_RULE_URL, true))
                 .cacheMode(CacheMode.NO_CACHE)
