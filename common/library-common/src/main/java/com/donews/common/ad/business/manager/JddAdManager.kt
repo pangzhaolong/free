@@ -81,14 +81,14 @@ object JddAdManager : BaseAdConfigManager() {
                         mmkv.encode(KEY_JDD_AD_ID_CONFIG, it)
                     }
                     mAdIdConfigBean = t ?: getDefaultAdIdConfig()
-                    AdLoggerUtils.d("广告id:$mAdConfigBean")
+                    AdLoggerUtils.d("广告id:$mAdIdConfigBean")
                     setInitSuccess()
                     callListener()
                 }
 
                 override fun onError(e: ApiException) {
                     mAdIdConfigBean = getDefaultAdIdConfig()
-                    AdLoggerUtils.d("广告id:$mAdConfigBean")
+                    AdLoggerUtils.d("广告id:$mAdIdConfigBean")
                     setInitSuccess()
                     callListener()
                 }
