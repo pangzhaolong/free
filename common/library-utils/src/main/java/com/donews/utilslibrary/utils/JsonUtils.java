@@ -114,6 +114,7 @@ public class JsonUtils {
             device.append("&channel=").append(DeviceUtils.getChannelName());
             device.append("&version_code=").append(DeviceUtils.getAppVersionCode());
             device.append("&package_name=").append(DeviceUtils.getPackage());
+            device.append("&logged=").append(AppInfo.checkIsWXLogin());
             if (isToken) {
                 device.append("&token=").append(AppInfo.getToken());
             }
