@@ -19,7 +19,7 @@ object DoNewsInterstitialLoadHelper : BaseHelper() {
 
     /** 加载和显示广告，插屏广告必须传递广告id，和广告宽高属性 */
     fun loadAndShowAd(activity: Activity, adRequest: AdRequest, listener: IAdInterstitialListener?) {
-
+        listener?.onAdStartLoad()
         if (adRequest.mAdId.isBlank()) {
             listener?.onAdError(
                 AdCustomError.ParamsAdIdNullOrBlank.code,
@@ -83,7 +83,6 @@ object DoNewsInterstitialLoadHelper : BaseHelper() {
             .setExpressViewHeight(adRequest.mHeightDp)
             .setTimeOut(adRequest.mAdRequestTimeOut)
             .build()
-        listener?.onAdStartLoad()
         doNewsNative.loadAndShowInterstitial(activity, doNewsAd, doNewsInterstitialListener)
     }
 

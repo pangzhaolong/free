@@ -19,7 +19,7 @@ object DoNewsBannerLoadHelper : BaseHelper() {
 
     /** 加载和显示Banner广告 */
     fun loadAndShowAd(activity: Activity, adRequest: AdRequest, listener: IAdBannerListener?) {
-
+        listener?.onAdStartLoad()
         if (adRequest.mAdId.isBlank()) {
             listener?.onAdError(
                 AdCustomError.ParamsAdIdNullOrBlank.code,
@@ -89,7 +89,6 @@ object DoNewsBannerLoadHelper : BaseHelper() {
             .setTimeOut(adRequest.mAdRequestTimeOut)
             .setView(adRequest.mAdContainer)
             .build()
-        listener?.onAdStartLoad()
         doNewsNative.loadAndShowBanner(activity, doNewsAd, doNewsBannerListener)
     }
 

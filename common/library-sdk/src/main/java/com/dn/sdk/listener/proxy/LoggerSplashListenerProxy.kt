@@ -17,7 +17,6 @@ class LoggerSplashListenerProxy(
 ) : IAdSplashListener {
 
     override fun onAdStartLoad() {
-        super.onAdStartLoad()
         AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "Splash onAdStartLoad()"))
         listener?.onAdStartLoad()
     }

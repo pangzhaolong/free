@@ -2,6 +2,7 @@ package com.dn.sdk.platform.donews.helper
 
 import android.app.Activity
 import com.dn.sdk.AdCustomError
+import com.dn.sdk.DelayExecutor
 import com.dn.sdk.bean.AdRequest
 import com.dn.sdk.bean.PreloadAdState
 import com.dn.sdk.platform.donews.preloadad.DoNewsPreloadSplashAd
@@ -22,6 +23,7 @@ object DoNewsSplashLoadHelper : BaseHelper() {
 
     /** 加载和显示广告 */
     fun loadAndShowAd(activity: Activity, adRequest: AdRequest, listener: IAdSplashListener?) {
+        listener?.onAdStartLoad()
         if (adRequest.mAdId.isBlank()) {
             listener?.onAdError(
                 AdCustomError.ParamsAdIdNullOrBlank.code,
@@ -98,13 +100,12 @@ object DoNewsSplashLoadHelper : BaseHelper() {
             //设置超时时间5000代表5秒，时间建议大于等于5秒以上，如果GroMore广告，请按照gromore后台合理配置
             .setTimeOut(adRequest.mAdRequestTimeOut)
             .build()
-        listener?.onAdStartLoad()
         doNewsAdNative.loadAndShowSplash(activity, doNewsAd, doNewsSplashListener)
     }
 
     /** 预加载广告 */
     fun preloadAd(activity: Activity, adRequest: AdRequest, listener: IAdSplashListener?): PreloadSplashAd {
-
+        listener?.onAdStartLoad()
         val doNewsAdNative = DoNewsAdManagerHolder.get().createDoNewsAdNative()
 
         //封装的预加载对象
@@ -117,38 +118,46 @@ object DoNewsSplashLoadHelper : BaseHelper() {
 
 
         if (adRequest.mAdId.isBlank()) {
-            doNewsPreloadSplashAd.setLoadState(PreloadAdState.Error)
-            listener?.onAdError(
-                AdCustomError.ParamsAdIdNullOrBlank.code,
-                AdCustomError.ParamsAdIdNullOrBlank.errorMsg
-            )
+            DelayExecutor.delayExec {
+                doNewsPreloadSplashAd.setLoadState(PreloadAdState.Error)
+                listener?.onAdError(
+                    AdCustomError.ParamsAdIdNullOrBlank.code,
+                    AdCustomError.ParamsAdIdNullOrBlank.errorMsg
+                )
+            }
             return doNewsPreloadSplashAd
         }
 
         if (adRequest.mAdContainer == null) {
-            doNewsPreloadSplashAd.setLoadState(PreloadAdState.Error)
-            listener?.onAdError(
-                AdCustomError.ParamsAdContainerNull.code,
-                AdCustomError.ParamsAdContainerNull.errorMsg
-            )
+            DelayExecutor.delayExec {
+                doNewsPreloadSplashAd.setLoadState(PreloadAdState.Error)
+                listener?.onAdError(
+                    AdCustomError.ParamsAdContainerNull.code,
+                    AdCustomError.ParamsAdContainerNull.errorMsg
+                )
+            }
             return doNewsPreloadSplashAd
         }
 
         if (adRequest.mWidthDp == 0f) {
-            doNewsPreloadSplashAd.setLoadState(PreloadAdState.Error)
-            listener?.onAdError(
-                AdCustomError.ParamsAdWidthDpError.code,
-                AdCustomError.ParamsAdWidthDpError.errorMsg
-            )
+            DelayExecutor.delayExec {
+                doNewsPreloadSplashAd.setLoadState(PreloadAdState.Error)
+                listener?.onAdError(
+                    AdCustomError.ParamsAdWidthDpError.code,
+                    AdCustomError.ParamsAdWidthDpError.errorMsg
+                )
+            }
             return doNewsPreloadSplashAd
         }
 
         if (adRequest.mHeightDp == 0f) {
-            doNewsPreloadSplashAd.setLoadState(PreloadAdState.Error)
-            listener?.onAdError(
-                AdCustomError.ParamsAdHeightDpError.code,
-                AdCustomError.ParamsAdHeightDpError.errorMsg
-            )
+            DelayExecutor.delayExec {
+                doNewsPreloadSplashAd.setLoadState(PreloadAdState.Error)
+                listener?.onAdError(
+                    AdCustomError.ParamsAdHeightDpError.code,
+                    AdCustomError.ParamsAdHeightDpError.errorMsg
+                )
+            }
             return doNewsPreloadSplashAd
         }
 
@@ -198,8 +207,9 @@ object DoNewsSplashLoadHelper : BaseHelper() {
             //设置超时时间5000代表5秒，时间建议大于等于5秒以上，如果GroMore广告，请按照gromore后台合理配置
             .setTimeOut(adRequest.mAdRequestTimeOut)
             .build()
-        listener?.onAdStartLoad()
-        doNewsAdNative.loadSplashAd(activity, doNewsAd, doNewsSplashListener)
+        DelayExecutor.delayExec(100) {
+            doNewsAdNative.loadSplashAd(activity, doNewsAd, doNewsSplashListener)
+        }
         return doNewsPreloadSplashAd
     }
 }

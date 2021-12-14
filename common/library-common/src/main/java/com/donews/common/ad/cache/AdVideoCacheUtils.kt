@@ -226,6 +226,10 @@ object AdVideoCacheUtils {
                     }
                 }
             }
+
+            override fun onAdStartLoad() {
+
+            }
         }
 
         if (!invalid) {

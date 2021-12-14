@@ -20,6 +20,8 @@ object DoNewsNativeTemplateLoadHelper : BaseHelper() {
 
     /** 加载模板广告 */
     fun loadTemplateAd(activity: Activity, adRequest: AdRequest, listener: IAdNativeTemplateListener?) {
+        listener?.onAdStartLoad()
+
         if (adRequest.mAdId.isBlank()) {
             listener?.onAdError(
                 AdCustomError.ParamsAdIdNullOrBlank.code,
@@ -91,7 +93,6 @@ object DoNewsNativeTemplateLoadHelper : BaseHelper() {
             .setExpressViewHeight(adRequest.mHeightDp)
             .setTimeOut(adRequest.mAdRequestTimeOut)
             .build()
-        listener?.onAdStartLoad()
         doNewsAdNative.loadTemplate(activity, doNewsAd, doNewsTemplateListener)
     }
 }

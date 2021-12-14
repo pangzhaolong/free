@@ -38,4 +38,8 @@ open class SimpleSplashListener : IAdSplashListener {
     override fun onAdError(code: Int, errorMsg: String?) {
 
     }
+
+    override fun onAdStartLoad() {
+
+    }
 }

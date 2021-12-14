@@ -27,7 +27,11 @@ class JddAdRewardVideoListenerProxy(
 ) : IAdRewardVideoListener {
 
     override fun onAdStatus(code: Int, any: Any?) {
+        listener?.onAdStatus(code, any)
+    }
 
+    override fun onAdStartLoad() {
+        listener?.onAdStartLoad()
     }
 
     override fun onAdLoad() {

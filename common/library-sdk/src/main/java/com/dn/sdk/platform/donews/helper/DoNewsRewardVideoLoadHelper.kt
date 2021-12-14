@@ -3,6 +3,7 @@ package com.dn.sdk.platform.donews.helper
 import android.app.Activity
 import com.dn.sdk.AdCustomError
 import com.dn.sdk.BuildConfig
+import com.dn.sdk.DelayExecutor
 import com.dn.sdk.bean.AdRequest
 import com.dn.sdk.bean.PreloadAdState
 import com.dn.sdk.bean.preload.PreloadRewardVideoAd
@@ -28,6 +29,8 @@ import org.json.JSONObject
 object DoNewsRewardVideoLoadHelper : BaseHelper() {
 
     fun loadAndShowAd(activity: Activity, adRequest: AdRequest, listener: IAdRewardVideoListener?) {
+        listener?.onAdStartLoad()
+
         if (adRequest.mAdId.isBlank()) {
             listener?.onAdError(
                 AdCustomError.ParamsAdIdNullOrBlank.code,
@@ -44,35 +47,7 @@ object DoNewsRewardVideoLoadHelper : BaseHelper() {
 
             override fun onAdStatus(code: Int, any: Any?) {
                 listener?.onAdStatus(code, any)
-                if (code == 10 && any is DnUnionBean) {
-                    if (any.platFormType == "2" || any.platFormType == "3") {
-
-                        val ecpm = any.currentEcpm
-                        val params = JSONObject()
-                        params.put("req_id", any.reqId)
-                        params.put("ecpm", ecpm)
-
-                        val jsonString = params.toString()
-
-                        AdLoggerUtils.d("开始Ecpm上报:$jsonString")
-                        EasyHttp.post(BuildConfig.ECPM_BASE_URL + "ecpm/report")
-                            .upJson(jsonString)
-                            .execute(object : SimpleCallBack<String>() {
-                                override fun onError(e: ApiException?) {
-                                    AdLoggerUtils.d("上报ecpm 错误:$e")
-                                }
-
-                                override fun onSuccess(t: String?) {
-                                    AdLoggerUtils.d("上报ecpm 成功:$t")
-                                }
-                            })
-
-                    } else {
-                        AdLoggerUtils.d("当前广告platFormType: ${any.platFormType}无法进行ecpm进行上报")
-                    }
-                } else {
-                    AdLoggerUtils.d("当前广告code: ${code}无法进行ecpm进行上报")
-                }
+                reportEcpm(code, any)
             }
 
             override fun onAdLoad() {
@@ -117,11 +92,13 @@ object DoNewsRewardVideoLoadHelper : BaseHelper() {
             .setOrientation(adRequest.mOrientation)
             .setTimeOut(adRequest.mAdRequestTimeOut)
             .build()
-        listener?.onAdStartLoad()
         doNewsAdNative.loadRewardVideo(activity, doNewsAd, doNewsRewardVideoListener)
     }
 
+
     fun preloadAd(activity: Activity, adRequest: AdRequest, listener: IAdRewardVideoListener?): PreloadRewardVideoAd {
+        listener?.onAdStartLoad()
+
         val doNewsAdNative = DoNewsAdManagerHolder.get().createDoNewsAdNative()
 
         //封装的预加载对象
@@ -133,10 +110,13 @@ object DoNewsRewardVideoLoadHelper : BaseHelper() {
         }
 
         if (adRequest.mAdId.isBlank()) {
-            listener?.onAdError(
-                AdCustomError.ParamsAdIdNullOrBlank.code,
-                AdCustomError.ParamsAdIdNullOrBlank.errorMsg
-            )
+            DelayExecutor.delayExec {
+                preloadRewardVideoAd.setLoadState(PreloadAdState.Error)
+                listener?.onAdError(
+                    AdCustomError.ParamsAdIdNullOrBlank.code,
+                    AdCustomError.ParamsAdIdNullOrBlank.errorMsg
+                )
+            }
             return preloadRewardVideoAd
         }
 
@@ -144,6 +124,7 @@ object DoNewsRewardVideoLoadHelper : BaseHelper() {
 
             override fun onAdStatus(code: Int, any: Any?) {
                 listener?.onAdStatus(code, any)
+                reportEcpm(code, any)
             }
 
             override fun onAdLoad() {
@@ -191,8 +172,44 @@ object DoNewsRewardVideoLoadHelper : BaseHelper() {
             .setOrientation(adRequest.mOrientation)
             .setTimeOut(adRequest.mAdRequestTimeOut)
             .build()
-        listener?.onAdStartLoad()
-        doNewsAdNative.loadRewardVideo(activity, doNewsAd, doNewsRewardVideoListener)
+        DelayExecutor.delayExec(100) {
+            doNewsAdNative.loadRewardVideo(activity, doNewsAd, doNewsRewardVideoListener)
+        }
         return preloadRewardVideoAd
     }
+
+
+    /** 给客户端 上报ecpm */
+    private fun reportEcpm(code: Int, any: Any?) {
+        if (code == 10 && any is DnUnionBean) {
+            if (any.platFormType == "2" || any.platFormType == "3") {
+
+                val ecpm = any.currentEcpm
+                val params = JSONObject()
+                params.put("req_id", any.reqId)
+                params.put("ecpm", ecpm)
+
+                val jsonString = params.toString()
+
+                AdLoggerUtils.d("开始Ecpm上报:$jsonString")
+                EasyHttp.post(BuildConfig.ECPM_BASE_URL + "ecpm/report")
+                    .upJson(jsonString)
+                    .execute(object : SimpleCallBack<String>() {
+                        override fun onError(e: ApiException?) {
+                            AdLoggerUtils.d("上报ecpm 错误:$e")
+                        }
+
+                        override fun onSuccess(t: String?) {
+                            AdLoggerUtils.d("上报ecpm 成功:$t")
+                        }
+                    })
+
+            } else {
+                AdLoggerUtils.d("当前广告platFormType: ${any.platFormType}无法进行ecpm进行上报")
+            }
+        } else {
+            AdLoggerUtils.d("当前广告code: ${code}无法进行ecpm进行上报")
+        }
+    }
+
 }

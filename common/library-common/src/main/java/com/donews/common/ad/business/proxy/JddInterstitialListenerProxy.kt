@@ -12,6 +12,11 @@ import com.donews.common.ad.business.monitor.InterstitialAdCount
  * @date 2021/11/2 15:09
  */
 class JddInterstitialListenerProxy(val listener: IAdInterstitialListener? = null) : IAdInterstitialListener {
+
+    override fun onAdStartLoad() {
+        listener?.onAdStartLoad()
+    }
+
     override fun onAdLoad() {
         listener?.onAdLoad()
     }

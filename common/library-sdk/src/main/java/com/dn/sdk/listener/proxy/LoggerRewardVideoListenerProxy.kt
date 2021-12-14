@@ -17,7 +17,6 @@ class LoggerRewardVideoListenerProxy(
 ) : IAdRewardVideoListener {
 
     override fun onAdStartLoad() {
-        super.onAdStartLoad()
         AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "RewardVideo onAdStartLoad()"))
         listener?.onAdStartLoad()
     }

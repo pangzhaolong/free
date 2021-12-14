@@ -33,4 +33,8 @@ open class SimpleBannerListener : IAdBannerListener {
     override fun onAdError(code: Int, errorMsg: String?) {
 
     }
+
+    override fun onAdStartLoad() {
+
+    }
 }

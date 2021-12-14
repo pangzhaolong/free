@@ -37,4 +37,8 @@ open class SimpleInterstitialListener : IAdInterstitialListener {
     override fun onAdError(code: Int, errorMsg: String?) {
 
     }
+
+    override fun onAdStartLoad() {
+
+    }
 }

@@ -17,7 +17,6 @@ class LoggerBannerListenerProxy(
 ) : IAdBannerListener {
 
     override fun onAdStartLoad() {
-        super.onAdStartLoad()
         AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "Banner onAdStartLoad()"))
         listener?.onAdStartLoad()
     }

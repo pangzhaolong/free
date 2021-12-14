@@ -22,6 +22,8 @@ object DoNewsNativeLoadHelper : BaseHelper() {
 
 
     fun loadNativeAd(activity: Activity, adRequest: AdRequest, listener: IAdNativeLoadListener?) {
+        listener?.onAdStartLoad()
+
         if (adRequest.mAdId.isBlank()) {
             listener?.onAdError(
                 AdCustomError.ParamsAdIdNullOrBlank.code,
@@ -54,7 +56,7 @@ object DoNewsNativeLoadHelper : BaseHelper() {
                     val result = mutableListOf<INativeAdData>()
                     if (data != null) {
                         for (doNewsData in data) {
-                            result.add(DoNewsNativeData(adRequest,doNewsData))
+                            result.add(DoNewsNativeData(adRequest, doNewsData))
                         }
                     }
                     it.onAdLoad(result)
@@ -65,7 +67,6 @@ object DoNewsNativeLoadHelper : BaseHelper() {
                 listener?.onAdError(code, errorMsg)
             }
         }
-        listener?.onAdStartLoad()
         doNewsNative.loadFeed(activity, doNewsAd, doNewsNativesListener)
     }
 

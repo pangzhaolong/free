@@ -9,7 +9,5 @@ package com.dn.sdk.listener
  */
 interface IAdStartLoadListener {
 
-    fun onAdStartLoad() {
-
-    }
+    fun onAdStartLoad()
 }

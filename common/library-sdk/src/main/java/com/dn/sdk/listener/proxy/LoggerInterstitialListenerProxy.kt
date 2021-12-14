@@ -17,7 +17,6 @@ class LoggerInterstitialListenerProxy(
 ) : IAdInterstitialListener {
 
     override fun onAdStartLoad() {
-        super.onAdStartLoad()
         AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "Interstitial onAdStartLoad()"))
         listener?.onAdStartLoad()
     }

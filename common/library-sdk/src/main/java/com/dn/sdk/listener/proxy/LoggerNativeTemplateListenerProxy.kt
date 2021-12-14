@@ -18,7 +18,6 @@ class LoggerNativeTemplateListenerProxy(
 ) : IAdNativeTemplateListener {
 
     override fun onAdStartLoad() {
-        super.onAdStartLoad()
         AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "NativeTemplate onAdStartLoad()"))
         listener?.onAdStartLoad()
     }

@@ -18,7 +18,6 @@ class LoggerNativeLoadListenerProxy(
 ) : IAdNativeLoadListener {
 
     override fun onAdStartLoad() {
-        super.onAdStartLoad()
         AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "NativeLoad onAdStartLoad()"))
         listener?.onAdStartLoad()
     }
