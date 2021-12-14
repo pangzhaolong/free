@@ -192,7 +192,7 @@ object DoNewsRewardVideoLoadHelper : BaseHelper() {
                 val jsonString = params.toString()
 
                 AdLoggerUtils.d("开始Ecpm上报:$jsonString")
-                EasyHttp.post(BuildConfig.ECPM_BASE_URL + "ecpm/report")
+                EasyHttp.post(BuildConfig.ECPM_BASE_URL + "api/v1/ecpm/report")
                         .upJson(jsonString)
                         .cacheMode(CacheMode.NO_CACHE)
                         .execute(object : SimpleCallBack<String>() {

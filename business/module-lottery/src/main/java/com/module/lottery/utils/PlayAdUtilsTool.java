@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.dn.sdk.AdCustomError;
 import com.dn.sdk.listener.IAdRewardVideoListener;
 import com.donews.base.base.AppManager;
 import com.donews.base.utils.ToastUtil;
@@ -95,6 +96,9 @@ public class PlayAdUtilsTool {
             public void onAdError(int code, @Nullable String errorMsg) {
                 loadError(dialog);
                 Logger.e(TAG + errorMsg + "");
+                if (code == AdCustomError.PreloadAdEmptyError.getCode()) {
+                    ToastUtil.showShort(mContext, "暂无新视频，请稍后再试");
+                }
             }
         };
 
