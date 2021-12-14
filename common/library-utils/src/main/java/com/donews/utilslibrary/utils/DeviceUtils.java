@@ -248,7 +248,7 @@ public class DeviceUtils {
         }
 
 //        return "kuaishou123";
-//        return "xiaomi";
+//        return "jws";
         return !TextUtils.isEmpty(channel) ? channel : BuildConfig.APP_IDENTIFICATION;
     }
 

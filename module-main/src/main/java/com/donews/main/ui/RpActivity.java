@@ -274,6 +274,7 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
 
             @Override
             public void onAdClose() {
+                hideLoading();
             }
 
             @Override
@@ -287,6 +288,7 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
             @Override
             public void onAdError(int code, @Nullable String errorMsg) {
                 ToastUtil.showShort(mContext, "视频加载失败，点击翻倍领取重试");
+                hideLoading();
             }
         };
 
