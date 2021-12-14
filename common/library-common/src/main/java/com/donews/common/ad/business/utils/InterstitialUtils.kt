@@ -1,6 +1,5 @@
 package com.donews.common.ad.business.utils
 
-import com.donews.base.utils.ext.isToday
 import com.donews.common.ad.business.bean.JddAdConfigBean
 import com.donews.common.ad.business.monitor.LotteryAdCount
 import com.donews.utilslibrary.utils.AppStatusUtils
@@ -20,7 +19,7 @@ object InterstitialUtils {
     fun checkOpenAd(bean: JddAdConfigBean): Boolean {
         //安装时间
         val installTime = AppStatusUtils.getAppInstallTime()
-        val duration = bean.interstitialStartTime * 60 * 1000L
+        val duration = bean.interstitialStartTime * 60 * 60 * 1000L
         if ((System.currentTimeMillis() - installTime) >= duration) {
             Logger.d("安装超过设置时间,开启插屏")
             return true
