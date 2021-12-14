@@ -234,6 +234,8 @@ object AdVideoCacheUtils {
                     } else {
                         mRewardVideoListener?.onAdError(code, errorMsg)
                     }
+                } else {
+                    mRewardVideoListener?.onAdError(code, errorMsg)
                 }
             }
 
