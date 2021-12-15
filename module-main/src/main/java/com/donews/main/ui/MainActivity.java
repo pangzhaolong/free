@@ -1,5 +1,7 @@
 package com.donews.main.ui;
 
+import static com.donews.common.config.CritParameterConfig.CRIT_STATE;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -38,6 +40,7 @@ import com.donews.common.ad.business.loader.AdManager;
 import com.donews.common.ad.cache.AdVideoCacheUtils;
 import com.donews.common.adapter.ScreenAutoAdapter;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
+import com.donews.common.bean.CritMessengerBean;
 import com.donews.common.config.CritParameterConfig;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
@@ -165,13 +168,65 @@ public class MainActivity
         mDataBinding.occupyPosition.post(new Runnable() {
             @Override
             public void run() {
-                showPopWindow();
+                initializeCritState();
             }
         });
     }
 
 
-    private void showPopWindow() {
+    /**
+     * 用来初始化暴击模式的状态
+     * 使用场景，当处于暴击模式时，app重启
+     */
+    private void initializeCritState() {
+
+        int critState = SPUtils.getInformain(CritParameterConfig.CRIT_STATE, 0);
+        //暴击模式在运行中
+        if (critState == 1) {
+            //获取暴击模式的开始时间
+            long critStartTime = SPUtils.getInformain(CritParameterConfig.CRIT_START_TIME, 0);
+            if (critStartTime != 0) {
+                //当前时间
+                long time = SystemClock.elapsedRealtime();
+                //计算 暴击时刻的总时间 5分钟
+                long againstTime = 5 * 60 * 1000;
+
+                if (Math.abs(time - critStartTime) >= againstTime) {
+                    //暴击时刻已结束
+                    showPopWindow(Math.abs(time - critStartTime));
+
+                } else {
+                    //正在进行暴击时刻
+                    SPUtils.setInformain(CRIT_STATE, 0);
+                    SPUtils.setInformain(CritParameterConfig.CRIT_REMAINING_TIME, 0);
+                    SPUtils.setInformain(CritParameterConfig.CRIT_START_TIME, 0);
+                }
+
+
+            }
+        }
+
+
+    }
+
+
+    //清除暴击时刻的状态
+    private void cleanCrit() {
+        SPUtils.setInformain(CRIT_STATE, 0);
+        SPUtils.setInformain(CritParameterConfig.CRIT_REMAINING_TIME, 0);
+        SPUtils.setInformain(CritParameterConfig.CRIT_START_TIME, 0);
+    }
+
+    @Subscribe
+    public void UnlockEvent(CritMessengerBean critMessenger) {
+        if (critMessenger != null && critMessenger.mStatus == 200) {
+            //开始暴击模式
+            long time = 5 * 60 * 1000;
+            showPopWindow(time);
+        }
+    }
+
+    private void showPopWindow(long time) {
         MainPopWindowProgressBarBinding viewDataBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.main_pop_window_progress_bar, null, false);
         PopupWindow mPopWindow = new PopupWindow(viewDataBinding.getRoot());
         mPopWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
@@ -179,6 +234,7 @@ public class MainActivity
         mPopWindow.setFocusable(false);
         mPopWindow.showAtLocation(getWindow().getDecorView(), Gravity.TOP, 0, 100);
         SPUtils.setInformain(CritParameterConfig.CRIT_START_TIME, SystemClock.elapsedRealtime());
+        viewDataBinding.countdownView.start(time);
         viewDataBinding.countdownView.setCountdownViewListener(new CountdownView.ICountdownViewListener() {
             @Override
             public void onProgressValue(long max, long value) {
@@ -186,16 +242,14 @@ public class MainActivity
                 viewDataBinding.progressBar.setProgress((value - 12000) > 0 ? (int) (value - 12000) : 0);
                 viewDataBinding.progressBar.setSecondaryProgress((int) value);
                 //将进度写入共享参数
-                SPUtils.setInformain(CritParameterConfig.CRIT_STATE, 1);
+                SPUtils.setInformain(CRIT_STATE, 1);
                 SPUtils.setInformain(CritParameterConfig.CRIT_REMAINING_TIME, value);
             }
 
             @Override
             public void onCountdownCompleted() {
                 mPopWindow.dismiss();
-                SPUtils.setInformain(CritParameterConfig.CRIT_STATE, 0);
-                SPUtils.setInformain(CritParameterConfig.CRIT_REMAINING_TIME, 0);
-                SPUtils.setInformain(CritParameterConfig.CRIT_START_TIME, 0);
+                cleanCrit();
                 ToastUtil.showShort(getApplicationContext(), "暴击时刻已结束");
             }
         });

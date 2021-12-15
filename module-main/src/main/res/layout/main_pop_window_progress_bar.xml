@@ -47,7 +47,6 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginEnd="4dp"
                     android:layout_marginRight="34dp"
-                    app:automatically="true"
                     app:colon_color="#FFFFFF"
                     app:text_view_millisecond_color="#FFFFFF"
                     app:text_view_minute_color="#FFFFFF"

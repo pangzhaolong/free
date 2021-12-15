@@ -27,10 +27,36 @@ public class CommonlyTool {
 
     }
 
+
+    /**
+     * 判断是否需要开启暴击模式
+     */
+    public static boolean ifTurnOnCrit() {
+        if(ABSwitch.Ins().getOpenCritModel()){
+            //新用户
+            int sumNumber=0;
+            //已经参与的次数
+            int participateNumber = LotteryAdCount.INSTANCE.getTotalLotteryNumber();
+            if (isNewUser()) {
+                //判断次数是否满足最低
+                //总共需要抽多少个抽奖码开始暴击模式
+                 sumNumber = ABSwitch.Ins().getOpenCritModelByLotteryCount();
+            }else{
+                sumNumber=6;
+            }
+            if (participateNumber >= sumNumber) {
+                //开始暴击模式
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     //是否满足暴击模式
     public static boolean ifCriticalStrike() {
         if (ABSwitch.Ins().getOpenCritModel()) {
-            //判断暴击模式是否开启
+            //判断是否是暴击时刻
             int state = SPUtils.getInformain(CritParameterConfig.CRIT_STATE, 0);
             if (state == 1) {
                 int sumNumber = 3;

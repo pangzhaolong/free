@@ -35,6 +35,7 @@ import com.dn.events.events.LotteryStatusEvent;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.business.manager.JddAdManager;
 import com.donews.common.ad.business.monitor.LotteryAdCount;
+import com.donews.common.bean.CritMessengerBean;
 import com.donews.common.provider.IDetailProvider;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
@@ -529,6 +530,11 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                         AnalysisUtils.onEventEx(LotteryActivity.this, Dot.PAY_FAIL);
                         Toast.makeText(LotteryActivity.this, "生成抽奖码失败", Toast.LENGTH_SHORT).show();
                         return;
+                    }
+                    //判断是否开始暴击模式
+                    if (CommonlyTool.ifTurnOnCrit()) {
+                      //通知开始暴击模式
+                        EventBus.getDefault().post(new CritMessengerBean(200));
                     }
                     //刷新页面  展示抽奖码
                     lotteryInfo();
