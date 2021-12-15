@@ -88,7 +88,9 @@ object DoNewsSplashLoadHelper : BaseHelper() {
             }
 
             override fun onAdError(code: Int, errorMsg: String?) {
-                listener?.onAdError(code, errorMsg)
+                activity.runOnUiThread {
+                    listener?.onAdError(code, errorMsg)
+                }
             }
         }
 
@@ -194,8 +196,10 @@ object DoNewsSplashLoadHelper : BaseHelper() {
             }
 
             override fun onAdError(code: Int, errorMsg: String?) {
-                doNewsPreloadSplashAd.setLoadState(PreloadAdState.Error)
-                listener?.onAdError(code, errorMsg)
+                activity.runOnUiThread {
+                    doNewsPreloadSplashAd.setLoadState(PreloadAdState.Error)
+                    listener?.onAdError(code, errorMsg)
+                }
             }
         }
 
