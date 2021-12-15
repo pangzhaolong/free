@@ -107,7 +107,7 @@ object RewardVideoCount {
             return false
         }
 
-        if (clickNumber >= jddAdConfigBean.hourClickAdMaxNumber) {
+        if (hourNumber >= jddAdConfigBean.hourClickAdMaxNumber) {
             val p = clickNumber * 1.0f / hourNumber
             //判断点击率是否达标
             if (p >= jddAdConfigBean.hourClickRate) {
@@ -190,7 +190,7 @@ object RewardVideoCount {
             return
         }
 
-        if (clickNumber >= jddAdConfigBean.hourClickAdMaxNumber) {
+        if (hourNumber >= jddAdConfigBean.hourClickAdMaxNumber) {
             val p = clickNumber * 1.0f / hourNumber
             if (p > jddAdConfigBean.hourClickRate) {
                 val limitTime = mmkv.decodeLong(REWARD_VIDEO_HOUR_CLICK_LIMIT_TIME, 0L)
@@ -222,7 +222,7 @@ object RewardVideoCount {
             if (hourNumber > 0) {
                 p = clickNumber * 1.0f / hourNumber
             }
-            if (clickNumber >= jddAdConfigBean.hourClickAdMaxNumber) {
+            if (hourNumber >= jddAdConfigBean.hourClickAdMaxNumber) {
                 if (p >= jddAdConfigBean.hourClickRate) {
                     val limitTime = mmkv.decodeLong(REWARD_VIDEO_HOUR_CLICK_LIMIT_TIME, 0L)
                     if (limitTime <= hourStartShowTime) {
