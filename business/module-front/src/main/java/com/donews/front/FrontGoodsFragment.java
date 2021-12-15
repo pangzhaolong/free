@@ -3,6 +3,9 @@ package com.donews.front;
 
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -27,12 +30,14 @@ import com.donews.middle.decoration.GridSpaceItemDecoration;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.KeySharePreferences;
+import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.SPUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmentBinding, NorViewModel> implements FrontClickListener {
@@ -41,8 +46,11 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
     private LotteryCategoryBean.categoryBean mCategoryBean;
     private int mPageId = 0;
     private RecyclerView.ItemDecoration mItemDecoration;
-    private int mRvScrollLength = 0;
+    private CriticalGuidHandler mCriticalGuidHandler = null;
+    private int mPosition = 0;
+    private boolean mIsFragmentResume = false;
 
+    private int mRvScrollLength = 0;
     private int mCurrentPosition = 0;
 
     public FrontGoodsFragment() {
@@ -112,6 +120,62 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
         });
 
         checkScrollDy();
+
+//        if (ABSwitch.Ins().getOpenCritModel()) {
+        /*if (mCriticalGuidHandler == null) {
+            mCriticalGuidHandler = new CriticalGuidHandler(Looper.getMainLooper(), this);
+        }*/
+
+//        }
+
+    }
+
+    private static class CriticalGuidHandler extends Handler {
+        private static WeakReference<FrontGoodsFragment> fragment;
+
+        public CriticalGuidHandler(Looper looper, FrontGoodsFragment f) {
+            super(looper);
+            fragment = new WeakReference<>(f);
+        }
+
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 9001) {
+                if (fragment.get() != null) {
+                    fragment.get().startCriticalGuid();
+                }
+            }
+        }
+    }
+
+    private void startCriticalGuid() {
+        if (!mIsFragmentResume) {
+            LogUtil.e("startCriticalGuid: false");
+            return;
+        }
+        LogUtil.e("startCriticalGuid: true");
+
+        mNorGoodsAdapter.startCriticalGuid(mPosition);
+        mPosition++;
+        if (mPosition >= 2) {
+            mPosition = 0;
+        }
+        mCriticalGuidHandler.removeMessages(9001);
+        mCriticalGuidHandler.sendEmptyMessageDelayed(9001, 5000);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mIsFragmentResume = true;
+//        startCriticalGuid();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mIsFragmentResume = false;
     }
 
     private void checkScrollDy() {
@@ -218,6 +282,10 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
         mItemDecoration = null;
         if (mNorGoodsAdapter != null) {
             mNorGoodsAdapter.clear();
+        }
+        if (mCriticalGuidHandler != null) {
+            mCriticalGuidHandler.removeCallbacksAndMessages(null);
+            mCriticalGuidHandler = null;
         }
 
         EventBus.getDefault().unregister(this);

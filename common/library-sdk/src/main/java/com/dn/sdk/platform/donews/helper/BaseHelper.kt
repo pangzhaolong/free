@@ -20,16 +20,18 @@ open class BaseHelper {
     /** 将广告对象和activity生命周期绑定，防止发送泄漏 */
     fun bindLifecycle(activity: Activity?, doNewsAdNative: DoNewsAdNative?, customDestroy: (() -> Unit)? = null) {
         if (activity is AppCompatActivity && Looper.getMainLooper() == Looper.myLooper()) {
-            activity.lifecycle.addObserver(object : LifecycleEventObserver {
-                override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-                    if (event == Lifecycle.Event.ON_DESTROY) {
-                        activity.lifecycle.removeObserver(this)
-                        customDestroy?.invoke() ?: kotlin.run {
-                            doNewsAdNative?.destroy()
+            activity.runOnUiThread(Runnable {
+                activity.lifecycle.addObserver(object : LifecycleEventObserver {
+                    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+                        if (event == Lifecycle.Event.ON_DESTROY) {
+                            activity.lifecycle.removeObserver(this)
+                            customDestroy?.invoke() ?: kotlin.run {
+                                doNewsAdNative?.destroy()
+                            }
                         }
                     }
-                }
-            })
+                })
+            });
         }
     }
 

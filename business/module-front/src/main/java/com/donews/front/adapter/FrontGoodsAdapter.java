@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.donews.front.R;
 import com.donews.front.listener.FrontClickListener;
@@ -46,6 +48,13 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
         if (needClear) {
             mGoodsList.clear();
             initTopList(list);
+            if (mGoodsList.size() > 4) {
+//                mGoodsList.get(0).setCritical_guid(true);
+//                mGoodsList.get(1).setCritical_guid(true);
+//                mGoodsList.get(2).setCritical_guid(true);
+//                mGoodsList.get(3).setCritical_guid(true);
+//                mGoodsList.get(0).setCritical_show_hand(true);
+            }
         } else {
             mGoodsList.addAll(list);
         }
@@ -78,6 +87,16 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
         notifyItemChanged(position, "lotteryStatus");
     }
 
+    public void startCriticalGuid(int position) {
+        if (position < 0 || position >= mGoodsList.size()) {
+            return;
+        }
+        for (int i = 0; i < 3; i++) {
+            mGoodsList.get(i).setCritical_show_hand(position == i);
+            notifyItemChanged(i, "criticalGuid");
+        }
+    }
+
     public void clear() {
         if (mGoodsList != null) {
             mGoodsList.clear();
@@ -103,11 +122,11 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
         if (payloads.size() <= 0) {
             return;
         }
+        LotteryGoodsBean.GoodsInfo goodsInfo = mGoodsList.get(position);
+        if (goodsInfo == null) {
+            return;
+        }
         if (payloads.get(0).equals("lotteryStatus")) {
-            LotteryGoodsBean.GoodsInfo goodsInfo = mGoodsList.get(position);
-            if (goodsInfo == null) {
-                return;
-            }
             switch (goodsInfo.getLotteryStatus()) {
                 case 0:
                     holder.doTv.setText("0元抽奖");
@@ -126,6 +145,19 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
                     break;
             }
             holder.doTv.postInvalidate();
+        } else if (payloads.get(0).equals("criticalGuid")) {
+            if (goodsInfo.isCritical_show_hand()) {
+                holder.criticalLav.setAnimation((Animation) null);
+                holder.criticalLav.setVisibility(View.VISIBLE);
+
+                holder.criticalLav.setImageAssetsFolder("images");
+                holder.criticalLav.setAnimation("lottery_finger.json");
+                holder.criticalLav.playAnimation();
+            } else {
+                holder.criticalLav.cancelAnimation();
+                holder.criticalLav.setAnimation((Animation) null);
+                holder.criticalLav.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -187,6 +219,20 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
                 holder.doTv.setBackgroundResource(R.drawable.front_goods_item_lottery_bg_disable);
                 break;
         }
+
+        if (goodsInfo.isCritical_guid()) {
+            holder.criticalClock.setVisibility(View.VISIBLE);
+            if (goodsInfo.isCritical_show_hand()) {
+                holder.criticalLav.setAnimation((Animation) null);
+                holder.criticalLav.setVisibility(View.VISIBLE);
+                holder.criticalLav.setImageAssetsFolder("images");
+                holder.criticalLav.setAnimation("lottery_finger.json");
+                holder.criticalLav.playAnimation();
+            }
+        } else {
+            holder.criticalClock.setVisibility(View.GONE);
+            holder.criticalLav.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -215,6 +261,9 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
         private final FrameLayout edgeFl;
         private final TextView tipTv;
 
+        private final ImageView criticalClock;
+        private final LottieAnimationView criticalLav;
+
         public GoodsViewHolder(@NonNull View itemView) {
             super(itemView);
             mainIv = itemView.findViewById(R.id.front_goods_item_iv);
@@ -224,6 +273,9 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
             doTv = itemView.findViewById(R.id.front_item_do_tv);
             edgeFl = itemView.findViewById(R.id.front_goods_item_edge_fl);
             tipTv = itemView.findViewById(R.id.front_goods_item_tip_tv);
+
+            criticalClock = itemView.findViewById(R.id.front_goods_item_clock_iv);
+            criticalLav = itemView.findViewById(R.id.front_goods_item_guid_lav);
         }
     }
 }
