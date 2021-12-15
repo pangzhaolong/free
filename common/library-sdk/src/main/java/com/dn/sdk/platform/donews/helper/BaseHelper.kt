@@ -32,4 +32,10 @@ open class BaseHelper {
             })
         }
     }
+
+    fun runOnUiThread(activity: Activity, runnable: () -> Unit) {
+        activity.runOnUiThread {
+            runnable.invoke()
+        }
+    }
 }

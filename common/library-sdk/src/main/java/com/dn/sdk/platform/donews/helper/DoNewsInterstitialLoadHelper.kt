@@ -21,26 +21,32 @@ object DoNewsInterstitialLoadHelper : BaseHelper() {
     fun loadAndShowAd(activity: Activity, adRequest: AdRequest, listener: IAdInterstitialListener?) {
         listener?.onAdStartLoad()
         if (adRequest.mAdId.isBlank()) {
-            listener?.onAdError(
-                AdCustomError.ParamsAdIdNullOrBlank.code,
-                AdCustomError.ParamsAdIdNullOrBlank.errorMsg
-            )
+            runOnUiThread(activity) {
+                listener?.onAdError(
+                    AdCustomError.ParamsAdIdNullOrBlank.code,
+                    AdCustomError.ParamsAdIdNullOrBlank.errorMsg
+                )
+            }
             return
         }
 
         if (adRequest.mWidthDp == 0f) {
-            listener?.onAdError(
-                AdCustomError.ParamsAdWidthDpError.code,
-                AdCustomError.ParamsAdWidthDpError.errorMsg
-            )
+            runOnUiThread(activity) {
+                listener?.onAdError(
+                    AdCustomError.ParamsAdWidthDpError.code,
+                    AdCustomError.ParamsAdWidthDpError.errorMsg
+                )
+            }
             return
         }
 
         if (adRequest.mHeightDp == 0f) {
-            listener?.onAdError(
-                AdCustomError.ParamsAdHeightDpError.code,
-                AdCustomError.ParamsAdHeightDpError.errorMsg
-            )
+            runOnUiThread(activity) {
+                listener?.onAdError(
+                    AdCustomError.ParamsAdHeightDpError.code,
+                    AdCustomError.ParamsAdHeightDpError.errorMsg
+                )
+            }
             return
         }
 
@@ -49,31 +55,45 @@ object DoNewsInterstitialLoadHelper : BaseHelper() {
 
         val doNewsInterstitialListener = object : DoNewsAdNative.DonewsInterstitialADListener {
             override fun onAdStatus(code: Int, any: Any?) {
-                listener?.onAdStatus(code, any)
+                runOnUiThread(activity) {
+                    listener?.onAdStatus(code, any)
+                }
             }
 
             override fun onAdLoad() {
-                listener?.onAdLoad()
+                runOnUiThread(activity) {
+                    listener?.onAdLoad()
+                }
             }
 
             override fun onAdShow() {
-                listener?.onAdShow()
+                runOnUiThread(activity) {
+                    listener?.onAdShow()
+                }
             }
 
             override fun onAdExposure() {
-                listener?.onAdExposure()
+                runOnUiThread(activity) {
+                    listener?.onAdExposure()
+                }
             }
 
             override fun onAdClicked() {
-                listener?.onAdClicked()
+                runOnUiThread(activity) {
+                    listener?.onAdClicked()
+                }
             }
 
             override fun onAdClosed() {
-                listener?.onAdClosed()
+                runOnUiThread(activity) {
+                    listener?.onAdClosed()
+                }
             }
 
             override fun onAdError(code: Int, errorMsg: String?) {
-                listener?.onAdError(code, errorMsg)
+                runOnUiThread(activity) {
+                    listener?.onAdError(code, errorMsg)
+                }
             }
         }
 

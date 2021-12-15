@@ -25,18 +25,22 @@ object DoNewsNativeLoadHelper : BaseHelper() {
         listener?.onAdStartLoad()
 
         if (adRequest.mAdId.isBlank()) {
-            listener?.onAdError(
-                AdCustomError.ParamsAdIdNullOrBlank.code,
-                AdCustomError.ParamsAdIdNullOrBlank.errorMsg
-            )
+            runOnUiThread(activity) {
+                listener?.onAdError(
+                    AdCustomError.ParamsAdIdNullOrBlank.code,
+                    AdCustomError.ParamsAdIdNullOrBlank.errorMsg
+                )
+            }
             return
         }
 
         if (adRequest.mAdCount > 5) {
-            listener?.onAdError(
-                AdCustomError.ParamsAdCountError.code,
-                AdCustomError.ParamsAdCountError.errorMsg
-            )
+            runOnUiThread(activity) {
+                listener?.onAdError(
+                    AdCustomError.ParamsAdCountError.code,
+                    AdCustomError.ParamsAdCountError.errorMsg
+                )
+            }
             return
         }
 
@@ -52,19 +56,23 @@ object DoNewsNativeLoadHelper : BaseHelper() {
 
         val doNewsNativesListener = object : DoNewsAdNative.DoNewsNativesListener {
             override fun onAdLoad(data: MutableList<DoNewsAdNativeData>?) {
-                listener?.let {
-                    val result = mutableListOf<INativeAdData>()
-                    if (data != null) {
-                        for (doNewsData in data) {
-                            result.add(DoNewsNativeData(adRequest, doNewsData))
+                runOnUiThread(activity) {
+                    listener?.let {
+                        val result = mutableListOf<INativeAdData>()
+                        if (data != null) {
+                            for (doNewsData in data) {
+                                result.add(DoNewsNativeData(adRequest, doNewsData))
+                            }
                         }
+                        it.onAdLoad(result)
                     }
-                    it.onAdLoad(result)
                 }
             }
 
             override fun onAdError(code: Int, errorMsg: String?) {
-                listener?.onAdError(code, errorMsg)
+                runOnUiThread(activity) {
+                    listener?.onAdError(code, errorMsg)
+                }
             }
         }
         doNewsNative.loadFeed(activity, doNewsAd, doNewsNativesListener)
