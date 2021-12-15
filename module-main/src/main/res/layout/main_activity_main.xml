@@ -21,6 +21,11 @@
             android:layout_marginBottom="56dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
+        <TextView
+            android:id="@+id/occupy_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
         <me.majiajie.pagerbottomtabstrip.PageNavigationView
             android:id="@+id/bottom_view"
             android:layout_width="match_parent"
@@ -49,8 +54,8 @@
                 android:id="@+id/main_home_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="-20dp"
                 android:layout_marginEnd="70dp"
+                android:layout_marginBottom="-20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 tools:ignore="MissingConstraints">
@@ -78,22 +83,23 @@
                     android:textColor="#E9423E"
                     android:textStyle="bold" />
             </FrameLayout>
+
             <ImageView
                 android:id="@+id/main_home_guid_aarow_down_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginEnd="110dp"
-                app:layout_constraintBottom_toTopOf="@+id/main_home_btn"
                 android:layout_marginBottom="40dp"
-                android:background="@drawable/main_home_guid_aarow_dowm"/>
+                android:background="@drawable/main_home_guid_aarow_dowm"
+                app:layout_constraintBottom_toTopOf="@+id/main_home_btn"
+                app:layout_constraintRight_toRightOf="parent" />
 
             <ImageView
                 android:id="@+id/main_home_guid_bg_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/main_home_guid_big_bg"
                 android:layout_marginBottom="40dp"
+                android:src="@drawable/main_home_guid_big_bg"
                 app:layout_constraintBottom_toTopOf="@+id/main_home_guid_aarow_down_iv"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent" />

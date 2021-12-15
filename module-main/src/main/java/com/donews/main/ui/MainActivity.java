@@ -1,15 +1,25 @@
 package com.donews.main.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 
@@ -28,16 +38,19 @@ import com.donews.common.ad.business.loader.AdManager;
 import com.donews.common.ad.cache.AdVideoCacheUtils;
 import com.donews.common.adapter.ScreenAutoAdapter;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
+import com.donews.common.config.CritParameterConfig;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.common.updatedialog.UpdateManager;
 import com.donews.common.updatedialog.UpdateReceiver;
 import com.donews.common.views.FrontFloatingBtn;
+import com.donews.common.views.CountdownView;
 import com.donews.main.BuildConfig;
 import com.donews.main.R;
 import com.donews.main.adapter.MainPageAdapter;
 import com.donews.main.common.CommonParams;
 import com.donews.main.databinding.MainActivityMainBinding;
+import com.donews.main.databinding.MainPopWindowProgressBarBinding;
 import com.donews.main.dialog.AnAdditionalDialog;
 import com.donews.main.dialog.DrawDialog;
 import com.donews.main.dialog.EnterShowDialog;
@@ -146,6 +159,43 @@ public class MainActivity
         AdVideoCacheUtils.INSTANCE.cacheRewardVideo(this);
         //上报一个测试友盟多参数事件
         testUMMuliParams();
+        mDataBinding.occupyPosition.post(new Runnable() {
+            @Override
+            public void run() {
+                showPopWindow();
+            }
+        });
+    }
+
+
+    private void showPopWindow() {
+        MainPopWindowProgressBarBinding viewDataBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.main_pop_window_progress_bar, null, false);
+        PopupWindow mPopWindow = new PopupWindow(viewDataBinding.getRoot());
+        mPopWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+        mPopWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        mPopWindow.setFocusable(false);
+        mPopWindow.showAtLocation(getWindow().getDecorView(), Gravity.TOP, 0, 100);
+        SPUtils.setInformain(CritParameterConfig.CRIT_START_TIME, SystemClock.elapsedRealtime());
+        viewDataBinding.countdownView.setCountdownViewListener(new CountdownView.ICountdownViewListener() {
+            @Override
+            public void onProgressValue(long max, long value) {
+                viewDataBinding.progressBar.setMax((int) max);
+                viewDataBinding.progressBar.setProgress((value - 12000) > 0 ? (int) (value - 12000) : 0);
+                viewDataBinding.progressBar.setSecondaryProgress((int) value);
+                //将进度写入共享参数
+                SPUtils.setInformain(CritParameterConfig.CRIT_STATE, 1);
+                SPUtils.setInformain(CritParameterConfig.CRIT_REMAINING_TIME, value);
+            }
+
+            @Override
+            public void onCountdownCompleted() {
+                mPopWindow.dismiss();
+                SPUtils.setInformain(CritParameterConfig.CRIT_STATE, 0);
+                SPUtils.setInformain(CritParameterConfig.CRIT_REMAINING_TIME, 0);
+                SPUtils.setInformain(CritParameterConfig.CRIT_START_TIME, 0);
+                ToastUtil.showShort(getApplicationContext(), "暴击时刻已结束");
+            }
+        });
     }
 
     @Override
@@ -345,7 +395,6 @@ public class MainActivity
                 mDataBinding.cvContentView.setCurrentItem(0);
                 mPosition = 0;
             });
-//            mDataBinding.mainFloatingBtn.setModel(FrontFloatingBtn.CRITICAL_HIT_MODEL);
         }
 
         int intoFrontCounts = SPUtils.getInformain(KeySharePreferences.INTO_FRONT_COUNTS, 0);

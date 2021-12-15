@@ -34,6 +34,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.events.LotteryStatusEvent;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.business.manager.JddAdManager;
+import com.donews.common.ad.business.monitor.LotteryAdCount;
 import com.donews.common.provider.IDetailProvider;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
@@ -42,9 +43,11 @@ import com.donews.middle.bean.RedEnvelopeUnlockBean;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
+import com.donews.utilslibrary.utils.AppStatusUtils;
 import com.donews.utilslibrary.utils.DateManager;
 import com.module.lottery.adapter.GuessAdapter;
 import com.module.lottery.bean.CommodityBean;
+import com.module.lottery.bean.CritCodeBean;
 import com.module.lottery.bean.GenerateCodeBean;
 import com.module.lottery.bean.LotteryCodeBean;
 import com.module.lottery.dialog.CongratulationsDialog;
@@ -54,10 +57,15 @@ import com.module.lottery.dialog.GenerateCodeDialog;
 import com.module.lottery.dialog.LessMaxDialog;
 import com.module.lottery.dialog.LogToWeChatDialog;
 import com.module.lottery.dialog.LotteryCodeStartsDialog;
+import com.module.lottery.dialog.LotteryCritCodeDialog;
+import com.module.lottery.dialog.LotteryCritCommodityDialog;
+import com.module.lottery.dialog.LotteryCritOverDialog;
 import com.module.lottery.dialog.ReceiveLotteryDialog;
 import com.module.lottery.dialog.ReturnInterceptDialog;
+import com.module.lottery.dialog.UnlockMaxCodeDialog;
 import com.module.lottery.model.LotteryModel;
 import com.module.lottery.utils.ClickDoubleUtil;
+import com.module.lottery.utils.CommonlyTool;
 import com.module.lottery.utils.GridSpaceItemDecoration;
 import com.module.lottery.utils.PlayAdUtilsTool;
 import com.module.lottery.viewModel.LotteryViewModel;
@@ -88,7 +96,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     @Autowired(name = "goods_id")
     public String mGoodsId;
     private SharedPreferences mSharedPreferences;
-    // 是否自动开始抽奖 true 进入页面自动开始 false
+    // 是否自动开始抽奖 true 进入页面自动开始 false  受中台控制
     @Autowired(name = "start_lottery")
     public boolean mStart_lottery = false;
 
@@ -169,6 +177,45 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         mStart_lottery = false;
     }
 
+
+    private void showLotteryCritCodeDialog() {
+        LotteryCritCodeDialog lotteryCritDialog = new LotteryCritCodeDialog(this);
+        lotteryCritDialog.setStateListener(new LotteryCritCodeDialog.OnStateListener() {
+            @Override
+            public void onStartCrit() {
+                if (lotteryCritDialog != null && lotteryCritDialog.isShowing()) {
+                    lotteryCritDialog.dismiss();
+                }
+                luckyDrawEntrance();
+            }
+        });
+
+        lotteryCritDialog.show(this);
+    }
+
+
+    private void showLotteryCritCommodityDialog() {
+        LotteryCritCommodityDialog lotteryCritDialog = new LotteryCritCommodityDialog(mGoodsId, this);
+        lotteryCritDialog.setOwnerActivity(this);
+        lotteryCritDialog.show(this);
+    }
+
+
+    private void showLotteryCritOverDialog() {
+        LotteryCritOverDialog lotteryCritDialog = new LotteryCritOverDialog(mGoodsId, this);
+        lotteryCritDialog.setOwnerActivity(this);
+        lotteryCritDialog.show(this);
+    }
+
+
+    private void showUnlockMaxCodeDialog(CritCodeBean critCodeBean) {
+        UnlockMaxCodeDialog UnlockMaxCodeDialog = new UnlockMaxCodeDialog(mLotteryCodeBean, critCodeBean, mGoodsId, this);
+        UnlockMaxCodeDialog.setOwnerActivity(this);
+
+
+        UnlockMaxCodeDialog.show(this);
+
+    }
 
     /**
      * 判断是否需要自动抽奖,并且是否大于了中台控制次数
@@ -456,6 +503,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         }
     }
 
+
     //生成抽奖码的Dialog
     private void showGenerateCodeDialog() {
         try {
@@ -482,10 +530,15 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                         Toast.makeText(LotteryActivity.this, "生成抽奖码失败", Toast.LENGTH_SHORT).show();
                         return;
                     }
-
-                    //刷新页面
+                    //刷新页面  展示抽奖码
                     lotteryInfo();
-                    showExhibitCodeDialog(generateCodeBean);
+                    //判断是否弹起暴击模式的弹框
+                    if (CommonlyTool.ifCriticalStrike()) {
+                        //弹起暴击模式的弹框
+                        showLotteryCritCodeDialog();
+                    } else {
+                        showExhibitCodeDialog(generateCodeBean);
+                    }
                 }
 
                 @Override
@@ -496,6 +549,16 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                     }
                     showExclusiveCodeDialog();
                 }
+
+                @Override
+                public void onCritJump(CritCodeBean critCodeBean) {
+                    if (generateCodeDialog != null && !LotteryActivity.this.isFinishing()) {
+                        generateCodeDialog.dismiss();
+                        //刷新页面  展示抽奖码
+                        lotteryInfo();
+                        showUnlockMaxCodeDialog(critCodeBean);
+                    }
+                }
             });
             generateCodeDialog.create();
             if (!LotteryActivity.this.isFinishing()) {
@@ -505,6 +568,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             Logger.e("" + e.getMessage());
         }
     }
+
 
     private void showLessMaxDialog() {
         LessMaxDialog lessMaxDialog = new LessMaxDialog(LotteryActivity.this, mLotteryCodeBean);
@@ -550,6 +614,15 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     }
 
 
+    private void showRecommendDialog() {
+        if (CommonlyTool.ifCriticalStrike()) {
+            showLotteryCritCommodityDialog();
+        } else {
+            showCongratulationsDialog();
+        }
+    }
+
+
     //满足6个时弹起恭喜你 dialog
     private void showCongratulationsDialog() {
         CongratulationsDialog mNoDrawDialog = new CongratulationsDialog(LotteryActivity.this);
@@ -562,6 +635,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         mNoDrawDialog.create();
         mNoDrawDialog.show(LotteryActivity.this);
     }
+
 
     private void finishReturn() {
         if (!mMeedLotteryEvent) {
@@ -602,7 +676,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 if (generateCodeBean != null) {
                     if (generateCodeBean.getRemain() == 0) {
                         //抽奖码满足跳转到恭喜dialog
-                        showCongratulationsDialog();
+                        showRecommendDialog();
                     } else {
                         //显示立刻领取的dialog
                         showReceiveLotteryDialog(false);

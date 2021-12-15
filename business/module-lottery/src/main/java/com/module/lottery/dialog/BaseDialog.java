@@ -28,7 +28,7 @@ import androidx.databinding.ViewDataBinding;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
-public abstract class BaseDialog<V extends ViewDataBinding> extends Dialog {
+public abstract class BaseDialog<V extends ViewDataBinding > extends Dialog {
     protected V mDataBinding;
     private static final String LOTTERY_PS = "Lottery_BaseDialog";
 

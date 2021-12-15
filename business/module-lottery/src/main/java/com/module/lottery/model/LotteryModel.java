@@ -38,12 +38,22 @@ public class LotteryModel extends BaseLiveDataModel {
     //生成抽奖码
     public static String LOTTERY_GENERATE_CODE = LOTTERY_BASE + "v1/gen-lottery-code";
 
+
+
+    //生成抽奖码暴击模式
+    public static String LOTTERY_CRIT_CODE = LOTTERY_BASE + "v1/bliz-gen-lottery-code";
+
     //抽奖次数达到上限后,推荐一个抽奖商品
     public static String LOTTERY_RECOMMEND_CODE = LOTTERY_BASE + "v1/recommend-lottery-goods";
 
 
     //获取抽奖中奖人员列表
     public static String LOTTERY_WIN_LOTTERY = LOTTERY_BASE + "v1/rand-lottery-info";
+
+
+    //获取抽奖中奖人员列表
+    public static String LOTTERY_CRIT_COMMODITY = LOTTERY_BASE + "v1/recommend-lottery-goods";
+
 
     /**
      * 获取网路数据
