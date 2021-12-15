@@ -10,6 +10,16 @@
         <item name="android:windowDrawsSystemBarBackgrounds">false</item>
     </style>
 
+    <style name="main_AppTheme.Guide" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">false</item>
+    </style>
+
     <style name="main_AppTheme.Start.Progress" parent="@android:style/Widget.ProgressBar.Horizontal" />
 
     <style name="main_transparent_style" parent="Theme.AppCompat.NoActionBar">

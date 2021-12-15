@@ -53,7 +53,8 @@
         <activity
             android:name="com.donews.main.ui.MainActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/main_AppTheme.Guide"/>
         <activity
             android:name=".ui.GuideActivity"
             android:screenOrientation="portrait" />
