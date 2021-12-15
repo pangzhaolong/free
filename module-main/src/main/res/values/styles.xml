@@ -66,4 +66,9 @@
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
+
+    <!-- 进度条效果样式 -->
+    <style name="CritProgressBar" parent="@android:style/Widget.ProgressBar.Horizontal" tools:ignore="ResourceName">
+        <item name="android:progressDrawable">@drawable/main_ext_crit_pro_bg</item>
+    </style>
 </resources>
