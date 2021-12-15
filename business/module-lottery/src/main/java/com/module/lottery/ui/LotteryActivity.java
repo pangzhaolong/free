@@ -204,6 +204,23 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
     private void showLotteryCritOverDialog() {
         LotteryCritOverDialog lotteryCritDialog = new LotteryCritOverDialog(mGoodsId, this);
+
+        lotteryCritDialog.setStateListener(new LotteryCritOverDialog.OnStateListener() {
+            @Override
+            public void onFinish() {
+                if(lotteryCritDialog!=null&&lotteryCritDialog.isShowing()){
+                    lotteryCritDialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onCritJump(CritCodeBean critCodeBean) {
+                //刷新页面  展示抽奖码
+                lotteryInfo();
+                showUnlockMaxCodeDialog(critCodeBean);
+            }
+        });
+
         lotteryCritDialog.setOwnerActivity(this);
         lotteryCritDialog.show(this);
     }
@@ -212,8 +229,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     private void showUnlockMaxCodeDialog(CritCodeBean critCodeBean) {
         UnlockMaxCodeDialog UnlockMaxCodeDialog = new UnlockMaxCodeDialog(mLotteryCodeBean, critCodeBean, mGoodsId, this);
         UnlockMaxCodeDialog.setOwnerActivity(this);
-
-
         UnlockMaxCodeDialog.show(this);
 
     }
@@ -397,7 +412,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         } else {
             //判断是否支持抽奖
             if (DateManager.getInstance().timesLimit(DateManager.LOTTERY_KEY, DateManager.NUMBER_OF_DRAWS, 24)) {
-                showGenerateCodeDialog();
+                generateLotteryCode();
             } else {
                 ToastUtil.showShort(this, "今天次数已用完，明日再来");
             }
@@ -418,7 +433,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 public void onComplete() {
                     //广告有效播放完成可以显示抽奖码的弹框
                     Logger.d(TAG + "showGenerateCodeDialog");
-                    showGenerateCodeDialog();
+                    generateLotteryCode();
                 }
             });
         }
@@ -505,6 +520,20 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     }
 
 
+    //生成抽奖码
+    private void generateLotteryCode() {
+
+        if(CommonlyTool.ifCriticalStrike()){
+            //弹起暴击模式的抽奖码
+            showLotteryCritOverDialog();
+        }else{
+            showGenerateCodeDialog();
+        }
+
+
+    }
+
+
     //生成抽奖码的Dialog
     private void showGenerateCodeDialog() {
         try {
@@ -533,18 +562,12 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                     }
                     //判断是否开始暴击模式
                     if (CommonlyTool.ifTurnOnCrit()) {
-                      //通知开始暴击模式
+                        //通知开始暴击模式
                         EventBus.getDefault().post(new CritMessengerBean(200));
                     }
                     //刷新页面  展示抽奖码
                     lotteryInfo();
-                    //判断是否弹起暴击模式的弹框
-                    if (CommonlyTool.ifCriticalStrike()) {
-                        //弹起暴击模式的弹框
-                        showLotteryCritCodeDialog();
-                    } else {
-                        showExhibitCodeDialog(generateCodeBean);
-                    }
+                    showExhibitCodeDialog(generateCodeBean);
                 }
 
                 @Override

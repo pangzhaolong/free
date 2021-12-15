@@ -93,23 +93,7 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
                 mOnFinishListener.onExclusiveBulletFrame();
             }
         } else {
-            if (CommonlyTool.ifCriticalStrike()) {
-                //暴击模式
-                multipleCode();
-            } else {
-                singleCode();
-            }
-
-        }
-    }
-
-
-    private void multipleCode() {
-        //生成多个抽奖码
-        if (baseLiveDataModel != null && mGoodsId != null) {
-            Map<String, String> params = BaseParams.getMap();
-            params.put("goods_id", mGoodsId);
-            getNeCritData(params, LotteryModel.LOTTERY_CRIT_CODE);
+            singleCode();
         }
     }
 
@@ -124,36 +108,6 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
     }
 
 
-    private void getNeCritData(Map<String, String> params, String url) {
-        JSONObject json = new JSONObject(params);
-        baseLiveDataModel.unDisposable();
-        baseLiveDataModel.addDisposable(EasyHttp.post(url)
-                .cacheMode(CacheMode.NO_CACHE)
-                .upJson(json.toString())
-                .execute(new SimpleCallBack<CritCodeBean>() {
-                    @Override
-                    public void onError(ApiException e) {
-                        //广告跳转
-                        if (mOnFinishListener != null) {
-                            mOnFinishListener.onFinish();
-                        }
-                        Toast.makeText(getContext(), "抽奖码获取失败", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onSuccess(CritCodeBean generateCode) {
-                        if (generateCode != null) {
-                            //抽奖统计
-                            LotteryAdCount.INSTANCE.lotterySuccess();
-                            if (mOnFinishListener != null) {
-                                mOnFinishListener.onCritJump(generateCode);
-                            }
-                        }
-                    }
-                }));
-
-
-    }
 
     private void getNetData(Map<String, String> params, String url) {
         JSONObject json = new JSONObject(params);

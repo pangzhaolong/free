@@ -62,6 +62,11 @@ public class UnlockMaxCodeDialog extends BaseDialog<UnlockMaxCodeDialogLayoutBin
     }
 
     @Override
+    public float setDimAmount() {
+        return 0.9f;
+    }
+
+    @Override
     public int setLayout() {
         return R.layout.unlock_max_code_dialog_layout;
     }
