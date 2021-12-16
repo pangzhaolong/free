@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.AnticipateOvershootInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
@@ -28,9 +30,9 @@ public class LotteryAnimationUtils {
 
 
     //位移动画
-    public static Animation setTranslateAnimation(Context context,int time) {
+    public static Animation setTranslateAnimation(Context context ) {
         Animation animation= AnimationUtils.loadAnimation(context, R.anim.translate);
-        animation.setInterpolator(new LinearInterpolator());
+        animation.setInterpolator(new DecelerateInterpolator());
         return animation;
 
     }

@@ -176,6 +176,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             ifOpenAutoLotteryAndCount();
         }
         mStart_lottery = false;
+        showLotteryCritOverDialog();
     }
 
 
