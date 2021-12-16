@@ -475,6 +475,18 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             if (mDataBinding.frontRpOpenFl1.getAnimation() == null) {
                 mDataBinding.frontRpOpenFl1.startAnimation(mScaleAnimation);
             }
+            if (mDataBinding.frontRpOpenFl2.getAnimation() != null) {
+                mDataBinding.frontRpOpenFl2.clearAnimation();
+            }
+            if (mDataBinding.frontRpOpenFl3.getAnimation() != null) {
+                mDataBinding.frontRpOpenFl3.clearAnimation();
+            }
+            if (mDataBinding.frontRpOpenFl4.getAnimation() != null) {
+                mDataBinding.frontRpOpenFl4.clearAnimation();
+            }
+            if (mDataBinding.frontRpOpenFl5.getAnimation() != null) {
+                mDataBinding.frontRpOpenFl5.clearAnimation();
+            }
 
             startTimer();
 

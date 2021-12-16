@@ -162,6 +162,7 @@ object AdManager : IAdLoadManager, ISdkManager by AdSdkManager, IAdConfigManager
     override fun loadRewardVideoAd(activity: Activity, listener: IAdRewardVideoListener?) {
         if (!RewardVideoCount.checkShouldLoadAd()) {
             ToastUtils.showShort("暂无新视频，请稍后再试")
+            AdLoggerUtils.d("onAdError(${AdCustomError.LimitAdError.code},${AdCustomError.LimitAdError.errorMsg}")
             listener?.onAdError(AdCustomError.LimitAdError.code, AdCustomError.LimitAdError.errorMsg)
             return
         }
@@ -182,6 +183,7 @@ object AdManager : IAdLoadManager, ISdkManager by AdSdkManager, IAdConfigManager
     override fun loadInvalidRewardVideoAd(activity: Activity, listener: IAdRewardVideoListener?) {
         if (!RewardVideoCount.checkShouldLoadAd()) {
             ToastUtils.showShort("暂无新视频，请稍后再试")
+            AdLoggerUtils.d("onAdError(${AdCustomError.LimitAdError.code},${AdCustomError.LimitAdError.errorMsg}")
             listener?.onAdError(AdCustomError.LimitAdError.code, AdCustomError.LimitAdError.errorMsg)
             return
         }
@@ -208,6 +210,7 @@ object AdManager : IAdLoadManager, ISdkManager by AdSdkManager, IAdConfigManager
 
         if (!RewardVideoCount.checkShouldLoadAd()) {
             ToastUtils.showShort("暂无新视频，请稍后再试")
+            AdLoggerUtils.d("onAdError(${AdCustomError.LimitAdError.code},${AdCustomError.LimitAdError.errorMsg}")
             listener?.onAdError(AdCustomError.LimitAdError.code, AdCustomError.LimitAdError.errorMsg)
             return
         }
@@ -237,6 +240,7 @@ object AdManager : IAdLoadManager, ISdkManager by AdSdkManager, IAdConfigManager
 
         if (!RewardVideoCount.checkShouldLoadAd()) {
             ToastUtils.showShort("暂无新视频，请稍后再试")
+            AdLoggerUtils.d("onAdError(${AdCustomError.LimitAdError.code},${AdCustomError.LimitAdError.errorMsg}")
             listener?.onAdError(AdCustomError.LimitAdError.code, AdCustomError.LimitAdError.errorMsg)
             return
         }

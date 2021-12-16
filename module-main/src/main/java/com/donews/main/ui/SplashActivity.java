@@ -516,9 +516,16 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
     }
 
     private void stopProgressAnim() {
-        if (mLoadAdAnimator != null && mLoadAdAnimator.isRunning()) {
-            mLoadAdAnimator.cancel();
+        if (!this.isFinishing()) {
+            runOnUiThread(() -> {
+                try {
+                    if (mLoadAdAnimator != null && mLoadAdAnimator.isRunning()) {
+                        mLoadAdAnimator.cancel();
+                    }
+                    mLoadAdAnimator = null;
+                } catch (Exception e) {
+                }
+            });
         }
-        mLoadAdAnimator = null;
     }
 }

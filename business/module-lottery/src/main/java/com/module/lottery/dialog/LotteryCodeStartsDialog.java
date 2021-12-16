@@ -9,33 +9,18 @@ package com.module.lottery.dialog;
 import static com.module.lottery.utils.PlayAdUtilsTool.CLOSURE_HINT;
 
 import android.animation.Animator;
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.ScaleAnimation;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.dn.sdk.listener.IAdRewardVideoListener;
-import com.donews.base.base.AppManager;
 import com.donews.base.utils.ToastUtil;
-import com.donews.common.ad.cache.AdVideoCacheUtils;
-import com.donews.middle.abswitch.ABSwitch;
-import com.donews.utilslibrary.utils.DateManager;
 import com.module.lottery.ui.LotteryActivity;
 import com.module_lottery.R;
 import com.module_lottery.databinding.LotteryStartDialogLayoutBinding;
-import com.orhanobut.logger.Logger;
 
 import java.lang.ref.WeakReference;
 
@@ -54,7 +39,6 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
         this.mContext = context;
     }
 
-
     @Override
     public int setLayout() {
         return R.layout.lottery_start_dialog_layout;
@@ -66,7 +50,7 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
         initView();
         Message mes = new Message();
         mes.what = 1;
-        mLotteryHandler.sendMessageDelayed(mes, 1500);
+        mLotteryHandler.sendMessageDelayed(mes, 500);
         setOnDismissListener(this);
         Message delay = new Message();
         delay.what = 3;
@@ -118,7 +102,6 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
         super.setOnDismissListener(listener);
 
     }
-
 
 
     public void setStateListener(OnStateListener l) {

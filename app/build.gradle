@@ -40,7 +40,7 @@ android {
             keyPassword 'cdyfjdd1008'
             storeFile rootProject.file('keystore/cdyfjdd.jks')
             storePassword 'cdyfjdd1008'
-//            v2SigningEnabled true
+            v2SigningEnabled true
 //            v1SigningEnabled true
         }
     }

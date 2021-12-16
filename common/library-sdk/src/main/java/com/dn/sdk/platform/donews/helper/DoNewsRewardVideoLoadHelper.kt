@@ -33,10 +33,12 @@ object DoNewsRewardVideoLoadHelper : BaseHelper() {
         listener?.onAdStartLoad()
 
         if (adRequest.mAdId.isBlank()) {
-            listener?.onAdError(
+            runOnUiThread(activity) {
+                listener?.onAdError(
                     AdCustomError.ParamsAdIdNullOrBlank.code,
                     AdCustomError.ParamsAdIdNullOrBlank.errorMsg
-            )
+                )
+            }
             return
         }
 
@@ -47,52 +49,70 @@ object DoNewsRewardVideoLoadHelper : BaseHelper() {
         val doNewsRewardVideoListener = object : DoNewsAdNative.RewardVideoADListener {
 
             override fun onAdStatus(code: Int, any: Any?) {
-                listener?.onAdStatus(code, any)
+                runOnUiThread(activity) {
+                    listener?.onAdStatus(code, any)
+                }
                 reportEcpm(code, any)
             }
 
             override fun onAdLoad() {
-                listener?.onAdLoad()
+                runOnUiThread(activity) {
+                    listener?.onAdLoad()
+                }
             }
 
             override fun onVideoCached() {
-                listener?.onVideoCached()
-                //缓存成功,则播放激励视频
-                doNewsAdNative?.showRewardAd()
+                runOnUiThread(activity) {
+                    listener?.onVideoCached()
+                    //缓存成功,则播放激励视频
+                    doNewsAdNative?.showRewardAd()
+                }
             }
 
             override fun onAdShow() {
-                listener?.onAdShow()
+                runOnUiThread(activity) {
+                    listener?.onAdShow()
+                }
             }
 
             override fun onAdVideoClick() {
-                listener?.onAdVideoClick()
+                runOnUiThread(activity) {
+                    listener?.onAdVideoClick()
+                }
             }
 
             override fun onRewardVerify(result: Boolean) {
-                listener?.onRewardVerify(result)
+                runOnUiThread(activity) {
+                    listener?.onRewardVerify(result)
+                }
             }
 
             override fun onVideoComplete() {
-                listener?.onVideoComplete()
+                runOnUiThread(activity) {
+                    listener?.onVideoComplete()
+                }
             }
 
             override fun onAdClose() {
-                listener?.onAdClose()
+                runOnUiThread(activity) {
+                    listener?.onAdClose()
+                }
             }
 
             override fun onAdError(code: Int, errorMsg: String?) {
-                listener?.onAdError(code, errorMsg)
+                runOnUiThread(activity) {
+                    listener?.onAdError(code, errorMsg)
+                }
             }
         }
 
         val doNewsAd = DoNewsAD.Builder()
-                //广告位id
-                .setPositionId(adRequest.mAdId)
-                //视频方向
-                .setOrientation(adRequest.mOrientation)
-                .setTimeOut(adRequest.mAdRequestTimeOut)
-                .build()
+            //广告位id
+            .setPositionId(adRequest.mAdId)
+            //视频方向
+            .setOrientation(adRequest.mOrientation)
+            .setTimeOut(adRequest.mAdRequestTimeOut)
+            .build()
         doNewsAdNative.loadRewardVideo(activity, doNewsAd, doNewsRewardVideoListener)
     }
 
@@ -111,12 +131,14 @@ object DoNewsRewardVideoLoadHelper : BaseHelper() {
         }
 
         if (adRequest.mAdId.isBlank()) {
-            DelayExecutor.delayExec {
-                preloadRewardVideoAd.setLoadState(PreloadAdState.Error)
-                listener?.onAdError(
+            runOnUiThread(activity) {
+                DelayExecutor.delayExec {
+                    preloadRewardVideoAd.setLoadState(PreloadAdState.Error)
+                    listener?.onAdError(
                         AdCustomError.ParamsAdIdNullOrBlank.code,
                         AdCustomError.ParamsAdIdNullOrBlank.errorMsg
-                )
+                    )
+                }
             }
             return preloadRewardVideoAd
         }
@@ -124,55 +146,73 @@ object DoNewsRewardVideoLoadHelper : BaseHelper() {
         val doNewsRewardVideoListener = object : DoNewsAdNative.RewardVideoADListener {
 
             override fun onAdStatus(code: Int, any: Any?) {
-                listener?.onAdStatus(code, any)
+                runOnUiThread(activity) {
+                    listener?.onAdStatus(code, any)
+                }
                 reportEcpm(code, any)
             }
 
             override fun onAdLoad() {
-                listener?.onAdLoad()
+                runOnUiThread(activity) {
+                    listener?.onAdLoad()
+                }
             }
 
             override fun onVideoCached() {
-                listener?.onVideoCached()
-                preloadRewardVideoAd.setLoadState(PreloadAdState.Success)
-                if (preloadRewardVideoAd.isNeedShow()) {
-                    preloadRewardVideoAd.showAd()
+                runOnUiThread(activity) {
+                    listener?.onVideoCached()
+                    preloadRewardVideoAd.setLoadState(PreloadAdState.Success)
+                    if (preloadRewardVideoAd.isNeedShow()) {
+                        preloadRewardVideoAd.showAd()
+                    }
                 }
             }
 
             override fun onAdShow() {
-                listener?.onAdShow()
+                runOnUiThread(activity) {
+                    listener?.onAdShow()
+                }
             }
 
             override fun onAdVideoClick() {
-                listener?.onAdVideoClick()
+                runOnUiThread(activity) {
+                    listener?.onAdVideoClick()
+                }
             }
 
             override fun onRewardVerify(result: Boolean) {
-                listener?.onRewardVerify(result)
+                runOnUiThread(activity) {
+                    listener?.onRewardVerify(result)
+                }
             }
 
             override fun onVideoComplete() {
-                listener?.onVideoComplete()
+                runOnUiThread(activity) {
+                    listener?.onVideoComplete()
+                }
             }
 
             override fun onAdClose() {
-                listener?.onAdClose()
+                runOnUiThread(activity) {
+                    listener?.onAdClose()
+                }
             }
 
             override fun onAdError(code: Int, errorMsg: String?) {
-                preloadRewardVideoAd.setLoadState(PreloadAdState.Error)
-                listener?.onAdError(code, errorMsg)
+                runOnUiThread(activity) {
+                    preloadRewardVideoAd.setLoadState(PreloadAdState.Error)
+                    listener?.onAdError(code, errorMsg)
+                }
             }
         }
 
         val doNewsAd = DoNewsAD.Builder()
-                //广告位id
-                .setPositionId(adRequest.mAdId)
-                //视频方向
-                .setOrientation(adRequest.mOrientation)
-                .setTimeOut(adRequest.mAdRequestTimeOut)
-                .build()
+            //广告位id
+            .setPositionId(adRequest.mAdId)
+            //视频方向
+            .setOrientation(adRequest.mOrientation)
+            .setTimeOut(adRequest.mAdRequestTimeOut)
+            .build()
         DelayExecutor.delayExec(100) {
             doNewsAdNative.loadRewardVideo(activity, doNewsAd, doNewsRewardVideoListener)
         }
@@ -192,18 +232,23 @@ object DoNewsRewardVideoLoadHelper : BaseHelper() {
                 val jsonString = params.toString()
 
                 AdLoggerUtils.d("开始Ecpm上报:$jsonString")
-                EasyHttp.post(BuildConfig.ECPM_BASE_URL + "ecpm/report")
-                        .upJson(jsonString)
-                        .cacheMode(CacheMode.NO_CACHE)
-                        .execute(object : SimpleCallBack<String>() {
-                            override fun onError(e: ApiException?) {
-                                AdLoggerUtils.d("上报ecpm 错误:$e")
-                            }
+                val url = if (BuildConfig.HTTP_DEBUG) {
+                    "http://ecpm-customer.dev.tagtic.cn/api/v1/ecpm/report"
+                } else {
+                    "http://ecpm-customer.xg.tagtic.cn/api/v1/ecpm/report"
+                }
+                EasyHttp.post(url)
+                    .upJson(jsonString)
+                    .cacheMode(CacheMode.NO_CACHE)
+                    .execute(object : SimpleCallBack<String>() {
+                        override fun onError(e: ApiException?) {
+                            AdLoggerUtils.d("上报ecpm 错误:$e")
+                        }
 
-                            override fun onSuccess(t: String?) {
-                                AdLoggerUtils.d("上报ecpm 成功:$t")
-                            }
-                        })
+                        override fun onSuccess(t: String?) {
+                            AdLoggerUtils.d("上报ecpm 成功:$t")
+                        }
+                    })
 
             } else {
                 AdLoggerUtils.d("当前广告platFormType: ${any.platFormType}无法进行ecpm进行上报")

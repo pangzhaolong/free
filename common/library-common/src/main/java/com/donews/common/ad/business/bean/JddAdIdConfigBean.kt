@@ -2,6 +2,7 @@ package com.donews.common.ad.business.bean
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import java.lang.StringBuilder
 
 
 /**
@@ -18,5 +19,14 @@ class JddAdIdConfigBean : BaseAdIdConfigBean(), Parcelable {
         interstitialId = "158536"
         rewardVideoId = "158530"
         invalidRewardVideoId = "158532"
+    }
+
+    override fun toString(): String {
+        val stringBuilder = StringBuilder()
+        stringBuilder.append("splashId = $splashId ,")
+        stringBuilder.append("interstitialId = $interstitialId ,")
+        stringBuilder.append("rewardVideoId = $rewardVideoId ,")
+        stringBuilder.append("invalidRewardVideoId = $invalidRewardVideoId ,")
+        return stringBuilder.toString()
     }
 }

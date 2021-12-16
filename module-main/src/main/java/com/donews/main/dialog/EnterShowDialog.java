@@ -217,14 +217,12 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
     }
 
     private void requestGoodsInfo(boolean isFirstIn) {
-        String url = HttpConfigUtilsKt.withConfigParams(BuildConfig.API_LOTTERY_URL + "v1/recommend-goods-list", true)
-                + "&limit=1&first=true";
+        String url = "";
         if (mChangeOne) {
             url = HttpConfigUtilsKt.withConfigParams(BuildConfig.API_LOTTERY_URL + "v1/recommend-goods-list", true)
                     + "&limit=1&first=false";
         } else {
-            int nInAPpCount = SPUtils.getInformain(KeySharePreferences.IS_FIRST_IN_APP, 0);
-            if (nInAPpCount == 1) {
+            if (SPUtils.getInformain(KeySharePreferences.IS_FIRST_IN_APP, 0) == 1) {
                 url = HttpConfigUtilsKt.withConfigParams(BuildConfig.API_LOTTERY_URL + "v1/recommend-goods-list", true)
                         + "&limit=1&first=true";
             } else {

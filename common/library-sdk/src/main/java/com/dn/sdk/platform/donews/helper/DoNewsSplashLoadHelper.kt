@@ -25,34 +25,42 @@ object DoNewsSplashLoadHelper : BaseHelper() {
     fun loadAndShowAd(activity: Activity, adRequest: AdRequest, listener: IAdSplashListener?) {
         listener?.onAdStartLoad()
         if (adRequest.mAdId.isBlank()) {
-            listener?.onAdError(
-                AdCustomError.ParamsAdIdNullOrBlank.code,
-                AdCustomError.ParamsAdIdNullOrBlank.errorMsg
-            )
+            runOnUiThread(activity) {
+                listener?.onAdError(
+                    AdCustomError.ParamsAdIdNullOrBlank.code,
+                    AdCustomError.ParamsAdIdNullOrBlank.errorMsg
+                )
+            }
             return
         }
 
         if (adRequest.mAdContainer == null) {
-            listener?.onAdError(
-                AdCustomError.ParamsAdContainerNull.code,
-                AdCustomError.ParamsAdContainerNull.errorMsg
-            )
+            runOnUiThread(activity) {
+                listener?.onAdError(
+                    AdCustomError.ParamsAdContainerNull.code,
+                    AdCustomError.ParamsAdContainerNull.errorMsg
+                )
+            }
             return
         }
 
         if (adRequest.mWidthDp == 0f) {
-            listener?.onAdError(
-                AdCustomError.ParamsAdWidthDpError.code,
-                AdCustomError.ParamsAdWidthDpError.errorMsg
-            )
+            runOnUiThread(activity) {
+                listener?.onAdError(
+                    AdCustomError.ParamsAdWidthDpError.code,
+                    AdCustomError.ParamsAdWidthDpError.errorMsg
+                )
+            }
             return
         }
 
         if (adRequest.mHeightDp == 0f) {
-            listener?.onAdError(
-                AdCustomError.ParamsAdHeightDpError.code,
-                AdCustomError.ParamsAdHeightDpError.errorMsg
-            )
+            runOnUiThread(activity) {
+                listener?.onAdError(
+                    AdCustomError.ParamsAdHeightDpError.code,
+                    AdCustomError.ParamsAdHeightDpError.errorMsg
+                )
+            }
             return
         }
 
@@ -64,31 +72,45 @@ object DoNewsSplashLoadHelper : BaseHelper() {
         val doNewsSplashListener = object : DoNewsAdNative.SplashListener {
 
             override fun onAdLoad() {
-                listener?.onAdLoad()
+                runOnUiThread(activity) {
+                    listener?.onAdLoad()
+                }
             }
 
             override fun onAdStatus(code: Int, any: Any?) {
-                listener?.onAdStatus(code, any)
+                runOnUiThread(activity) {
+                    listener?.onAdStatus(code, any)
+                }
             }
 
             override fun onAdShow() {
-                listener?.onAdShow()
+                runOnUiThread(activity) {
+                    listener?.onAdShow()
+                }
             }
 
             override fun onAdClicked() {
-                listener?.onAdClicked()
+                runOnUiThread(activity) {
+                    listener?.onAdClicked()
+                }
             }
 
             override fun onAdExposure() {
-                listener?.onAdExposure()
+                runOnUiThread(activity) {
+                    listener?.onAdExposure()
+                }
             }
 
             override fun onAdDismissed() {
-                listener?.onAdDismiss()
+                runOnUiThread(activity) {
+                    listener?.onAdDismiss()
+                }
             }
 
             override fun onAdError(code: Int, errorMsg: String?) {
-                listener?.onAdError(code, errorMsg)
+                runOnUiThread(activity) {
+                    listener?.onAdError(code, errorMsg)
+                }
             }
         }
 
@@ -118,45 +140,53 @@ object DoNewsSplashLoadHelper : BaseHelper() {
 
 
         if (adRequest.mAdId.isBlank()) {
-            DelayExecutor.delayExec {
-                doNewsPreloadSplashAd.setLoadState(PreloadAdState.Error)
-                listener?.onAdError(
-                    AdCustomError.ParamsAdIdNullOrBlank.code,
-                    AdCustomError.ParamsAdIdNullOrBlank.errorMsg
-                )
+            runOnUiThread(activity) {
+                DelayExecutor.delayExec {
+                    doNewsPreloadSplashAd.setLoadState(PreloadAdState.Error)
+                    listener?.onAdError(
+                        AdCustomError.ParamsAdIdNullOrBlank.code,
+                        AdCustomError.ParamsAdIdNullOrBlank.errorMsg
+                    )
+                }
             }
             return doNewsPreloadSplashAd
         }
 
         if (adRequest.mAdContainer == null) {
-            DelayExecutor.delayExec {
-                doNewsPreloadSplashAd.setLoadState(PreloadAdState.Error)
-                listener?.onAdError(
-                    AdCustomError.ParamsAdContainerNull.code,
-                    AdCustomError.ParamsAdContainerNull.errorMsg
-                )
+            runOnUiThread(activity) {
+                DelayExecutor.delayExec {
+                    doNewsPreloadSplashAd.setLoadState(PreloadAdState.Error)
+                    listener?.onAdError(
+                        AdCustomError.ParamsAdContainerNull.code,
+                        AdCustomError.ParamsAdContainerNull.errorMsg
+                    )
+                }
             }
             return doNewsPreloadSplashAd
         }
 
         if (adRequest.mWidthDp == 0f) {
-            DelayExecutor.delayExec {
-                doNewsPreloadSplashAd.setLoadState(PreloadAdState.Error)
-                listener?.onAdError(
-                    AdCustomError.ParamsAdWidthDpError.code,
-                    AdCustomError.ParamsAdWidthDpError.errorMsg
-                )
+            runOnUiThread(activity) {
+                DelayExecutor.delayExec {
+                    doNewsPreloadSplashAd.setLoadState(PreloadAdState.Error)
+                    listener?.onAdError(
+                        AdCustomError.ParamsAdWidthDpError.code,
+                        AdCustomError.ParamsAdWidthDpError.errorMsg
+                    )
+                }
             }
             return doNewsPreloadSplashAd
         }
 
         if (adRequest.mHeightDp == 0f) {
-            DelayExecutor.delayExec {
-                doNewsPreloadSplashAd.setLoadState(PreloadAdState.Error)
-                listener?.onAdError(
-                    AdCustomError.ParamsAdHeightDpError.code,
-                    AdCustomError.ParamsAdHeightDpError.errorMsg
-                )
+            runOnUiThread(activity) {
+                DelayExecutor.delayExec {
+                    doNewsPreloadSplashAd.setLoadState(PreloadAdState.Error)
+                    listener?.onAdError(
+                        AdCustomError.ParamsAdHeightDpError.code,
+                        AdCustomError.ParamsAdHeightDpError.errorMsg
+                    )
+                }
             }
             return doNewsPreloadSplashAd
         }
@@ -165,37 +195,53 @@ object DoNewsSplashLoadHelper : BaseHelper() {
         val doNewsSplashListener = object : DoNewsAdNative.SplashListener {
 
             override fun onAdLoad() {
-                listener?.onAdLoad()
-                doNewsPreloadSplashAd.setLoadState(PreloadAdState.Success)
-                //加载成功后，判断是否需要立即调用展示
-                if (doNewsPreloadSplashAd.isNeedShow()) {
-                    doNewsPreloadSplashAd.showAd()
+                runOnUiThread(activity) {
+                    listener?.onAdLoad()
+                    doNewsPreloadSplashAd.setLoadState(PreloadAdState.Success)
+                    //加载成功后，判断是否需要立即调用展示
+                    if (doNewsPreloadSplashAd.isNeedShow()) {
+                        doNewsPreloadSplashAd.showAd()
+                    }
                 }
             }
 
             override fun onAdStatus(code: Int, any: Any?) {
-                listener?.onAdStatus(code, any)
+                runOnUiThread(activity) {
+                    listener?.onAdStatus(code, any)
+                }
             }
 
             override fun onAdShow() {
-                listener?.onAdShow()
+                runOnUiThread(activity) {
+                    listener?.onAdShow()
+                }
             }
 
             override fun onAdClicked() {
-                listener?.onAdClicked()
+                runOnUiThread(activity) {
+                    listener?.onAdClicked()
+                }
             }
 
             override fun onAdExposure() {
-                listener?.onAdExposure()
+                runOnUiThread(activity) {
+                    listener?.onAdExposure()
+                }
             }
 
             override fun onAdDismissed() {
-                listener?.onAdDismiss()
+                runOnUiThread(activity) {
+                    listener?.onAdDismiss()
+                }
             }
 
             override fun onAdError(code: Int, errorMsg: String?) {
-                doNewsPreloadSplashAd.setLoadState(PreloadAdState.Error)
-                listener?.onAdError(code, errorMsg)
+                runOnUiThread(activity) {
+                    activity.runOnUiThread {
+                        doNewsPreloadSplashAd.setLoadState(PreloadAdState.Error)
+                        listener?.onAdError(code, errorMsg)
+                    }
+                }
             }
         }
 

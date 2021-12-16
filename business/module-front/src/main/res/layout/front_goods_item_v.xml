@@ -137,5 +137,14 @@
             android:layout_marginStart="-1dp"
             android:src="@drawable/front_goods_item_clock"
             android:visibility="gone" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/front_goods_item_guid_lav"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="end|bottom"
+            android:layout_marginBottom="-5dp"
+            android:visibility="gone"
+            app:lottie_loop="true" />
     </FrameLayout>
 </LinearLayout>

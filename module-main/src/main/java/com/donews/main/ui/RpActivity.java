@@ -30,6 +30,7 @@ import com.donews.main.databinding.MainRpActivityBinding;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoods;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoodsResp;
 import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.bean.WalletBean;
 import com.donews.middle.bean.rp.PreRpBean;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
@@ -165,19 +166,55 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
         MutableLiveData<Integer> mld = event.getLoginLoadingLiveData();
         mld.observe(this, d -> {
             if (d == 2) {
-                if (mGoods != null) {
-                    ARouter.getInstance()
-                            .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
-                            .withString("goods_id", mGoods.getGoodsId())
-                            .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
-                            .withBoolean("privilege", true)
-                            .navigation();
-                }
-                finish();
+                checkRpData();
             } else if (d == -1) {
                 ToastUtil.showShort(this, "微信登录失败，请重试!");
             }
         });
+    }
+
+    private void checkRpData() {
+        showLoading("红包状态检查中...");
+        mDataBinding.mainRpDouble.setClickable(false);
+        EasyHttp.get(BuildConfig.API_WALLET_URL + "v1/red-packet")
+                .cacheMode(CacheMode.NO_CACHE)
+                .isShowToast(false)
+                .execute(new SimpleCallBack<WalletBean>() {
+
+                    @Override
+                    public void onError(ApiException e) {
+                        hideLoading();
+                        mDataBinding.mainRpDouble.setClickable(true);
+                    }
+
+                    @Override
+                    public void onSuccess(WalletBean walletBean) {
+                        hideLoading();
+                        mDataBinding.mainRpDouble.setClickable(true);
+
+                        if (walletBean == null || walletBean.getList() == null || walletBean.getList().size() <= 0) {
+                            finish();
+                            return;
+                        }
+
+                        WalletBean.RpBean bean = walletBean.getList().get(0);
+                        if (bean.getOpened()) {
+                            ToastUtil.showShort(mContext, "奖励已发放");
+                            finish();
+                            return;
+                        }
+
+                        if (mGoods != null) {
+                            ARouter.getInstance()
+                                    .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
+                                    .withString("goods_id", mGoods.getGoodsId())
+                                    .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
+                                    .withBoolean("privilege", true)
+                                    .navigation();
+                        }
+                        finish();
+                    }
+                });
     }
 
     @Override
@@ -203,30 +240,27 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
     }
 
     private void doubleRp() {
+        showLoading("视频加载中...");
         IAdRewardVideoListener listener = new IAdRewardVideoListener() {
             @Override
             public void onAdStartLoad() {
-
             }
 
             @Override
             public void onAdStatus(int code, @Nullable Object any) {
-
             }
 
             @Override
             public void onAdLoad() {
-
             }
 
             @Override
             public void onAdShow() {
-
+                hideLoading();
             }
 
             @Override
             public void onAdVideoClick() {
-
             }
 
             @Override
@@ -240,22 +274,21 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
 
             @Override
             public void onAdClose() {
-
+                hideLoading();
             }
 
             @Override
             public void onVideoCached() {
-
             }
 
             @Override
             public void onVideoComplete() {
-
             }
 
             @Override
             public void onAdError(int code, @Nullable String errorMsg) {
                 ToastUtil.showShort(mContext, "视频加载失败，点击翻倍领取重试");
+                hideLoading();
             }
         };
 

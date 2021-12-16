@@ -25,7 +25,7 @@ import android.view.WindowManager;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 
-import com.donews.ads.mediation.v2.suuid.api.DnSuuid;
+import com.dnstatistics.sdk.agent.DonewsAgent;
 import com.donews.utilslibrary.BuildConfig;
 import com.donews.utilslibrary.base.UtilsConfig;
 import com.ishumei.smantifraud.SmAntiFraud;
@@ -224,29 +224,18 @@ public class DeviceUtils {
     }
 
     // suuid获取,保存在sp中，不然每次返回都是不一样的suuid
-/*
     public static String getMyUUID() {
         String key = "SUUID";
         String appSuuid = SPUtils.getInformain(key, "");
         if (TextUtils.isEmpty(appSuuid.trim())) {
-            String suuid = DnSuuid.getInstance().getSuuid(UtilsConfig.getApplication());
-//            String suuid = DonewsAgent.obtainSuuid(UtilsConfig.getApplication());
+//            String suuid = DnSuuid.getInstance().getSuuid(UtilsConfig.getApplication());
+            String suuid = DonewsAgent.obtainSuuid(UtilsConfig.getApplication());
             SPUtils.setInformain(key, suuid);
             appSuuid = suuid;
         }
         return appSuuid;
     }
-*/
 
-    // suuid获取,保存在sp中，不然每次返回都是不一样的suuid
-    public static String getMyUUID() {
-        String appSuuid = DnSuuid.getInstance().getSuuid(UtilsConfig.getApplication());
-        if (TextUtils.isEmpty(appSuuid.trim())) {
-            appSuuid = DnSuuid.getInstance().getSuuid(UtilsConfig.getApplication());
-        }
-//        LogUtil.e("suuid:" + appSuuid);
-        return appSuuid;
-    }
 
     public static String getChannelName() {
         ChannelInfo channelInfo = WalleChannelReader.getChannelInfo(UtilsConfig.getApplication());
@@ -259,7 +248,7 @@ public class DeviceUtils {
         }
 
 //        return "kuaishou123";
-//        return "xiaomi";
+//        return "jws";
         return !TextUtils.isEmpty(channel) ? channel : BuildConfig.APP_IDENTIFICATION;
     }
 

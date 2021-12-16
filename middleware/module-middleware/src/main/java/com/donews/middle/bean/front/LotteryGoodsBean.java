@@ -47,6 +47,28 @@ public class LotteryGoodsBean extends BaseCustomViewModel {
         @SerializedName("tag")
         private int tag;
 
+        @SerializedName("critical_guid")
+        private boolean critical_guid = false;
+
+        @SerializedName("critical_show_hand")
+        private boolean critical_show_hand = false;
+
+        public boolean isCritical_show_hand() {
+            return critical_show_hand;
+        }
+
+        public void setCritical_show_hand(boolean critical_show_hand) {
+            this.critical_show_hand = critical_show_hand;
+        }
+
+        public boolean isCritical_guid() {
+            return critical_guid;
+        }
+
+        public void setCritical_guid(boolean critical_guid) {
+            this.critical_guid = critical_guid;
+        }
+
         public int getTag() {
             return tag;
         }

@@ -16,6 +16,7 @@
 package com.donews.network.interceptor;
 
 
+import com.blankj.utilcode.util.AppUtils;
 import com.donews.network.model.HttpHeaders;
 import com.donews.network.utils.HttpLog;
 import com.donews.utilslibrary.utils.AppInfo;

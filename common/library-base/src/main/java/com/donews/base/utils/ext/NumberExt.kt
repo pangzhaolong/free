@@ -18,3 +18,9 @@ fun Long.isToday(): Boolean {
     val today = Date()
     return mDataFormat.format(curDate) == mDataFormat.format(today)
 }
+
+fun Long.toDataString(): String {
+    val mDataFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.CHINA)
+    val curDate = Date(this)
+    return mDataFormat.format(curDate)
+}
