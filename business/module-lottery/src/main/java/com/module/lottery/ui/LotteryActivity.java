@@ -176,6 +176,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             ifOpenAutoLotteryAndCount();
         }
         mStart_lottery = false;
+        showLotteryCritOverDialog();
     }
 
 
@@ -433,6 +434,10 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 public void onComplete() {
                     //广告有效播放完成可以显示抽奖码的弹框
                     Logger.d(TAG + "showGenerateCodeDialog");
+                    if (ABSwitch.Ins().getOpenCritModel()) {
+                        //暴击模式抽奖次数加一
+                        LotteryAdCount.INSTANCE.putCriticalModelLotteryNumber();
+                    }
                     generateLotteryCode();
                 }
             });
@@ -522,14 +527,15 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
     //生成抽奖码
     private void generateLotteryCode() {
-
-        if(CommonlyTool.ifCriticalStrike()){
+        //判断是否开始暴击模式
+        if (CommonlyTool.ifTurnOnCrit()) {
+            //通知开始暴击模式
+            EventBus.getDefault().post(new CritMessengerBean(200));
             //弹起暴击模式的抽奖码
             showLotteryCritOverDialog();
         }else{
             showGenerateCodeDialog();
         }
-
 
     }
 
@@ -559,11 +565,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                         AnalysisUtils.onEventEx(LotteryActivity.this, Dot.PAY_FAIL);
                         Toast.makeText(LotteryActivity.this, "生成抽奖码失败", Toast.LENGTH_SHORT).show();
                         return;
-                    }
-                    //判断是否开始暴击模式
-                    if (CommonlyTool.ifTurnOnCrit()) {
-                        //通知开始暴击模式
-                        EventBus.getDefault().post(new CritMessengerBean(200));
                     }
                     //刷新页面  展示抽奖码
                     lotteryInfo();

@@ -81,7 +81,7 @@ public class LotteryCritOverDialog extends BaseDialog<LotteryCritOverDialogLayou
         //延迟一秒出现关闭按钮
         Message msg = new Message();
         msg.what = 2;
-        mCritOverHandler.sendMessageDelayed(msg, 1500);
+        mCritOverHandler.sendMessageDelayed(msg, 3200);
         setOnDismissListener(this);
     }
 
@@ -95,7 +95,7 @@ public class LotteryCritOverDialog extends BaseDialog<LotteryCritOverDialogLayou
     }
 
     private void initView() {
-        mDataBinding.overView.startAnimation(LotteryAnimationUtils.setTranslateAnimation(getContext(), 3000));
+        mDataBinding.overView.startAnimation(LotteryAnimationUtils.setTranslateAnimation(getContext()));
     }
 
 
@@ -121,10 +121,6 @@ public class LotteryCritOverDialog extends BaseDialog<LotteryCritOverDialogLayou
                         if (generateCode != null) {
                             //抽奖统计
                             LotteryAdCount.INSTANCE.lotterySuccess();
-                            if (ABSwitch.Ins().getOpenCritModel()) {
-                                //暴击模式抽奖此时
-                                LotteryAdCount.INSTANCE.putCriticalModelLotteryNumber();
-                            }
                             if (mOnFinishListener != null) {
                                 mOnFinishListener.onCritJump(generateCode);
                                 mOnFinishListener.onFinish();

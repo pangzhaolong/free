@@ -220,9 +220,13 @@ public class MainActivity
     @Subscribe
     public void UnlockEvent(CritMessengerBean critMessenger) {
         if (critMessenger != null && critMessenger.mStatus == 200) {
-            //开始暴击模式
-            long time = 5 * 60 * 1000;
-            showPopWindow(time);
+            //判断暴击模式是否处于开启中
+            int critState = SPUtils.getInformain(CRIT_STATE, 0);
+            if (critState == 0) {
+                //开始暴击模式
+                long time = 5 * 60 * 1000;
+                showPopWindow(time);
+            }
         }
     }
 
