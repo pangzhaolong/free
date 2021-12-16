@@ -23,6 +23,7 @@ import com.donews.network.model.HttpHeaders;
 import com.donews.share.ISWXSuccessCallBack;
 import com.donews.share.WXHolderHelp;
 import com.donews.utilslibrary.analysis.AnalysisHelp;
+import com.donews.utilslibrary.analysis.AnalysisParam;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
@@ -324,6 +325,7 @@ public class UserInfoManage {
      * @param from 需要上报到后台的登录源：就是发起登录的位置
      */
     public static MutableLiveData<UserInfoBean> onLoadNetUserInfo(String data, String tag, String from) {
+        AnalysisUtils.onEventEx(BaseApplication.getInstance(), AnalysisParam.REGISTER);
         boolean isWxLogin = (AppInfo.getWXLoginCode() != null &&
                 AppInfo.getWXLoginCode().length() > 0);
         boolean isSendLoginEvent = (from != null && from.length() > 0);
