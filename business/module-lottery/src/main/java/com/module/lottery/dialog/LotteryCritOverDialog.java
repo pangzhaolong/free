@@ -70,7 +70,6 @@ public class LotteryCritOverDialog extends BaseDialog<LotteryCritOverDialogLayou
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initView();
         //延迟一秒出现关闭按钮
         Message message = new Message();
         message.what = 1;
@@ -78,8 +77,14 @@ public class LotteryCritOverDialog extends BaseDialog<LotteryCritOverDialogLayou
         //延迟一秒出现关闭按钮
         Message msg = new Message();
         msg.what = 2;
-        mCritOverHandler.sendMessageDelayed(msg, 3200);
+        mCritOverHandler.sendMessageDelayed(msg, 3000);
         setOnDismissListener(this);
+
+
+        Message animationMessage = new Message();
+        animationMessage.what = 3;
+        mCritOverHandler.sendMessageDelayed(animationMessage, 500);
+
     }
 
     private void multipleCode() {
@@ -92,6 +97,7 @@ public class LotteryCritOverDialog extends BaseDialog<LotteryCritOverDialogLayou
     }
 
     private void initView() {
+        mDataBinding.overView.setVisibility(View.VISIBLE);
         mDataBinding.overView.startAnimation(LotteryAnimationUtils.setTranslateAnimation(getContext()));
     }
 
@@ -172,6 +178,12 @@ public class LotteryCritOverDialog extends BaseDialog<LotteryCritOverDialogLayou
                 case 2:
                     if (reference.get() != null) {
                         reference.get().multipleCode();
+                    }
+                    break;
+
+                case 3:
+                    if (reference.get() != null) {
+                        reference.get().initView();
                     }
                     break;
 

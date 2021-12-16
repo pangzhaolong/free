@@ -17,13 +17,16 @@ import com.module_lottery.databinding.LotteryCritDialogLayoutBinding;
 import java.lang.ref.WeakReference;
 
 //暴击模式下,恭喜获得抽奖码,弹框
-public class LotteryCritCodeDialog extends  BaseDialog<LotteryCritDialogLayoutBinding> implements DialogInterface.OnDismissListener{
+public class LotteryCritCodeDialog extends BaseDialog<LotteryCritDialogLayoutBinding> implements DialogInterface.OnDismissListener {
 
 
-    private LotteryCritCodeHandler  mLotteryCritCodeHandler = new LotteryCritCodeHandler(this);
+    private LotteryCritCodeHandler mLotteryCritCodeHandler = new LotteryCritCodeHandler(this);
     private OnStateListener mOnFinishListener;
-    public LotteryCritCodeDialog(@NonNull Context context) {
-        super(context,  R.style.dialogTransparent);
+    private GenerateCodeBean mGenerateCodeBean;
+
+    public LotteryCritCodeDialog(@NonNull Context context, GenerateCodeBean generateCodeBean) {
+        super(context, R.style.dialogTransparent);
+        this.mGenerateCodeBean = generateCodeBean;
     }
 
 
@@ -38,11 +41,23 @@ public class LotteryCritCodeDialog extends  BaseDialog<LotteryCritDialogLayoutBi
         initView();
 
     }
+
     private void initView() {
         mDataBinding.closure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismiss();
+            }
+        });
+        if (mGenerateCodeBean != null) {
+            mDataBinding.lotteryCode.setText(mGenerateCodeBean.getCode());
+        }
+        mDataBinding.startLottery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mOnFinishListener!=null){
+                    mOnFinishListener.onStartCrit();
+                }
             }
         });
     }
@@ -55,8 +70,6 @@ public class LotteryCritCodeDialog extends  BaseDialog<LotteryCritDialogLayoutBi
             mLotteryCritCodeHandler.removeCallbacksAndMessages(null);
         }
     }
-
-
 
 
     @Override
