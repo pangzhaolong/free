@@ -61,7 +61,7 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
         boolean logType = AppInfo.checkIsWXLogin();
         if (ABSwitch.Ins().getLotteryLine() == 1 && !logType) {
             mLotteryHandler.sendMessageDelayed(mes, 2000);
-        }else{
+        } else {
             mLotteryHandler.sendMessageDelayed(mes, 800);
         }
         initView();
@@ -91,7 +91,7 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
                 mOnFinishListener.onExclusiveBulletFrame();
             }
 
-        }else{
+        } else {
             if (baseLiveDataModel != null && mGoodsId != null) {
                 Map<String, String> params = BaseParams.getMap();
                 params.put("goods_id", mGoodsId);
@@ -118,14 +118,14 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
                                     if (mOnFinishListener != null) {
                                         mOnFinishListener.onJump(generateCode);
                                     }
+                                    AnalysisUtils.onEventEx(getContext(), Dot.PAY_SUCC);
+                                } else {
+                                    AnalysisUtils.onEventEx(getContext(), Dot.PAY_FAIL);
                                 }
                             }
                         }));
             }
         }
-
-
-
     }
 
 
@@ -166,8 +166,7 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
         void onJump(GenerateCodeBean generateCodeBean);
 
 
-        void onExclusiveBulletFrame( );
-
+        void onExclusiveBulletFrame();
 
 
     }
