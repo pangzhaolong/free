@@ -108,6 +108,7 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
                                     mOnFinishListener.onFinish();
                                 }
                                 Toast.makeText(getContext(), "抽奖码获取失败", Toast.LENGTH_SHORT).show();
+                                AnalysisUtils.onEventEx(getContext(), Dot.PAY_FAIL);
                             }
 
                             @Override

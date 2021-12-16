@@ -125,7 +125,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
                     android:gravity="center"
-                    android:text="翻倍领取"
+                    android:text="领取更多"
                     android:textColor="#D82D2A"
                     android:textSize="20sp"
                     android:textStyle="bold" />
