@@ -177,6 +177,7 @@ public class Dot {
     //
     public final static String But_Goto_Lottery = "But_Goto_Lottery";
     public final static String PAY_SUCC = "pay";
+    //抽奖码失败
     public final static String PAY_FAIL = "pay_fail";
 
 }

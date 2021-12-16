@@ -19,11 +19,14 @@ import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.module.lottery.bean.CritCodeBean;
 import com.module.lottery.bean.GenerateCodeBean;
 import com.module.lottery.bean.RecommendBean;
 import com.module.lottery.model.LotteryModel;
 import com.module.lottery.ui.BaseParams;
+import com.module.lottery.ui.LotteryActivity;
 import com.module.lottery.utils.ImageUtils;
 import com.module.lottery.utils.LotteryAnimationUtils;
 import com.module.lottery.utils.RandomProbability;
@@ -109,6 +112,7 @@ public class LotteryCritOverDialog extends BaseDialog<LotteryCritOverDialogLayou
                         if (mOnFinishListener != null) {
                             mOnFinishListener.onFinish();
                         }
+                        AnalysisUtils.onEventEx(getContext(), Dot.PAY_FAIL);
                         Toast.makeText(getContext(), "抽奖码获取失败", Toast.LENGTH_SHORT).show();
                     }
 
