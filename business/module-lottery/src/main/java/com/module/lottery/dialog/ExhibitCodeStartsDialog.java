@@ -171,7 +171,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
                 //总共需要抽多少个抽奖码开始暴击模式
                 int sumNumber;
                 //已经参与的次数
-                int participateNumber = LotteryAdCount.INSTANCE.getTotalLotteryNumber();
+                int participateNumber = LotteryAdCount.INSTANCE.getCriticalModelLotteryNumber();
                 if (CommonlyTool.isNewUser()) {
                     sumNumber = ABSwitch.Ins().getOpenCritModelByLotteryCount();
                 } else {
