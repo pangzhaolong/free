@@ -69,11 +69,11 @@ class CountdownView : LinearLayout {
                 typedArray.getDrawable(R.styleable.CountdownView_text_view_millisecond_bg)
             millisecond?.background = millisecondBg
             var txSize =
-                typedArray.getDimension(R.styleable.CountdownView_c_text_size,0F)
-            if(txSize != 0F){
-                minute?.setTextSize(TypedValue.COMPLEX_UNIT_PX,txSize)
-                second?.setTextSize(TypedValue.COMPLEX_UNIT_PX,txSize)
-                millisecond?.setTextSize(TypedValue.COMPLEX_UNIT_PX,txSize)
+                typedArray.getDimension(R.styleable.CountdownView_c_text_size, 0F)
+            if (txSize != 0F) {
+                minute?.setTextSize(TypedValue.COMPLEX_UNIT_PX, txSize)
+                second?.setTextSize(TypedValue.COMPLEX_UNIT_PX, txSize)
+                millisecond?.setTextSize(TypedValue.COMPLEX_UNIT_PX, txSize)
             }
             //设置背景
             var minuteColor =
@@ -105,6 +105,17 @@ class CountdownView : LinearLayout {
         typedArray?.recycle()
     }
 
+    /**
+     * @param time 需要倒计时的时间 毫秒
+     *
+     * */
+    public fun start(time: Long) {
+        pauseTimer();
+        period = time;
+        elapsedRealtime = SystemClock.elapsedRealtime();
+        startTime()
+    }
+
 
     private fun startTime() {
         if (period > 0) {
@@ -122,7 +133,7 @@ class CountdownView : LinearLayout {
     interface ICountdownViewListener {
         //倒计时完成
         fun onCountdownCompleted()
-
+        fun onProgressValue(max: Long, value: Long);
     }
 
 
@@ -147,6 +158,13 @@ class CountdownView : LinearLayout {
                     var timestamp = reference?.get()?.period!! - time;
                     if (timestamp > 0) {
                         reference?.get()?.complete = false
+                        //回调进度
+                        if (reference?.get()!!.mICountdownViewListener != null) {
+                            reference?.get()!!.mICountdownViewListener!!.onProgressValue(
+                                reference?.get()!!.period,
+                                timestamp
+                            )
+                        }
                         //修改时间
                         reference?.get()?.getTimeFormat(timestamp)
                         var message = Message();

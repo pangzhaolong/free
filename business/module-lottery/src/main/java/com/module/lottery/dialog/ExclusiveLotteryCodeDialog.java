@@ -190,6 +190,12 @@ public class ExclusiveLotteryCodeDialog extends BaseDialog<ExclusiveLotteryCodeL
         mDataBinding.userProtocol.setOnClickListener(this);
         mDataBinding.privacyProtocol.setOnClickListener(this);
         mDataBinding.countdownView.setCountdownViewListener(new CountdownView.ICountdownViewListener() {
+
+            @Override
+            public void onProgressValue(long max, long value) {
+
+            }
+
             @Override
             public void onCountdownCompleted() {
                 //倒计时完成

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!--StartActivity Style 冷启动效果-->
     <style name="main_AppTheme.Start" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/welcome_layer_drawable</item>
@@ -9,6 +9,11 @@
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">false</item>
     </style>
+
+    <style name="main_AppTheme.Guide" parent="main_AppTheme.Start">
+        <item name="android:windowBackground">@color/white</item>
+    </style>
+
 
     <style name="main_AppTheme.Start.Progress" parent="@android:style/Widget.ProgressBar.Horizontal" />
 
@@ -33,6 +38,12 @@
         <item name="android:windowAnimationStyle">@android:style/Animation.Dialog
         </item>
     </style>
+    <style name="StyleProgressBarMini"
+        parent="@android:style/Widget.ProgressBar.Horizontal" tools:ignore="ResourceName">
+        <item name="android:maxHeight">50dip</item>
+        <item name="android:minHeight">10dip</item>
+        <item name="android:progressDrawable">@drawable/my_progressbar</item>
+    </style>
     <style name="BaseDialogTheme" parent="Theme.MaterialComponents.DayNight.Dialog.Bridge">
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -51,8 +62,18 @@
         <!--        <item name="android:backgroundDimEnabled">false</item>-->
     </style>
 
-    <style name="BaseDialogTheme.FullScreen">
+    <style name="BaseDialogTheme.FullScreen" tools:ignore="ResourceName">
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="Dialog_BottomToTopAnim" parent="android:Animation" tools:ignore="ResourceName">
+        <item name="android:windowEnterAnimation">@anim/bottom_anim_enter</item>
+        <item name="android:windowExitAnimation">@anim/bottom_anim_exit</item>
+    </style>
+
+    <!-- 进度条效果样式 -->
+    <style name="CritProgressBar" parent="@android:style/Widget.ProgressBar.Horizontal" tools:ignore="ResourceName">
+        <item name="android:progressDrawable">@drawable/main_ext_crit_pro_bg</item>
     </style>
 </resources>

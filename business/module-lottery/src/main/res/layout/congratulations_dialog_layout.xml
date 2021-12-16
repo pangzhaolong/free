@@ -82,14 +82,14 @@
                     android:src="@drawable/main_exit_dialog_winning_yh_r" />
 
                 <ImageView
-                    android:visibility="invisible"
                     android:id="@+id/iv_lh_2"
                     android:layout_width="42dp"
                     android:layout_height="46dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="120dp"
                     android:layout_marginEnd="10dp"
-                    android:src="@drawable/main_exit_dialog_winning_yh_r" />
+                    android:src="@drawable/main_exit_dialog_winning_yh_r"
+                    android:visibility="invisible" />
 
 
                 <ImageView

@@ -37,6 +37,13 @@ public abstract class BaseDialog<V extends ViewDataBinding> extends Dialog {
 
     public abstract int setLayout();
 
+    public float setDimAmount() {
+
+
+        return 0.8f;
+    }
+
+
     public BaseDialog(@NonNull Context context, int themeResId) {
         super(context, themeResId);
     }
@@ -53,7 +60,7 @@ public abstract class BaseDialog<V extends ViewDataBinding> extends Dialog {
         WindowManager.LayoutParams lp = dialogWindow.getAttributes();
         DisplayMetrics d = getContext().getResources().getDisplayMetrics(); // 获取屏幕宽、高用
         lp.width = (int) (d.widthPixels * setSize());
-        lp.dimAmount = 0.8f;//外围遮罩透明度0.0f-1.0f
+        lp.dimAmount = setDimAmount();//外围遮罩透明度0.0f-1.0f
         dialogWindow.setAttributes(lp);
         dialogWindow.setGravity(Gravity.CENTER);//内围区域底部显示
 //        //设置window背景，默认的背景会有Padding值，不能全屏。当然不一定要是透明，你可以设置其他背景，替换默认的背景即可。

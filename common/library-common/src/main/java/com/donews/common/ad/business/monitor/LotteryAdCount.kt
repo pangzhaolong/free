@@ -35,6 +35,11 @@ object LotteryAdCount {
     /** 退出app但是未抽奖次数 */
     private const val EXIT_APP_WITH_NOT_LOTTERY = "exitAppWithNotLottery"
 
+
+
+    /** 暴击模式抽奖次数 */
+    private const val CRITICAL_MODEL = "critical_model";
+
     private val mmkv = MMKV.mmkvWithID("AdCount", MMKV.MULTI_PROCESS_MODE)!!
 
 
@@ -87,6 +92,36 @@ object LotteryAdCount {
     fun getTotalLotteryNumber(): Int {
         return mmkv.decodeInt(TOTAL_LOTTERY_TIME, 0)
     }
+
+
+    /**
+     * 记录暴击模式的抽奖次数
+     * */
+    fun putCriticalModelLotteryNumber() {
+        //记录总的抽奖次数
+        var totalLotteryNumber = mmkv.decodeInt(CRITICAL_MODEL, 0)
+        totalLotteryNumber++
+        mmkv.encode(CRITICAL_MODEL,totalLotteryNumber)
+    }
+
+    /**
+     * 重置暴击模式的值
+     * */
+    fun resetCriticalModelNumber():Int {
+
+        return mmkv.decodeInt(CRITICAL_MODEL, 0)
+    }
+
+
+
+    /**
+     * 暴击模式抽奖次数 该次数会在 暴击模式时间结束后重置
+     * */
+    fun getCriticalModelLotteryNumber():Int {
+
+        return mmkv.decodeInt(CRITICAL_MODEL, 0)
+    }
+
 
     /** 返回退出app但是没有抽奖的次数 */
     fun getExitAppWithNotLotteryTimes(): Int {

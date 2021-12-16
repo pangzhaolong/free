@@ -29,7 +29,7 @@ public class ABBean extends BaseCustomViewModel {
     @SerializedName("critModelSwitch")
     private int critModelSwitch = 1;
     @SerializedName("openCritModel")
-    private boolean openCritModel = false;
+    private boolean openCritModel = true;
 
     public boolean isOpenCritModel() {
         return openCritModel;

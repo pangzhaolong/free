@@ -17,7 +17,7 @@
             android:layout_width="21dp"
             android:layout_height="21dp"
             android:gravity="center"
-            android:text="04"
+            android:text="00"
             android:textSize="13dp" />
 
 
@@ -35,7 +35,7 @@
             android:layout_width="21dp"
             android:layout_height="21dp"
             android:gravity="center"
-            android:text="04"
+            android:text="00"
             android:textSize="13dp" />
 
         <TextView
@@ -51,7 +51,7 @@
             android:layout_width="21dp"
             android:layout_height="21dp"
             android:gravity="center"
-            android:text="04"
+            android:text="00"
             android:textSize="13dp" />
     </LinearLayout>
 </layout>

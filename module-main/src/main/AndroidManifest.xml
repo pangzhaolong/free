@@ -56,7 +56,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.GuideActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/main_AppTheme.Guide"/>
         <activity
             android:name=".ui.RpActivity"
             android:screenOrientation="portrait"

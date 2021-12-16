@@ -1,15 +1,27 @@
 package com.donews.main.ui;
 
+import static com.donews.common.config.CritParameterConfig.CRIT_STATE;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 
@@ -25,25 +37,33 @@ import com.donews.base.base.AppStatusConstant;
 import com.donews.base.base.AppStatusManager;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.business.loader.AdManager;
+import com.donews.common.ad.business.monitor.LotteryAdCount;
 import com.donews.common.ad.cache.AdVideoCacheUtils;
 import com.donews.common.adapter.ScreenAutoAdapter;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
+import com.donews.common.bean.CritMessengerBean;
+import com.donews.common.config.CritParameterConfig;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.common.updatedialog.UpdateManager;
 import com.donews.common.updatedialog.UpdateReceiver;
 import com.donews.common.views.FrontFloatingBtn;
+import com.donews.common.views.CountdownView;
 import com.donews.main.BuildConfig;
 import com.donews.main.R;
 import com.donews.main.adapter.MainPageAdapter;
 import com.donews.main.common.CommonParams;
 import com.donews.main.databinding.MainActivityMainBinding;
+import com.donews.main.databinding.MainPopWindowProgressBarBinding;
 import com.donews.main.dialog.AnAdditionalDialog;
 import com.donews.main.dialog.DrawDialog;
 import com.donews.main.dialog.EnterShowDialog;
 import com.donews.main.dialog.FreePanicBuyingDialog;
 import com.donews.main.dialog.RemindDialogExt;
+import com.donews.main.dialog.ext.CritWelfareDialogFragment;
+import com.donews.main.utils.AndroidProcessesUtils;
 import com.donews.main.utils.ExitInterceptUtils;
+import com.donews.main.utils.ExtDialogUtil;
 import com.donews.main.viewModel.MainViewModel;
 import com.donews.main.views.CornerMarkUtils;
 import com.donews.main.views.MainBottomTanItem;
@@ -146,6 +166,93 @@ public class MainActivity
         AdVideoCacheUtils.INSTANCE.cacheRewardVideo(this);
         //上报一个测试友盟多参数事件
         testUMMuliParams();
+        mDataBinding.occupyPosition.post(new Runnable() {
+            @Override
+            public void run() {
+                initializeCritState();
+            }
+        });
+    }
+
+
+    /**
+     * 用来初始化暴击模式的状态
+     * 使用场景，当处于暴击模式时，app重启
+     */
+    private void initializeCritState() {
+
+        int critState = SPUtils.getInformain(CritParameterConfig.CRIT_STATE, 0);
+        //暴击模式在运行中
+        if (critState == 1) {
+            //获取暴击模式的开始时间
+            long critStartTime = SPUtils.getInformain(CritParameterConfig.CRIT_START_TIME, 0);
+            if (critStartTime != 0) {
+                //当前时间
+                long time = SystemClock.elapsedRealtime();
+                //计算 暴击时刻的总时间 5分钟
+                long againstTime = 5 * 60 * 1000;
+                if (Math.abs(time - critStartTime) >= againstTime) {
+                    cleanCrit();
+                } else {
+                    showPopWindow(Math.abs(time - critStartTime));
+                    //正在进行暴击时刻
+                }
+
+
+            }
+        }
+
+
+    }
+
+    //重置暴击模式的状态
+    private void cleanCrit() {
+        //暴击时刻已结束
+        SPUtils.setInformain(CRIT_STATE, 0);
+        SPUtils.setInformain(CritParameterConfig.CRIT_REMAINING_TIME, 0);
+        SPUtils.setInformain(CritParameterConfig.CRIT_START_TIME, 0);
+        //修改新手标识   false标识非新手
+        SPUtils.setInformain(CritParameterConfig.LOTTERY_MARK, false);
+        //结束后重置暴击模式的次数，下次达到后在进入下轮
+        LotteryAdCount.INSTANCE.resetCriticalModelNumber();
+    }
+
+    @Subscribe
+    public void UnlockEvent(CritMessengerBean critMessenger) {
+        if (critMessenger != null && critMessenger.mStatus == 200) {
+            //开始暴击模式
+            long time = 5 * 60 * 1000;
+            showPopWindow(time);
+        }
+    }
+
+    private void showPopWindow(long time) {
+        MainPopWindowProgressBarBinding viewDataBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.main_pop_window_progress_bar, null, false);
+        PopupWindow mPopWindow = new PopupWindow(viewDataBinding.getRoot());
+        mPopWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+        mPopWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        mPopWindow.setFocusable(false);
+        mPopWindow.showAtLocation(getWindow().getDecorView(), Gravity.TOP, 0, 100);
+        SPUtils.setInformain(CritParameterConfig.CRIT_START_TIME, SystemClock.elapsedRealtime());
+        viewDataBinding.countdownView.start(time);
+        viewDataBinding.countdownView.setCountdownViewListener(new CountdownView.ICountdownViewListener() {
+            @Override
+            public void onProgressValue(long max, long value) {
+                viewDataBinding.progressBar.setMax((int) max);
+                viewDataBinding.progressBar.setProgress((value - 12000) > 0 ? (int) (value - 12000) : 0);
+                viewDataBinding.progressBar.setSecondaryProgress((int) value);
+                //将进度写入共享参数
+                SPUtils.setInformain(CRIT_STATE, 1);
+                SPUtils.setInformain(CritParameterConfig.CRIT_REMAINING_TIME, value);
+            }
+
+            @Override
+            public void onCountdownCompleted() {
+                mPopWindow.dismiss();
+                cleanCrit();
+                ToastUtil.showShort(getApplicationContext(), "暴击时刻已结束");
+            }
+        });
     }
 
     @Override
@@ -345,7 +452,6 @@ public class MainActivity
                 mDataBinding.cvContentView.setCurrentItem(0);
                 mPosition = 0;
             });
-//            mDataBinding.mainFloatingBtn.setModel(FrontFloatingBtn.CRITICAL_HIT_MODEL);
         }
 
         int intoFrontCounts = SPUtils.getInformain(KeySharePreferences.INTO_FRONT_COUNTS, 0);

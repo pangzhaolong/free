@@ -24,11 +24,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import com.donews.common.ad.business.monitor.LotteryAdCount;
+import com.donews.main.utils.ExitInterceptUtils;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.module.lottery.bean.GenerateCodeBean;
 import com.module.lottery.bean.LotteryCodeBean;
 import com.module.lottery.utils.ClickDoubleUtil;
+import com.module.lottery.utils.CommonlyTool;
 import com.module_lottery.R;
 import com.module_lottery.databinding.ExhibitCodeDialogLayoutBinding;
 import com.orhanobut.logger.Logger;
@@ -73,7 +77,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
             public void onClick(View v) {
                 if (mOnFinishListener != null) {
                     //放在倒计时结束后再次打开
-                    if(ClickDoubleUtil.Companion.isFastClick()){
+                    if (ClickDoubleUtil.Companion.isFastClick()) {
                         freed();
                         mOnFinishListener.onFinish();
                     }
@@ -85,7 +89,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
         initProgressBar();
         initView();
         setOnDismissListener(dialog -> {
-            if(isSendCloseEvent) {
+            if (isSendCloseEvent) {
                 if (mGenerateCodeBean.getRemain() <= 0) {
                     AnalysisUtils.onEventEx(context, Dot.Lottery_Complete_Drawing_Close);
                 } else {
@@ -99,6 +103,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
     }
 
     private boolean isSendCloseEvent = true;
+
     private void initProgressBar() {
         mDataBinding.setCodeBean(mGenerateCodeBean);
         int schedule = 0;
@@ -155,6 +160,37 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
             mDataBinding.giftBoxOff.setAnimation("gift_box_off.json");
             mDataBinding.giftBoxOff.loop(true);
             mDataBinding.giftBoxOff.playAnimation();
+        }
+        if (ABSwitch.Ins().getOpenCritModel()) {
+
+            //读取暴击模式
+            if (ABSwitch.Ins().getCritModelSwitch() == 1) {
+                //抽奖解锁暴击
+                mDataBinding.critDraw.setVisibility(View.VISIBLE);
+                mDataBinding.critDownload.setVisibility(View.GONE);
+                //总共需要抽多少个抽奖码开始暴击模式
+                int sumNumber;
+                //已经参与的次数
+                int participateNumber = LotteryAdCount.INSTANCE.getTotalLotteryNumber();
+                if (CommonlyTool.isNewUser()) {
+                    sumNumber = ABSwitch.Ins().getOpenCritModelByLotteryCount();
+                } else {
+                    sumNumber = 6;
+                }
+                mDataBinding.numberCode.setText((sumNumber - participateNumber) < 0 ? 0 + "" : (sumNumber - participateNumber) + "");
+
+            } else if (ABSwitch.Ins().getCritModelSwitch() == 2) {
+                //下载解锁
+                mDataBinding.critDownload.setVisibility(View.VISIBLE);
+                mDataBinding.critDraw.setVisibility(View.GONE);
+            } else {
+                //抽奖解锁暴击
+                mDataBinding.critDraw.setVisibility(View.VISIBLE);
+                mDataBinding.critDownload.setVisibility(View.GONE);
+            }
+        } else {
+            mDataBinding.critDraw.setVisibility(View.GONE);
+            mDataBinding.critDownload.setVisibility(View.GONE);
         }
     }
 
