@@ -2,6 +2,7 @@ package com.dn.sdk.listener.proxy
 
 import android.view.View
 import com.dn.sdk.bean.AdRequest
+import com.dn.sdk.count.CountTrackImpl
 import com.dn.sdk.listener.IAdNativeTemplateListener
 import com.dn.sdk.utils.AdLoggerUtils
 
@@ -16,6 +17,8 @@ class LoggerNativeTemplateListenerProxy(
     private val adRequest: AdRequest,
     private val listener: IAdNativeTemplateListener?
 ) : IAdNativeTemplateListener {
+
+    private val countTrack = CountTrackImpl(adRequest)
 
     override fun onAdStartLoad() {
         AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "NativeTemplate onAdStartLoad()"))
@@ -40,16 +43,19 @@ class LoggerNativeTemplateListenerProxy(
     override fun onAdExposure() {
         AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "NativeTemplate onAdExposure()"))
         listener?.onAdExposure()
+        countTrack.onAdShow()
     }
 
     override fun onAdClicked() {
         AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "NativeTemplate onAdClicked()"))
         listener?.onAdClicked()
+        countTrack.onAdClick()
     }
 
     override fun onAdClose() {
         AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "NativeTemplate onAdClose()"))
         listener?.onAdClose()
+        countTrack.onAdClose()
     }
 
     override fun onAdError(code: Int, errorMsg: String?) {

@@ -1,6 +1,7 @@
 package com.dn.sdk.listener.proxy
 
 import com.dn.sdk.bean.AdRequest
+import com.dn.sdk.count.CountTrackImpl
 import com.dn.sdk.listener.IAdBannerListener
 import com.dn.sdk.utils.AdLoggerUtils
 
@@ -16,6 +17,8 @@ class LoggerBannerListenerProxy(
     private val listener: IAdBannerListener?
 ) : IAdBannerListener {
 
+    private val countTrack = CountTrackImpl(adRequest)
+
     override fun onAdStartLoad() {
         AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "Banner onAdStartLoad()"))
         listener?.onAdStartLoad()
@@ -27,21 +30,24 @@ class LoggerBannerListenerProxy(
     }
 
     override fun onAdShow() {
+        countTrack.onAdShow()
         AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "Banner onAdShow()"))
-        listener?.onAdShow()
     }
 
     override fun onAdExposure() {
         AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "Banner onAdExposure()"))
         listener?.onAdExposure()
+        listener?.onAdShow()
     }
 
     override fun onAdClicked() {
+        countTrack.onAdClick()
         AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "Banner onAdClicked()"))
         listener?.onAdClicked()
     }
 
     override fun onAdClosed() {
+        countTrack.onAdClose()
         AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "Banner onAdClosed()"))
         listener?.onAdClosed()
     }
