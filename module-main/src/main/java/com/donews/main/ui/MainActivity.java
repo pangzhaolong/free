@@ -37,6 +37,7 @@ import com.donews.base.base.AppStatusConstant;
 import com.donews.base.base.AppStatusManager;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.business.loader.AdManager;
+import com.donews.common.ad.business.monitor.LotteryAdCount;
 import com.donews.common.ad.cache.AdVideoCacheUtils;
 import com.donews.common.adapter.ScreenAutoAdapter;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
@@ -190,16 +191,11 @@ public class MainActivity
                 long time = SystemClock.elapsedRealtime();
                 //计算 暴击时刻的总时间 5分钟
                 long againstTime = 5 * 60 * 1000;
-
                 if (Math.abs(time - critStartTime) >= againstTime) {
-                    //暴击时刻已结束
-                    showPopWindow(Math.abs(time - critStartTime));
-
+                    cleanCrit();
                 } else {
+                    showPopWindow(Math.abs(time - critStartTime));
                     //正在进行暴击时刻
-                    SPUtils.setInformain(CRIT_STATE, 0);
-                    SPUtils.setInformain(CritParameterConfig.CRIT_REMAINING_TIME, 0);
-                    SPUtils.setInformain(CritParameterConfig.CRIT_START_TIME, 0);
                 }
 
 
@@ -209,12 +205,16 @@ public class MainActivity
 
     }
 
-
-    //清除暴击时刻的状态
+    //重置暴击模式的状态
     private void cleanCrit() {
+        //暴击时刻已结束
         SPUtils.setInformain(CRIT_STATE, 0);
         SPUtils.setInformain(CritParameterConfig.CRIT_REMAINING_TIME, 0);
         SPUtils.setInformain(CritParameterConfig.CRIT_START_TIME, 0);
+        //修改新手标识   false标识非新手
+        SPUtils.setInformain(CritParameterConfig.LOTTERY_MARK, false);
+        //结束后重置暴击模式的次数，下次达到后在进入下轮
+        LotteryAdCount.INSTANCE.resetCriticalModelNumber();
     }
 
     @Subscribe

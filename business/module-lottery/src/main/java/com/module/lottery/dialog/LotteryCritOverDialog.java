@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import com.donews.base.model.BaseLiveDataModel;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.business.monitor.LotteryAdCount;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
@@ -116,6 +117,10 @@ public class LotteryCritOverDialog extends BaseDialog<LotteryCritOverDialogLayou
                         if (generateCode != null) {
                             //抽奖统计
                             LotteryAdCount.INSTANCE.lotterySuccess();
+                            if (ABSwitch.Ins().getOpenCritModel()) {
+                                //暴击模式抽奖此时
+                                LotteryAdCount.INSTANCE.putCriticalModelLotteryNumber();
+                            }
                             if (mOnFinishListener != null) {
                                 mOnFinishListener.onCritJump(generateCode);
                                 mOnFinishListener.onFinish();

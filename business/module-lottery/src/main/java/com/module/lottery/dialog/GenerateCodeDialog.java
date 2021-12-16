@@ -108,7 +108,6 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
     }
 
 
-
     private void getNetData(Map<String, String> params, String url) {
         JSONObject json = new JSONObject(params);
         baseLiveDataModel.unDisposable();
@@ -130,6 +129,11 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
                         if (generateCode != null) {
                             //抽奖统计
                             LotteryAdCount.INSTANCE.lotterySuccess();
+
+                            if (ABSwitch.Ins().getOpenCritModel()) {
+                                //暴击模式抽奖此时
+                                LotteryAdCount.INSTANCE.putCriticalModelLotteryNumber();
+                            }
                             if (mOnFinishListener != null) {
                                 mOnFinishListener.onJump(generateCode);
                             }

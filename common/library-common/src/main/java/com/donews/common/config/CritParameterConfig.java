@@ -19,4 +19,14 @@ public class CritParameterConfig {
      */
     public static final String CRIT_START_TIME = "crit_start_time";
 
+
+
+    /**
+     * 新手标识
+     *
+     */
+    public  static final String  LOTTERY_MARK="lottery_mark";
+
+
+
 }

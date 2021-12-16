@@ -11,19 +11,21 @@ public class CommonlyTool {
 
     //判断是否是新用户
     public static boolean isNewUser() {
+        //判断是否是新用户
+        //安装时间
+        long installTime = AppStatusUtils.getAppInstallTime();
+        //经过时间
+        long elapsedTime = (System.currentTimeMillis() - installTime);
+        //设备时长24小时
+        long duration = 24 * 60 * 60 * 1000L;
+        //新手标识
+        boolean mark = SPUtils.getInformain(CritParameterConfig.LOTTERY_MARK, true);
+        //还需要判断 新手福利是否使用  mark
+        if (elapsedTime <= duration && mark) {
+            //是新用户
+            return true;
+        }
         return false;
-//        //判断是否是新用户
-//        //安装时间
-//        long installTime = AppStatusUtils.getAppInstallTime();
-//        //经过时间
-//        long elapsedTime = (System.currentTimeMillis() - installTime);
-//        //设备时长24小时
-//        long duration = 24 * 60 * 60 * 1000L;
-//        if (elapsedTime <= duration) {
-//            //是新用户
-//            return true;
-//        }
-//        return false;
 
     }
 
@@ -32,17 +34,17 @@ public class CommonlyTool {
      * 判断是否需要开启暴击模式
      */
     public static boolean ifTurnOnCrit() {
-        if(ABSwitch.Ins().getOpenCritModel()){
+        if (ABSwitch.Ins().getOpenCritModel()) {
             //新用户
-            int sumNumber=0;
+            int sumNumber = 0;
             //已经参与的次数
-            int participateNumber = LotteryAdCount.INSTANCE.getTotalLotteryNumber();
+            int participateNumber = LotteryAdCount.INSTANCE.getCriticalModelLotteryNumber();
             if (isNewUser()) {
                 //判断次数是否满足最低
                 //总共需要抽多少个抽奖码开始暴击模式
-                 sumNumber = ABSwitch.Ins().getOpenCritModelByLotteryCount();
-            }else{
-                sumNumber=6;
+                sumNumber = ABSwitch.Ins().getOpenCritModelByLotteryCount();
+            } else {
+                sumNumber = 6;
             }
             if (participateNumber >= sumNumber) {
                 //开始暴击模式
@@ -68,13 +70,13 @@ public class CommonlyTool {
                     sumNumber = 6;
                 }
                 //已经参与的次数
-                int participateNumber = LotteryAdCount.INSTANCE.getTotalLotteryNumber();
-                if (sumNumber - participateNumber > 0) {
-                    //不满足
-                    return false;
-                } else {
+                int participateNumber = LotteryAdCount.INSTANCE.getCriticalModelLotteryNumber();
+                if (participateNumber >= sumNumber) {
                     //满足
                     return true;
+                } else {
+                    //不满足
+                    return false;
                 }
             } else {
                 return false;
