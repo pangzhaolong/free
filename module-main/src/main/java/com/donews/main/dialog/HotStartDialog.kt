@@ -56,6 +56,8 @@ class HotStartDialog : DialogFragment(), DialogInterface.OnKeyListener {
     private var mFirstAd: PreloadAd? = null
     private var mSecondAd: PreloadAd? = null
 
+    private var mIsShow: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NORMAL, R.style.BaseDialogTheme_FullScreen)
@@ -118,6 +120,9 @@ class HotStartDialog : DialogFragment(), DialogInterface.OnKeyListener {
             override fun onAdError(code: Int, errorMsg: String?) {
                 super.onAdError(code, errorMsg)
                 mFirstAd = null
+                if (mIsShow) {
+                    dismissAllowingStateLoss()
+                }
             }
 
             override fun onAdExposure() {
@@ -158,6 +163,9 @@ class HotStartDialog : DialogFragment(), DialogInterface.OnKeyListener {
         val preloadListener = object : IPreloadAdListener {
             override fun preloadAd(ad: PreloadAd) {
                 mSecondAd = ad
+                if (mIsShow) {
+                    dismissAllowingStateLoss()
+                }
             }
         }
 
@@ -262,6 +270,7 @@ class HotStartDialog : DialogFragment(), DialogInterface.OnKeyListener {
 
         if (mFirstAd != null) {
             mFirstAd!!.showAd()
+            mIsShow = true
         }
     }
 
