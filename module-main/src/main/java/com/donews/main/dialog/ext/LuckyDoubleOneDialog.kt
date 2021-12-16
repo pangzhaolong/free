@@ -5,30 +5,27 @@ import android.content.Context
 import android.content.DialogInterface
 import android.os.Handler
 import android.os.Looper
-import android.text.Html
 import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.blankj.utilcode.util.ConvertUtils
 import com.blankj.utilcode.util.ScreenUtils
 import com.donews.base.fragmentdialog.AbstractFragmentDialog
 import com.donews.main.R
-import com.donews.main.databinding.GoodLuckDoubleDialogLayoutBinding
+import com.donews.main.databinding.LuckyDoubleOneDialogLayoutBinding
 import com.vmadalin.easypermissions.EasyPermissions
 
 
 /**
- * 好运翻倍的弹窗
+ * 幸运翻倍只差一步
  *
  * @author lcl
  * @version v1.0
- * @date 2021/12/3
+ * @date 2021/12/16
  */
-class GoodLuckDoubleDialog(
-    /** 看视频次数 */
-    var count: String,
+class LuckyDoubleOneDialog(
     /** 倒计时时长 */
     var downTimeCount: Int = 4 //倒计时三秒
-) : AbstractFragmentDialog<GoodLuckDoubleDialogLayoutBinding>(),
+) : AbstractFragmentDialog<LuckyDoubleOneDialogLayoutBinding>(),
     EasyPermissions.PermissionCallbacks {
 
     private val handler = Handler(Looper.getMainLooper())
@@ -40,14 +37,14 @@ class GoodLuckDoubleDialog(
     }
 
     override fun getLayoutId(): Int {
-        return R.layout.good_luck_double_dialog_layout
+        return R.layout.lucky_double_one_dialog_layout
     }
 
     @SuppressLint("SetTextI18n", "ObjectAnimatorBinding")
     override fun initView() {
         timeTask = Runnable {
             downTimeCount--
-            dataBinding.tvButTime.text = "${downTimeCount}S"
+            dataBinding.mainLuckyLaterTv.text = "${downTimeCount}S后自动跳转"
             if (downTimeCount > 0) {
                 handler.postDelayed(timeTask!!, 1000)
             } else {
@@ -56,9 +53,7 @@ class GoodLuckDoubleDialog(
             }
         }
         handler.post(timeTask!!)
-        dataBinding.tvCount.text = Html.fromHtml("仅看 <font color='#FFDC9F'>${count}</font> 个视频")
         setOnDismissListener {
-            dataBinding.vLuckFg.clearAnimation()
             handler.removeCallbacksAndMessages(null)
             timeTask?.apply {
                 handler.removeCallbacks(this)
@@ -70,26 +65,15 @@ class GoodLuckDoubleDialog(
         dataBinding.mainDoubleCloseIv.setOnClickListener {
             dismiss()
         }
-        //调整背景光晕的位置
-        val wh = (ScreenUtils.getScreenWidth() * 1.15).toInt()
-        val lp: ConstraintLayout.LayoutParams =
-            (dataBinding.vLuckFg.layoutParams ?: ConstraintLayout.LayoutParams(
-                wh, wh
-            )) as ConstraintLayout.LayoutParams
-        lp.width = wh
-        lp.height = wh
-        lp.topMargin = -ConvertUtils.dp2px(3F)
-        dataBinding.vLuckFg.layoutParams = lp
         //手
-        dataBinding.maskingHand.imageAssetsFolder = "images"
-        dataBinding.maskingHand.setAnimation("lottery_finger.json")
-        dataBinding.maskingHand.loop(true)
-        dataBinding.maskingHand.playAnimation()
+//        dataBinding.maskingHand.imageAssetsFolder = "images"
+//        dataBinding.maskingHand.setAnimation("lottery_finger.json")
+//        dataBinding.maskingHand.loop(true)
+//        dataBinding.maskingHand.playAnimation()
     }
 
     override fun onResume() {
         super.onResume()
-        addAmin()
     }
 
     override fun onDismiss(dialog: DialogInterface) {
@@ -104,21 +88,5 @@ class GoodLuckDoubleDialog(
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: List<String>) {
-    }
-
-    private var isAddAnim = false
-    private fun addAmin() {
-        if (isAddAnim) {
-            return
-        }
-        isAddAnim = true
-        val anim = AnimationUtils.loadAnimation(activity, R.anim.anim_main_good_luck_bg)
-        dataBinding.vLuckFg.startAnimation(anim)
-//        val addCoinsAnim: ObjectAnimator =
-//            ObjectAnimator.ofFloat(dataBinding.vLuckFg, "rotation", 0f, 360f)
-//        addCoinsAnim.interpolator = LinearInterpolator()
-//        addCoinsAnim.repeatCount = -1
-//        addCoinsAnim.duration = 18000
-//        addCoinsAnim.start()
     }
 }

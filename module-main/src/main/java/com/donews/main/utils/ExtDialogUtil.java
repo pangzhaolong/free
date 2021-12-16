@@ -7,6 +7,7 @@ import com.donews.base.fragmentdialog.AbstractFragmentDialog;
 import com.donews.main.dialog.ext.CritDownAppDialogFragment;
 import com.donews.main.dialog.ext.CritWelfareDialogFragment;
 import com.donews.main.dialog.ext.GoodLuckDoubleDialog;
+import com.donews.main.dialog.ext.LuckyDoubleOneDialog;
 
 /**
  * @author lcl
@@ -75,7 +76,27 @@ public class ExtDialogUtil {
             AbstractFragmentDialog.SureListener sureListener
     ) {
         GoodLuckDoubleDialog dialog = new GoodLuckDoubleDialog("" + count, downTimeCount);
-        if(sureListener != null){
+        if (sureListener != null) {
+            dialog.setOnSureListener(sureListener);
+        }
+        dialog.show(fa.getSupportFragmentManager(), dialog.toString());
+        return dialog;
+    }
+
+    /**
+     * 幸运翻倍只差一步的弹窗
+     *
+     * @param fa
+     * @param downTimeCount 延迟几秒钟
+     * @return
+     */
+    public static DialogFragment showLuckyDoubleOneDialog(
+            FragmentActivity fa,
+            int downTimeCount,
+            AbstractFragmentDialog.SureListener sureListener
+    ) {
+        LuckyDoubleOneDialog dialog = new LuckyDoubleOneDialog(downTimeCount);
+        if (sureListener != null) {
             dialog.setOnSureListener(sureListener);
         }
         dialog.show(fa.getSupportFragmentManager(), dialog.toString());

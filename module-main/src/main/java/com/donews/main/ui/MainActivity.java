@@ -262,10 +262,8 @@ public class MainActivity
     @Override
     protected void onResume() {
         super.onResume();
-        if (RpActivity.isShowInnerAd) {
-            ExitInterceptUtils.closeExitDialog(this);
-        }
-
+        ExtDialogUtil.showLuckyDoubleOneDialog(this,5,()->{
+        });
         if (SPUtils.getInformain(KeySharePreferences.FIRST_RP_CAN_OPEN, false)) {
             SPUtils.setInformain(KeySharePreferences.FIRST_RP_CAN_OPEN, false);
             String preId = SPUtils.getInformain(KeySharePreferences.FIRST_RP_OPEN_PRE_ID, "");
