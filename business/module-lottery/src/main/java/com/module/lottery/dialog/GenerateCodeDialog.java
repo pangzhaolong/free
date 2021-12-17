@@ -24,7 +24,6 @@ import com.module.lottery.bean.CritCodeBean;
 import com.module.lottery.bean.GenerateCodeBean;
 import com.module.lottery.model.LotteryModel;
 import com.module.lottery.ui.BaseParams;
-import com.module.lottery.utils.CommonlyTool;
 import com.module_lottery.R;
 import com.module_lottery.databinding.GenerateDialogLayoutBinding;
 
