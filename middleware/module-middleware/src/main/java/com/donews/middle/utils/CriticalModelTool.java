@@ -4,12 +4,13 @@ import com.donews.common.ad.business.monitor.LotteryAdCount;
 import com.donews.common.config.CritParameterConfig;
 import com.donews.common.contract.LoginHelp;
 import com.donews.middle.abswitch.ABSwitch;
+import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.SPUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class CommonlyTool {
+public class CriticalModelTool {
 
 
     //判断是否是新用户
@@ -84,14 +85,15 @@ public class CommonlyTool {
      * 是否处于暴击时刻中
      */
     public static boolean ifCriticalStrike() {
+
+        if (!AppInfo.checkIsWXLogin()) {
+            return false;
+        }
+
         if (ABSwitch.Ins().getOpenCritModel()) {
             //判断是否是暴击时刻
             int state = SPUtils.getInformain(CritParameterConfig.CRIT_STATE, 0);
-            if (state == 1) {
-                return true;
-            } else {
-                return false;
-            }
+            return state == 1;
         }
         return false;
     }

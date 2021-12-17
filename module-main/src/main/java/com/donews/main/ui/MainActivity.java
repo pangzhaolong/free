@@ -2,11 +2,9 @@ package com.donews.main.ui;
 
 import static com.donews.common.config.CritParameterConfig.CRIT_STATE;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.Gravity;
@@ -14,14 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.WindowManager;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 
@@ -47,8 +43,8 @@ import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.common.updatedialog.UpdateManager;
 import com.donews.common.updatedialog.UpdateReceiver;
-import com.donews.common.views.FrontFloatingBtn;
 import com.donews.common.views.CountdownView;
+import com.donews.common.views.FrontFloatingBtn;
 import com.donews.main.BuildConfig;
 import com.donews.main.R;
 import com.donews.main.adapter.MainPageAdapter;
@@ -60,10 +56,7 @@ import com.donews.main.dialog.DrawDialog;
 import com.donews.main.dialog.EnterShowDialog;
 import com.donews.main.dialog.FreePanicBuyingDialog;
 import com.donews.main.dialog.RemindDialogExt;
-import com.donews.main.dialog.ext.CritWelfareDialogFragment;
-import com.donews.main.utils.AndroidProcessesUtils;
 import com.donews.main.utils.ExitInterceptUtils;
-import com.donews.main.utils.ExtDialogUtil;
 import com.donews.main.viewModel.MainViewModel;
 import com.donews.main.views.CornerMarkUtils;
 import com.donews.main.views.MainBottomTanItem;
@@ -183,7 +176,6 @@ public class MainActivity
      * 使用场景，当处于暴击模式时，app重启
      */
     private void initializeCritState() {
-
         int critState = SPUtils.getInformain(CritParameterConfig.CRIT_STATE, 0);
         //暴击模式在运行中
         if (critState == 1) {
@@ -200,12 +192,8 @@ public class MainActivity
                     showPopWindow(Math.abs(time - critStartTime));
                     //正在进行暴击时刻
                 }
-
-
             }
         }
-
-
     }
 
     //重置暴击模式的状态
@@ -218,6 +206,8 @@ public class MainActivity
         SPUtils.setInformain(CritParameterConfig.LOTTERY_MARK, false);
         //结束后重置暴击模式的次数，下次达到后在进入下轮
         LotteryAdCount.INSTANCE.resetCriticalModelNumber();
+
+        mDataBinding.mainFloatingBtn.setModel(FrontFloatingBtn.RP_MODEL);
     }
 
     @Subscribe
@@ -227,6 +217,7 @@ public class MainActivity
             int critState = SPUtils.getInformain(CRIT_STATE, 0);
             if (critState == 0) {
                 //开始暴击模式
+                mDataBinding.mainFloatingBtn.setModel(FrontFloatingBtn.CRITICAL_MODEL);
                 long time = 5 * 60 * 1000;
                 showPopWindow(time);
             }

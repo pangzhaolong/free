@@ -6,7 +6,6 @@ import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.donews.front.R;
 import com.donews.front.listener.FrontClickListener;
@@ -147,16 +145,9 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
             holder.doTv.postInvalidate();
         } else if (payloads.get(0).equals("criticalGuid")) {
             if (goodsInfo.isCritical_show_hand()) {
-                holder.criticalLav.setAnimation((Animation) null);
-                holder.criticalLav.setVisibility(View.VISIBLE);
-
-                holder.criticalLav.setImageAssetsFolder("images");
-                holder.criticalLav.setAnimation("lottery_finger.json");
-                holder.criticalLav.playAnimation();
+                holder.criticalHand.setVisibility(View.VISIBLE);
             } else {
-                holder.criticalLav.cancelAnimation();
-                holder.criticalLav.setAnimation((Animation) null);
-                holder.criticalLav.setVisibility(View.GONE);
+                holder.criticalHand.setVisibility(View.GONE);
             }
         }
     }
@@ -223,15 +214,11 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
         if (goodsInfo.isCritical_guid()) {
             holder.criticalClock.setVisibility(View.VISIBLE);
             if (goodsInfo.isCritical_show_hand()) {
-                holder.criticalLav.setAnimation((Animation) null);
-                holder.criticalLav.setVisibility(View.VISIBLE);
-                holder.criticalLav.setImageAssetsFolder("images");
-                holder.criticalLav.setAnimation("lottery_finger.json");
-                holder.criticalLav.playAnimation();
+                holder.criticalHand.setVisibility(View.VISIBLE);
             }
         } else {
             holder.criticalClock.setVisibility(View.GONE);
-            holder.criticalLav.setVisibility(View.GONE);
+            holder.criticalHand.setVisibility(View.GONE);
         }
     }
 
@@ -262,7 +249,7 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
         private final TextView tipTv;
 
         private final ImageView criticalClock;
-        private final LottieAnimationView criticalLav;
+        private final ImageView criticalHand;
 
         public GoodsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -275,7 +262,7 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
             tipTv = itemView.findViewById(R.id.front_goods_item_tip_tv);
 
             criticalClock = itemView.findViewById(R.id.front_goods_item_clock_iv);
-            criticalLav = itemView.findViewById(R.id.front_goods_item_guid_lav);
+            criticalHand = itemView.findViewById(R.id.front_goods_item_guid_lav);
         }
     }
 }

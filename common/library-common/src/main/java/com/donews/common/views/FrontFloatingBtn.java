@@ -17,7 +17,7 @@ import com.donews.common.R;
 
 public class FrontFloatingBtn extends LinearLayout {
 
-    public static final int CRITICAL_HIT_MODEL = 0;
+    public static final int CRITICAL_MODEL = 0;
     public static final int RP_MODEL = 1;
 
     private int mCurrModel = 1;
@@ -60,7 +60,7 @@ public class FrontFloatingBtn extends LinearLayout {
         if (mCurrModel == RP_MODEL) {
             mCriticalHitIv.setVisibility(GONE);
             mRpLl.setVisibility(VISIBLE);
-        } else if (mCurrModel == CRITICAL_HIT_MODEL) {
+        } else if (mCurrModel == CRITICAL_MODEL) {
             mCriticalHitIv.setVisibility(VISIBLE);
             mRpLl.setVisibility(GONE);
         }

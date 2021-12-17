@@ -1,6 +1,8 @@
 package com.donews.front;
 
 
+import static com.donews.common.config.CritParameterConfig.CRIT_STATE;
+
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,6 +20,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.events.FrontScrollEvent;
 import com.dn.events.events.LotteryStatusEvent;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
+import com.donews.common.bean.CritMessengerBean;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.front.adapter.FrontGoodsAdapter;
 import com.donews.front.databinding.FrontNorFragmentBinding;
@@ -27,6 +30,7 @@ import com.donews.middle.bean.front.LotteryCategoryBean;
 import com.donews.middle.bean.front.LotteryGoodsBean;
 import com.donews.middle.cache.GoodsCache;
 import com.donews.middle.decoration.GridSpaceItemDecoration;
+import com.donews.middle.utils.CriticalModelTool;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.KeySharePreferences;
@@ -121,13 +125,9 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
 
         checkScrollDy();
 
-//        if (ABSwitch.Ins().getOpenCritModel()) {
-        /*if (mCriticalGuidHandler == null) {
+        if (mCriticalGuidHandler == null) {
             mCriticalGuidHandler = new CriticalGuidHandler(Looper.getMainLooper(), this);
-        }*/
-
-//        }
-
+        }
     }
 
     private static class CriticalGuidHandler extends Handler {
@@ -161,15 +161,30 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
         if (mPosition >= 2) {
             mPosition = 0;
         }
+        
         mCriticalGuidHandler.removeMessages(9001);
-        mCriticalGuidHandler.sendEmptyMessageDelayed(9001, 5000);
+        mCriticalGuidHandler.sendEmptyMessageDelayed(9001, 1000);
+    }
+
+    @Subscribe
+    public void UnlockEvent(CritMessengerBean critMessenger) {
+        if (critMessenger != null && critMessenger.mStatus == 200) {
+            //判断暴击模式是否处于开启中
+            int critState = SPUtils.getInformain(CRIT_STATE, 0);
+            if (critState == 0) {
+                //开始暴击模式
+                startCriticalGuid();
+            }
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
         mIsFragmentResume = true;
-//        startCriticalGuid();
+        if (CriticalModelTool.ifCriticalStrike()) {
+            startCriticalGuid();
+        }
     }
 
     @Override

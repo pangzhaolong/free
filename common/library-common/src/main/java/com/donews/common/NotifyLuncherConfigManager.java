@@ -66,7 +66,7 @@ public class NotifyLuncherConfigManager {
                             if (mHandler.hasMessages(0)) {
                                 mHandler.removeMessages(0);
                             }
-                            mHandler.sendEmptyMessageDelayed(0, getInstance().getAppGlobalConfigBean().refreshInterval);
+                            mHandler.sendEmptyMessageDelayed(0, getInstance().getAppGlobalConfigBean().refreshInterval * 1000);
                         }
                     }
 

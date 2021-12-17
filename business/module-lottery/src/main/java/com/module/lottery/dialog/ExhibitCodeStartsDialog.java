@@ -12,7 +12,6 @@ import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -25,9 +24,8 @@ import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.donews.common.ad.business.monitor.LotteryAdCount;
-import com.donews.main.utils.ExitInterceptUtils;
 import com.donews.middle.abswitch.ABSwitch;
-import com.donews.middle.utils.CommonlyTool;
+import com.donews.middle.utils.CriticalModelTool;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.module.lottery.bean.GenerateCodeBean;
@@ -37,7 +35,6 @@ import com.module_lottery.databinding.ExhibitCodeDialogLayoutBinding;
 import com.orhanobut.logger.Logger;
 
 import java.lang.ref.WeakReference;
-import java.text.DecimalFormat;
 import java.util.Random;
 
 //展示生成的抽奖码
@@ -171,7 +168,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
                 int sumNumber;
                 //已经参与的次数
                 int participateNumber = LotteryAdCount.INSTANCE.getCriticalModelLotteryNumber();
-                if (CommonlyTool.isNewUser()) {
+                if (CriticalModelTool.isNewUser()) {
                     sumNumber = ABSwitch.Ins().getOpenCritModelByLotteryCount();
                 } else {
                     sumNumber = 6;

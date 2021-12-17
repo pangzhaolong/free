@@ -30,6 +30,16 @@ public class ABBean extends BaseCustomViewModel {
     private int critModelSwitch = 1;
     @SerializedName("openCritModel")
     private boolean openCritModel = true;
+    @SerializedName("enableOpenCritModelCount")
+    private int enableOpenCritModelCount = 5;
+
+    public int getEnableOpenCritModelCount() {
+        return enableOpenCritModelCount;
+    }
+
+    public void setEnableOpenCritModelCount(int enableOpenCritModelCount) {
+        this.enableOpenCritModelCount = enableOpenCritModelCount;
+    }
 
     public boolean isOpenCritModel() {
         return openCritModel;
