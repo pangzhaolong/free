@@ -117,7 +117,6 @@ object LotteryAdCount {
      * 暴击模式抽奖次数 该次数会在 暴击模式时间结束后重置
      * */
     fun getCriticalModelLotteryNumber():Int {
-
         return mmkv.decodeInt(CRITICAL_MODEL, 0)
     }
 

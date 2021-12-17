@@ -65,6 +65,22 @@ public class CommonlyTool {
     }
 
     /**
+     * 当前用户模式下。达到暴击模式需要的总次数
+     * @return
+     */
+    public static int getCurrentUserModulCount() {
+        //新用户
+        int sumNumber = 0;
+        if (isNewUser()) {
+            //总共需要抽多少个抽奖码开始暴击模式
+            sumNumber = ABSwitch.Ins().getOpenCritModelByLotteryCount();
+        } else {
+            sumNumber = 6;
+        }
+        return sumNumber;
+    }
+
+    /**
      * 是否处于暴击时刻中
      */
     public static boolean ifCriticalStrike() {

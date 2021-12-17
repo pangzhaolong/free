@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="ResourceName">
+    tools:ignore="ResourceName,MissingConstraints">
 
     <data>
 
@@ -18,8 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="40dp"
             android:src="@drawable/common_close"
-            app:layout_constraintRight_toRightOf="parent"
-            tools:ignore="MissingConstraints" />
+            app:layout_constraintRight_toRightOf="parent" />
 
         <ImageView
             android:id="@+id/main_double_title_iv"
@@ -29,8 +28,7 @@
             android:src="@mipmap/main_lucky_double_one_title"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/main_double_close_iv"
-            tools:ignore="MissingConstraints" />
+            app:layout_constraintTop_toBottomOf="@+id/main_double_close_iv" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/main_lucky_content"
@@ -57,7 +55,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layouGt_marginLeft="3dp"
+                    android:layout_marginLeft="3dp"
                     android:text="点击打开"
                     android:textColor="@color/white"
                     android:textSize="20sp"

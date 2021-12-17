@@ -68,7 +68,11 @@ import com.donews.main.viewModel.MainViewModel;
 import com.donews.main.views.CornerMarkUtils;
 import com.donews.main.views.MainBottomTanItem;
 import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.bean.HighValueGoodsBean;
 import com.donews.middle.bean.RedEnvelopeUnlockBean;
+import com.donews.middle.cache.GoodsCache;
+import com.donews.middle.request.RequestUtil;
+import com.donews.middle.utils.CommonlyTool;
 import com.donews.utilslibrary.analysis.AnalysisHelp;
 import com.donews.utilslibrary.analysis.AnalysisParam;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
@@ -174,7 +178,6 @@ public class MainActivity
         });
     }
 
-
     /**
      * 用来初始化暴击模式的状态
      * 使用场景，当处于暴击模式时，app重启
@@ -238,7 +241,7 @@ public class MainActivity
         mPopWindow.setFocusable(false);
         mPopWindow.showAtLocation(getWindow().getDecorView(), Gravity.TOP, 0, 100);
         SPUtils.setInformain(CritParameterConfig.CRIT_START_TIME, SystemClock.elapsedRealtime());
-        viewDataBinding.countdownView.start(2*60*1000);
+        viewDataBinding.countdownView.start(2 * 60 * 1000);
         viewDataBinding.countdownView.setCountdownViewListener(new CountdownView.ICountdownViewListener() {
             @Override
             public void onProgressValue(long max, long value) {
@@ -262,8 +265,6 @@ public class MainActivity
     @Override
     protected void onResume() {
         super.onResume();
-        ExtDialogUtil.showLuckyDoubleOneDialog(this,5,()->{
-        });
         if (SPUtils.getInformain(KeySharePreferences.FIRST_RP_CAN_OPEN, false)) {
             SPUtils.setInformain(KeySharePreferences.FIRST_RP_CAN_OPEN, false);
             String preId = SPUtils.getInformain(KeySharePreferences.FIRST_RP_OPEN_PRE_ID, "");
@@ -453,6 +454,7 @@ public class MainActivity
                 toggleStatusBar(0);
                 mDataBinding.cvContentView.setCurrentItem(0);
                 mPosition = 0;
+                bjClick();
             });
         }
 
@@ -474,6 +476,40 @@ public class MainActivity
             });
         } else {
             mDataBinding.mainHomeGuidCl.setVisibility(View.GONE);
+        }
+    }
+
+    //暴击模式的点击
+    private void bjClick(){
+        HighValueGoodsBean t = GoodsCache.readGoodsBean(HighValueGoodsBean.class, "exit");
+        if(t.getList() == null ||
+                t.getList().isEmpty()){
+            ToastUtil.showShort(this,"商品获取失败。请重试");
+            RequestUtil.requestHighValueGoodsInfo();
+            return;
+        }
+        HighValueGoodsBean.GoodsInfo info = t.getList().get(0);
+        int count = CommonlyTool.getCurrentUserModulCount();
+        int currCount = LotteryAdCount.INSTANCE.getCriticalModelLotteryNumber();
+        CritWelfareDialogFragment.OnSurListener surListener = (int type, int curJd, int totalJd) -> {
+            ARouter.getInstance()
+                    .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
+                    .withString("goods_id", info.getGoodsId())
+//                            .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
+//                            .withBoolean("privilege", true)
+                    .navigation();
+
+            //重新请求数据
+            RequestUtil.requestHighValueGoodsInfo();
+        };
+        if (CommonlyTool.isNewUser()) {
+            ExtDialogUtil.showCritWelfareDialog(
+                    this, 0, currCount, count, surListener
+            );
+        } else {
+            ExtDialogUtil.showCritWelfareDialog(
+                    this, 1, currCount, count, surListener
+            );
         }
     }
 
