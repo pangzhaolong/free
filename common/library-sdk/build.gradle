@@ -28,6 +28,8 @@ dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 
+    implementation project(path: ':common:library-utils')
+
 //    //多牛SDK1.0版本aar
 //    implementation(name: 'donews_ad_dnsdk_1.0.0', ext: 'aar')
 //    //多牛SDK适配穿山甲SDK的aar

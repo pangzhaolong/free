@@ -10,6 +10,7 @@ public final class AnalysisParam {
 
     public static String STARTUP = "startup"; //App启动
     public static String SHUTDOWN = "shutdown"; //App退出
+    public static String REGISTER = "register";//设备注册（用户注册）
     public static String LOGIN = "login"; //App账号登录
     public static String LOGOUT = "logout"; //App退出账号登录
     public static String ERROR = "error"; //各种原因崩溃记录

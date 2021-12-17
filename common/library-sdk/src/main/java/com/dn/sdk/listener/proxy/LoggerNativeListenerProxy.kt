@@ -1,6 +1,7 @@
 package com.dn.sdk.listener.proxy
 
 import com.dn.sdk.bean.AdRequest
+import com.dn.sdk.count.CountTrackImpl
 import com.dn.sdk.listener.IAdNativeListener
 import com.dn.sdk.utils.AdLoggerUtils
 
@@ -16,6 +17,8 @@ class LoggerNativeListenerProxy(
     private val listener: IAdNativeListener?
 ) : IAdNativeListener {
 
+    private val countTrack = CountTrackImpl(adRequest)
+
     override fun onAdStatus(code: Int, any: Any?) {
         AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "Native onAdStatus($code,$any)"))
         listener?.onAdStatus(code, any)
@@ -24,11 +27,13 @@ class LoggerNativeListenerProxy(
     override fun onAdExposure() {
         AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "Native onAdExposure()"))
         listener?.onAdExposure()
+        countTrack.onAdShow()
     }
 
     override fun onAdClicked() {
         AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "Native onAdClicked()"))
         listener?.onAdClicked()
+        countTrack.onAdClick()
     }
 
     override fun onAdError(errorMsg: String?) {
