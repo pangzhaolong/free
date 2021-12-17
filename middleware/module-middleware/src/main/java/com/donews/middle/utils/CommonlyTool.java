@@ -1,14 +1,9 @@
-package com.module.lottery.utils;
-
-import android.util.Log;
+package com.donews.middle.utils;
 
 import com.donews.common.ad.business.monitor.LotteryAdCount;
 import com.donews.common.config.CritParameterConfig;
 import com.donews.common.contract.LoginHelp;
-import com.donews.common.contract.UserInfoBean;
 import com.donews.middle.abswitch.ABSwitch;
-import com.donews.middle.bean.home.UserBean;
-import com.donews.utilslibrary.utils.AppStatusUtils;
 import com.donews.utilslibrary.utils.SPUtils;
 
 import java.text.SimpleDateFormat;

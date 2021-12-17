@@ -41,6 +41,7 @@ import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.bean.RedEnvelopeUnlockBean;
+import com.donews.middle.utils.CommonlyTool;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
@@ -66,7 +67,6 @@ import com.module.lottery.dialog.ReturnInterceptDialog;
 import com.module.lottery.dialog.UnlockMaxCodeDialog;
 import com.module.lottery.model.LotteryModel;
 import com.module.lottery.utils.ClickDoubleUtil;
-import com.module.lottery.utils.CommonlyTool;
 import com.module.lottery.utils.GridSpaceItemDecoration;
 import com.module.lottery.utils.PlayAdUtilsTool;
 import com.module.lottery.viewModel.LotteryViewModel;
@@ -904,9 +904,15 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         //当抽奖码==0 显示0元抽奖
         if (lotteryCodeBean != null && lotteryCodeBean.getCodes().size() == 0) {
             mDataBinding.label02.setVisibility(View.VISIBLE);
-            mDataBinding.label01.setText(getResources().getString(R.string.zero_dollar_draw));
-            mDataBinding.label02.setText("抽奖");
-            mDataBinding.tips.setText("观看视频，参与抽奖");
+            if(CommonlyTool.ifCriticalStrike()){
+                mDataBinding.label01.setText("暴击");
+                mDataBinding.label02.setText("抽奖");
+                mDataBinding.tips.setText("超级幸运：中奖率X6");
+            }else{
+                mDataBinding.label01.setText(getResources().getString(R.string.zero_dollar_draw));
+                mDataBinding.label02.setText("抽奖");
+                mDataBinding.tips.setText("观看视频，参与抽奖");
+            }
             setLottieAnimation(true);
         }
         //当抽奖码小于6大于1的话 显示继续抽奖
@@ -914,7 +920,11 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             mDataBinding.label02.setVisibility(View.VISIBLE);
             mDataBinding.label01.setText(getResources().getString(R.string.continue_value));
             mDataBinding.label02.setText(getResources().getString(R.string.lottery_value));
-            mDataBinding.tips.setText("抽奖码越多，中奖概率越大");
+            if(CommonlyTool.ifCriticalStrike()){
+                mDataBinding.tips.setText("超级幸运：中奖率X6");
+            }else{
+                mDataBinding.tips.setText("抽奖码越多，中奖概率越大");
+            }
             setLottieAnimation(true);
         }
         //当抽奖码大于等于6时显示等待开奖
