@@ -1,6 +1,7 @@
 package com.dn.sdk.listener.proxy
 
 import com.dn.sdk.bean.AdRequest
+import com.dn.sdk.count.CountTrackImpl
 import com.dn.sdk.listener.IAdRewardVideoListener
 import com.dn.sdk.utils.AdLoggerUtils
 
@@ -15,6 +16,8 @@ class LoggerRewardVideoListenerProxy(
     private val adRequest: AdRequest,
     private val listener: IAdRewardVideoListener?
 ) : IAdRewardVideoListener {
+
+    private val countTrack = CountTrackImpl(adRequest)
 
     override fun onAdStartLoad() {
         AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "RewardVideo onAdStartLoad()"))
@@ -34,21 +37,25 @@ class LoggerRewardVideoListenerProxy(
     override fun onAdShow() {
         AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "RewardVideo onAdShow()"))
         listener?.onAdShow()
+        countTrack.onAdShow()
     }
 
     override fun onAdVideoClick() {
         AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "RewardVideo onAdVideoClick()"))
         listener?.onAdVideoClick()
+        countTrack.onAdClick()
     }
 
     override fun onRewardVerify(result: Boolean) {
         AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "RewardVideo onRewardVerify($result)"))
         listener?.onRewardVerify(result)
+        countTrack.onRewardVerify(result)
     }
 
     override fun onAdClose() {
         AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "RewardVideo onAdClose()"))
         listener?.onAdClose()
+        countTrack.onAdClose()
     }
 
     override fun onVideoCached() {
@@ -59,6 +66,7 @@ class LoggerRewardVideoListenerProxy(
     override fun onVideoComplete() {
         AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "RewardVideo onVideoComplete()"))
         listener?.onVideoComplete()
+        countTrack.onVideoComplete()
     }
 
     override fun onAdError(code: Int, errorMsg: String?) {

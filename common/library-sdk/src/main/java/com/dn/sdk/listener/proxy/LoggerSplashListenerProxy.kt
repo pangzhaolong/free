@@ -1,6 +1,7 @@
 package com.dn.sdk.listener.proxy
 
 import com.dn.sdk.bean.AdRequest
+import com.dn.sdk.count.CountTrackImpl
 import com.dn.sdk.listener.IAdSplashListener
 import com.dn.sdk.utils.AdLoggerUtils
 
@@ -15,6 +16,8 @@ class LoggerSplashListenerProxy(
     private val adRequest: AdRequest,
     private val listener: IAdSplashListener?
 ) : IAdSplashListener {
+
+    private val countTrack = CountTrackImpl(adRequest)
 
     override fun onAdStartLoad() {
         AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "Splash onAdStartLoad()"))
@@ -39,16 +42,19 @@ class LoggerSplashListenerProxy(
     override fun onAdExposure() {
         AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "Splash onAdExposure()"))
         listener?.onAdExposure()
+        countTrack.onAdShow()
     }
 
     override fun onAdClicked() {
         AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "Splash onAdClicked()"))
         listener?.onAdClicked()
+        countTrack.onAdClick()
     }
 
     override fun onAdDismiss() {
         AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "Splash onAdDismiss()"))
         listener?.onAdDismiss()
+        countTrack.onAdClose()
     }
 
     override fun onAdError(code: Int, errorMsg: String?) {
