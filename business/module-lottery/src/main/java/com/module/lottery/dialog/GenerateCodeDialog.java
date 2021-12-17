@@ -120,8 +120,8 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
                         if (mOnFinishListener != null) {
                             mOnFinishListener.onFinish();
                         }
-                        AnalysisUtils.onEventEx(getContext(), Dot.PAY_FAIL);
                         Toast.makeText(getContext(), "抽奖码获取失败", Toast.LENGTH_SHORT).show();
+                        AnalysisUtils.onEventEx(getContext(), Dot.PAY_FAIL);
                     }
 
                     @Override
@@ -132,6 +132,9 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
                             if (mOnFinishListener != null) {
                                 mOnFinishListener.onJump(generateCode);
                             }
+                            AnalysisUtils.onEventEx(getContext(), Dot.PAY_SUCC);
+                        } else {
+                            AnalysisUtils.onEventEx(getContext(), Dot.PAY_FAIL);
                         }
                     }
                 }));
@@ -178,9 +181,6 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
 
 
         void onExclusiveBulletFrame();
-
-        void onCritJump(CritCodeBean critCodeBean);
-
     }
 
     private static class LotteryHandler extends Handler {
