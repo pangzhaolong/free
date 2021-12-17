@@ -107,9 +107,8 @@ object LotteryAdCount {
     /**
      * 重置暴击模式的值
      * */
-    fun resetCriticalModelNumber():Int {
-
-        return mmkv.decodeInt(CRITICAL_MODEL, 0)
+    fun resetCriticalModelNumber() {
+         mmkv.encode(CRITICAL_MODEL, 0);
     }
 
 

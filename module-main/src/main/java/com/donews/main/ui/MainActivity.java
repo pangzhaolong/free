@@ -238,7 +238,7 @@ public class MainActivity
         mPopWindow.setFocusable(false);
         mPopWindow.showAtLocation(getWindow().getDecorView(), Gravity.TOP, 0, 100);
         SPUtils.setInformain(CritParameterConfig.CRIT_START_TIME, SystemClock.elapsedRealtime());
-        viewDataBinding.countdownView.start(time);
+        viewDataBinding.countdownView.start(2*60*1000);
         viewDataBinding.countdownView.setCountdownViewListener(new CountdownView.ICountdownViewListener() {
             @Override
             public void onProgressValue(long max, long value) {
