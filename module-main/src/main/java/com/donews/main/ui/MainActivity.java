@@ -56,7 +56,9 @@ import com.donews.main.dialog.DrawDialog;
 import com.donews.main.dialog.EnterShowDialog;
 import com.donews.main.dialog.FreePanicBuyingDialog;
 import com.donews.main.dialog.RemindDialogExt;
+import com.donews.main.dialog.ext.CritWelfareDialogFragment;
 import com.donews.main.utils.ExitInterceptUtils;
+import com.donews.main.utils.ExtDialogUtil;
 import com.donews.main.viewModel.MainViewModel;
 import com.donews.main.views.CornerMarkUtils;
 import com.donews.main.views.MainBottomTanItem;
@@ -65,7 +67,7 @@ import com.donews.middle.bean.HighValueGoodsBean;
 import com.donews.middle.bean.RedEnvelopeUnlockBean;
 import com.donews.middle.cache.GoodsCache;
 import com.donews.middle.request.RequestUtil;
-import com.donews.middle.utils.CommonlyTool;
+import com.donews.middle.utils.CriticalModelTool;
 import com.donews.utilslibrary.analysis.AnalysisHelp;
 import com.donews.utilslibrary.analysis.AnalysisParam;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
@@ -208,6 +210,7 @@ public class MainActivity
         LotteryAdCount.INSTANCE.resetCriticalModelNumber();
 
         mDataBinding.mainFloatingBtn.setModel(FrontFloatingBtn.RP_MODEL);
+        EventBus.getDefault().post(new CritMessengerBean(300));
     }
 
     @Subscribe
@@ -471,16 +474,16 @@ public class MainActivity
     }
 
     //暴击模式的点击
-    private void bjClick(){
+    private void bjClick() {
         HighValueGoodsBean t = GoodsCache.readGoodsBean(HighValueGoodsBean.class, "exit");
-        if(t.getList() == null ||
-                t.getList().isEmpty()){
-            ToastUtil.showShort(this,"商品获取失败。请重试");
+        if (t.getList() == null ||
+                t.getList().isEmpty()) {
+            ToastUtil.showShort(this, "商品获取失败。请重试");
             RequestUtil.requestHighValueGoodsInfo();
             return;
         }
         HighValueGoodsBean.GoodsInfo info = t.getList().get(0);
-        int count = CommonlyTool.getCurrentUserModulCount();
+        int count = CriticalModelTool.getCurrentUserModulCount();
         int currCount = LotteryAdCount.INSTANCE.getCriticalModelLotteryNumber();
         CritWelfareDialogFragment.OnSurListener surListener = (int type, int curJd, int totalJd) -> {
             ARouter.getInstance()
@@ -493,7 +496,7 @@ public class MainActivity
             //重新请求数据
             RequestUtil.requestHighValueGoodsInfo();
         };
-        if (CommonlyTool.isNewUser()) {
+        if (CriticalModelTool.isNewUser()) {
             ExtDialogUtil.showCritWelfareDialog(
                     this, 0, currCount, count, surListener
             );

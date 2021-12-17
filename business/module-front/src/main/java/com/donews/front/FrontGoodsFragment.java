@@ -124,10 +124,6 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
         });
 
         checkScrollDy();
-
-        if (mCriticalGuidHandler == null) {
-            mCriticalGuidHandler = new CriticalGuidHandler(Looper.getMainLooper(), this);
-        }
     }
 
     private static class CriticalGuidHandler extends Handler {
@@ -156,14 +152,28 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
         }
         LogUtil.e("startCriticalGuid: true");
 
+        if (mCriticalGuidHandler == null) {
+            mCriticalGuidHandler = new CriticalGuidHandler(Looper.getMainLooper(), this);
+        }
+
         mNorGoodsAdapter.startCriticalGuid(mPosition);
+        mNorGoodsAdapter.openCriticalModel(true);
         mPosition++;
         if (mPosition >= 2) {
             mPosition = 0;
         }
-        
+
         mCriticalGuidHandler.removeMessages(9001);
         mCriticalGuidHandler.sendEmptyMessageDelayed(9001, 1000);
+    }
+
+    private void stopCriticalGuid() {
+        if (mCriticalGuidHandler != null) {
+            mCriticalGuidHandler.removeCallbacksAndMessages(null);
+            mCriticalGuidHandler = null;
+        }
+        mNorGoodsAdapter.openCriticalModel(false);
+
     }
 
     @Subscribe
@@ -175,6 +185,8 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
                 //开始暴击模式
                 startCriticalGuid();
             }
+        } else if (critMessenger != null && critMessenger.mStatus == 300) {
+            stopCriticalGuid();
         }
     }
 

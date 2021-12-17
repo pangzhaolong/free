@@ -31,6 +31,7 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
     private FrontClickListener mListener;
     private int mCols;
     private int mPadding = DensityUtils.dp2px(6);
+    private boolean mIsOpenCriticalModel = false;
 
     public FrontGoodsAdapter(Context context, FrontClickListener listener) {
         mContext = context;
@@ -46,17 +47,29 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
         if (needClear) {
             mGoodsList.clear();
             initTopList(list);
-            if (mGoodsList.size() > 4) {
-//                mGoodsList.get(0).setCritical_guid(true);
-//                mGoodsList.get(1).setCritical_guid(true);
-//                mGoodsList.get(2).setCritical_guid(true);
-//                mGoodsList.get(3).setCritical_guid(true);
-//                mGoodsList.get(0).setCritical_show_hand(true);
+            if (mGoodsList.size() > 2) {
+                mGoodsList.get(0).setCritical_guid(true);
+                mGoodsList.get(1).setCritical_guid(true);
+                mGoodsList.get(0).setCritical_show_hand(true);
             }
         } else {
             mGoodsList.addAll(list);
         }
         notifyDataSetChanged();
+    }
+
+    public void openCriticalModel(boolean open) {
+        if (mGoodsList == null || mGoodsList.size() < 2) {
+            return;
+        }
+        if (mIsOpenCriticalModel == open) {
+            return;
+        }
+
+        mIsOpenCriticalModel = open;
+        mGoodsList.get(0).setCritical_guid(open);
+        mGoodsList.get(1).setCritical_guid(open);
+        mGoodsList.get(0).setCritical_show_hand(open);
     }
 
     private void initTopList(List<LotteryGoodsBean.GoodsInfo> list) {
