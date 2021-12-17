@@ -605,15 +605,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                     showExclusiveCodeDialog();
                 }
 
-                @Override
-                public void onCritJump(CritCodeBean critCodeBean) {
-                    if (generateCodeDialog != null && !LotteryActivity.this.isFinishing()) {
-                        generateCodeDialog.dismiss();
-                        //刷新页面  展示抽奖码
-                        lotteryInfo();
-                        showUnlockMaxCodeDialog(critCodeBean);
-                    }
-                }
             });
             generateCodeDialog.create();
             if (!LotteryActivity.this.isFinishing()) {
