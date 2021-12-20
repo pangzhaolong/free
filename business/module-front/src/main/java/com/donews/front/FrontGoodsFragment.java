@@ -173,7 +173,6 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
             mCriticalGuidHandler = null;
         }
         mNorGoodsAdapter.openCriticalModel(false);
-
     }
 
     @Subscribe

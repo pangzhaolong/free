@@ -47,11 +47,11 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
         if (needClear) {
             mGoodsList.clear();
             initTopList(list);
-            if (mGoodsList.size() > 2) {
+            /*if (mGoodsList.size() > 2) {
                 mGoodsList.get(0).setCritical_guid(true);
                 mGoodsList.get(1).setCritical_guid(true);
                 mGoodsList.get(0).setCritical_show_hand(true);
-            }
+            }*/
         } else {
             mGoodsList.addAll(list);
         }
