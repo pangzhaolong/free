@@ -209,7 +209,8 @@ public class MainActivity
         //结束后重置暴击模式的次数，下次达到后在进入下轮
         LotteryAdCount.INSTANCE.resetCriticalModelNumber();
 
-        mDataBinding.mainFloatingBtn.setModel(FrontFloatingBtn.RP_MODEL);
+        mDataBinding.mainFloatingBtn.setModel(FrontFloatingBtn.CRITICAL_MODEL);
+        mDataBinding.mainFloatingBtn.setVisibility(View.VISIBLE);
         EventBus.getDefault().post(new CritMessengerBean(300));
     }
 
@@ -220,6 +221,7 @@ public class MainActivity
             int critState = SPUtils.getInformain(CRIT_STATE, 0);
             if (critState == 0) {
                 //开始暴击模式
+                mDataBinding.mainFloatingBtn.setVisibility(View.GONE);
                 mDataBinding.mainFloatingBtn.setModel(FrontFloatingBtn.CRITICAL_MODEL);
                 long time = 5 * 60 * 1000;
                 showPopWindow(time);
