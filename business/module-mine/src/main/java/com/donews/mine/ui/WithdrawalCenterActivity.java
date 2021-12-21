@@ -3,17 +3,27 @@ package com.donews.mine.ui;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.Nullable;
+
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.AppUtils;
 import com.dn.events.events.WalletRefreshEvent;
+import com.dn.sdk.bean.integral.ProxyIntegral;
+import com.dn.sdk.listener.impl.SimpleInterstitialListener;
+import com.dn.sdk.utils.IntegralComponent;
 import com.donews.base.utils.ToastUtil;
+import com.donews.base.utils.glide.GlideUtils;
+import com.donews.common.ad.business.loader.AdManager;
 import com.donews.common.ad.business.manager.JddAdManager;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.UserInfoBean;
 import com.donews.common.router.RouterActivityPath;
+import com.donews.common.router.RouterFragmentPath;
 import com.donews.mine.R;
 import com.donews.mine.databinding.MineActivityWithdrawalCenterBinding;
+import com.donews.mine.dialogs.MineCongratulationsDialog;
 import com.donews.mine.viewModel.WithdrawalCenterViewModel;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
@@ -58,6 +68,13 @@ public class WithdrawalCenterActivity extends
         }
         UserInfoBean uf = LoginHelp.getInstance().getUserInfoBean();
         mDataBinding.mineDrawWxName.setText(uf.getWechatExtra().getNickName());
+        if (uf.getWechatExtra().getHeadimgurl() != null && uf.getWechatExtra().getHeadimgurl().length() > 0) {
+            GlideUtils.loadImageView(
+                    this, uf.getWechatExtra().getHeadimgurl(), mDataBinding.mineDrawWxIcon);
+        }
+        mDataBinding.mindYywJd.setOnClickListener(v -> {
+            ToastUtil.showShort(this, "运营位点击了。。。");
+        });
         mDataBinding.mineDrawMore.setOnClickListener(v -> {
             ARouter.getInstance()
                     .build(RouterActivityPath.Mine.PAGER_ACTIVITY_WITHDRAWAL_RECORD)
@@ -68,14 +85,23 @@ public class WithdrawalCenterActivity extends
                 ToastUtil.showShort(this, "账户升级中，请稍后再试");
                 return;
             }
-            mDataBinding.mineDrawSubmit.setEnabled(false);
-            showLoading();
-            mViewModel.requestWithdraw(mDataBinding.mineDrawGrid);
+            if (mViewModel.withdrawSelectDto == null) {
+                ToastUtil.showShort(this, "请选择你要提现的金额");
+                return;
+            }
+            if (mViewModel.withdrawSelectDto.external) {
+                //检查随机金额
+                getTaskList();
+            } else {
+                mDataBinding.mineDrawSubmit.setEnabled(false);
+                showLoading();
+                mViewModel.requestWithdraw(mDataBinding.mineDrawGrid);
+            }
         });
         mViewModel.withdrawDataLivData.observe(this, items -> {
             hideLoading();
             mViewModel.addGridDatas(mDataBinding.mineDrawGrid,
-                    mDataBinding.mineDrawSubmit, mDataBinding.mineDrawDesc);
+                    mDataBinding.mineDrawSubmit, mDataBinding.mineDrawDescContent);
         });
         mViewModel.withdrawDatilesLivData.observe(this, items -> {
             if (items == null) {
@@ -93,8 +119,10 @@ public class WithdrawalCenterActivity extends
             if (code == 0 || code == 22102) {
                 if (code == 0) {
                     ToastUtil.showShort(this, "提现成功!");
+                    showCongratulationsDialog();
+                } else {
+                    showLoading("加载中");
                 }
-                showLoading("加载中");
                 mViewModel.getLoadWithdraWalletDite();
                 mViewModel.getLoadWithdrawData(true); //更新配置信息
                 EventBus.getDefault().post(new WalletRefreshEvent(1));
@@ -104,6 +132,30 @@ public class WithdrawalCenterActivity extends
         });
         mViewModel.getLoadWithdraWalletDite();
         mViewModel.getLoadWithdrawData(false);
+        AdManager.INSTANCE.loadInterstitialAd(this, new SimpleInterstitialListener() {
+            @Override
+            public void onAdError(int code, @Nullable String errorMsg) {
+                super.onAdError(code, errorMsg);
+            }
+
+            @Override
+            public void onAdShow() {
+                super.onAdShow();
+            }
+        });
+    }
+
+    //成功之后的抽奖弹窗
+    private void showCongratulationsDialog() {
+        if (mViewModel.withdrawSelectDto == null) {
+            return;
+        }
+        double money = mViewModel.withdrawSelectDto.money;
+        MineCongratulationsDialog mNoDrawDialog =
+                new MineCongratulationsDialog(this, "" + money);
+        mNoDrawDialog.setFinishListener(() -> mNoDrawDialog.dismiss());
+        mNoDrawDialog.create();
+        mNoDrawDialog.show(this);
     }
 
     @Override
@@ -113,5 +165,31 @@ public class WithdrawalCenterActivity extends
     }
 
     private void initData() {
+    }
+
+    //积分任务
+    private void getTaskList() {
+        showLoading("查询中");
+        IntegralComponent.getInstance().getIntegral(new IntegralComponent.IntegralHttpCallBack() {
+            @Override
+            public void onSuccess(ProxyIntegral integralBean) {
+                hideLoading();
+                ARouter.getInstance()
+                        .build(RouterFragmentPath.Integral.PAGER_INTEGRAL)
+                        .withSerializable("proxyIntegral",integralBean)
+                        .navigation();
+            }
+
+            @Override
+            public void onError(String var1) {
+                hideLoading();
+            }
+
+            @Override
+            public void onNoTask() {
+                hideLoading();
+                ToastUtil.showShort(WithdrawalCenterActivity.this, "暂无未完成任务");
+            }
+        });
     }
 }

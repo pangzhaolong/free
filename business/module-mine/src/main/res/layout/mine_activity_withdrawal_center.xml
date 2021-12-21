@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,66 +24,76 @@
                 android:orientation="vertical"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp">
-
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="15dp"
-                    android:background="@drawable/mine_withdraw_centent_top"
-                    android:orientation="vertical"
-                    android:paddingLeft="30dp"
-                    android:paddingTop="20dp"
-                    android:paddingRight="20dp"
-                    android:paddingBottom="30dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="可提现余额"
-                        android:textColor="@color/white"
-                        android:textSize="15sp" />
-
+                    android:layout_height="wrap_content">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="15dp"
+                        android:background="@drawable/mine_withdraw_centent_top"
+                        android:orientation="vertical"
+                        android:paddingLeft="30dp"
+                        android:paddingTop="20dp"
+                        android:paddingRight="20dp"
+                        android:paddingBottom="30dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="¥"
+                            android:text="可提现余额"
                             android:textColor="@color/white"
                             android:textSize="15sp" />
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="¥"
+                                android:textColor="@color/white"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:id="@+id/mine_draw_ye"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:text="0"
+                                android:textColor="@color/white"
+                                android:textSize="39sp" />
+                        </LinearLayout>
+
                         <TextView
-                            android:id="@+id/mine_draw_ye"
+                            android:id="@+id/mine_draw_more"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="right"
                             android:layout_marginLeft="5dp"
-                            android:text="0"
+                            android:layout_marginTop="-10dp"
+                            android:drawableRight="@drawable/mine_withdraw_centent_top_w"
+                            android:drawablePadding="5dp"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="5dp"
+                            android:paddingRight="10dp"
+                            android:paddingBottom="5dp"
+                            android:text="明细"
                             android:textColor="@color/white"
-                            android:textSize="39sp" />
+                            android:textSize="15sp" />
                     </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/mine_draw_more"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="-10dp"
-                        android:drawableRight="@drawable/mine_withdraw_centent_top_w"
-                        android:drawablePadding="5dp"
-                        android:paddingLeft="10dp"
-                        android:paddingTop="5dp"
-                        android:paddingRight="10dp"
-                        android:paddingBottom="5dp"
-                        android:text="明细"
-                        android:textColor="@color/white"
-                        android:textSize="15sp" />
-                </LinearLayout>
-
+                    <ImageView
+                        android:id="@+id/mind_yyw_jd"
+                        android:layout_width="63dp"
+                        android:layout_height="69dp"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginRight="28dp"
+                        android:src="@drawable/mine_tx__yyw"
+                        android:layout_alignParentRight="true"/>
+                </RelativeLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -109,7 +120,8 @@
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
-                    <ImageView
+                    <com.donews.common.views.CircleImageView
+                        android:id="@+id/mine_draw_wx_icon"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/mine_tx_center_wx" />
@@ -147,17 +159,62 @@
                         android:text="数据加载中..."/>
                 </FrameLayout>
 
-                <TextView
-                    android:id="@+id/mine_draw_desc"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/mine_draw_desc_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:layout_weight="1"
-                    android:text=""
-                    android:textColor="@color/text_hint_color"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
+                    android:layout_marginBottom="-15dp"
+                    android:visibility="gone">
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="95dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:src="@drawable/mine_tx_tips_bg"
+                        android:scaleType="fitXY"
+                        android:layout_marginBottom="-10dp"/>
+                    
+                    <ImageView
+                        android:id="@+id/mine_draw_desc_flg"
+                        android:layout_width="8dp"
+                        android:layout_height="11dp"
+                        android:src="@drawable/mine_draw_desc_icon"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginLeft="34dp"/>
+                    <LinearLayout
+                        android:id="@+id/mine_draw_desc_ll"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="-3dp"
+                        app:layout_constraintLeft_toRightOf="@+id/mine_draw_desc_flg"
+                        app:layout_constraintTop_toTopOf="@+id/mine_draw_desc_flg">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="4dp"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="提现条件:"
+                            android:textColor="#A9AEB1"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/mine_draw_desc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="4dp"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text=""
+                            android:textColor="#A9AEB1"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
                 <TextView
                     android:id="@+id/mine_draw_submit"
                     android:layout_width="match_parent"

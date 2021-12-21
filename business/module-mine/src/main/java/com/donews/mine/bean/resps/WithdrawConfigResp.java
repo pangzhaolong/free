@@ -23,7 +23,17 @@ public class WithdrawConfigResp extends BaseCustomViewModel {
         public Double money;
         @SerializedName("tips")
         public String tips;
+        /**
+         * 是否可提现
+         * T:允许，F:不可提现
+         */
         @SerializedName("available")
-        public Boolean available;
+        public Boolean available = false;
+        /**
+         * 是否为随机金额:
+         * T:随机金额项，F:正常提现项目
+         */
+        @SerializedName("external")
+        public Boolean external = false;
     }
 }

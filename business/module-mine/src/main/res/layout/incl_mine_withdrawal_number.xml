@@ -57,11 +57,21 @@
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:background="@drawable/mine_new_user_zx_bg"
-        android:paddingLeft="3dp"
+        android:paddingLeft="4dp"
         android:paddingTop="2dp"
-        android:paddingRight="3dp"
+        android:paddingRight="4dp"
         android:paddingBottom="2dp"
-        android:text="新人专享"
+        android:text="已解鎖"
+        android:visibility="gone"
         android:textColor="@color/white"
         android:textSize="12sp" />
+
+    <!-- 底部角标 -->
+    <ImageView
+        android:id="@+id/icnl_mine_withdraw_jb"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:visibility="gone"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>
