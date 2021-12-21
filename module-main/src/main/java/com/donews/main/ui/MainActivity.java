@@ -175,7 +175,7 @@ public class MainActivity
             @Override
             public void onClick(View v) {
                 ARouter.getInstance()
-                        .build(RouterFragmentPath.Integral.PAGER_INTEGRAL)
+                        .build(RouterFragmentPath.Integral.PAGER_INTEGRAL).withSerializable("proxyIntegral",null)
                         .navigation();
             }
         });

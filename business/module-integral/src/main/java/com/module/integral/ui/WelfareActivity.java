@@ -6,7 +6,9 @@ import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.AppUtils;
 import com.bumptech.glide.Glide;
 import com.dn.sdk.bean.integral.IntegralStateListener;
@@ -22,7 +24,10 @@ import java.util.List;
 
 //限时福利
 @Route(path = RouterFragmentPath.Integral.PAGER_INTEGRAL)
-public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, IntegralViewModel>  implements Toolbar.OnMenuItemClickListener {
+public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, IntegralViewModel> implements Toolbar.OnMenuItemClickListener {
+
+    @Autowired(name = "proxyIntegral")
+    public ProxyIntegral proxyIntegral;
 
     @Override
     protected int getLayoutId() {
@@ -32,7 +37,15 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
     @Override
     public void initView() {
         setSupportActionBar(mDataBinding.toolbar);
+        ARouter.getInstance().inject(this);
         setData();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ARouter.getInstance().destroy();
+
     }
 
     private void setData() {
@@ -122,7 +135,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId()==android.R.id.home){
+        if (item.getItemId() == android.R.id.home) {
             finish();
         }
         return super.onOptionsItemSelected(item);

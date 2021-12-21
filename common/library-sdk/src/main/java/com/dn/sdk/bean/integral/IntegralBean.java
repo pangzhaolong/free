@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import com.donews.ads.mediation.v2.integral.DnIntegralAdListener;
 import com.donews.ads.mediation.v2.integral.DnIntegralNativeAd;
 
-import java.util.List;
+import java.io.Serializable;
 
-public abstract class IntegralBean {
+public abstract class IntegralBean implements Serializable {
     public DnIntegralNativeAd getDnIntegralNativeAd() {
         return mDnIntegralNativeAd;
     }
