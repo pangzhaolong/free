@@ -7,6 +7,9 @@ import android.os.Looper
 import com.dn.sdk.BuildConfig
 import com.dn.sdk.utils.AdLoggerUtils
 import com.donews.ads.mediation.v2.api.DoNewsAdManagerHolder
+import com.donews.ads.mediation.v2.integral.DoNewsIntegralHolder
+import com.donews.utilslibrary.utils.DeviceUtils
+import com.qq.e.comm.managers.status.DeviceStatus
 
 /**
  * 广告SDK 管理类
@@ -43,5 +46,6 @@ object AdSdkManager : ISdkManager {
     private fun initDnSdk(context: Context, channelName: String) {
         DoNewsAdManagerHolder.setChannel(channelName)
         DoNewsAdManagerHolder.init(context)
+        DoNewsIntegralHolder.getInstance().init(context, channelName,DeviceUtils.getMyUUID(), true)
     }
 }

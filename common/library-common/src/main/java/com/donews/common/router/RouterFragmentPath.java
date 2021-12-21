@@ -112,6 +112,18 @@ public class RouterFragmentPath {
     }
 
 
+
+    /** 抽奖组件 */
+    public static class Integral
+    {
+        private static final String INTEGRAL = "/integral";
+
+        /** 抽奖 */
+        public static final String PAGER_INTEGRAL = INTEGRAL + "/integral";
+
+    }
+
+
     /**
      * sdkTest
      */

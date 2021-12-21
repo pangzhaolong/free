@@ -23,8 +23,9 @@
 
         <TextView
             android:id="@+id/occupy_position"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="120dp"
+            android:background="#BAA80A"
+            android:layout_height="120dp" />
 
         <me.majiajie.pagerbottomtabstrip.PageNavigationView
             android:id="@+id/bottom_view"
