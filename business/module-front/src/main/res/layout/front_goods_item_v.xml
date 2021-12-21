@@ -32,19 +32,20 @@
                 app:rightTop_corner_radius="10dp"
                 app:type="round" />
 
-            <TextView
-                android:id="@+id/front_goods_item_tip_tv"
-                android:layout_width="35dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="-3dp"
-                android:background="@drawable/front_goods_item_iv_tip_1"
-                android:gravity="top|center_horizontal"
-                android:padding="2dp"
-                android:text="爆款推荐"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp" />
         </FrameLayout>
+
+        <TextView
+            android:id="@+id/front_goods_item_tip_tv"
+            android:layout_width="35dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/front_goods_item_iv_tip_1"
+            android:gravity="top|center_horizontal"
+            android:padding="2dp"
+            android:text="爆款推荐"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
 
         <ImageView
             android:id="@+id/front_goods_item_label_iv"

@@ -11,4 +11,9 @@
         <item name="android:backgroundDimEnabled">true</item> <!--模糊-->
         <item name="android:backgroundDimAmount">0.6</item> <!--背景透明度-->
     </style>
+
+    <style name="middle_lottery_barrage_item_avatar_style">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>
