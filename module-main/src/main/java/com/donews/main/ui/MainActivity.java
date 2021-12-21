@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -171,6 +172,15 @@ public class MainActivity
                 initializeCritState();
             }
         });
+        mDataBinding.occupyPosition.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ARouter.getInstance()
+                        .build(RouterFragmentPath.Integral.PAGER_INTEGRAL).withSerializable("proxyIntegral",null)
+                        .navigation();
+            }
+        });
+
     }
 
     /**
@@ -191,7 +201,7 @@ public class MainActivity
                 if (Math.abs(time - critStartTime) >= againstTime) {
                     cleanCrit();
                 } else {
-                    showPopWindow(Math.abs(time - critStartTime));
+                    showPopWindow(Math.abs(againstTime - (time - critStartTime)));
                     //正在进行暴击时刻
                 }
             }
@@ -237,7 +247,7 @@ public class MainActivity
         mPopWindow.setFocusable(false);
         mPopWindow.showAtLocation(getWindow().getDecorView(), Gravity.TOP, 0, 100);
         SPUtils.setInformain(CritParameterConfig.CRIT_START_TIME, SystemClock.elapsedRealtime());
-        viewDataBinding.countdownView.start(2 * 60 * 1000);
+        viewDataBinding.countdownView.start(time);
         viewDataBinding.countdownView.setCountdownViewListener(new CountdownView.ICountdownViewListener() {
             @Override
             public void onProgressValue(long max, long value) {
@@ -256,11 +266,17 @@ public class MainActivity
                 ToastUtil.showShort(getApplicationContext(), "暴击时刻已结束");
             }
         });
+
+
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
+
+
         if (SPUtils.getInformain(KeySharePreferences.FIRST_RP_CAN_OPEN, false)) {
             SPUtils.setInformain(KeySharePreferences.FIRST_RP_CAN_OPEN, false);
             String preId = SPUtils.getInformain(KeySharePreferences.FIRST_RP_OPEN_PRE_ID, "");

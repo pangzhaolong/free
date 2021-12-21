@@ -26,9 +26,11 @@ public class CriticalModelTool {
         SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
         try {
             Date date = dateFormat.parse(createdAt);
-            long RegistrationTime = date.getTime();
+            long registrationTime = date.getTime();
+            //当前系统时间
+            long systemTime = System.currentTimeMillis();
             //还需要判断 新手福利是否使用  mark
-            if (RegistrationTime <= duration && mark) {
+            if ((systemTime - registrationTime) <= duration && mark) {
                 //是新用户
                 return true;
             }
@@ -67,6 +69,7 @@ public class CriticalModelTool {
 
     /**
      * 当前用户模式下。达到暴击模式需要的总次数
+     *
      * @return
      */
     public static int getCurrentUserModulCount() {

@@ -1,11 +1,16 @@
 package com.donews.mine.viewModel;
 
+import static androidx.annotation.Dimension.SP;
+
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.MutableLiveData;
@@ -21,6 +26,7 @@ import com.donews.mine.bean.resps.WithdrawConfigResp;
 import com.donews.mine.model.MineModel;
 
 import java.util.List;
+import java.util.Stack;
 
 public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> {
     private FragmentActivity baseActivity;
@@ -37,6 +43,9 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
     //提现的结果
     public MutableLiveData<Integer> withdrawLivData =
             new MutableLiveData<>();
+
+    //当前请求的操作对象
+    public WithdrawConfigResp.WithdrawListDTO withdrawSelectDto = null;
 
     //是否正在提现中
     public boolean isWithdrawLoading = false;
@@ -94,9 +103,9 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
         if (isWithdrawLoading) {
             return;
         }
-        if(getGridSelectViewItem(superLayout) == null){
-            ToastUtil.showShort(superLayout.getContext(),"请选择提金额");
-            return ;
+        if (getGridSelectViewItem(superLayout) == null) {
+            ToastUtil.showShort(superLayout.getContext(), "请选择提金额");
+            return;
         }
         isWithdrawLoading = true;
         mModel.requestWithdra(withdrawLivData, getGridSelectViewItem(superLayout), baseActivity);
@@ -123,15 +132,29 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
      *
      * @param gridLayout
      * @param submit     提交按钮
-     * @param desc       描述
+     * @param descll     描述的容器
      */
-    public void addGridDatas(@NonNull GridLayout gridLayout, TextView submit, TextView desc) {
+    public void addGridDatas(@NonNull GridLayout gridLayout, TextView submit, ConstraintLayout descll) {
         gridLayout.removeAllViews();
         if (withdrawDataLivData.getValue() == null) {
             return;
         }
+        WithdrawConfigResp.WithdrawListDTO dto = new WithdrawConfigResp.WithdrawListDTO();
+        dto.external = false;
+        dto.tips="lasdjfklasjdsfkl";
+        dto.money = 0.7;
+        dto.available = false;
+        dto.id = 123456;
+        withdrawDataLivData.getValue().add(0,dto);
+        dto = new WithdrawConfigResp.WithdrawListDTO();
+        dto.external = true;
+        dto.tips="";
+        dto.money = 0D;
+        dto.available = false;
+        dto.id = 123456;
+        withdrawDataLivData.getValue().add(0,dto);
         for (int i = 0; i < withdrawDataLivData.getValue().size(); i++) {
-            getGridItemView(i, gridLayout, withdrawDataLivData.getValue().get(i), submit, desc);
+            getGridItemView(i, gridLayout, withdrawDataLivData.getValue().get(i), submit, descll);
         }
     }
 
@@ -155,7 +178,7 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
             int pos, GridLayout superLayout,
             WithdrawConfigResp.WithdrawListDTO item,
             TextView submit,
-            TextView desc) {
+            ConstraintLayout descLL) {
         int notClickBgRes = R.drawable.mine_withdrawal_momy_item_enable_bg;
         int notSelectBgRes = R.drawable.ad_shape_min_bg;
         int selectBgRes = R.drawable.mine_withdrawal_momy_item_bg;
@@ -165,12 +188,20 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
         GridLayout.LayoutParams glp = new GridLayout.LayoutParams();
         glp.columnSpec = GridLayout.spec(col, 1, 3F);
         glp.height = ConvertUtils.dp2px(83);
+        glp.width = ConvertUtils.dp2px(103);
         view.setLayoutParams(glp);
         view.setTag(R.id.icnl_mine_withdraw_num, item); //绑定数据
         view.setTag(R.id.icnl_mine_withdraw_fl, "0"); //设置未选中默认
+        //组件
+        TextView numTv = view.findViewById(R.id.icnl_mine_withdraw_num);
+        TextView numTvFlg = view.findViewById(R.id.icnl_mine_withdraw_fl);
+        TextView newUserZx = view.findViewById(R.id.icnl_mine_withdraw_new_uf);
+        ImageView userBFlg = view.findViewById(R.id.icnl_mine_withdraw_jb);
+        TextView desc = descLL.findViewById(R.id.mine_draw_desc);
         view.setOnClickListener(v -> {
-            if(isWithdrawLoading){
-                ToastUtil.showShort(v.getContext(),"正在提现中,请稍后重试");
+            submit.setText("提现");
+            if (isWithdrawLoading) {
+                ToastUtil.showShort(v.getContext(), "正在提现中,请稍后重试");
                 return;//提现中。不允许点击
             }
             boolean isHostSelect = false; //是否自己被选中
@@ -184,46 +215,79 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
                 }
                 superLayout.getChildAt(i).setTag(R.id.icnl_mine_withdraw_fl, "0");
                 superLayout.getChildAt(i).setBackgroundResource(notSelectBgRes);
+                superLayout.getChildAt(i)
+                        .findViewById(R.id.icnl_mine_withdraw_new_uf)
+                        .setVisibility(View.GONE);
+                superLayout.getChildAt(i)
+                        .findViewById(R.id.icnl_mine_withdraw_jb)
+                        .setVisibility(View.GONE);
             }
             //检查是否点击的自己
             if (!isHostSelect) {
+                newUserZx.setVisibility(View.VISIBLE);
+                userBFlg.setVisibility(View.VISIBLE);
                 submit.setEnabled(true);
                 v.setTag(R.id.icnl_mine_withdraw_fl, "1");
                 v.setBackgroundResource(selectBgRes);
+                withdrawSelectDto = (WithdrawConfigResp.WithdrawListDTO) v.getTag(R.id.icnl_mine_withdraw_num);
             } else {
+                newUserZx.setVisibility(View.GONE);
+                userBFlg.setVisibility(View.GONE);
                 v.setTag(R.id.icnl_mine_withdraw_fl, "0");
                 v.setBackgroundResource(notSelectBgRes);
                 submit.setEnabled(false);
+                withdrawSelectDto = null;
             }
-            if (withdrawDatilesLivData.getValue() == null) {
-                ToastUtil.showShort(baseActivity, "钱包信息获取异常");
-                submit.setEnabled(false);
-                return; //钱包信息获取异常
-            }
-            if (withdrawDatilesLivData.getValue().total < item.money) {
-                desc.setText("");
-                submit.setEnabled(false);
-                return; //余额不足
-            }
-            if (!item.available) {
-                desc.setText(item.tips);
-                submit.setEnabled(false);
+            newUserZx.setBackgroundResource(R.drawable.mine_new_user_rw_bg);
+            userBFlg.setImageResource(R.drawable.mine_tx_b_jb_red);
+            newUserZx.setText("任务");
+            if (!item.external) {
+                //如果是正常项目的话。才走正常的逻辑判断
+                if (withdrawDatilesLivData.getValue() == null) {
+                    ToastUtil.showShort(baseActivity, "钱包信息获取异常");
+                    submit.setEnabled(false);
+                    return; //钱包信息获取异常
+                }
+                if (withdrawDatilesLivData.getValue().total < item.money) {
+                    desc.setText("抱歉,余额不足!");
+                    descLL.setVisibility(View.VISIBLE);
+                    submit.setEnabled(false);
+                    return; //余额不足
+                }
+                if (!item.available) {
+                    desc.setText(item.tips);
+                    descLL.setVisibility(View.VISIBLE);
+                    submit.setEnabled(false);
+                } else {
+                    newUserZx.setBackgroundResource(R.drawable.mine_new_user_zx_bg);
+                    userBFlg.setImageResource(R.drawable.mine_tx_b_jb);
+                    newUserZx.setText("已解锁");
+                    desc.setText("");
+                    descLL.setVisibility(View.GONE);
+                    submit.setEnabled(!isHostSelect);
+                }
             } else {
-                desc.setText("");
+                //随机金额项点击
+                descLL.setVisibility(View.GONE);
+                submit.setEnabled(true);
+                submit.setText("立即抽奖");
                 submit.setEnabled(!isHostSelect);
             }
         });
         //绑定数据
-        TextView numTv = view.findViewById(R.id.icnl_mine_withdraw_num);
-        TextView newUserZx = view.findViewById(R.id.icnl_mine_withdraw_new_uf);
-        numTv.setText("" + item.money);
+        if (item.external) {
+            numTv.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+            numTv.setText("随机金额");
+            numTvFlg.setText("");
+            //默认选中随机金额
+            view.performClick();
+        } else {
+            numTv.setTextSize(TypedValue.COMPLEX_UNIT_SP,25);
+            numTv.setText("" + item.money);
+            numTvFlg.setText("元");
+        }
         //添加视图
         superLayout.addView(view);
-        if (0.3 == item.money) {
-            newUserZx.setVisibility(View.VISIBLE);
-        } else {
-            newUserZx.setVisibility(View.GONE);
-        }
         return view;
     }
 }

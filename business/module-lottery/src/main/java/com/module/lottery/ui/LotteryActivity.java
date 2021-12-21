@@ -687,6 +687,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ARouter.getInstance().destroy();
         mDataBinding.lotteryTips.clearAnimation();
         mCritTime=false;
         if (mPlayAdUtilsTool != null) {
