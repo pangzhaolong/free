@@ -683,6 +683,9 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         if (mDataBinding.frontBarrageView != null) {
             mDataBinding.frontBarrageView.resumeScroll();
         }
+        if (mDataBinding.frontLotteryCodesBarrageLbv != null) {
+            mDataBinding.frontLotteryCodesBarrageLbv.resumeScroll();
+        }
 
         loadRpData(false);
 
@@ -694,6 +697,9 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         super.onPause();
         if (mDataBinding.frontBarrageView != null) {
             mDataBinding.frontBarrageView.pauseScroll();
+        }
+        if (mDataBinding.frontLotteryCodesBarrageLbv != null) {
+            mDataBinding.frontLotteryCodesBarrageLbv.pauseScroll();
         }
 
         mIsFragmentActive = false;

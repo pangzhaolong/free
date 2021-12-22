@@ -15,7 +15,6 @@
         android:layout_gravity="center_vertical"
         android:background="@color/transparent"
         android:scaleType="centerInside"
-        android:src="#ff0000"
         app:shapeAppearance="@style/middle_lottery_barrage_item_avatar_style" />
 
     <!--    <TextView

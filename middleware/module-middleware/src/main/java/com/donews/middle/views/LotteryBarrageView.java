@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.donews.middle.bean.front.AwardBean;
+import com.donews.utilslibrary.utils.DensityUtils;
 import com.donews.utilslibrary.utils.LogUtil;
 
 import java.lang.ref.WeakReference;
@@ -29,13 +30,11 @@ public class LotteryBarrageView extends FrameLayout {
     private ScrollHandler mScrollHandler = null;
 
     private ObjectAnimator mMoveAnimator1;
-    private ValueAnimator mAlphaAnimator1;
     private ObjectAnimator mMoveAnimator2;
-    private ValueAnimator mAlphaAnimator2;
 
     private int mListIndex = 0;
 
-    private boolean mExchange = false;
+    private boolean mIsPause = false;
 
     public LotteryBarrageView(Context context) {
         super(context);
@@ -44,65 +43,56 @@ public class LotteryBarrageView extends FrameLayout {
     public LotteryBarrageView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         mAwardView1 = new LotteryBarrageItemView(context, attrs);
-//        mAwardView1.setVisibility(GONE);
         mAwardView2 = new LotteryBarrageItemView(context, attrs);
-//        mAwardView2.setVisibility(GONE);
 
         addView(mAwardView1);
         addView(mAwardView2);
 
         mScrollHandler = new ScrollHandler(this);
 
-//        initAnimation1();
-//        initAnimation2();
+        LogUtil.e("LotteryBarrageView on create");
+        LogUtil.e("LotteryBarrageView on create:" + DensityUtils.dp2px(30));
+        initAnimation();
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-//        int measureWidth = MeasureSpec.getSize(widthMeasureSpec);
-//        int measureHeight = MeasureSpec.getSize(heightMeasureSpec);
-//        int measureWidthMode = MeasureSpec.getMode(widthMeasureSpec);
-//        int measureHeightMode = MeasureSpec.getMode(heightMeasureSpec);
-//        // 计算所有子控件需要用到的宽高
-//        int height = 0;              //记录根容器的高度
-//        int width = 0;               //记录根容器的宽度
-//        int count = getChildCount(); //记录容器内的子控件个数
-//        for (int i = 0; i < count; i++) {
-//            //测量子控件
-//            View child = getChildAt(i);
-//            measureChild(child, widthMeasureSpec, heightMeasureSpec);
-//            //获得子控件的高度和宽度
-//            int childHeight = child.getMeasuredHeight();
-//            int childWidth = child.getMeasuredWidth();
-//            //得到最大宽度，并且累加高度
-//            height += childHeight;
-//            width = Math.max(childWidth, width);
-//        }
-//        // 设置当前View的宽高
-//        setMeasuredDimension((measureWidthMode == MeasureSpec.EXACTLY) ? measureWidth : width, (measureHeightMode == MeasureSpec.EXACTLY) ? measureHeight : height);
+        if (mIsPause) {
+            return;
+        }
+
+        int nCount = getChildCount();
+
+        LogUtil.e("LotteryBarrageView onMeasure : " + nCount);
+
+        for (int i = 0; i < nCount; i++) {
+            View view = getChildAt(i);
+            measureChild(view, 10, 10);
+        }
     }
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        int topx = 0;
-        int leftx = 0;
+        if (mIsPause) {
+            return;
+        }
+        int topx = 4;
+
         int nCount = getChildCount();
-        LogUtil.e("LotteryBarrageView child view count:" + nCount);
         for (int i = 0; i < nCount; i++) {
-            LogUtil.e("LotteryBarrageView child view top:" + topx);
-            View view = getChildAt(i);
-            int childHeight = view.getMeasuredHeight();
-            int childWidth = view.getMeasuredWidth();
-            LogUtil.e("LotteryBarrageView child view top:" + topx + " width:" + childWidth + " height:" + childHeight);
-            view.layout(leftx, topx, leftx + childWidth, topx + childHeight);
-            topx += 100;
-            leftx += 500;
+            View v = getChildAt(i);
+            int childHeight = v.getMeasuredHeight();
+            int childWidth = v.getMeasuredWidth();
+            LogUtil.e("LotteryBarrageView onLayout child view top:" + topx + " width:" + childWidth
+                    + " height:" + childHeight + " p width:" + this.getWidth() + " p height:" + this.getHeight());
+            v.layout(this.getWidth(), topx, this.getWidth() + childWidth, topx + childHeight);
+            topx += childHeight;
         }
     }
 
-    private void initAnimation1() {
-        mMoveAnimator1 = ObjectAnimator.ofFloat(mAwardView1, "translationY", 0);
+    private void initAnimation() {
+        mMoveAnimator1 = ObjectAnimator.ofFloat(mAwardView1, "translationX", 0);
         mMoveAnimator1.setDuration(2000);
         mMoveAnimator1.addListener(new Animator.AnimatorListener() {
             @Override
@@ -112,7 +102,8 @@ public class LotteryBarrageView extends FrameLayout {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                mScrollHandler.sendEmptyMessageDelayed(10000, 3000);
+                LogUtil.e("LotteryBarrageView mMoveAnimator1 end");
+                mScrollHandler.sendEmptyMessageDelayed(10000, 0);
             }
 
             @Override
@@ -125,33 +116,7 @@ public class LotteryBarrageView extends FrameLayout {
 
             }
         });
-        mAlphaAnimator1 = ObjectAnimator.ofFloat(mAwardView1, "translationY", -70);
-        mAlphaAnimator1.setDuration(2000);
-        mAlphaAnimator1.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mAwardView1.setVisibility(GONE);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
-    }
-
-    private void initAnimation2() {
-        mMoveAnimator2 = ObjectAnimator.ofFloat(mAwardView2, "translationY", 0);
+        mMoveAnimator2 = ObjectAnimator.ofFloat(mAwardView2, "translationX", 0);
         mMoveAnimator2.setDuration(2000);
         mMoveAnimator2.addListener(new Animator.AnimatorListener() {
             @Override
@@ -161,31 +126,8 @@ public class LotteryBarrageView extends FrameLayout {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                mScrollHandler.sendEmptyMessageDelayed(10000, 3000);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
-        mAlphaAnimator2 = ObjectAnimator.ofFloat(mAwardView2, "translationY", -70);
-//        mAlphaAnimator2.addUpdateListener(animation -> mAwardView2.setAlpha((float) animation.getAnimatedValue()));
-        mAlphaAnimator2.setDuration(2000);
-        mAlphaAnimator2.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mAwardView2.setVisibility(GONE);
+                LogUtil.e("LotteryBarrageView mMoveAnimator2 end");
+                mScrollHandler.sendEmptyMessageDelayed(10000, 0);
             }
 
             @Override
@@ -215,36 +157,27 @@ public class LotteryBarrageView extends FrameLayout {
     }
 
     public void pauseScroll() {
+        mIsPause = true;
         if (mMoveAnimator1 != null) {
             mMoveAnimator1.pause();
-        }
-        if (mAlphaAnimator1 != null) {
-            mAlphaAnimator1.pause();
         }
         if (mMoveAnimator2 != null) {
             mMoveAnimator2.pause();
         }
-        if (mAlphaAnimator2 != null) {
-            mAlphaAnimator2.pause();
-        }
     }
 
     public void resumeScroll() {
+        mIsPause = false;
         if (mMoveAnimator1 != null) {
             mMoveAnimator1.resume();
-        }
-        if (mAlphaAnimator1 != null) {
-            mAlphaAnimator1.resume();
         }
         if (mMoveAnimator2 != null) {
             mMoveAnimator2.resume();
         }
-        if (mAlphaAnimator2 != null) {
-            mAlphaAnimator2.resume();
-        }
     }
 
     public void stopScroll() {
+        mIsPause = true;
         if (mScrollHandler != null) {
             mScrollHandler.removeCallbacksAndMessages(null);
             mScrollHandler = null;
@@ -255,24 +188,11 @@ public class LotteryBarrageView extends FrameLayout {
             mMoveAnimator1.cancel();
             mMoveAnimator1 = null;
         }
-        if (mAlphaAnimator1 != null) {
-            mAlphaAnimator1.removeAllUpdateListeners();
-            mAlphaAnimator1.removeAllListeners();
-            mAlphaAnimator1.cancel();
-            mAlphaAnimator1 = null;
-        }
         if (mMoveAnimator2 != null) {
             mMoveAnimator2.removeAllUpdateListeners();
-            ;
             mMoveAnimator2.removeAllListeners();
             mMoveAnimator2.cancel();
             mMoveAnimator2 = null;
-        }
-        if (mAlphaAnimator2 != null) {
-            mAlphaAnimator2.removeAllUpdateListeners();
-            mAlphaAnimator2.removeAllListeners();
-            mAlphaAnimator2.cancel();
-            mAlphaAnimator2 = null;
         }
     }
 
@@ -283,33 +203,53 @@ public class LotteryBarrageView extends FrameLayout {
         }
 
         AwardBean.AwardInfo awardInfo = mAwardList.get(mListIndex);
-        if (!mExchange) {
-            mAwardView1.setUserAwardInfo(awardInfo.getAvatar(), awardInfo.getName(), awardInfo.getProduceName());
-            mAwardView1.setTranslationY(60);
-            mAwardView1.setVisibility(VISIBLE);
-            mAwardView1.setAlpha(1.0f);
-            mMoveAnimator1.start();
-        } else {
-            mAwardView2.setUserAwardInfo(awardInfo.getAvatar(), awardInfo.getName(), awardInfo.getProduceName());
-            mAwardView2.setTranslationY(60);
-            mAwardView2.setVisibility(VISIBLE);
-            mAwardView2.setAlpha(1.0f);
-            mMoveAnimator2.start();
-        }
+        mAwardView1.setUserAwardInfo(awardInfo.getAvatar(), awardInfo.getName(), awardInfo.getProduceName());
+
+        int left = mAwardView1.getLeft();
+        int right = mAwardView1.getRight();
+        ValueAnimator valueAnimator = ValueAnimator.ofInt(this.getWidth() + mAwardView1.getMeasuredWidth());
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                LogUtil.e("LotteryBarrageView pg:" + (int) animation.getAnimatedValue());
+                mAwardView1.layout(left - (int) animation.getAnimatedValue(), mAwardView1.getTop()
+                        , right - (int) animation.getAnimatedValue(), mAwardView1.getBottom());
+            }
+        });
+        valueAnimator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                valueAnimator.cancel();
+                mScrollHandler.sendEmptyMessage(10000);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+            }
+        });
+        valueAnimator.setDuration(4000);
+        valueAnimator.setRepeatCount(1);
+        valueAnimator.start();
+
+/*        mAwardView1.setTranslationX(this.getWidth() + mAwardView1.getMeasuredWidth());
+        mMoveAnimator1.start();
+        mAwardView2.setUserAwardInfo(awardInfo.getAvatar(), awardInfo.getName(), awardInfo.getProduceName());
+        mAwardView2.setTranslationX(this.getWidth() + mAwardView2.getMeasuredWidth());
+        mMoveAnimator2.start();*/
     }
 
     private void hideView() {
-        if (mAlphaAnimator1 == null || mAlphaAnimator2 == null) {
-            mScrollHandler.sendEmptyMessageDelayed(10001, 1000);
+        if (mIsPause) {
             return;
         }
-
-        if (!mExchange) {
-            mAlphaAnimator1.start();
-        } else {
-            mAlphaAnimator2.start();
-        }
-        mExchange = !mExchange;
         mScrollHandler.sendEmptyMessage(10001);
     }
 

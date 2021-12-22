@@ -674,7 +674,7 @@
                                 android:id="@+id/front_lottery_codes_barrage_lbv"
                                 android:layout_width="match_parent"
                                 android:layout_height="70dp"
-                                android:background="#4e000000"
+                                android:background="@color/transparent"
                                 app:layout_constraintBottom_toTopOf="@+id/front_lottery_codes_line"
                                 app:layout_constraintTop_toBottomOf="@+id/front_lottery_cup_ll" />
 
