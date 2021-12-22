@@ -581,7 +581,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                     //判断是否需要弹起 超幸运弹框
                     if (CriticalModelTool.ifCoincide()) {
                         //通知开始暴击模式
-                        EventBus.getDefault().post(new CritMessengerBean(200));
+                        startCriticalMoment();
                         //弹起超幸运弹框
                         if (generateCodeBean.getRemain() == 0) {
                             //满了6个后先弹出之前的弹框
@@ -687,9 +687,8 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ARouter.getInstance().destroy();
         mDataBinding.lotteryTips.clearAnimation();
-        mCritTime=false;
+        mCritTime = false;
         if (mPlayAdUtilsTool != null) {
             mPlayAdUtilsTool.setIStateListener(null);
             mPlayAdUtilsTool = null;
@@ -726,14 +725,23 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 }
             }
 
-            @Override
-            public void onJumpAd() {
-            }
 
             @Override
             public void onLottery() {
                 //继续抽奖
                 startLottery();
+            }
+
+            @Override
+            public void onStartCritMode(GenerateCodeBean generateCodeBean) {
+                //开始暴击模式
+                startCriticalMoment();
+                //关闭当前弹框
+                if (exhibitCodeStartsDialog != null && exhibitCodeStartsDialog.isShowing()) {
+                    exhibitCodeStartsDialog.dismiss();
+                }
+                //开启暴击弹框
+                showLotteryCritCodeDialog(generateCodeBean);
             }
         });
         try {
@@ -749,6 +757,15 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             }
         } catch (Exception ignored) {
         }
+    }
+
+
+    /**
+     * 开启暴击时刻统一入口
+     */
+    private void startCriticalMoment() {
+        //通知开始暴击模式  模拟开启暴击模式
+        EventBus.getDefault().post(new CritMessengerBean(200));
     }
 
 
@@ -771,7 +788,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         privilege = false;
-        mCritTime=false;
+        mCritTime = false;
         setIntent(intent);
         ARouter.getInstance().inject(this);
         if (mAction != null && mAction.equals("newAction")) {
@@ -895,11 +912,11 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         //当抽奖码==0 显示0元抽奖
         if (lotteryCodeBean != null && lotteryCodeBean.getCodes().size() == 0) {
             mDataBinding.label02.setVisibility(View.VISIBLE);
-            if(CriticalModelTool.ifCriticalStrike()){
+            if (CriticalModelTool.ifCriticalStrike()) {
                 mDataBinding.label01.setText("暴击");
                 mDataBinding.label02.setText("抽奖");
                 mDataBinding.tips.setText("超级幸运：中奖率X6");
-            }else{
+            } else {
                 mDataBinding.label01.setText(getResources().getString(R.string.zero_dollar_draw));
                 mDataBinding.label02.setText("抽奖");
                 mDataBinding.tips.setText("观看视频，参与抽奖");
@@ -911,9 +928,9 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             mDataBinding.label02.setVisibility(View.VISIBLE);
             mDataBinding.label01.setText(getResources().getString(R.string.continue_value));
             mDataBinding.label02.setText(getResources().getString(R.string.lottery_value));
-            if(CriticalModelTool.ifCriticalStrike()){
+            if (CriticalModelTool.ifCriticalStrike()) {
                 mDataBinding.tips.setText("超级幸运：中奖率X6");
-            }else{
+            } else {
                 mDataBinding.tips.setText("抽奖码越多，中奖概率越大");
             }
             setLottieAnimation(true);

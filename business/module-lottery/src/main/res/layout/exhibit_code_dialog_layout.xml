@@ -361,18 +361,17 @@
             tools:ignore="MissingConstraints">
 
             <ImageView
-                android:id="@+id/icon"
+                android:id="@+id/integral_icon"
                 android:layout_width="47dp"
                 android:layout_height="47dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
-                android:src="@drawable/red_linear_shape"
-                />
+                android:src="@drawable/red_linear_shape" />
 
             <LinearLayout
-                android:layout_toRightOf="@+id/icon"
+                android:layout_toRightOf="@+id/integral_icon"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -382,6 +381,7 @@
                 tools:ignore="MissingConstraints">
 
                 <TextView
+                    android:id="@+id/integral_describe"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="体验下方App一分钟即可解锁暴击模式"
@@ -398,6 +398,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/integral_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="快手极速版"
@@ -406,6 +407,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/integral_bt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"

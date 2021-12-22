@@ -23,7 +23,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import com.blankj.utilcode.util.AppUtils;
+import com.bumptech.glide.Glide;
+import com.dn.sdk.bean.integral.IntegralStateListener;
+import com.dn.sdk.bean.integral.ProxyIntegral;
+import com.dn.sdk.utils.IntegralComponent;
 import com.donews.common.ad.business.monitor.LotteryAdCount;
+import com.donews.common.bean.CritMessengerBean;
 import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.utils.CriticalModelTool;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
@@ -34,7 +40,13 @@ import com.module_lottery.R;
 import com.module_lottery.databinding.ExhibitCodeDialogLayoutBinding;
 import com.orhanobut.logger.Logger;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.lang.ref.WeakReference;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 //展示生成的抽奖码
@@ -47,6 +59,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
     private GenerateCodeBean mGenerateCodeBean;
     private ValueAnimator valueProbeAnimator;
     private int mProgressMarginStart;
+    private boolean isSendCloseEvent = true;
 
     public ExhibitCodeStartsDialog(Context context, String goodsId, GenerateCodeBean generateCodeBean) {
         super(context, R.style.dialogTransparent);//内容样式在这里引入
@@ -98,7 +111,106 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
         });
     }
 
-    private boolean isSendCloseEvent = true;
+    private void setIntegralView(ProxyIntegral integralBean) {
+        if (integralBean != null) {
+            mDataBinding.critDownload.setVisibility(View.VISIBLE);
+            Glide.with(getContext()).asDrawable().load(integralBean.getIcon()).into(mDataBinding.integralIcon);
+            mDataBinding.integralName.setText(integralBean.getAppName());
+            mDataBinding.integralDescribe.setText("体验下方App一分钟即可解锁暴击模式");
+
+            List<View> clickViews = new ArrayList<>();
+            clickViews.add(mDataBinding.integralBt);
+
+            IntegralComponent.getInstance().setIntegralBindView(getContext(), integralBean, mDataBinding.critDownload, clickViews, new IntegralStateListener() {
+                @Override
+                public void onAdShow() {
+
+                }
+
+                @Override
+                public void onAdClick() {
+
+                }
+
+                @Override
+                public void onStart() {
+
+                }
+
+                @Override
+                public void onProgress(long l, long l1) {
+                    mDataBinding.integralBt.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (l != 0) {
+                                float value = (float) (l1 / l) * 100f;
+                                DecimalFormat df = new DecimalFormat("0.00");
+                                df.setRoundingMode(RoundingMode.HALF_UP);
+                                mDataBinding.integralBt.setText("下载中 " + df.format(value) + "%");
+                            }
+                        }
+                    });
+
+                }
+
+                @Override
+                public void onComplete() {
+                    mDataBinding.integralBt.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mDataBinding.integralBt.setText("立即安装");
+                        }
+                    });
+
+                }
+
+                @Override
+                public void onInstalled() {
+                    //安装完成 请求服务器是否开启暴击模式
+                    if (mOnFinishListener != null) {
+                        mOnFinishListener.onStartCritMode(mGenerateCodeBean);
+                    }
+                }
+
+                @Override
+                public void onError(Throwable throwable) {
+
+                }
+            }, true);
+
+
+        }
+    }
+
+
+    /**
+     * 获取积分任务。应用
+     */
+    private void getIntegralTask() {
+        IntegralComponent.getInstance().getIntegral(new IntegralComponent.IntegralHttpCallBack() {
+            @Override
+            public void onSuccess(ProxyIntegral integralBean) {
+                Message message = new Message();
+                message.obj = integralBean;
+                message.what = 3;
+                mLotteryHandler.sendMessage(message);
+            }
+
+            @Override
+            public void onError(String var1) {
+
+            }
+
+            @Override
+            public void onNoTask() {
+
+            }
+
+        });
+
+
+    }
+
 
     private void initProgressBar() {
         mDataBinding.setCodeBean(mGenerateCodeBean);
@@ -177,8 +289,9 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
 
             } else if (ABSwitch.Ins().getCritModelSwitch() == 2) {
                 //下载解锁
-                mDataBinding.critDownload.setVisibility(View.VISIBLE);
+                mDataBinding.critDownload.setVisibility(View.INVISIBLE);
                 mDataBinding.critDraw.setVisibility(View.GONE);
+                getIntegralTask();
             } else {
                 //抽奖解锁暴击
                 mDataBinding.critDraw.setVisibility(View.VISIBLE);
@@ -367,9 +480,13 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
          */
         void onFinish();
 
-        void onJumpAd();
-
         void onLottery();
+
+        /**
+         * 开启暴击模式
+         */
+        void onStartCritMode(GenerateCodeBean generateCodeBean);
+
     }
 
 
@@ -398,6 +515,12 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
                 case 2:
                     if (reference.get() != null) {
                         reference.get().mDataBinding.closure.setVisibility(View.VISIBLE);
+                    }
+                    break;
+
+                case 3:
+                    if (reference.get() != null) {
+                        reference.get().setIntegralView((ProxyIntegral) msg.obj);
                     }
                     break;
             }

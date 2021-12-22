@@ -113,12 +113,12 @@ public class RouterFragmentPath {
 
 
 
-    /** 抽奖组件 */
+    /** 积分墙 */
     public static class Integral
     {
         private static final String INTEGRAL = "/integral";
 
-        /** 抽奖 */
+        /** 积分墙 */
         public static final String PAGER_INTEGRAL = INTEGRAL + "/integral";
 
     }
