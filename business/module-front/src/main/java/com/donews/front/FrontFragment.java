@@ -714,6 +714,9 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
         EventBus.getDefault().unregister(this);
 
+        if (mDataBinding.frontLotteryCodesBarrageLbv != null) {
+            mDataBinding.frontLotteryCodesBarrageLbv.stopScroll();
+        }
         mDataBinding.frontBarrageView.stopScroll();
         if (mFragmentAdapter != null) {
             mFragmentAdapter.clear();

@@ -1,20 +1,19 @@
 package com.donews.middle.views;
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.donews.middle.bean.front.AwardBean;
-import com.donews.utilslibrary.utils.DensityUtils;
 import com.donews.utilslibrary.utils.LogUtil;
 
 import java.lang.ref.WeakReference;
@@ -22,18 +21,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LotteryBarrageView extends FrameLayout {
-    private LotteryBarrageItemView mAwardView1;
-    private LotteryBarrageItemView mAwardView2;
-
+    private final int ITEM_NUMS = 6;
+    private final LotteryBarrageItemView[] mLotteryBarrageViews = new LotteryBarrageItemView[ITEM_NUMS];
     private final List<AwardBean.AwardInfo> mAwardList = new ArrayList<>();
 
     private ScrollHandler mScrollHandler = null;
 
-    private ObjectAnimator mMoveAnimator1;
-    private ObjectAnimator mMoveAnimator2;
-
     private int mListIndex = 0;
-
     private boolean mIsPause = false;
 
     public LotteryBarrageView(Context context) {
@@ -42,17 +36,15 @@ public class LotteryBarrageView extends FrameLayout {
 
     public LotteryBarrageView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        mAwardView1 = new LotteryBarrageItemView(context, attrs);
-        mAwardView2 = new LotteryBarrageItemView(context, attrs);
-
-        addView(mAwardView1);
-        addView(mAwardView2);
+        for (int i = 0; i < ITEM_NUMS; i++) {
+            mLotteryBarrageViews[i] = new LotteryBarrageItemView(context, attrs);
+            mLotteryBarrageViews[i].setVisibility(INVISIBLE);
+            addView(mLotteryBarrageViews[i]);
+        }
 
         mScrollHandler = new ScrollHandler(this);
 
         LogUtil.e("LotteryBarrageView on create");
-        LogUtil.e("LotteryBarrageView on create:" + DensityUtils.dp2px(30));
-        initAnimation();
     }
 
     @Override
@@ -63,12 +55,9 @@ public class LotteryBarrageView extends FrameLayout {
         }
 
         int nCount = getChildCount();
-
-        LogUtil.e("LotteryBarrageView onMeasure : " + nCount);
-
         for (int i = 0; i < nCount; i++) {
             View view = getChildAt(i);
-            measureChild(view, 10, 10);
+            measureChild(view, 0, 0);
         }
     }
 
@@ -77,69 +66,20 @@ public class LotteryBarrageView extends FrameLayout {
         if (mIsPause) {
             return;
         }
-        int topx = 4;
-
+        int topx = 0;
         int nCount = getChildCount();
         for (int i = 0; i < nCount; i++) {
             View v = getChildAt(i);
             int childHeight = v.getMeasuredHeight();
             int childWidth = v.getMeasuredWidth();
-            LogUtil.e("LotteryBarrageView onLayout child view top:" + topx + " width:" + childWidth
-                    + " height:" + childHeight + " p width:" + this.getWidth() + " p height:" + this.getHeight());
-            v.layout(this.getWidth(), topx, this.getWidth() + childWidth, topx + childHeight);
-            topx += childHeight;
+//            LogUtil.e("LotteryBarrageView onLayout child view top:" + topx + " width:" + childWidth
+//                    + " height:" + childHeight + " p width:" + this.getWidth() + " p height:" + this.getHeight());
+            if (i % 2 == 1) {
+                v.layout(this.getWidth(), topx + childHeight, this.getWidth() + childWidth, topx + 2 * childHeight);
+            } else {
+                v.layout(this.getWidth(), topx, this.getWidth() + childWidth, topx + childHeight);
+            }
         }
-    }
-
-    private void initAnimation() {
-        mMoveAnimator1 = ObjectAnimator.ofFloat(mAwardView1, "translationX", 0);
-        mMoveAnimator1.setDuration(2000);
-        mMoveAnimator1.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                LogUtil.e("LotteryBarrageView mMoveAnimator1 end");
-                mScrollHandler.sendEmptyMessageDelayed(10000, 0);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
-        mMoveAnimator2 = ObjectAnimator.ofFloat(mAwardView2, "translationX", 0);
-        mMoveAnimator2.setDuration(2000);
-        mMoveAnimator2.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                LogUtil.e("LotteryBarrageView mMoveAnimator2 end");
-                mScrollHandler.sendEmptyMessageDelayed(10000, 0);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
     }
 
     public void refreshData(List<AwardBean.AwardInfo> list) {
@@ -153,27 +93,15 @@ public class LotteryBarrageView extends FrameLayout {
     }
 
     public void startScroll() {
-//        initView();
+        initView();
     }
 
     public void pauseScroll() {
         mIsPause = true;
-        if (mMoveAnimator1 != null) {
-            mMoveAnimator1.pause();
-        }
-        if (mMoveAnimator2 != null) {
-            mMoveAnimator2.pause();
-        }
     }
 
     public void resumeScroll() {
         mIsPause = false;
-        if (mMoveAnimator1 != null) {
-            mMoveAnimator1.resume();
-        }
-        if (mMoveAnimator2 != null) {
-            mMoveAnimator2.resume();
-        }
     }
 
     public void stopScroll() {
@@ -182,18 +110,38 @@ public class LotteryBarrageView extends FrameLayout {
             mScrollHandler.removeCallbacksAndMessages(null);
             mScrollHandler = null;
         }
-        if (mMoveAnimator1 != null) {
-            mMoveAnimator1.removeAllUpdateListeners();
-            mMoveAnimator1.removeAllListeners();
-            mMoveAnimator1.cancel();
-            mMoveAnimator1 = null;
+        for (int i=0; i< mTAs.length; i++) {
+            if (mTAs[i] != null) {
+                mTAs[i].cancel();
+                mTAs[i] = null;
+            }
         }
-        if (mMoveAnimator2 != null) {
-            mMoveAnimator2.removeAllUpdateListeners();
-            mMoveAnimator2.removeAllListeners();
-            mMoveAnimator2.cancel();
-            mMoveAnimator2 = null;
+
+        for (int i = 0; i<mLotteryBarrageViews.length; i++) {
+            if (mLotteryBarrageViews[i] != null) {
+                mLotteryBarrageViews[i] = null;
+            }
         }
+    }
+
+    private TranslateAnimation[] mTAs = new TranslateAnimation[6];
+
+    private int getIdleTransAnimatorIdx() {
+        for (int idx = 0; idx < mTAs.length; idx++) {
+            if (mTAs[idx] == null) {
+                return idx;
+            }
+        }
+        return -1;
+    }
+
+    private int getIdleItemView() {
+        for (int i = 0; i < mLotteryBarrageViews.length; i++) {
+            if (mLotteryBarrageViews[i].isIdle()) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     private void initView() {
@@ -202,55 +150,58 @@ public class LotteryBarrageView extends FrameLayout {
             mListIndex = 0;
         }
 
-        AwardBean.AwardInfo awardInfo = mAwardList.get(mListIndex);
-        mAwardView1.setUserAwardInfo(awardInfo.getAvatar(), awardInfo.getName(), awardInfo.getProduceName());
-
-        int left = mAwardView1.getLeft();
-        int right = mAwardView1.getRight();
-        ValueAnimator valueAnimator = ValueAnimator.ofInt(this.getWidth() + mAwardView1.getMeasuredWidth());
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                LogUtil.e("LotteryBarrageView pg:" + (int) animation.getAnimatedValue());
-                mAwardView1.layout(left - (int) animation.getAnimatedValue(), mAwardView1.getTop()
-                        , right - (int) animation.getAnimatedValue(), mAwardView1.getBottom());
-            }
-        });
-        valueAnimator.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                valueAnimator.cancel();
-                mScrollHandler.sendEmptyMessage(10000);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-            }
-        });
-        valueAnimator.setDuration(4000);
-        valueAnimator.setRepeatCount(1);
-        valueAnimator.start();
-
-/*        mAwardView1.setTranslationX(this.getWidth() + mAwardView1.getMeasuredWidth());
-        mMoveAnimator1.start();
-        mAwardView2.setUserAwardInfo(awardInfo.getAvatar(), awardInfo.getName(), awardInfo.getProduceName());
-        mAwardView2.setTranslationX(this.getWidth() + mAwardView2.getMeasuredWidth());
-        mMoveAnimator2.start();*/
-    }
-
-    private void hideView() {
-        if (mIsPause) {
+        int idleViewIdx = getIdleItemView();
+        if (idleViewIdx < 0) {
+//            LogUtil.e("LotteryBarrageView gogogo idleViewIdx < 0");
+            mScrollHandler.sendEmptyMessageDelayed(10001, 1000);
             return;
         }
-        mScrollHandler.sendEmptyMessage(10001);
+
+        int idleTransIdx = getIdleTransAnimatorIdx();
+        if (idleTransIdx < 0) {
+//            LogUtil.e("LotteryBarrageView gogogo idleTransIdx < 0");
+            mScrollHandler.sendEmptyMessageDelayed(10001, 1000);
+            return;
+        }
+
+        gogogogogo(idleTransIdx, idleViewIdx, mListIndex);
+    }
+
+    @SuppressLint("Recycle")
+    private void gogogogogo(int transIdx, int viewIdx, int infoIdx) {
+//        LogUtil.e("LotteryBarrageView gogogo:" + transIdx + " vid:" + viewIdx + " infoIdx:" + infoIdx);
+        AwardBean.AwardInfo awardInfo = mAwardList.get(infoIdx);
+
+        int viewGroupWidth = this.getWidth();
+        mLotteryBarrageViews[viewIdx].setIdle(false);
+        mLotteryBarrageViews[viewIdx].setVisibility(View.VISIBLE);
+        mLotteryBarrageViews[viewIdx].setUserAwardInfo(awardInfo.getAvatar(), awardInfo.getName(), awardInfo.getProduceName());
+        mLotteryBarrageViews[viewIdx].measure(0, 0);
+        mLotteryBarrageViews[viewIdx].clearAnimation();
+        mTAs[transIdx] = new TranslateAnimation(0,
+                -viewGroupWidth - mLotteryBarrageViews[viewIdx].getMeasuredWidth(), 0, 0);
+        mTAs[transIdx].setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mLotteryBarrageViews[viewIdx].setVisibility(INVISIBLE);
+                mLotteryBarrageViews[viewIdx].setIdle(true);
+                mTAs[transIdx].cancel();
+                mTAs[transIdx] = null;
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+        mTAs[transIdx].setDuration(4000);
+        mTAs[transIdx].setRepeatCount(0);
+        mLotteryBarrageViews[viewIdx].startAnimation(mTAs[transIdx]);
+
+        mScrollHandler.sendEmptyMessageDelayed(10001, 1000);
     }
 
     private static class ScrollHandler extends Handler {
@@ -264,9 +215,7 @@ public class LotteryBarrageView extends FrameLayout {
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
-            if (msg.what == 10000) {
-                mBarrageView.get().hideView();
-            } else if (msg.what == 10001) {
+            if (msg.what == 10001) {
                 mBarrageView.get().initView();
             }
         }

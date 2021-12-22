@@ -18,6 +18,16 @@ public class LotteryBarrageItemView extends LinearLayout {
     private final TextView mAwardTv;
     private final Context mContext;
 
+    private boolean mIsIdle = true;
+
+    public boolean isIdle() {
+        return mIsIdle;
+    }
+
+    public void setIdle(boolean isIdle) {
+        this.mIsIdle = isIdle;
+    }
+
     public LotteryBarrageItemView(Context context) {
         super(context);
         mContext = context;
@@ -42,5 +52,7 @@ public class LotteryBarrageItemView extends LinearLayout {
         String awardInfo = String.format(mContext.getString(R.string.middle_lottery_barrage_item_text), award);
         mAwardTv.setText(Html.fromHtml(awardInfo));
     }
+
+
 
 }
