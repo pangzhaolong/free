@@ -33,8 +33,8 @@ public class FrontViewModel extends BaseLiveDataViewModel<FrontModel> {
         return mModel.openRpData(restId, preId);
     }
 
-    public MutableLiveData<AwardBean> getAwardList() {
-        return mModel.getAwardList();
+    public MutableLiveData<AwardBean> getWinnerList() {
+        return mModel.getWinnerList();
     }
 
     public MutableLiveData<LotteryOpenRecord> getLotteryPeriod() {

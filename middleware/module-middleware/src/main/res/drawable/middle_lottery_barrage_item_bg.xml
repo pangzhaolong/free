@@ -7,7 +7,7 @@
         android:layout_height="27dp">
         <shape android:shape="rectangle">
             <solid android:color="#6e000000" />
-            <corners android:radius="13dp" />
+            <corners android:radius="20dp" />
         </shape>
     </item>
 </layer-list>

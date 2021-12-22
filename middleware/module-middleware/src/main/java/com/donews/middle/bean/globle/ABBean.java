@@ -33,6 +33,17 @@ public class ABBean extends BaseCustomViewModel {
     @SerializedName("enableOpenCritModelCount")
     private int enableOpenCritModelCount = 5;
 
+    @SerializedName("scoreTaskPlayTime")
+    private int scoreTaskPlayTime = 60;
+
+    public int getScoreTaskPlayTime() {
+        return scoreTaskPlayTime;
+    }
+
+    public void setScoreTaskPlayTime(int scoreTaskPlayTime) {
+        this.scoreTaskPlayTime = scoreTaskPlayTime;
+    }
+
     public int getEnableOpenCritModelCount() {
         return enableOpenCritModelCount;
     }

@@ -100,7 +100,7 @@ public class FrontModel extends BaseLiveDataModel {
         return mutableLiveData;
     }
 
-    public MutableLiveData<AwardBean> getAwardList() {
+    public MutableLiveData<AwardBean> getWinnerList() {
         MutableLiveData<AwardBean> mutableLiveData = new MutableLiveData<>();
         addDisposable(EasyHttp.get(FrontApi.awardListUrl + "?offset=1&limit=10")
                 .cacheMode(CacheMode.NO_CACHE)

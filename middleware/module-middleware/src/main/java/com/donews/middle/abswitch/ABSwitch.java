@@ -85,6 +85,10 @@ public class ABSwitch {
         return mAbBean.getEnableOpenCritModelCount();
     }
 
+    public int getScoreTaskPlayTime() {
+        return mAbBean.getScoreTaskPlayTime();
+    }
+
     public void initAbSwitch() {
         EasyHttp.get(HttpConfigUtilsKt.withConfigParams(BuildConfig.BASE_CONFIG_URL + "plus-abswitch" + BuildConfig.BASE_RULE_URL, true))
                 .cacheMode(CacheMode.NO_CACHE)

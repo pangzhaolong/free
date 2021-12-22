@@ -236,7 +236,6 @@ public class DeviceUtils {
         return appSuuid;
     }
 
-
     public static String getChannelName() {
         ChannelInfo channelInfo = WalleChannelReader.getChannelInfo(UtilsConfig.getApplication());
         String channel;

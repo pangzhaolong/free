@@ -186,8 +186,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
         loadCategoryData();
         loadServerTime();
-//        loadLotteryRecord();
-//        loadAwardList();
+        loadLotteryWinnerList();
         initSrl();
 
         mDataBinding.frontLotteryGotoLl.setOnClickListener(v -> ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY)
@@ -314,11 +313,10 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     private void refreshFront() {
         mHasRefreshed = true;
         loadCategoryData();
-//            loadAwardList();
         loadRpData(false);
         loadServerTime();
-//        loadLotteryRecord();
         reloadNorData(mCurSelectPosition);
+        loadLotteryWinnerList();
         mDataBinding.frontSrl.finishRefresh();
     }
 
@@ -326,6 +324,16 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         if (mFragmentAdapter != null) {
             mFragmentAdapter.reloadNorData(position);
         }
+    }
+
+    private void loadLotteryWinnerList() {
+        mViewModel.getWinnerList().observe(this.getViewLifecycleOwner(), awardBean -> {
+            if (awardBean == null || awardBean.getList() == null || awardBean.getList().size() <= 0) {
+                return;
+            }
+
+            mDataBinding.frontLotteryCodesBarrageLbv.refreshData(awardBean.getList());
+        });
     }
 
     private void loadCategoryData() {

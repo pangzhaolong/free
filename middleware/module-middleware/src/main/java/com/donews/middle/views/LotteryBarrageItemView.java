@@ -4,7 +4,6 @@ import android.content.Context;
 import android.text.Html;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -33,7 +32,7 @@ public class LotteryBarrageItemView extends LinearLayout {
 
         mContext = context;
 
-        LayoutInflater.from(context).inflate(R.layout.middle_award_info, this, true);
+        LayoutInflater.from(context).inflate(R.layout.middle_lottery_barrage_item, this, true);
         mAvatarIv = findViewById(R.id.middle_gift_head_iv);
         mAwardTv = findViewById(R.id.middle_gift_text);
     }

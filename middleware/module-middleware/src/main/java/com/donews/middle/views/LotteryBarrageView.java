@@ -7,20 +7,22 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.donews.middle.bean.front.AwardBean;
+import com.donews.utilslibrary.utils.LogUtil;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LotteryBarrageView extends FrameLayout {
-    private AwardInfoView mAwardView1;
-    private AwardInfoView mAwardView2;
+    private LotteryBarrageItemView mAwardView1;
+    private LotteryBarrageItemView mAwardView2;
 
     private final List<AwardBean.AwardInfo> mAwardList = new ArrayList<>();
 
@@ -41,18 +43,62 @@ public class LotteryBarrageView extends FrameLayout {
 
     public LotteryBarrageView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        mAwardView1 = new AwardInfoView(context, attrs);
-        mAwardView1.setVisibility(GONE);
-        mAwardView2 = new AwardInfoView(context, attrs);
-        mAwardView2.setVisibility(GONE);
+        mAwardView1 = new LotteryBarrageItemView(context, attrs);
+//        mAwardView1.setVisibility(GONE);
+        mAwardView2 = new LotteryBarrageItemView(context, attrs);
+//        mAwardView2.setVisibility(GONE);
 
         addView(mAwardView1);
         addView(mAwardView2);
 
         mScrollHandler = new ScrollHandler(this);
 
-        initAnimation1();
-        initAnimation2();
+//        initAnimation1();
+//        initAnimation2();
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+//        int measureWidth = MeasureSpec.getSize(widthMeasureSpec);
+//        int measureHeight = MeasureSpec.getSize(heightMeasureSpec);
+//        int measureWidthMode = MeasureSpec.getMode(widthMeasureSpec);
+//        int measureHeightMode = MeasureSpec.getMode(heightMeasureSpec);
+//        // 计算所有子控件需要用到的宽高
+//        int height = 0;              //记录根容器的高度
+//        int width = 0;               //记录根容器的宽度
+//        int count = getChildCount(); //记录容器内的子控件个数
+//        for (int i = 0; i < count; i++) {
+//            //测量子控件
+//            View child = getChildAt(i);
+//            measureChild(child, widthMeasureSpec, heightMeasureSpec);
+//            //获得子控件的高度和宽度
+//            int childHeight = child.getMeasuredHeight();
+//            int childWidth = child.getMeasuredWidth();
+//            //得到最大宽度，并且累加高度
+//            height += childHeight;
+//            width = Math.max(childWidth, width);
+//        }
+//        // 设置当前View的宽高
+//        setMeasuredDimension((measureWidthMode == MeasureSpec.EXACTLY) ? measureWidth : width, (measureHeightMode == MeasureSpec.EXACTLY) ? measureHeight : height);
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        int topx = 0;
+        int leftx = 0;
+        int nCount = getChildCount();
+        LogUtil.e("LotteryBarrageView child view count:" + nCount);
+        for (int i = 0; i < nCount; i++) {
+            LogUtil.e("LotteryBarrageView child view top:" + topx);
+            View view = getChildAt(i);
+            int childHeight = view.getMeasuredHeight();
+            int childWidth = view.getMeasuredWidth();
+            LogUtil.e("LotteryBarrageView child view top:" + topx + " width:" + childWidth + " height:" + childHeight);
+            view.layout(leftx, topx, leftx + childWidth, topx + childHeight);
+            topx += 100;
+            leftx += 500;
+        }
     }
 
     private void initAnimation1() {
