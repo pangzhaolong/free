@@ -24,7 +24,6 @@ import com.donews.common.ad.cache.AdVideoCacheUtils;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
-import com.donews.main.databinding.MainRpActivityBinding;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoods;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoodsResp;
 import com.donews.middle.abswitch.ABSwitch;
@@ -41,6 +40,7 @@ import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.SPUtils;
 import com.donews.utilslibrary.utils.SoundHelp;
 import com.example.module_integral.R;
+import com.example.module_integral.databinding.MainRpDialogLayoutBinding;
 import com.gyf.immersionbar.BarHide;
 import com.gyf.immersionbar.ImmersionBar;
 import com.module_lottery.BuildConfig;
@@ -50,7 +50,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 @Route(path = RouterActivityPath.Integral.INTEGRAL_DG)
-public class RpActivityDialog extends MvvmBaseLiveDataActivity<MainRpActivityBinding, BaseLiveDataViewModel> {
+public class RpActivityDialog extends MvvmBaseLiveDataActivity<MainRpDialogLayoutBinding, BaseLiveDataViewModel> {
 
     //此页面退出的。是否显示插屏广告
     public static boolean isShowInnerAd = false;
