@@ -1,6 +1,7 @@
 package com.module.integral.ui;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
@@ -9,7 +10,6 @@ import android.view.View;
 import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -27,9 +27,6 @@ import com.example.module_integral.R;
 import com.example.module_integral.databinding.IntegralWelfareLayoutBinding;
 import com.module.integral.dialog.BenefitUpgradeDialog;
 import com.module.integral.viewModel.IntegralViewModel;
-import com.module.lottery.bean.GenerateCodeBean;
-import com.module.lottery.dialog.GenerateCodeDialog;
-import com.module.lottery.dialog.LessMaxDialog;
 
 import java.lang.ref.WeakReference;
 import java.math.RoundingMode;
@@ -190,9 +187,9 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
         if (secondStayStartTime != 0) {
             if ((SystemClock.elapsedRealtime() - secondStayStartTime) >= 5000) {
                 secondStayStartTime = 0;
-               //弹起翻倍弹框
-                ARouter.getInstance().build(RouterActivityPath.Integral.INTEGRAL_DG)
-                        .navigation();
+                //弹起翻倍弹框
+                Intent intent = new Intent(WelfareActivity.this, RpActivityDialog.class);
+                startActivity(intent);
             }
         }
     }
