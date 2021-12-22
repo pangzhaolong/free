@@ -60,7 +60,7 @@ public class IntegralComponent {
 
 
     /**
-     * 获取积分单个应用
+     * 获取积分单个应用(激活任务)
      */
     public void getIntegral(IntegralHttpCallBack integralHttpCallBack) {
         DoNewsIntegralHolder.getInstance()
@@ -72,11 +72,13 @@ public class IntegralComponent {
                             integralHttpCallBack.onNoTask();
                             return;
                         }
-                        Log.d("==============",integralAds.get(0).getDeepLink());
-                        Log.d("==============userId",  AppInfo.getUserId());
-                        ProxyIntegral integralBean = new ProxyIntegral(integralAds.get(0));
-                        integralHttpCallBack.onSuccess(integralBean);
-
+                        for (int i = 0; i < integralAds.size(); i++) {
+                            if (integralAds.get(i).getTaskType() == "ACTIVATION_TASK") {
+                                ProxyIntegral integralBean = new ProxyIntegral(integralAds.get(i));
+                                integralHttpCallBack.onSuccess(integralBean);
+                                break;
+                            }
+                        }
                     }
 
                     @Override
@@ -87,13 +89,60 @@ public class IntegralComponent {
     }
 
 
+    /**
+     * 获取积分单个应用(次留任务,价格最高)
+     */
+    public void getSecondStayTask(ISecondStayTask iSecondStayTask) {
+        DoNewsIntegralHolder.getInstance()
+                .getIntegralList(new DnIntegralHttpCallBack() {
+                    @Override
+                    public void onSuccess(List<DnIntegralNativeAd> integralAds) {
+                        //积分拉取成功
+                        if (integralAds == null || integralAds.isEmpty()) {
+                            iSecondStayTask.onNoTask();
+                            return;
+                        }
+                        ProxyIntegral integralBean = null;
+                        for (int i = 0; i < integralAds.size(); i++) {
+                            if (integralAds.get(i).getTaskType() == "RETENTION_TASK") {
+                                if (integralBean == null) {
+                                    integralBean = new ProxyIntegral(integralAds.get(i));
+                                } else {
+                                    if (integralAds.get(i).getPrice() > integralBean.getDnIntegralNativeAd().getPrice()) {
+                                        integralBean = new ProxyIntegral(integralAds.get(i));
+                                    }
+                                }
+                            }
+                        }
+                        if(integralBean!=null){
+                            iSecondStayTask.onSecondStayTask(integralBean);
+                        }
+                    }
+
+                    @Override
+                    public void onError(DnIntegralIntegralError errorInfo) {
+                        iSecondStayTask.onError(errorInfo.getMessage());
+                    }
+                });
+    }
+
+
     public interface IntegralHttpCallBack {
         void onSuccess(ProxyIntegral var1);
 
         void onError(String var1);
 
+
         void onNoTask();
     }
+
+
+    public interface ISecondStayTask {
+        void onSecondStayTask(ProxyIntegral var1);
+        void onError(String var1);
+        void onNoTask();
+    }
+
 
 
     /**
