@@ -49,7 +49,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-@Route(path = RouterActivityPath.Integral.INTEGRAL_DG)
 public class RpActivityDialog extends MvvmBaseLiveDataActivity<MainRpDialogLayoutBinding, BaseLiveDataViewModel> {
 
     //此页面退出的。是否显示插屏广告

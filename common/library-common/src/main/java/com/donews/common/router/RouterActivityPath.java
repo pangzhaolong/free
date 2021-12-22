@@ -197,11 +197,6 @@ public class RouterActivityPath {
 
 
 
-    public static class Integral {
-        public static final String INTEGRAL = "/integral";
-        public static final String INTEGRAL_DG = INTEGRAL + "/integral";
-    }
-
 
 
     public static class Pictures {
