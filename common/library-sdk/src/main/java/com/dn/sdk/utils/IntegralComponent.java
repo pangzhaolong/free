@@ -73,7 +73,7 @@ public class IntegralComponent {
                             return;
                         }
                         for (int i = 0; i < integralAds.size(); i++) {
-                            if (integralAds.get(i).getTaskType() == "ACTIVATION_TASK") {
+                            if (integralAds.get(i).getTaskType().equals("ACTIVATION_TASK")) {
                                 ProxyIntegral integralBean = new ProxyIntegral(integralAds.get(i));
                                 integralHttpCallBack.onSuccess(integralBean);
                                 break;
@@ -104,7 +104,7 @@ public class IntegralComponent {
                         }
                         ProxyIntegral integralBean = null;
                         for (int i = 0; i < integralAds.size(); i++) {
-                            if (integralAds.get(i).getTaskType() == "RETENTION_TASK") {
+                            if (integralAds.get(i).getTaskType() .equals("RETENTION_TASK")) {
                                 if (integralBean == null) {
                                     integralBean = new ProxyIntegral(integralAds.get(i));
                                 } else {

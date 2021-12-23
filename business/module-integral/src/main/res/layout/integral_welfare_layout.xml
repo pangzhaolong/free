@@ -120,9 +120,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="3dp"
                         android:text="5"
                         android:textColor="#FFFFFF"
-                        android:textSize="24dp"
+                        android:textSize="38dp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -135,11 +136,12 @@
                 </LinearLayout>
 
 
-                <ImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/apk_icon"
+                    app:shapeAppearanceOverlay="@style/roundedCornerImageStyle"
                     android:layout_width="57dp"
                     android:layout_height="57dp"
-                    android:layout_marginTop="50dp" />
+                    android:layout_marginTop="30dp" />
 
                 <TextView
                     android:id="@+id/apk_name"
@@ -204,6 +206,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/tips_layout"
+            android:visibility="invisible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -283,7 +286,7 @@
             android:layout_marginBottom="35dp"
             android:layout_width="108dp"
             android:layout_height="97dp"
-            android:visibility="invisible"
+            android:visibility="visible"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true">
 
@@ -294,12 +297,13 @@
                 android:layout_centerHorizontal="true"
                 android:src="@mipmap/treasure_chest_icon" />
 
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/box_icon"
                 android:layout_width="31dp"
+                app:shapeAppearanceOverlay="@style/roundedCornerImageStyle"
                 android:layout_height="31dp"
                 android:layout_marginStart="30dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="7dp"
                 android:layout_marginEnd="10dp" />
 
             <TextView
