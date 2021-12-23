@@ -271,35 +271,37 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
             mDataBinding.giftBoxOff.playAnimation();
         }
         if (ABSwitch.Ins().getOpenCritModel()) {
-            //新用户并且抽奖次数未达到开启暴击条件
-            if (CriticalModelTool.getScenesSwitch() == 1) {
-                //走次数
-                //抽奖解锁暴击
-                mDataBinding.critDraw.setVisibility(View.VISIBLE);
-                mDataBinding.critDownload.setVisibility(View.GONE);
-                //总共需要抽多少个抽奖码开始暴击模式
-                int sumNumber;
-                //已经参与的次数
-                int participateNumber = LotteryAdCount.INSTANCE.getCriticalModelLotteryNumber();
-                if (CriticalModelTool.isNewUser()) {
-                    sumNumber = ABSwitch.Ins().getOpenCritModelByLotteryCount();
-                } else {
-                    sumNumber = 6;
-                }
-                mDataBinding.numberCode.setText((sumNumber - participateNumber) < 0 ? 0 + "" : (sumNumber - participateNumber) + "");
 
-            } else if (CriticalModelTool.getScenesSwitch() == 2) {
-                //走下载
-                //下载解锁
-                mDataBinding.critDownload.setVisibility(View.INVISIBLE);
-                mDataBinding.critDraw.setVisibility(View.GONE);
-                getIntegralTask();
-            }
-//每天参与的次数用完
-            if (!DateManager.getInstance().timesLimit(DateManager.CRIT_KEY, DateManager.CRIT_NUMBER,
+            if (DateManager.getInstance().timesLimit(DateManager.CRIT_KEY, DateManager.CRIT_NUMBER,
                     ABSwitch.Ins().getEnableOpenCritModelCount())) {
-                //抽奖解锁暴击
-                mDataBinding.critDraw.setVisibility(View.VISIBLE);
+                //还能触发暴击模式
+                //新用户并且抽奖次数未达到开启暴击条件
+                if (CriticalModelTool.getScenesSwitch() == 1) {
+                    //走次数
+                    //抽奖解锁暴击
+                    mDataBinding.critDraw.setVisibility(View.VISIBLE);
+                    mDataBinding.critDownload.setVisibility(View.GONE);
+                    //总共需要抽多少个抽奖码开始暴击模式
+                    int sumNumber;
+                    //已经参与的次数
+                    int participateNumber = LotteryAdCount.INSTANCE.getCriticalModelLotteryNumber();
+                    if (CriticalModelTool.isNewUser()) {
+                        sumNumber = ABSwitch.Ins().getOpenCritModelByLotteryCount();
+                    } else {
+                        sumNumber = 6;
+                    }
+                    mDataBinding.numberCode.setText((sumNumber - participateNumber) < 0 ? 0 + "" : (sumNumber - participateNumber) + "");
+
+                } else if (CriticalModelTool.getScenesSwitch() == 2) {
+                    //走下载
+                    //下载解锁
+                    mDataBinding.critDownload.setVisibility(View.INVISIBLE);
+                    mDataBinding.critDraw.setVisibility(View.GONE);
+                    getIntegralTask();
+                }
+            }else{
+                //不能触发了 每天参与的次数用完
+                mDataBinding.critDraw.setVisibility(View.GONE);
                 mDataBinding.critDownload.setVisibility(View.GONE);
             }
         } else {

@@ -17,36 +17,37 @@ public class CriticalModelTool {
 
     //判断是否是新用户
     public static boolean isNewUser() {
-//        return true;
-        //设备时长24小时
-        long duration = 24 * 60 * 60 * 1000L;
-        //新手标识
-        boolean mark = SPUtils.getInformain(CritParameterConfig.LOTTERY_MARK, true);
-        //取出用户注册时间
-        String createdAt = LoginHelp.getInstance().getUserInfoBean().getCreatedAt();
-        String pattern = "yyyy-MM-dd HH:mm:ss";
-        SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
-        try {
-            Date date = dateFormat.parse(createdAt);
-            long registrationTime = date.getTime();
-            //当前系统时间
-            long systemTime = System.currentTimeMillis();
-            //还需要判断 新手福利是否使用  mark
-            if ((systemTime - registrationTime) <= duration && mark) {
-                //是新用户
-                return true;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
+        return true;
+//        //设备时长24小时
+//        long duration = 24 * 60 * 60 * 1000L;
+//        //新手标识
+//        boolean mark = SPUtils.getInformain(CritParameterConfig.LOTTERY_MARK, true);
+//        //取出用户注册时间
+//        String createdAt = LoginHelp.getInstance().getUserInfoBean().getCreatedAt();
+//        String pattern = "yyyy-MM-dd HH:mm:ss";
+//        SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+//        try {
+//            Date date = dateFormat.parse(createdAt);
+//            long registrationTime = date.getTime();
+//            //当前系统时间
+//            long systemTime = System.currentTimeMillis();
+//            //还需要判断 新手福利是否使用  mark
+//            if ((systemTime - registrationTime) <= duration && mark) {
+//                //是新用户
+//                return true;
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return false;
     }
 
 
-    //判断抽奖次数和最低抽奖次数一样
+    //判断抽奖次数和最低抽奖次数一样(前提是处于普通次数模式)
     public static boolean ifCoincide() {
         if (ABSwitch.Ins().getOpenCritModel()) {
-            if (ABSwitch.Ins().getOpenCritModel()) {
+            int scenesSwitch = getScenesSwitch();
+            if (ABSwitch.Ins().getOpenCritModel() && scenesSwitch == 1) {
                 //新用户
                 int sumNumber = 0;
                 //已经参与的次数
@@ -74,12 +75,12 @@ public class CriticalModelTool {
         int sumNumber = ABSwitch.Ins().getOpenCritModelByLotteryCount();
         //已经参与的次数
         int participateNumber = LotteryAdCount.INSTANCE.getCriticalModelLotteryNumber();
-        if (CriticalModelTool.isNewUser() && sumNumber < participateNumber) {
+        if (CriticalModelTool.isNewUser() && participateNumber <= sumNumber) {
             //继续中抽奖次数逻辑
             return 1;
         } else {
             //判断下载，积分模式是否开启
-            if (ABSwitch.Ins().getScoreModelCritCount() > 0) {
+            if (ABSwitch.Ins().isOpenScoreModelCrit()) {
                 //积分模式开启
                 return 2;
             } else {
