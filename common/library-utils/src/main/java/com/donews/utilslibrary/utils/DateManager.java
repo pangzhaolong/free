@@ -16,6 +16,15 @@ public class DateManager {
     public final static String FREE_PANIC_DIALOG_KEY = "Free_Panic_dialog_key";
 
     public final static String SHOW_DIALOG_WHEN_LAUNCH = "show_dialog_when_launch_dm";
+
+
+    //控制暴击次数的key
+    public final static String CRIT_KEY = "crit_key";
+
+
+    //控制暴击次数的次数
+    public final static String CRIT_NUMBER = "crit_number";
+
     //抽奖次数
     public static String NUMBER_OF_DRAWS = "number_of_draws";
     //抽奖KEY

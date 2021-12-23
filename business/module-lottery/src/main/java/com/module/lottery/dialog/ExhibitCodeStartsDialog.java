@@ -34,6 +34,7 @@ import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.utils.CriticalModelTool;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
+import com.donews.utilslibrary.utils.DateManager;
 import com.module.lottery.bean.GenerateCodeBean;
 import com.module.lottery.utils.ClickDoubleUtil;
 import com.module_lottery.R;
@@ -270,9 +271,9 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
             mDataBinding.giftBoxOff.playAnimation();
         }
         if (ABSwitch.Ins().getOpenCritModel()) {
-
-            //读取暴击模式
-            if (ABSwitch.Ins().getCritModelSwitch() == 1) {
+            //新用户并且抽奖次数未达到开启暴击条件
+            if (CriticalModelTool.getScenesSwitch() == 1) {
+                //走次数
                 //抽奖解锁暴击
                 mDataBinding.critDraw.setVisibility(View.VISIBLE);
                 mDataBinding.critDownload.setVisibility(View.GONE);
@@ -287,12 +288,16 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
                 }
                 mDataBinding.numberCode.setText((sumNumber - participateNumber) < 0 ? 0 + "" : (sumNumber - participateNumber) + "");
 
-            } else if (ABSwitch.Ins().getCritModelSwitch() == 2) {
+            } else if (CriticalModelTool.getScenesSwitch() == 2) {
+                //走下载
                 //下载解锁
                 mDataBinding.critDownload.setVisibility(View.INVISIBLE);
                 mDataBinding.critDraw.setVisibility(View.GONE);
                 getIntegralTask();
-            } else {
+            }
+//每天参与的次数用完
+            if (!DateManager.getInstance().timesLimit(DateManager.CRIT_KEY, DateManager.CRIT_NUMBER,
+                    ABSwitch.Ins().getEnableOpenCritModelCount())) {
                 //抽奖解锁暴击
                 mDataBinding.critDraw.setVisibility(View.VISIBLE);
                 mDataBinding.critDownload.setVisibility(View.GONE);

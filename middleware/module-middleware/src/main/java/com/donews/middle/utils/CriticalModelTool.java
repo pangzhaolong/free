@@ -1,5 +1,7 @@
 package com.donews.middle.utils;
 
+import android.app.Notification;
+
 import com.donews.common.ad.business.monitor.LotteryAdCount;
 import com.donews.common.config.CritParameterConfig;
 import com.donews.common.contract.LoginHelp;
@@ -44,8 +46,7 @@ public class CriticalModelTool {
     //判断抽奖次数和最低抽奖次数一样
     public static boolean ifCoincide() {
         if (ABSwitch.Ins().getOpenCritModel()) {
-            //抽奖模式
-            if (ABSwitch.Ins().getCritModelSwitch() == 1) {
+            if (ABSwitch.Ins().getOpenCritModel()) {
                 //新用户
                 int sumNumber = 0;
                 //已经参与的次数
@@ -60,12 +61,35 @@ public class CriticalModelTool {
                 if (participateNumber >= sumNumber) {
                     return true;
                 }
-            } else {
-                //下载模式
             }
         }
         return false;
     }
+
+
+    //场景切换
+    public static int getScenesSwitch() {
+        //新用户并且抽奖次数未达到开启暴击条件
+        //新用户的次数
+        int sumNumber = ABSwitch.Ins().getOpenCritModelByLotteryCount();
+        //已经参与的次数
+        int participateNumber = LotteryAdCount.INSTANCE.getCriticalModelLotteryNumber();
+        if (CriticalModelTool.isNewUser() && sumNumber < participateNumber) {
+            //继续中抽奖次数逻辑
+            return 1;
+        } else {
+            //判断下载，积分模式是否开启
+            if (ABSwitch.Ins().getScoreModelCritCount() > 0) {
+                //积分模式开启
+                return 2;
+            } else {
+                return 1;
+            }
+        }
+
+
+    }
+
 
     /**
      * 当前用户模式下。达到暴击模式需要的总次数

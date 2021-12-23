@@ -764,8 +764,12 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
      * 开启暴击时刻统一入口
      */
     private void startCriticalMoment() {
-        //通知开始暴击模式  模拟开启暴击模式
-        EventBus.getDefault().post(new CritMessengerBean(200));
+        if (DateManager.getInstance().timesLimit(DateManager.CRIT_KEY, DateManager.CRIT_NUMBER,
+                ABSwitch.Ins().getEnableOpenCritModelCount())) {
+            //判断开启了多少次
+            //通知开始暴击模式  模拟开启暴击模式
+            EventBus.getDefault().post(new CritMessengerBean(200));
+        }
     }
 
 
