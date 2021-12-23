@@ -14,6 +14,10 @@ public class LoginApi {
     public static final String CODE = BASE_URL + "code";
     // 手机号登录与微信登录
     public static final String LOGIN = BASE_URL + "login";
+
+    // 预注册
+    public static final String PRE_REGISTER = BASE_URL + "pre-register";
+
     //获取用户TAG值,新老用户
     public static final String USER_TAG = BuildConfig.TASK_URL + "user/more";
     // 手机号与微信 绑定

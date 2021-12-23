@@ -11,6 +11,7 @@ public final class AnalysisParam {
     public static String STARTUP = "startup"; //App启动
     public static String SHUTDOWN = "shutdown"; //App退出
     public static String REGISTER = "register";//设备注册（用户注册）
+    public static String PRE_REGISTER = "pre_register";//设备注册（用户注册）
     public static String LOGIN = "login"; //App账号登录
     public static String LOGOUT = "logout"; //App退出账号登录
     public static String ERROR = "error"; //各种原因崩溃记录
@@ -34,7 +35,9 @@ public final class AnalysisParam {
     public static String LOOK_JOB_LOOK = "look_job_look"; //创意视频完整播放
 
 
-    /** Swei桌面通知新增的事件 */
+    /**
+     * Swei桌面通知新增的事件
+     */
     public static final String DESKTOP_DISPLAY = "desktopdisplay";
     public static final String DESKTOP_DISPLAY_CLICK = "desktopclicking";
     public static final String NOTICE_BAR_DISPLAY = "noticebardisplay";

@@ -194,8 +194,6 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         //极光推送
         JPushHelper.setDebugMode(BuildConfig.DEBUG);
         JPushHelper.init(getApplication());
-
-//        Log.e("xxxx", "xxxxxxxxx" + JPushInterface.getRegistrationID(this));
     }
 
     private void showPersonGuideDialog() {

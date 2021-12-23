@@ -537,6 +537,7 @@
                         </com.zhpan.bannerview.BannerViewPager>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/front_lottery_winner_cl"
                             android:layout_width="match_parent"
                             android:layout_height="133dp"
                             android:layout_marginStart="10dp"

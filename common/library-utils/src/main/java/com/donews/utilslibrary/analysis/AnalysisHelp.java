@@ -63,14 +63,12 @@ public class AnalysisHelp {
         UMConfigure.getOaid(application, new OnGetOaidListener() {
             @Override
             public void onGetOaid(String oaid) {
-
                 SPUtils.setInformain(KeySharePreferences.OAID, !TextUtils.isEmpty(oaid) ? oaid : "");
                 LogUtil.d("oaid====" + oaid);
             }
         });
         // 选用AUTO页面采集模式
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
-
     }
 
     // register
@@ -79,7 +77,6 @@ public class AnalysisHelp {
         DonewsAgent.setExtDev(String.format("versionCode=%s", DeviceUtils.getAppVersionCode()));
         LogUtil.d("register 统计SDK");
         registerUserId();
-
     }
 
     /**

@@ -29,6 +29,18 @@ public class AppInfo {
         return SPUtils.getInformain(KeySharePreferences.USER_ID, "");
     }
 
+    public static void setUserId(String userId) {
+        SPUtils.setInformain(KeySharePreferences.USER_ID, userId);
+    }
+
+    public static String getUserRegisterTime() {
+        return SPUtils.getInformain(KeySharePreferences.USER_REGISTER_TIME, "");
+    }
+
+    public static void setUserRegisterTime(String time) {
+        SPUtils.setInformain(KeySharePreferences.USER_REGISTER_TIME, time);
+    }
+
     /**
      * 退出登录(退出所有登录)
      *
@@ -50,9 +62,9 @@ public class AppInfo {
      * @param code
      */
     public static void saveWXLoginCode(String code) {
-        if(code == null){
+        if (code == null) {
             SPUtils.setInformain("wxLoginCode", "");
-        }else{
+        } else {
             SPUtils.setInformain("wxLoginCode", code);
         }
     }

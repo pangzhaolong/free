@@ -18,6 +18,10 @@ public class KeySharePreferences {
     public final static String TOKEN = "token";
     //本地用户的userId
     public final static String USER_ID = "userId";
+
+    // 用户创建时间
+    public final static String USER_REGISTER_TIME = "user_register_time";
+
     //oaid
     public final static String OAID = "share_util_oaid";
     // 是否给了协议权限
@@ -57,12 +61,16 @@ public class KeySharePreferences {
 
     public final static String LOTTERY_COUNTS = "lottery_counts";
 
-    /** main模块。报错首页提示浮标最新一期提交的记录。表示当前期数已经被记录过了 */
+    /**
+     * main模块。报错首页提示浮标最新一期提交的记录。表示当前期数已经被记录过了
+     */
     public final static String MAIN_MASK_FLG = "main_model_mask_flg";
 
     public final static String IS_FIRST_IN_APP = "is_first_in_app";
 
-    /** notify限制 */
+    /**
+     * notify限制
+     */
     public final static String KEY_NOTIFYOPEN_TIME = "key_notifyopen_time";
 
     public final static String KEY_NOTIFYCOUNT_LIMIT = "key_notifycount_limit";

@@ -15,6 +15,7 @@ import com.donews.main.BuildConfig;
 import com.donews.main.ui.SplashActivity;
 import com.donews.main.utils.ExitInterceptUtils;
 import com.donews.main.utils.HotStartCacheUtils;
+import com.donews.middle.front.FrontConfigManager;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.converter.GsonDiskConverter;
 import com.donews.network.cache.model.CacheMode;
@@ -153,6 +154,9 @@ public class MainModuleInit implements IModuleInit {
         application.registerActivityLifecycleCallbacks(callbacks);
 
         ExitInterceptUtils.INSTANCE.init();
+
+        FrontConfigManager.Ins().init();
+
         return false;
     }
 
