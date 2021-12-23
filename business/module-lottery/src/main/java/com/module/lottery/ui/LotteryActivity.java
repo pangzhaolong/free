@@ -32,6 +32,7 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.events.LotteryStatusEvent;
+import com.dn.sdk.bean.integral.ProxyIntegral;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.business.manager.JddAdManager;
 import com.donews.common.ad.business.monitor.LotteryAdCount;
@@ -186,18 +187,22 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
 
     private void showLotteryCritCodeDialog(GenerateCodeBean generateCodeBean) {
-        LotteryCritCodeDialog lotteryCritDialog = new LotteryCritCodeDialog(this, generateCodeBean);
-        lotteryCritDialog.setStateListener(new LotteryCritCodeDialog.OnStateListener() {
+        runOnUiThread(new Runnable() {
             @Override
-            public void onStartCrit() {
-                if (lotteryCritDialog != null && lotteryCritDialog.isShowing()) {
-                    lotteryCritDialog.dismiss();
-                }
-                luckyDrawEntrance();
+            public void run() {
+                LotteryCritCodeDialog lotteryCritDialog = new LotteryCritCodeDialog(LotteryActivity.this, generateCodeBean);
+                lotteryCritDialog.setStateListener(new LotteryCritCodeDialog.OnStateListener() {
+                    @Override
+                    public void onStartCrit() {
+                        if (lotteryCritDialog != null && lotteryCritDialog.isShowing()) {
+                            lotteryCritDialog.dismiss();
+                        }
+                        luckyDrawEntrance();
+                    }
+                });
+                lotteryCritDialog.show(LotteryActivity.this);
             }
         });
-
-        lotteryCritDialog.show(this);
     }
 
 
@@ -578,21 +583,30 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                     }
                     //刷新页面  展示抽奖码
                     lotteryInfo();
-                    //判断是否需要弹起 超幸运弹框
-                    if (CriticalModelTool.ifCoincide()) {
-                        //通知开始暴击模式
-                        startCriticalMoment();
-                        //弹起超幸运弹框
-                        if (generateCodeBean.getRemain() == 0) {
-                            //满了6个后先弹出之前的弹框
-                            showExhibitCodeDialog(generateCodeBean);
-                        } else {
-                            //普通的暴击抽奖
-                            showLotteryCritCodeDialog(generateCodeBean);
+                    CriticalModelTool.getScenesSwitch(new CriticalModelTool.IScenesSwitchListener() {
+                        @Override
+                        public void onIntegralNumber(ProxyIntegral integralBean) {
+                            if (integralBean == null) {
+                                //判断是否需要弹起 超幸运弹框
+                                if (CriticalModelTool.ifCoincide()) {
+                                    //通知开始暴击模式
+                                    startCriticalMoment();
+                                    //弹起超幸运弹框
+                                    if (generateCodeBean.getRemain() == 0) {
+                                        //满了6个后先弹出之前的弹框
+                                        showExhibitCodeDialog(generateCodeBean);
+                                    } else {
+                                        //普通的暴击抽奖
+                                        showLotteryCritCodeDialog(generateCodeBean);
+                                    }
+                                } else {
+                                    showExhibitCodeDialog(generateCodeBean);
+                                }
+                            } else {
+                                showExhibitCodeDialog(generateCodeBean);
+                            }
                         }
-                    } else {
-                        showExhibitCodeDialog(generateCodeBean);
-                    }
+                    });
                 }
 
                 @Override
@@ -704,6 +718,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         }
         ExhibitCodeStartsDialog exhibitCodeStartsDialog = new ExhibitCodeStartsDialog(LotteryActivity.this, mGoodsId,
                 generateCodeBean);
+        exhibitCodeStartsDialog.setOwnerActivity(LotteryActivity.this);
         exhibitCodeStartsDialog.setStateListener(new ExhibitCodeStartsDialog.OnStateListener() {
             @Override
             public void onFinish() {
@@ -734,14 +749,18 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
             @Override
             public void onStartCritMode(GenerateCodeBean generateCodeBean) {
-                //开始暴击模式
-                startCriticalMoment();
-                //关闭当前弹框
-                if (exhibitCodeStartsDialog != null && exhibitCodeStartsDialog.isShowing()) {
-                    exhibitCodeStartsDialog.dismiss();
+
+                if (DateManager.getInstance().timesLimit(DateManager.CRIT_KEY, DateManager.CRIT_NUMBER,
+                        ABSwitch.Ins().getEnableOpenCritModelCount())) {
+                    //开始暴击模式
+                    startCriticalMoment();
+                    //关闭当前弹框
+                    if (exhibitCodeStartsDialog != null && exhibitCodeStartsDialog.isShowing()) {
+                        exhibitCodeStartsDialog.dismiss();
+                    }
+                    //开启暴击弹框
+                    showLotteryCritCodeDialog(generateCodeBean);
                 }
-                //开启暴击弹框
-                showLotteryCritCodeDialog(generateCodeBean);
             }
         });
         try {
