@@ -1,7 +1,10 @@
 package com.donews.middle.utils;
 
 import android.app.Notification;
+import android.os.Message;
 
+import com.dn.sdk.bean.integral.ProxyIntegral;
+import com.dn.sdk.utils.IntegralComponent;
 import com.donews.common.ad.business.monitor.LotteryAdCount;
 import com.donews.common.config.CritParameterConfig;
 import com.donews.common.contract.LoginHelp;
@@ -17,11 +20,11 @@ public class CriticalModelTool {
 
     //判断是否是新用户
     public static boolean isNewUser() {
-        return true;
-//        //设备时长24小时
-//        long duration = 24 * 60 * 60 * 1000L;
-//        //新手标识
-//        boolean mark = SPUtils.getInformain(CritParameterConfig.LOTTERY_MARK, true);
+        //设备时长24小时
+        long duration = 24 * 60 * 60 * 1000L;
+        //新手标识
+        boolean mark = SPUtils.getInformain(CritParameterConfig.LOTTERY_MARK, true);
+        return  mark;
 //        //取出用户注册时间
 //        String createdAt = LoginHelp.getInstance().getUserInfoBean().getCreatedAt();
 //        String pattern = "yyyy-MM-dd HH:mm:ss";
@@ -45,50 +48,78 @@ public class CriticalModelTool {
 
     //判断抽奖次数和最低抽奖次数一样(前提是处于普通次数模式)
     public static boolean ifCoincide() {
+        //开启了暴击模式
         if (ABSwitch.Ins().getOpenCritModel()) {
-            int scenesSwitch = getScenesSwitch();
-            if (ABSwitch.Ins().getOpenCritModel() && scenesSwitch == 1) {
-                //新用户
-                int sumNumber = 0;
-                //已经参与的次数
-                int participateNumber = LotteryAdCount.INSTANCE.getCriticalModelLotteryNumber();
-                if (isNewUser()) {
-                    //判断次数是否满足最低
-                    //总共需要抽多少个抽奖码开始暴击模式
-                    sumNumber = ABSwitch.Ins().getOpenCritModelByLotteryCount();
-                } else {
-                    sumNumber = 6;
-                }
-                if (participateNumber >= sumNumber) {
-                    return true;
-                }
+
+
+            //新用户
+            int sumNumber = 0;
+            //已经参与的次数
+            int participateNumber = LotteryAdCount.INSTANCE.getCriticalModelLotteryNumber();
+            if (isNewUser()) {
+                //判断次数是否满足最低
+                //总共需要抽多少个抽奖码开始暴击模式
+                sumNumber = ABSwitch.Ins().getOpenCritModelByLotteryCount();
+            } else {
+                sumNumber = 6;
+            }
+            if (participateNumber >= sumNumber) {
+                return true;
             }
         }
         return false;
     }
 
 
+    public interface IScenesSwitchListener {
+        void onIntegralNumber(ProxyIntegral integralBean);
+    }
+
+
     //场景切换
-    public static int getScenesSwitch() {
-        //新用户并且抽奖次数未达到开启暴击条件
-        //新用户的次数
-        int sumNumber = ABSwitch.Ins().getOpenCritModelByLotteryCount();
-        //已经参与的次数
-        int participateNumber = LotteryAdCount.INSTANCE.getCriticalModelLotteryNumber();
-        if (CriticalModelTool.isNewUser() && participateNumber <= sumNumber) {
-            //继续中抽奖次数逻辑
-            return 1;
-        } else {
-            //判断下载，积分模式是否开启
-            if (ABSwitch.Ins().isOpenScoreModelCrit()) {
-                //积分模式开启
-                return 2;
-            } else {
-                return 1;
+    public static void getScenesSwitch(final IScenesSwitchListener iScenesSwitchListener) {
+        if (ABSwitch.Ins().getOpenCritModel()) {
+            if (iScenesSwitchListener != null) {
+                //新用户并且抽奖次数未达到开启暴击条件
+                //新用户的次数
+                int sumNumber = ABSwitch.Ins().getOpenCritModelByLotteryCount();
+                //已经参与的次数
+                int participateNumber = LotteryAdCount.INSTANCE.getCriticalModelLotteryNumber();
+                boolean markTEststst = SPUtils.getInformain(CritParameterConfig.LOTTERY_MARK, true);
+                if (CriticalModelTool.isNewUser() && participateNumber <= sumNumber && markTEststst) {
+                    //继续中抽奖次数逻辑(新手进行中)
+                    iScenesSwitchListener.onIntegralNumber(null);
+                    return;
+                }
+                //非新手
+                if (ABSwitch.Ins().isOpenScoreModelCrit()) {
+                    IntegralComponent.getInstance().getIntegral(new IntegralComponent.IntegralHttpCallBack() {
+                        @Override
+                        public void onSuccess(ProxyIntegral integralBean) {
+                            iScenesSwitchListener.onIntegralNumber(integralBean);
+                        }
+
+                        @Override
+                        public void onError(String var1) {
+                            iScenesSwitchListener.onIntegralNumber(null);
+                        }
+
+                        @Override
+                        public void onNoTask() {
+                            iScenesSwitchListener.onIntegralNumber(null);
+                        }
+
+                    });
+                } else {
+                    //没有开启下载模式
+                    iScenesSwitchListener.onIntegralNumber(null);
+                }
+
+
             }
+
+
         }
-
-
     }
 
 
