@@ -47,26 +47,18 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
     private int jumpTime = 0;
     //记录此时系统运行的时间（次数）
     private long experienceStartTime = 0;
-
-
+    //配置的体验时长
+    private long taskPlayTime = ABSwitch.Ins().getScoreTaskPlayTime() * 1000L;
     //记录此时系统运行的时间（次留）
     private long secondStayStartTime = 0;
-
+    private ProxyIntegral mIntegralBean;
     /**
      * 是否处于体验阶段  false 没有默认  ,true 标识开始体验
      */
     private boolean experienceLogo = false;
 
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (experienceLogo) {
-            //记录此时系统运行的时间
-            experienceStartTime = SystemClock.elapsedRealtime();
-        }
-
-    }
+    private boolean tipsLayoutIsShow = false;
 
 
     private void showBenefitUpgradeDialog() {
@@ -79,9 +71,8 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
                 }
                 finish();
                 ARouter.getInstance()
-                        .build(RouterActivityPath.Mine.PAGER_ACTIVITY_WITHDRAWAL_RECORD)
+                        .build(RouterActivityPath.Mine.PAGER_ACTIVITY_WITHDRAWAL)
                         .navigation();
-
             }
         });
         benefitUpgradeDialog.show(WelfareActivity.this);
@@ -111,13 +102,27 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
     }
 
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (experienceLogo) {
+            //记录此时系统运行的时间 (体验阶段)
+            if (experienceStartTime == 0) {
+                experienceStartTime = SystemClock.elapsedRealtime();
+            }
+        }
+
+    }
+
     private void setData() {
         IntegralComponent.getInstance().getIntegral(new IntegralComponent.IntegralHttpCallBack() {
             @Override
             public void onSuccess(ProxyIntegral integralBean) {
+                mIntegralBean = integralBean;
                 //判断app是否安装
                 if (AppUtils.isAppInstalled(integralBean.getPkName())) {
-                    refreshPageView(integralBean);
+                    refreshSecondStayPageView(integralBean);
+
                 } else {
                     mDataBinding.downloadBt.setText("立即下载");
                     mDataBinding.tipsLayout.setVisibility(View.GONE);
@@ -140,7 +145,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
         IntegralComponent.getInstance().getSecondStayTask(new IntegralComponent.ISecondStayTask() {
             @Override
             public void onSecondStayTask(ProxyIntegral var1) {
-                refreshSecondStayPageView(var1);
+                showBoxLayout(var1);
             }
 
             @Override
@@ -158,28 +163,80 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
 
     //刷新次留页面UI
     private void refreshSecondStayPageView(ProxyIntegral integralBean) {
-        mDataBinding.boxLayout.setVisibility(View.VISIBLE);
-        Glide.with(WelfareActivity.this).asDrawable().load(integralBean.getIcon()).into(mDataBinding.boxIcon);
-        mDataBinding.boxLayout.setOnClickListener(new View.OnClickListener() {
+        mDataBinding.downloadBt.setText("打开APP玩1分钟");
+        mDataBinding.downloadBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //记录此时系统运行的时间（次留）
-                secondStayStartTime = SystemClock.elapsedRealtime();
                 jumpToApk(integralBean);
+                startTrialStatus();
             }
         });
     }
+
+
+    //处理试玩状态(来判断返回页面后是否显示下方tips)
+    private void startTrialStatus() {
+        experienceLogo = true;
+        //开始体验后，准备延时通知
+        Message message = new Message();
+        message.what = 2;
+        mWelfareHandler.sendMessageDelayed(message, taskPlayTime);
+    }
+
+
+    //显示下方体验提示布局
+    private void showTipsView(ProxyIntegral integralBean) {
+        if (integralBean != null && !tipsLayoutIsShow) {
+            tipsLayoutIsShow = true;
+            Glide.with(WelfareActivity.this).asDrawable().load(integralBean.getIcon()).into(mDataBinding.apkTipsIcon);
+            mDataBinding.apkTipsName.setText(integralBean.getAppName() + "安装成功啦");
+            mDataBinding.apkTipsTime.setText("赶紧打开体验3S后自动跳转");
+            //开始倒计时自动跳转
+            startAutomaticCountdown(integralBean);
+            mDataBinding.tipsLayout.setVisibility(View.VISIBLE);
+            mDataBinding.tipsLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    jumpToApk(integralBean);
+                }
+            });
+        } else {
+            mDataBinding.tipsLayout.setVisibility(View.INVISIBLE);
+        }
+    }
+
+
+    //显示宝箱 次留任务
+    private void showBoxLayout(ProxyIntegral integralBean) {
+        if (AppUtils.isAppInstalled(integralBean.getPkName())) {
+            mDataBinding.boxLayout.setVisibility(View.VISIBLE);
+            Glide.with(WelfareActivity.this).asDrawable().load(integralBean.getIcon()).into(mDataBinding.boxIcon);
+            mDataBinding.boxLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //记录此时系统运行的时间（次留）
+                    secondStayStartTime = SystemClock.elapsedRealtime();
+                    jumpToApk(integralBean);
+                }
+            });
+        }
+    }
+
 
     @Override
     protected void onResume() {
         super.onResume();
         if (experienceLogo) {
-            int taskPlayTime = ABSwitch.Ins().getScoreTaskPlayTime();
-            if ((SystemClock.elapsedRealtime() - experienceStartTime) > taskPlayTime * 1000L) {
+            cleanMessage();
+            //判断是否完成 弹起完成的dialog
+            if ((SystemClock.elapsedRealtime() - experienceStartTime) > taskPlayTime) {
                 //满足了体验时间  弹框准备跳转
                 showBenefitUpgradeDialog();
                 experienceLogo = false;
                 experienceStartTime = 0;
+            } else {
+                //体验时间不到
+                showTipsView(mIntegralBean);//体验时间不到
             }
         }
 
@@ -187,7 +244,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
         if (secondStayStartTime != 0) {
             if ((SystemClock.elapsedRealtime() - secondStayStartTime) >= 5000) {
                 secondStayStartTime = 0;
-                //弹起翻倍弹框
+                //弹起翻倍弹框(红包)
                 Intent intent = new Intent(WelfareActivity.this, RpActivityDialog.class);
                 startActivity(intent);
             }
@@ -204,36 +261,21 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
     }
 
 
-    private void refreshPageView(ProxyIntegral integralBean) {
-        if (AppUtils.isAppInstalled(integralBean.getPkName())) {
-            experienceLogo = true;
-            mDataBinding.downloadBt.setText("立即打开");
-            Glide.with(WelfareActivity.this).asDrawable().load(integralBean.getIcon()).into(mDataBinding.apkTipsIcon);
-            mDataBinding.apkTipsName.setText(integralBean.getAppName() + "安装成功啦");
-            mDataBinding.apkTipsTime.setText("赶紧打开体验12S后自动跳转");
-            //开始倒计时自动跳转
-            startAutomaticCountdown(integralBean);
-            mDataBinding.tipsLayout.setVisibility(View.VISIBLE);
-            mDataBinding.tipsLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    jumpToApk(integralBean);
-                }
-            });
-
-        }
-    }
-
-
     /**
      * 跳转打开apk
      */
     public void jumpToApk(ProxyIntegral integralBean) {
         if (integralBean != null) {
-            mWelfareHandler.removeMessages(0);
-            mWelfareHandler.removeMessages(1);
+            cleanMessage();
             IntegralComponent.getInstance().runIntegralApk(WelfareActivity.this, integralBean);
         }
+    }
+
+
+    private void cleanMessage() {
+        mWelfareHandler.removeMessages(0);
+        mWelfareHandler.removeMessages(1);
+        mWelfareHandler.removeCallbacksAndMessages(null);
     }
 
 
@@ -286,9 +328,15 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
 
             }
 
+            //安装完成
             @Override
             public void onInstalled() {
-                refreshPageView(integralBean);
+                mDataBinding.downloadBt.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshSecondStayPageView(integralBean);
+                    }
+                });
             }
 
             @Override
@@ -344,6 +392,13 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
                         }
                     }
                     break;
+
+
+                case 2:
+                    ToastUtils.showShort("任务已完成");
+                    break;
+
+
             }
         }
     }
