@@ -59,6 +59,10 @@ public class IntegralComponent {
                                     resultList.add(integralBean);
                                 }
                             }
+                            if(resultList.isEmpty()){
+                                integralHttpCallBack.onNoTask();
+                                return;
+                            }
                             integralHttpCallBack.onSuccess(resultList);
                         }
                     }
