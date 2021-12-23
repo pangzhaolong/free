@@ -184,35 +184,6 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
     }
 
 
-    /**
-     * 获取积分任务。应用
-     */
-    private void getIntegralTask() {
-        IntegralComponent.getInstance().getIntegral(new IntegralComponent.IntegralHttpCallBack() {
-            @Override
-            public void onSuccess(ProxyIntegral integralBean) {
-                Message message = new Message();
-                message.obj = integralBean;
-                message.what = 3;
-                mLotteryHandler.sendMessage(message);
-            }
-
-            @Override
-            public void onError(String var1) {
-
-            }
-
-            @Override
-            public void onNoTask() {
-
-            }
-
-        });
-
-
-    }
-
-
     private void initProgressBar() {
         mDataBinding.setCodeBean(mGenerateCodeBean);
         int schedule = 0;
@@ -276,30 +247,36 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
                     ABSwitch.Ins().getEnableOpenCritModelCount())) {
                 //还能触发暴击模式
                 //新用户并且抽奖次数未达到开启暴击条件
-                if (CriticalModelTool.getScenesSwitch() == 1) {
-                    //走次数
-                    //抽奖解锁暴击
-                    mDataBinding.critDraw.setVisibility(View.VISIBLE);
-                    mDataBinding.critDownload.setVisibility(View.GONE);
-                    //总共需要抽多少个抽奖码开始暴击模式
-                    int sumNumber;
-                    //已经参与的次数
-                    int participateNumber = LotteryAdCount.INSTANCE.getCriticalModelLotteryNumber();
-                    if (CriticalModelTool.isNewUser()) {
-                        sumNumber = ABSwitch.Ins().getOpenCritModelByLotteryCount();
-                    } else {
-                        sumNumber = 6;
-                    }
-                    mDataBinding.numberCode.setText((sumNumber - participateNumber) < 0 ? 0 + "" : (sumNumber - participateNumber) + "");
+                CriticalModelTool.getScenesSwitch(new CriticalModelTool.IScenesSwitchListener() {
+                    @Override
+                    public void onIntegralNumber(ProxyIntegral integralBean) {
+                        if (!getOwnerActivity().isDestroyed() && !getOwnerActivity().isFinishing()) {
+                            if (integralBean != null) {
+                                //下载解锁
+                                Message message = new Message();
+                                message.obj = integralBean;
+                                message.what = 3;
+                                mLotteryHandler.sendMessage(message);
+                            } else {
+                                //普通次数模式
+                                mDataBinding.critDraw.setVisibility(View.VISIBLE);
+                                mDataBinding.critDownload.setVisibility(View.GONE);
+                                //总共需要抽多少个抽奖码开始暴击模式
+                                int sumNumber;
+                                //已经参与的次数
+                                int participateNumber = LotteryAdCount.INSTANCE.getCriticalModelLotteryNumber();
+                                if (CriticalModelTool.isNewUser()) {
+                                    sumNumber = ABSwitch.Ins().getOpenCritModelByLotteryCount();
+                                } else {
+                                    sumNumber = 6;
+                                }
+                                mDataBinding.numberCode.setText((sumNumber - participateNumber) < 0 ? 0 + "" : (sumNumber - participateNumber) + "");
 
-                } else if (CriticalModelTool.getScenesSwitch() == 2) {
-                    //走下载
-                    //下载解锁
-                    mDataBinding.critDownload.setVisibility(View.INVISIBLE);
-                    mDataBinding.critDraw.setVisibility(View.GONE);
-                    getIntegralTask();
-                }
-            }else{
+                            }
+                        }
+                    }
+                });
+            } else {
                 //不能触发了 每天参与的次数用完
                 mDataBinding.critDraw.setVisibility(View.GONE);
                 mDataBinding.critDownload.setVisibility(View.GONE);

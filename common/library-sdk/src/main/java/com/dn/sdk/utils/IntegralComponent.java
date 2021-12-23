@@ -15,6 +15,7 @@ import com.donews.ads.mediation.v2.integral.api.DnIntegralHttpCallBack;
 import com.donews.ads.mediation.v2.integral.api.DnIntegralIntegralError;
 import com.donews.utilslibrary.utils.AppInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class IntegralComponent {
@@ -48,7 +49,18 @@ public class IntegralComponent {
 //                        IntegralBean integralBean = new IntegralBean(integralAds.get(0));
 //                        integralBean.setIntegralList(integralAds);
 //                        integralHttpCallBack.onSuccess(integralBean);
-
+                        if (integralAds == null || integralAds.isEmpty()) {
+                            integralHttpCallBack.onNoTask();
+                        } else {
+                            List<ProxyIntegral> resultList = new ArrayList<>();
+                            for (int i = 0; i < integralAds.size(); i++) {
+                                if (integralAds.get(i).getTaskType().equals("ACTIVATION_TASK")) {
+                                    ProxyIntegral integralBean = new ProxyIntegral(integralAds.get(i));
+                                    resultList.add(integralBean);
+                                }
+                            }
+                            integralHttpCallBack.onSuccess(resultList);
+                        }
                     }
 
                     @Override
@@ -104,7 +116,7 @@ public class IntegralComponent {
                         }
                         ProxyIntegral integralBean = null;
                         for (int i = 0; i < integralAds.size(); i++) {
-                            if (integralAds.get(i).getTaskType() .equals("RETENTION_TASK")) {
+                            if (integralAds.get(i).getTaskType().equals("RETENTION_TASK")) {
                                 if (integralBean == null) {
                                     integralBean = new ProxyIntegral(integralAds.get(i));
                                 } else {
@@ -114,7 +126,7 @@ public class IntegralComponent {
                                 }
                             }
                         }
-                        if(integralBean!=null){
+                        if (integralBean != null) {
                             iSecondStayTask.onSecondStayTask(integralBean);
                         }
                     }
@@ -128,7 +140,12 @@ public class IntegralComponent {
 
 
     public interface IntegralHttpCallBack {
-        void onSuccess(ProxyIntegral var1);
+        default void onSuccess(ProxyIntegral var1) {
+        }
+
+        //获取一个列表的
+        default void onSuccess(List<ProxyIntegral> var1) {
+        }
 
         void onError(String var1);
 
@@ -139,10 +156,11 @@ public class IntegralComponent {
 
     public interface ISecondStayTask {
         void onSecondStayTask(ProxyIntegral var1);
+
         void onError(String var1);
+
         void onNoTask();
     }
-
 
 
     /**
