@@ -19,6 +19,8 @@ public class MiddleApi {
 
     public final static String commandUrl = BuildConfig.BASE_CONFIG_URL + "plus-cmdConfig" + BuildConfig.BASE_RULE_URL;
 
+    public final static String frontConfigUrl = BuildConfig.BASE_CONFIG_URL + "plus-front" + BuildConfig.BASE_RULE_URL;
+
     public final static String privilegeLinkUrl = BuildConfig.BASE_URL + "v2/get-privilege-link?goods_id=%s&material_id=%s&search_id=%s&src=%d";
 //    https://lottery.dev.tagtic.cn/shop/v2/get-privilege-link?goods_id=tb:616331976354&src=1
 }

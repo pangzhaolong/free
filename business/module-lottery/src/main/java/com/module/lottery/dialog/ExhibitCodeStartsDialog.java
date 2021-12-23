@@ -266,9 +266,9 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
                                 //已经参与的次数
                                 int participateNumber = LotteryAdCount.INSTANCE.getCriticalModelLotteryNumber();
                                 if (CriticalModelTool.isNewUser()) {
-                                    sumNumber = ABSwitch.Ins().getOpenCritModelByLotteryCount();
+                                    sumNumber = ABSwitch.Ins().getOpenCritModelByNewUserCount();
                                 } else {
-                                    sumNumber = 6;
+                                    sumNumber =ABSwitch.Ins().getOpenCritModelByOldUserCount();
                                 }
                                 mDataBinding.numberCode.setText((sumNumber - participateNumber) < 0 ? 0 + "" : (sumNumber - participateNumber) + "");
 
