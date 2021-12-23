@@ -26,12 +26,23 @@ public class ABBean extends BaseCustomViewModel {
     private int lotteryLine = 0;
     @SerializedName("openCritModelByLotteryCount")
     private int openCritModelByLotteryCount = 1;
-    @SerializedName("critModelSwitch")
-    private int critModelSwitch = 1;
+//    @SerializedName("critModelSwitch")
+//    private int critModelSwitch = 1;
     @SerializedName("openCritModel")
     private boolean openCritModel = true;
     @SerializedName("enableOpenCritModelCount")
     private int enableOpenCritModelCount = 5;
+
+    @SerializedName("scoreModelCritCount")
+    private int scoreModelCritCount = 3;
+
+    public int getScoreModelCritCount() {
+        return scoreModelCritCount;
+    }
+
+    public void setScoreModelCritCount(int scoreModelCritCount) {
+        this.scoreModelCritCount = scoreModelCritCount;
+    }
 
     @SerializedName("scoreTaskPlayTime")
     private int scoreTaskPlayTime = 60;
@@ -60,9 +71,9 @@ public class ABBean extends BaseCustomViewModel {
         return openCritModelByLotteryCount;
     }
 
-    public int getCritModelSwitch() {
-        return critModelSwitch;
-    }
+//    public int getCritModelSwitch() {
+//        return critModelSwitch;
+//    }
 
     public int getLotteryLine() {
         return lotteryLine;

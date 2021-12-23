@@ -73,8 +73,12 @@ public class ABSwitch {
         return mAbBean.getOpenCritModelByLotteryCount();
     }
 
-    public int getCritModelSwitch() {
-        return mAbBean.getCritModelSwitch();
+//    public int getCritModelSwitch() {
+//        return mAbBean.getCritModelSwitch();
+//    }
+
+    public int getScoreModelCritCount() {
+        return mAbBean.getScoreModelCritCount();
     }
 
     public boolean getOpenCritModel() {
