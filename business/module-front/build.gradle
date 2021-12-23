@@ -21,6 +21,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     kapt rootProject.ext.dependencies["arouter-compiler"]
+    implementation rootProject.ext.dependencies["bannerViewpager"]
 
     implementation('org.raphets:roundimageview:1.2.0')
 }

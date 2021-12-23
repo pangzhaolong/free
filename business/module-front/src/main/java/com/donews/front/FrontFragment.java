@@ -216,7 +216,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mDataBinding.frontToTopTv.setVisibility(View.GONE);
         });
 
-        mDataBinding.frontGiftGroupFl.setVisibility(View.GONE);
+        mDataBinding.frontGiftGroupBvp.setVisibility(View.GONE);
         mDataBinding.frontTaskGroupLl.setVisibility(View.GONE);
     }
 

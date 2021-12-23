@@ -77,8 +77,8 @@ public class ABSwitch {
 //        return mAbBean.getCritModelSwitch();
 //    }
 
-    public int getScoreModelCritCount() {
-        return mAbBean.getScoreModelCritCount();
+    public boolean isOpenScoreModelCrit() {
+        return mAbBean.isOpenScoreModelCrit();
     }
 
     public boolean getOpenCritModel() {

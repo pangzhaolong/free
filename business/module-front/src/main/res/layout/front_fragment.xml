@@ -164,6 +164,7 @@
                                         android:layout_gravity="top|center_horizontal"
                                         android:layout_marginBottom="10dp">
                                         front_rp_progress_done
+
                                         <ImageView
                                             android:id="@+id/front_rp_iv2"
                                             android:layout_width="wrap_content"
@@ -426,12 +427,11 @@
                             android:layout_marginEnd="10dp"
                             android:background="@drawable/front_rp_group_bg"
                             android:orientation="horizontal"
-                            android:padding="10dp"
                             android:weightSum="4">
 
-                            <LinearLayout
+                            <FrameLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_gravity="center"
                                 android:layout_weight="1"
                                 android:gravity="center"
@@ -440,18 +440,22 @@
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginTop="15dp"
                                     android:src="@drawable/front_task_getmoney" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal|bottom"
                                     android:layout_marginTop="3dp"
+                                    android:layout_marginBottom="10dp"
                                     android:text="返现任务" />
-                            </LinearLayout>
+                            </FrameLayout>
 
-                            <LinearLayout
+                            <FrameLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_gravity="center"
                                 android:layout_weight="1"
                                 android:gravity="center"
@@ -460,18 +464,22 @@
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginTop="15dp"
                                     android:src="@drawable/front_task_invite" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal|bottom"
                                     android:layout_marginTop="3dp"
+                                    android:layout_marginBottom="10dp"
                                     android:text="邀请好友" />
-                            </LinearLayout>
+                            </FrameLayout>
 
-                            <LinearLayout
+                            <FrameLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_gravity="center"
                                 android:layout_weight="1"
                                 android:gravity="center"
@@ -480,18 +488,22 @@
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginTop="15dp"
                                     android:src="@drawable/front_task_buy" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal|bottom"
                                     android:layout_marginTop="3dp"
+                                    android:layout_marginBottom="10dp"
                                     android:text="品牌特卖" />
-                            </LinearLayout>
+                            </FrameLayout>
 
-                            <LinearLayout
+                            <FrameLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_gravity="center"
                                 android:layout_weight="1"
                                 android:gravity="center"
@@ -500,34 +512,29 @@
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginTop="15dp"
                                     android:src="@drawable/front_task_coupon" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal|bottom"
                                     android:layout_marginTop="3dp"
+                                    android:layout_marginBottom="10dp"
                                     android:text="大额神券" />
-                            </LinearLayout>
+                            </FrameLayout>
                         </LinearLayout>
 
-                        <FrameLayout
-                            android:id="@+id/front_gift_group_fl"
+                        <com.zhpan.bannerview.BannerViewPager
+                            android:id="@+id/front_gift_group_bvp"
                             android:layout_width="match_parent"
                             android:layout_height="80dp"
                             android:layout_marginStart="10dp"
                             android:layout_marginTop="20dp"
-                            android:layout_marginEnd="10dp"
-                            android:background="@drawable/front_gift_group_bg">
+                            android:layout_marginEnd="10dp">
 
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical|end"
-                                android:background="@drawable/front_gift_group_button_bg"
-                                android:gravity="center"
-                                android:padding="14dp"
-                                android:src="@drawable/front_gift_group_get_now" />
-                        </FrameLayout>
+                        </com.zhpan.bannerview.BannerViewPager>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
