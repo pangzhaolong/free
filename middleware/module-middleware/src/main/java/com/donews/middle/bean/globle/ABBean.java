@@ -30,6 +30,9 @@ public class ABBean extends BaseCustomViewModel {
     @SerializedName("openCritModelByOldUserCount")  //老用户抽奖几次开启暴击
     private int openCritModelByOldUserCount = 1;
 
+    @SerializedName("enableOpenCritModelCount")     //每天允许开启暴击模式总次数（包含老用户，新用户，等各种模式）
+    private int enableOpenCritModelCount = 3;
+
     @SerializedName("openCritModelByNewUser")       //新用户是否开启暴击模式；true:开启；false:关闭
     private boolean openCritModelByNewUser = true;
 
@@ -43,6 +46,9 @@ public class ABBean extends BaseCustomViewModel {
     @SerializedName("scoreTaskPlayTime")            //积分墙任务，玩多少时间，单位：秒
     private int scoreTaskPlayTime = 60;
 
+    public int getEnableOpenCritModelCount() {
+        return enableOpenCritModelCount;
+    }
     public boolean isOpenCritModelByNewUser() {
         return openCritModelByNewUser;
     }

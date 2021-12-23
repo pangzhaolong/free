@@ -69,6 +69,10 @@ public class ABSwitch {
         return mAbBean.getLotteryLine();
     }
 
+    public int getEnableOpenCritModelCount() {
+        return mAbBean.getEnableOpenCritModelCount();
+    }
+
     public boolean isOpenCritModelByNewUser() {
         return mAbBean.isOpenCritModelByNewUser();
     }
