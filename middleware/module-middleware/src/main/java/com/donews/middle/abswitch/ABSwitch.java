@@ -69,8 +69,12 @@ public class ABSwitch {
         return mAbBean.getLotteryLine();
     }
 
-    public int getOpenCritModelByLotteryCount() {
-        return mAbBean.getOpenCritModelByLotteryCount();
+    public boolean isOpenCritModelByNewUser() {
+        return mAbBean.isOpenCritModelByNewUser();
+    }
+
+    public int getOpenCritModelByNewUserCount() {
+        return mAbBean.getOpenCritModelByNewUserCount();
     }
 
 //    public int getCritModelSwitch() {
@@ -83,10 +87,6 @@ public class ABSwitch {
 
     public boolean getOpenCritModel() {
         return mAbBean.isOpenCritModel();
-    }
-
-    public int getEnableOpenCritModelCount() {
-        return mAbBean.getEnableOpenCritModelCount();
     }
 
     public int getScoreTaskPlayTime() {

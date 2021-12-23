@@ -24,17 +24,33 @@ public class ABBean extends BaseCustomViewModel {
     private boolean openGuidGif = false;
     @SerializedName("lotteryLine")
     private int lotteryLine = 0;
-    @SerializedName("openCritModelByLotteryCount")
-    private int openCritModelByLotteryCount = 1;
-//    @SerializedName("critModelSwitch")
-//    private int critModelSwitch = 1;
-    @SerializedName("openCritModel")
-    private boolean openCritModel = true;
-    @SerializedName("enableOpenCritModelCount")
-    private int enableOpenCritModelCount = 5;
 
-    @SerializedName("openScoreModelCrit")
+    @SerializedName("openCritModel")                //暴击模式开关；true: 打开；false:关闭
+    private boolean openCritModel = true;
+    @SerializedName("openCritModelByOldUserCount")  //老用户抽奖几次开启暴击
+    private int openCritModelByOldUserCount = 1;
+
+    @SerializedName("openCritModelByNewUser")       //新用户是否开启暴击模式；true:开启；false:关闭
+    private boolean openCritModelByNewUser = true;
+
+    @SerializedName("openCritModelByNewUserCount")  //新用户开启暴击模式次数（前提：openCritModelByNewUser==true）；
+    private int openCritModelByNewUserCount = 3;
+
+    @SerializedName("openScoreModelCrit")           //积分模式是否开启暴击模式开关； true: 打开；false：关闭
     private boolean openScoreModelCrit = true;
+
+
+    @SerializedName("scoreTaskPlayTime")            //积分墙任务，玩多少时间，单位：秒
+    private int scoreTaskPlayTime = 60;
+
+    public boolean isOpenCritModelByNewUser() {
+        return openCritModelByNewUser;
+    }
+
+    public int getOpenCritModelByNewUserCount() {
+        return openCritModelByNewUserCount;
+    }
+
 
     public boolean isOpenScoreModelCrit() {
         return openScoreModelCrit;
@@ -44,9 +60,6 @@ public class ABBean extends BaseCustomViewModel {
         this.openScoreModelCrit = openScoreModelCrit;
     }
 
-    @SerializedName("scoreTaskPlayTime")
-    private int scoreTaskPlayTime = 60;
-
     public int getScoreTaskPlayTime() {
         return scoreTaskPlayTime;
     }
@@ -55,25 +68,14 @@ public class ABBean extends BaseCustomViewModel {
         this.scoreTaskPlayTime = scoreTaskPlayTime;
     }
 
-    public int getEnableOpenCritModelCount() {
-        return enableOpenCritModelCount;
-    }
-
-    public void setEnableOpenCritModelCount(int enableOpenCritModelCount) {
-        this.enableOpenCritModelCount = enableOpenCritModelCount;
-    }
 
     public boolean isOpenCritModel() {
         return openCritModel;
     }
 
-    public int getOpenCritModelByLotteryCount() {
-        return openCritModelByLotteryCount;
+    public int getOpenCritModelByOldUserCount() {
+        return openCritModelByOldUserCount;
     }
-
-//    public int getCritModelSwitch() {
-//        return critModelSwitch;
-//    }
 
     public int getLotteryLine() {
         return lotteryLine;
