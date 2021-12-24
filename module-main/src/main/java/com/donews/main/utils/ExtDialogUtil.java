@@ -6,7 +6,6 @@ import androidx.fragment.app.FragmentActivity;
 import com.donews.base.fragmentdialog.AbstractFragmentDialog;
 import com.donews.main.dialog.ext.CritDownAppDialogFragment;
 import com.donews.main.dialog.ext.CritWelfareDialogFragment;
-import com.donews.main.dialog.ext.GoodLuckDoubleDialog;
 import com.donews.main.dialog.ext.LuckyDoubleOneDialog;
 
 /**
@@ -61,27 +60,6 @@ public class ExtDialogUtil {
         return dialog;
     }
 
-    /**
-     * 显示暴击翻倍的弹窗(好运翻倍)
-     *
-     * @param fa
-     * @param count         次数
-     * @param downTimeCount 延迟几秒钟
-     * @return
-     */
-    public static DialogFragment showGooLuckDoubleDialog(
-            FragmentActivity fa,
-            int count,
-            int downTimeCount,
-            AbstractFragmentDialog.SureListener sureListener
-    ) {
-        GoodLuckDoubleDialog dialog = new GoodLuckDoubleDialog("" + count, downTimeCount);
-        if (sureListener != null) {
-            dialog.setOnSureListener(sureListener);
-        }
-        dialog.show(fa.getSupportFragmentManager(), dialog.toString());
-        return dialog;
-    }
 
     /**
      * 幸运翻倍只差一步的弹窗

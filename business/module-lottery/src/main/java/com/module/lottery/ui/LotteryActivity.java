@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -36,12 +37,14 @@ import com.dn.sdk.bean.integral.ProxyIntegral;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.business.manager.JddAdManager;
 import com.donews.common.ad.business.monitor.LotteryAdCount;
-import com.donews.common.bean.CritMessengerBean;
 import com.donews.common.provider.IDetailProvider;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.bean.RedEnvelopeUnlockBean;
+import com.donews.middle.service.CritLotteryService;
+import com.donews.middle.ui.GoodLuckDoubleDialog;
+import com.donews.middle.utils.CommonUtils;
 import com.donews.middle.utils.CriticalModelTool;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
@@ -130,7 +133,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
      * 用来处理暴击时间结束后，在暴击时间内，查看视频，看完广告，当次暴击事件失效
      */
     private boolean mCritTime;
-
 
     @Override
     protected int getLayoutId() {
@@ -709,6 +711,17 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    //
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
     //展示生成的抽奖码
     private void showExhibitCodeDialog(GenerateCodeBean generateCodeBean) {
         if (generateCodeBean == null) {
@@ -740,7 +753,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 }
             }
 
-
             @Override
             public void onLottery() {
                 //继续抽奖
@@ -749,17 +761,19 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
             @Override
             public void onStartCritMode(GenerateCodeBean generateCodeBean) {
-
-                if (DateManager.getInstance().timesLimit(DateManager.CRIT_KEY, DateManager.CRIT_NUMBER,
-                        ABSwitch.Ins().getEnableOpenCritModelCount())) {
-                    //开始暴击模式
-                    startCriticalMoment();
-                    //关闭当前弹框
-                    if (exhibitCodeStartsDialog != null && exhibitCodeStartsDialog.isShowing()) {
-                        exhibitCodeStartsDialog.dismiss();
+                if (ClickDoubleUtil.isFastClick()) {
+                    if (DateManager.getInstance().timesLimit(DateManager.CRIT_KEY, DateManager.CRIT_NUMBER,
+                            ABSwitch.Ins().getEnableOpenCritModelCount())) {
+                        //开启暴击校验  (开始服务)
+                        Intent intent = new Intent(LotteryActivity.this, CritLotteryService.class);
+                        intent.putExtra("start_crit", true);
+                        intent.putExtra("start_time", ABSwitch.Ins().getScoreTaskPlayTime());
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            LotteryActivity.this.startForegroundService(intent);
+                        } else {
+                            LotteryActivity.this.startService(intent);
+                        }
                     }
-                    //开启暴击弹框
-                    showLotteryCritCodeDialog(generateCodeBean);
                 }
             }
         });
@@ -783,12 +797,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
      * 开启暴击时刻统一入口
      */
     private void startCriticalMoment() {
-        if (DateManager.getInstance().timesLimit(DateManager.CRIT_KEY, DateManager.CRIT_NUMBER,
-                ABSwitch.Ins().getEnableOpenCritModelCount())) {
-            //判断开启了多少次
-            //通知开始暴击模式  模拟开启暴击模式
-            EventBus.getDefault().post(new CritMessengerBean(200));
-        }
+        CommonUtils.startCrit();
     }
 
 
@@ -883,11 +892,10 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             if (LotteryBean.getList() != null) {
                 if (refresh) {
                     guessAdapter.setGuessLikeData(LotteryBean.getList());
-                    guessAdapter.notifyDataSetChanged();
                 } else {
                     guessAdapter.addGuessLikeData(LotteryBean.getList());
-                    guessAdapter.notifyDataSetChanged();
                 }
+                guessAdapter.notifyDataSetChanged();
             }
         });
 

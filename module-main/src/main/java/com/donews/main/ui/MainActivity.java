@@ -201,7 +201,7 @@ public class MainActivity
                 if (Math.abs(time - critStartTime) >= againstTime) {
                     cleanCrit();
                 } else {
-                    showPopWindow(Math.abs(againstTime - (time - critStartTime)));
+                    showPopWindow(Math.abs(againstTime - (time - critStartTime)),againstTime);
                     //正在进行暴击时刻
                 }
             }
@@ -218,7 +218,6 @@ public class MainActivity
         SPUtils.setInformain(CritParameterConfig.LOTTERY_MARK, false);
         //结束后重置暴击模式的次数，下次达到后在进入下轮
         LotteryAdCount.INSTANCE.resetCriticalModelNumber();
-
         mDataBinding.mainFloatingBtn.setModel(FrontFloatingBtn.CRITICAL_MODEL);
         mDataBinding.mainFloatingBtn.setVisibility(View.VISIBLE);
         EventBus.getDefault().post(new CritMessengerBean(300));
@@ -234,12 +233,12 @@ public class MainActivity
                 mDataBinding.mainFloatingBtn.setVisibility(View.GONE);
                 mDataBinding.mainFloatingBtn.setModel(FrontFloatingBtn.CRITICAL_MODEL);
                 long time = 5 * 60 * 1000;
-                showPopWindow(time);
+                showPopWindow(time,time);
             }
         }
     }
 
-    private void showPopWindow(long time) {
+    private void showPopWindow(long time,long sumTime) {
         MainPopWindowProgressBarBinding viewDataBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.main_pop_window_progress_bar, null, false);
         PopupWindow mPopWindow = new PopupWindow(viewDataBinding.getRoot());
         mPopWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
@@ -251,7 +250,7 @@ public class MainActivity
         viewDataBinding.countdownView.setCountdownViewListener(new CountdownView.ICountdownViewListener() {
             @Override
             public void onProgressValue(long max, long value) {
-                viewDataBinding.progressBar.setMax((int) max);
+                viewDataBinding.progressBar.setMax((int) sumTime);
                 viewDataBinding.progressBar.setProgress((value - 12000) > 0 ? (int) (value - 12000) : 0);
                 viewDataBinding.progressBar.setSecondaryProgress((int) value);
                 //将进度写入共享参数
