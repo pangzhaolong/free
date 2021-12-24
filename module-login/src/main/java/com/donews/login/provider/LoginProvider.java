@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.facade.template.IProvider;
-import com.donews.base.model.BaseModel;
 import com.donews.common.contract.UserInfoBean;
 import com.donews.common.services.config.ServicesConfig;
 import com.donews.login.model.ISUserInfoCallBack;
@@ -81,16 +80,25 @@ public class LoginProvider implements IProvider {
     }
 
     /**
+     * 首页 预注册 pre_register
+     */
+    public void preRegister() {
+        UserInfoManage.onPreRegister();
+    }
+
+    /**
      * 首页登录 login(微信登录)
+     *
      * @param wxCode 微信的code
      */
     public void getLoginWx(String wxCode) {
-        if(wxCode == null || "".equals(wxCode)){
+        if (wxCode == null || "".equals(wxCode)) {
             //没有微信相关登录信息。那么直接设备登录。走原始逻辑
-            getLogin();
-        }else{
+//            getLogin();
+            preRegister();
+        } else {
             //走微信登录
-            UserInfoManage.onLoadNetUserInfo(UserInfoManage.getNetDataStr(wxCode),null,"微信登录页");
+            UserInfoManage.onLoadNetUserInfo(UserInfoManage.getNetDataStr(wxCode), null, "微信登录页");
         }
     }
 

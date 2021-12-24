@@ -25,6 +25,7 @@ import android.view.WindowManager;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 
+import com.bytedance.hume.readapk.HumeSDK;
 import com.dnstatistics.sdk.agent.DonewsAgent;
 import com.donews.utilslibrary.BuildConfig;
 import com.donews.utilslibrary.base.UtilsConfig;
@@ -236,7 +237,21 @@ public class DeviceUtils {
         return appSuuid;
     }
 
+    private static String getTouTiaoChannelName() {
+        try {
+            return HumeSDK.getChannel(UtilsConfig.getApplication());
+        } catch (Exception e) {
+
+        }
+        return null;
+    }
+
     public static String getChannelName() {
+        String toutiaoChannel = getTouTiaoChannelName();
+        if (toutiaoChannel !=null && !toutiaoChannel.equalsIgnoreCase("")) {
+            return toutiaoChannel;
+        }
+
         ChannelInfo channelInfo = WalleChannelReader.getChannelInfo(UtilsConfig.getApplication());
         String channel;
         if (channelInfo != null) {

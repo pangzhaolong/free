@@ -172,6 +172,7 @@ public class Dot {
     //
 
     public final static String WX_Login = "WX_login";
+    public final static String Device_Login = "Device_login";
 
     //-- 0元抽奖
     //

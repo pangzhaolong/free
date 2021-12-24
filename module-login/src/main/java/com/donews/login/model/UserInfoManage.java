@@ -10,6 +10,7 @@ import com.donews.base.base.BaseApplication;
 import com.donews.base.utils.GsonUtils;
 import com.donews.common.contract.DataBean;
 import com.donews.common.contract.LoginHelp;
+import com.donews.common.contract.PreRegisterBean;
 import com.donews.common.contract.UserInfoBean;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
@@ -17,6 +18,7 @@ import com.donews.common.services.config.ServicesConfig;
 import com.donews.login.api.LoginApi;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
+import com.donews.network.callback.CallBack;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
 import com.donews.network.model.HttpHeaders;
@@ -318,6 +320,77 @@ public class UserInfoManage {
     }
 
     /**
+     * 创建预注册json信息
+     */
+    private static String createPreRegisterJson() {
+        String data = "";
+        try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("oaid", SPUtils.getInformain(KeySharePreferences.OAID, ""));
+            jsonObject.put("imei", DeviceUtils.getDeviceId());
+            jsonObject.put("suuid", DeviceUtils.getMyUUID());
+            jsonObject.put("mac", DeviceUtils.getMacAddress());
+            jsonObject.put("android_id", DeviceUtils.getAndroidID());
+            jsonObject.put("idfa", "");
+            jsonObject.put("package_name", DeviceUtils.getPackage());
+            data = jsonObject.toString();
+        } catch (Exception e) {
+        }
+        return data;
+    }
+
+    public static MutableLiveData<PreRegisterBean> onPreRegister() {
+        AnalysisUtils.onEventEx(BaseApplication.getInstance(), AnalysisParam.PRE_REGISTER);
+        LoginLodingStartStatus eventLoadIngStatus;
+        eventLoadIngStatus = new LoginLodingStartStatus();
+        EventBus.getDefault().post(eventLoadIngStatus);
+
+        MutableLiveData<PreRegisterBean> mutableLiveData = new MutableLiveData<PreRegisterBean>();
+        EasyHttp.post(LoginApi.PRE_REGISTER)
+                .upJson(createPreRegisterJson())
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new CallBack<String>() {
+                    @Override
+                    public void onStart() {
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(ApiException e) {
+                        eventLoadIngStatus.getLoginLoadingLiveData().postValue(-1);
+                        EventBus.getDefault().post(new LoginUserStatus(-1));
+                        LogUtil.i(e.getCode() + e.getMessage() + "");
+                    }
+
+                    @Override
+                    public void onSuccess(String s) {
+                        PreRegisterBean bean = GsonUtils.fromLocalJson(s, PreRegisterBean.class);
+                        if (bean == null || bean.getCode() != 0) {
+                            EventBus.getDefault().post(new LoginUserStatus(0));
+                            eventLoadIngStatus.getLoginLoadingLiveData().postValue(1);
+                            return;
+                        }
+
+                        eventLoadIngStatus.getLoginLoadingLiveData().postValue(2);
+                        AppInfo.setUserId(bean.getUserId());
+                        AppInfo.setUserRegisterTime(bean.getRegisterTime());
+                        AnalysisHelp.registerUserId();
+                        mutableLiveData.postValue(bean);
+                        EventBus.getDefault().post(new LoginUserStatus(1));
+                    }
+
+                    @Override
+                    public void onCompleteOk() {
+
+                    }
+                });
+        return mutableLiveData;
+    }
+
+    /**
      * 登录的接口
      *
      * @param data 请求的参数
@@ -467,6 +540,4 @@ public class UserInfoManage {
                     }
                 });
     }
-
-
 }

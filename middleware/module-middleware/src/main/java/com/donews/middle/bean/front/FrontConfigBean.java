@@ -22,16 +22,56 @@ public class FrontConfigBean extends BaseCustomViewModel {
     @SerializedName("taskItems")
     private List<TaskItems> taskItems;
 
-    public static class BannerItem {
+    public Boolean getBanner() {
+        return banner;
+    }
+
+    public List<BannerItem> getBannerItems() {
+        return bannerItems;
+    }
+
+    public Boolean getLotteryWinner() {
+        return lotteryWinner;
+    }
+
+    public Boolean getRedPackage() {
+        return redPackage;
+    }
+
+    public int getRefreshInterval() {
+        return refreshInterval;
+    }
+
+    public Boolean getTask() {
+        return task;
+    }
+
+    public List<TaskItems> getTaskItems() {
+        return taskItems;
+    }
+
+    public static class BannerItem extends BaseCustomViewModel{
         @SerializedName("action")
         private String action;
         @SerializedName("id")
         private int id;
         @SerializedName("img")
         private String img;
+
+        public String getAction() {
+            return action;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public String getImg() {
+            return img;
+        }
     }
 
-    public static class TaskItems {
+    public static class TaskItems extends BaseCustomViewModel{
         @SerializedName("action")
         private String action;
         @SerializedName("icon")
@@ -40,5 +80,21 @@ public class FrontConfigBean extends BaseCustomViewModel {
         private int id;
         @SerializedName("title")
         private String title;
+
+        public String getAction() {
+            return action;
+        }
+
+        public String getIcon() {
+            return icon;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public String getTitle() {
+            return title;
+        }
     }
 }
