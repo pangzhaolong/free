@@ -762,18 +762,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             @Override
             public void onStartCritMode(GenerateCodeBean generateCodeBean) {
                 if (ClickDoubleUtil.isFastClick()) {
-                    if (DateManager.getInstance().timesLimit(DateManager.CRIT_KEY, DateManager.CRIT_NUMBER,
-                            ABSwitch.Ins().getEnableOpenCritModelCount())) {
-                        //开启暴击校验  (开始服务)
-                        Intent intent = new Intent(LotteryActivity.this, CritLotteryService.class);
-                        intent.putExtra("start_crit", true);
-                        intent.putExtra("start_time", ABSwitch.Ins().getScoreTaskPlayTime());
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            LotteryActivity.this.startForegroundService(intent);
-                        } else {
-                            LotteryActivity.this.startService(intent);
-                        }
-                    }
+                    CommonUtils.startCritService(LotteryActivity.this, true);
                 }
             }
         });
