@@ -145,7 +145,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
                         public void run() {
                             if (l != 0) {
                                 float value = (float) (Float.valueOf(l1) / Float.valueOf(l)) * 100f;
-                                mDataBinding.integralBt.setText("下载中 " +(int)value + "%");
+                                mDataBinding.integralBt.setText("下载中 " + (int) value + "%");
                             }
                         }
                     });
@@ -240,40 +240,22 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
             mDataBinding.giftBoxOff.playAnimation();
         }
         if (ABSwitch.Ins().getOpenCritModel()) {
-
             if (DateManager.getInstance().timesLimit(DateManager.CRIT_KEY, DateManager.CRIT_NUMBER,
                     ABSwitch.Ins().getEnableOpenCritModelCount())) {
-                //还能触发暴击模式
-                //新用户并且抽奖次数未达到开启暴击条件
-                CriticalModelTool.getScenesSwitch(new CriticalModelTool.IScenesSwitchListener() {
-                    @Override
-                    public void onIntegralNumber(ProxyIntegral integralBean) {
-                        if (!getOwnerActivity().isDestroyed() && !getOwnerActivity().isFinishing()) {
-                            if (integralBean != null) {
-                                //下载解锁
-                                Message message = new Message();
-                                message.obj = integralBean;
-                                message.what = 3;
-                                mLotteryHandler.sendMessage(message);
-                            } else {
-                                //普通次数模式
-                                mDataBinding.critDraw.setVisibility(View.VISIBLE);
-                                mDataBinding.critDownload.setVisibility(View.GONE);
-                                //总共需要抽多少个抽奖码开始暴击模式
-                                int sumNumber;
-                                //已经参与的次数
-                                int participateNumber = LotteryAdCount.INSTANCE.getCriticalModelLotteryNumber();
-                                if (CriticalModelTool.isNewUser()) {
-                                    sumNumber = ABSwitch.Ins().getOpenCritModelByNewUserCount();
-                                } else {
-                                    sumNumber =ABSwitch.Ins().getOpenCritModelByOldUserCount();
-                                }
-                                mDataBinding.numberCode.setText((sumNumber - participateNumber) < 0 ? 0 + "" : (sumNumber - participateNumber) + "");
-
-                            }
-                        }
+                //判断是否打开新手模式
+                if (ABSwitch.Ins().isOpenCritModelByNewUser()) {
+                    //判断是否处于新手阶段
+                    if (CriticalModelTool.isNewUser()) {
+                        //普通次数模式
+                        numberModel();
+                    } else {
+                        //老用户模式
+                        oldUserModel();
                     }
-                });
+                } else {
+                    //老用户模式
+                    oldUserModel();
+                }
             } else {
                 //不能触发了 每天参与的次数用完
                 mDataBinding.critDraw.setVisibility(View.GONE);
@@ -285,6 +267,49 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
         }
     }
 
+
+    private void oldUserModel() {
+        //判断积分墙是否开启
+        if (ABSwitch.Ins().isOpenScoreModelCrit()) {
+            //积分下载模式打开的 ，获取是否有积分任务
+            //新用户并且抽奖次数未达到开启暴击条件
+            CriticalModelTool.getScenesSwitch(new CriticalModelTool.IScenesSwitchListener() {
+                @Override
+                public void onIntegralNumber(ProxyIntegral integralBean) {
+                    if (!getOwnerActivity().isDestroyed() && !getOwnerActivity().isFinishing()) {
+                        if (integralBean != null) {
+                            //下载解锁
+                            setIntegralView(integralBean);
+                        } else {
+                            //普通次数模式
+                            numberModel();
+                        }
+                    }
+                }
+            });
+        } else {
+            //普通次数模式
+            numberModel();
+        }
+    }
+    //次数模式
+    private void numberModel() {
+        //普通次数模式
+        mDataBinding.critDraw.setVisibility(View.VISIBLE);
+        mDataBinding.critDownload.setVisibility(View.GONE);
+        //总共需要抽多少个抽奖码开始暴击模式
+        int sumNumber;
+        //已经参与的次数
+        int participateNumber = LotteryAdCount.INSTANCE.getCriticalModelLotteryNumber();
+        if (CriticalModelTool.isNewUser()) {
+            sumNumber = ABSwitch.Ins().getOpenCritModelByNewUserCount();
+        } else {
+            sumNumber = ABSwitch.Ins().getOpenCritModelByOldUserCount();
+        }
+        mDataBinding.numberCode.setText((sumNumber - participateNumber) < 0 ? 0 + "" : (sumNumber - participateNumber) + "");
+
+
+    }
 
     private void automaticJump() {
         Message message = new Message();
@@ -500,11 +525,6 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
                     }
                     break;
 
-                case 3:
-                    if (reference.get() != null) {
-                        reference.get().setIntegralView((ProxyIntegral) msg.obj);
-                    }
-                    break;
             }
         }
     }
