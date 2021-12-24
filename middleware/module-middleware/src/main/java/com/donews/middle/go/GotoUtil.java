@@ -107,4 +107,8 @@ public class GotoUtil {
         }
     }
 
+    public static void doAction(Context context, String action) {
+
+    }
+
 }

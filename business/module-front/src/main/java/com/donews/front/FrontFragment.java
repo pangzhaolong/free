@@ -4,6 +4,7 @@ package com.donews.front;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -21,10 +22,16 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.BarUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.dn.events.events.DoubleRpEvent;
 import com.dn.events.events.FrontScrollEvent;
 import com.dn.events.events.LoginLodingStartStatus;
@@ -33,16 +40,19 @@ import com.dn.events.events.WalletRefreshEvent;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
+import com.donews.front.adapter.BannerViewAdapter;
 import com.donews.front.adapter.FragmentAdapter;
 import com.donews.front.databinding.FrontFragmentBinding;
 import com.donews.front.dialog.ActivityRuleDialog;
 import com.donews.front.dialog.LotteryMore4RpDialog;
 import com.donews.front.viewModel.FrontViewModel;
 import com.donews.middle.bean.WalletBean;
+import com.donews.middle.bean.front.FrontConfigBean;
 import com.donews.middle.bean.front.LotteryCategoryBean;
 import com.donews.middle.bean.home.ServerTimeBean;
 import com.donews.middle.cache.GoodsCache;
 import com.donews.middle.front.FrontConfigManager;
+import com.donews.middle.go.GotoUtil;
 import com.donews.middle.views.TabItem;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
@@ -192,10 +202,15 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         }
         initSrl();
 
+        mDataBinding.frontLotteryRuleBtnLl.setOnClickListener(v -> ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY)
+                .withString("title", "中奖攻略")
+                .withString("url", BuildConfig.WEB_BASE_URL)
+                .navigation());
         mDataBinding.frontLotteryGotoLl.setOnClickListener(v -> ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY)
                 .withString("title", "中奖攻略")
                 .withString("url", BuildConfig.WEB_BASE_URL)
                 .navigation());
+        mDataBinding.frontLotteryRuleRl.setVisibility(View.GONE);
 
         startTimer();
         scrollFloatBar();
@@ -212,10 +227,83 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
     // 更新首页ui布局
     private void refreshLayout() {
+        if (FrontConfigManager.Ins().getConfigBean() == null) {
+            return;
+        }
+
+        if (!FrontConfigManager.Ins().getConfigBean().getRedPackage()
+                && !FrontConfigManager.Ins().getConfigBean().getBanner()
+                && !FrontConfigManager.Ins().getConfigBean().getTask()
+                && FrontConfigManager.Ins().getConfigBean().getLotteryWinner()) {
+            mDataBinding.frontLotteryRuleRl.setVisibility(View.VISIBLE);
+            return;
+        }
+
         mDataBinding.frontRpRl.setVisibility(FrontConfigManager.Ins().getConfigBean().getRedPackage() ? View.VISIBLE : View.GONE);
         mDataBinding.frontGiftGroupBvp.setVisibility(FrontConfigManager.Ins().getConfigBean().getBanner() ? View.VISIBLE : View.GONE);
         mDataBinding.frontTaskGroupLl.setVisibility(FrontConfigManager.Ins().getConfigBean().getTask() ? View.VISIBLE : View.GONE);
         mDataBinding.frontLotteryWinnerCl.setVisibility(FrontConfigManager.Ins().getConfigBean().getLotteryWinner() ? View.VISIBLE : View.GONE);
+
+        if (FrontConfigManager.Ins().getConfigBean().getTaskItems().size() == 4) {
+            FrontConfigBean.TaskItem ti = FrontConfigManager.Ins().getConfigBean().getTaskItems().get(0);
+            initTaskView(this.getContext(), ti, mDataBinding.frontTaskFl1, mDataBinding.frontRpIv1, mDataBinding.frontRpTv1);
+            ti = FrontConfigManager.Ins().getConfigBean().getTaskItems().get(1);
+            initTaskView(this.getContext(), ti, mDataBinding.frontTaskFl2, mDataBinding.frontRpIv2, mDataBinding.frontRpTv2);
+            ti = FrontConfigManager.Ins().getConfigBean().getTaskItems().get(2);
+            initTaskView(this.getContext(), ti, mDataBinding.frontTaskFl3, mDataBinding.frontRpIv3, mDataBinding.frontRpTv3);
+            ti = FrontConfigManager.Ins().getConfigBean().getTaskItems().get(3);
+            initTaskView(this.getContext(), ti, mDataBinding.frontTaskFl4, mDataBinding.frontRpIv4, mDataBinding.frontRpTv4);
+        }
+
+        if (FrontConfigManager.Ins().getConfigBean().getBannerItems().size() > 0) {
+            mDataBinding.frontGiftGroupBvp.setCanLoop(true)
+                    .setAdapter(new BannerViewAdapter(getContext()))
+                    .registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+                        @Override
+                        public void onPageSelected(int position) {
+                            super.onPageSelected(position);
+                            if (position < 0 || position >= FrontConfigManager.Ins().getConfigBean().getBannerItems().size() - 1) {
+                                return;
+                            }
+
+                            FrontConfigBean.BannerItem bi = FrontConfigManager.Ins().getConfigBean().getBannerItems().get(position);
+                            if (bi == null) {
+                                return;
+                            }
+
+                            GotoUtil.doAction(getContext(), bi.getAction());
+                        }
+                    })
+                    .create(FrontConfigManager.Ins().getConfigBean().getBannerItems());
+        } else {
+            mDataBinding.frontGiftGroupBvp.setVisibility(View.GONE);
+        }
+    }
+
+    private void initTaskView(Context context, FrontConfigBean.TaskItem ti, FrameLayout fl, ImageView iv, TextView tv) {
+        if (ti == null) {
+            return;
+        }
+        fl.setOnClickListener(v -> GotoUtil.doAction(context, ti.getAction()));
+        if (ti.getModel() == 1) {
+            Glide.with(this).load(ti.getIcon()).into(iv);
+            tv.setText(ti.getTitle());
+        } else {
+            Glide.with(this).load(ti.getIcon()).addListener(new RequestListener<Drawable>() {
+                @Override
+                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                    return false;
+                }
+
+                @Override
+                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                    iv.setVisibility(View.GONE);
+                    tv.setVisibility(View.GONE);
+                    fl.setBackground(resource);
+                    return false;
+                }
+            }).preload();
+        }
     }
 
     private void sendDotData() {
@@ -683,9 +771,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     @Override
     public void onResume() {
         super.onResume();
-        if (mDataBinding.frontBarrageView != null) {
-            mDataBinding.frontBarrageView.resumeScroll();
-        }
         if (mDataBinding.frontLotteryCodesBarrageLbv != null) {
             mDataBinding.frontLotteryCodesBarrageLbv.resumeScroll();
         }
@@ -698,9 +783,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     @Override
     public void onPause() {
         super.onPause();
-        if (mDataBinding.frontBarrageView != null) {
-            mDataBinding.frontBarrageView.pauseScroll();
-        }
         if (mDataBinding.frontLotteryCodesBarrageLbv != null) {
             mDataBinding.frontLotteryCodesBarrageLbv.pauseScroll();
         }
@@ -720,7 +802,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         if (mDataBinding.frontLotteryCodesBarrageLbv != null) {
             mDataBinding.frontLotteryCodesBarrageLbv.stopScroll();
         }
-        mDataBinding.frontBarrageView.stopScroll();
         if (mFragmentAdapter != null) {
             mFragmentAdapter.clear();
         }
