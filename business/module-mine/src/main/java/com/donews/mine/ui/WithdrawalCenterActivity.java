@@ -1,7 +1,12 @@
 package com.donews.mine.ui;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.ScaleAnimation;
 
 import androidx.annotation.Nullable;
 
@@ -21,6 +26,8 @@ import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.UserInfoBean;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
+import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.bean.HighValueGoodsBean;
 import com.donews.mine.R;
 import com.donews.mine.databinding.MineActivityWithdrawalCenterBinding;
 import com.donews.mine.dialogs.MineCongratulationsDialog;
@@ -32,12 +39,18 @@ import com.gyf.immersionbar.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 /**
  * 提现中心
  */
 @Route(path = RouterActivityPath.Mine.PAGER_ACTIVITY_WITHDRAWAL)
 public class WithdrawalCenterActivity extends
         MvvmBaseLiveDataActivity<MineActivityWithdrawalCenterBinding, WithdrawalCenterViewModel> {
+
+    private ScaleAnimation mScaleAnimation;
 
     @Override
     protected int getLayoutId() {
@@ -59,6 +72,13 @@ public class WithdrawalCenterActivity extends
     public void initView() {
         mViewModel.setDataBinDing(mDataBinding, this);
         mDataBinding.titleBar.setTitle("提现中心");
+        mDataBinding.titleBar.getTitleView().setTypeface(Typeface.DEFAULT_BOLD);
+        mDataBinding.titleBar.setSubmitButtonText("明细");
+        mDataBinding.titleBar.setSubmitOnClick((v)->{
+            ARouter.getInstance()
+                    .build(RouterActivityPath.Mine.PAGER_ACTIVITY_WITHDRAWAL_RECORD)
+                    .navigation();
+        });
         if (!AppInfo.checkIsWXLogin()) {
             ARouter.getInstance()
                     .build(RouterActivityPath.User.PAGER_LOGIN)
@@ -93,6 +113,23 @@ public class WithdrawalCenterActivity extends
                 //检查随机金额
                 getTaskList();
             } else {
+                if (mViewModel.withdrawDatilesLivData.getValue().total < mViewModel.withdrawSelectDto.money) {
+                    //去往首页
+                    ARouter.getInstance().build(RouterActivityPath.Main.PAGER_MAIN)
+                            .withInt("position", 0)
+                            .navigation();
+//                    HighValueGoodsBean.GoodsInfo item = mViewModel.getGoodInfo();
+//                    if (item != null) {
+//                        AnalysisUtils.onEventEx(this,
+//                                Dot.But_Goto_Lottery, "提现页面>提现按钮");
+//                        ARouter.getInstance()
+//                                .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
+//                                .withString("goods_id", item.getGoodsId())
+//                                .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
+//                                .navigation();
+//                    }
+                    return; //余额不足
+                }
                 mDataBinding.mineDrawSubmit.setEnabled(false);
                 showLoading();
                 mViewModel.requestWithdraw(mDataBinding.mineDrawGrid);
@@ -143,6 +180,15 @@ public class WithdrawalCenterActivity extends
                 super.onAdShow();
             }
         });
+        //呼吸动画
+        if (mScaleAnimation == null) {
+            mScaleAnimation = new ScaleAnimation(1.15f, 0.9f, 1.15f, 0.9f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            mScaleAnimation.setInterpolator(new LinearInterpolator());
+            mScaleAnimation.setRepeatMode(Animation.REVERSE);
+            mScaleAnimation.setRepeatCount(Animation.INFINITE);
+            mScaleAnimation.setDuration(1000);
+            mDataBinding.mindYywJd.startAnimation(mScaleAnimation);
+        }
     }
 
     //成功之后的抽奖弹窗
@@ -173,22 +219,31 @@ public class WithdrawalCenterActivity extends
         IntegralComponent.getInstance().getIntegral(new IntegralComponent.IntegralHttpCallBack() {
             @Override
             public void onSuccess(ProxyIntegral integralBean) {
-                hideLoading();
-                ARouter.getInstance()
-                        .build(RouterFragmentPath.Integral.PAGER_INTEGRAL)
-                        .withSerializable("proxyIntegral",integralBean)
-                        .navigation();
+                runOnUiThread(() -> {
+                    hideLoading();
+                    ARouter.getInstance()
+                            .build(RouterFragmentPath.Integral.PAGER_INTEGRAL)
+                            .withSerializable("proxyIntegral", integralBean)
+                            .navigation();
+                    runOnUiThread(() -> {
+                        finish();
+                    });
+                });
             }
 
             @Override
             public void onError(String var1) {
-                hideLoading();
+                runOnUiThread(() -> {
+                    hideLoading();
+                });
             }
 
             @Override
             public void onNoTask() {
-                hideLoading();
-                ToastUtil.showShort(WithdrawalCenterActivity.this, "暂无未完成任务");
+                runOnUiThread(() -> {
+                    hideLoading();
+                    ToastUtil.showShort(WithdrawalCenterActivity.this, "暂无未完成任务");
+                });
             }
         });
     }

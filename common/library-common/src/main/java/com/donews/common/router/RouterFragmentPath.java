@@ -121,6 +121,9 @@ public class RouterFragmentPath {
         /** 积分墙 */
         public static final String PAGER_INTEGRAL = INTEGRAL + "/integral";
 
+        /** 没有积分任务。但是存在次留任务 */
+        public static final String PAGER_INTEGRAL_NOT_TASK = INTEGRAL + "/WelfareNotTaskActivity";
+
     }
 
 

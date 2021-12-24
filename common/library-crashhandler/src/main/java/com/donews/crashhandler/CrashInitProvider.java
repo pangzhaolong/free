@@ -43,6 +43,8 @@ public class CrashInitProvider extends ContentProvider {
                     installCrash(isRefresh);
                 }
             });
+            //直接安装崩溃榨取
+//            installCrash(true);
         } catch (Exception e) {
             e.printStackTrace();
         }

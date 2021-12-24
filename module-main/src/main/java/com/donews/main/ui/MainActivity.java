@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +30,8 @@ import com.dn.events.events.DoubleRpEvent;
 import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.RedPackageStatus;
 import com.dn.events.events.WalletRefreshEvent;
+import com.dn.sdk.bean.integral.ProxyIntegral;
+import com.dn.sdk.utils.IntegralComponent;
 import com.donews.base.base.AppManager;
 import com.donews.base.base.AppStatusConstant;
 import com.donews.base.base.AppStatusManager;
@@ -57,6 +60,7 @@ import com.donews.main.dialog.DrawDialog;
 import com.donews.main.dialog.EnterShowDialog;
 import com.donews.main.dialog.FreePanicBuyingDialog;
 import com.donews.main.dialog.RemindDialogExt;
+import com.donews.main.dialog.ext.CritDownAppDialogFragment;
 import com.donews.main.dialog.ext.CritWelfareDialogFragment;
 import com.donews.main.utils.ExitInterceptUtils;
 import com.donews.main.utils.ExtDialogUtil;
@@ -176,12 +180,15 @@ public class MainActivity
             @Override
             public void onClick(View v) {
                 ARouter.getInstance()
-                        .build(RouterFragmentPath.Integral.PAGER_INTEGRAL).withSerializable("proxyIntegral",null)
+                        .build(RouterFragmentPath.Integral.PAGER_INTEGRAL).withSerializable("proxyIntegral", null)
                         .navigation();
             }
         });
-
+//        ARouter.getInstance()
+//                .build(RouterFragmentPath.Integral.PAGER_INTEGRAL_NOT_TASK)
+//                .navigation();
     }
+
 
     /**
      * 用来初始化暴击模式的状态
@@ -267,13 +274,11 @@ public class MainActivity
         });
 
 
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
 
 
         if (SPUtils.getInformain(KeySharePreferences.FIRST_RP_CAN_OPEN, false)) {
@@ -513,15 +518,75 @@ public class MainActivity
             //重新请求数据
             RequestUtil.requestHighValueGoodsInfo();
         };
-        if (CriticalModelTool.isNewUser()) {
+        //是否触发过过暴击模式，T:已参加过，F:未参加过
+        boolean mark = SPUtils.getInformain(CritParameterConfig.LOTTERY_MARK, true);
+        //是否允许当前用户继续参与暴击(主要判断是否超过总次数限制)，T:可以参与，F:无法在参与了
+        boolean critModelIsAllowAdd = DateManager.getInstance().timesLimit(DateManager.CRIT_KEY, DateManager.CRIT_NUMBER,
+                ABSwitch.Ins().getEnableOpenCritModelCount());
+        if (mark && !critModelIsAllowAdd) {
+            return; //用户参与过抽奖。并且已经达到最大次数限制
+        }
+        if (!mark && CriticalModelTool.isNewUser()) {
+            //满足新用户条件(已开启新任务模式+新用户+新用户)。直接显示新人任务
             ExtDialogUtil.showCritWelfareDialog(
                     this, 0, currCount, count, surListener
             );
-        } else {
+            return;
+        }
+        //是否开启了积分任务，T:开启了，F:未开启
+        boolean isOpenJFModel = ABSwitch.Ins().getOpenCritModel();
+        if (!isOpenJFModel) {
+            //没有开启积分墙任务。那么而直接进行日常任务
             ExtDialogUtil.showCritWelfareDialog(
                     this, 1, currCount, count, surListener
             );
+            return;
         }
+        if(currCount > 0){
+            //日常任务模式正在进行中。走正常的日常任务
+            ExtDialogUtil.showCritWelfareDialog(
+                    MainActivity.this, 1, currCount, count, surListener
+            );
+            return;
+        }
+        showLoading("获取中");
+        //防止重复点击
+        mDataBinding.mainFloatingBtn.setEnabled(false);
+        IntegralComponent.getInstance().getIntegralList(new IntegralComponent.IntegralHttpCallBack() {
+            @Override
+            public void onSuccess(List<ProxyIntegral> list) {
+                runOnUiThread(() -> {
+                    mDataBinding.mainFloatingBtn.setEnabled(true);
+                    hideLoading();
+                    //下载列表弹窗
+                    ExtDialogUtil.showCritDownAppDialog(MainActivity.this, list, null);
+                });
+            }
+
+            @Override
+            public void onError(String var1) {
+                runOnUiThread(() -> {
+                    mDataBinding.mainFloatingBtn.setEnabled(true);
+                    //获取出错,开启日常任务
+                    hideLoading();
+                    ExtDialogUtil.showCritWelfareDialog(
+                            MainActivity.this, 1, currCount, count, surListener
+                    );
+                });
+            }
+
+            @Override
+            public void onNoTask() {
+                runOnUiThread(() -> {
+                    mDataBinding.mainFloatingBtn.setEnabled(true);
+                    hideLoading();
+                    //没有任务,开启日常任务
+                    ExtDialogUtil.showCritWelfareDialog(
+                            MainActivity.this, 1, currCount, count, surListener
+                    );
+                });
+            }
+        });
     }
 
     /**

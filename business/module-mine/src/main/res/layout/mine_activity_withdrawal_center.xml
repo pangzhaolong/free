@@ -78,6 +78,7 @@
                             android:drawableRight="@drawable/mine_withdraw_centent_top_w"
                             android:drawablePadding="5dp"
                             android:paddingLeft="10dp"
+                            android:visibility="gone"
                             android:paddingTop="5dp"
                             android:paddingRight="10dp"
                             android:paddingBottom="5dp"
@@ -85,14 +86,15 @@
                             android:textColor="@color/white"
                             android:textSize="15sp" />
                     </LinearLayout>
+
                     <ImageView
                         android:id="@+id/mind_yyw_jd"
-                        android:layout_width="63dp"
-                        android:layout_height="69dp"
-                        android:layout_marginTop="30dp"
+                        android:layout_width="83dp"
+                        android:layout_height="91dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
                         android:layout_marginRight="28dp"
-                        android:src="@drawable/mine_tx__yyw"
-                        android:layout_alignParentRight="true"/>
+                        android:src="@drawable/mine_tx__yyw" />
                 </RelativeLayout>
                 <LinearLayout
                     android:layout_width="match_parent"

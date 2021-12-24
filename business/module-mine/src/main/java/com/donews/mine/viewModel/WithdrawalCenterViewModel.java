@@ -20,6 +20,9 @@ import com.blankj.utilcode.util.SPUtils;
 import com.donews.base.utils.GsonUtils;
 import com.donews.base.utils.ToastUtil;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
+import com.donews.middle.bean.HighValueGoodsBean;
+import com.donews.middle.cache.GoodsCache;
+import com.donews.middle.request.RequestUtil;
 import com.donews.mine.R;
 import com.donews.mine.bean.resps.WithdraWalletResp;
 import com.donews.mine.bean.resps.WithdrawConfigResp;
@@ -128,6 +131,36 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
     }
 
     /**
+     * 获取一个商品
+     *
+     * @return
+     */
+    public HighValueGoodsBean.GoodsInfo getGoodInfo() {
+        HighValueGoodsBean bean = GoodsCache.readGoodsBean(HighValueGoodsBean.class, "exit");
+        if (bean.getList() != null && bean.getList().size() > 0) {
+            RequestUtil.requestHighValueGoodsInfo();
+            return bean.getList().get(0);
+        } else {
+            RequestUtil.requestHighValueGoodsInfo();
+            return null;
+        }
+    }
+
+    /**
+     * 检查本地是否有商品
+     *
+     * @return T:存在，F:不存在
+     */
+    public Boolean checkGoodInfo() {
+        HighValueGoodsBean bean = GoodsCache.readGoodsBean(HighValueGoodsBean.class, "exit");
+        if (bean == null) {
+            RequestUtil.requestHighValueGoodsInfo();
+        }
+        return bean != null;
+    }
+
+
+    /**
      * 添加网格数据
      *
      * @param gridLayout
@@ -141,18 +174,18 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
         }
         WithdrawConfigResp.WithdrawListDTO dto = new WithdrawConfigResp.WithdrawListDTO();
         dto.external = false;
-        dto.tips="lasdjfklasjdsfkl";
+        dto.tips = "lasdjfklasjdsfkl";
         dto.money = 0.7;
         dto.available = false;
         dto.id = 123456;
-        withdrawDataLivData.getValue().add(0,dto);
+        withdrawDataLivData.getValue().add(0, dto);
         dto = new WithdrawConfigResp.WithdrawListDTO();
         dto.external = true;
-        dto.tips="";
+        dto.tips = "";
         dto.money = 0D;
         dto.available = false;
         dto.id = 123456;
-        withdrawDataLivData.getValue().add(0,dto);
+        withdrawDataLivData.getValue().add(0, dto);
         for (int i = 0; i < withdrawDataLivData.getValue().size(); i++) {
             getGridItemView(i, gridLayout, withdrawDataLivData.getValue().get(i), submit, descll);
         }
@@ -199,7 +232,9 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
         ImageView userBFlg = view.findViewById(R.id.icnl_mine_withdraw_jb);
         TextView desc = descLL.findViewById(R.id.mine_draw_desc);
         view.setOnClickListener(v -> {
-            submit.setText("提现");
+            submit.setText("立即提现");
+            //情况内容区域的点击
+            descLL.setOnClickListener(null);
             if (isWithdrawLoading) {
                 ToastUtil.showShort(v.getContext(), "正在提现中,请稍后重试");
                 return;//提现中。不允许点击
@@ -249,9 +284,15 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
                     return; //钱包信息获取异常
                 }
                 if (withdrawDatilesLivData.getValue().total < item.money) {
-                    desc.setText("抱歉,余额不足!");
+                    desc.setText("余额不足");
                     descLL.setVisibility(View.VISIBLE);
-                    submit.setEnabled(false);
+                    if (checkGoodInfo()) {
+                        submit.setEnabled(true);
+                        submit.setText("抽奖开红包");
+                    } else {
+                        submit.setEnabled(false);
+                        submit.setText("立即提现");
+                    }
                     return; //余额不足
                 }
                 if (!item.available) {
@@ -263,28 +304,30 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
                     userBFlg.setImageResource(R.drawable.mine_tx_b_jb);
                     newUserZx.setText("已解锁");
                     desc.setText("");
-                    descLL.setVisibility(View.GONE);
+                    descLL.setVisibility(View.INVISIBLE);
                     submit.setEnabled(!isHostSelect);
                 }
             } else {
                 //随机金额项点击
-                descLL.setVisibility(View.GONE);
+                descLL.setVisibility(View.INVISIBLE);
                 submit.setEnabled(true);
-                submit.setText("立即抽奖");
+                submit.setText("抽奖开红包");
                 submit.setEnabled(!isHostSelect);
             }
         });
         //绑定数据
         if (item.external) {
-            numTv.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+            numTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
             numTv.setText("随机金额");
             numTvFlg.setText("");
-            //默认选中随机金额
-            view.performClick();
         } else {
-            numTv.setTextSize(TypedValue.COMPLEX_UNIT_SP,25);
+            numTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
             numTv.setText("" + item.money);
             numTvFlg.setText("元");
+        }
+        if (pos == 0) {
+            //默认选中第一个
+            view.performClick();
         }
         //添加视图
         superLayout.addView(view);
