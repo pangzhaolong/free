@@ -144,10 +144,8 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
                         @Override
                         public void run() {
                             if (l != 0) {
-                                float value = (float) (l1 / l) * 100f;
-                                DecimalFormat df = new DecimalFormat("0.00");
-                                df.setRoundingMode(RoundingMode.HALF_UP);
-                                mDataBinding.integralBt.setText("下载中 " + df.format(value) + "%");
+                                float value = (float) (Float.valueOf(l1) / Float.valueOf(l)) * 100f;
+                                mDataBinding.integralBt.setText("下载中 " +(int)value + "%");
                             }
                         }
                     });

@@ -17,13 +17,13 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseLiv
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         ImmersionBar.with(this)
                 .statusBarColor(R.color.transparent)
                 .navigationBarColor(R.color.black)
                 .fitsSystemWindows(false)
                 .autoDarkModeEnable(true)
                 .init();
+        super.onCreate(savedInstanceState);
     }
 
     /**

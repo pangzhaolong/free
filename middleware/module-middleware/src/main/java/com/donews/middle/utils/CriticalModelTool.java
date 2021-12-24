@@ -20,31 +20,33 @@ public class CriticalModelTool {
 
     //判断是否是新用户
     public static boolean isNewUser() {
-        //是否开启新用户模式
-        if (ABSwitch.Ins().isOpenCritModelByNewUser()) {
-            //设备时长24小时
-            long duration = 24 * 60 * 60 * 1000L;
-            //新手标识
-            boolean mark = SPUtils.getInformain(CritParameterConfig.LOTTERY_MARK, true);
-            //取出用户注册时间
-            String createdAt = LoginHelp.getInstance().getUserInfoBean().getCreatedAt();
-            String pattern = "yyyy-MM-dd HH:mm:ss";
-            SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
-            try {
-                Date date = dateFormat.parse(createdAt);
-                long registrationTime = date.getTime();
-                //当前系统时间
-                long systemTime = System.currentTimeMillis();
-                //还需要判断 新手福利是否使用  mark
-                if ((systemTime - registrationTime) <= duration && mark) {
-                    //是新用户
-                    return true;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
         return false;
+
+//        //是否开启新用户模式
+//        if (ABSwitch.Ins().isOpenCritModelByNewUser()) {
+//            //设备时长24小时
+//            long duration = 24 * 60 * 60 * 1000L;
+//            //新手标识
+//            boolean mark = SPUtils.getInformain(CritParameterConfig.LOTTERY_MARK, true);
+//            //取出用户注册时间
+//            String createdAt = LoginHelp.getInstance().getUserInfoBean().getCreatedAt();
+//            String pattern = "yyyy-MM-dd HH:mm:ss";
+//            SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+//            try {
+//                Date date = dateFormat.parse(createdAt);
+//                long registrationTime = date.getTime();
+//                //当前系统时间
+//                long systemTime = System.currentTimeMillis();
+//                //还需要判断 新手福利是否使用  mark
+//                if ((systemTime - registrationTime) <= duration && mark) {
+//                    //是新用户
+//                    return true;
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        return false;
     }
 
 

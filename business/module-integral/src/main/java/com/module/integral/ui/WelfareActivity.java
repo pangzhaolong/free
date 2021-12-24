@@ -25,6 +25,7 @@ import com.donews.common.router.RouterFragmentPath;
 import com.donews.middle.abswitch.ABSwitch;
 import com.example.module_integral.R;
 import com.example.module_integral.databinding.IntegralWelfareLayoutBinding;
+import com.gyf.immersionbar.ImmersionBar;
 import com.module.integral.dialog.BenefitUpgradeDialog;
 import com.module.integral.viewModel.IntegralViewModel;
 
@@ -86,6 +87,12 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
 
     @Override
     public void initView() {
+        ImmersionBar.with(this)
+                .statusBarColor(com.module_lottery.R.color.white)
+                .navigationBarColor(com.module_lottery.R.color.black)
+                .fitsSystemWindows(true)
+                .autoDarkModeEnable(true)
+                .init();
         setSupportActionBar(mDataBinding.toolbar);
         ARouter.getInstance().inject(this);
         setData();
