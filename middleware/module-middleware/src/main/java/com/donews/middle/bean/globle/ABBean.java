@@ -6,6 +6,8 @@ import com.google.gson.annotations.SerializedName;
 public class ABBean extends BaseCustomViewModel {
     @SerializedName("openAB")
     private boolean openAB;
+    @SerializedName("refreshInterval")
+    private int refreshInterval = 30;
     @SerializedName("openVideoToast")
     private boolean openVideoToast = true;
     @SerializedName("openAutoLottery")
@@ -45,6 +47,10 @@ public class ABBean extends BaseCustomViewModel {
 
     @SerializedName("scoreTaskPlayTime")            //积分墙任务，玩多少时间，单位：秒
     private int scoreTaskPlayTime = 60;
+
+    public int getRefreshInterval() {
+        return refreshInterval;
+    }
 
     public int getEnableOpenCritModelCount() {
         return enableOpenCritModelCount;

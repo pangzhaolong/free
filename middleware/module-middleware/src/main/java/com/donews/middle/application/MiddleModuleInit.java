@@ -16,6 +16,7 @@ import com.donews.middle.bean.WithdraWalletResp;
 import com.donews.middle.bean.WithdrawConfigResp;
 import com.donews.middle.bean.globle.CommandBean;
 import com.donews.middle.cache.GoodsCache;
+import com.donews.middle.command.CommandManager;
 import com.donews.middle.request.RequestUtil;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
@@ -39,7 +40,7 @@ public class MiddleModuleInit implements IModuleInit {
     public boolean onInitAhead(BaseApplication application) {
         GoodsCache.init(application);
         // 获取A/B开关
-        ABSwitch.Ins().initAbSwitch();
+        ABSwitch.Ins().init();
         requestCommand(application);
         requestWithdraWallet();
         requestWithdrawCenterConfig();
@@ -54,22 +55,7 @@ public class MiddleModuleInit implements IModuleInit {
      */
 
     private void requestCommand(Application application) {
-        EasyHttp.get(HttpConfigUtilsKt.withConfigParams(MiddleApi.commandUrl, true))
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(new SimpleCallBack<CommandBean>() {
-
-                    @Override
-                    public void onError(ApiException e) {
-                    }
-
-                    @Override
-                    public void onSuccess(CommandBean commandBean) {
-                        ClipboardManager clipboardManager = (ClipboardManager) application.getSystemService(
-                                Context.CLIPBOARD_SERVICE);
-                        ClipData clipData = ClipData.newPlainText(null, commandBean.getCommand());
-                        clipboardManager.setPrimaryClip(clipData);
-                    }
-                });
+        CommandManager.Ins().init(application);
     }
 
     /**
