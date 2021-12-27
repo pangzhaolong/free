@@ -9,10 +9,10 @@
 
     <ImageView
         android:id="@+id/common_critical_hit_iv"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:src="@drawable/common_critical_hit"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
     <LinearLayout
         android:id="@+id/common_rp_ll"
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <FrameLayout
             android:id="@+id/common_floating_fl"

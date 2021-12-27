@@ -1,8 +1,5 @@
 package com.donews.middle.utils;
 
-import android.app.Notification;
-import android.os.Message;
-
 import com.dn.sdk.bean.integral.ProxyIntegral;
 import com.dn.sdk.utils.IntegralComponent;
 import com.donews.common.ad.business.monitor.LotteryAdCount;
