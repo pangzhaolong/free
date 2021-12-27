@@ -341,7 +341,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
      */
     private void requestServiceData(ProxyIntegral integralBean) {
         Map<String, String> params = BaseParams.getMap();
-        params.put("req_id", integralBean.getSourceRequestId());
+        params.put("req_id", integralBean.getWallRequestId());
         mViewModel.getDownloadStatus(IntegralModel.INTEGRAL_REWARD, params);
     }
 

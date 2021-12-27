@@ -18,15 +18,15 @@
             android:layout_height="21dp"
             android:gravity="center"
             android:text="00"
-            android:textSize="13dp" />
+            android:textStyle="bold"
+            android:textSize="14dp" />
 
 
         <TextView
             android:id="@+id/colon_one"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="3dp"
-            android:paddingEnd="3dp"
+            android:gravity="center"
             android:text=":" />
 
 
@@ -36,14 +36,13 @@
             android:layout_height="21dp"
             android:gravity="center"
             android:text="00"
-            android:textSize="13dp" />
+            android:textStyle="bold"
+            android:textSize="14dp" />
 
         <TextView
             android:id="@+id/colon_two"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="3dp"
-            android:paddingEnd="3dp"
             android:text=":" />
 
         <TextView
@@ -52,6 +51,7 @@
             android:layout_height="21dp"
             android:gravity="center"
             android:text="00"
-            android:textSize="13dp" />
+            android:textStyle="bold"
+            android:textSize="14dp" />
     </LinearLayout>
 </layout>

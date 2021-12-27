@@ -252,7 +252,8 @@ public class MainActivity
         mPopWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         mPopWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopWindow.setFocusable(false);
-        mPopWindow.showAtLocation(getWindow().getDecorView(), Gravity.TOP, 0, 100);
+        mPopWindow.setClippingEnabled(false);
+        mPopWindow.showAtLocation(getWindow().getDecorView(), Gravity.TOP, 0, 0);
         if (SPUtils.getInformain(CRIT_STATE, 0) == 0) {
             SPUtils.setInformain(CritParameterConfig.CRIT_START_TIME, SystemClock.elapsedRealtime());
         }
