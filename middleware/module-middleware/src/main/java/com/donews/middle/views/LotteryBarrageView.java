@@ -22,6 +22,7 @@ import java.util.List;
 
 public class LotteryBarrageView extends FrameLayout {
     private final int ITEM_NUMS = 6;
+    private final static int MSG_ID = 10001;
     private final LotteryBarrageItemView[] mLotteryBarrageViews = new LotteryBarrageItemView[ITEM_NUMS];
     private final List<AwardBean.AwardInfo> mAwardList = new ArrayList<>();
 
@@ -72,8 +73,6 @@ public class LotteryBarrageView extends FrameLayout {
             View v = getChildAt(i);
             int childHeight = v.getMeasuredHeight();
             int childWidth = v.getMeasuredWidth();
-//            LogUtil.e("LotteryBarrageView onLayout child view top:" + topx + " width:" + childWidth
-//                    + " height:" + childHeight + " p width:" + this.getWidth() + " p height:" + this.getHeight());
             if (i % 2 == 1) {
                 v.layout(this.getWidth(), topx + childHeight, this.getWidth() + childWidth, topx + 2 * childHeight);
             } else {
@@ -88,6 +87,11 @@ public class LotteryBarrageView extends FrameLayout {
 
         if (mAwardList.size() <= 0) {
             return;
+        }
+        if (mScrollHandler != null) {
+            if (mScrollHandler.hasMessages(MSG_ID)) {
+                mScrollHandler.removeMessages(MSG_ID);
+            }
         }
         startScroll();
     }
@@ -110,14 +114,14 @@ public class LotteryBarrageView extends FrameLayout {
             mScrollHandler.removeCallbacksAndMessages(null);
             mScrollHandler = null;
         }
-        for (int i=0; i< mTAs.length; i++) {
+        for (int i = 0; i < mTAs.length; i++) {
             if (mTAs[i] != null) {
                 mTAs[i].cancel();
                 mTAs[i] = null;
             }
         }
 
-        for (int i = 0; i<mLotteryBarrageViews.length; i++) {
+        for (int i = 0; i < mLotteryBarrageViews.length; i++) {
             if (mLotteryBarrageViews[i] != null) {
                 mLotteryBarrageViews[i] = null;
             }
@@ -152,15 +156,13 @@ public class LotteryBarrageView extends FrameLayout {
 
         int idleViewIdx = getIdleItemView();
         if (idleViewIdx < 0) {
-//            LogUtil.e("LotteryBarrageView gogogo idleViewIdx < 0");
-            mScrollHandler.sendEmptyMessageDelayed(10001, 1000);
+            mScrollHandler.sendEmptyMessageDelayed(MSG_ID, 1000);
             return;
         }
 
         int idleTransIdx = getIdleTransAnimatorIdx();
         if (idleTransIdx < 0) {
-//            LogUtil.e("LotteryBarrageView gogogo idleTransIdx < 0");
-            mScrollHandler.sendEmptyMessageDelayed(10001, 1000);
+            mScrollHandler.sendEmptyMessageDelayed(MSG_ID, 1000);
             return;
         }
 
@@ -197,11 +199,11 @@ public class LotteryBarrageView extends FrameLayout {
             public void onAnimationRepeat(Animation animation) {
             }
         });
-        mTAs[transIdx].setDuration(4000);
+        mTAs[transIdx].setDuration(5000);
         mTAs[transIdx].setRepeatCount(0);
         mLotteryBarrageViews[viewIdx].startAnimation(mTAs[transIdx]);
 
-        mScrollHandler.sendEmptyMessageDelayed(10001, 1000);
+        mScrollHandler.sendEmptyMessageDelayed(MSG_ID, 2000);
     }
 
     private static class ScrollHandler extends Handler {
@@ -215,7 +217,7 @@ public class LotteryBarrageView extends FrameLayout {
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
-            if (msg.what == 10001) {
+            if (msg.what == MSG_ID) {
                 mBarrageView.get().initView();
             }
         }

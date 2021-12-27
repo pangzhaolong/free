@@ -2,14 +2,12 @@ package com.donews.main.ui;
 
 import static com.donews.common.config.CritParameterConfig.CRIT_STATE;
 
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +18,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -68,8 +65,6 @@ import com.donews.main.dialog.ext.CritDownAppDialogFragment;
 import com.donews.main.dialog.ext.CritWelfareDialogFragment;
 import com.donews.main.utils.ExitInterceptUtils;
 import com.donews.main.utils.ExtDialogUtil;
-import com.donews.main.utils.down.DownApkCallBeanBean;
-import com.donews.main.utils.down.DownApkUtil;
 import com.donews.main.viewModel.MainViewModel;
 import com.donews.main.views.CornerMarkUtils;
 import com.donews.main.views.MainBottomTanItem;
@@ -101,8 +96,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import kotlin.Unit;
-import kotlin.jvm.functions.Function2;
 import me.majiajie.pagerbottomtabstrip.NavigationController;
 
 /**
@@ -122,6 +115,9 @@ public class MainActivity
     private NavigationController mNavigationController;
 
     private long mFirstClickBackTime = 0;
+    //计算 暴击时刻的总时间 5分钟
+    private long CruelDuration = 1 * 60 * 1000;
+
     /**
      * 初始选择tab
      */
@@ -192,9 +188,6 @@ public class MainActivity
                         .navigation();
             }
         });
-//        ARouter.getInstance()
-//                .build(RouterFragmentPath.Integral.PAGER_INTEGRAL_NOT_TASK)
-//                .navigation();
     }
 
 
@@ -211,12 +204,10 @@ public class MainActivity
             if (critStartTime != 0) {
                 //当前时间
                 long time = SystemClock.elapsedRealtime();
-                //计算 暴击时刻的总时间 5分钟
-                long againstTime = 5 * 60 * 1000;
-                if (Math.abs(time - critStartTime) >= againstTime) {
+                if (Math.abs(time - critStartTime) >= CruelDuration) {
                     cleanCrit();
                 } else {
-                    showPopWindow(Math.abs(againstTime - (time - critStartTime)), againstTime);
+                    showPopWindow(Math.abs(CruelDuration - (time - critStartTime)), CruelDuration);
                     //正在进行暴击时刻
                 }
             }
@@ -247,20 +238,22 @@ public class MainActivity
                 //开始暴击模式
                 mDataBinding.mainFloatingBtn.setVisibility(View.GONE);
                 mDataBinding.mainFloatingBtn.setModel(FrontFloatingBtn.CRITICAL_MODEL);
-                long time = 5 * 60 * 1000;
-                showPopWindow(time, time);
+                showPopWindow(CruelDuration, CruelDuration);
             }
         }
     }
 
     private void showPopWindow(long time, long sumTime) {
+        Log.d("=====%%   ", time + "");
         MainPopWindowProgressBarBinding viewDataBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.main_pop_window_progress_bar, null, false);
         PopupWindow mPopWindow = new PopupWindow(viewDataBinding.getRoot());
         mPopWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         mPopWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopWindow.setFocusable(false);
         mPopWindow.showAtLocation(getWindow().getDecorView(), Gravity.TOP, 0, 100);
-        SPUtils.setInformain(CritParameterConfig.CRIT_START_TIME, SystemClock.elapsedRealtime());
+        if (SPUtils.getInformain(CRIT_STATE, 0) == 0) {
+            SPUtils.setInformain(CritParameterConfig.CRIT_START_TIME, SystemClock.elapsedRealtime());
+        }
         viewDataBinding.countdownView.start(time);
         viewDataBinding.countdownView.setCountdownViewListener(new CountdownView.ICountdownViewListener() {
             @Override

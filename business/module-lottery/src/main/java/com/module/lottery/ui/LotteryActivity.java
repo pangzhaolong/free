@@ -7,7 +7,6 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -33,17 +32,17 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.events.LotteryStatusEvent;
+import com.dn.sdk.bean.integral.IntegralBean;
 import com.dn.sdk.bean.integral.ProxyIntegral;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.business.manager.JddAdManager;
 import com.donews.common.ad.business.monitor.LotteryAdCount;
+import com.donews.common.bean.CritMessengerBean;
 import com.donews.common.provider.IDetailProvider;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.bean.RedEnvelopeUnlockBean;
-import com.donews.middle.service.CritLotteryService;
-import com.donews.middle.ui.GoodLuckDoubleDialog;
 import com.donews.middle.utils.CommonUtils;
 import com.donews.middle.utils.CriticalModelTool;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
@@ -79,6 +78,7 @@ import com.module_lottery.databinding.LotteryMainLayoutBinding;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 import java.util.Map;
@@ -95,6 +95,11 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     private static final String TAG = "LotteryActivity";
     private static final String LOTTERY_ACTIVITY = "LOTTERY_ACTIVITY";
     private static final String FIRST_SHOW = "first_show";
+
+    private static final String LOTTERY_FINGER = "lottery_finger.json";
+    private static final String LOTTERY_ROUND = "lottery_round.json";
+
+    private static final String CRIT_ROUND = "cruel_time.json";
 
 
     @Autowired(name = "goods_id")
@@ -144,6 +149,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         super.onCreate(savedInstanceState);
         mSharedPreferences = this.getSharedPreferences(LOTTERY_ACTIVITY, 0);
         ARouter.getInstance().inject(this);
+        EventBus.getDefault().register(this);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
@@ -385,25 +391,31 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             initLottie(mDataBinding.jsonAnimation, "lottery_finger.json");
             mDataBinding.jsonAnimation.setVisibility(View.VISIBLE);
             //圆
-            initLottie(mDataBinding.jsonAnimationRound, "lottery_round.json");
+            if (CriticalModelTool.ifCriticalStrike()) {
+                mDataBinding.tips.setText("超级幸运：中奖率");
+                mDataBinding.jsonAnimationRound.clearAnimation();
+                initLottie(mDataBinding.jsonAnimationRound, CRIT_ROUND);
+            } else {
+                mDataBinding.tips.setText("抽奖码越多，中奖概率越大");
+                initLottie(mDataBinding.jsonAnimationRound, LOTTERY_ROUND);
+            }
 
         } else {
             mDataBinding.jsonAnimation.setVisibility(View.GONE);
             mDataBinding.jsonAnimationRound.pauseAnimation();
             mDataBinding.jsonAnimationRound.setProgress(0);
-
         }
     }
 
     private void initLottie(LottieAnimationView view, String json) {
-        if (view != null && !view.isAnimating()) {
+        if ((view != null && !view.isAnimating())) {
             view.setImageAssetsFolder("images");
+            view.clearAnimation();
             view.setAnimation(json);
             view.loop(true);
             view.playAnimation();
         }
     }
-
 
     //开始抽奖
     private void startLottery() {
@@ -703,6 +715,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         mDataBinding.lotteryTips.clearAnimation();
         mCritTime = false;
         if (mPlayAdUtilsTool != null) {
@@ -760,9 +773,9 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             }
 
             @Override
-            public void onStartCritMode(GenerateCodeBean generateCodeBean) {
+            public void onStartCritMode(GenerateCodeBean generateCodeBean, ProxyIntegral integralBean) {
                 if (ClickDoubleUtil.isFastClick()) {
-                    CommonUtils.startCritService(LotteryActivity.this, true);
+                    CommonUtils.startCritService(LotteryActivity.this,integralBean);
                 }
             }
         });
@@ -917,13 +930,29 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 guessAdapter.notifyDataSetChanged();
             }
         });
-//观察商品中奖人数集合
+        //观察商品中奖人数集合
         mViewModel.getWinLotteryBean().observe(this, winLotteryBean -> {
             if (winLotteryBean != null) {
                 guessAdapter.setScrollListData(winLotteryBean);
             }
         });
     }
+
+
+
+
+    @Subscribe
+    public void UnlockEvent(CritMessengerBean critMessenger) {
+        //暴击结束
+        if (critMessenger != null && critMessenger.mStatus == 300||critMessenger.mStatus == 200) {
+            if(mLotteryCodeBean!=null){
+                mDataBinding.jsonAnimationRound.pauseAnimation();
+                mDataBinding.jsonAnimationRound.clearAnimation();
+                setButtonValue(mLotteryCodeBean);
+            }
+        }
+    }
+
 
 
     //设置底部按钮的文案显示
@@ -935,36 +964,35 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             if (CriticalModelTool.ifCriticalStrike()) {
                 mDataBinding.label01.setText("暴击");
                 mDataBinding.label02.setText("抽奖");
-                mDataBinding.tips.setText("超级幸运：中奖率X6");
+                mDataBinding.tips.setText("超级幸运：中奖率X6qqq");
             } else {
                 mDataBinding.label01.setText(getResources().getString(R.string.zero_dollar_draw));
                 mDataBinding.label02.setText("抽奖");
                 mDataBinding.tips.setText("观看视频，参与抽奖");
             }
             setLottieAnimation(true);
-        }
-        //当抽奖码小于6大于1的话 显示继续抽奖
-        if (lotteryCodeBean != null && lotteryCodeBean.getCodes().size() > 0 && lotteryCodeBean.getCodes().size() < 6) {
-            mDataBinding.label02.setVisibility(View.VISIBLE);
-            mDataBinding.label01.setText(getResources().getString(R.string.continue_value));
-            mDataBinding.label02.setText(getResources().getString(R.string.lottery_value));
-            if (CriticalModelTool.ifCriticalStrike()) {
-                mDataBinding.tips.setText("超级幸运：中奖率X6");
-            } else {
-                mDataBinding.tips.setText("抽奖码越多，中奖概率越大");
-            }
-            setLottieAnimation(true);
-        }
-        //当抽奖码大于等于6时显示等待开奖
-        if (lotteryCodeBean != null && lotteryCodeBean.getCodes().size() >= 6) {
-            mDataBinding.label01.setText(getResources().getString(R.string.wait_dollar_draw));
-            mDataBinding.label02.setVisibility(View.GONE);
-            mDataBinding.label02.setText("");
-            mDataBinding.tips.setText("明日10:00点开奖");
-            //
-            setLottieAnimation(false);
-
-        }
+        } else
+            //当抽奖码小于6大于1的话 显示继续抽奖
+            if (lotteryCodeBean != null && lotteryCodeBean.getCodes().size() > 0 && lotteryCodeBean.getCodes().size() < 6) {
+                mDataBinding.label02.setVisibility(View.VISIBLE);
+                mDataBinding.label01.setText(getResources().getString(R.string.continue_value));
+                mDataBinding.label02.setText(getResources().getString(R.string.lottery_value));
+                if (CriticalModelTool.ifCriticalStrike()) {
+                    mDataBinding.tips.setText("超级幸运：中奖率X6ww");
+                } else {
+                    mDataBinding.tips.setText("抽奖码越多，中奖概率越大");
+                }
+                setLottieAnimation(true);
+            } else
+                //当抽奖码大于等于6时显示等待开奖
+                if (lotteryCodeBean != null && lotteryCodeBean.getCodes().size() >= 6) {
+                    mDataBinding.label01.setText(getResources().getString(R.string.wait_dollar_draw));
+                    mDataBinding.label02.setVisibility(View.GONE);
+                    mDataBinding.label02.setText("");
+                    mDataBinding.tips.setText("明日10:00点开奖");
+                    //
+                    setLottieAnimation(false);
+                }
         final LottieAnimationView mirror = mDataBinding.jsonAnimationRound;
         if (mirror != null) {
             mirror.addLottieOnCompositionLoadedListener(new LottieOnCompositionLoadedListener() {

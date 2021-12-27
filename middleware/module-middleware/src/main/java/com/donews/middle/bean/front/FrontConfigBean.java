@@ -50,13 +50,15 @@ public class FrontConfigBean extends BaseCustomViewModel {
         return taskItems;
     }
 
-    public static class BannerItem extends BaseCustomViewModel{
+    public static class BannerItem extends BaseCustomViewModel {
         @SerializedName("action")
         private String action;
         @SerializedName("id")
         private int id;
         @SerializedName("img")
         private String img;
+        @SerializedName("title")
+        private String title;
 
         public String getAction() {
             return action;
@@ -69,9 +71,13 @@ public class FrontConfigBean extends BaseCustomViewModel {
         public String getImg() {
             return img;
         }
+
+        public String getTitle() {
+            return title;
+        }
     }
 
-    public static class TaskItem extends BaseCustomViewModel{
+    public static class TaskItem extends BaseCustomViewModel {
         @SerializedName("action")
         private String action;
         @SerializedName("icon")

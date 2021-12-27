@@ -1,24 +1,28 @@
 package com.module.integral.viewModel;
 
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
+import com.module.integral.bean.IntegralDownloadStateDean;
 import com.module.integral.model.IntegralModel;
-import com.module.lottery.bean.CommodityBean;
-import com.module.lottery.bean.LotteryCodeBean;
-import com.module.lottery.bean.MaylikeBean;
-import com.module.lottery.bean.ParticipateBean;
-import com.module.lottery.bean.WinLotteryBean;
-import com.module.lottery.model.LotteryModel;
 
 import java.util.Map;
 
 public class IntegralViewModel extends BaseLiveDataViewModel<IntegralModel> {
-   private MutableLiveData<CommodityBean> mutableLiveData = new MutableLiveData<CommodityBean>();
+    public MutableLiveData<IntegralDownloadStateDean> getMutableLiveData() {
+        return mutableLiveData;
+    }
+
+    public void setMutableLiveData(MutableLiveData<IntegralDownloadStateDean> mutableLiveData) {
+        this.mutableLiveData = mutableLiveData;
+    }
+
+    private MutableLiveData<IntegralDownloadStateDean> mutableLiveData = new MutableLiveData<IntegralDownloadStateDean>();
 
     //获取商品信息
-    public void getNetLotteryData(String url, Map<String, String> params) {
-//        mModel.
+    public void getDownloadStatus(String url, Map<String, String> params) {
+        mModel.getDownloadStatus(mutableLiveData,url,params);
     }
 
     @Override

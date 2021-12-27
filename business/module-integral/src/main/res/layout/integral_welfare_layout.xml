@@ -87,6 +87,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="143dp">
+
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="97dp"
@@ -99,7 +100,7 @@
                     android:layout_height="74dp"
                     android:layout_alignParentBottom="true"
                     android:layout_gravity="center_horizontal"
-                    android:background="#000000" />
+                    android:src="@mipmap/integrating_sphere" />
 
             </RelativeLayout>
 
@@ -273,6 +274,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/open_bt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="17dp"
@@ -291,43 +293,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-        <RelativeLayout
-            android:id="@+id/box_layout"
-            android:layout_width="108dp"
-            android:layout_height="97dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="35dp"
-            android:visibility="visible">
-
-
-            <ImageView
-                android:layout_width="73dp"
-                android:layout_height="63dp"
-                android:layout_centerHorizontal="true"
-                android:src="@mipmap/treasure_chest_icon" />
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/box_icon"
-                android:layout_width="31dp"
-                android:layout_height="31dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="7dp"
-                android:layout_marginEnd="10dp"
-                app:shapeAppearanceOverlay="@style/roundedCornerImageStyle" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_alignParentBottom="true"
-                android:background="@mipmap/turn_on_icon"
-                android:gravity="center"
-                android:text="开红包一次"
-                android:textColor="#FFFFFF"
-                android:textSize="15dp" />
-
-        </RelativeLayout>
 
     </RelativeLayout>
 </layout>

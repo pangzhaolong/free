@@ -4,7 +4,6 @@ package com.donews.front;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -13,9 +12,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.CycleInterpolator;
-import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
-import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,10 +25,6 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.BarUtils;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.dn.events.events.DoubleRpEvent;
 import com.dn.events.events.FrontScrollEvent;
 import com.dn.events.events.LoginLodingStartStatus;
@@ -45,6 +38,7 @@ import com.donews.front.adapter.FragmentAdapter;
 import com.donews.front.databinding.FrontFragmentBinding;
 import com.donews.front.dialog.ActivityRuleDialog;
 import com.donews.front.dialog.LotteryMore4RpDialog;
+import com.donews.front.listener.FrontBannerClickListener;
 import com.donews.front.viewModel.FrontViewModel;
 import com.donews.middle.bean.WalletBean;
 import com.donews.middle.bean.front.FrontConfigBean;
@@ -63,6 +57,7 @@ import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.SPUtils;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.zhpan.indicator.enums.IndicatorStyle;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -78,7 +73,7 @@ import java.util.TimerTask;
 
 @Route(path = RouterFragmentPath.Front.PAGER_FRONT)
 public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding, FrontViewModel>
-        implements View.OnClickListener {
+        implements View.OnClickListener, FrontBannerClickListener {
 
     private FragmentAdapter mFragmentAdapter;
     private LotteryCategoryBean mLotteryCategoryBean;
@@ -88,6 +83,9 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
     private Timer mRotateTimer = null;
     private TimerTask mRotateTask = null;
+
+    private Timer mScaleTimer = null;
+    private TimerTask mScaleTask = null;
     private boolean mIsFragmentActive = false;
 
     private FrontHandler mFrontHandler = null;
@@ -179,20 +177,28 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             }
         });
 
-        if (mRotateAnimation == null) {
-            mRotateAnimation = new RotateAnimation(0, 8, Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF,
-                    1f);
+        /*if (mRotateAnimation == null) {
+            mRotateAnimation = new RotateAnimation(0, 8, Animation.RELATIVE_TO_SELF, 0f
+                    , Animation.RELATIVE_TO_SELF, 1f);
             mRotateAnimation.setInterpolator(new CycleInterpolator(2));
             mRotateAnimation.setRepeatMode(Animation.REVERSE);
             mRotateAnimation.setRepeatCount(1);
             mRotateAnimation.setDuration(400);
-        }
-        if (mScaleAnimation == null) {
+        }*/
+        /*if (mScaleAnimation == null) {
             mScaleAnimation = new ScaleAnimation(1.15f, 0.9f, 1.15f, 0.9f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
             mScaleAnimation.setInterpolator(new LinearInterpolator());
             mScaleAnimation.setRepeatMode(Animation.REVERSE);
             mScaleAnimation.setRepeatCount(Animation.INFINITE);
             mScaleAnimation.setDuration(1000);
+        }*/
+        if (mScaleAnimation == null) {
+            mScaleAnimation = new RotateAnimation(-5, 5, Animation.RELATIVE_TO_SELF, 0.5f
+                    , Animation.RELATIVE_TO_SELF, 0.5f);
+            mScaleAnimation.setInterpolator(new CycleInterpolator(2));
+            mScaleAnimation.setRepeatMode(Animation.REVERSE);
+            mScaleAnimation.setRepeatCount(1);
+            mScaleAnimation.setDuration(400);
         }
 
         loadCategoryData();
@@ -239,6 +245,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             return;
         }
 
+        mDataBinding.frontLotteryRuleRl.setVisibility(View.GONE);
         mDataBinding.frontRpRl.setVisibility(FrontConfigManager.Ins().getConfigBean().getRedPackage() ? View.VISIBLE : View.GONE);
         mDataBinding.frontGiftGroupBvp.setVisibility(FrontConfigManager.Ins().getConfigBean().getBanner() ? View.VISIBLE : View.GONE);
         mDataBinding.frontTaskGroupLl.setVisibility(FrontConfigManager.Ins().getConfigBean().getTask() ? View.VISIBLE : View.GONE);
@@ -246,63 +253,62 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
         if (FrontConfigManager.Ins().getConfigBean().getTaskItems().size() == 4) {
             FrontConfigBean.TaskItem ti = FrontConfigManager.Ins().getConfigBean().getTaskItems().get(0);
-            initTaskView(this.getContext(), ti, mDataBinding.frontTaskFl1, mDataBinding.frontRpIv1, mDataBinding.frontRpTv1);
+            initTaskView(this.getContext(), ti, mDataBinding.frontTaskFl1, mDataBinding.frontTaskMixIv1, mDataBinding.frontTaskIv1, mDataBinding.frontTaskTv1, 1);
             ti = FrontConfigManager.Ins().getConfigBean().getTaskItems().get(1);
-            initTaskView(this.getContext(), ti, mDataBinding.frontTaskFl2, mDataBinding.frontRpIv2, mDataBinding.frontRpTv2);
+            initTaskView(this.getContext(), ti, mDataBinding.frontTaskFl2, mDataBinding.frontTaskMixIv2, mDataBinding.frontTaskIv2, mDataBinding.frontTaskTv2, 2);
             ti = FrontConfigManager.Ins().getConfigBean().getTaskItems().get(2);
-            initTaskView(this.getContext(), ti, mDataBinding.frontTaskFl3, mDataBinding.frontRpIv3, mDataBinding.frontRpTv3);
+            initTaskView(this.getContext(), ti, mDataBinding.frontTaskFl3, mDataBinding.frontTaskMixIv3, mDataBinding.frontTaskIv3, mDataBinding.frontTaskTv3, 3);
             ti = FrontConfigManager.Ins().getConfigBean().getTaskItems().get(3);
-            initTaskView(this.getContext(), ti, mDataBinding.frontTaskFl4, mDataBinding.frontRpIv4, mDataBinding.frontRpTv4);
+            initTaskView(this.getContext(), ti, mDataBinding.frontTaskFl4, mDataBinding.frontTaskMixIv4, mDataBinding.frontTaskIv4, mDataBinding.frontTaskTv4, 4);
         }
 
         if (FrontConfigManager.Ins().getConfigBean().getBannerItems().size() > 0) {
             mDataBinding.frontGiftGroupBvp.setCanLoop(true)
-                    .setAdapter(new BannerViewAdapter(getContext()))
-                    .registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+                    .setIndicatorStyle(IndicatorStyle.ROUND_RECT)
+                    .setAdapter(new BannerViewAdapter(getContext(), this))
+                    /*.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
                         @Override
                         public void onPageSelected(int position) {
                             super.onPageSelected(position);
-                            if (position < 0 || position >= FrontConfigManager.Ins().getConfigBean().getBannerItems().size() - 1) {
-                                return;
-                            }
 
-                            FrontConfigBean.BannerItem bi = FrontConfigManager.Ins().getConfigBean().getBannerItems().get(position);
-                            if (bi == null) {
-                                return;
-                            }
-
-                            GotoUtil.doAction(getContext(), bi.getAction());
                         }
-                    })
+                    })*/
                     .create(FrontConfigManager.Ins().getConfigBean().getBannerItems());
         } else {
             mDataBinding.frontGiftGroupBvp.setVisibility(View.GONE);
         }
     }
 
-    private void initTaskView(Context context, FrontConfigBean.TaskItem ti, FrameLayout fl, ImageView iv, TextView tv) {
+    private void initTaskView(Context context, FrontConfigBean.TaskItem ti, FrameLayout fl, ImageView mixIv, ImageView iv, TextView tv, int idx) {
         if (ti == null) {
             return;
         }
-        fl.setOnClickListener(v -> GotoUtil.doAction(context, ti.getAction()));
+        fl.setOnClickListener(v -> GotoUtil.doAction(context, ti.getAction(), ti.getTitle()));
         if (ti.getModel() == 1) {
+            mixIv.setVisibility(View.GONE);
             Glide.with(this).load(ti.getIcon()).into(iv);
             tv.setText(ti.getTitle());
         } else {
-            Glide.with(this).load(ti.getIcon()).addListener(new RequestListener<Drawable>() {
-                @Override
-                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                    return false;
-                }
+            switch (idx) {
+                case 1:
+                    mixIv.setBackgroundResource(R.drawable.front_task_pic1);
+                    break;
+                case 2:
+                    mixIv.setBackgroundResource(R.drawable.front_task_pic2);
+                    break;
+                case 3:
+                    mixIv.setBackgroundResource(R.drawable.front_task_pic3);
+                    break;
+                case 4:
+                    mixIv.setBackgroundResource(R.drawable.front_task_pic4);
+                    break;
+            }
 
-                @Override
-                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                    iv.setVisibility(View.GONE);
-                    tv.setVisibility(View.GONE);
-                    fl.setBackground(resource);
-                    return false;
-                }
-            }).preload();
+            iv.setVisibility(View.GONE);
+            tv.setVisibility(View.GONE);
+
+            Glide.with(this).load(ti.getIcon()).into(mixIv);
+            mixIv.setVisibility(View.VISIBLE);
         }
     }
 
@@ -323,6 +329,20 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         AnalysisUtils.onEventEx(mContext, Dot.But_Category_Click, bean.getName());
     }
 
+    @Override
+    public void onClick(int position) {
+        if (position < 0 || position >= FrontConfigManager.Ins().getConfigBean().getBannerItems().size()) {
+            return;
+        }
+
+        FrontConfigBean.BannerItem bi = FrontConfigManager.Ins().getConfigBean().getBannerItems().get(position);
+        if (bi == null) {
+            return;
+        }
+
+        GotoUtil.doAction(getContext(), bi.getAction(), bi.getTitle());
+    }
+
     private static class FrontHandler extends Handler {
         private final WeakReference<FrontFragment> fragmentWeakReference;
 
@@ -338,8 +358,14 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             if (fragment == null) {
                 return;
             }
-            if (msg.what == 10001) {
-                fragment.startRotateAnim();
+            switch (msg.what) {
+                case 10001:
+//                    fragment.startRotateAnim();
+                    break;
+                case 10002:
+                    fragment.startScaleAnim();
+                    break;
+
             }
         }
     }
@@ -352,6 +378,67 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mDataBinding.frontRpGold88.startAnimation(mRotateAnimation);
         } catch (Exception ignored) {
         }
+    }
+
+    private void startRpAnimator(WalletBean.RpBean rpBean, FrameLayout fl, int index) {
+        if (rpBean == null) {
+            return;
+        }
+
+        if (fl.getAnimation() != null) {
+            fl.clearAnimation();
+        }
+
+        if (!rpBean.getOpened()) {
+            if (rpBean.getHadLotteryTotal() == -1 || rpBean.getHadLotteryTotal() >= rpBean.getLotteryTotal()) {
+                if (fl.getAnimation() == null && !mFindFirstReadyRpAnim) {
+                    fl.startAnimation(mScaleAnimation);
+                    mFindFirstReadyRpAnim = true;
+                }
+            } else if (rpBean.getHadLotteryTotal() < rpBean.getLotteryTotal()) {
+                if (index == 1) {
+                    if (fl.getAnimation() == null) {
+                        fl.startAnimation(mScaleAnimation);
+                    }
+                }
+            }
+        }
+    }
+
+    private boolean mFindFirstReadyRpAnim = false;
+    public void startScaleAnim() {
+        if (!AppInfo.checkIsWXLogin()) {
+            if (mDataBinding.frontRpOpenFl1.getAnimation() == null) {
+                mDataBinding.frontRpOpenFl1.startAnimation(mScaleAnimation);
+            }
+            if (mDataBinding.frontRpOpenFl2.getAnimation() != null) {
+                mDataBinding.frontRpOpenFl2.clearAnimation();
+            }
+            if (mDataBinding.frontRpOpenFl3.getAnimation() != null) {
+                mDataBinding.frontRpOpenFl3.clearAnimation();
+            }
+            if (mDataBinding.frontRpOpenFl4.getAnimation() != null) {
+                mDataBinding.frontRpOpenFl4.clearAnimation();
+            }
+            if (mDataBinding.frontRpOpenFl5.getAnimation() != null) {
+                mDataBinding.frontRpOpenFl5.clearAnimation();
+            }
+            return;
+        }
+        mFindFirstReadyRpAnim = false;
+        if (mWalletBean == null || mWalletBean.getList() == null || mWalletBean.getList().size() != 5) {
+            return;
+        }
+        WalletBean.RpBean rpBean = mWalletBean.getList().get(0);
+        startRpAnimator(rpBean, mDataBinding.frontRpOpenFl1, 1);
+        rpBean = mWalletBean.getList().get(1);
+        startRpAnimator(rpBean, mDataBinding.frontRpOpenFl2, 2);
+        rpBean = mWalletBean.getList().get(2);
+        startRpAnimator(rpBean, mDataBinding.frontRpOpenFl3, 3);
+        rpBean = mWalletBean.getList().get(3);
+        startRpAnimator(rpBean, mDataBinding.frontRpOpenFl4, 4);
+        rpBean = mWalletBean.getList().get(4);
+        startRpAnimator(rpBean, mDataBinding.frontRpOpenFl5, 5);
     }
 
     private void startTimer() {
@@ -372,6 +459,21 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mRotateTimer = new Timer();
             mRotateTimer.schedule(mRotateTask, 2000, 5000);
         }
+
+        if (mScaleTask == null) {
+            mScaleTask = new TimerTask() {
+                @Override
+                public void run() {
+                    if (mFrontHandler != null && mIsFragmentActive) {
+                        mFrontHandler.sendEmptyMessage(10002);
+                    }
+                }
+            };
+        }
+        if (mScaleTimer == null) {
+            mScaleTimer = new Timer();
+            mScaleTimer.schedule(mScaleTask, 2000, 4000);
+        }
     }
 
     private void stopTimer() {
@@ -382,6 +484,14 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         if (mRotateTask != null) {
             mRotateTask.cancel();
             mRotateTask = null;
+        }
+        if (mScaleTimer != null) {
+            mScaleTimer.cancel();
+            mScaleTimer = null;
+        }
+        if (mScaleTask != null) {
+            mScaleTask.cancel();
+            mScaleTask = null;
         }
         if (mFrontHandler != null) {
             mFrontHandler.removeCallbacksAndMessages(null);
@@ -775,6 +885,10 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mDataBinding.frontLotteryCodesBarrageLbv.resumeScroll();
         }
 
+        if (mDataBinding.frontGiftGroupBvp != null) {
+            mDataBinding.frontGiftGroupBvp.startLoop();
+        }
+
         loadRpData(false);
 
         mIsFragmentActive = true;
@@ -785,6 +899,9 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         super.onPause();
         if (mDataBinding.frontLotteryCodesBarrageLbv != null) {
             mDataBinding.frontLotteryCodesBarrageLbv.pauseScroll();
+        }
+        if (mDataBinding.frontGiftGroupBvp != null) {
+            mDataBinding.frontGiftGroupBvp.stopLoop();
         }
 
         mIsFragmentActive = false;

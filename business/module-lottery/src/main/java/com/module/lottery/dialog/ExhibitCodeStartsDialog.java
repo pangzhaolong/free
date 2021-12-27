@@ -167,7 +167,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
                 public void onInstalled() {
                     //安装完成 请求服务器是否开启暴击模式
                     if (mOnFinishListener != null) {
-                        mOnFinishListener.onStartCritMode(mGenerateCodeBean);
+                        mOnFinishListener.onStartCritMode(mGenerateCodeBean,integralBean);
                     }
                 }
 
@@ -492,7 +492,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
         /**
          * 开启暴击模式
          */
-        void onStartCritMode(GenerateCodeBean generateCodeBean);
+        void onStartCritMode(GenerateCodeBean generateCodeBean,ProxyIntegral integralBean);
 
     }
 

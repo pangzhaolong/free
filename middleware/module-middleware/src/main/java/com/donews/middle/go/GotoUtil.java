@@ -4,7 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 
+import com.dn.drouter.ARouteHelper;
+import com.donews.common.router.RouterActivityPath;
 import com.donews.middle.api.MiddleApi;
 import com.donews.middle.bean.home.PrivilegeLinkBean;
 import com.donews.network.EasyHttp;
@@ -107,8 +110,15 @@ public class GotoUtil {
         }
     }
 
-    public static void doAction(Context context, String action) {
-
+    public static void doAction(Context context, String action, String title) {
+        if (action == null || action.equalsIgnoreCase("")) {
+            return;
+        }
+        if (action.startsWith("http")) {
+            Bundle bundle = new Bundle();
+            bundle.putString("url", action);
+            bundle.putString("title", title);
+            ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
+        }
     }
-
 }
