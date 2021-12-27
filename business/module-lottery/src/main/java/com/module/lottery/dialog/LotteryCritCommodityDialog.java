@@ -107,8 +107,8 @@ public class LotteryCritCommodityDialog extends BaseDialog<LotteryCritCommodityL
     private void refreshPage(RecommendBean recommendBean) {
         ImageUtils.setImage(getOwnerActivity(), mDataBinding.picture, recommendBean.getMainPic(), 1);
         mDataBinding.title.setText(recommendBean.getTitle() + "");
-        mDataBinding.price.setText(recommendBean.getDisplayPrice() + "");
-        mDataBinding.originalPrice.setText(recommendBean.getOriginalPrice() + "");
+        mDataBinding.price.setText("¥ "+recommendBean.getDisplayPrice() + "");
+        mDataBinding.originalPrice.setText("¥ "+recommendBean.getOriginalPrice() + "");
         mDataBinding.originalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG); //中划线
         mDataBinding.numberPeople.setText("累计" + recommendBean.getTotalPeople() + "人参与抽奖");
         mDataBinding.randomNumber.setText(RandomProbability.Companion.getRandomNumber() + "%");

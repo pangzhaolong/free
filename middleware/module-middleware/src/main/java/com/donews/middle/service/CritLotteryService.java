@@ -111,7 +111,7 @@ public class CritLotteryService extends Service {
     public void getDownloadStatus() {
         if (integralBean != null) {
             Map<String, String> params = new HashMap<>();
-            params.put("req_id", integralBean.getSourceRequestId());
+            params.put("req_id", integralBean.getWallRequestId());
             unDisposable();
             addDisposable(EasyHttp.get(INTEGRAL_REWARD)
                     .cacheMode(CacheMode.NO_CACHE)
