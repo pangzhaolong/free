@@ -19,9 +19,9 @@ import org.raphets.roundimageview.RoundImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainFloatingBtn extends FrameLayout implements IntegralComponent.IntegralHttpCallBack, View.OnClickListener {
+public class MainFloatingBtn extends FrameLayout implements IntegralComponent.ISecondStayTaskListener {
 
-    private Context mContext;
+    private final Context mContext;
     private final RoundImageView mAppIcon;
     private final View mRootView;
 
@@ -33,38 +33,19 @@ public class MainFloatingBtn extends FrameLayout implements IntegralComponent.In
         mRootView = LayoutInflater.from(context).inflate(R.layout.main_floating_rp, this, true);
         mAppIcon = mRootView.findViewById(R.id.main_rp_icon);
 
-        IntegralComponent.getInstance().getIntegralList(this);
-
-        this.setOnClickListener(this);
+        IntegralComponent.getInstance().getSecondStayTask(this);
     }
 
     @Override
-    public void onSuccess(List<ProxyIntegral> var1) {
-        if (var1 != null && var1.size() > 0) {
-            IntegralComponent.getInstance().getSecondStayTask(new IntegralComponent.ISecondStayTaskListener() {
-                @Override
-                public void onSecondStayTask(ProxyIntegral var1) {
-                    if (var1 == null) {
-                        return;
-                    }
-                    List<View> views = new ArrayList<>();
-                    views.add(mRootView);
-                    Glide.with(mContext).load(var1.getIcon()).into(mAppIcon);
-                    IntegralComponent.getInstance().setIntegralBindView(mContext, var1
-                            , MainFloatingBtn.this, views, null, true);
-                }
-
-                @Override
-                public void onError(String var1) {
-
-                }
-
-                @Override
-                public void onNoTask() {
-
-                }
-            });
+    public void onSecondStayTask(ProxyIntegral var1) {
+        if (var1 == null) {
+            return;
         }
+        List<View> views = new ArrayList<>();
+        views.add(mRootView);
+        Glide.with(mContext).load(var1.getIcon()).into(mAppIcon);
+        IntegralComponent.getInstance().setIntegralBindView(mContext, var1
+                , MainFloatingBtn.this, views, null, true);
     }
 
     @Override
@@ -76,11 +57,4 @@ public class MainFloatingBtn extends FrameLayout implements IntegralComponent.In
     public void onNoTask() {
         this.setVisibility(GONE);
     }
-
-    @Override
-    public void onClick(View v) {
-
-    }
-
-
 }
