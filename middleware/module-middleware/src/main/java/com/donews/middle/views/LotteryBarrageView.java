@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.donews.middle.bean.front.AwardBean;
+import com.donews.middle.bean.front.WinningRotationBean;
 import com.donews.utilslibrary.utils.LogUtil;
 
 import java.lang.ref.WeakReference;
@@ -24,7 +25,7 @@ public class LotteryBarrageView extends FrameLayout {
     private final int ITEM_NUMS = 6;
     private final static int MSG_ID = 10001;
     private final LotteryBarrageItemView[] mLotteryBarrageViews = new LotteryBarrageItemView[ITEM_NUMS];
-    private final List<AwardBean.AwardInfo> mAwardList = new ArrayList<>();
+    private final List<WinningRotationBean.WinnerItem> mAwardList = new ArrayList<>();
 
     private ScrollHandler mScrollHandler = null;
 
@@ -81,7 +82,7 @@ public class LotteryBarrageView extends FrameLayout {
         }
     }
 
-    public void refreshData(List<AwardBean.AwardInfo> list) {
+    public void refreshData(List<WinningRotationBean.WinnerItem> list) {
         mAwardList.clear();
         mAwardList.addAll(list);
 
@@ -172,12 +173,12 @@ public class LotteryBarrageView extends FrameLayout {
     @SuppressLint("Recycle")
     private void gogogogogo(int transIdx, int viewIdx, int infoIdx) {
 //        LogUtil.e("LotteryBarrageView gogogo:" + transIdx + " vid:" + viewIdx + " infoIdx:" + infoIdx);
-        AwardBean.AwardInfo awardInfo = mAwardList.get(infoIdx);
+        WinningRotationBean.WinnerItem winnerItem = mAwardList.get(infoIdx);
 
         int viewGroupWidth = this.getWidth();
         mLotteryBarrageViews[viewIdx].setIdle(false);
         mLotteryBarrageViews[viewIdx].setVisibility(View.VISIBLE);
-        mLotteryBarrageViews[viewIdx].setUserAwardInfo(awardInfo.getAvatar(), awardInfo.getName(), awardInfo.getProduceName());
+        mLotteryBarrageViews[viewIdx].setUserAwardInfo(winnerItem.getAvatar(), winnerItem.getName(), winnerItem.getMessage());
         mLotteryBarrageViews[viewIdx].measure(0, 0);
         mLotteryBarrageViews[viewIdx].clearAnimation();
         mTAs[transIdx] = new TranslateAnimation(0,

@@ -377,7 +377,7 @@ public class UserInfoManage {
                         eventLoadIngStatus.getLoginLoadingLiveData().postValue(2);
                         AppInfo.setUserId(bean.getUserId());
                         AppInfo.setUserRegisterTime(bean.getRegisterTime());
-                        LoginHelp.getInstance().getUserInfoBean().setCreatedAt(bean.getRegisterTime());
+//                        LoginHelp.getInstance().getUserInfoBean().setCreatedAt(bean.getRegisterTime());
                         AnalysisHelp.registerUserId();
                         mutableLiveData.postValue(bean);
                         EventBus.getDefault().post(new LoginUserStatus(1));

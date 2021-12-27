@@ -33,6 +33,7 @@
         android:layout_marginStart="3dp"
         android:ellipsize="end"
         android:gravity="center_vertical"
+        android:maxLength="15"
         android:maxLines="1"
         android:text="抽中3P格力立式空调"
         android:textColor="@color/white"

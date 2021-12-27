@@ -4,6 +4,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.model.BaseLiveDataModel;
 import com.donews.main.BuildConfig;
+import com.donews.main.bean.RetentionTaskBean;
+import com.donews.main.bean.WallTaskRpBean;
 import com.donews.main.entitys.resps.HistoryPeopleLottery;
 import com.donews.main.entitys.resps.RewardHistoryBean;
 import com.donews.middle.bean.RestIdBean;
@@ -101,6 +103,50 @@ public class MainModel extends BaseLiveDataModel {
 
                     @Override
                     public void onSuccess(DoubleRedPacketBean bean) {
+                        mutableLiveData.postValue(bean);
+                    }
+                }));
+
+        return mutableLiveData;
+    }
+
+    public MutableLiveData<RetentionTaskBean> getRetentionTask(String reqId) {
+        MutableLiveData<RetentionTaskBean> mutableLiveData = new MutableLiveData<>();
+        addDisposable(EasyHttp.post(BuildConfig.API_INTEGRAL_URL + "v1/has-wall-reward")
+                .cacheMode(CacheMode.NO_CACHE)
+                .isShowToast(false)
+                .params("req_id", reqId)
+                .execute(new SimpleCallBack<RetentionTaskBean>() {
+
+                    @Override
+                    public void onError(ApiException e) {
+                        mutableLiveData.postValue(null);
+                    }
+
+                    @Override
+                    public void onSuccess(RetentionTaskBean bean) {
+                        mutableLiveData.postValue(bean);
+                    }
+                }));
+
+        return mutableLiveData;
+    }
+
+    public MutableLiveData<WallTaskRpBean> getWallTaskRp(String reqId) {
+        MutableLiveData<WallTaskRpBean> mutableLiveData = new MutableLiveData<>();
+        addDisposable(EasyHttp.post(BuildConfig.API_INTEGRAL_URL + "v1/double-red-packet")
+                .cacheMode(CacheMode.NO_CACHE)
+                .isShowToast(false)
+                .upJson("{\"req_id\": \"" + reqId + "\"}")
+                .execute(new SimpleCallBack<WallTaskRpBean>() {
+
+                    @Override
+                    public void onError(ApiException e) {
+                        mutableLiveData.postValue(null);
+                    }
+
+                    @Override
+                    public void onSuccess(WallTaskRpBean bean) {
                         mutableLiveData.postValue(bean);
                     }
                 }));

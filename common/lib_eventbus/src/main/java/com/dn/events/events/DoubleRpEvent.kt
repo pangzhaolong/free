@@ -12,6 +12,7 @@ class DoubleRpEvent(
          *  1:翻倍领取-完整观看视频
          *  2:v1.3.6新版翻倍领取
          *  3: 开启日历提醒
+         *  4: 积分任务翻倍领取
          */
         val event: Int,
         val score: Float,

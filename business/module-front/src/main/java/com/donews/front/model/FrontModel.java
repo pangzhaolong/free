@@ -11,6 +11,7 @@ import com.donews.middle.bean.front.DoubleRedPacketBean;
 import com.donews.middle.bean.front.LotteryCategoryBean;
 import com.donews.middle.bean.front.LotteryDetailBean;
 import com.donews.middle.bean.front.LotteryOpenRecord;
+import com.donews.middle.bean.front.WinningRotationBean;
 import com.donews.middle.bean.home.ServerTimeBean;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
@@ -100,7 +101,28 @@ public class FrontModel extends BaseLiveDataModel {
         return mutableLiveData;
     }
 
-    public MutableLiveData<AwardBean> getWinnerList() {
+    public MutableLiveData<WinningRotationBean> getWinnerList() {
+        MutableLiveData<WinningRotationBean> mutableLiveData = new MutableLiveData<>();
+        addDisposable(EasyHttp.get(FrontApi.winningRotationUrl)
+                .params("type", "0")
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new SimpleCallBack<WinningRotationBean>() {
+
+                    @Override
+                    public void onError(ApiException e) {
+                        mutableLiveData.postValue(null);
+                    }
+
+                    @Override
+                    public void onSuccess(WinningRotationBean awardBean) {
+                        mutableLiveData.postValue(awardBean);
+                    }
+                }));
+
+        return mutableLiveData;
+    }
+
+/*    public MutableLiveData<AwardBean> getWinnerList() {
         MutableLiveData<AwardBean> mutableLiveData = new MutableLiveData<>();
         addDisposable(EasyHttp.get(FrontApi.awardListUrl + "?offset=1&limit=10")
                 .cacheMode(CacheMode.NO_CACHE)
@@ -118,7 +140,7 @@ public class FrontModel extends BaseLiveDataModel {
                 }));
 
         return mutableLiveData;
-    }
+    }*/
 
     public MutableLiveData<LotteryOpenRecord> getLotteryPeriod() {
         MutableLiveData<LotteryOpenRecord> mutableLiveData = new MutableLiveData<>();

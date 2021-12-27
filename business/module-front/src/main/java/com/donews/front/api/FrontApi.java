@@ -20,6 +20,8 @@ public class FrontApi {
 
     public final static String awardListUrl = BuildConfig.API_LOTTERY_URL + "v1/rotation-lottery-info";
 
+    public final static String winningRotationUrl = BuildConfig.API_LOTTERY_URL + "v1/winning-rotation";
+
     public final static String lotteryRecordUrl = BuildConfig.API_LOTTERY_URL + "v1/get-today-lottery-period";
 
     public final static String lotteryDetailUrl = BuildConfig.API_LOTTERY_URL + "v1/detail-open-lottery-record";

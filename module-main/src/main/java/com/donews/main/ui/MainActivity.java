@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.Gravity;
@@ -19,10 +20,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -61,8 +60,8 @@ import com.donews.main.dialog.DrawDialog;
 import com.donews.main.dialog.EnterShowDialog;
 import com.donews.main.dialog.FreePanicBuyingDialog;
 import com.donews.main.dialog.RemindDialogExt;
-import com.donews.main.dialog.ext.CritDownAppDialogFragment;
 import com.donews.main.dialog.ext.CritWelfareDialogFragment;
+import com.donews.main.listener.RetentionTaskListener;
 import com.donews.main.utils.ExitInterceptUtils;
 import com.donews.main.utils.ExtDialogUtil;
 import com.donews.main.viewModel.MainViewModel;
@@ -106,7 +105,7 @@ import me.majiajie.pagerbottomtabstrip.NavigationController;
 
 @Route(path = RouterActivityPath.Main.PAGER_MAIN)
 public class MainActivity
-        extends MvvmBaseLiveDataActivity<MainActivityMainBinding, MainViewModel> {
+        extends MvvmBaseLiveDataActivity<MainActivityMainBinding, MainViewModel> implements RetentionTaskListener {
 
     private List<Fragment> fragments;
 
@@ -188,6 +187,9 @@ public class MainActivity
                         .navigation();
             }
         });
+
+        mDataBinding.mainFloatingBtn.setVisibility(AppInfo.checkIsWXLogin() ? View.VISIBLE : View.GONE);
+        mDataBinding.mainFloatingRp.setListener(this);
     }
 
 
@@ -224,8 +226,8 @@ public class MainActivity
         SPUtils.setInformain(CritParameterConfig.LOTTERY_MARK, false);
         //结束后重置暴击模式的次数，下次达到后在进入下轮
         LotteryAdCount.INSTANCE.resetCriticalModelNumber();
-        mDataBinding.mainFloatingBtn.setModel(FrontFloatingBtn.CRITICAL_MODEL);
         mDataBinding.mainFloatingBtn.setVisibility(View.VISIBLE);
+        mDataBinding.mainFloatingBtn.setModel(FrontFloatingBtn.CRITICAL_MODEL);
         EventBus.getDefault().post(new CritMessengerBean(300));
     }
 
@@ -273,14 +275,11 @@ public class MainActivity
                 ToastUtil.showShort(getApplicationContext(), "暴击时刻已结束");
             }
         });
-
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
 
         if (SPUtils.getInformain(KeySharePreferences.FIRST_RP_CAN_OPEN, false)) {
             SPUtils.setInformain(KeySharePreferences.FIRST_RP_CAN_OPEN, false);
@@ -305,6 +304,19 @@ public class MainActivity
                 AnalysisUtils.onEventEx(this, Dot.But_Rp_Double);
             });
         }
+
+        mViewModel.getWallTaskRp("c74riki16q5jr1jat3q0").observe(this, wallTaskRpBean -> {
+            if (wallTaskRpBean == null) {
+                return;
+            }
+
+            ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
+                    .withString("from", "wallTask")
+                    .withFloat("score", wallTaskRpBean.getScore())
+                    .withString("restId", wallTaskRpBean.getRestId())
+                    .navigation();
+            AnalysisUtils.onEventEx(this, Dot.But_Rp_Double);
+        });
     }
 
     //上报测试多参数事件
@@ -768,6 +780,8 @@ public class MainActivity
             remindDialog.setOnSureListener(remindDialog::dismiss);
             remindDialog.setOnLaterListener(remindDialog::dismiss);
             remindDialog.show(this.getSupportFragmentManager(), "");
+        } else if (event.getEvent() == 4) { //积分任务翻倍领取
+            postGotDoubleRp(event.getRestId(), event.getPreId(), event.getScore());
         }
     }
 
@@ -802,4 +816,36 @@ public class MainActivity
             AnalysisUtils.onEventEx(this, Dot.But_Rp_Double);
         });
     }
+
+    private int mRetryCount = 0;
+
+    @Override
+    public void onTaskClick(String reqId) {
+        LogUtil.e("reqId: " + reqId);
+        mViewModel.getRetentionTask(reqId).observe(this, retentionTaskBean -> {
+            if (retentionTaskBean == null || !retentionTaskBean.getHandout()) {
+                if (mRetryCount > 6) {
+                    return;
+                }
+                mRetryCount++;
+                new Handler().postDelayed(() -> onTaskClick(reqId), 10000);
+                return;
+            }
+
+            mRetryCount = 0;
+            mViewModel.getWallTaskRp(reqId).observe(this, wallTaskRpBean -> {
+                if (wallTaskRpBean == null) {
+                    return;
+                }
+
+                ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
+                        .withString("from", "wallTask")
+                        .withFloat("score", wallTaskRpBean.getScore())
+                        .withString("restId", wallTaskRpBean.getRestId())
+                        .navigation();
+                AnalysisUtils.onEventEx(this, Dot.But_Rp_Double);
+            });
+        });
+    }
+
 }

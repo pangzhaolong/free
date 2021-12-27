@@ -49,8 +49,7 @@ public class LotteryBarrageItemView extends LinearLayout {
 
     public void setUserAwardInfo(String url, String name, String award) {
         Glide.with(mContext).load(url).into(mAvatarIv);
-        String awardInfo = String.format(mContext.getString(R.string.middle_lottery_barrage_item_text), award);
-        mAwardTv.setText(Html.fromHtml(awardInfo));
+        mAwardTv.setText(award);
     }
 
 

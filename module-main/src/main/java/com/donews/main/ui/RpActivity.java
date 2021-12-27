@@ -268,7 +268,11 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
             public void onRewardVerify(boolean result) {
                 if (result) {
                     // 完整观看视频
-                    EventBus.getDefault().post(new DoubleRpEvent(1, score, restId == null ? "" : restId, preId == null ? "" : preId));
+                    if (from != null && from.equalsIgnoreCase("wallTask")) {
+                        EventBus.getDefault().post(new DoubleRpEvent(4, score, restId == null ? "" : restId, preId == null ? "" : preId));
+                    } else {
+                        EventBus.getDefault().post(new DoubleRpEvent(1, score, restId == null ? "" : restId, preId == null ? "" : preId));
+                    }
                     finish();
                 }
             }

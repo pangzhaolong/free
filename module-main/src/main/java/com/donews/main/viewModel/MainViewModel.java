@@ -4,13 +4,15 @@ import static com.donews.utilslibrary.utils.KeySharePreferences.MAIN_MASK_FLG;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
+import com.donews.main.bean.RetentionTaskBean;
+import com.donews.main.bean.WallTaskRpBean;
 import com.donews.main.entitys.resps.HistoryPeopleLottery;
 import com.donews.main.entitys.resps.RewardHistoryBean;
 import com.donews.main.model.MainModel;
 import com.donews.middle.bean.front.DoubleRedPacketBean;
+import com.donews.middle.bean.front.WinningRotationBean;
 import com.donews.utilslibrary.utils.SPUtils;
 
 import java.util.List;
@@ -116,5 +118,13 @@ public class MainViewModel extends BaseLiveDataViewModel<MainModel> {
 
     public MutableLiveData<DoubleRedPacketBean> postDoubleRp(String restId, String preId) {
         return mModel.postDoubleRp(restId, preId);
+    }
+
+    public MutableLiveData<RetentionTaskBean> getRetentionTask(String reqId) {
+        return mModel.getRetentionTask(reqId);
+    }
+
+    public MutableLiveData<WallTaskRpBean> getWallTaskRp(String reqId) {
+        return mModel.getWallTaskRp(reqId);
     }
 }

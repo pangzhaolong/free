@@ -19,7 +19,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -203,7 +202,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
         loadCategoryData();
         loadServerTime();
-        if (FrontConfigManager.Ins().getConfigBean().getLotteryWinner()) {
+        if (FrontConfigManager.Ins() != null && FrontConfigManager.Ins().getConfigBean() != null && FrontConfigManager.Ins().getConfigBean().getLotteryWinner()) {
             loadLotteryWinnerList();
         }
         initSrl();
@@ -406,6 +405,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     }
 
     private boolean mFindFirstReadyRpAnim = false;
+
     public void startScaleAnim() {
         if (!AppInfo.checkIsWXLogin()) {
             if (mDataBinding.frontRpOpenFl1.getAnimation() == null) {
