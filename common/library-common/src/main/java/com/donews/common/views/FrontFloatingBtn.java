@@ -20,7 +20,7 @@ public class FrontFloatingBtn extends LinearLayout {
     public static final int CRITICAL_MODEL = 0;
     public static final int RP_MODEL = 1;
 
-    private int mCurrModel = 1;
+    private int mCurrModel = CRITICAL_MODEL;
 
     private final ImageView mCriticalHitIv;
     private final LinearLayout mRpLl;

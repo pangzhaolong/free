@@ -13,9 +13,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.CycleInterpolator;
-import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
-import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -180,19 +178,28 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         });
 
         if (mRotateAnimation == null) {
-            mRotateAnimation = new RotateAnimation(0, 8, Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF,
-                    1f);
+            mRotateAnimation = new RotateAnimation(0, 8, Animation.RELATIVE_TO_SELF, 0f
+                    , Animation.RELATIVE_TO_SELF, 1f);
             mRotateAnimation.setInterpolator(new CycleInterpolator(2));
             mRotateAnimation.setRepeatMode(Animation.REVERSE);
             mRotateAnimation.setRepeatCount(1);
             mRotateAnimation.setDuration(400);
         }
-        if (mScaleAnimation == null) {
+        /*if (mScaleAnimation == null) {
             mScaleAnimation = new ScaleAnimation(1.15f, 0.9f, 1.15f, 0.9f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
             mScaleAnimation.setInterpolator(new LinearInterpolator());
             mScaleAnimation.setRepeatMode(Animation.REVERSE);
             mScaleAnimation.setRepeatCount(Animation.INFINITE);
             mScaleAnimation.setDuration(1000);
+        }*/
+        if (mScaleAnimation == null) {
+            mScaleAnimation = new RotateAnimation(-5, 5, Animation.RELATIVE_TO_SELF, 0.5f
+                    , Animation.RELATIVE_TO_SELF, 0.5f);
+            mScaleAnimation.setInterpolator(new CycleInterpolator(1));
+            mScaleAnimation.setRepeatMode(Animation.REVERSE);
+            mScaleAnimation.setRepeatCount(Animation.INFINITE);
+            mScaleAnimation.setStartOffset(2000);
+            mScaleAnimation.setDuration(400);
         }
 
         loadCategoryData();

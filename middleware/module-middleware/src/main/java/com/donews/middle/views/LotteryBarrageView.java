@@ -72,8 +72,6 @@ public class LotteryBarrageView extends FrameLayout {
             View v = getChildAt(i);
             int childHeight = v.getMeasuredHeight();
             int childWidth = v.getMeasuredWidth();
-//            LogUtil.e("LotteryBarrageView onLayout child view top:" + topx + " width:" + childWidth
-//                    + " height:" + childHeight + " p width:" + this.getWidth() + " p height:" + this.getHeight());
             if (i % 2 == 1) {
                 v.layout(this.getWidth(), topx + childHeight, this.getWidth() + childWidth, topx + 2 * childHeight);
             } else {
@@ -197,11 +195,11 @@ public class LotteryBarrageView extends FrameLayout {
             public void onAnimationRepeat(Animation animation) {
             }
         });
-        mTAs[transIdx].setDuration(4000);
+        mTAs[transIdx].setDuration(5000);
         mTAs[transIdx].setRepeatCount(0);
         mLotteryBarrageViews[viewIdx].startAnimation(mTAs[transIdx]);
 
-        mScrollHandler.sendEmptyMessageDelayed(10001, 1000);
+        mScrollHandler.sendEmptyMessageDelayed(10001, 2000);
     }
 
     private static class ScrollHandler extends Handler {

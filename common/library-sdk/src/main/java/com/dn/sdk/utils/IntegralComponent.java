@@ -1,7 +1,6 @@
 package com.dn.sdk.utils;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -13,7 +12,6 @@ import com.donews.ads.mediation.v2.integral.DnIntegralNativeAd;
 import com.donews.ads.mediation.v2.integral.DoNewsIntegralHolder;
 import com.donews.ads.mediation.v2.integral.api.DnIntegralHttpCallBack;
 import com.donews.ads.mediation.v2.integral.api.DnIntegralIntegralError;
-import com.donews.utilslibrary.utils.AppInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +57,7 @@ public class IntegralComponent {
                                     resultList.add(integralBean);
                                 }
                             }
-                            if(resultList.isEmpty()){
+                            if (resultList.isEmpty()) {
                                 integralHttpCallBack.onNoTask();
                                 return;
                             }
@@ -180,7 +178,7 @@ public class IntegralComponent {
      * 获取积分列表
      */
     public void setIntegralBindView(Context context, IntegralBean var1, ViewGroup var2, List<View> clickViews, IntegralStateListener integralAdListener, boolean automaticInstallation) {
-        if (integralAdListener == null || context == null || var1 == null || var2 == null || clickViews == null) {
+        if (context == null || var1 == null || var2 == null || clickViews == null) {
             return;
         }
         var1.getDnIntegralNativeAd().bindView(context, var2, clickViews, new DnIntegralAdListener() {
@@ -190,6 +188,9 @@ public class IntegralComponent {
              * */
             @Override
             public void onAdShow() {
+                if (integralAdListener == null) {
+                    return;
+                }
                 integralAdListener.onAdShow();
             }
 
@@ -199,7 +200,9 @@ public class IntegralComponent {
              * */
             @Override
             public void onAdClick() {
-                integralAdListener.onAdClick();
+                if (integralAdListener != null) {
+                    integralAdListener.onAdClick();
+                }
                 var1.getDnIntegralNativeAd().downLoadApk(context, automaticInstallation);
             }
 
@@ -209,6 +212,9 @@ public class IntegralComponent {
 
             @Override
             public void onStart() {
+                if (integralAdListener == null) {
+                    return;
+                }
                 integralAdListener.onStart();
             }
 
@@ -218,6 +224,9 @@ public class IntegralComponent {
              * */
             @Override
             public void onProgress(long l, long l1) {
+                if (integralAdListener == null) {
+                    return;
+                }
                 integralAdListener.onProgress(l, l1);
             }
 
@@ -227,6 +236,9 @@ public class IntegralComponent {
 
             @Override
             public void onComplete() {
+                if (integralAdListener == null) {
+                    return;
+                }
                 integralAdListener.onComplete();
             }
 
@@ -235,6 +247,9 @@ public class IntegralComponent {
              * */
             @Override
             public void onInstalled() {
+                if (integralAdListener == null) {
+                    return;
+                }
                 integralAdListener.onInstalled();
             }
 
@@ -243,6 +258,9 @@ public class IntegralComponent {
              * */
             @Override
             public void onError(Throwable throwable) {
+                if (integralAdListener == null) {
+                    return;
+                }
                 integralAdListener.onError(throwable);
             }
         });
