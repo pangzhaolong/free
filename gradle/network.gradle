@@ -1,6 +1,6 @@
 ext {
     // true 表示测试环境，false表示正式环境
-    DEBUG = false
+    DEBUG = true
 
     //版本号，版本名称 版本号对应于版本名称，
     // 例如：1.2.1->12010;1.3.2->13020
@@ -29,6 +29,10 @@ ext {
     API_WALLET_URL = API_BASE_URL + "wallet/"
     //用户相关接口
     API_USER_URL = API_BASE_URL + "user/"
+
+    //积分下载查询接口
+    API_INTEGRAL_URL = API_BASE_URL + "wall/"
+
 
     WEB_BASE_URL = "https://recharge-web.xg.tagtic.cn/jdd/index.html#/"
 

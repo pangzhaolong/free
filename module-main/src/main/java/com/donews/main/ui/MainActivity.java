@@ -178,7 +178,6 @@ public class MainActivity
             @Override
             public void run() {
                 initializeCritState();
-                EventBus.getDefault().post(new CritMessengerBean(200));
             }
         });
         mDataBinding.occupyPosition.setOnClickListener(new View.OnClickListener() {

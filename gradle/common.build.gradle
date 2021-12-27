@@ -24,6 +24,9 @@ android {
         buildConfigField("String", "APP_COMMON_CONFIG", "\"${rootProject.APP_COMMON_CONFIG}\"")
         buildConfigField("String", "APP_NOTIFY_LUNCHER", "\"${rootProject.APP_NOTIFY_LUNCHER}\"")
         buildConfigField("String", "ECPM_BASE_URL", "\"${rootProject.ECPM_BASE_URL}\"")
+        buildConfigField("String", "API_INTEGRAL_URL", "\"${rootProject.API_INTEGRAL_URL}\"")
+
+
 
     }
 }

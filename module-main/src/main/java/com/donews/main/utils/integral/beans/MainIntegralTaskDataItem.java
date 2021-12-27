@@ -93,7 +93,7 @@ public class MainIntegralTaskDataItem extends BaseCustomViewModel {
             public void onInstalled() {
                 onInstalled = true;
                 //告知后台计时服务
-                CommonUtils.startCritService(BaseApplication.getInstance(), true);
+                CommonUtils.startCritService(BaseApplication.getInstance(), srcData);
                 MainIntegralTaskManager.removeTask(getTaskId());
                 if (attchSrcToNewListener != null) {
                     attchSrcToNewListener.onInstalled();

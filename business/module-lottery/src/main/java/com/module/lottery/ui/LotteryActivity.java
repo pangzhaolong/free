@@ -32,6 +32,7 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.events.LotteryStatusEvent;
+import com.dn.sdk.bean.integral.IntegralBean;
 import com.dn.sdk.bean.integral.ProxyIntegral;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.business.manager.JddAdManager;
@@ -772,9 +773,9 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             }
 
             @Override
-            public void onStartCritMode(GenerateCodeBean generateCodeBean) {
+            public void onStartCritMode(GenerateCodeBean generateCodeBean, ProxyIntegral integralBean) {
                 if (ClickDoubleUtil.isFastClick()) {
-                    CommonUtils.startCritService(LotteryActivity.this, true);
+                    CommonUtils.startCritService(LotteryActivity.this,integralBean);
                 }
             }
         });
@@ -929,7 +930,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 guessAdapter.notifyDataSetChanged();
             }
         });
-//观察商品中奖人数集合
+        //观察商品中奖人数集合
         mViewModel.getWinLotteryBean().observe(this, winLotteryBean -> {
             if (winLotteryBean != null) {
                 guessAdapter.setScrollListData(winLotteryBean);

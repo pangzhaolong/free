@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
+import com.dn.sdk.bean.integral.ProxyIntegral;
 import com.donews.common.bean.CritMessengerBean;
 import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.service.CritLotteryService;
@@ -24,15 +25,16 @@ public class CommonUtils {
 
     /**
      * 开启暴击体验监听服务
-     * @param context   需要的上下文
-     * @param critState 是否开启后台体验监听
+     *
+     * @param context 需要的上下文
      */
-    public static void startCritService(Context context, boolean critState) {
+    public static void startCritService(Context context, ProxyIntegral integralBean) {
         if (DateManager.getInstance().timesLimit(DateManager.CRIT_KEY, DateManager.CRIT_NUMBER,
                 ABSwitch.Ins().getEnableOpenCritModelCount())) {
             //开启暴击校验  (开始服务)
             Intent intent = new Intent(context, CritLotteryService.class);
             intent.putExtra("start_crit", true);
+            intent.putExtra("integralBean", integralBean);
             intent.putExtra("start_time", ABSwitch.Ins().getScoreTaskPlayTime());
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(intent);

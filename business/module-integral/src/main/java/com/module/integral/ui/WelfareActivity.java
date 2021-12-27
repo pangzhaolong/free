@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toolbar;
@@ -20,20 +21,27 @@ import com.bumptech.glide.Glide;
 import com.dn.sdk.bean.integral.IntegralStateListener;
 import com.dn.sdk.bean.integral.ProxyIntegral;
 import com.dn.sdk.utils.IntegralComponent;
+import com.donews.base.utils.ToastUtil;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.middle.abswitch.ABSwitch;
 import com.example.module_integral.R;
 import com.example.module_integral.databinding.IntegralWelfareLayoutBinding;
 import com.gyf.immersionbar.ImmersionBar;
+import com.module.integral.bean.IntegralDownloadStateDean;
 import com.module.integral.dialog.BenefitUpgradeDialog;
+import com.module.integral.model.IntegralModel;
 import com.module.integral.viewModel.IntegralViewModel;
+import com.module.lottery.ui.BaseParams;
 
 import java.lang.ref.WeakReference;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 //限时福利
 @Route(path = RouterFragmentPath.Integral.PAGER_INTEGRAL)
@@ -46,20 +54,16 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
     private WelfareHandler mWelfareHandler = new WelfareHandler(this);
     //自动跳转的时间
     private int jumpTime = 0;
-    //记录此时系统运行的时间（次数）
-    private long experienceStartTime = 0;
     //配置的体验时长
     private long taskPlayTime = ABSwitch.Ins().getScoreTaskPlayTime() * 1000L;
-    //记录此时系统运行的时间（次留）
-    private long secondStayStartTime = 0;
     private ProxyIntegral mIntegralBean;
-    /**
-     * 是否处于体验阶段  false 没有默认  ,true 标识开始体验
-     */
-    private boolean experienceLogo = false;
-
-
+    IntegralDownloadStateDean mIntegralDownloadStateDean;
+    private Timer mTimer;
     private boolean tipsLayoutIsShow = false;
+    private int mStartTime = -1;
+
+
+    private boolean ifTimerRun = false;
 
 
     private void showBenefitUpgradeDialog() {
@@ -96,11 +100,16 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
         setSupportActionBar(mDataBinding.toolbar);
         ARouter.getInstance().inject(this);
         setData();
+        setObserveList();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (mTimer != null) {
+            mTimer.cancel();
+            mTimer = null;
+        }
         if (mWelfareHandler != null) {
             mWelfareHandler.removeMessages(0);
             mWelfareHandler.removeMessages(1);
@@ -108,18 +117,6 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
         }
     }
 
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (experienceLogo) {
-            //记录此时系统运行的时间 (体验阶段)
-            if (experienceStartTime == 0) {
-                experienceStartTime = SystemClock.elapsedRealtime();
-            }
-        }
-
-    }
 
     private void setData() {
         IntegralComponent.getInstance().getIntegral(new IntegralComponent.IntegralHttpCallBack() {
@@ -129,7 +126,6 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
                 //判断app是否安装
                 if (AppUtils.isAppInstalled(integralBean.getPkName())) {
                     refreshSecondStayPageView(integralBean);
-
                 } else {
                     mDataBinding.downloadBt.setText("立即下载");
                     mDataBinding.tipsLayout.setVisibility(View.GONE);
@@ -174,19 +170,10 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
             @Override
             public void onClick(View v) {
                 jumpToApk(integralBean);
-                startTrialStatus();
+                //开始一分钟(中台配置)倒计时任务
+                startTask(integralBean);
             }
         });
-    }
-
-
-    //处理试玩状态(来判断返回页面后是否显示下方tips)
-    private void startTrialStatus() {
-        experienceLogo = true;
-        //开始体验后，准备延时通知
-        Message message = new Message();
-        message.what = 2;
-        mWelfareHandler.sendMessageDelayed(message, taskPlayTime);
     }
 
 
@@ -212,34 +199,37 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
     }
 
 
-
     @Override
     protected void onResume() {
         super.onResume();
-        if (experienceLogo) {
-            cleanMessage();
-            //判断是否完成 弹起完成的dialog
-            if ((SystemClock.elapsedRealtime() - experienceStartTime) > taskPlayTime) {
-                //满足了体验时间  弹框准备跳转
-                showBenefitUpgradeDialog();
-                experienceLogo = false;
-                experienceStartTime = 0;
-            } else {
-                //体验时间不到
-                showTipsView(mIntegralBean);//体验时间不到
-            }
-        }
-
-        //打开次留任务回来时间需要大于5秒
-        if (secondStayStartTime != 0) {
-            if ((SystemClock.elapsedRealtime() - secondStayStartTime) >= 5000) {
-                secondStayStartTime = 0;
-                //弹起翻倍弹框(红包)
-                Intent intent = new Intent(WelfareActivity.this, RpActivityDialog.class);
-                startActivity(intent);
-            }
+        //判断倒计时是否在运行
+        if (ifTimerRun && mStartTime > 0 && !tipsLayoutIsShow) {
+            //在运行，体验时间不足，显示下方tips
+            unTaskCompleted();
         }
     }
+
+
+    /**
+     * 任务完成
+     */
+    private void taskCompleted() {
+        if (mIntegralDownloadStateDean != null && mIntegralDownloadStateDean.getHandout()) {
+            cleanMessage();
+            //满足了体验时间  弹框准备跳转
+            showBenefitUpgradeDialog();
+        }
+    }
+
+
+    /**
+     * 未任务完成
+     */
+    private void unTaskCompleted() {
+        //体验时间不到
+        showTipsView(mIntegralBean);//体验时间不到
+    }
+
 
     //开始自动跳转倒计时
     private void startAutomaticCountdown(ProxyIntegral integralBean) {
@@ -298,9 +288,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
                     public void run() {
                         if (l != 0) {
                             float value = (float) (Float.valueOf(l1) / Float.valueOf(l)) * 100f;
-                            DecimalFormat df = new DecimalFormat("0.00");
-                            df.setRoundingMode(RoundingMode.HALF_UP);
-                            mDataBinding.downloadBt.setText("下载中 " + df.format(value) + "%");
+                            mDataBinding.downloadBt.setText("下载中 " + (int) value + "%");
                         }
                     }
                 });
@@ -325,6 +313,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
                     @Override
                     public void run() {
                         refreshSecondStayPageView(integralBean);
+                        startTask(integralBean);
                     }
                 });
             }
@@ -345,6 +334,86 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
         return super.onOptionsItemSelected(item);
 
     }
+
+
+    /**
+     * 请求服务器下载的任务是否完成
+     */
+    private void requestServiceData(ProxyIntegral integralBean) {
+        Map<String, String> params = BaseParams.getMap();
+        params.put("req_id", integralBean.getSourceRequestId());
+        mViewModel.getDownloadStatus(IntegralModel.INTEGRAL_REWARD, params);
+    }
+
+    public void setObserveList() {
+        mViewModel.getMutableLiveData().observe(this, IntegralDownloadStateDean -> {
+            ToastUtil.showShort(getApplicationContext(), "观测到任务状态" + mStartTime);
+            if (IntegralDownloadStateDean == null || !IntegralDownloadStateDean.getHandout()) {
+                ToastUtil.showShort(getApplicationContext(), "任务失败");
+                return;
+            }
+            //任务成功
+            mIntegralDownloadStateDean = IntegralDownloadStateDean;
+            if (!ifTimerRun) {
+                Log.d("startTask","服务器成功");
+                taskCompleted();
+            }
+        });
+    }
+
+    private void startTask(ProxyIntegral integralBean) {
+        //初始化暴击体验时长
+        mStartTime = ABSwitch.Ins().getScoreTaskPlayTime();
+        if (mTimer != null) {
+            mTimer.cancel();
+            ifTimerRun = false;
+            mTimer = null;
+        }
+        mTimer = new Timer();
+        mTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                ifTimerRun = true;
+//只有应用不在前台才会继续倒计时
+                boolean foreground = AppUtils.isAppForeground();
+                Log.d("startTask","开始倒计时");
+                if (!foreground) {
+                    if (mStartTime > 0) {
+                        Log.d("startTask","没在前台,倒计时中");
+                        mStartTime = mStartTime - 1;
+                        if (mStartTime == (mStartTime / 2)) {
+                            //请求服务器处理结果
+                            Log.d("startTask","请求服务器获取结果");
+                            requestServiceData(integralBean);
+                        }
+                    } else {
+                        Log.d("startTask","可以开始暴击模式了");
+                    }
+                } else {
+                    if (mStartTime <= 0 && foreground) {
+                        mTimer.cancel();
+                        mTimer = null;
+                        ifTimerRun = false;
+                        //倒计时结束 任务完成
+                        Log.d("startTask","任务完成");
+                        if (mIntegralDownloadStateDean == null || !mIntegralDownloadStateDean.getHandout()) {
+                            //请求服务器处理结果
+                            mStartTime = 0;
+                            Log.d("startTask","上次没有请求到或者请求失败");
+                            requestServiceData(integralBean);
+                        } else {
+                            Log.d("startTask","上次请求成功");
+                            taskCompleted();
+                        }
+
+                    } else {
+                        Log.d("startTask","在前台，体验体验时间不足");
+                    }
+                }
+            }
+        }, 0, 1000);
+    }
+
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
@@ -381,11 +450,6 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
                             sendMessageDelayed(message, DELAY);
                         }
                     }
-                    break;
-
-
-                case 2:
-                    ToastUtils.showShort("任务已完成");
                     break;
 
 
