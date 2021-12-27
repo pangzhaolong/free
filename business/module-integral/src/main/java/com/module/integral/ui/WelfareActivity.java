@@ -149,7 +149,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
 
         });
 
-        IntegralComponent.getInstance().getSecondStayTask(new IntegralComponent.ISecondStayTask() {
+        IntegralComponent.getInstance().getSecondStayTask(new IntegralComponent.ISecondStayTaskListener() {
             @Override
             public void onSecondStayTask(ProxyIntegral var1) {
             }

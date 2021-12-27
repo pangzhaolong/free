@@ -106,7 +106,7 @@ public class IntegralComponent {
     /**
      * 获取积分单个应用(次留任务,价格最高)
      */
-    public void getSecondStayTask(ISecondStayTask iSecondStayTask) {
+    public void getSecondStayTask(ISecondStayTaskListener iSecondStayTask) {
         DoNewsIntegralHolder.getInstance()
                 .getIntegralList(new DnIntegralHttpCallBack() {
                     @Override
@@ -156,7 +156,7 @@ public class IntegralComponent {
     }
 
 
-    public interface ISecondStayTask {
+    public interface ISecondStayTaskListener {
         void onSecondStayTask(ProxyIntegral var1);
 
         void onError(String var1);

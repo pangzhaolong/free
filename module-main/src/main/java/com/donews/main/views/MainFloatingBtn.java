@@ -41,7 +41,7 @@ public class MainFloatingBtn extends FrameLayout implements IntegralComponent.In
     @Override
     public void onSuccess(List<ProxyIntegral> var1) {
         if (var1 != null && var1.size() > 0) {
-            IntegralComponent.getInstance().getSecondStayTask(new IntegralComponent.ISecondStayTask() {
+            IntegralComponent.getInstance().getSecondStayTask(new IntegralComponent.ISecondStayTaskListener() {
                 @Override
                 public void onSecondStayTask(ProxyIntegral var1) {
                     if (var1 == null) {

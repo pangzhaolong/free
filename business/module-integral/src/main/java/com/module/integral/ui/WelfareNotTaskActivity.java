@@ -67,7 +67,7 @@ public class WelfareNotTaskActivity extends MvvmBaseLiveDataActivity<IntegralWel
     }
 
     private void setData() {
-        IntegralComponent.getInstance().getSecondStayTask(new IntegralComponent.ISecondStayTask() {
+        IntegralComponent.getInstance().getSecondStayTask(new IntegralComponent.ISecondStayTaskListener() {
             @Override
             public void onSecondStayTask(ProxyIntegral var1) {
                 showBoxLayout(var1);
