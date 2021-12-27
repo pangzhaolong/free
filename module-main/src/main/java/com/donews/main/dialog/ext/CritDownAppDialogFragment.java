@@ -41,6 +41,7 @@ import com.donews.main.R;
 import com.donews.main.utils.integral.MainIntegralTaskManager;
 import com.donews.main.utils.integral.beans.MainIntegralTaskDataItem;
 import com.donews.middle.abswitch.ABSwitch;
+import com.donews.network.subsciber.DownloadSubscriber;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
