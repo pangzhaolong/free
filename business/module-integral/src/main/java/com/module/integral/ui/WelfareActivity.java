@@ -152,7 +152,6 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
         IntegralComponent.getInstance().getSecondStayTask(new IntegralComponent.ISecondStayTask() {
             @Override
             public void onSecondStayTask(ProxyIntegral var1) {
-                showBoxLayout(var1);
             }
 
             @Override
@@ -212,22 +211,6 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
         }
     }
 
-
-    //显示宝箱 次留任务
-    private void showBoxLayout(ProxyIntegral integralBean) {
-        if (AppUtils.isAppInstalled(integralBean.getPkName())) {
-            mDataBinding.boxLayout.setVisibility(View.VISIBLE);
-            Glide.with(WelfareActivity.this).asDrawable().load(integralBean.getIcon()).into(mDataBinding.boxIcon);
-            mDataBinding.boxLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //记录此时系统运行的时间（次留）
-                    secondStayStartTime = SystemClock.elapsedRealtime();
-                    jumpToApk(integralBean);
-                }
-            });
-        }
-    }
 
 
     @Override

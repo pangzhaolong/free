@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -114,6 +115,9 @@ public class MainActivity
     private NavigationController mNavigationController;
 
     private long mFirstClickBackTime = 0;
+    //计算 暴击时刻的总时间 5分钟
+    private long CruelDuration = 1 * 60 * 1000;
+
     /**
      * 初始选择tab
      */
@@ -174,6 +178,7 @@ public class MainActivity
             @Override
             public void run() {
                 initializeCritState();
+                EventBus.getDefault().post(new CritMessengerBean(200));
             }
         });
         mDataBinding.occupyPosition.setOnClickListener(new View.OnClickListener() {
@@ -184,9 +189,6 @@ public class MainActivity
                         .navigation();
             }
         });
-//        ARouter.getInstance()
-//                .build(RouterFragmentPath.Integral.PAGER_INTEGRAL_NOT_TASK)
-//                .navigation();
     }
 
 
@@ -203,12 +205,10 @@ public class MainActivity
             if (critStartTime != 0) {
                 //当前时间
                 long time = SystemClock.elapsedRealtime();
-                //计算 暴击时刻的总时间 5分钟
-                long againstTime = 5 * 60 * 1000;
-                if (Math.abs(time - critStartTime) >= againstTime) {
+                if (Math.abs(time - critStartTime) >= CruelDuration) {
                     cleanCrit();
                 } else {
-                    showPopWindow(Math.abs(againstTime - (time - critStartTime)),againstTime);
+                    showPopWindow(Math.abs(CruelDuration - (time - critStartTime)), CruelDuration);
                     //正在进行暴击时刻
                 }
             }
@@ -239,20 +239,22 @@ public class MainActivity
                 //开始暴击模式
                 mDataBinding.mainFloatingBtn.setVisibility(View.GONE);
                 mDataBinding.mainFloatingBtn.setModel(FrontFloatingBtn.CRITICAL_MODEL);
-                long time = 5 * 60 * 1000;
-                showPopWindow(time,time);
+                showPopWindow(CruelDuration, CruelDuration);
             }
         }
     }
 
-    private void showPopWindow(long time,long sumTime) {
+    private void showPopWindow(long time, long sumTime) {
+        Log.d("=====%%   ", time + "");
         MainPopWindowProgressBarBinding viewDataBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.main_pop_window_progress_bar, null, false);
         PopupWindow mPopWindow = new PopupWindow(viewDataBinding.getRoot());
         mPopWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         mPopWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopWindow.setFocusable(false);
         mPopWindow.showAtLocation(getWindow().getDecorView(), Gravity.TOP, 0, 100);
-        SPUtils.setInformain(CritParameterConfig.CRIT_START_TIME, SystemClock.elapsedRealtime());
+        if (SPUtils.getInformain(CRIT_STATE, 0) == 0) {
+            SPUtils.setInformain(CritParameterConfig.CRIT_START_TIME, SystemClock.elapsedRealtime());
+        }
         viewDataBinding.countdownView.start(time);
         viewDataBinding.countdownView.setCountdownViewListener(new CountdownView.ICountdownViewListener() {
             @Override
@@ -542,7 +544,7 @@ public class MainActivity
             );
             return;
         }
-        if(currCount > 0){
+        if (currCount > 0) {
             //日常任务模式正在进行中。走正常的日常任务
             ExtDialogUtil.showCritWelfareDialog(
                     MainActivity.this, 1, currCount, count, surListener
