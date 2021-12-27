@@ -501,28 +501,6 @@ public class MainActivity
         } else {
             mDataBinding.mainHomeGuidCl.setVisibility(View.GONE);
         }
-
-        new Thread() {
-            int a = 1;
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void run() {
-                while (a <= 100) {
-                    runOnUiThread(()->{
-                        a++;
-                        new DownApkUtil().createOrUpdateNotification(
-                                "11111",a , "下载中");
-                        new DownApkUtil().createOrUpdateNotification(
-                                "22222",a , "下载中");
-                    });
-                    try {
-                        sleep(300L);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }.start();
     }
 
     //暴击模式的点击
