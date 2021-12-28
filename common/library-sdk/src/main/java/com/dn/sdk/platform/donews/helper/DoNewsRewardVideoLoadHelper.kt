@@ -5,6 +5,7 @@ import com.dn.sdk.AdCustomError
 import com.dn.sdk.BuildConfig
 import com.dn.sdk.DelayExecutor
 import com.dn.sdk.bean.AdRequest
+import com.dn.sdk.bean.AdStatus
 import com.dn.sdk.bean.PreloadAdState
 import com.dn.sdk.bean.preload.PreloadRewardVideoAd
 import com.dn.sdk.listener.IAdRewardVideoListener
@@ -50,7 +51,11 @@ object DoNewsRewardVideoLoadHelper : BaseHelper() {
 
             override fun onAdStatus(code: Int, any: Any?) {
                 runOnUiThread(activity) {
-                    listener?.onAdStatus(code, any)
+                    if (code == 10 && any is DnUnionBean) {
+                        listener?.onAdStatus(code, AdStatus(any))
+                    } else {
+                        listener?.onAdStatus(code, any)
+                    }
                 }
                 reportEcpm(code, any)
             }
@@ -147,7 +152,11 @@ object DoNewsRewardVideoLoadHelper : BaseHelper() {
 
             override fun onAdStatus(code: Int, any: Any?) {
                 runOnUiThread(activity) {
-                    listener?.onAdStatus(code, any)
+                    if (code == 10 && any is DnUnionBean) {
+                        listener?.onAdStatus(code, AdStatus(any))
+                    } else {
+                        listener?.onAdStatus(code, any)
+                    }
                 }
                 reportEcpm(code, any)
             }

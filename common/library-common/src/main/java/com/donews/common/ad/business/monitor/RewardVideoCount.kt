@@ -1,5 +1,6 @@
 package com.donews.common.ad.business.monitor
 
+import com.dn.sdk.bean.AdStatus
 import com.dn.sdk.utils.AdLoggerUtils
 import com.donews.base.utils.ext.isToday
 import com.donews.base.utils.ext.toDataString
@@ -39,33 +40,32 @@ object RewardVideoCount {
     /** 小时内激励视频点击次数 */
     private const val REWARD_VIDEO_HOUR_CLICK_NUMBER = "RewardVideoHourClickNumber"
 
+    /** 小时内ecop <= 设置标准的次数 */
+    private const val REWARD_VIDEO_ECPM_HOUR_NUMBER = "RewardVideoEcpmHourNumber"
+
+    /**  今天ecom <= 设置标准的总次数*/
+    private const val REWARD_VIDEO_ECPM_TODAY_NUMBER = "RewardVideoEcpmDayNumber"
+
+    /** 小时ecpm限制开始时间 */
+    private const val REWARD_VIDEO_ECPM_LIMIT_TIME = "RewardVideoEcpmLimitTime"
 
     /** 判断是否可以显示广告 */
     fun checkShouldLoadAd(): Boolean {
         val lastPlayTime = mmkv.decodeLong(REWARD_VIDEO_LAST_PLAY_TIME, 0L)
         val currentTime = System.currentTimeMillis()
 
-        var totalPlayNumber = 0
-        var clickNumber = 0
-        var hourNumber = 0
-        var hourStartShowTime: Long = 0L
-        var hourLimitStartTime = 0L
-        var clickLimitStartTime = 0L
-        if (lastPlayTime.isToday()) {
-            totalPlayNumber = mmkv.decodeInt(REWARD_VIDEO_TODAY_PLAY_NUMBER, 0)
-            hourStartShowTime = mmkv.decodeLong(REWARD_VIDEO_HOUR_START_PLAY_TIME, 0L)
-            clickNumber = mmkv.decodeInt(REWARD_VIDEO_HOUR_CLICK_NUMBER, 0)
-            hourNumber = mmkv.decodeInt(REWARD_VIDEO_HOUR_PLAY_NUMBER, 0)
-            hourLimitStartTime = mmkv.decodeLong(REWARD_VIDEO_HOUR_PLAY_NUMBER_LIMIT_TIME, 0L)
-            clickLimitStartTime = mmkv.decodeLong(REWARD_VIDEO_HOUR_CLICK_LIMIT_TIME, 0L)
+        var hourStartShowTime = mmkv.decodeLong(REWARD_VIDEO_HOUR_START_PLAY_TIME, 0L)
 
+        if (lastPlayTime.isToday()) {
             if (currentTime - hourStartShowTime > 60 * 60 * 1000L) {
                 mmkv.encode(REWARD_VIDEO_HOUR_START_PLAY_TIME, currentTime)
                 mmkv.encode(REWARD_VIDEO_HOUR_PLAY_NUMBER, 0)
                 mmkv.encode(REWARD_VIDEO_HOUR_CLICK_NUMBER, 0)
                 mmkv.encode(REWARD_VIDEO_HOUR_PLAY_NUMBER_LIMIT_TIME, 0L)
                 mmkv.encode(REWARD_VIDEO_HOUR_CLICK_LIMIT_TIME, 0L)
-                hourLimitStartTime = currentTime
+                mmkv.encode(REWARD_VIDEO_ECPM_HOUR_NUMBER, 0)
+                mmkv.encode(REWARD_VIDEO_ECPM_LIMIT_TIME, 0L)
+                mmkv.encode(REWARD_VIDEO_ECPM_TODAY_NUMBER, 0)
             }
         } else {
             mmkv.encode(REWARD_VIDEO_TODAY_PLAY_NUMBER, 0)
@@ -74,13 +74,29 @@ object RewardVideoCount {
             mmkv.encode(REWARD_VIDEO_HOUR_CLICK_NUMBER, 0)
             mmkv.encode(REWARD_VIDEO_HOUR_PLAY_NUMBER_LIMIT_TIME, 0L)
             mmkv.encode(REWARD_VIDEO_HOUR_CLICK_LIMIT_TIME, 0L)
-            mmkv.removeValueForKey(REWARD_VIDEO_HOUR_CLICK_LIMIT_TIME)
-            hourStartShowTime = currentTime
-            mmkv.encode(REWARD_VIDEO_HOUR_START_PLAY_TIME, hourStartShowTime)
+            mmkv.encode(REWARD_VIDEO_ECPM_HOUR_NUMBER, 0)
+            mmkv.encode(REWARD_VIDEO_ECPM_LIMIT_TIME, 0L)
+            mmkv.encode(REWARD_VIDEO_ECPM_TODAY_NUMBER, 0)
         }
 
+        val totalPlayNumber = mmkv.decodeInt(REWARD_VIDEO_TODAY_PLAY_NUMBER, 0)
+        hourStartShowTime = mmkv.decodeLong(REWARD_VIDEO_HOUR_START_PLAY_TIME, 0L)
+        val clickNumber = mmkv.decodeInt(REWARD_VIDEO_HOUR_CLICK_NUMBER, 0)
+        val hourNumber = mmkv.decodeInt(REWARD_VIDEO_HOUR_PLAY_NUMBER, 0)
+        val hourLimitStartTime = mmkv.decodeLong(REWARD_VIDEO_HOUR_PLAY_NUMBER_LIMIT_TIME, 0L)
+        val clickLimitStartTime = mmkv.decodeLong(REWARD_VIDEO_HOUR_CLICK_LIMIT_TIME, 0L)
+        val ecpmLimitStartTime = mmkv.decodeLong(REWARD_VIDEO_ECPM_LIMIT_TIME, 0)
+        val totalEcpmNumber = mmkv.decodeInt(REWARD_VIDEO_ECPM_TODAY_NUMBER, 0)
+        val hourEcpmNumber = mmkv.decodeInt(REWARD_VIDEO_ECPM_HOUR_NUMBER, 0)
 
         val jddAdConfigBean = JddAdConfigManager.jddAdConfigBean
+
+        //ecpm 达到最大次数
+        if (totalEcpmNumber >= jddAdConfigBean.todayMaxEcpmNumber) {
+            log(3)
+            return false
+        }
+
         //每日达到最大播放次数
         if (totalPlayNumber >= jddAdConfigBean.todayMaxRewardVideoNumber) {
             log(3)
@@ -92,6 +108,20 @@ object RewardVideoCount {
             return true
         }
 
+        //单位ecpm 到达次数限制
+        if (hourEcpmNumber >= jddAdConfigBean.hourEcpmNumber) {
+            if (currentTime - ecpmLimitStartTime < jddAdConfigBean.hourEcpmLimitTime) {
+                mmkv.encode(REWARD_VIDEO_HOUR_START_PLAY_TIME, currentTime)
+                mmkv.encode(REWARD_VIDEO_ECPM_HOUR_NUMBER, 0)
+                mmkv.encode(REWARD_VIDEO_HOUR_PLAY_NUMBER, 0)
+                mmkv.encode(REWARD_VIDEO_HOUR_CLICK_NUMBER, 0)
+                log(3)
+                return true
+            }
+            log(3)
+            return false
+        }
+
         //1小时内达到最大次数
         if (hourNumber >= jddAdConfigBean.hourRewardVideoNumber) {
             //判断限制时间是否已经过了
@@ -100,6 +130,7 @@ object RewardVideoCount {
                 mmkv.encode(REWARD_VIDEO_HOUR_START_PLAY_TIME, currentTime)
                 mmkv.encode(REWARD_VIDEO_HOUR_CLICK_NUMBER, 0)
                 mmkv.encode(REWARD_VIDEO_HOUR_PLAY_NUMBER, 0)
+                mmkv.encode(REWARD_VIDEO_ECPM_HOUR_NUMBER, 0)
                 log(3)
                 return true
             }
@@ -117,6 +148,7 @@ object RewardVideoCount {
                     mmkv.encode(REWARD_VIDEO_HOUR_START_PLAY_TIME, currentTime)
                     mmkv.encode(REWARD_VIDEO_HOUR_CLICK_NUMBER, 0)
                     mmkv.encode(REWARD_VIDEO_HOUR_PLAY_NUMBER, 0)
+                    mmkv.encode(REWARD_VIDEO_ECPM_HOUR_NUMBER, 0)
                     return true
                 }
                 log(3)
@@ -129,16 +161,39 @@ object RewardVideoCount {
 
 
     /** 播放激励视频成功 */
-    fun playRewardVideoSuccess() {
+    fun playRewardVideoSuccess(adStatus: AdStatus?) {
+
+        // 判断限制时间
+        val jddAdConfigBean = JddAdConfigManager.jddAdConfigBean
+
+        var ecpmControl = false
+        if (adStatus != null) {
+            val ecpm = adStatus.currentEcpm.toInt()
+            if (ecpm <= jddAdConfigBean.ecpmLevelNumber) {
+                ecpmControl = true
+            }
+        }
+
+
         val currentTime = System.currentTimeMillis()
         val lastPlayTime = mmkv.decodeLong(REWARD_VIDEO_LAST_PLAY_TIME, 0L)
 
         //统计总次数
         if (!lastPlayTime.isToday()) {
             mmkv.encode(REWARD_VIDEO_TODAY_PLAY_NUMBER, 1)
+            if (ecpmControl) {
+                mmkv.encode(REWARD_VIDEO_ECPM_TODAY_NUMBER, 1)
+            } else {
+                mmkv.encode(REWARD_VIDEO_ECPM_TODAY_NUMBER, 0)
+            }
         } else {
             val todayPlayTimes = mmkv.decodeInt(REWARD_VIDEO_TODAY_PLAY_NUMBER, 0)
             mmkv.encode(REWARD_VIDEO_TODAY_PLAY_NUMBER, todayPlayTimes + 1)
+
+            if (ecpmControl) {
+                val ecpmNumber = mmkv.decodeInt(REWARD_VIDEO_ECPM_TODAY_NUMBER, 0)
+                mmkv.encode(REWARD_VIDEO_ECPM_TODAY_NUMBER, ecpmNumber + 1)
+            }
         }
         mmkv.encode(REWARD_VIDEO_LAST_PLAY_TIME, currentTime)
 
@@ -152,6 +207,12 @@ object RewardVideoCount {
             mmkv.encode(REWARD_VIDEO_HOUR_CLICK_NUMBER, 0)
             mmkv.encode(REWARD_VIDEO_HOUR_PLAY_NUMBER_LIMIT_TIME, 0L)
             mmkv.encode(REWARD_VIDEO_HOUR_CLICK_LIMIT_TIME, 0L)
+            mmkv.encode(REWARD_VIDEO_ECPM_LIMIT_TIME, 0L)
+            if (ecpmControl) {
+                mmkv.encode(REWARD_VIDEO_ECPM_HOUR_NUMBER, 1)
+            } else {
+                mmkv.encode(REWARD_VIDEO_ECPM_HOUR_NUMBER, 0)
+            }
         } else {
             val duration = currentTime - hourStartShowTime;
             val hour = 60 * 60 * 1000L
@@ -162,20 +223,38 @@ object RewardVideoCount {
                 mmkv.encode(REWARD_VIDEO_HOUR_CLICK_NUMBER, 0)
                 mmkv.encode(REWARD_VIDEO_HOUR_PLAY_NUMBER_LIMIT_TIME, 0L)
                 mmkv.encode(REWARD_VIDEO_HOUR_CLICK_LIMIT_TIME, 0L)
+                mmkv.encode(REWARD_VIDEO_ECPM_LIMIT_TIME, 0L)
+                if (ecpmControl) {
+                    mmkv.encode(REWARD_VIDEO_ECPM_HOUR_NUMBER, 1)
+                } else {
+                    mmkv.encode(REWARD_VIDEO_ECPM_HOUR_NUMBER, 0)
+                }
             } else {
                 //小时播放次数+1
-                val playTime = mmkv.decodeLong(REWARD_VIDEO_HOUR_PLAY_NUMBER, 0)
+                val playTime = mmkv.decodeInt(REWARD_VIDEO_HOUR_PLAY_NUMBER, 0)
                 mmkv.encode(REWARD_VIDEO_HOUR_PLAY_NUMBER, playTime + 1)
+
+                if (ecpmControl) {
+                    val hourEcpmNumber = mmkv.decodeInt(REWARD_VIDEO_ECPM_HOUR_NUMBER, 0)
+                    mmkv.encode(REWARD_VIDEO_ECPM_HOUR_NUMBER, hourEcpmNumber + 1)
+                }
             }
         }
 
 
         // 判断限制时间
-        val jddAdConfigBean = JddAdConfigManager.jddAdConfigBean
         hourStartShowTime = mmkv.decodeLong(REWARD_VIDEO_HOUR_START_PLAY_TIME, 0L)
         val hourNumber = mmkv.decodeInt(REWARD_VIDEO_HOUR_PLAY_NUMBER, 0)
         val clickNumber = mmkv.decodeInt(REWARD_VIDEO_HOUR_CLICK_NUMBER, 0)
+        val ecpmNumber = mmkv.decodeInt(REWARD_VIDEO_ECPM_HOUR_NUMBER, 0)
 
+        if (ecpmNumber >= jddAdConfigBean.hourEcpmNumber) {
+            val limitTime = mmkv.decodeLong(REWARD_VIDEO_ECPM_LIMIT_TIME, 0L)
+            if (limitTime <= hourStartShowTime) {
+                //设置时间，开始限制
+                mmkv.encode(REWARD_VIDEO_ECPM_LIMIT_TIME, currentTime)
+            }
+        }
 
         if (hourNumber >= jddAdConfigBean.hourRewardVideoNumber) {
             val limitTime = mmkv.decodeLong(REWARD_VIDEO_HOUR_PLAY_NUMBER_LIMIT_TIME, 0L)
@@ -257,6 +336,9 @@ object RewardVideoCount {
         val hourPlayLimitTime = mmkv.decodeLong(REWARD_VIDEO_HOUR_PLAY_NUMBER_LIMIT_TIME, 0L)
         val clickNumber = mmkv.decodeInt(REWARD_VIDEO_HOUR_CLICK_NUMBER, 0)
         val clickPlayLimitTime = mmkv.decodeLong(REWARD_VIDEO_HOUR_CLICK_LIMIT_TIME, 0L)
+        val ecpmNumber = mmkv.decodeInt(REWARD_VIDEO_ECPM_HOUR_NUMBER, 0)
+        val totalEcpmNumber = mmkv.decodeInt(REWARD_VIDEO_ECPM_TODAY_NUMBER, 0)
+        val ecomLimitTime = mmkv.decodeLong(REWARD_VIDEO_ECPM_LIMIT_TIME, 0L)
 
         val stringBuilder = StringBuilder()
             .apply {
@@ -277,6 +359,9 @@ object RewardVideoCount {
                 append("  1小时开始计时时间：${hourStartShowTime.toDataString()},\n")
                 append("  1小时播放量：${hourNumber},\n")
                 append("  1小时播放量开始限制时间：${hourPlayLimitTime.toDataString()},\n")
+                append("  今天总ecop不达次数：${totalEcpmNumber},\n")
+                append("  1小时ecpm不达标次数：${ecpmNumber},\n")
+                append("  1小时ecpm开始限制时间 ${ecomLimitTime.toDataString()},\n")
                 append("  点击量：${clickNumber},\n")
                 if (hourNumber != 0) {
                     append("  点击率：${clickNumber * 1.0f / hourNumber},\n")

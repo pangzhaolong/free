@@ -6,10 +6,12 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import com.dn.sdk.bean.AdRequest
+import com.dn.sdk.bean.AdStatus
 import com.dn.sdk.bean.natives.INativeAdData
 import com.dn.sdk.listener.IAdNativeListener
 import com.dn.sdk.listener.proxy.LoggerNativeListenerProxy
 import com.dn.sdk.loader.SdkType
+import com.donews.ads.mediation.v2.framework.bean.DnUnionBean
 import com.donews.ads.mediation.v2.framework.listener.DoNewsAdNativeData
 import com.donews.ads.mediation.v2.framework.listener.NativeAdListener
 
@@ -95,7 +97,11 @@ class DoNewsNativeData(
         val loggerListener = LoggerNativeListenerProxy(adRequest, listener)
         nativeData.bindView(context, viewGroup, frameLayout, clickViews, object : NativeAdListener {
             override fun onAdStatus(code: Int, any: Any?) {
-                loggerListener.onAdStatus(code, any)
+                if (code == 10 && any is DnUnionBean) {
+                    loggerListener?.onAdStatus(code, AdStatus(any))
+                } else {
+                    loggerListener?.onAdStatus(code, any)
+                }
             }
 
             override fun onAdExposure() {

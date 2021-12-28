@@ -2,6 +2,7 @@ package com.donews.common.ad.business.proxy
 
 import android.app.Activity
 import androidx.fragment.app.FragmentActivity
+import com.dn.sdk.bean.AdStatus
 import com.dn.sdk.listener.IAdRewardVideoListener
 import com.dn.sdk.listener.impl.SimpleInterstitialListener
 import com.dn.sdk.manager.config.IAdConfigInitListener
@@ -26,8 +27,14 @@ class JddAdRewardVideoListenerProxy(
     private var listener: IAdRewardVideoListener? = null
 ) : IAdRewardVideoListener {
 
+
+    private var mAdStatus: AdStatus? = null
+
     override fun onAdStatus(code: Int, any: Any?) {
         listener?.onAdStatus(code, any)
+        if (code == 0 && any is AdStatus) {
+            mAdStatus = any
+        }
     }
 
     override fun onAdStartLoad() {
@@ -40,7 +47,7 @@ class JddAdRewardVideoListenerProxy(
 
     override fun onAdShow() {
         listener?.onAdShow()
-        RewardVideoCount.playRewardVideoSuccess()
+        RewardVideoCount.playRewardVideoSuccess(mAdStatus)
     }
 
     override fun onAdVideoClick() {
