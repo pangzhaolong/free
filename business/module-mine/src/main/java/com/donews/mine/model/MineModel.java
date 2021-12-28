@@ -9,6 +9,8 @@ import com.donews.base.model.BaseLiveDataModel;
 import com.donews.base.utils.GsonUtils;
 import com.donews.base.utils.ToastUtil;
 import com.donews.middle.bean.front.AwardBean;
+import com.donews.middle.bean.front.LotteryOpenRecord;
+import com.donews.middle.bean.front.WinningRotationBean;
 import com.donews.mine.BuildConfig;
 import com.donews.mine.bean.QueryBean;
 import com.donews.mine.Api.MineHttpApi;
@@ -73,6 +75,31 @@ public class MineModel extends BaseLiveDataModel {
                 });
         addDisposable(disposable);
         return disposable;
+    }
+
+    /**
+     * 提现页面，滚动数据获取
+     *
+     * @return
+     */
+    public MutableLiveData<WinningRotationBean> getWiningRotation(MutableLiveData<WinningRotationBean> mutableLiveData) {
+        addDisposable(EasyHttp.get(BuildConfig.API_LOTTERY_URL + "v1/winning-rotation")
+                .params("type", "1")
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new SimpleCallBack<WinningRotationBean>() {
+
+                    @Override
+                    public void onError(ApiException e) {
+                        mutableLiveData.postValue(null);
+                    }
+
+                    @Override
+                    public void onSuccess(WinningRotationBean lotteryOpenRecord) {
+                        mutableLiveData.postValue(lotteryOpenRecord);
+                    }
+                }));
+
+        return mutableLiveData;
     }
 
     /**
