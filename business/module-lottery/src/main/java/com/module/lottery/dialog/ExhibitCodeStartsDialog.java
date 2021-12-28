@@ -323,9 +323,14 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
         } else {
             sumNumber = ABSwitch.Ins().getOpenCritModelByOldUserCount();
         }
-        mDataBinding.numberCode.setText((sumNumber - participateNumber) < 0 ? 0 + "" : (sumNumber - participateNumber) + "");
-
-
+        if ((sumNumber - participateNumber) == 0) {
+            mDataBinding.critDraw.setVisibility(View.GONE);
+            //暴击模式开启修改之前的状态
+            mOnFinishListener.onChangeState();
+        } else {
+            mDataBinding.critDraw.setVisibility(View.VISIBLE);
+            mDataBinding.numberCode.setText((sumNumber - participateNumber) < 0 ? 0 + "" : (sumNumber - participateNumber) + "");
+        }
     }
 
     private void automaticJump() {
@@ -505,6 +510,9 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
         void onFinish();
 
         void onLottery();
+
+        void onChangeState();
+
 
         /**
          * 开启暴击模式

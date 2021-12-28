@@ -282,6 +282,7 @@ public class CritDownAppDialogFragment extends DialogFragment {
     //更新下载按钮状态
     private void updateDownButStatus(ItemData data, View view) {
         TextView down = view.findViewById(R.id.tv_down);
+        down.setEnabled(true);
         down.setOnClickListener(v -> {
             if (surListener != null) {
                 surListener.onSur(data);
@@ -316,6 +317,7 @@ public class CritDownAppDialogFragment extends DialogFragment {
         if (AppUtils.isAppInstalled(data.srcData.getPkName())) {
             IntegralComponent.getInstance()
                     .runIntegralApk(getActivity(), data.srcData);
+            dismiss();
             return;
         }
         TextView clickView = itemView.findViewById(R.id.tv_down);
@@ -350,7 +352,6 @@ public class CritDownAppDialogFragment extends DialogFragment {
             @Override
             public void onComplete() {
                 clickView.setText("安装");
-                clickView.setEnabled(true);
                 checkInstallPack = data.srcData.getPkName();
                 updateDownButStatus(data, itemView);
                 if (getActivity() instanceof MvvmBaseLiveDataActivity) {
@@ -362,7 +363,6 @@ public class CritDownAppDialogFragment extends DialogFragment {
             @Override
             public void onInstalled() {
                 clickView.setText("打开");
-                clickView.setEnabled(true);
                 updateDownButStatus(data, itemView);
                 if (getActivity() instanceof MvvmBaseLiveDataActivity) {
                     ((MvvmBaseLiveDataActivity<?, ?>) getActivity()).hideLoading();
@@ -372,7 +372,6 @@ public class CritDownAppDialogFragment extends DialogFragment {
             @Override
             public void onError(Throwable throwable) {
                 clickView.setText("下载失败");
-                clickView.setEnabled(true);
                 updateDownButStatus(data, itemView);
                 if (getActivity() instanceof MvvmBaseLiveDataActivity) {
                     ((MvvmBaseLiveDataActivity<?, ?>) getActivity()).hideLoading();

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.ScaleAnimation;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 
@@ -84,6 +85,12 @@ public class ExitRadPackDialog extends BaseDialog<DialogExitRadPackLayoutBinding
         lottieAnimationView.setAnimation("integr_anim_hb.json");
         lottieAnimationView.loop(true);
         lottieAnimationView.playAnimation();
+        //背景的光的动画
+        LottieAnimationView bgAnimLot = mDataBinding.integralLtv;
+        bgAnimLot.setImageAssetsFolder("images");
+        bgAnimLot.setAnimation("exit_progress_lottie.json");
+        bgAnimLot.loop(true);
+        bgAnimLot.playAnimation();
     }
 
 

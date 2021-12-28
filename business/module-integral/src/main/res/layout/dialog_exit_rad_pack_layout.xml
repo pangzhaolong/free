@@ -8,38 +8,38 @@
 
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="30dp">
+        android:layout_height="match_parent">
+        <!-- 背景区域(光) -->
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/integral_ltv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:layout_marginTop="-60dp"
+            android:layout_marginBottom="-20dp"/>
 
         <ImageView
             android:id="@+id/closure"
             android:layout_width="26dp"
             android:layout_height="26dp"
-            android:layout_alignParentRight="true"
+            android:layout_above="@+id/content_layout"
+            android:layout_alignRight="@+id/content_layout"
             android:layout_gravity="right"
-            android:layout_marginEnd="40dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginRight="80dp"
+            android:layout_marginBottom="30dp"
             android:src="@mipmap/closure_icon"
             android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/content_layout"
-            app:layout_constraintRight_toRightOf="parent"
             tools:ignore="MissingConstraints" />
 
         <RelativeLayout
             android:id="@+id/content_layout"
             android:layout_width="match_parent"
             android:layout_height="403dp"
-            android:orientation="vertical"
-            tools:ignore="MissingConstraints">
-
-            <!-- 背景区域 -->
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/integral_ltv"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+            android:layout_centerInParent="true"
+            tools:ignore="MissingConstraints"
+            android:layout_marginBottom="30dp">
 
             <RelativeLayout
                 android:id="@+id/integral_rl_con"
@@ -109,17 +109,17 @@
                 android:id="@+id/integral_tv_jj"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="残忍拒绝"
-                android:layout_marginTop="26dp"
-                android:textSize="13sp"
-                android:paddingTop="3dp"
-                android:paddingBottom="3dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:textColor="#D6D6D6"
-                android:layout_centerHorizontal="true"
                 android:layout_below="@+id/integral_rl_con"
-                android:layout_gravity="center_horizontal"/>
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="26dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="3dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="3dp"
+                android:text="残忍拒绝"
+                android:textColor="#D6D6D6"
+                android:textSize="13sp" />
         </RelativeLayout>
-    </LinearLayout>
+    </RelativeLayout>
 </layout>
