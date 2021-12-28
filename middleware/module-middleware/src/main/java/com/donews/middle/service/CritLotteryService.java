@@ -2,6 +2,7 @@ package com.donews.middle.service;
 
 import static com.donews.common.config.CritParameterConfig.CRIT_STATE;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -22,6 +23,8 @@ import androidx.lifecycle.MutableLiveData;
 import com.blankj.utilcode.util.AppUtils;
 import com.dn.sdk.bean.integral.ProxyIntegral;
 import com.donews.base.BuildConfig;
+import com.donews.base.base.AppManager;
+import com.donews.base.base.AppStatusManager;
 import com.donews.base.utils.ToastUtil;
 import com.donews.middle.bean.DownloadStateDean;
 import com.donews.middle.ui.GoodLuckDoubleDialog;
@@ -29,6 +32,7 @@ import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
+import com.donews.utilslibrary.utils.AppStatusUtils;
 import com.donews.utilslibrary.utils.SPUtils;
 
 import java.util.HashMap;
@@ -80,7 +84,7 @@ public class CritLotteryService extends Service {
     }
 
     DownloadStateDean mDownloadStateDean;
-    String  mRequestId;
+    String mRequestId;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -171,18 +175,13 @@ public class CritLotteryService extends Service {
                     }
                 } else {
                     if (mStartTime <= 0 && foreground) {
-                        mTimer.cancel();
-                        mTimer = null;
-                        ifTimerRun = false;
-                        Log.d("startTask", "任务完成");
-                        if (mDownloadStateDean == null || !mDownloadStateDean.getHandout()) {
-                            //请求服务器处理结果
-                            mStartTime = 0;
-                            Log.d("startTask", "上次没有请求到或者请求失败");
-                            getDownloadStatus();
+                        Activity activity = AppManager.getInstance().getTopActivity();
+                        if (activity != null) {
+                            if (activity.getClass().getSimpleName().equals("MainActivity")) {
+                                cancelTimer();
+                            }
                         } else {
-                            Log.d("startTask", "上次请求成功");
-                            jump();
+                            cancelTimer();
                         }
 
 
@@ -194,6 +193,20 @@ public class CritLotteryService extends Service {
         }, 0, 1000);
     }
 
+    private void cancelTimer() {
+        mTimer = null;
+        ifTimerRun = false;
+        Log.d("startTask", "任务完成");
+        if (mDownloadStateDean == null || !mDownloadStateDean.getHandout()) {
+            //请求服务器处理结果
+            mStartTime = 0;
+            Log.d("startTask", "上次没有请求到或者请求失败");
+            getDownloadStatus();
+        } else {
+            Log.d("startTask", "上次请求成功");
+            jump();
+        }
+    }
 
     private void jump() {
         //倒计时结束 可以打开开启暴击模式的弹框

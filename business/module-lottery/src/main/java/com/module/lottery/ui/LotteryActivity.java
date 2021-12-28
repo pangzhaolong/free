@@ -508,7 +508,8 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     }
 
     private void addCriticalLotteryNumber() {
-        if (SPUtils.getInformain(CRIT_STATE, 0) == 0) {
+        boolean logType = AppInfo.checkIsWXLogin();
+        if (SPUtils.getInformain(CRIT_STATE, 0) == 0 && logType) {
             LotteryAdCount.INSTANCE.putCriticalModelLotteryNumber();
         }
     }
