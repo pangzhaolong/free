@@ -1,7 +1,7 @@
 package com.donews.middle.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.text.Html;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
@@ -47,11 +47,13 @@ public class LotteryBarrageItemView extends LinearLayout {
         mAwardTv = findViewById(R.id.middle_gift_text);
     }
 
+    @SuppressLint("SetTextI18n")
     public void setUserAwardInfo(String url, String name, String award) {
-        Glide.with(mContext).load(url).into(mAvatarIv);
-        mAwardTv.setText(award);
+        if (url == null || url.equalsIgnoreCase("")) {
+            mAwardTv.setText(name + award);
+        } else {
+            Glide.with(mContext).load(url).into(mAvatarIv);
+            mAwardTv.setText(award);
+        }
     }
-
-
-
 }

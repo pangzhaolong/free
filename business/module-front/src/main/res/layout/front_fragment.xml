@@ -367,8 +367,8 @@
                                                 android:layout_height="wrap_content"
                                                 android:layout_gravity="center_horizontal"
                                                 android:orientation="horizontal"
-                                                android:visibility="gone"
-                                                android:paddingStart="5dp">
+                                                android:paddingStart="5dp"
+                                                android:visibility="gone">
 
                                                 <TextView
                                                     android:layout_width="wrap_content"
@@ -473,6 +473,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center_horizontal"
                                         android:layout_marginTop="15dp"
+                                        android:scaleType="centerInside"
                                         android:src="@drawable/front_task_getmoney" />
 
                                     <TextView
@@ -507,6 +508,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center_horizontal"
                                         android:layout_marginTop="15dp"
+                                        android:scaleType="centerInside"
                                         android:src="@drawable/front_task_invite" />
 
                                     <TextView
@@ -541,6 +543,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center_horizontal"
                                         android:layout_marginTop="15dp"
+                                        android:scaleType="centerInside"
                                         android:src="@drawable/front_task_buy" />
 
                                     <TextView
@@ -575,6 +578,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center_horizontal"
                                         android:layout_marginTop="15dp"
+                                        android:scaleType="centerInside"
                                         android:src="@drawable/front_task_coupon" />
 
                                     <TextView

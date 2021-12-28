@@ -50,6 +50,9 @@ public class KeySharePreferences {
     public final static String FIRST_RP_OPEN_PRE_SCORE = "first_rp_open_pre_score";
     public final static String FIRST_RP_CAN_OPEN = "first_rp_can_open";
 
+    //积分墙次留任务
+    public final static String RETENTION_TASK_REQUEST_ID = "retention_task_request_id";
+
 
     public final static String SHOW_DIALOG_WHEN_LAUNCH = "show_dialog_when_launch";
 

@@ -285,6 +285,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         fl.setOnClickListener(v -> GotoUtil.doAction(context, ti.getAction(), ti.getTitle()));
         if (ti.getModel() == 1) {
             mixIv.setVisibility(View.GONE);
+            iv.setVisibility(View.VISIBLE);
+            tv.setVisibility(View.VISIBLE);
             Glide.with(this).load(ti.getIcon()).into(iv);
             tv.setText(ti.getTitle());
         } else {
@@ -305,9 +307,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
             iv.setVisibility(View.GONE);
             tv.setVisibility(View.GONE);
-
-            Glide.with(this).load(ti.getIcon()).into(mixIv);
             mixIv.setVisibility(View.VISIBLE);
+            Glide.with(this).load(ti.getIcon()).into(mixIv);
         }
     }
 

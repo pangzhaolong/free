@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -299,18 +300,8 @@ public class MainActivity
             });
         }
 
-        mViewModel.getWallTaskRp("c74riki16q5jr1jat3q0").observe(this, wallTaskRpBean -> {
-            if (wallTaskRpBean == null) {
-                return;
-            }
-
-            ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
-                    .withString("from", "wallTask")
-                    .withFloat("score", wallTaskRpBean.getScore())
-                    .withString("restId", wallTaskRpBean.getRestId())
-                    .navigation();
-            AnalysisUtils.onEventEx(this, Dot.But_Rp_Double);
-        });
+        mDataBinding.mainFloatingRp.reLoadTask();
+        checkRetentionTask();
     }
 
     //上报测试多参数事件
@@ -816,6 +807,16 @@ public class MainActivity
     @Override
     public void onTaskClick(String reqId) {
         LogUtil.e("reqId: " + reqId);
+
+        SPUtils.setInformain(KeySharePreferences.RETENTION_TASK_REQUEST_ID, reqId);
+    }
+
+    private void checkRetentionTask() {
+        String reqId = SPUtils.getInformain(KeySharePreferences.RETENTION_TASK_REQUEST_ID, "");
+        if (TextUtils.isEmpty(reqId)) {
+            return;
+        }
+
         mViewModel.getRetentionTask(reqId).observe(this, retentionTaskBean -> {
             if (retentionTaskBean == null || !retentionTaskBean.getHandout()) {
                 if (mRetryCount > 6) {
@@ -831,7 +832,7 @@ public class MainActivity
                 if (wallTaskRpBean == null) {
                     return;
                 }
-
+//                SPUtils.setInformain(KeySharePreferences.RETENTION_TASK_REQUEST_ID, "");
                 ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
                         .withString("from", "wallTask")
                         .withFloat("score", wallTaskRpBean.getScore())
