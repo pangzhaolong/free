@@ -168,7 +168,7 @@ object RewardVideoCount {
 
         var ecpmControl = false
         if (adStatus != null) {
-            val ecpm = adStatus.currentEcpm.toInt()
+            val ecpm = adStatus.currentEcpm.toFloat()
             if (ecpm <= jddAdConfigBean.ecpmLevelNumber) {
                 ecpmControl = true
             }

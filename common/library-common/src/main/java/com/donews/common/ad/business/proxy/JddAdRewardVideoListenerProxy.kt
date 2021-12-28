@@ -32,7 +32,7 @@ class JddAdRewardVideoListenerProxy(
 
     override fun onAdStatus(code: Int, any: Any?) {
         listener?.onAdStatus(code, any)
-        if (code == 0 && any is AdStatus) {
+        if (code == 10 && any is AdStatus) {
             mAdStatus = any
         }
     }

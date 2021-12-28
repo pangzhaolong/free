@@ -18,4 +18,10 @@ class AdStatus(private val dnUnionBean: DnUnionBean) {
     val currentPositionId: String = dnUnionBean.currentPostionId
     val platFormType: String = dnUnionBean.platFormType
     val currentEcpm: String = dnUnionBean.currentEcpm
+
+    override fun toString(): String {
+        return "AdStatus(reqId='$reqId', appId='$appId', positionId='$positionId', groMorePositionId='$groMorePositionId', currentPositionId='$currentPositionId', platFormType='$platFormType', currentEcpm='$currentEcpm')"
+    }
+
+
 }

@@ -125,7 +125,7 @@ data class JddAdConfigBean(
 
     /** ecpm限制标准 */
     @SerializedName("ecpmLevelNumber")
-    var ecpmLevelNumber: Int = 0,
+    var ecpmLevelNumber: Float = 0f,
 
     /** 单位小时内，ecpm为 <=ecpmLevelNumber 时的次数 达到x 次，则限制用户广告 */
     @SerializedName("hourEcpmNumber")
