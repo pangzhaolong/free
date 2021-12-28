@@ -135,7 +135,13 @@ public class CritLotteryService extends Service {
                             if (stateDean != null) {
                                 mDownloadStateDean = stateDean;
                                 if (!ifTimerRun) {
-                                    jump();
+                                    if (mDownloadStateDean.getHandout()) {
+                                        ToastUtil.showShort(getApplicationContext(), "任务激活成功");
+                                        jump();
+                                    } else {
+                                        ToastUtil.showShort(getApplicationContext(), "任务激活失败");
+                                    }
+
                                 }
                             }
                         }
@@ -177,14 +183,12 @@ public class CritLotteryService extends Service {
                     if (mStartTime <= 0 && foreground) {
                         Activity activity = AppManager.getInstance().getTopActivity();
                         if (activity != null) {
-                            if (activity.getClass().getSimpleName().equals("MainActivity")) {
+                            if (activity.getClass().getSimpleName().equals("MainActivity") || activity.getClass().getSimpleName().equals("LotteryActivity")) {
                                 cancelTimer();
                             }
                         } else {
                             cancelTimer();
                         }
-
-
                     } else {
                         test("在前台，体验体验时间不足" + mStartTime);
                     }
@@ -194,7 +198,10 @@ public class CritLotteryService extends Service {
     }
 
     private void cancelTimer() {
-        mTimer = null;
+        if (mTimer != null) {
+            mTimer.cancel();
+            mTimer = null;
+        }
         ifTimerRun = false;
         Log.d("startTask", "任务完成");
         if (mDownloadStateDean == null || !mDownloadStateDean.getHandout()) {
