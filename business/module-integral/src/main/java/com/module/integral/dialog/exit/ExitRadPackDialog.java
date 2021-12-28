@@ -21,7 +21,7 @@ import java.lang.ref.WeakReference;
  * 退出拦截红包弹窗
  */
 public class ExitRadPackDialog extends BaseDialog<DialogExitRadPackLayoutBinding> implements DialogInterface.OnDismissListener {
-    private OnStateListener mOnFinishListener;
+    private OnSurListener mOnFinishListener;
 
     public ExitRadPackDialog(Context context) {
         super(context, R.style.dialogTransparent);
@@ -68,11 +68,11 @@ public class ExitRadPackDialog extends BaseDialog<DialogExitRadPackLayoutBinding
     }
 
 
-    public void setStateListener(OnStateListener l) {
+    public void setStateListener(OnSurListener l) {
         mOnFinishListener = l;
     }
 
-    public interface OnStateListener {
+    public interface OnSurListener {
         void onJump();
     }
 
