@@ -1,5 +1,6 @@
 package com.module.lottery.dialog;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Paint;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.donews.base.model.BaseLiveDataModel;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.business.monitor.LotteryAdCount;
@@ -78,17 +80,40 @@ public class LotteryCritOverDialog extends BaseDialog<LotteryCritOverDialogLayou
         message.what = 1;
         mCritOverHandler.sendMessageDelayed(message, 1000);
         //延迟一秒出现关闭按钮
-        Message msg = new Message();
-        msg.what = 2;
-        mCritOverHandler.sendMessageDelayed(msg, 3000);
         setOnDismissListener(this);
-
-
-        Message animationMessage = new Message();
-        animationMessage.what = 3;
-        mCritOverHandler.sendMessageDelayed(animationMessage, 500);
-
+        initLottie(mDataBinding.overView,"over_animation.json");
     }
+
+    private void initLottie(LottieAnimationView view, String json) {
+        if ((view != null && !view.isAnimating())) {
+            view.setImageAssetsFolder("images");
+            view.addAnimatorListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+
+                }
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    multipleCode();
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
+            view.clearAnimation();
+            view.setAnimation(json);
+            view.loop(false);
+            view.playAnimation();
+        }
+    }
+
 
     private void multipleCode() {
         //生成多个抽奖码
@@ -97,11 +122,6 @@ public class LotteryCritOverDialog extends BaseDialog<LotteryCritOverDialogLayou
             params.put("goods_id", mGoodsId);
             getNeCritData(params, LotteryModel.LOTTERY_CRIT_CODE);
         }
-    }
-
-    private void initView() {
-        mDataBinding.overView.setVisibility(View.VISIBLE);
-        mDataBinding.overView.startAnimation(CommonAnimationUtils.setTranslateAnimation(getContext()));
     }
 
 
@@ -177,17 +197,6 @@ public class LotteryCritOverDialog extends BaseDialog<LotteryCritOverDialogLayou
             switch (msg.what) {
                 case 1:
                     if (reference.get() != null) {
-                    }
-                    break;
-                case 2:
-                    if (reference.get() != null) {
-                        reference.get().multipleCode();
-                    }
-                    break;
-
-                case 3:
-                    if (reference.get() != null) {
-                        reference.get().initView();
                     }
                     break;
 

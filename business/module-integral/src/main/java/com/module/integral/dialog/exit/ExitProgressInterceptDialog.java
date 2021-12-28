@@ -11,6 +11,7 @@ import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.blankj.utilcode.util.VibrateUtils;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.router.RouterActivityPath;
@@ -61,9 +62,17 @@ public class ExitProgressInterceptDialog extends BaseDialog<IntegralScheduleDial
         Message message = new Message();
         message.what = 1;
         mExitProgressHandle.sendMessageDelayed(message, 1000);
-
+        initLottie(mDataBinding.bgAnimation,"exit_progress_lottie.json");
     }
-
+    private void initLottie(LottieAnimationView view, String json) {
+        if ((view != null && !view.isAnimating())) {
+            view.setImageAssetsFolder("images");
+            view.clearAnimation();
+            view.setAnimation(json);
+            view.loop(true);
+            view.playAnimation();
+        }
+    }
     public void setFinishListener(OnFinishListener l) {
         mOnFinishListener = l;
     }

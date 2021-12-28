@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <data>
 
@@ -12,13 +14,15 @@
         android:gravity="center_vertical">
 
 
-        <ImageView
-            android:visibility="invisible"
+
+        <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/over_view"
             android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:layout_centerHorizontal="true"
             android:scaleType="fitXY"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/over_bg" />
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true" />
 
     </LinearLayout>
 </layout>
