@@ -8,17 +8,17 @@ import java.util.List;
 public class FrontConfigBean extends BaseCustomViewModel {
 
     @SerializedName("banner")
-    private Boolean banner;
+    private Boolean banner = false;
     @SerializedName("bannerItems")
     private List<BannerItem> bannerItems;
     @SerializedName("lotteryWinner")
-    private Boolean lotteryWinner;
+    private Boolean lotteryWinner = true;
     @SerializedName("redPackage")
-    private Boolean redPackage;
+    private Boolean redPackage = true;
     @SerializedName("refreshInterval")
-    private int refreshInterval;
+    private int refreshInterval = 60;
     @SerializedName("task")
-    private Boolean task;
+    private Boolean task = false;
     @SerializedName("taskItems")
     private List<TaskItem> taskItems;
 

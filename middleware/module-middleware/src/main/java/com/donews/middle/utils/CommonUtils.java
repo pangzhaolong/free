@@ -25,16 +25,14 @@ public class CommonUtils {
             //判断暴击模式是否处于开启中
             int critState = SPUtils.getInformain(CRIT_STATE, 0);
             if (critState == 0) {
-                SPUtils.setInformain(CRIT_STATE, 1);
                 if (SPUtils.getInformain(CRIT_STATE, 0) == 0) {
                     SPUtils.setInformain(CritParameterConfig.CRIT_START_TIME, SystemClock.elapsedRealtime());
                 }
+                SPUtils.setInformain(CRIT_STATE, 1);
                 //判断开启了多少次
                 //通知开始暴击模式  模拟开启暴击模式
                 EventBus.getDefault().post(new CritMessengerBean(200));
             }
-
-
         }
     }
 

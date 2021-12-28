@@ -67,8 +67,10 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
         mGoodsList.get(0).setCritical_show_hand(open);
         mGoodsList.get(1).setCritical_show_hand(open);
 
-        notifyItemChanged(0, "criticalGuid");
-        notifyItemChanged(1, "criticalGuid");
+        if (!open) {
+            notifyItemChanged(0, "criticalGuid");
+            notifyItemChanged(1, "criticalGuid");
+        }
     }
 
     private void initTopList(List<LotteryGoodsBean.GoodsInfo> list) {
@@ -156,9 +158,15 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
             }
             holder.doTv.postInvalidate();
         } else if (payloads.get(0).equals("criticalGuid")) {
-            if (goodsInfo.isCritical_show_hand()) {
-                holder.criticalHand.setVisibility(View.VISIBLE);
+            if (goodsInfo.isCritical_guid()) {
+                holder.criticalClock.setVisibility(View.VISIBLE);
+                if (goodsInfo.isCritical_show_hand()) {
+                    holder.criticalHand.setVisibility(View.VISIBLE);
+                } else {
+                    holder.criticalHand.setVisibility(View.GONE);
+                }
             } else {
+                holder.criticalClock.setVisibility(View.GONE);
                 holder.criticalHand.setVisibility(View.GONE);
             }
         }

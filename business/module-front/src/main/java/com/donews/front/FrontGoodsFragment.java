@@ -34,7 +34,6 @@ import com.donews.middle.utils.CriticalModelTool;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.KeySharePreferences;
-import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.SPUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -146,18 +145,14 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
     }
 
     private void startCriticalGuid() {
-        if (!mIsFragmentResume) {
-            LogUtil.e("startCriticalGuid: false");
-            return;
-        }
-        LogUtil.e("startCriticalGuid: true");
-
         if (mCriticalGuidHandler == null) {
             mCriticalGuidHandler = new CriticalGuidHandler(Looper.getMainLooper(), this);
         }
 
-        mNorGoodsAdapter.startCriticalGuid(mPosition);
-        mNorGoodsAdapter.openCriticalModel(true);
+        if (mNorGoodsAdapter != null) {
+            mNorGoodsAdapter.startCriticalGuid(mPosition);
+            mNorGoodsAdapter.openCriticalModel(true);
+        }
         mPosition++;
         if (mPosition >= 2) {
             mPosition = 0;
@@ -195,6 +190,8 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
         mIsFragmentResume = true;
         if (CriticalModelTool.ifCriticalStrike()) {
             startCriticalGuid();
+        } else {
+            stopCriticalGuid();
         }
     }
 
@@ -202,6 +199,7 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
     public void onPause() {
         super.onPause();
         mIsFragmentResume = false;
+        stopCriticalGuid();
     }
 
     private void checkScrollDy() {

@@ -74,6 +74,7 @@ import com.donews.middle.bean.HighValueGoodsBean;
 import com.donews.middle.bean.RedEnvelopeUnlockBean;
 import com.donews.middle.cache.GoodsCache;
 import com.donews.middle.request.RequestUtil;
+import com.donews.middle.utils.CommonUtils;
 import com.donews.middle.utils.CriticalModelTool;
 import com.donews.utilslibrary.analysis.AnalysisHelp;
 import com.donews.utilslibrary.analysis.AnalysisParam;
