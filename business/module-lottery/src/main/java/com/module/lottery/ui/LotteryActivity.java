@@ -105,6 +105,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     private static final String CRITICAL_BT_TITLE_2 = "超级幸运：中奖率X6";
     private static final String CRITICAL_BT_TITLE_3 = "观看视频，参与抽奖";
     private static final String CRITICAL_BT_TITLE_4 = "抽奖码越多，中奖概率越大";
+    private static final String CRITICAL_BT_TITLE_5 = "0元";
     @Autowired(name = "goods_id")
     public String mGoodsId;
     private SharedPreferences mSharedPreferences;
@@ -860,6 +861,11 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             }
 
             @Override
+            public void onChangeState() {
+                mCritTime = true;
+            }
+
+            @Override
             public void onStartCritMode(GenerateCodeBean generateCodeBean, ProxyIntegral integralBean) {
                 if (ClickDoubleUtil.isFastClick()) {
                     CommonUtils.startCritService(LotteryActivity.this, integralBean);
@@ -1050,7 +1056,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 mDataBinding.label02.setText(CRITICAL_BT_TITLE_1);
                 mDataBinding.tips.setText(CRITICAL_BT_TITLE_2);
             } else {
-                mDataBinding.label01.setText(CRITICAL_BT_TITLE_0);
+                mDataBinding.label01.setText(CRITICAL_BT_TITLE_5);
                 mDataBinding.label02.setText(CRITICAL_BT_TITLE_1);
                 mDataBinding.tips.setText(CRITICAL_BT_TITLE_3);
             }
