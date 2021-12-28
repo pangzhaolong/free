@@ -25,6 +25,7 @@ import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.middle.bean.front.AwardBean;
+import com.donews.middle.bean.front.WinningRotationBean;
 import com.donews.mine.R;
 import com.donews.mine.bean.CSBean;
 import com.donews.mine.bean.emus.WinTypes;

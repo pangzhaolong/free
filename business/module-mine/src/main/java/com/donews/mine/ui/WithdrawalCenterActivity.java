@@ -2,7 +2,6 @@ package com.donews.mine.ui;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
@@ -12,7 +11,6 @@ import androidx.annotation.Nullable;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.blankj.utilcode.util.AppUtils;
 import com.dn.events.events.WalletRefreshEvent;
 import com.dn.sdk.bean.integral.ProxyIntegral;
 import com.dn.sdk.listener.impl.SimpleInterstitialListener;
@@ -26,8 +24,6 @@ import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.UserInfoBean;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
-import com.donews.middle.abswitch.ABSwitch;
-import com.donews.middle.bean.HighValueGoodsBean;
 import com.donews.mine.R;
 import com.donews.mine.databinding.MineActivityWithdrawalCenterBinding;
 import com.donews.mine.dialogs.MineCongratulationsDialog;
@@ -38,10 +34,6 @@ import com.donews.utilslibrary.utils.AppInfo;
 import com.gyf.immersionbar.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /**
  * 提现中心
@@ -180,6 +172,11 @@ public class WithdrawalCenterActivity extends
                 super.onAdShow();
             }
         });
+        mViewModel.awardScrollDataLiveData.observe(this,resu->{
+            if(resu != null){
+                mDataBinding.mineDrawSubmitLbv.refreshData(resu.getList());
+            }
+        });
         //呼吸动画
         if (mScaleAnimation == null) {
             mScaleAnimation = new ScaleAnimation(1.15f, 0.9f, 1.15f, 0.9f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
@@ -188,6 +185,23 @@ public class WithdrawalCenterActivity extends
             mScaleAnimation.setRepeatCount(Animation.INFINITE);
             mScaleAnimation.setDuration(1000);
             mDataBinding.mindYywJd.startAnimation(mScaleAnimation);
+        }
+        mViewModel.getWiningRotation();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mDataBinding.mineDrawSubmitLbv != null) {
+            mDataBinding.mineDrawSubmitLbv.resumeScroll();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mDataBinding.mineDrawSubmitLbv != null) {
+            mDataBinding.mineDrawSubmitLbv.pauseScroll();
         }
     }
 

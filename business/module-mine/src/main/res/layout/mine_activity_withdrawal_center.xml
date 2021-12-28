@@ -231,6 +231,13 @@
                     android:text="提现"
                     android:textColor="@color/white"
                     android:textSize="15sp" />
+
+                <com.donews.middle.views.LotteryBarrageView
+                    android:id="@+id/mine_draw_submit_lbv"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="35dp"
+                    android:background="@color/transparent" />
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

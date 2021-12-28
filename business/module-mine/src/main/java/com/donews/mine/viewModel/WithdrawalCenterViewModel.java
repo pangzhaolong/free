@@ -21,6 +21,7 @@ import com.donews.base.utils.GsonUtils;
 import com.donews.base.utils.ToastUtil;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.middle.bean.HighValueGoodsBean;
+import com.donews.middle.bean.front.WinningRotationBean;
 import com.donews.middle.cache.GoodsCache;
 import com.donews.middle.request.RequestUtil;
 import com.donews.mine.R;
@@ -42,6 +43,13 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
     //钱包详情
     public MutableLiveData<WithdraWalletResp> withdrawDatilesLivData =
             new MutableLiveData<>();
+
+    /**
+     * 提现页面的地步横向滚动数据
+     * null = 获取错误
+     */
+    public MutableLiveData<WinningRotationBean> awardScrollDataLiveData =
+            new MutableLiveData<>(null);
 
     //提现的结果
     public MutableLiveData<Integer> withdrawLivData =
@@ -66,6 +74,13 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
     @Override
     protected void onCleared() {
         super.onCleared();
+    }
+
+    /**
+     * 获取地步滚动的通知
+     */
+    public void getWiningRotation(){
+        mModel.getWiningRotation(awardScrollDataLiveData);
     }
 
     /**
@@ -172,20 +187,6 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
         if (withdrawDataLivData.getValue() == null) {
             return;
         }
-        WithdrawConfigResp.WithdrawListDTO dto = new WithdrawConfigResp.WithdrawListDTO();
-        dto.external = false;
-        dto.tips = "lasdjfklasjdsfkl";
-        dto.money = 0.7;
-        dto.available = false;
-        dto.id = 123456;
-        withdrawDataLivData.getValue().add(0, dto);
-        dto = new WithdrawConfigResp.WithdrawListDTO();
-        dto.external = true;
-        dto.tips = "";
-        dto.money = 0D;
-        dto.available = false;
-        dto.id = 123456;
-        withdrawDataLivData.getValue().add(0, dto);
         for (int i = 0; i < withdrawDataLivData.getValue().size(); i++) {
             getGridItemView(i, gridLayout, withdrawDataLivData.getValue().get(i), submit, descll);
         }
