@@ -80,14 +80,14 @@ public class CritLotteryService extends Service {
     }
 
     DownloadStateDean mDownloadStateDean;
-    ProxyIntegral integralBean;
+    String  mRequestId;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         startLotteryForeground();
         boolean startCrit = intent.getBooleanExtra("start_crit", false);
         mStartTime = intent.getIntExtra("start_time", 0);
-        integralBean = (ProxyIntegral) intent.getSerializableExtra("integralBean");
+        mRequestId = intent.getStringExtra("requestId");
         if (startCrit) {
             //开始服务
             //判断暴击模式是否在运行
@@ -109,9 +109,9 @@ public class CritLotteryService extends Service {
 
 
     public void getDownloadStatus() {
-        if (integralBean != null) {
+        if (mRequestId != null) {
             Map<String, String> params = new HashMap<>();
-            params.put("req_id", integralBean.getWallRequestId());
+            params.put("req_id", mRequestId);
             unDisposable();
             addDisposable(EasyHttp.get(INTEGRAL_REWARD)
                     .cacheMode(CacheMode.NO_CACHE)

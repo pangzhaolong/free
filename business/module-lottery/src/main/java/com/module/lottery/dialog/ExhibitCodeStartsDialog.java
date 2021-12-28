@@ -61,6 +61,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
     private ValueAnimator valueProbeAnimator;
     private int mProgressMarginStart;
     private boolean isSendCloseEvent = true;
+    private static final String TAG = "ExhibitCodeStartsDialog";
 
     public ExhibitCodeStartsDialog(Context context, String goodsId, GenerateCodeBean generateCodeBean) {
         super(context, R.style.dialogTransparent);//内容样式在这里引入
@@ -167,7 +168,8 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
                 public void onInstalled() {
                     //安装完成 请求服务器是否开启暴击模式
                     if (mOnFinishListener != null) {
-                        mOnFinishListener.onStartCritMode(mGenerateCodeBean,integralBean);
+                        mDataBinding.integralBt.setText("体验" + ABSwitch.Ins().getScoreTaskPlayTime() + "秒");
+                        mOnFinishListener.onStartCritMode(mGenerateCodeBean, integralBean);
                     }
                 }
 
@@ -239,22 +241,30 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
             mDataBinding.giftBoxOff.loop(true);
             mDataBinding.giftBoxOff.playAnimation();
         }
+        //开启了暴击模式
         if (ABSwitch.Ins().getOpenCritModel()) {
+            Logger.d(TAG + "开启了暴击模式");
+            //每天参与次数
             if (DateManager.getInstance().timesLimit(DateManager.CRIT_KEY, DateManager.CRIT_NUMBER,
                     ABSwitch.Ins().getEnableOpenCritModelCount())) {
+                Logger.d(TAG + "可以继续参与");
                 //判断是否打开新手模式
                 if (ABSwitch.Ins().isOpenCritModelByNewUser()) {
+                    Logger.d(TAG + "打来了新手模式");
                     //判断是否处于新手阶段
                     if (CriticalModelTool.isNewUser()) {
+                        Logger.d(TAG + "新手阶段");
                         //普通次数模式
                         numberModel();
                     } else {
                         //老用户模式
                         oldUserModel();
+                        Logger.d(TAG + "老用户模式 1");
                     }
                 } else {
                     //老用户模式
                     oldUserModel();
+                    Logger.d(TAG + "老用户模式 2");
                 }
             } else {
                 //不能触发了 每天参与的次数用完
@@ -269,8 +279,9 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
 
 
     private void oldUserModel() {
+        int number = LotteryAdCount.INSTANCE.getCriticalModelLotteryNumber();
         //判断积分墙是否开启
-        if (ABSwitch.Ins().isOpenScoreModelCrit()) {
+        if (ABSwitch.Ins().isOpenScoreModelCrit() && number == 0) {
             //积分下载模式打开的 ，获取是否有积分任务
             //新用户并且抽奖次数未达到开启暴击条件
             CriticalModelTool.getScenesSwitch(new CriticalModelTool.IScenesSwitchListener() {
@@ -292,6 +303,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
             numberModel();
         }
     }
+
     //次数模式
     private void numberModel() {
         //普通次数模式
@@ -492,7 +504,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
         /**
          * 开启暴击模式
          */
-        void onStartCritMode(GenerateCodeBean generateCodeBean,ProxyIntegral integralBean);
+        void onStartCritMode(GenerateCodeBean generateCodeBean, ProxyIntegral integralBean);
 
     }
 
