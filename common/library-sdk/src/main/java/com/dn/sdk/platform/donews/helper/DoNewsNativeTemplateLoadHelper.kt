@@ -4,9 +4,11 @@ import android.app.Activity
 import android.view.View
 import com.dn.sdk.AdCustomError
 import com.dn.sdk.bean.AdRequest
+import com.dn.sdk.bean.AdStatus
 import com.dn.sdk.listener.IAdNativeTemplateListener
 import com.donews.ads.mediation.v2.api.DoNewsAdManagerHolder
 import com.donews.ads.mediation.v2.api.DoNewsAdNative
+import com.donews.ads.mediation.v2.framework.bean.DnUnionBean
 import com.donews.ads.mediation.v2.framework.bean.DoNewsAD
 
 /**
@@ -59,7 +61,11 @@ object DoNewsNativeTemplateLoadHelper : BaseHelper() {
         val doNewsTemplateListener = object : DoNewsAdNative.DoNewsTemplateListener {
             override fun onAdStatus(code: Int, any: Any?) {
                 runOnUiThread(activity) {
-                    listener?.onAdStatus(code, any)
+                    if (code == 10 && any is DnUnionBean) {
+                        listener?.onAdStatus(code, AdStatus(any))
+                    } else {
+                        listener?.onAdStatus(code, any)
+                    }
                 }
             }
 

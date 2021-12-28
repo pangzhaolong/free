@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -115,7 +116,7 @@ public class MainActivity
 
     private long mFirstClickBackTime = 0;
     //计算 暴击时刻的总时间 5分钟
-    private long CruelDuration = 1 * 60 * 1000;
+    private final long CruelDuration = 1 * 60 * 1000;
 
     /**
      * 初始选择tab
@@ -234,14 +235,10 @@ public class MainActivity
     @Subscribe
     public void UnlockEvent(CritMessengerBean critMessenger) {
         if (critMessenger != null && critMessenger.mStatus == 200) {
-            //判断暴击模式是否处于开启中
-            int critState = SPUtils.getInformain(CRIT_STATE, 0);
-            if (critState == 0) {
-                //开始暴击模式
-                mDataBinding.mainFloatingBtn.setVisibility(View.GONE);
-                mDataBinding.mainFloatingBtn.setModel(FrontFloatingBtn.CRITICAL_MODEL);
-                showPopWindow(CruelDuration, CruelDuration);
-            }
+            //开始暴击模式
+            mDataBinding.mainFloatingBtn.setVisibility(View.GONE);
+            mDataBinding.mainFloatingBtn.setModel(FrontFloatingBtn.CRITICAL_MODEL);
+            showPopWindow(CruelDuration, CruelDuration);
         }
     }
 
@@ -254,9 +251,6 @@ public class MainActivity
         mPopWindow.setFocusable(false);
         mPopWindow.setClippingEnabled(false);
         mPopWindow.showAtLocation(getWindow().getDecorView(), Gravity.TOP, 0, 0);
-        if (SPUtils.getInformain(CRIT_STATE, 0) == 0) {
-            SPUtils.setInformain(CritParameterConfig.CRIT_START_TIME, SystemClock.elapsedRealtime());
-        }
         viewDataBinding.countdownView.start(time);
         viewDataBinding.countdownView.setCountdownViewListener(new CountdownView.ICountdownViewListener() {
             @Override
@@ -306,18 +300,8 @@ public class MainActivity
             });
         }
 
-        mViewModel.getWallTaskRp("c74riki16q5jr1jat3q0").observe(this, wallTaskRpBean -> {
-            if (wallTaskRpBean == null) {
-                return;
-            }
-
-            ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
-                    .withString("from", "wallTask")
-                    .withFloat("score", wallTaskRpBean.getScore())
-                    .withString("restId", wallTaskRpBean.getRestId())
-                    .navigation();
-            AnalysisUtils.onEventEx(this, Dot.But_Rp_Double);
-        });
+        mDataBinding.mainFloatingRp.reLoadTask();
+        checkRetentionTask();
     }
 
     //上报测试多参数事件
@@ -823,6 +807,16 @@ public class MainActivity
     @Override
     public void onTaskClick(String reqId) {
         LogUtil.e("reqId: " + reqId);
+
+        SPUtils.setInformain(KeySharePreferences.RETENTION_TASK_REQUEST_ID, reqId);
+    }
+
+    private void checkRetentionTask() {
+        String reqId = SPUtils.getInformain(KeySharePreferences.RETENTION_TASK_REQUEST_ID, "");
+        if (TextUtils.isEmpty(reqId)) {
+            return;
+        }
+
         mViewModel.getRetentionTask(reqId).observe(this, retentionTaskBean -> {
             if (retentionTaskBean == null || !retentionTaskBean.getHandout()) {
                 if (mRetryCount > 6) {
@@ -838,7 +832,7 @@ public class MainActivity
                 if (wallTaskRpBean == null) {
                     return;
                 }
-
+//                SPUtils.setInformain(KeySharePreferences.RETENTION_TASK_REQUEST_ID, "");
                 ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
                         .withString("from", "wallTask")
                         .withFloat("score", wallTaskRpBean.getScore())

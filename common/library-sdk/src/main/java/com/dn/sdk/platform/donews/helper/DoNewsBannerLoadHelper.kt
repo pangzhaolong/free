@@ -3,9 +3,11 @@ package com.dn.sdk.platform.donews.helper
 import android.app.Activity
 import com.dn.sdk.AdCustomError
 import com.dn.sdk.bean.AdRequest
+import com.dn.sdk.bean.AdStatus
 import com.dn.sdk.listener.IAdBannerListener
 import com.donews.ads.mediation.v2.api.DoNewsAdManagerHolder
 import com.donews.ads.mediation.v2.api.DoNewsAdNative
+import com.donews.ads.mediation.v2.framework.bean.DnUnionBean
 import com.donews.ads.mediation.v2.framework.bean.DoNewsAD
 
 /**
@@ -68,7 +70,11 @@ object DoNewsBannerLoadHelper : BaseHelper() {
 
             override fun onAdStatus(code: Int, any: Any?) {
                 runOnUiThread(activity) {
-                    listener?.onAdStatus(code, any)
+                    if (code == 10 && any is DnUnionBean) {
+                        listener?.onAdStatus(code, AdStatus(any))
+                    } else {
+                        listener?.onAdStatus(code, any)
+                    }
                 }
             }
 

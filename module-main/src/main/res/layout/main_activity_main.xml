@@ -23,8 +23,16 @@
 
         <TextView
             android:id="@+id/occupy_position"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="wrap_content"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:textStyle="bold"
+            android:textSize="10dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:textColor="#FFFFFF"
+            android:text="调试使用入口可忽略"
+            android:layout_height="wrap_content"
             android:layout_marginTop="200dp"
             android:background="#BAA80A" />
 

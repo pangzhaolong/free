@@ -39,7 +39,11 @@ public class MainFloatingBtn extends FrameLayout implements IntegralComponent.IS
         mAppIcon = mRootView.findViewById(R.id.main_rp_icon);
 
 //        IntegralComponent.getInstance().getSecondStayTask(this);
-        IntegralComponent.getInstance().getIntegral(this);
+//        IntegralComponent.getInstance().getIntegral(this);
+    }
+
+    public void reLoadTask() {
+        IntegralComponent.getInstance().getSecondStayTask(this);
     }
 
     public void setListener(RetentionTaskListener listener) {
@@ -51,6 +55,7 @@ public class MainFloatingBtn extends FrameLayout implements IntegralComponent.IS
         if (var1 == null) {
             return;
         }
+        this.setVisibility(VISIBLE);
         List<View> views = new ArrayList<>();
         views.add(mRootView);
         Glide.with(mContext).load(var1.getIcon()).into(mAppIcon);

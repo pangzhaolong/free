@@ -4,12 +4,14 @@ import android.app.Activity
 import com.dn.sdk.AdCustomError
 import com.dn.sdk.DelayExecutor
 import com.dn.sdk.bean.AdRequest
+import com.dn.sdk.bean.AdStatus
 import com.dn.sdk.bean.PreloadAdState
 import com.dn.sdk.platform.donews.preloadad.DoNewsPreloadSplashAd
 import com.dn.sdk.listener.IAdSplashListener
 import com.dn.sdk.bean.preload.PreloadSplashAd
 import com.donews.ads.mediation.v2.api.DoNewsAdManagerHolder
 import com.donews.ads.mediation.v2.api.DoNewsAdNative
+import com.donews.ads.mediation.v2.framework.bean.DnUnionBean
 import com.donews.ads.mediation.v2.framework.bean.DoNewsAD
 
 /**
@@ -79,7 +81,11 @@ object DoNewsSplashLoadHelper : BaseHelper() {
 
             override fun onAdStatus(code: Int, any: Any?) {
                 runOnUiThread(activity) {
-                    listener?.onAdStatus(code, any)
+                    if (code == 10 && any is DnUnionBean) {
+                        listener?.onAdStatus(code, AdStatus(any))
+                    } else {
+                        listener?.onAdStatus(code, any)
+                    }
                 }
             }
 
@@ -207,7 +213,11 @@ object DoNewsSplashLoadHelper : BaseHelper() {
 
             override fun onAdStatus(code: Int, any: Any?) {
                 runOnUiThread(activity) {
-                    listener?.onAdStatus(code, any)
+                    if (code == 10 && any is DnUnionBean) {
+                        listener?.onAdStatus(code, AdStatus(any))
+                    } else {
+                        listener?.onAdStatus(code, any)
+                    }
                 }
             }
 

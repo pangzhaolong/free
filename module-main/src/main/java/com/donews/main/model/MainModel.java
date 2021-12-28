@@ -14,6 +14,7 @@ import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
+import com.donews.utilslibrary.utils.HttpConfigUtilsKt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,7 +113,7 @@ public class MainModel extends BaseLiveDataModel {
 
     public MutableLiveData<RetentionTaskBean> getRetentionTask(String reqId) {
         MutableLiveData<RetentionTaskBean> mutableLiveData = new MutableLiveData<>();
-        addDisposable(EasyHttp.post(BuildConfig.API_INTEGRAL_URL + "v1/has-wall-reward")
+        addDisposable(EasyHttp.get(HttpConfigUtilsKt.withConfigParams(BuildConfig.API_INTEGRAL_URL + "v1/has-wall-reward", true))
                 .cacheMode(CacheMode.NO_CACHE)
                 .isShowToast(false)
                 .params("req_id", reqId)
@@ -134,7 +135,7 @@ public class MainModel extends BaseLiveDataModel {
 
     public MutableLiveData<WallTaskRpBean> getWallTaskRp(String reqId) {
         MutableLiveData<WallTaskRpBean> mutableLiveData = new MutableLiveData<>();
-        addDisposable(EasyHttp.post(BuildConfig.API_INTEGRAL_URL + "v1/double-red-packet")
+        addDisposable(EasyHttp.post(HttpConfigUtilsKt.withConfigParams(BuildConfig.API_INTEGRAL_URL + "v1/double-red-packet", true))
                 .cacheMode(CacheMode.NO_CACHE)
                 .isShowToast(false)
                 .upJson("{\"req_id\": \"" + reqId + "\"}")
