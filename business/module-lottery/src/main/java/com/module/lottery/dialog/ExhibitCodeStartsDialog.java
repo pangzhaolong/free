@@ -168,7 +168,12 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
                 public void onInstalled() {
                     //安装完成 请求服务器是否开启暴击模式
                     if (mOnFinishListener != null) {
-                        mDataBinding.integralBt.setText("体验" + ABSwitch.Ins().getScoreTaskPlayTime() + "秒");
+                        mDataBinding.integralBt.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mDataBinding.integralBt.setText("体验" + ABSwitch.Ins().getScoreTaskPlayTime() + "秒");
+                            }
+                        });
                         mOnFinishListener.onStartCritMode(mGenerateCodeBean, integralBean);
                     }
                 }
