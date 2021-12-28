@@ -205,6 +205,14 @@ public class WithdrawalCenterActivity extends
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mDataBinding.mineDrawSubmitLbv != null) {
+            mDataBinding.mineDrawSubmitLbv.stopScroll();
+        }
+    }
+
     //成功之后的抽奖弹窗
     private void showCongratulationsDialog() {
         if (mViewModel.withdrawSelectDto == null) {

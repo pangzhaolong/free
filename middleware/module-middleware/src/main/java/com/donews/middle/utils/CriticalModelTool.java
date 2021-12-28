@@ -153,6 +153,4 @@ public class CriticalModelTool {
         }
         return false;
     }
-
-
 }

@@ -96,7 +96,7 @@
                                     android:layout_marginBottom="21dp"
                                     android:max="10"
                                     android:maxLength="10"
-                                    android:progress="3"
+                                    android:progress="0"
                                     android:progressDrawable="@drawable/front_progress_style"
                                     app:layout_constraintBottom_toBottomOf="parent" />
 
@@ -183,8 +183,6 @@
                                             android:layout_height="wrap_content"
                                             android:layout_gravity="top|center_horizontal"
                                             android:layout_marginBottom="10dp">
-                                            front_rp_progress_done
-
                                             <ImageView
                                                 android:id="@+id/front_rp_iv2"
                                                 android:layout_width="wrap_content"

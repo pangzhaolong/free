@@ -51,7 +51,9 @@ public class KeySharePreferences {
     public final static String FIRST_RP_CAN_OPEN = "first_rp_can_open";
 
     //积分墙次留任务
-    public final static String RETENTION_TASK_REQUEST_ID = "retention_task_request_id";
+    public final static String RETENTION_TASK_SRC_REQUEST_ID = "retention_task_src_request_id";
+    public final static String RETENTION_TASK_WALL_REQUEST_ID = "retention_task_wall_request_id";
+
 
 
     public final static String SHOW_DIALOG_WHEN_LAUNCH = "show_dialog_when_launch";

@@ -113,6 +113,7 @@ public class MainModel extends BaseLiveDataModel {
 
     public MutableLiveData<RetentionTaskBean> getRetentionTask(String reqId) {
         MutableLiveData<RetentionTaskBean> mutableLiveData = new MutableLiveData<>();
+//        addDisposable(EasyHttp.get(HttpConfigUtilsKt.withConfigParams("https://lottery.dev.tagtic.cn/wall/v1/has-wall-reward", true))
         addDisposable(EasyHttp.get(HttpConfigUtilsKt.withConfigParams(BuildConfig.API_INTEGRAL_URL + "v1/has-wall-reward", true))
                 .cacheMode(CacheMode.NO_CACHE)
                 .isShowToast(false)

@@ -89,7 +89,7 @@ public class FrontConfigManager {
 
                         FrontConfigManager.Ins().setFrontConfigBean(bean);
                         if (mHandler != null) {
-                            mHandler.sendEmptyMessageDelayed(UPDATE_CONFIG_MSG, FrontConfigManager.Ins().getConfigBean().getRefreshInterval() * 1000);
+                            mHandler.sendEmptyMessageDelayed(UPDATE_CONFIG_MSG, FrontConfigManager.Ins().getConfigBean().getRefreshInterval() * 1000L);
                         }
                     }
                 });

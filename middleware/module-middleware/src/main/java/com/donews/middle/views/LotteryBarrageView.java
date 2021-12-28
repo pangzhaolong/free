@@ -13,7 +13,6 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.donews.middle.bean.front.AwardBean;
 import com.donews.middle.bean.front.WinningRotationBean;
 import com.donews.utilslibrary.utils.LogUtil;
 
@@ -89,15 +88,16 @@ public class LotteryBarrageView extends FrameLayout {
         if (mAwardList.size() <= 0) {
             return;
         }
+
+        startScroll();
+    }
+
+    public void startScroll() {
         if (mScrollHandler != null) {
             if (mScrollHandler.hasMessages(MSG_ID)) {
                 mScrollHandler.removeMessages(MSG_ID);
             }
         }
-        startScroll();
-    }
-
-    public void startScroll() {
         initView();
     }
 
@@ -107,6 +107,7 @@ public class LotteryBarrageView extends FrameLayout {
 
     public void resumeScroll() {
         mIsPause = false;
+        startScroll();
     }
 
     public void stopScroll() {
@@ -129,7 +130,7 @@ public class LotteryBarrageView extends FrameLayout {
         }
     }
 
-    private TranslateAnimation[] mTAs = new TranslateAnimation[6];
+    private final TranslateAnimation[] mTAs = new TranslateAnimation[6];
 
     private int getIdleTransAnimatorIdx() {
         for (int idx = 0; idx < mTAs.length; idx++) {
@@ -150,6 +151,9 @@ public class LotteryBarrageView extends FrameLayout {
     }
 
     private void initView() {
+        if (mIsPause) {
+            return;
+        }
         mListIndex++;
         if (mListIndex < 0 || mListIndex >= mAwardList.size()) {
             mListIndex = 0;
@@ -173,6 +177,9 @@ public class LotteryBarrageView extends FrameLayout {
     @SuppressLint("Recycle")
     private void gogogogogo(int transIdx, int viewIdx, int infoIdx) {
 //        LogUtil.e("LotteryBarrageView gogogo:" + transIdx + " vid:" + viewIdx + " infoIdx:" + infoIdx);
+        if (infoIdx < 0 || infoIdx >= mAwardList.size()) {
+            return;
+        }
         WinningRotationBean.WinnerItem winnerItem = mAwardList.get(infoIdx);
 
         int viewGroupWidth = this.getWidth();
@@ -190,10 +197,14 @@ public class LotteryBarrageView extends FrameLayout {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                mLotteryBarrageViews[viewIdx].setVisibility(INVISIBLE);
-                mLotteryBarrageViews[viewIdx].setIdle(true);
-                mTAs[transIdx].cancel();
-                mTAs[transIdx] = null;
+                if (mLotteryBarrageViews[viewIdx] != null) {
+                    mLotteryBarrageViews[viewIdx].setVisibility(INVISIBLE);
+                    mLotteryBarrageViews[viewIdx].setIdle(true);
+                }
+                if (mTAs[transIdx] != null) {
+                    mTAs[transIdx].cancel();
+                    mTAs[transIdx] = null;
+                }
             }
 
             @Override

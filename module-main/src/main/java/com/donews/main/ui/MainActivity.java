@@ -174,20 +174,10 @@ public class MainActivity
         AdVideoCacheUtils.INSTANCE.cacheRewardVideo(this);
         //上报一个测试友盟多参数事件
         testUMMuliParams();
-        mDataBinding.occupyPosition.post(new Runnable() {
-            @Override
-            public void run() {
-                initializeCritState();
-            }
-        });
-        mDataBinding.occupyPosition.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ARouter.getInstance()
-                        .build(RouterFragmentPath.Integral.PAGER_INTEGRAL).withSerializable("proxyIntegral", null)
-                        .navigation();
-            }
-        });
+        mDataBinding.occupyPosition.post(this::initializeCritState);
+        mDataBinding.occupyPosition.setOnClickListener(v -> ARouter.getInstance()
+                .build(RouterFragmentPath.Integral.PAGER_INTEGRAL).withSerializable("proxyIntegral", null)
+                .navigation());
 
         mDataBinding.mainFloatingBtn.setVisibility(AppInfo.checkIsWXLogin() ? View.VISIBLE : View.GONE);
         mDataBinding.mainFloatingRp.setListener(this);
@@ -320,6 +310,13 @@ public class MainActivity
             //登录刷新广告id
             String url = HttpConfigUtilsKt.withConfigParams(BuildConfig.AD_ID_CONFIG, false);
             AdManager.INSTANCE.init();
+
+            if (ABSwitch.Ins().getOpenCritModel() && 0 == SPUtils.getInformain(CritParameterConfig.CRIT_STATE, 0)) {
+                mDataBinding.mainFloatingBtn.setVisibility(View.VISIBLE);
+                mDataBinding.mainFloatingBtn.setModel(FrontFloatingBtn.CRITICAL_MODEL);
+            }
+        } else {
+            mDataBinding.mainFloatingBtn.setVisibility(View.GONE);
         }
     }
 
@@ -463,7 +460,8 @@ public class MainActivity
         if (ABSwitch.Ins().isOpenAB()) {
             mDataBinding.mainFloatingBtn.setVisibility(View.GONE);
         } else {
-            mDataBinding.mainFloatingBtn.setVisibility(View.VISIBLE);
+            //暴击模式是否打开
+            mDataBinding.mainFloatingBtn.setVisibility(ABSwitch.Ins().getOpenCritModel() ? View.VISIBLE : View.GONE);
             mDataBinding.mainFloatingBtn.setOnClickListener(v -> {
                 toggleStatusBar(0);
                 mDataBinding.cvContentView.setCurrentItem(0);
@@ -805,30 +803,31 @@ public class MainActivity
     private int mRetryCount = 0;
 
     @Override
-    public void onTaskClick(String reqId) {
-        LogUtil.e("reqId: " + reqId);
+    public void onTaskClick(String srcReqId, String wallReqId) {
+        LogUtil.e("reqId: " + srcReqId + "  wallReqId: " + wallReqId);
 
-        SPUtils.setInformain(KeySharePreferences.RETENTION_TASK_REQUEST_ID, reqId);
+        SPUtils.setInformain(KeySharePreferences.RETENTION_TASK_SRC_REQUEST_ID, srcReqId);
+        SPUtils.setInformain(KeySharePreferences.RETENTION_TASK_WALL_REQUEST_ID, wallReqId);
     }
 
     private void checkRetentionTask() {
-        String reqId = SPUtils.getInformain(KeySharePreferences.RETENTION_TASK_REQUEST_ID, "");
-        if (TextUtils.isEmpty(reqId)) {
+        String wallReqId = SPUtils.getInformain(KeySharePreferences.RETENTION_TASK_WALL_REQUEST_ID, "");
+        if (TextUtils.isEmpty(wallReqId)) {
             return;
         }
 
-        mViewModel.getRetentionTask(reqId).observe(this, retentionTaskBean -> {
-            if (retentionTaskBean == null || !retentionTaskBean.getHandout()) {
-                if (mRetryCount > 6) {
+        mViewModel.getRetentionTask(wallReqId).observe(this, retentionTaskBean -> {
+            if (retentionTaskBean == null || retentionTaskBean.getHandout()) {
+                if (mRetryCount > 10) {
                     return;
                 }
                 mRetryCount++;
-                new Handler().postDelayed(() -> onTaskClick(reqId), 10000);
+                new Handler().postDelayed(this::checkRetentionTask, 6000);
                 return;
             }
 
             mRetryCount = 0;
-            mViewModel.getWallTaskRp(reqId).observe(this, wallTaskRpBean -> {
+            mViewModel.getWallTaskRp(wallReqId).observe(this, wallTaskRpBean -> {
                 if (wallTaskRpBean == null) {
                     return;
                 }

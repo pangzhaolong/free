@@ -259,6 +259,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             initTaskView(this.getContext(), ti, mDataBinding.frontTaskFl3, mDataBinding.frontTaskMixIv3, mDataBinding.frontTaskIv3, mDataBinding.frontTaskTv3, 3);
             ti = FrontConfigManager.Ins().getConfigBean().getTaskItems().get(3);
             initTaskView(this.getContext(), ti, mDataBinding.frontTaskFl4, mDataBinding.frontTaskMixIv4, mDataBinding.frontTaskIv4, mDataBinding.frontTaskTv4, 4);
+            mDataBinding.frontTaskGroupLl.postInvalidate();
         }
 
         if (FrontConfigManager.Ins().getConfigBean().getBannerItems().size() > 0) {

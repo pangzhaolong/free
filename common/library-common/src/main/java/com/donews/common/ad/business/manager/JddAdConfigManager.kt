@@ -9,6 +9,7 @@ import com.donews.network.EasyHttp
 import com.donews.network.cache.model.CacheMode
 import com.donews.network.callback.SimpleCallBack
 import com.donews.network.exception.ApiException
+import com.donews.utilslibrary.utils.LogUtil
 import com.donews.utilslibrary.utils.withConfigParams
 import com.tencent.mmkv.MMKV
 
@@ -54,6 +55,7 @@ object JddAdConfigManager {
     }
 
     fun update() {
+        LogUtil.e("JddAdConfigManager update")
         EasyHttp.get(BuildConfig.AD_CONFIG.withConfigParams(false))
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(object : SimpleCallBack<JddAdConfigBean>() {

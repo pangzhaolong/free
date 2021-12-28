@@ -1,6 +1,7 @@
 package com.donews.middle.views;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -49,6 +50,9 @@ public class LotteryBarrageItemView extends LinearLayout {
 
     @SuppressLint("SetTextI18n")
     public void setUserAwardInfo(String url, String name, String award) {
+        if (((Activity) mContext).isFinishing()) {
+            return;
+        }
         if (url == null || url.equalsIgnoreCase("")) {
             mAwardTv.setText(name + award);
         } else {
