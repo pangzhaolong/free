@@ -27,10 +27,6 @@ public class ExitRadPackDialog extends BaseDialog<DialogExitRadPackLayoutBinding
         super(context, R.style.dialogTransparent);
     }
 
-    @Override
-    public float setDimAmount() {
-        return 0.9f;
-    }
 
     @Override
     public int setLayout() {
@@ -55,7 +51,6 @@ public class ExitRadPackDialog extends BaseDialog<DialogExitRadPackLayoutBinding
 
     private void initView() {
         mDataBinding.closure.setOnClickListener(v -> dismiss());
-
         mDataBinding.integralTvJj.setOnClickListener(v->{
             dismiss();
         });

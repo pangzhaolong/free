@@ -1,18 +1,16 @@
-package com.module.lottery.utils;
+package com.donews.middle.utils;
 
 import android.content.Context;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.AnticipateOvershootInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.ScaleAnimation;
-import android.view.animation.TranslateAnimation;
 
-import com.module_lottery.R;
+import com.donews.middle.R;
 
-public class LotteryAnimationUtils {
+
+public class CommonAnimationUtils {
 
 
     //缩放动画

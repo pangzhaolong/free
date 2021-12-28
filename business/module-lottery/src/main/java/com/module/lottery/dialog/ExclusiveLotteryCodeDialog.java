@@ -30,6 +30,7 @@ import com.donews.common.views.CountdownView;
 import com.donews.main.BuildConfig;
 import com.donews.main.dialog.BaseDialog;
 import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.utils.CommonAnimationUtils;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
@@ -38,7 +39,6 @@ import com.donews.utilslibrary.utils.AppInfo;
 import com.module.lottery.bean.GenerateCodeBean;
 import com.module.lottery.model.LotteryModel;
 import com.module.lottery.ui.BaseParams;
-import com.module.lottery.utils.LotteryAnimationUtils;
 import com.module_lottery.R;
 import com.module_lottery.databinding.ExclusiveLotteryCodeLayoutBinding;
 
@@ -207,7 +207,7 @@ public class ExclusiveLotteryCodeDialog extends BaseDialog<ExclusiveLotteryCodeL
         boolean protocol = getSharedPreferences().getBoolean("Free", false) ||
                 ABSwitch.Ins().isOpenAutoAgreeProtocol();
         mDataBinding.checkBox.setChecked(protocol);
-        mDataBinding.jumpButton.setAnimation(LotteryAnimationUtils.setScaleAnimation(1000));
+        mDataBinding.jumpButton.setAnimation(CommonAnimationUtils.setScaleAnimation(1000));
         mDataBinding.jumpButton.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("MissingPermission")
             @Override

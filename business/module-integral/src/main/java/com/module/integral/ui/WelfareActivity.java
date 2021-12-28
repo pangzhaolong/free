@@ -1,11 +1,13 @@
 package com.module.integral.ui;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toolbar;
@@ -30,6 +32,8 @@ import com.example.module_integral.databinding.IntegralWelfareLayoutBinding;
 import com.gyf.immersionbar.ImmersionBar;
 import com.module.integral.bean.IntegralDownloadStateDean;
 import com.module.integral.dialog.BenefitUpgradeDialog;
+import com.module.integral.dialog.exit.ExitProgressInterceptDialog;
+import com.module.integral.dialog.exit.ExitRadPackDialog;
 import com.module.integral.model.IntegralModel;
 import com.module.integral.viewModel.IntegralViewModel;
 import com.module.lottery.ui.BaseParams;
@@ -61,10 +65,17 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
     private Timer mTimer;
     private boolean tipsLayoutIsShow = false;
     private int mStartTime = -1;
+    private boolean dialogShow = false;
+
+    /**
+     * mClickStatus 用来判断返回拦截使用
+     * mClickStatus false 表示未安装
+     * mClickStatus true 表示安装
+     */
+    private boolean mClickInstalledStatus = false;
 
 
     private boolean ifTimerRun = false;
-
 
     private void showBenefitUpgradeDialog() {
         BenefitUpgradeDialog benefitUpgradeDialog = new BenefitUpgradeDialog(WelfareActivity.this);
@@ -144,22 +155,6 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
             }
 
         });
-
-        IntegralComponent.getInstance().getSecondStayTask(new IntegralComponent.ISecondStayTaskListener() {
-            @Override
-            public void onSecondStayTask(ProxyIntegral var1) {
-            }
-
-            @Override
-            public void onError(String var1) {
-
-            }
-
-            @Override
-            public void onNoTask() {
-
-            }
-        });
     }
 
 
@@ -169,11 +164,16 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
         mDataBinding.downloadBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                jumpToApk(integralBean);
-                //开始一分钟(中台配置)倒计时任务
-                startTask(integralBean);
+                startExperienceApp(integralBean);
             }
         });
+    }
+
+    //打开体验app
+    private void startExperienceApp(ProxyIntegral integralBean) {
+        jumpToApk(integralBean);
+        //开始一分钟(中台配置)倒计时任务
+        startTask(integralBean);
     }
 
 
@@ -273,7 +273,6 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
 
             @Override
             public void onAdClick() {
-
             }
 
             @Override
@@ -309,6 +308,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
             //安装完成
             @Override
             public void onInstalled() {
+                mClickInstalledStatus = true;
                 mDataBinding.downloadBt.post(new Runnable() {
                     @Override
                     public void run() {
@@ -329,7 +329,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            finish();
+            returnIntercept();
         }
         return super.onOptionsItemSelected(item);
 
@@ -355,13 +355,17 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
             //任务成功
             mIntegralDownloadStateDean = IntegralDownloadStateDean;
             if (!ifTimerRun) {
-                Log.d("startTask","服务器成功");
+                Log.d("startTask", "服务器成功");
                 taskCompleted();
             }
         });
     }
 
     private void startTask(ProxyIntegral integralBean) {
+        if (mTimer != null) {
+            Log.d("startTask", "记时正在进行");
+            return;
+        }
         //初始化暴击体验时长
         mStartTime = ABSwitch.Ins().getScoreTaskPlayTime();
         if (mTimer != null) {
@@ -376,18 +380,18 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
                 ifTimerRun = true;
 //只有应用不在前台才会继续倒计时
                 boolean foreground = AppUtils.isAppForeground();
-                Log.d("startTask","开始倒计时");
+                Log.d("startTask", "开始倒计时");
                 if (!foreground) {
                     if (mStartTime > 0) {
-                        Log.d("startTask","没在前台,倒计时中");
+                        Log.d("startTask", "没在前台,倒计时中");
                         mStartTime = mStartTime - 1;
                         if (mStartTime == (mStartTime / 2)) {
                             //请求服务器处理结果
-                            Log.d("startTask","请求服务器获取结果");
+                            Log.d("startTask", "请求服务器获取结果");
                             requestServiceData(integralBean);
                         }
                     } else {
-                        Log.d("startTask","可以开始暴击模式了");
+                        Log.d("startTask", "可以开始暴击模式了");
                     }
                 } else {
                     if (mStartTime <= 0 && foreground) {
@@ -395,23 +399,76 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
                         mTimer = null;
                         ifTimerRun = false;
                         //倒计时结束 任务完成
-                        Log.d("startTask","任务完成");
+                        Log.d("startTask", "任务完成");
                         if (mIntegralDownloadStateDean == null || !mIntegralDownloadStateDean.getHandout()) {
                             //请求服务器处理结果
                             mStartTime = 0;
-                            Log.d("startTask","上次没有请求到或者请求失败");
+                            Log.d("startTask", "上次没有请求到或者请求失败");
                             requestServiceData(integralBean);
                         } else {
-                            Log.d("startTask","上次请求成功");
+                            Log.d("startTask", "上次请求成功");
                             taskCompleted();
                         }
 
                     } else {
-                        Log.d("startTask","在前台，体验体验时间不足");
+                        Log.d("startTask", "在前台，体验体验时间不足");
                     }
                 }
             }
         }, 0, 1000);
+    }
+
+
+    private void returnIntercept() {
+        if (dialogShow) {
+            finish();
+        }
+        //是否完成了安装
+        if (mClickInstalledStatus) {
+            showExitProgressInterceptDialog();
+        } else {
+            showReceiveDialog();
+        }
+        dialogShow = true;
+    }
+
+
+    @SuppressLint("ResourceType")
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            returnIntercept();
+        }
+        return true;
+    }
+
+    //显示进度条的弹框
+    private void showExitProgressInterceptDialog() {
+        ExitProgressInterceptDialog exitProgressInterceptDialog = new ExitProgressInterceptDialog(WelfareActivity.this);
+        exitProgressInterceptDialog.setFinishListener(new ExitProgressInterceptDialog.OnFinishListener() {
+            @Override
+            public void onExperience() {
+                if (mIntegralBean != null) {
+                    startExperienceApp(mIntegralBean);
+                }
+            }
+        });
+        exitProgressInterceptDialog.show(WelfareActivity.this);
+
+
+    }
+
+    //显示立刻领取dialog
+    private void showReceiveDialog() {
+        ExitRadPackDialog exitRadPackDialog = new ExitRadPackDialog(WelfareActivity.this);
+        exitRadPackDialog.setStateListener(new ExitRadPackDialog.OnSurListener() {
+            @Override
+            public void onJump() {
+                exitRadPackDialog.dismiss();
+                mDataBinding.downloadBt.performClick();
+            }
+        });
+        exitRadPackDialog.show(WelfareActivity.this);
     }
 
 

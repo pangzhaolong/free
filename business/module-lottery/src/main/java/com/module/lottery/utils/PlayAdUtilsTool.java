@@ -20,6 +20,7 @@ import com.donews.base.base.AppManager;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.cache.AdVideoCacheUtils;
 import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.utils.CommonAnimationUtils;
 import com.donews.utilslibrary.utils.DateManager;
 import com.module_lottery.R;
 import com.orhanobut.logger.Logger;
@@ -187,7 +188,7 @@ public class PlayAdUtilsTool {
                     FrameLayout contentParent =
                             (FrameLayout) decorView.findViewById(android.R.id.content);
                     contentParent.addView(view);
-                    linearLayout.setAnimation(LotteryAnimationUtils.setScaleAnimation(1000));
+                    linearLayout.setAnimation(CommonAnimationUtils.setScaleAnimation(1000));
                 }
             } else {
                 ToastUtil.showShort(mContext, "完整观看视频即可获得抽奖码");

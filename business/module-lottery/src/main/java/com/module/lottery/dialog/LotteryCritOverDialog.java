@@ -15,6 +15,7 @@ import com.donews.base.model.BaseLiveDataModel;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.business.monitor.LotteryAdCount;
 import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.utils.CommonAnimationUtils;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
@@ -28,7 +29,6 @@ import com.module.lottery.model.LotteryModel;
 import com.module.lottery.ui.BaseParams;
 import com.module.lottery.ui.LotteryActivity;
 import com.module.lottery.utils.ImageUtils;
-import com.module.lottery.utils.LotteryAnimationUtils;
 import com.module.lottery.utils.RandomProbability;
 import com.module_lottery.R;
 import com.module_lottery.databinding.LotteryCritCommodityLayoutBinding;
@@ -101,7 +101,7 @@ public class LotteryCritOverDialog extends BaseDialog<LotteryCritOverDialogLayou
 
     private void initView() {
         mDataBinding.overView.setVisibility(View.VISIBLE);
-        mDataBinding.overView.startAnimation(LotteryAnimationUtils.setTranslateAnimation(getContext()));
+        mDataBinding.overView.startAnimation(CommonAnimationUtils.setTranslateAnimation(getContext()));
     }
 
 
