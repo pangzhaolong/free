@@ -21,6 +21,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 
@@ -117,6 +118,8 @@ public class MainActivity
     private long mFirstClickBackTime = 0;
     //计算 暴击时刻的总时间 5分钟
     private final long CruelDuration = 1 * 60 * 1000;
+    //下载应用的积分墙弹窗
+    DialogFragment appDownDialog;
 
     /**
      * 初始选择tab
@@ -239,6 +242,9 @@ public class MainActivity
             mDataBinding.mainFloatingBtn.setVisibility(View.GONE);
             mDataBinding.mainFloatingBtn.setModel(FrontFloatingBtn.CRITICAL_MODEL);
             showPopWindow(CruelDuration, CruelDuration);
+            if(appDownDialog != null){
+                appDownDialog.dismiss();
+            }
         }
     }
 
@@ -555,9 +561,12 @@ public class MainActivity
             public void onSuccess(List<ProxyIntegral> list) {
                 runOnUiThread(() -> {
                     mDataBinding.mainFloatingBtn.setEnabled(true);
+                    if(appDownDialog != null){
+                        appDownDialog.dismiss();
+                    }
                     hideLoading();
                     //下载列表弹窗
-                    ExtDialogUtil.showCritDownAppDialog(MainActivity.this, list, null);
+                    appDownDialog = ExtDialogUtil.showCritDownAppDialog(MainActivity.this, list, null);
                 });
             }
 
