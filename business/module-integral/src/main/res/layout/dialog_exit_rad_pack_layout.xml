@@ -10,8 +10,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="30dp">
 
         <ImageView
             android:id="@+id/closure"
@@ -22,7 +23,7 @@
             android:layout_marginEnd="40dp"
             android:layout_marginBottom="24dp"
             android:src="@mipmap/closure_icon"
-            android:visibility="invisible"
+            android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/content_layout"
             app:layout_constraintRight_toRightOf="parent"
             tools:ignore="MissingConstraints" />
@@ -97,25 +98,13 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/integr_iv_pre" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_alignRight="@+id/integral_cl_content"
-                    android:layout_alignBottom="@+id/integral_cl_content"
-                    android:layout_marginRight="-50dp"
-                    android:layout_marginBottom="13dp"
-                    android:src="@mipmap/integr_circel_icon_r_hb" />
-
-                <ImageView
-                    android:layout_width="53dp"
-                    android:layout_height="62dp"
-                    android:layout_alignLeft="@+id/integral_cl_content"
-                    android:layout_alignBottom="@+id/integral_cl_content"
-                    android:layout_marginLeft="-25dp"
-                    android:layout_marginBottom="110dp"
-                    android:src="@mipmap/integr_circel_icon_l_hb" />
             </RelativeLayout>
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/integr_bb_anim"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
             <TextView
                 android:id="@+id/integral_tv_jj"
                 android:layout_width="wrap_content"

@@ -7,9 +7,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.ScaleAnimation;
 
 import androidx.annotation.NonNull;
 
+import com.airbnb.lottie.LottieAnimationView;
+import com.donews.base.utils.ToastUtil;
 import com.example.module_integral.R;
 import com.example.module_integral.databinding.BenefitUpgradeLayoutBinding;
 import com.example.module_integral.databinding.DialogExitRadPackLayoutBinding;
@@ -22,6 +27,8 @@ import java.lang.ref.WeakReference;
  */
 public class ExitRadPackDialog extends BaseDialog<DialogExitRadPackLayoutBinding> implements DialogInterface.OnDismissListener {
     private OnSurListener mOnFinishListener;
+
+    private ScaleAnimation mScaleAnimation;
 
     public ExitRadPackDialog(Context context) {
         super(context, R.style.dialogTransparent);
@@ -51,15 +58,32 @@ public class ExitRadPackDialog extends BaseDialog<DialogExitRadPackLayoutBinding
 
     private void initView() {
         mDataBinding.closure.setOnClickListener(v -> dismiss());
-        mDataBinding.integralTvJj.setOnClickListener(v->{
+        mDataBinding.integralTvJj.setOnClickListener(v -> {
             dismiss();
         });
 
-        mDataBinding.integralTvOk.setOnClickListener(v->{
+        mDataBinding.integralTvOk.setOnClickListener(v -> {
             if (mOnFinishListener != null) {
+                ToastUtil.show(getContext(), "确定点击");
                 mOnFinishListener.onJump();
             }
         });
+
+        //呼吸动画
+        if (mScaleAnimation == null) {
+            mScaleAnimation = new ScaleAnimation(1.15f, 0.9f, 1.15f, 0.9f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            mScaleAnimation.setInterpolator(new LinearInterpolator());
+            mScaleAnimation.setRepeatMode(Animation.REVERSE);
+            mScaleAnimation.setRepeatCount(Animation.INFINITE);
+            mScaleAnimation.setDuration(1000);
+            mDataBinding.integrIbLing.startAnimation(mScaleAnimation);
+        }
+        //红包动画
+        LottieAnimationView lottieAnimationView = mDataBinding.integrBbAnim;
+        lottieAnimationView.setImageAssetsFolder("images");
+        lottieAnimationView.setAnimation("integr_anim_hb.json");
+        lottieAnimationView.loop(true);
+        lottieAnimationView.playAnimation();
     }
 
 
