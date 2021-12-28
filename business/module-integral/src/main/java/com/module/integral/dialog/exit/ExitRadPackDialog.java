@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 
 import com.example.module_integral.R;
 import com.example.module_integral.databinding.BenefitUpgradeLayoutBinding;
+import com.example.module_integral.databinding.DialogExitRadPackLayoutBinding;
 import com.module.lottery.dialog.BaseDialog;
 
 import java.lang.ref.WeakReference;
@@ -19,7 +20,7 @@ import java.lang.ref.WeakReference;
 /**
  * 退出拦截红包弹窗
  */
-public class ExitRadPackDialog extends BaseDialog<BenefitUpgradeLayoutBinding> implements DialogInterface.OnDismissListener {
+public class ExitRadPackDialog extends BaseDialog<DialogExitRadPackLayoutBinding> implements DialogInterface.OnDismissListener {
     private OnStateListener mOnFinishListener;
 
     public ExitRadPackDialog(Context context) {
@@ -53,22 +54,17 @@ public class ExitRadPackDialog extends BaseDialog<BenefitUpgradeLayoutBinding> i
 
 
     private void initView() {
-        mDataBinding.closure.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
+        mDataBinding.closure.setOnClickListener(v -> dismiss());
+
+        mDataBinding.integralTvJj.setOnClickListener(v->{
+            dismiss();
         });
 
-        mDataBinding.jumpBt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mOnFinishListener != null) {
-                    mOnFinishListener.onJump();
-                }
+        mDataBinding.integralTvOk.setOnClickListener(v->{
+            if (mOnFinishListener != null) {
+                mOnFinishListener.onJump();
             }
         });
-
     }
 
 
