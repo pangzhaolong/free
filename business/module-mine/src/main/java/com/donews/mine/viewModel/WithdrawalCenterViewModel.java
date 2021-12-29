@@ -85,7 +85,7 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
     /**
      * 获取地步滚动的通知
      */
-    public void getWiningRotation(){
+    public void getWiningRotation() {
         mModel.getWiningRotation(awardScrollDataLiveData);
     }
 
@@ -221,16 +221,30 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
         }
         //筛选一次数据
         List<WithdrawConfigResp.WithdrawListDTO> newAddList = new ArrayList<>();
+        boolean isTaskJL = false;
         for (int i = 0; i < withdrawDataLivData.getValue().size(); i++) {
             WithdrawConfigResp.WithdrawListDTO item = withdrawDataLivData.getValue().get(i);
-            if(item.external){ //判断是否为积分任务项目
+            if (item.external &&  item.money > 0) { //判断是否为积分任务项目
                 //判断是否为随机项目
-                boolean isRomanItem = item.money <= 0;
-                if(!(isRomanItem && isExitesIntegralTask)){
-                    continue; //是随机金额项目。但是当前没有任务,所以需要隐藏随机金额项
-                }
+                isTaskJL = true;
+                break;
             }
-            newAddList.add(item);
+        }
+        if(isTaskJL){
+            //显示源数据。不做任何处理
+            newAddList.addAll(withdrawDataLivData.getValue());
+        }else{
+            for (int i = 0; i < withdrawDataLivData.getValue().size(); i++) {
+                WithdrawConfigResp.WithdrawListDTO item = withdrawDataLivData.getValue().get(i);
+                if (item.external) { //判断是否为积分任务项目
+                    //判断是否为随机项目
+                    boolean isRomanItem = item.money <= 0;
+                    if (!(isRomanItem && isExitesIntegralTask)) {
+                        continue; //是随机金额项目。但是当前没有任务,所以需要隐藏随机金额项
+                    }
+                }
+                newAddList.add(item);
+            }
         }
         for (int i = 0; i < newAddList.size(); i++) {
             getGridItemView(i, gridLayout, newAddList.get(i), submit, descll);
@@ -362,7 +376,7 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
             }
         });
         //绑定数据
-        if (item.external) {
+        if (item.money <= 0) {
             numTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
             numTv.setText("随机金额");
             numTvFlg.setText("");
