@@ -12,6 +12,9 @@ import com.donews.ads.mediation.v2.integral.DnIntegralNativeAd;
 import com.donews.ads.mediation.v2.integral.DoNewsIntegralHolder;
 import com.donews.ads.mediation.v2.integral.api.DnIntegralHttpCallBack;
 import com.donews.ads.mediation.v2.integral.api.DnIntegralIntegralError;
+import com.donews.utilslibrary.utils.AppInfo;
+import com.donews.utilslibrary.utils.DeviceUtils;
+import com.donews.utilslibrary.utils.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -21,11 +21,6 @@ repositories {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 
-//    api (name: 'DonewsBISdk', ext: 'aar')
-//    api (name: 'smantifraud', ext: 'aar')
-
-//    implementation(name: 'donewsBISdk', ext: 'aar')//donewsBISdk.aar 多牛统计SDK
-//    implementation(name: 'oaid_sdk_1.0.23', ext: 'aar')
 
     implementation rootProject.ext.androidx["androidx-appcompat"]
     implementation 'com.android.support:multidex:1.0.3'
@@ -49,6 +44,4 @@ dependencies {
     api rootProject.ext.dependencies["logger"]
 
     api project(path: ':common:lib_eventbus')
-//    api project(':common:libs:utils-libs')
-
 }

@@ -182,6 +182,9 @@ public class GotoUtil {
 
             @Override
             public void onNoTask() {
+                ARouter.getInstance()
+                        .build(RouterFragmentPath.Integral.PAGER_INTEGRAL_NOT_TASK)
+                        .navigation();
                 ToastUtil.showShort(context, "暂无积分任务");
             }
         });

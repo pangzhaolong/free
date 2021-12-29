@@ -354,7 +354,6 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
                 finish();
             }
 
-
             @Override
             public void onAdShow() {
                 super.onAdShow();
