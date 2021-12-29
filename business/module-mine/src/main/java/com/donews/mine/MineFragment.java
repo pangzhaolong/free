@@ -144,6 +144,10 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
     public void onResume() {
         super.onResume();
         onRefresh();
+
+//        ARouter.getInstance()
+//                .build(RouterFragmentPath.Integral.PAGER_INTEGRAL_NOT_TASK)
+//                .navigation();
     }
 
     private void onRefresh() {

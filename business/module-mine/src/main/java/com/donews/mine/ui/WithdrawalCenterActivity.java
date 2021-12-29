@@ -194,10 +194,6 @@ public class WithdrawalCenterActivity extends
         setYYW();
         mViewModel.getWiningRotation();
         mViewModel.updateIntegralTask();
-
-        ARouter.getInstance()
-                .build(RouterFragmentPath.Integral.PAGER_INTEGRAL_NOT_TASK)
-                .navigation();
     }
 
     private MineWithdraWallBean mineWithdraWallBean = null;
