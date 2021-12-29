@@ -397,6 +397,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             //圆
             if (CriticalModelTool.ifCriticalStrike()) {
                 mDataBinding.tips.setText(CRITICAL_BT_TITLE_2);
+                mDataBinding.label01.setText(CRITICAL_BT_TITLE_0);
                 mDataBinding.jsonAnimationRound.clearAnimation();
                 initLottie(mDataBinding.jsonAnimationRound, CRIT_ROUND);
             } else {
