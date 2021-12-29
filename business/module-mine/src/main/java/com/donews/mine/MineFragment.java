@@ -267,7 +267,6 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
                 });
         updateUIData();
         mDataBinding.mineFrmRefesh.autoRefresh();
-        setYYW();
         scrollFloatBar();
 //        mDataBinding.mineCcsView.refreshData();
     }
@@ -389,6 +388,7 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
         isRefresh = true;
         adapter.refeshStart();
         mViewModel.loadRecommendGoods(25);
+        setYYW();
         if (checkIsLogin()) {
             mViewModel.getLoadWithdrawData();
         } else {
