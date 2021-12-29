@@ -17,6 +17,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.dn.sdk.bean.integral.ProxyIntegral;
+import com.dn.sdk.utils.IntegralComponent;
 import com.donews.base.utils.GsonUtils;
 import com.donews.base.utils.ToastUtil;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
@@ -29,12 +31,16 @@ import com.donews.mine.bean.resps.WithdraWalletResp;
 import com.donews.mine.bean.resps.WithdrawConfigResp;
 import com.donews.mine.model.MineModel;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
 public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> {
     private FragmentActivity baseActivity;
     private ViewDataBinding viewDataBinding;
+
+    //是否存在积分任务
+    public boolean isExitesIntegralTask = false;
 
     //提现中心的配置，金额列表
     public MutableLiveData<List<WithdrawConfigResp.WithdrawListDTO>> withdrawDataLivData =
@@ -105,6 +111,35 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
         } catch (Exception err) {
             mModel.requestWithdrawCenterConfig(withdrawDataLivData);
         }
+    }
+
+    /**
+     * 更新积分墙任务
+     */
+    public void updateIntegralTask() {
+        //获取积分墙任务
+        IntegralComponent.getInstance().getIntegral(new IntegralComponent.IntegralHttpCallBack() {
+            @Override
+            public void onSuccess(ProxyIntegral integralBean) {
+                isExitesIntegralTask = true;
+                getLoadWithdraWalletDite();
+                getLoadWithdrawData(false);
+            }
+
+            @Override
+            public void onError(String var1) {
+                isExitesIntegralTask = false;
+                getLoadWithdraWalletDite();
+                getLoadWithdrawData(false);
+            }
+
+            @Override
+            public void onNoTask() {
+                isExitesIntegralTask = false;
+                getLoadWithdraWalletDite();
+                getLoadWithdrawData(false);
+            }
+        });
     }
 
     /**
@@ -187,8 +222,21 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
         if (withdrawDataLivData.getValue() == null) {
             return;
         }
+        //筛选一次数据
+        List<WithdrawConfigResp.WithdrawListDTO> newAddList = new ArrayList<>();
         for (int i = 0; i < withdrawDataLivData.getValue().size(); i++) {
-            getGridItemView(i, gridLayout, withdrawDataLivData.getValue().get(i), submit, descll);
+            WithdrawConfigResp.WithdrawListDTO item = withdrawDataLivData.getValue().get(i);
+            if(item.external){ //判断是否为积分任务项目
+                //判断是否为随机项目
+                boolean isRomanItem = item.money <= 0;
+                if(!(isRomanItem && isExitesIntegralTask)){
+                    continue; //是随机金额项目。但是当前没有任务,所以需要隐藏随机金额项
+                }
+            }
+            newAddList.add(item);
+        }
+        for (int i = 0; i < newAddList.size(); i++) {
+            getGridItemView(i, gridLayout, newAddList.get(i), submit, descll);
         }
     }
 
