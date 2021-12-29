@@ -53,8 +53,6 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
 
     private static final int DELAY = 1000;
 
-    @Autowired(name = "proxyIntegral")
-    public ProxyIntegral proxyIntegral;
     private WelfareHandler mWelfareHandler = new WelfareHandler(this);
     //自动跳转的时间
     private int jumpTime = 0;

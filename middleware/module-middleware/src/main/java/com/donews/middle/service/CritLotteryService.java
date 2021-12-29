@@ -89,15 +89,17 @@ public class CritLotteryService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         startLotteryForeground();
-        boolean startCrit = intent.getBooleanExtra("start_crit", false);
-        mStartTime = intent.getIntExtra("start_time", 0);
-        mRequestId = intent.getStringExtra("requestId");
-        if (startCrit) {
-            //开始服务
-            //判断暴击模式是否在运行
-            int critState = SPUtils.getInformain(CRIT_STATE, 0);
-            if (critState == 0) {
-                startTask();
+        if (intent != null) {
+            boolean startCrit = intent.getBooleanExtra("start_crit", false);
+            mStartTime = intent.getIntExtra("start_time", 0);
+            mRequestId = intent.getStringExtra("requestId");
+            if (startCrit) {
+                //开始服务
+                //判断暴击模式是否在运行
+                int critState = SPUtils.getInformain(CRIT_STATE, 0);
+                if (critState == 0) {
+                    startTask();
+                }
             }
         }
         return super.onStartCommand(intent, flags, startId);
