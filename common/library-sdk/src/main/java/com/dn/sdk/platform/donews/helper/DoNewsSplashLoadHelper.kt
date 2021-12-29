@@ -223,6 +223,7 @@ object DoNewsSplashLoadHelper : BaseHelper() {
 
             override fun onAdShow() {
                 runOnUiThread(activity) {
+                    doNewsPreloadSplashAd.setLoadState(PreloadAdState.Shown)
                     listener?.onAdShow()
                 }
             }

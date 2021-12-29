@@ -84,10 +84,6 @@ data class JddAdConfigBean(
     @SerializedName("playRewardVideoTimes")
     var playRewardVideoTimes: Int = 10,
 
-    /** 用户当日抽奖达到一定次数则会启动无效激励视频广告位加载激励视频 */
-    @SerializedName("useInvalidRewardVideoIdWhenLotteryNumber")
-    var useInvalidRewardVideoIdWhenLotteryNumber: Int = 15,
-
     /** 用户未抽奖时退出app弹出框关闭按钮点击时出现的广告开关 */
     @SerializedName("notLotteryExitAppDialogAdEnable")
     var notLotteryExitAppDialogAdEnable: Boolean = false,
@@ -121,19 +117,4 @@ data class JddAdConfigBean(
     /** 用户每天次数大于 HourClickAdMaxNumber 并且点击率 大于 HourClickRate ，则限制 x 时长 （单位毫秒,默认30分） */
     @SerializedName("hourClickLimitTime")
     var hourClickLimitTime: Long = 1800000,
-
-
-    /** ecpm限制标准 */
-    @SerializedName("ecpmLevelNumber")
-    var ecpmLevelNumber: Float = 0f,
-
-    /** 单位小时内，ecpm为 <=ecpmLevelNumber 时的次数 达到x 次，则限制用户广告 */
-    @SerializedName("hourEcpmNumber")
-    var hourEcpmNumber: Int = 10,
-    /** 单位小时内，ecpm为 <=ecpmLevelNumber 时的次数 达到 hourEcpmNumber 次，则限制用户广告时长（单位毫秒,默认30分） */
-    @SerializedName("hourEcpmLimitTime")
-    var hourEcpmLimitTime: Long = 1800000,
-    /**  1天内 ecpm为 <=ecpmLevelNumber 的次数到达x次，则本日不在显示广告*/
-    @SerializedName("todayMaxEcpmNumber")
-    var todayMaxEcpmNumber: Int = 30
 ) : BaseCustomViewModel(), Parcelable

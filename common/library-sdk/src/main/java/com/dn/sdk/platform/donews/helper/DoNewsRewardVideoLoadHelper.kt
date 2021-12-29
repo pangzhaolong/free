@@ -169,8 +169,8 @@ object DoNewsRewardVideoLoadHelper : BaseHelper() {
 
             override fun onVideoCached() {
                 runOnUiThread(activity) {
-                    listener?.onVideoCached()
                     preloadRewardVideoAd.setLoadState(PreloadAdState.Success)
+                    listener?.onVideoCached()
                     if (preloadRewardVideoAd.isNeedShow()) {
                         preloadRewardVideoAd.showAd()
                     }
@@ -179,6 +179,7 @@ object DoNewsRewardVideoLoadHelper : BaseHelper() {
 
             override fun onAdShow() {
                 runOnUiThread(activity) {
+                    preloadRewardVideoAd.setLoadState(PreloadAdState.Shown)
                     listener?.onAdShow()
                 }
             }
@@ -237,6 +238,8 @@ object DoNewsRewardVideoLoadHelper : BaseHelper() {
                 val params = JSONObject()
                 params.put("req_id", any.reqId)
                 params.put("ecpm", ecpm)
+                //广告类型,0 缺省,1激励视频
+                params.put("type", 1)
 
                 val jsonString = params.toString()
 
