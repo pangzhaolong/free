@@ -6,14 +6,25 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.drouter.ARouteHelper;
+import com.dn.sdk.bean.integral.ProxyIntegral;
+import com.dn.sdk.utils.IntegralComponent;
+import com.donews.base.utils.GsonUtils;
+import com.donews.base.utils.ToastUtil;
 import com.donews.common.router.RouterActivityPath;
+import com.donews.common.router.RouterFragmentPath;
 import com.donews.middle.api.MiddleApi;
+import com.donews.middle.bean.TaskActionBean;
 import com.donews.middle.bean.home.PrivilegeLinkBean;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.List;
 
 public class GotoUtil {
 
@@ -119,6 +130,60 @@ public class GotoUtil {
             bundle.putString("url", action);
             bundle.putString("title", title);
             ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
+        } else {
+            String[] acts = action.split("\\|");
+            if (acts.length < 1) {
+                return;
+            }
+            switch (acts[0]) {
+                case TaskActionBean.WINNER:
+                case TaskActionBean.SHOW:
+                    EventBus.getDefault().post(new TaskActionBean(acts[0], ""));
+                    break;
+                case TaskActionBean.LOTTERY:
+                    //抽奖页
+                    if (acts.length >= 2) {
+                        ARouter.getInstance()
+                                .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
+                                .withString("goods_id", acts[1])
+                                .navigation();
+                    }
+                    break;
+                case TaskActionBean.INTEGRAL:
+                    // 积分墙
+                    getIntegralTask(context);
+                    break;
+                case TaskActionBean.MONEY:
+                    //提现页
+                    ARouter.getInstance()
+                            .build(RouterActivityPath.Mine.PAGER_ACTIVITY_WITHDRAWAL)
+                            .navigation();
+                    break;
+            }
         }
+    }
+
+    private static void getIntegralTask(Context context) {
+        IntegralComponent.getInstance().getIntegralList(new IntegralComponent.IntegralHttpCallBack() {
+            @Override
+            public void onSuccess(List<ProxyIntegral> var1) {
+                if (var1 != null &&var1.size()> 0) {
+                    // 积分墙
+                    ARouter.getInstance()
+                            .build(RouterFragmentPath.Integral.PAGER_INTEGRAL)
+                            .navigation();
+                }
+            }
+
+            @Override
+            public void onError(String var1) {
+
+            }
+
+            @Override
+            public void onNoTask() {
+                ToastUtil.showShort(context, "暂无积分任务");
+            }
+        });
     }
 }

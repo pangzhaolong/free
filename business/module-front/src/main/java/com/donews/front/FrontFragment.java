@@ -67,6 +67,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -250,7 +251,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         mDataBinding.frontTaskGroupLl.setVisibility(FrontConfigManager.Ins().getConfigBean().getTask() ? View.VISIBLE : View.GONE);
         mDataBinding.frontLotteryWinnerCl.setVisibility(FrontConfigManager.Ins().getConfigBean().getLotteryWinner() ? View.VISIBLE : View.GONE);
 
-        if (FrontConfigManager.Ins().getConfigBean().getTaskItems().size() == 4) {
+        List<FrontConfigBean.TaskItem> taskItems = FrontConfigManager.Ins().getConfigBean().getTaskItems();
+        if (taskItems != null && taskItems.size() == 4) {
             FrontConfigBean.TaskItem ti = FrontConfigManager.Ins().getConfigBean().getTaskItems().get(0);
             initTaskView(this.getContext(), ti, mDataBinding.frontTaskFl1, mDataBinding.frontTaskMixIv1, mDataBinding.frontTaskIv1, mDataBinding.frontTaskTv1, 1);
             ti = FrontConfigManager.Ins().getConfigBean().getTaskItems().get(1);
@@ -260,9 +262,12 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             ti = FrontConfigManager.Ins().getConfigBean().getTaskItems().get(3);
             initTaskView(this.getContext(), ti, mDataBinding.frontTaskFl4, mDataBinding.frontTaskMixIv4, mDataBinding.frontTaskIv4, mDataBinding.frontTaskTv4, 4);
             mDataBinding.frontTaskGroupLl.postInvalidate();
+        } else {
+            mDataBinding.frontTaskGroupLl.setVisibility(View.GONE);
         }
 
-        if (FrontConfigManager.Ins().getConfigBean().getBannerItems().size() > 0) {
+        List<FrontConfigBean.BannerItem> bannerItems = FrontConfigManager.Ins().getConfigBean().getBannerItems();
+        if (bannerItems != null && bannerItems.size() > 0) {
             mDataBinding.frontGiftGroupBvp.setCanLoop(true)
                     .setIndicatorStyle(IndicatorStyle.ROUND_RECT)
                     .setAdapter(new BannerViewAdapter(getContext(), this))
@@ -291,7 +296,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             Glide.with(this).load(ti.getIcon()).into(iv);
             tv.setText(ti.getTitle());
         } else {
-            switch (idx) {
+/*            switch (idx) {
                 case 1:
                     mixIv.setBackgroundResource(R.drawable.front_task_pic1);
                     break;
@@ -304,8 +309,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                 case 4:
                     mixIv.setBackgroundResource(R.drawable.front_task_pic4);
                     break;
-            }
-
+            }*/
             iv.setVisibility(View.GONE);
             tv.setVisibility(View.GONE);
             mixIv.setVisibility(View.VISIBLE);
@@ -700,6 +704,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             if (mDataBinding.frontRpOpenFl5.getAnimation() != null) {
                 mDataBinding.frontRpOpenFl5.clearAnimation();
             }
+
+            mDataBinding.frontRpProgress.setProgress(0);
 
             startTimer();
 

@@ -64,10 +64,10 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
         mIsOpenCriticalModel = open;
         mGoodsList.get(0).setCritical_guid(open);
         mGoodsList.get(1).setCritical_guid(open);
-        mGoodsList.get(0).setCritical_show_hand(open);
-        mGoodsList.get(1).setCritical_show_hand(open);
 
         if (!open) {
+            mGoodsList.get(0).setCritical_show_hand(open);
+            mGoodsList.get(1).setCritical_show_hand(open);
             notifyItemChanged(0, "criticalGuid");
             notifyItemChanged(1, "criticalGuid");
         }

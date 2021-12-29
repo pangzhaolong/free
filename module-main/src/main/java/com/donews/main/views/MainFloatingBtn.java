@@ -44,8 +44,8 @@ public class MainFloatingBtn extends FrameLayout implements IntegralComponent.IS
     }
 
     public void reLoadTask() {
-//        IntegralComponent.getInstance().getSecondStayTask(this);
-        IntegralComponent.getInstance().getIntegralList(this);
+        IntegralComponent.getInstance().getSecondStayTask(this);
+//        IntegralComponent.getInstance().getIntegralList(this);
     }
 
     public void setListener(RetentionTaskListener listener) {

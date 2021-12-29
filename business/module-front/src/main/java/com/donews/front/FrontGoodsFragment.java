@@ -1,8 +1,6 @@
 package com.donews.front;
 
 
-import static com.donews.common.config.CritParameterConfig.CRIT_STATE;
-
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
@@ -51,7 +49,6 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
     private RecyclerView.ItemDecoration mItemDecoration;
     private CriticalGuidHandler mCriticalGuidHandler = null;
     private int mPosition = 0;
-    private boolean mIsFragmentResume = false;
 
     private int mRvScrollLength = 0;
     private int mCurrentPosition = 0;
@@ -138,17 +135,20 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
             super.handleMessage(msg);
             if (msg.what == 9001) {
                 if (fragment.get() != null) {
-                    fragment.get().startCriticalGuid();
+                    fragment.get().startCriticalGuid(false);
                 }
             }
         }
     }
 
-    private void startCriticalGuid() {
+    private void startCriticalGuid(boolean reset) {
         if (mCriticalGuidHandler == null) {
             mCriticalGuidHandler = new CriticalGuidHandler(Looper.getMainLooper(), this);
         }
 
+        if (reset) {
+            mPosition = 0;
+        }
         if (mNorGoodsAdapter != null) {
             mNorGoodsAdapter.startCriticalGuid(mPosition);
             mNorGoodsAdapter.openCriticalModel(true);
@@ -174,10 +174,9 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
     public void UnlockEvent(CritMessengerBean critMessenger) {
         if (critMessenger != null && critMessenger.mStatus == 200) {
             //判断暴击模式是否处于开启中
-            int critState = SPUtils.getInformain(CRIT_STATE, 0);
-            if (critState == 0) {
+            if (CriticalModelTool.ifCriticalStrike()) {
                 //开始暴击模式
-                startCriticalGuid();
+                startCriticalGuid(true);
             }
         } else if (critMessenger != null && critMessenger.mStatus == 300) {
             stopCriticalGuid();
@@ -187,9 +186,8 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
     @Override
     public void onResume() {
         super.onResume();
-        mIsFragmentResume = true;
         if (CriticalModelTool.ifCriticalStrike()) {
-            startCriticalGuid();
+            startCriticalGuid(true);
         } else {
             stopCriticalGuid();
         }
@@ -198,7 +196,6 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
     @Override
     public void onPause() {
         super.onPause();
-        mIsFragmentResume = false;
         stopCriticalGuid();
     }
 

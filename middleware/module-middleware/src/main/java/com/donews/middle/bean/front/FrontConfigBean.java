@@ -3,6 +3,7 @@ package com.donews.middle.bean.front;
 import com.donews.common.contract.BaseCustomViewModel;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FrontConfigBean extends BaseCustomViewModel {
@@ -10,7 +11,7 @@ public class FrontConfigBean extends BaseCustomViewModel {
     @SerializedName("banner")
     private Boolean banner = false;
     @SerializedName("bannerItems")
-    private List<BannerItem> bannerItems;
+    private List<BannerItem> bannerItems = new ArrayList<>();
     @SerializedName("lotteryWinner")
     private Boolean lotteryWinner = true;
     @SerializedName("redPackage")
@@ -20,7 +21,7 @@ public class FrontConfigBean extends BaseCustomViewModel {
     @SerializedName("task")
     private Boolean task = false;
     @SerializedName("taskItems")
-    private List<TaskItem> taskItems;
+    private List<TaskItem> taskItems = new ArrayList<>();
 
     public Boolean getBanner() {
         return banner;

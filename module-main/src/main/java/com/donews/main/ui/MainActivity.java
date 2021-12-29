@@ -72,9 +72,9 @@ import com.donews.main.views.MainBottomTanItem;
 import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.bean.HighValueGoodsBean;
 import com.donews.middle.bean.RedEnvelopeUnlockBean;
+import com.donews.middle.bean.TaskActionBean;
 import com.donews.middle.cache.GoodsCache;
 import com.donews.middle.request.RequestUtil;
-import com.donews.middle.utils.CommonUtils;
 import com.donews.middle.utils.CriticalModelTool;
 import com.donews.utilslibrary.analysis.AnalysisHelp;
 import com.donews.utilslibrary.analysis.AnalysisParam;
@@ -179,8 +179,9 @@ public class MainActivity
         //上报一个测试友盟多参数事件
         testUMMuliParams();
         mDataBinding.occupyPosition.post(this::initializeCritState);
-        mDataBinding.occupyPosition.setOnClickListener(v -> ARouter.getInstance()
-                .build(RouterFragmentPath.Integral.PAGER_INTEGRAL).withSerializable("proxyIntegral", null)
+        mDataBinding.occupyPosition.setOnClickListener(v -> /*CommonUtils.startCrit()*/
+                ARouter.getInstance()
+                .build(RouterFragmentPath.Integral.PAGER_INTEGRAL)
                 .navigation());
 
         mDataBinding.mainFloatingBtn.setVisibility(AppInfo.checkIsWXLogin() ? View.VISIBLE : View.GONE);
@@ -852,4 +853,20 @@ public class MainActivity
         });
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onGetTaskAction(TaskActionBean bean) {
+        if (bean == null || TextUtils.isEmpty(bean.getPage())) {
+            return;
+        }
+
+        if (bean.getPage().equalsIgnoreCase(TaskActionBean.WINNER)) {
+            mDataBinding.cvContentView.setCurrentItem(2);
+            toggleStatusBar(2);
+            mPosition = 2;
+        } else if (bean.getPage().equalsIgnoreCase(TaskActionBean.SHOW)) {
+            mDataBinding.cvContentView.setCurrentItem(1);
+            toggleStatusBar(1);
+            mPosition = 1;
+        }
+    }
 }
