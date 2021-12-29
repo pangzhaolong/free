@@ -240,6 +240,8 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
                 boolean hotDoubleSplash = configBean.getHotStartDoubleSplashOpen()
                         && LoginHelp.getInstance().checkUserRegisterTime(configBean.getHotStartDoubleSplash());
                 loadSplash(configBean.getHotStartSplashStyle() == 1, hotDoubleSplash);
+            }else{
+                goToMain();
             }
             return null;
         });
@@ -262,6 +264,8 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
                 boolean coldDoubleSplash = configBean.getColdStartDoubleSplashOpen()
                         && LoginHelp.getInstance().checkUserRegisterTime(configBean.getColdStartDoubleSplash());
                 loadSplash(configBean.getColdStartSplashStyle() == 1, coldDoubleSplash);
+            }else{
+                goToMain();
             }
             return null;
         });

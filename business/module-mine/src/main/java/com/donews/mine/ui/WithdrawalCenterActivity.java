@@ -245,7 +245,7 @@ public class WithdrawalCenterActivity extends
                     hideLoading();
                     ARouter.getInstance()
                             .build(RouterFragmentPath.Integral.PAGER_INTEGRAL)
-                            .withSerializable("proxyIntegral", integralBean)
+//                            .withSerializable("proxyIntegral", integralBean)
                             .navigation();
                     runOnUiThread(() -> {
                         finish();
