@@ -251,6 +251,9 @@ public class IntegralComponent {
                     return;
                 }
                 integralAdListener.onInstalled();
+                if (automaticInstallation) {
+                    var1.getDnIntegralNativeAd().downLoadApk(context, automaticInstallation);
+                }
             }
 
             /**

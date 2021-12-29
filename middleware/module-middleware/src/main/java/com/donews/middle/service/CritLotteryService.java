@@ -185,6 +185,8 @@ public class CritLotteryService extends Service {
                         if (activity != null) {
                             if (activity.getClass().getSimpleName().equals("MainActivity") || activity.getClass().getSimpleName().equals("LotteryActivity")) {
                                 cancelTimer();
+                            } else {
+                                test("等待首页，或者抽奖页显示后，弹起暴击弹框" + mStartTime);
                             }
                         } else {
                             cancelTimer();
