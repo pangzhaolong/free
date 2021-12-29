@@ -224,16 +224,16 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
         boolean isTaskJL = false;
         for (int i = 0; i < withdrawDataLivData.getValue().size(); i++) {
             WithdrawConfigResp.WithdrawListDTO item = withdrawDataLivData.getValue().get(i);
-            if (item.external &&  item.money > 0) { //判断是否为积分任务项目
+            if (item.external && item.money > 0) { //判断是否为积分任务项目
                 //判断是否为随机项目
                 isTaskJL = true;
                 break;
             }
         }
-        if(isTaskJL){
+        if (isTaskJL) {
             //显示源数据。不做任何处理
             newAddList.addAll(withdrawDataLivData.getValue());
-        }else{
+        } else {
             for (int i = 0; i < withdrawDataLivData.getValue().size(); i++) {
                 WithdrawConfigResp.WithdrawListDTO item = withdrawDataLivData.getValue().get(i);
                 if (item.external) { //判断是否为积分任务项目
@@ -371,7 +371,7 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
                 //随机金额项点击
                 descLL.setVisibility(View.INVISIBLE);
                 submit.setEnabled(true);
-                submit.setText("抽奖开红包");
+                submit.setText("立即提现");
                 submit.setEnabled(!isHostSelect);
             }
         });
