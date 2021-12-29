@@ -64,7 +64,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
     private boolean tipsLayoutIsShow = false;
     private int mStartTime = -1;
     private boolean dialogShow = false;
-
+    boolean mForegroun = false;
     /**
      * mClickStatus 用来判断返回拦截使用
      * mClickStatus false 表示未安装
@@ -76,22 +76,26 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
     private boolean ifTimerRun = false;
 
     private void showBenefitUpgradeDialog() {
-        BenefitUpgradeDialog benefitUpgradeDialog = new BenefitUpgradeDialog(WelfareActivity.this);
-        benefitUpgradeDialog.setStateListener(new BenefitUpgradeDialog.OnStateListener() {
+        runOnUiThread(new Runnable() {
             @Override
-            public void onJump() {
-                if (benefitUpgradeDialog != null) {
-                    benefitUpgradeDialog.dismiss();
-                }
-                finish();
-                ARouter.getInstance()
-                        .build(RouterActivityPath.Mine.PAGER_ACTIVITY_WITHDRAWAL)
-                        .navigation();
+            public void run() {
+                BenefitUpgradeDialog benefitUpgradeDialog = new BenefitUpgradeDialog(WelfareActivity.this);
+                benefitUpgradeDialog.setStateListener(new BenefitUpgradeDialog.OnStateListener() {
+                    @Override
+                    public void onJump() {
+                        if (benefitUpgradeDialog != null) {
+                            benefitUpgradeDialog.dismiss();
+                        }
+                        finish();
+                        ARouter.getInstance()
+                                .build(RouterActivityPath.Mine.PAGER_ACTIVITY_WITHDRAWAL)
+                                .navigation();
+                    }
+                });
+                benefitUpgradeDialog.show(WelfareActivity.this);
             }
         });
-        benefitUpgradeDialog.show(WelfareActivity.this);
     }
-
 
     @Override
     protected int getLayoutId() {
@@ -200,6 +204,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
     @Override
     protected void onResume() {
         super.onResume();
+        mForegroun = true;
         //判断倒计时是否在运行
         if (ifTimerRun && mStartTime > 0 && !tipsLayoutIsShow) {
             //在运行，体验时间不足，显示下方tips
@@ -207,11 +212,17 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mForegroun = false;
+    }
 
     /**
      * 任务完成
      */
     private void taskCompleted() {
+        showToast("执行跳转");
         if (mIntegralDownloadStateDean != null && mIntegralDownloadStateDean.getHandout()) {
             cleanMessage();
             //满足了体验时间  弹框准备跳转
@@ -340,23 +351,36 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
     private void requestServiceData(ProxyIntegral integralBean) {
         Map<String, String> params = BaseParams.getMap();
         params.put("req_id", integralBean.getWallRequestId());
+
+        Log.d("startTask url", IntegralModel.INTEGRAL_REWARD+"" +""+integralBean.getWallRequestId());
         mViewModel.getDownloadStatus(IntegralModel.INTEGRAL_REWARD, params);
     }
 
     public void setObserveList() {
         mViewModel.getMutableLiveData().observe(this, IntegralDownloadStateDean -> {
-            ToastUtil.showShort(getApplicationContext(), "观测到任务状态" + mStartTime);
+            Log.d("startTask", "服务器请求回来了");
             if (IntegralDownloadStateDean == null || !IntegralDownloadStateDean.getHandout()) {
-                ToastUtil.showShort(getApplicationContext(), "任务失败");
+                showToast("任务失败");
                 return;
             }
+            Log.d("startTask", "服务器请求回来了"+IntegralDownloadStateDean.getHandout());
             //任务成功
             mIntegralDownloadStateDean = IntegralDownloadStateDean;
             if (!ifTimerRun) {
-                Log.d("startTask", "服务器成功");
                 taskCompleted();
             }
         });
+    }
+
+
+    private void showToast(String msg) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ToastUtil.showShort(getApplicationContext(), msg);
+            }
+        });
+
     }
 
     private void startTask(ProxyIntegral integralBean) {
@@ -376,23 +400,25 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
             @Override
             public void run() {
                 ifTimerRun = true;
-//只有应用不在前台才会继续倒计时
-                boolean foreground = AppUtils.isAppForeground();
+                //只有应用不在前台才会继续倒计时
                 Log.d("startTask", "开始倒计时");
-                if (!foreground) {
+                if (!mForegroun) {
                     if (mStartTime > 0) {
-                        Log.d("startTask", "没在前台,倒计时中");
+                        Log.d("startTask", "没在前台,倒计时中" + mStartTime);
                         mStartTime = mStartTime - 1;
-                        if (mStartTime == (mStartTime / 2)) {
+                        if (mStartTime == (ABSwitch.Ins().getScoreTaskPlayTime() / 2)) {
                             //请求服务器处理结果
                             Log.d("startTask", "请求服务器获取结果");
-                            requestServiceData(integralBean);
+                            if (integralBean != null) {
+                                requestServiceData(integralBean);
+                            }
+
                         }
                     } else {
                         Log.d("startTask", "可以开始暴击模式了");
                     }
                 } else {
-                    if (mStartTime <= 0 && foreground) {
+                    if (mStartTime <= 0 && mForegroun) {
                         mTimer.cancel();
                         mTimer = null;
                         ifTimerRun = false;
@@ -402,7 +428,10 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
                             //请求服务器处理结果
                             mStartTime = 0;
                             Log.d("startTask", "上次没有请求到或者请求失败");
-                            requestServiceData(integralBean);
+                            if (integralBean != null) {
+                                showToast("开始访问服务器");
+                                requestServiceData(integralBean);
+                            }
                         } else {
                             Log.d("startTask", "上次请求成功");
                             taskCompleted();

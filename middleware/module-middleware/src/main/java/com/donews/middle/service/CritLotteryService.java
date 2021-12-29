@@ -50,6 +50,7 @@ public class CritLotteryService extends Service {
     private Timer mTimer;
     //暴击体验时长
     private int mStartTime;
+    private int mStartSumTime;
     Handler handler = new Handler() {
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -92,6 +93,7 @@ public class CritLotteryService extends Service {
         if (intent != null) {
             boolean startCrit = intent.getBooleanExtra("start_crit", false);
             mStartTime = intent.getIntExtra("start_time", 0);
+            mStartSumTime=mStartTime;
             mRequestId = intent.getStringExtra("requestId");
             if (startCrit) {
                 //开始服务
@@ -173,7 +175,7 @@ public class CritLotteryService extends Service {
                         test("没在前台,倒计时中" + mStartTime);
                         mStartTime = mStartTime - 1;
 
-                        if (mStartTime == (mStartTime / 2)) {
+                        if (mStartTime == (mStartSumTime / 2)) {
                             //请求服务器处理结果
                             Log.d("startTask", "请求服务器获取结果");
                             getDownloadStatus();

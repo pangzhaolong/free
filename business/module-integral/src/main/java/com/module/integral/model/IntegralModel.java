@@ -33,6 +33,8 @@ public class IntegralModel extends BaseLiveDataModel {
                     public void onSuccess(IntegralDownloadStateDean stateDean) {
                         if (stateDean != null) {
                             mutableLiveData.postValue(stateDean);
+                        }else{
+                            mutableLiveData.postValue(null);
                         }
                     }
                 }));
