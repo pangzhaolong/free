@@ -31,7 +31,8 @@ public class WithdrawConfigResp extends BaseCustomViewModel {
         public Boolean available = false;
         /**
          * 是否为随机金额:
-         * T:随机金额项，F:正常提现项目
+         * T:随机金额项(金额>0:表示任务奖励，<=0:随机金额)
+         * F:正常提现项目
          */
         @SerializedName("external")
         public Boolean external = false;

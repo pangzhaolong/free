@@ -66,7 +66,7 @@ public class WithdrawalCenterActivity extends
         mDataBinding.titleBar.setTitle("提现中心");
         mDataBinding.titleBar.getTitleView().setTypeface(Typeface.DEFAULT_BOLD);
         mDataBinding.titleBar.setSubmitButtonText("明细");
-        mDataBinding.titleBar.setSubmitOnClick((v)->{
+        mDataBinding.titleBar.setSubmitOnClick((v) -> {
             ARouter.getInstance()
                     .build(RouterActivityPath.Mine.PAGER_ACTIVITY_WITHDRAWAL_RECORD)
                     .navigation();
@@ -159,8 +159,6 @@ public class WithdrawalCenterActivity extends
                 hideLoading();
             }
         });
-        mViewModel.getLoadWithdraWalletDite();
-        mViewModel.getLoadWithdrawData(false);
         AdManager.INSTANCE.loadInterstitialAd(this, new SimpleInterstitialListener() {
             @Override
             public void onAdError(int code, @Nullable String errorMsg) {
@@ -172,8 +170,8 @@ public class WithdrawalCenterActivity extends
                 super.onAdShow();
             }
         });
-        mViewModel.awardScrollDataLiveData.observe(this,resu->{
-            if(resu != null){
+        mViewModel.awardScrollDataLiveData.observe(this, resu -> {
+            if (resu != null) {
                 mDataBinding.mineDrawSubmitLbv.refreshData(resu.getList());
             }
         });
@@ -187,6 +185,7 @@ public class WithdrawalCenterActivity extends
             mDataBinding.mindYywJd.startAnimation(mScaleAnimation);
         }
         mViewModel.getWiningRotation();
+        mViewModel.updateIntegralTask();
     }
 
     @Override
@@ -247,9 +246,7 @@ public class WithdrawalCenterActivity extends
                             .build(RouterFragmentPath.Integral.PAGER_INTEGRAL)
 //                            .withSerializable("proxyIntegral", integralBean)
                             .navigation();
-                    runOnUiThread(() -> {
-                        finish();
-                    });
+                    finish();
                 });
             }
 
@@ -264,7 +261,9 @@ public class WithdrawalCenterActivity extends
             public void onNoTask() {
                 runOnUiThread(() -> {
                     hideLoading();
-                    ToastUtil.showShort(WithdrawalCenterActivity.this, "暂无未完成任务");
+                    ARouter.getInstance()
+                            .build(RouterFragmentPath.Integral.PAGER_INTEGRAL_NOT_TASK)
+                            .navigation();
                 });
             }
         });
