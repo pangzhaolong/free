@@ -491,6 +491,8 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
                                     }
                                 });
+                            } else if (CriticalModelTool.isNewUser()) {
+                                addCriticalLotteryNumber();
                             }
                         } else {
                             //暴击模式抽奖次数加一
@@ -510,7 +512,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
     private void addCriticalLotteryNumber() {
         boolean logType = AppInfo.checkIsWXLogin();
-        if (SPUtils.getInformain(CRIT_STATE, 0) == 0 && logType) {
+        if (SPUtils.getInformain(CRIT_STATE, 0) == 0 && logType && !mCritTime) {
             LotteryAdCount.INSTANCE.putCriticalModelLotteryNumber();
         }
     }
@@ -1014,8 +1016,11 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 return;
             }
             mLotteryCodeBean = MaylikeBean;
-            //设置底部
+            //设置底部3+
             setButtonValue(mLotteryCodeBean);
+            if (mLotteryCodeBean.getCodes() != null && mLotteryCodeBean.getCodes().size() >= 6) {
+                ToastUtil.showShort(getApplicationContext(), "“已获得最大中奖率，换个商品吧”");
+            }
             //获取数据刷新列表
             if (MaylikeBean.getCodes() != null) {
                 CommodityBean commodityBean = guessAdapter.getCommodityBean();

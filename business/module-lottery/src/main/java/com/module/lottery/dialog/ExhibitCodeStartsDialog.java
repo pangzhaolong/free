@@ -131,7 +131,6 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
 
                 @Override
                 public void onAdClick() {
-
                 }
 
                 @Override

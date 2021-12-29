@@ -27,6 +27,7 @@ import androidx.core.app.ActivityCompat;
 
 import com.bytedance.hume.readapk.HumeSDK;
 import com.dnstatistics.sdk.agent.DonewsAgent;
+import com.donews.ads.mediation.v2.suuid.api.DnSuuid;
 import com.donews.utilslibrary.BuildConfig;
 import com.donews.utilslibrary.base.UtilsConfig;
 import com.ishumei.smantifraud.SmAntiFraud;
@@ -226,15 +227,16 @@ public class DeviceUtils {
 
     // suuid获取,保存在sp中，不然每次返回都是不一样的suuid
     public static String getMyUUID() {
-        String key = "SUUID";
-        String appSuuid = SPUtils.getInformain(key, "");
-        if (TextUtils.isEmpty(appSuuid.trim())) {
+//        String key = "SUUID";
+//        String appSuuid = SPUtils.getInformain(key, "");
+//        if (TextUtils.isEmpty(appSuuid.trim())) {
 //            String suuid = DnSuuid.getInstance().getSuuid(UtilsConfig.getApplication());
-            String suuid = DonewsAgent.obtainSuuid(UtilsConfig.getApplication());
-            SPUtils.setInformain(key, suuid);
-            appSuuid = suuid;
-        }
-        return appSuuid;
+//            String suuid = DonewsAgent.obtainSuuid(UtilsConfig.getApplication());
+//            SPUtils.setInformain(key, suuid);
+//            appSuuid = suuid;
+//        }
+        return DnSuuid.getInstance().getSuuid(UtilsConfig.getApplication());
+//        return DonewsAgent.obtainSuuid(UtilsConfig.getApplication());
     }
 
     private static String getTouTiaoChannelName() {

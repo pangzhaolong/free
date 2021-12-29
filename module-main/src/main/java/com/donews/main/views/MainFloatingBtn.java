@@ -38,14 +38,11 @@ public class MainFloatingBtn extends FrameLayout implements IntegralComponent.IS
 
         mRootView = LayoutInflater.from(context).inflate(R.layout.main_floating_rp, this, true);
         mAppIcon = mRootView.findViewById(R.id.main_rp_icon);
-
-//        IntegralComponent.getInstance().getSecondStayTask(this);
-//        IntegralComponent.getInstance().getIntegral(this);
     }
 
     public void reLoadTask() {
         IntegralComponent.getInstance().getSecondStayTask(this);
-//        IntegralComponent.getInstance().getIntegralList(this);
+//        IntegralComponent.getInstance().getIntegral(this);
     }
 
     public void setListener(RetentionTaskListener listener) {
@@ -87,7 +84,7 @@ public class MainFloatingBtn extends FrameLayout implements IntegralComponent.IS
                     @Override
                     public void onComplete() {
                         LogUtil.e("dn_integral onSecondStayTask onComplete");
-                        mListener.onTaskClick(var1.getSourceRequestId(), var1.getWallRequestId());
+//                        mListener.onTaskClick(var1.getSourceRequestId(), var1.getWallRequestId());
                     }
 
                     @Override
@@ -111,13 +108,6 @@ public class MainFloatingBtn extends FrameLayout implements IntegralComponent.IS
     @Override
     public void onNoTask() {
         this.setVisibility(GONE);
-    }
-
-    @Override
-    public void onSuccess(List<ProxyIntegral> var1) {
-        if (var1 == null || var1.size() <= 0) {
-            return;
-        }
     }
 
     @Override
@@ -156,7 +146,7 @@ public class MainFloatingBtn extends FrameLayout implements IntegralComponent.IS
                     @Override
                     public void onComplete() {
                         LogUtil.e("dn_integral onSuccess onComplete");
-                        mListener.onTaskClick(var1.getSourceRequestId(), var1.getWallRequestId());
+//                        mListener.onTaskClick(var1.getSourceRequestId(), var1.getWallRequestId());
                     }
 
                     @Override

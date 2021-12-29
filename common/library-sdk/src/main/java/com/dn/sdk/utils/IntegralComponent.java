@@ -12,6 +12,9 @@ import com.donews.ads.mediation.v2.integral.DnIntegralNativeAd;
 import com.donews.ads.mediation.v2.integral.DoNewsIntegralHolder;
 import com.donews.ads.mediation.v2.integral.api.DnIntegralHttpCallBack;
 import com.donews.ads.mediation.v2.integral.api.DnIntegralIntegralError;
+import com.donews.utilslibrary.utils.AppInfo;
+import com.donews.utilslibrary.utils.DeviceUtils;
+import com.donews.utilslibrary.utils.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -182,7 +185,6 @@ public class IntegralComponent {
             return;
         }
         var1.getDnIntegralNativeAd().bindView(context, var2, clickViews, new DnIntegralAdListener() {
-
             /**
              * 广告曝光
              * */
@@ -193,7 +195,6 @@ public class IntegralComponent {
                 }
                 integralAdListener.onAdShow();
             }
-
             /**
              * 广告点击
              *
@@ -205,11 +206,9 @@ public class IntegralComponent {
                 }
                 var1.getDnIntegralNativeAd().downLoadApk(context, automaticInstallation);
             }
-
             /**
              * 开始下载
              * */
-
             @Override
             public void onStart() {
                 if (integralAdListener == null) {
@@ -217,8 +216,6 @@ public class IntegralComponent {
                 }
                 integralAdListener.onStart();
             }
-
-
             /**
              * 下载进度
              * */
@@ -229,11 +226,9 @@ public class IntegralComponent {
                 }
                 integralAdListener.onProgress(l, l1);
             }
-
             /**
              * 下载完成
              * */
-
             @Override
             public void onComplete() {
                 if (integralAdListener == null) {
@@ -241,7 +236,6 @@ public class IntegralComponent {
                 }
                 integralAdListener.onComplete();
             }
-
             /**
              * 安装完成
              * */
@@ -253,6 +247,7 @@ public class IntegralComponent {
                 integralAdListener.onInstalled();
                 if (automaticInstallation) {
                     var1.getDnIntegralNativeAd().downLoadApk(context, automaticInstallation);
+
                 }
             }
 

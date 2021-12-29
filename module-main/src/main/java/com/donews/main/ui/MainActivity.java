@@ -186,6 +186,7 @@ public class MainActivity
 
         mDataBinding.mainFloatingBtn.setVisibility(AppInfo.checkIsWXLogin() ? View.VISIBLE : View.GONE);
         mDataBinding.mainFloatingRp.setListener(this);
+        mDataBinding.mainFloatingRp.reLoadTask();
     }
 
 
@@ -298,7 +299,7 @@ public class MainActivity
             });
         }
 
-        mDataBinding.mainFloatingRp.reLoadTask();
+//        mDataBinding.mainFloatingRp.reLoadTask();
         checkRetentionTask();
     }
 
@@ -828,7 +829,7 @@ public class MainActivity
         }
 
         mViewModel.getRetentionTask(wallReqId).observe(this, retentionTaskBean -> {
-            if (retentionTaskBean == null || retentionTaskBean.getHandout()) {
+            if (retentionTaskBean == null || !retentionTaskBean.getHandout()) {
                 if (mRetryCount > 10) {
                     return;
                 }
@@ -842,7 +843,7 @@ public class MainActivity
                 if (wallTaskRpBean == null) {
                     return;
                 }
-//                SPUtils.setInformain(KeySharePreferences.RETENTION_TASK_REQUEST_ID, "");
+                SPUtils.setInformain(KeySharePreferences.RETENTION_TASK_WALL_REQUEST_ID, "");
                 ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
                         .withString("from", "wallTask")
                         .withFloat("score", wallTaskRpBean.getScore())
