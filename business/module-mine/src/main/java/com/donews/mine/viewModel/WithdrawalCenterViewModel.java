@@ -123,21 +123,18 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
             public void onSuccess(ProxyIntegral integralBean) {
                 isExitesIntegralTask = true;
                 getLoadWithdraWalletDite();
-                getLoadWithdrawData(false);
             }
 
             @Override
             public void onError(String var1) {
                 isExitesIntegralTask = false;
                 getLoadWithdraWalletDite();
-                getLoadWithdrawData(false);
             }
 
             @Override
             public void onNoTask() {
                 isExitesIntegralTask = false;
                 getLoadWithdraWalletDite();
-                getLoadWithdrawData(false);
             }
         });
     }
@@ -325,7 +322,7 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
             newUserZx.setBackgroundResource(R.drawable.mine_new_user_rw_bg);
             userBFlg.setImageResource(R.drawable.mine_tx_b_jb_red);
             newUserZx.setText("任务");
-            if (!item.external) {
+            if (item.money > 0) {
                 //如果是正常项目的话。才走正常的逻辑判断
                 if (withdrawDatilesLivData.getValue() == null) {
                     ToastUtil.showShort(baseActivity, "钱包信息获取异常");

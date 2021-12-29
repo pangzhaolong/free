@@ -87,6 +87,9 @@
                             android:textSize="15sp" />
                     </LinearLayout>
 
+                    <!--
+                     android:src="@drawable/mine_tx__yyw"
+                     -->
                     <ImageView
                         android:id="@+id/mind_yyw_jd"
                         android:layout_width="83dp"
@@ -94,7 +97,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="28dp"
-                        android:src="@drawable/mine_tx__yyw" />
+                        android:visibility="gone"/>
                 </RelativeLayout>
                 <LinearLayout
                     android:layout_width="match_parent"

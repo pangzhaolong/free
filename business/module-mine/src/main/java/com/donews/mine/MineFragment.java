@@ -2,7 +2,6 @@ package com.donews.mine;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,17 +12,16 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.BarUtils;
-import com.blankj.utilcode.util.ScreenUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.dn.drouter.ARouteHelper;
 import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.LotteryStatusEvent;
 import com.dn.events.events.UserTelBindEvent;
 import com.dn.events.events.WalletRefreshEvent;
+import com.donews.base.utils.GsonUtils;
 import com.donews.base.utils.ToastUtil;
 import com.donews.base.utils.glide.GlideUtils;
 import com.donews.common.ad.business.monitor.PageMonitor;
@@ -33,22 +31,26 @@ import com.donews.common.contract.UserInfoBean;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.mine.adapters.MineFragmentAdapter;
+import com.donews.mine.bean.MineWithdraWallBean;
 import com.donews.mine.bean.resps.RecommendGoodsResp;
 import com.donews.mine.databinding.MineFragmentBinding;
 import com.donews.mine.viewModel.MineViewModel;
 import com.donews.mine.views.operating.MineOperatingPosView;
+import com.donews.network.BuildConfig;
+import com.donews.network.EasyHttp;
+import com.donews.network.cache.model.CacheMode;
+import com.donews.network.callback.SimpleCallBack;
+import com.donews.network.exception.ApiException;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
-import com.donews.utilslibrary.utils.LogUtil;
-import com.google.android.material.appbar.AppBarLayout;
+import com.donews.utilslibrary.utils.JsonUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -60,6 +62,11 @@ import java.util.List;
  */
 @Route(path = RouterFragmentPath.User.PAGER_USER)
 public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, MineViewModel> {
+
+    //运营位的配置信息的文件名称
+    public static final String mineYYWCacheFile = "mineYYWCacheFile";
+    //运营位的配置缓存的key
+    public static final String mineYYWCache = "mineYYWCache";
 
     MineFragmentAdapter adapter;
     private boolean isRefresh = false;
@@ -261,35 +268,47 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
 //        mDataBinding.mineCcsView.refreshData();
     }
 
+    private MineWithdraWallBean mineWithdraWallBean = null;
+
     //模拟设置运营位
     private void setYYW() {
+        String localJson = SPUtils.getInstance(mineYYWCacheFile).getString(mineYYWCache, "");
+        if (localJson.length() > 0) {
+            mineWithdraWallBean = GsonUtils.fromLocalJson(localJson, MineWithdraWallBean.class);
+            updateYYWData();
+        }
+        EasyHttp.get(BuildConfig.BASE_CONFIG_URL + "plus-mineWithdrawal" + com.donews.common.BuildConfig.BASE_RULE_URL
+                + JsonUtils.getCommonJson(false))
+                .cacheMode(CacheMode.NO_CACHE)
+                .isShowToast(false)
+                .execute(new SimpleCallBack<MineWithdraWallBean>() {
+                    @Override
+                    public void onError(ApiException e) {
+                        ToastUtil.showShort(getActivity(), "获取数据异常");
+                    }
+
+                    @Override
+                    public void onSuccess(MineWithdraWallBean appWallBean) {
+                        if (appWallBean != null) {
+                            if (mineWithdraWallBean == null) {
+                                mineWithdraWallBean = appWallBean;
+                                updateYYWData();
+                            }
+                            SPUtils.getInstance(mineYYWCacheFile).put(mineYYWCache, GsonUtils.toJson(appWallBean));
+                        }
+                    }
+                });
+    }
+
+    //更新运营位数据
+    private void updateYYWData() {
+        if (mineWithdraWallBean == null || !mineWithdraWallBean.mine) {
+            return;
+        }
         MineOperatingPosView vpOperation = getView().findViewById(R.id.mine_me_k_operating);
         List<MineOperatingPosView.IOperatingData> list = new ArrayList<>();
-        List<Integer> imgs = new ArrayList() {
-            {
-                add(R.drawable.mine_yyw_01);
-                add(R.drawable.mine_yyw_02);
-            }
-        };
-        for (int i = 0; i < imgs.size(); i++) {
-            final int pos = i;
-            list.add(new MineOperatingPosView.IOperatingData() {
-                @Override
-                public String getIconUrl() {
-                    return "" + imgs.get(pos);
-                }
-
-                @Override
-                public void onClick(View view, MineOperatingPosView.IOperatingData data) {
-                    AnalysisUtils.onEventEx(getActivity(), Dot.But_Mine_Operating, "个人中心>运营位" + pos);
-                    Bundle bundle = new Bundle();
-//                    bundle.putString("url",
-//                            "https://i.iwanbei.cn/activities?appKey=c0d8e103601c4bc49abb501c59718143&appEntrance=1&business=money");
-                    bundle.putString("url", "https://p.pinduoduo.com/yIH46n8T");
-                    bundle.putString("title", "天降豪礼");
-                    ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
-                }
-            });
+        if (mineWithdraWallBean.mineItems != null && mineWithdraWallBean.mineItems.size() > 0) {
+            list.addAll(mineWithdraWallBean.mineItems);
         }
         vpOperation.setDatas(list);
     }

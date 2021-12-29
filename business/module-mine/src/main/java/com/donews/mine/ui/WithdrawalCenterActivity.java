@@ -1,5 +1,8 @@
 package com.donews.mine.ui;
 
+import static com.donews.mine.MineFragment.mineYYWCache;
+import static com.donews.mine.MineFragment.mineYYWCacheFile;
+
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
@@ -11,10 +14,12 @@ import androidx.annotation.Nullable;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.SPUtils;
 import com.dn.events.events.WalletRefreshEvent;
 import com.dn.sdk.bean.integral.ProxyIntegral;
 import com.dn.sdk.listener.impl.SimpleInterstitialListener;
 import com.dn.sdk.utils.IntegralComponent;
+import com.donews.base.utils.GsonUtils;
 import com.donews.base.utils.ToastUtil;
 import com.donews.base.utils.glide.GlideUtils;
 import com.donews.common.ad.business.loader.AdManager;
@@ -24,16 +29,28 @@ import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.UserInfoBean;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
+import com.donews.middle.go.GotoUtil;
 import com.donews.mine.R;
+import com.donews.mine.bean.MineWithdraWallBean;
 import com.donews.mine.databinding.MineActivityWithdrawalCenterBinding;
 import com.donews.mine.dialogs.MineCongratulationsDialog;
 import com.donews.mine.viewModel.WithdrawalCenterViewModel;
+import com.donews.mine.views.operating.MineOperatingPosView;
+import com.donews.network.BuildConfig;
+import com.donews.network.EasyHttp;
+import com.donews.network.cache.model.CacheMode;
+import com.donews.network.callback.SimpleCallBack;
+import com.donews.network.exception.ApiException;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
+import com.donews.utilslibrary.utils.JsonUtils;
 import com.gyf.immersionbar.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 提现中心
@@ -84,9 +101,6 @@ public class WithdrawalCenterActivity extends
             GlideUtils.loadImageView(
                     this, uf.getWechatExtra().getHeadimgurl(), mDataBinding.mineDrawWxIcon);
         }
-        mDataBinding.mindYywJd.setOnClickListener(v -> {
-            ToastUtil.showShort(this, "运营位点击了。。。");
-        });
         mDataBinding.mineDrawMore.setOnClickListener(v -> {
             ARouter.getInstance()
                     .build(RouterActivityPath.Mine.PAGER_ACTIVITY_WITHDRAWAL_RECORD)
@@ -101,7 +115,8 @@ public class WithdrawalCenterActivity extends
                 ToastUtil.showShort(this, "请选择你要提现的金额");
                 return;
             }
-            if (mViewModel.withdrawSelectDto.external) {
+            if (mViewModel.withdrawSelectDto.external &&
+                    mViewModel.withdrawSelectDto.money < 0) {
                 //检查随机金额
                 getTaskList();
             } else {
@@ -140,6 +155,7 @@ public class WithdrawalCenterActivity extends
             } else {
                 mDataBinding.mineDrawGridLoading.setVisibility(View.GONE);
                 mDataBinding.mineDrawYe.setText("" + items.total);
+                mViewModel.getLoadWithdrawData(false); //更新配置信息
             }
         });
         mViewModel.withdrawLivData.observe(this, code -> {
@@ -175,17 +191,73 @@ public class WithdrawalCenterActivity extends
                 mDataBinding.mineDrawSubmitLbv.refreshData(resu.getList());
             }
         });
-        //呼吸动画
-        if (mScaleAnimation == null) {
-            mScaleAnimation = new ScaleAnimation(1.15f, 0.9f, 1.15f, 0.9f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-            mScaleAnimation.setInterpolator(new LinearInterpolator());
-            mScaleAnimation.setRepeatMode(Animation.REVERSE);
-            mScaleAnimation.setRepeatCount(Animation.INFINITE);
-            mScaleAnimation.setDuration(1000);
-            mDataBinding.mindYywJd.startAnimation(mScaleAnimation);
-        }
+        setYYW();
         mViewModel.getWiningRotation();
         mViewModel.updateIntegralTask();
+
+        ARouter.getInstance()
+                .build(RouterFragmentPath.Integral.PAGER_INTEGRAL_NOT_TASK)
+                .navigation();
+    }
+
+    private MineWithdraWallBean mineWithdraWallBean = null;
+
+    //模拟设置运营位
+    private void setYYW() {
+        String localJson = SPUtils.getInstance(mineYYWCacheFile).getString(mineYYWCache, "");
+        if (localJson.length() > 0) {
+            mineWithdraWallBean = GsonUtils.fromLocalJson(localJson, MineWithdraWallBean.class);
+            updateYYWData();
+        }
+        EasyHttp.get(BuildConfig.BASE_CONFIG_URL + "plus-mineWithdrawal" + com.donews.common.BuildConfig.BASE_RULE_URL
+                + JsonUtils.getCommonJson(false))
+                .cacheMode(CacheMode.NO_CACHE)
+                .isShowToast(false)
+                .execute(new SimpleCallBack<MineWithdraWallBean>() {
+                    @Override
+                    public void onError(ApiException e) {
+                        ToastUtil.showShort(WithdrawalCenterActivity.this, "获取数据异常");
+                    }
+
+                    @Override
+                    public void onSuccess(MineWithdraWallBean appWallBean) {
+                        if (appWallBean != null) {
+                            if (mineWithdraWallBean == null) {
+                                mineWithdraWallBean = appWallBean;
+                                updateYYWData();
+                            }
+                            SPUtils.getInstance(mineYYWCacheFile).put(mineYYWCache, GsonUtils.toJson(appWallBean));
+                        }
+                    }
+                });
+    }
+
+
+    //更新运营位数据
+    private void updateYYWData() {
+        if (mineWithdraWallBean == null) {
+            return;
+        }
+        if (!mineWithdraWallBean.withDrawal || mineWithdraWallBean.withDrawalItems == null ||
+                mineWithdraWallBean.withDrawalItems.size() <= 0) {
+            mDataBinding.mindYywJd.setVisibility(View.GONE);
+        } else {
+            mDataBinding.mindYywJd.setVisibility(View.VISIBLE);
+            //呼吸动画
+            if (mScaleAnimation == null) {
+                mScaleAnimation = new ScaleAnimation(1.15f, 0.9f, 1.15f, 0.9f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                mScaleAnimation.setInterpolator(new LinearInterpolator());
+                mScaleAnimation.setRepeatMode(Animation.REVERSE);
+                mScaleAnimation.setRepeatCount(Animation.INFINITE);
+                mScaleAnimation.setDuration(1000);
+                mDataBinding.mindYywJd.startAnimation(mScaleAnimation);
+            }
+            MineWithdraWallBean.DrawalWallBeanItem item = mineWithdraWallBean.withDrawalItems.get(0);
+            GlideUtils.loadImageView(this,item.img,mDataBinding.mindYywJd);
+            mDataBinding.mindYywJd.setOnClickListener(v -> {
+                GotoUtil.doAction(this, item.action, item.title);
+            });
+        }
     }
 
     @Override

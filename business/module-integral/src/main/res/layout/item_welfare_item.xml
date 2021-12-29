@@ -13,11 +13,14 @@
     android:background="@color/white"
     tools:ignore="MissingConstraints,ResourceName">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/iv_down_icon"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@mipmap/ic_launcher" />
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:background="@color/transparent"
+        android:scaleType="fitXY"
+        app:cornerFamily="rounded"
+        app:cornerSize="10dp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -40,6 +43,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="desc"
+            android:maxLines="2"
+            android:ellipsize="end"
             android:textColor="#787878"
             android:textSize="15sp" />
     </LinearLayout>

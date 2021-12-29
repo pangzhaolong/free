@@ -1,8 +1,11 @@
 package com.module.integral.ui;
 
+import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,13 +17,25 @@ import com.blankj.utilcode.util.AppUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
+import com.dn.drouter.ARouteHelper;
 import com.dn.sdk.bean.integral.ProxyIntegral;
 import com.dn.sdk.utils.IntegralComponent;
+import com.donews.base.utils.ToastUtil;
+import com.donews.base.utils.glide.GlideUtils;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
+import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
+import com.donews.utilslibrary.utils.JsonUtils;
+import com.module.integral.down.DownApkUtil;
+import com.donews.network.BuildConfig;
+import com.donews.network.EasyHttp;
+import com.donews.network.cache.model.CacheMode;
+import com.donews.network.callback.SimpleCallBack;
+import com.donews.network.exception.ApiException;
 import com.example.module_integral.R;
 import com.example.module_integral.databinding.IntegralWelfareNotTaskLayoutBinding;
 import com.gyf.immersionbar.ImmersionBar;
+import com.module.integral.bean.AppWallBean;
 import com.module.integral.viewModel.IntegralViewModel;
 
 import java.util.List;
@@ -53,6 +68,7 @@ public class WelfareNotTaskActivity extends MvvmBaseLiveDataActivity<IntegralWel
         addHeadView();
         mDataBinding.welfaeList.setAdapter(adapter);
         setData();
+        getTaskList();
     }
 
     @Override
@@ -61,8 +77,8 @@ public class WelfareNotTaskActivity extends MvvmBaseLiveDataActivity<IntegralWel
     }
 
     //添加头视图
-    private void addHeadView(){
-        View view = LayoutInflater.from(this).inflate(R.layout.item_welfare_head,null,false);
+    private void addHeadView() {
+        View view = LayoutInflater.from(this).inflate(R.layout.item_welfare_head, null, false);
         adapter.addHeaderView(view);
     }
 
@@ -115,22 +131,92 @@ public class WelfareNotTaskActivity extends MvvmBaseLiveDataActivity<IntegralWel
         }
     }
 
+    //获取任务
+    private void getTaskList() {
+        EasyHttp.get(BuildConfig.BASE_CONFIG_URL + "plus-appsWall" + com.donews.common.BuildConfig.BASE_RULE_URL
+                + JsonUtils.getCommonJson(false))
+                .cacheMode(CacheMode.NO_CACHE)
+                .isShowToast(false)
+                .execute(new SimpleCallBack<AppWallBean>() {
+                    @Override
+                    public void onError(ApiException e) {
+                        ToastUtil.showShort(WelfareNotTaskActivity.this, "获取任务异常");
+                    }
+
+                    @Override
+                    public void onSuccess(AppWallBean appWallBean) {
+                        if (appWallBean.apps != null) {
+                            adapter.setNewData(appWallBean.apps);
+                        }
+                    }
+                });
+    }
+
     /**
      * 适配器
      */
-    private class WelfareNotTaskAdapter extends BaseQuickAdapter<Object, BaseViewHolder> {
+    private class WelfareNotTaskAdapter extends BaseQuickAdapter<AppWallBean.AppWallBeanItem, BaseViewHolder> {
+
+        DownApkUtil downApkUtil = new DownApkUtil();
 
         public WelfareNotTaskAdapter(int layoutResId) {
             super(layoutResId);
         }
 
-        public WelfareNotTaskAdapter(int layoutResId, @Nullable List<Object> data) {
+        public WelfareNotTaskAdapter(int layoutResId, @Nullable List<AppWallBean.AppWallBeanItem> data) {
             super(layoutResId, data);
         }
 
         @Override
-        protected void convert(@NonNull BaseViewHolder baseViewHolder, @Nullable Object o) {
+        protected void convert(@NonNull BaseViewHolder baseViewHolder, @Nullable AppWallBean.AppWallBeanItem item) {
+            ImageView icon = baseViewHolder.findView(R.id.iv_down_icon);
+            TextView down = baseViewHolder.findView(R.id.tv_down);
+            GlideUtils.loadImageView(WelfareNotTaskActivity.this, item.icon, icon);
+            baseViewHolder.setText(R.id.tv_down_title, item.title)
+                    .setText(R.id.tv_down_desc, item.desc);
 
+            if ("install".equals(item.action)) {
+                if (AppUtils.isAppInstalled(item.pkgName)) {
+                    down.setText("打开");
+                } else if (downApkUtil.checkIsDownApk(item.linkUrl)){
+                    down.setText("安装");
+                }else{
+                    down.setText("下载");
+                }
+            } else {
+                down.setText("查看");
+            }
+            down.setOnClickListener(v -> {
+                if ("install".equals(item.action)) {
+                    if (AppUtils.isAppInstalled(item.pkgName)) {
+                        AppUtils.launchApp(item.pkgName);
+                    } else {
+                        if (downApkUtil.checkIsDownApk(item.linkUrl)) {
+                            AppUtils.installApp(downApkUtil.getDownApkFile(item.linkUrl));
+                            return;
+                        }
+                        downApkUtil.downApk(item.title, item.linkUrl, WelfareNotTaskActivity.this.getLifecycle(),
+                                (downApkCallBeanBean, integer) -> {
+                                    if (integer < 0) {
+                                        down.setText("重试");
+                                    } else {
+                                        if (integer < 100) {
+                                            down.setText("下载.." + integer + "%");
+                                        } else {
+                                            down.setText("安装");
+                                        }
+                                    }
+                                    return null;
+                                }
+                        );
+                    }
+                } else {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("url", item.linkUrl);
+                    bundle.putString("title", item.title);
+                    ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
+                }
+            });
         }
     }
 }
