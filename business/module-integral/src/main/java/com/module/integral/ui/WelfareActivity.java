@@ -27,6 +27,7 @@ import com.donews.base.utils.ToastUtil;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.service.CritLotteryService;
 import com.example.module_integral.R;
 import com.example.module_integral.databinding.IntegralWelfareLayoutBinding;
 import com.gyf.immersionbar.ImmersionBar;
@@ -350,10 +351,21 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
      */
     private void requestServiceData(ProxyIntegral integralBean) {
         Map<String, String> params = BaseParams.getMap();
-        params.put("req_id", integralBean.getWallRequestId());
-
-        Log.d("startTask url", IntegralModel.INTEGRAL_REWARD+"" +""+integralBean.getWallRequestId());
-        mViewModel.getDownloadStatus(IntegralModel.INTEGRAL_REWARD, params);
+        params.put("wall_request_id", integralBean.getWallRequestId());
+        params.put("source_request_id", integralBean.getSourceRequestId());
+        params.put("source_ad_type", integralBean.getSourceAdType());
+        params.put("package_name", integralBean.getPkName());
+        params.put("app_name", integralBean.getAppName());
+        params.put("icon", integralBean.getIcon());
+        params.put("deep_link", integralBean.getDeepLink());
+        params.put("source_platform", integralBean.getSourcePlatform());
+        params.put("desc", integralBean.getDesc());
+        params.put("task_type", integralBean.getTaskType());
+        params.put("price", integralBean.getPrice() + "");
+        params.put("apk_url", integralBean.getApkUrl());
+        params.put("wall_event","WALL_ACTIVE");
+        Log.d("startTask url", CritLotteryService.INTEGRAL_REWARD + "" + "" + integralBean.getWallRequestId());
+        mViewModel.getDownloadStatus(CritLotteryService.INTEGRAL_REWARD, params);
     }
 
     public void setObserveList() {
@@ -363,7 +375,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
                 showToast("任务失败");
                 return;
             }
-            Log.d("startTask", "服务器请求回来了"+IntegralDownloadStateDean.getHandout());
+            Log.d("startTask", "服务器请求回来了" + IntegralDownloadStateDean.getHandout());
             //任务成功
             mIntegralDownloadStateDean = IntegralDownloadStateDean;
             if (!ifTimerRun) {

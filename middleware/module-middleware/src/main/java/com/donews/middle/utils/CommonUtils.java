@@ -44,16 +44,31 @@ public class CommonUtils {
     public static void startCritService(Context context, ProxyIntegral integralBean) {
         if (DateManager.getInstance().timesLimit(DateManager.CRIT_KEY, DateManager.CRIT_NUMBER,
                 ABSwitch.Ins().getEnableOpenCritModelCount())) {
-            //开启暴击校验  (开始服务)
-            Intent intent = new Intent(context, CritLotteryService.class);
-            intent.putExtra("start_crit", true);
-            intent.putExtra("requestId", integralBean.getWallRequestId());
-            intent.putExtra("start_time", ABSwitch.Ins().getScoreTaskPlayTime());
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(intent);
-            } else {
-                context.startService(intent);
+            if(integralBean!=null){
+                //开启暴击校验  (开始服务)
+                Intent intent = new Intent(context, CritLotteryService.class);
+                intent.putExtra("start_crit", true);
+                intent.putExtra("start_time", ABSwitch.Ins().getScoreTaskPlayTime());
+                intent.putExtra("wall_request_id", integralBean.getWallRequestId());
+                intent.putExtra("source_request_id", integralBean.getSourceRequestId());
+                intent.putExtra("source_ad_type", integralBean.getSourceAdType());
+                intent.putExtra("package_name", integralBean.getPkName());
+                intent.putExtra("app_name", integralBean.getAppName());
+                intent.putExtra("icon", integralBean.getIcon());
+                intent.putExtra("deep_link", integralBean.getDeepLink());
+                intent.putExtra("source_platform", integralBean.getSourcePlatform());
+                intent.putExtra("desc", integralBean.getDesc());
+                intent.putExtra("task_type", integralBean.getTaskType());
+                intent.putExtra("price", integralBean.getPrice()+"");
+                intent.putExtra("apk_url", integralBean.getApkUrl());
+                intent.putExtra("wall_event", "WALL_ACTIVE");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    context.startForegroundService(intent);
+                } else {
+                    context.startService(intent);
+                }
             }
+
         }
     }
 }
