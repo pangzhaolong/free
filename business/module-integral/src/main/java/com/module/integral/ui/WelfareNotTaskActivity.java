@@ -1,5 +1,6 @@
 package com.module.integral.ui;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.LayoutInflater;
@@ -15,6 +16,8 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.AppUtils;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.dn.drouter.ARouteHelper;
@@ -178,9 +181,9 @@ public class WelfareNotTaskActivity extends MvvmBaseLiveDataActivity<IntegralWel
             if ("install".equals(item.action)) {
                 if (AppUtils.isAppInstalled(item.pkgName)) {
                     down.setText("打开");
-                } else if (downApkUtil.checkIsDownApk(item.linkUrl)){
+                } else if (downApkUtil.checkIsDownApk(item.linkUrl)) {
                     down.setText("安装");
-                }else{
+                } else {
                     down.setText("下载");
                 }
             } else {
@@ -195,7 +198,17 @@ public class WelfareNotTaskActivity extends MvvmBaseLiveDataActivity<IntegralWel
                             AppUtils.installApp(downApkUtil.getDownApkFile(item.linkUrl));
                             return;
                         }
-                        downApkUtil.downApk(item.title, item.linkUrl, WelfareNotTaskActivity.this.getLifecycle(),
+//                        showLoading("准备中");
+//                        Glide.with(WelfareNotTaskActivity.this)
+//                                .asBitmap()
+//                                .load(item.icon)
+//                                .into(new SimpleTarget<Bitmap>() {
+//                                    @Override
+//                                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+//                                        hideLoading();
+//                                    }
+//                                });
+                        downApkUtil.downApk(item.title, item.linkUrl, null, WelfareNotTaskActivity.this.getLifecycle(),
                                 (downApkCallBeanBean, integer) -> {
                                     if (integer < 0) {
                                         down.setText("重试");

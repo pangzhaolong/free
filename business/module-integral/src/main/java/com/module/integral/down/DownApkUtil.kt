@@ -3,6 +3,7 @@ package com.module.integral.down
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.graphics.Bitmap
 import android.os.Build
 import android.view.View
 import android.widget.RemoteViews
@@ -92,6 +93,7 @@ class DownApkUtil {
      * 下载apk任务，注意:此方法只允许一个连接下关联一个UI组件。其余的将会被替换为最新的生效
      * @param apkName apk名称
      * @param apkUrl apk的URL地址
+     * @param notIcon 通知栏图标(没有可以为空)
      * @param lifecy 生命周期管理对象(本监听需要和指定组件共享生命周期),如果为空表示全生命周期
      * @param callBack 回调 //String：apk的名称，String：apk的Url，Int:当前的进度(计算之后的进度)
      *  :Int < 0 表示出错了
@@ -102,6 +104,7 @@ class DownApkUtil {
     fun downApk(
         apkName: String,
         apkUrl: String,
+        notIcon:Bitmap?,
         lifecy: Lifecycle?,
         callBack: ((DownApkCallBeanBean, Int) -> Unit)?
     ) {
@@ -215,6 +218,7 @@ class DownApkUtil {
      * @param apkUrl apkUrl，对应唯一的一条通知
      * @param progress 进度
      * @param text 进度秒速的文字
+     * @param iconBit 图标
      * @return Notification
      */
     @RequiresApi(Build.VERSION_CODES.N)
@@ -222,7 +226,8 @@ class DownApkUtil {
     fun createOrUpdateNotification(
         apkUrl: String,
         progress: Int,
-        text: String
+        text: String,
+        iconBit: Bitmap?
     ) { //自定义View通知
         val notificationManagerCompat =
             NotificationManagerCompat.from(BaseApplication.getInstance())
@@ -236,9 +241,13 @@ class DownApkUtil {
         )
         downNotifyLMap[apkUrl]!!
             .setCustomContentView(view)
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(R.drawable.ic_launcher_round)
 //            .setOngoing(progress < 100)
             .setOngoing(false)
+        if(iconBit != null){
+            downNotifyLMap[apkUrl]!!
+                .setLargeIcon(iconBit)
+        }
 
         //设置值
         view.setProgressBar(R.id.bar, 100, progress, false)
