@@ -116,7 +116,7 @@ public class WithdrawalCenterActivity extends
                 return;
             }
             if (mViewModel.withdrawSelectDto.external &&
-                    mViewModel.withdrawSelectDto.money < 0) {
+                    mViewModel.withdrawSelectDto.money <= 0) {
                 //检查随机金额
                 getTaskList();
             } else {

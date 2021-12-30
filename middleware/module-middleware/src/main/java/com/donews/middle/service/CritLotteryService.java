@@ -18,13 +18,12 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.MutableLiveData;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import com.blankj.utilcode.util.AppUtils;
-import com.dn.sdk.bean.integral.ProxyIntegral;
 import com.donews.base.BuildConfig;
 import com.donews.base.base.AppManager;
-import com.donews.base.base.AppStatusManager;
 import com.donews.base.utils.ToastUtil;
 import com.donews.middle.bean.DownloadStateDean;
 import com.donews.middle.ui.GoodLuckDoubleDialog;
@@ -32,7 +31,6 @@ import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
-import com.donews.utilslibrary.utils.AppStatusUtils;
 import com.donews.utilslibrary.utils.SPUtils;
 
 import org.json.JSONObject;
@@ -226,17 +224,23 @@ public class CritLotteryService extends Service {
                 } else {
                     if (mStartTime <= 0 && foreground) {
                         Activity activity = AppManager.getInstance().getTopActivity();
-                        if (activity != null) {
-                            test(activity.getClass().getSimpleName() + "   1212");
-                            if (activity.getClass().getSimpleName().equals("MainActivity") || activity.getClass().getSimpleName().equals("LotteryActivity")) {
-                                cancelTimer();
-                            } else {
-                                test("等待首页，或者抽奖页显示后，弹起暴击弹框" + mStartTime);
+                        if (activity != null && activity instanceof FragmentActivity) {
+                            if (((FragmentActivity) activity).getSupportFragmentManager() != null) {
+                                Fragment hotStartDialogFragment = ((FragmentActivity) activity).getSupportFragmentManager().findFragmentByTag("HotStartDialog");
+                                if (hotStartDialogFragment != null) {
+                                    test("齐平页面等待");
+                                } else {
+                                    if ((activity.getClass().getSimpleName().equals("MainActivity") || activity.getClass().getSimpleName().equals("LotteryActivity"))) {
+                                        cancelTimer();
+                                    } else {
+                                        test("等待首页，或者抽奖页显示后，弹起暴击弹框" + mStartTime);
+                                    }
+                                }
                             }
                         } else {
-                            test(activity.getClass().getSimpleName() + "   777");
                             cancelTimer();
                         }
+
                     } else {
                         test("在前台，体验体验时间不足" + mStartTime);
                     }

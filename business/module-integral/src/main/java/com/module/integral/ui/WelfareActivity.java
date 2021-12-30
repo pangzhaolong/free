@@ -64,8 +64,21 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
     private Timer mTimer;
     private boolean tipsLayoutIsShow = false;
     private int mStartTime = -1;
+    /**
+     * 返回拦截的dialog是否显示
+     */
     private boolean dialogShow = false;
-    boolean mForegroun = false;
+    /**
+     * 应用是否当前可见
+     */
+    boolean mReception = false;
+
+
+    /**
+     * 任务状态 false 未完成 true 完成
+     */
+    boolean mTaskState = false;
+
     /**
      * mClickStatus 用来判断返回拦截使用
      * mClickStatus false 表示未安装
@@ -205,7 +218,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
     @Override
     protected void onResume() {
         super.onResume();
-        mForegroun = true;
+        mReception = true;
         //判断倒计时是否在运行
         if (ifTimerRun && mStartTime > 0 && !tipsLayoutIsShow) {
             //在运行，体验时间不足，显示下方tips
@@ -216,7 +229,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
     @Override
     protected void onPause() {
         super.onPause();
-        mForegroun = false;
+        mReception = false;
     }
 
     /**
@@ -363,7 +376,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
         params.put("task_type", integralBean.getTaskType());
         params.put("price", integralBean.getPrice() + "");
         params.put("apk_url", integralBean.getApkUrl());
-        params.put("wall_event","WALL_ACTIVE");
+        params.put("wall_event", "WALL_ACTIVE");
         Log.d("startTask url", CritLotteryService.INTEGRAL_REWARD + "" + "" + integralBean.getWallRequestId());
         mViewModel.getDownloadStatus(CritLotteryService.INTEGRAL_REWARD, params);
     }
@@ -414,7 +427,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
                 ifTimerRun = true;
                 //只有应用不在前台才会继续倒计时
                 Log.d("startTask", "开始倒计时");
-                if (!mForegroun) {
+                if (!mReception) {
                     if (mStartTime > 0) {
                         Log.d("startTask", "没在前台,倒计时中" + mStartTime);
                         mStartTime = mStartTime - 1;
@@ -430,7 +443,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
                         Log.d("startTask", "可以开始暴击模式了");
                     }
                 } else {
-                    if (mStartTime <= 0 && mForegroun) {
+                    if (mStartTime <= 0 && mReception) {
                         mTimer.cancel();
                         mTimer = null;
                         ifTimerRun = false;
@@ -459,7 +472,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
 
 
     private void returnIntercept() {
-        if (dialogShow) {
+        if (dialogShow || mTaskState) {
             finish();
         }
         //是否完成了安装
@@ -483,6 +496,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
 
     //显示进度条的弹框
     private void showExitProgressInterceptDialog() {
+        mTaskState = true;
         ExitProgressInterceptDialog exitProgressInterceptDialog = new ExitProgressInterceptDialog(WelfareActivity.this);
         exitProgressInterceptDialog.setFinishListener(new ExitProgressInterceptDialog.OnFinishListener() {
             @Override
