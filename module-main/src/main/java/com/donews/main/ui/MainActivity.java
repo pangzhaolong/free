@@ -311,10 +311,10 @@ public class MainActivity
 //        mDataBinding.mainFloatingRp.reLoadTask();
         checkRetentionTask();
 
-        if (CriticalModelTool.ifCoincide()) {
-            mDataBinding.mainFloatingRp.setVisibility(View.VISIBLE);
+        if (CriticalModelTool.canShowCriticalBtn()) {
+            mDataBinding.mainFloatingBtn.setVisibility(View.VISIBLE);
         } else {
-            mDataBinding.mainFloatingRp.setVisibility(View.GONE);
+            mDataBinding.mainFloatingBtn.setVisibility(View.GONE);
         }
     }
 

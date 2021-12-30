@@ -61,11 +61,16 @@ public class CriticalModelTool {
             } else {
                 sumNumber = ABSwitch.Ins().getOpenCritModelByOldUserCount();
             }
+
             if (participateNumber >= sumNumber) {
                 return true;
             }
         }
         return false;
+    }
+
+    public static boolean canShowCriticalBtn() {
+        return ABSwitch.Ins().getOpenCritModel() && DateManager.getInstance().isAllowCritical();
     }
 
 
