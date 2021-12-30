@@ -2,6 +2,8 @@ package com.donews.mine.viewModel;
 
 import static androidx.annotation.Dimension.SP;
 
+import static com.donews.utilslibrary.utils.KeySharePreferences.CURRENT_SCORE_TASK_COUNT;
+
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.GridLayout;
@@ -22,6 +24,7 @@ import com.dn.sdk.utils.IntegralComponent;
 import com.donews.base.utils.GsonUtils;
 import com.donews.base.utils.ToastUtil;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.bean.HighValueGoodsBean;
 import com.donews.middle.bean.front.WinningRotationBean;
 import com.donews.middle.cache.GoodsCache;
@@ -32,6 +35,7 @@ import com.donews.mine.bean.resps.WithdrawConfigResp;
 import com.donews.mine.model.MineModel;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
 
@@ -246,6 +250,24 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
                 newAddList.add(item);
             }
         }
+        //检查开关和配置
+        boolean taskIsShow = !ABSwitch.Ins().isOpenScoreTask();
+        if (taskIsShow) {
+            int maxCount = ABSwitch.Ins().getOpenScoreTaskMax();
+            int curT = com.donews.utilslibrary.utils.SPUtils.getInformain(CURRENT_SCORE_TASK_COUNT, 0);
+            //如果任务开关打开。并且未达到最大限制的情况下。显示任务
+            taskIsShow = taskIsShow && curT >= maxCount;
+        }
+        Iterator<WithdrawConfigResp.WithdrawListDTO> iter = newAddList.iterator();
+        while (taskIsShow && iter.hasNext()) {
+            //如果达到后台配置。关白总开关、达到提现任务上限。那么强制进入无任务状态(不显示随机金额)
+            WithdrawConfigResp.WithdrawListDTO itData = iter.next();
+            if (itData.money <= 0) {
+                iter.remove();
+                break;
+            }
+        }
+
         for (int i = 0; i < newAddList.size(); i++) {
             getGridItemView(i, gridLayout, newAddList.get(i), submit, descll);
         }

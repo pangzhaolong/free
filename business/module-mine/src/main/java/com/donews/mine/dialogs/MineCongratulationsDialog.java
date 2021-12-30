@@ -207,6 +207,7 @@ public class MineCongratulationsDialog extends BaseDialog<MineCongratulationsDia
                         //缓存等待下一次使用
                         SPUtils.getInstance().put(mRecommendJsonKey, GsonUtils.toJson(recommendBean));
                     } else {
+                        mRecommendBean= recommendBean;
                         bindGoodsInfo();
                         requestGoodsInfo("",true);
                     }

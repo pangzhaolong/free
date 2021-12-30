@@ -22,6 +22,9 @@ public class KeySharePreferences {
     // 用户创建时间
     public final static String USER_REGISTER_TIME = "user_register_time";
 
+    // 当前提现积分任务完成的次数
+    public final static String CURRENT_SCORE_TASK_COUNT = "current_score_task_count";
+
     //oaid
     public final static String OAID = "share_util_oaid";
     // 是否给了协议权限

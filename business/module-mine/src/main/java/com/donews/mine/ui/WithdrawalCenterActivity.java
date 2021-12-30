@@ -2,6 +2,7 @@ package com.donews.mine.ui;
 
 import static com.donews.mine.MineFragment.mineYYWCache;
 import static com.donews.mine.MineFragment.mineYYWCacheFile;
+import static com.donews.utilslibrary.utils.KeySharePreferences.CURRENT_SCORE_TASK_COUNT;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.UserInfoBean;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.go.GotoUtil;
 import com.donews.mine.R;
 import com.donews.mine.bean.MineWithdraWallBean;
@@ -172,6 +174,8 @@ public class WithdrawalCenterActivity extends
                 mViewModel.getLoadWithdrawData(true); //更新配置信息
                 EventBus.getDefault().post(new WalletRefreshEvent(1));
             } else {
+                mViewModel.getLoadWithdraWalletDite();
+                mViewModel.getLoadWithdrawData(true); //更新配置信息
                 hideLoading();
             }
         });
@@ -249,7 +253,7 @@ public class WithdrawalCenterActivity extends
                 mDataBinding.mindYywJd.startAnimation(mScaleAnimation);
             }
             MineWithdraWallBean.DrawalWallBeanItem item = mineWithdraWallBean.withDrawalItems.get(0);
-            GlideUtils.loadImageView(this,item.img,mDataBinding.mindYywJd);
+            GlideUtils.loadImageView(this, item.img, mDataBinding.mindYywJd);
             mDataBinding.mindYywJd.setOnClickListener(v -> {
                 GotoUtil.doAction(this, item.action, item.title);
             });
@@ -304,6 +308,17 @@ public class WithdrawalCenterActivity extends
 
     //积分任务
     private void getTaskList() {
+        if (!ABSwitch.Ins().isOpenScoreTask()) {
+            ToastUtil.showShort(this,"此任务已关闭");
+            return;
+        }
+        int maxCount = ABSwitch.Ins().getOpenScoreTaskMax();
+        int curT = com.donews.utilslibrary.utils.SPUtils.getInformain(CURRENT_SCORE_TASK_COUNT,0);;
+        if(curT >= maxCount){
+            ToastUtil.showShort(this,"今日任务已达上限");
+            return;
+        }
+
         showLoading("查询中");
         IntegralComponent.getInstance().getIntegral(new IntegralComponent.IntegralHttpCallBack() {
             @Override
