@@ -18,12 +18,11 @@ public class DateManager {
     public final static String SHOW_DIALOG_WHEN_LAUNCH = "show_dialog_when_launch_dm";
 
 
-    //控制暴击次数的key
-    public final static String CRIT_KEY = "crit_key";
+    //每天允许的总暴击次数
+    public static String LOTTERY_SUN_NUMBER = "LOTTERY_SUN_NUMBER";
+    //当前暴击次数
+    public static String LOTTERY_JD = "LOTTERY_JD";
 
-
-    //控制暴击次数的次数
-    public final static String CRIT_NUMBER = "crit_number";
 
     //抽奖次数
     public static String NUMBER_OF_DRAWS = "number_of_draws";
@@ -89,14 +88,14 @@ public class DateManager {
      *
      * @param key       用来区分天的key
      * @param numberKey 用来判断每天限制的次数的key
-     * @param num       限制的次数
+     * @param sumNum    限制的次数
      */
-    public boolean timesLimit(String key, String numberKey, int num) {
+    public boolean timesLimit(String key, String numberKey, int sumNum) {
         //是否是同一天
         boolean ifSameDay = ifTheSameDay(key);
         if (ifSameDay) {
-            //判断次数是否用完
-            boolean frequencyState = bigFrequency(numberKey, num);
+            //判断次数是否用完 true没有用完
+            boolean frequencyState = bigFrequency(numberKey, sumNum);
             //次数加1
             int frequency = SPUtils.getInformain(numberKey, 0);
             frequency = frequency + 1;
@@ -109,16 +108,47 @@ public class DateManager {
             Calendar c = Calendar.getInstance();//
             int mDay = c.get(Calendar.DAY_OF_MONTH);// 获取当日期
             //更新数据
-            putValue(LOTTERY_KEY, mDay);
+            putValue(key, mDay);
             return true;
         }
     }
 
 
+    /**
+     * 是否允许暴击（每天触发的次数）
+     * * @param subjoin 每天限制的次数是否自增加
+     */
+    public boolean isAllowCritical() {
+        //暴击的总次数
+        int lotterySunNumber = com.blankj.utilcode.util.SPUtils.getInstance().getInt(DateManager.LOTTERY_SUN_NUMBER);
+        //当前暴击的次数
+        int lotteryJd = com.blankj.utilcode.util.SPUtils.getInstance().getInt(DateManager.LOTTERY_JD);
+        if (lotteryJd > lotterySunNumber) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
+    /**
+     * @refreshSunNumber 总次数、
+     * @refreshNumber 当前次数
+     *
+     * */
+    public void putRefreshCritical(int refreshSunNumber, int refreshNumber) {
+        //总次数
+        com.blankj.utilcode.util.SPUtils.getInstance().put(DateManager.LOTTERY_SUN_NUMBER, refreshSunNumber);
+        //同步当前暴击的次数
+        com.blankj.utilcode.util.SPUtils.getInstance().put(DateManager.LOTTERY_JD, refreshNumber);
+    }
+
+
+
     //判断次数限制
     private boolean bigFrequency(String key, int num) {
         int frequency = SPUtils.getInformain(key, 0);
-        if (frequency < num) {
+        if (frequency <= num) {
             return true;
         } else {
             return false;

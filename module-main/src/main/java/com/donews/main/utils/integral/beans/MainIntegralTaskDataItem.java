@@ -92,8 +92,6 @@ public class MainIntegralTaskDataItem extends BaseCustomViewModel {
             @Override
             public void onInstalled() {
                 onInstalled = true;
-                //告知后台计时服务
-                CommonUtils.startCritService(BaseApplication.getInstance(), srcData);
                 MainIntegralTaskManager.removeTask(getTaskId());
                 if (attchSrcToNewListener != null) {
                     attchSrcToNewListener.onInstalled();
@@ -108,6 +106,20 @@ public class MainIntegralTaskDataItem extends BaseCustomViewModel {
                 if (attchSrcToNewListener != null) {
                     attchSrcToNewListener.onError(throwable);
                 }
+            }
+
+            @Override
+            public void onRewardVerify() {
+                //告知后台计时服务
+                CommonUtils.startCritService(BaseApplication.getInstance(), srcData);
+            }
+
+            @Override
+            public void onRewardVerifyError(String s) {
+
+
+
+
             }
         };
     }

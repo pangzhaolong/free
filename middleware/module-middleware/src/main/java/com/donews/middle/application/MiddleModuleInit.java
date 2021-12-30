@@ -8,10 +8,12 @@ import android.content.Context;
 import com.blankj.utilcode.util.SPUtils;
 import com.donews.base.base.BaseApplication;
 import com.donews.base.utils.GsonUtils;
+import com.donews.base.utils.ToastUtil;
 import com.donews.common.IModuleInit;
 import com.donews.middle.BuildConfig;
 import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.api.MiddleApi;
+import com.donews.middle.bean.CriticalNumberBean;
 import com.donews.middle.bean.WithdraWalletResp;
 import com.donews.middle.bean.WithdrawConfigResp;
 import com.donews.middle.bean.globle.CommandBean;
@@ -22,7 +24,13 @@ import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
+import com.donews.utilslibrary.utils.AppInfo;
+import com.donews.utilslibrary.utils.DateManager;
 import com.donews.utilslibrary.utils.HttpConfigUtilsKt;
+
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 应用模块: middle
@@ -45,7 +53,10 @@ public class MiddleModuleInit implements IModuleInit {
         requestWithdraWallet();
         requestWithdrawCenterConfig();
         RequestUtil.requestHighValueGoodsInfo();
-
+        //同步抽奖暴击次数
+        if (AppInfo.checkIsWXLogin()) {
+            requestCriticalWallet(null,"false");
+        }
         return false;
     }
 
@@ -79,6 +90,50 @@ public class MiddleModuleInit implements IModuleInit {
                 });
     }
 
+
+    /**
+     * 获取用户暴击次数
+     *
+     * @return participate 是否参与了暴击 true服务器会加一
+     */
+    public static void requestCriticalWallet(ICriticalWalletListener iCriticalWalletListener,String participate) {
+        Map<String, String> params = new HashMap<>();
+        params.put("start", participate);
+        EasyHttp.get(BuildConfig.API_LOTTERY_URL + "v1/bliz-lottery-times")
+                .cacheMode(CacheMode.NO_CACHE)
+                .params(params)
+                .isShowToast(false)
+                .execute(new SimpleCallBack<CriticalNumberBean>() {
+                    @Override
+                    public void onError(ApiException e) {
+                        if (iCriticalWalletListener != null) {
+                            iCriticalWalletListener.onError();
+                        }
+                        ToastUtil.showShort(BaseApplication.getInstance(), "同步出错");
+                    }
+
+                    @Override
+                    public void onSuccess(CriticalNumberBean numberBean) {
+                        if (numberBean != null) {
+                            ToastUtil.showShort(BaseApplication.getInstance(), "暴击当前次数" + numberBean.getUseTimes() + "总次数" + numberBean.getTotalTimes());
+                            //同步暴击的总次数
+                            SPUtils.getInstance().put(DateManager.LOTTERY_SUN_NUMBER, numberBean.getTotalTimes());
+                            //同步当前暴击的次数
+                            SPUtils.getInstance().put(DateManager.LOTTERY_JD, numberBean.getUseTimes());
+                            if (iCriticalWalletListener != null) {
+                                iCriticalWalletListener.onSuccess(numberBean);
+                            }
+                        } else {
+                            if (iCriticalWalletListener != null) {
+                                iCriticalWalletListener.onError();
+                            }
+                            ToastUtil.showShort(BaseApplication.getInstance(), "同步失败");
+                        }
+                    }
+                });
+    }
+
+
     /**
      * 获取提现中心的配置
      *
@@ -106,4 +161,15 @@ public class MiddleModuleInit implements IModuleInit {
     public boolean onInitLow(BaseApplication application) {
         return false;
     }
+
+
+    public  interface ICriticalWalletListener {
+
+
+        public void onError();
+
+        public void onSuccess(CriticalNumberBean numberBean);
+    }
+
+
 }

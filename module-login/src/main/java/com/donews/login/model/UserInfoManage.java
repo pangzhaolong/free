@@ -1,5 +1,7 @@
 package com.donews.login.model;
 
+import android.app.Application;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.dn.drouter.ARouteHelper;
@@ -8,6 +10,7 @@ import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.UserTelBindEvent;
 import com.donews.base.base.BaseApplication;
 import com.donews.base.utils.GsonUtils;
+import com.donews.base.utils.ToastUtil;
 import com.donews.common.contract.DataBean;
 import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.PreRegisterBean;
@@ -16,6 +19,9 @@ import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.common.services.config.ServicesConfig;
 import com.donews.login.api.LoginApi;
+import com.donews.middle.BuildConfig;
+import com.donews.middle.application.MiddleModuleInit;
+import com.donews.middle.bean.CriticalNumberBean;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.CallBack;
@@ -29,6 +35,7 @@ import com.donews.utilslibrary.analysis.AnalysisParam;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
+import com.donews.utilslibrary.utils.DateManager;
 import com.donews.utilslibrary.utils.DeviceUtils;
 import com.donews.utilslibrary.utils.JsonUtils;
 import com.donews.utilslibrary.utils.KeySharePreferences;
@@ -450,6 +457,7 @@ public class UserInfoManage {
                         mutableLiveData.postValue(userInfoBean);
                         refreshUserTag(userInfoBean);
                         EventBus.getDefault().post(new LoginUserStatus(1));
+                        MiddleModuleInit.requestCriticalWallet(null,"false");
                     }
                 });
 

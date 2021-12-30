@@ -244,7 +244,7 @@ public class MainActivity
             mDataBinding.mainFloatingBtn.setVisibility(View.GONE);
             mDataBinding.mainFloatingBtn.setModel(FrontFloatingBtn.CRITICAL_MODEL);
             showPopWindow(CruelDuration, CruelDuration);
-            if(appDownDialog != null){
+            if (appDownDialog != null) {
                 appDownDialog.dismiss();
             }
         }
@@ -541,8 +541,7 @@ public class MainActivity
         //是否触发过过暴击模式，T:已参加过，F:未参加过
         boolean mark = SPUtils.getInformain(CritParameterConfig.LOTTERY_MARK, true);
         //是否允许当前用户继续参与暴击(主要判断是否超过总次数限制)，T:可以参与，F:无法在参与了
-        boolean critModelIsAllowAdd = DateManager.getInstance().timesLimit(DateManager.CRIT_KEY, DateManager.CRIT_NUMBER,
-                ABSwitch.Ins().getEnableOpenCritModelCount());
+        boolean critModelIsAllowAdd = DateManager.getInstance().isAllowCritical();
         if (mark && !critModelIsAllowAdd) {
             return; //用户参与过抽奖。并且已经达到最大次数限制
         }
@@ -577,7 +576,7 @@ public class MainActivity
             public void onSuccess(List<ProxyIntegral> list) {
                 runOnUiThread(() -> {
                     mDataBinding.mainFloatingBtn.setEnabled(true);
-                    if(appDownDialog != null){
+                    if (appDownDialog != null) {
                         appDownDialog.dismiss();
                     }
                     hideLoading();

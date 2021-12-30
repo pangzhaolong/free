@@ -97,6 +97,16 @@ public class MainFloatingBtn extends FrameLayout implements IntegralComponent.IS
                     public void onError(Throwable throwable) {
                         LogUtil.e("dn_integral onSecondStayTask onError");
                     }
+
+                    @Override
+                    public void onRewardVerify() {
+
+                    }
+
+                    @Override
+                    public void onRewardVerifyError(String s) {
+
+                    }
                 }, true);
     }
 
@@ -158,6 +168,16 @@ public class MainFloatingBtn extends FrameLayout implements IntegralComponent.IS
                     @Override
                     public void onError(Throwable throwable) {
                         LogUtil.e("dn_integral onSuccess onError");
+                    }
+
+                    @Override
+                    public void onRewardVerify() {
+
+                    }
+
+                    @Override
+                    public void onRewardVerifyError(String s) {
+
                     }
                 }, true);
     }

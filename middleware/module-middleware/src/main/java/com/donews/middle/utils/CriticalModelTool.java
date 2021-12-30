@@ -7,6 +7,7 @@ import com.donews.common.config.CritParameterConfig;
 import com.donews.common.contract.LoginHelp;
 import com.donews.middle.abswitch.ABSwitch;
 import com.donews.utilslibrary.utils.AppInfo;
+import com.donews.utilslibrary.utils.DateManager;
 import com.donews.utilslibrary.utils.SPUtils;
 
 import java.text.SimpleDateFormat;
@@ -48,7 +49,7 @@ public class CriticalModelTool {
     //判断抽奖次数和最低抽奖次数一样(前提是处于普通次数模式)
     public static boolean ifCoincide() {
         //开启了暴击模式
-        if (ABSwitch.Ins().getOpenCritModel()) {
+        if (ABSwitch.Ins().getOpenCritModel() && DateManager.getInstance().isAllowCritical()) {
             //新用户
             int sumNumber = 0;
             //已经参与的次数
@@ -58,7 +59,7 @@ public class CriticalModelTool {
                 //总共需要抽多少个抽奖码开始暴击模式
                 sumNumber = ABSwitch.Ins().getOpenCritModelByNewUserCount();
             } else {
-                sumNumber =  ABSwitch.Ins().getOpenCritModelByOldUserCount();
+                sumNumber = ABSwitch.Ins().getOpenCritModelByOldUserCount();
             }
             if (participateNumber >= sumNumber) {
                 return true;
@@ -132,7 +133,7 @@ public class CriticalModelTool {
             //总共需要抽多少个抽奖码开始暴击模式
             sumNumber = ABSwitch.Ins().getOpenCritModelByNewUserCount();
         } else {
-            sumNumber =ABSwitch.Ins().getOpenCritModelByOldUserCount();
+            sumNumber = ABSwitch.Ins().getOpenCritModelByOldUserCount();
         }
         return sumNumber;
     }

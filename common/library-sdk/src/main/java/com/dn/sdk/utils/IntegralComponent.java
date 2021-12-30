@@ -195,6 +195,7 @@ public class IntegralComponent {
                 }
                 integralAdListener.onAdShow();
             }
+
             /**
              * 广告点击
              *
@@ -206,6 +207,7 @@ public class IntegralComponent {
                 }
                 var1.getDnIntegralNativeAd().downLoadApk(context, automaticInstallation);
             }
+
             /**
              * 开始下载
              * */
@@ -216,6 +218,7 @@ public class IntegralComponent {
                 }
                 integralAdListener.onStart();
             }
+
             /**
              * 下载进度
              * */
@@ -226,6 +229,7 @@ public class IntegralComponent {
                 }
                 integralAdListener.onProgress(l, l1);
             }
+
             /**
              * 下载完成
              * */
@@ -236,6 +240,7 @@ public class IntegralComponent {
                 }
                 integralAdListener.onComplete();
             }
+
             /**
              * 安装完成
              * */
@@ -248,6 +253,21 @@ public class IntegralComponent {
                 if (automaticInstallation) {
                     var1.getDnIntegralNativeAd().downLoadApk(context, automaticInstallation);
 
+                }
+            }
+
+            //应用激活
+            @Override
+            public void onRewardVerify() {
+                if (integralAdListener != null) {
+                    integralAdListener.onRewardVerify();
+                }
+            }
+
+            @Override
+            public void onRewardVerifyError(String s) {
+                if (integralAdListener != null) {
+                    integralAdListener.onRewardVerifyError(s);
                 }
             }
 

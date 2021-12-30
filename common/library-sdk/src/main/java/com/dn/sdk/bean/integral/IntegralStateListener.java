@@ -16,5 +16,7 @@ public abstract interface IntegralStateListener {
     public void onInstalled();
 
     public void onError(Throwable throwable);
+    public void onRewardVerify();
+    public void onRewardVerifyError(String s);
 
 }

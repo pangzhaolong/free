@@ -174,7 +174,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
     }
 
 
-    //刷新次留页面UI
+    //安装的情况下
     private void refreshSecondStayPageView(ProxyIntegral integralBean) {
         mDataBinding.downloadBt.setText("打开APP玩1分钟");
         mDataBinding.downloadBt.setOnClickListener(new View.OnClickListener() {
@@ -331,6 +331,32 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
             //安装完成
             @Override
             public void onInstalled() {
+                Log.d("startTask", "安装完成");
+                mDataBinding.downloadBt.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mDataBinding.downloadBt.setText("安装完成");
+                    }
+                });
+
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+
+            }
+
+
+            //激活成功
+            @Override
+            public void onRewardVerify() {
+                Log.d("startTask", "激活完成");
+                mDataBinding.downloadBt.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mDataBinding.downloadBt.setText("激活完成");
+                    }
+                });
                 mClickInstalledStatus = true;
                 mDataBinding.downloadBt.post(new Runnable() {
                     @Override
@@ -342,8 +368,15 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
             }
 
             @Override
-            public void onError(Throwable throwable) {
+            public void onRewardVerifyError(String s) {
 
+                Log.d("startTask", "激活失败" + s);
+                mDataBinding.downloadBt.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mDataBinding.downloadBt.setText("激活失败" + s);
+                    }
+                });
             }
         }, true);
 
@@ -364,20 +397,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
      */
     private void requestServiceData(ProxyIntegral integralBean) {
         Map<String, String> params = BaseParams.getMap();
-        params.put("wall_request_id", integralBean.getWallRequestId());
-        params.put("source_request_id", integralBean.getSourceRequestId());
-        params.put("source_ad_type", integralBean.getSourceAdType());
-        params.put("package_name", integralBean.getPkName());
-        params.put("app_name", integralBean.getAppName());
-        params.put("icon", integralBean.getIcon());
-        params.put("deep_link", integralBean.getDeepLink());
-        params.put("source_platform", integralBean.getSourcePlatform());
-        params.put("desc", integralBean.getDesc());
-        params.put("task_type", integralBean.getTaskType());
-        params.put("price", integralBean.getPrice() + "");
-        params.put("apk_url", integralBean.getApkUrl());
-        params.put("wall_event", "WALL_ACTIVE");
-        Log.d("startTask url", CritLotteryService.INTEGRAL_REWARD + "" + "" + integralBean.getWallRequestId());
+        params.put("req_id", integralBean.getWallRequestId());
         mViewModel.getDownloadStatus(CritLotteryService.INTEGRAL_REWARD, params);
     }
 
@@ -385,10 +405,12 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
         mViewModel.getMutableLiveData().observe(this, IntegralDownloadStateDean -> {
             Log.d("startTask", "服务器请求回来了");
             if (IntegralDownloadStateDean == null || !IntegralDownloadStateDean.getHandout()) {
-                showToast("任务失败");
+                if (IntegralDownloadStateDean != null) {
+                    Log.d("startTask", "服务器请求回来了" + IntegralDownloadStateDean.getHandout());
+                }
                 return;
             }
-            Log.d("startTask", "服务器请求回来了" + IntegralDownloadStateDean.getHandout());
+            Log.d("startTask", "服务器请求回来了asdsad" + IntegralDownloadStateDean.getHandout());
             //任务成功
             mIntegralDownloadStateDean = IntegralDownloadStateDean;
             if (!ifTimerRun) {

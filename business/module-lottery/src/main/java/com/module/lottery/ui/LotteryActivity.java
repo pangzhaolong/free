@@ -500,10 +500,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                             Logger.d(TAG + "普通模式次数加一 未开启积分情况下");
                             addCriticalLotteryNumber();
                         }
-                    } else {
-                        //暴击模式抽奖次数加一
-                        Logger.d(TAG + "非暴击模式次数加一");
-                        addCriticalLotteryNumber();
                     }
                     generateLotteryCode();
                 }
@@ -513,7 +509,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
     private void addCriticalLotteryNumber() {
         boolean logType = AppInfo.checkIsWXLogin();
-        if (SPUtils.getInformain(CRIT_STATE, 0) == 0 && logType && !mCritTime) {
+        if (SPUtils.getInformain(CRIT_STATE, 0) == 0 && logType && !mCritTime && ABSwitch.Ins().getOpenCritModel() && DateManager.getInstance().isAllowCritical()) {
             LotteryAdCount.INSTANCE.putCriticalModelLotteryNumber();
         }
     }
@@ -640,8 +636,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                     //判断是否在进行积分任务
                     if (ABSwitch.Ins().getOpenCritModel()) {
                         //暴击次数判断
-                        if (DateManager.getInstance().timesLimit(DateManager.CRIT_KEY, DateManager.CRIT_NUMBER,
-                                ABSwitch.Ins().getEnableOpenCritModelCount())) {
+                        if (DateManager.getInstance().isAllowCritical()) {
                             taskJudgment(generateCodeBean, generateCodeDialog);
                         } else {
                             //不满足了走普通流程

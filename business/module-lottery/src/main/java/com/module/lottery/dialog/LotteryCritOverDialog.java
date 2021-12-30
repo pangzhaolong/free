@@ -13,10 +13,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.blankj.utilcode.util.EncryptUtils;
+import com.blankj.utilcode.util.TimeUtils;
 import com.donews.base.model.BaseLiveDataModel;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.business.monitor.LotteryAdCount;
 import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.bean.home.UserBean;
 import com.donews.middle.utils.CommonAnimationUtils;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
@@ -24,6 +27,7 @@ import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
+import com.donews.utilslibrary.utils.AppInfo;
 import com.module.lottery.bean.CritCodeBean;
 import com.module.lottery.bean.GenerateCodeBean;
 import com.module.lottery.bean.RecommendBean;
@@ -39,6 +43,8 @@ import com.module_lottery.databinding.LotteryCritOverDialogLayoutBinding;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 import io.reactivex.disposables.Disposable;
@@ -81,7 +87,7 @@ public class LotteryCritOverDialog extends BaseDialog<LotteryCritOverDialogLayou
         mCritOverHandler.sendMessageDelayed(message, 1000);
         //延迟一秒出现关闭按钮
         setOnDismissListener(this);
-        initLottie(mDataBinding.overView,"over_animation.json");
+        initLottie(mDataBinding.overView, "over_animation.json");
     }
 
     private void initLottie(LottieAnimationView view, String json) {
@@ -92,6 +98,7 @@ public class LotteryCritOverDialog extends BaseDialog<LotteryCritOverDialogLayou
                 public void onAnimationStart(Animator animation) {
 
                 }
+
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     multipleCode();
@@ -120,6 +127,10 @@ public class LotteryCritOverDialog extends BaseDialog<LotteryCritOverDialogLayou
         if (baseLiveDataModel != null && mGoodsId != null) {
             Map<String, String> params = BaseParams.getMap();
             params.put("goods_id", mGoodsId);
+            String time = TimeUtils.date2String(new Date(), new SimpleDateFormat("yyyyMMdd"));
+            String md5 = mGoodsId + "." + AppInfo.getUserId() + "." + time + "." + "@lottery!$%^";
+            String md5String = EncryptUtils.encryptMD5ToString(md5);
+            params.put("code", md5String);
             getNeCritData(params, LotteryModel.LOTTERY_CRIT_CODE);
         }
     }

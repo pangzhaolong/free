@@ -19,12 +19,11 @@ import java.util.Map;
 //对数据进行访问，并且通知观察者
 public class IntegralModel extends BaseLiveDataModel {
     public void getDownloadStatus(MutableLiveData<IntegralDownloadStateDean> mutableLiveData, String url, Map<String, String> params) {
-        JSONObject json = new JSONObject(params);
-
         unDisposable();
-        addDisposable(EasyHttp.post(url)
+        addDisposable(EasyHttp.get(url)
+                .params(params)
                 .cacheMode(CacheMode.NO_CACHE)
-                .isShowToast(false).upJson(json.toString())
+                .isShowToast(false)
                 .execute(new SimpleCallBack<IntegralDownloadStateDean>() {
                     @Override
                     public void onError(ApiException e) {

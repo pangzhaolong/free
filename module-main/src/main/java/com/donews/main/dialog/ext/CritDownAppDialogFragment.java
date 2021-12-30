@@ -377,6 +377,16 @@ public class CritDownAppDialogFragment extends DialogFragment {
                     ((MvvmBaseLiveDataActivity<?, ?>) getActivity()).hideLoading();
                 }
             }
+
+            @Override
+            public void onRewardVerify() {
+
+            }
+
+            @Override
+            public void onRewardVerifyError(String s) {
+
+            }
         };
         boolean isExitTask = MainIntegralTaskManager.getCheckTaskIsExties(data.srcData);
         IntegralStateListener srcListener = MainIntegralTaskManager.addOrAttchTask(

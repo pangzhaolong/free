@@ -8,6 +8,8 @@
 
 package com.module.lottery.dialog;
 
+import static com.donews.common.config.CritParameterConfig.CRIT_STATE;
+
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
@@ -18,6 +20,7 @@ import android.os.Message;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +31,8 @@ import com.bumptech.glide.Glide;
 import com.dn.sdk.bean.integral.IntegralStateListener;
 import com.dn.sdk.bean.integral.ProxyIntegral;
 import com.dn.sdk.utils.IntegralComponent;
+import com.donews.base.base.BaseApplication;
+import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.business.monitor.LotteryAdCount;
 import com.donews.common.bean.CritMessengerBean;
 import com.donews.middle.abswitch.ABSwitch;
@@ -35,6 +40,7 @@ import com.donews.middle.utils.CriticalModelTool;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.DateManager;
+import com.donews.utilslibrary.utils.SPUtils;
 import com.module.lottery.bean.GenerateCodeBean;
 import com.module.lottery.utils.ClickDoubleUtil;
 import com.module_lottery.R;
@@ -89,8 +95,13 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
                 if (mOnFinishListener != null) {
                     //放在倒计时结束后再次打开
                     if (ClickDoubleUtil.Companion.isFastClick()) {
-                        freed();
-                        mOnFinishListener.onFinish();
+                        if (SPUtils.getInformain(CRIT_STATE, 0) == 1) {
+                            dismiss();
+                        } else {
+                            freed();
+                            mOnFinishListener.onFinish();
+                        }
+
                     }
                 }
             }
@@ -173,13 +184,35 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
                                 mDataBinding.integralBt.setText("体验" + ABSwitch.Ins().getScoreTaskPlayTime() + "秒");
                             }
                         });
-                        mOnFinishListener.onStartCritMode(mGenerateCodeBean, integralBean);
                     }
                 }
 
                 @Override
                 public void onError(Throwable throwable) {
 
+                }
+
+                @Override
+                public void onRewardVerify() {
+                    if (mOnFinishListener != null) {
+                        mDataBinding.integralBt.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(BaseApplication.getInstance(), "激活成功", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        mOnFinishListener.onStartCritMode(mGenerateCodeBean, integralBean);
+                    }
+                }
+
+                @Override
+                public void onRewardVerifyError(String s) {
+                    mDataBinding.integralBt.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(BaseApplication.getInstance(), "任务创建失败" + s, Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }, true);
 
@@ -249,8 +282,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
         if (ABSwitch.Ins().getOpenCritModel()) {
             Logger.d(TAG + "开启了暴击模式");
             //每天参与次数
-            if (DateManager.getInstance().timesLimit(DateManager.CRIT_KEY, DateManager.CRIT_NUMBER,
-                    ABSwitch.Ins().getEnableOpenCritModelCount())) {
+            if (DateManager.getInstance().isAllowCritical()) {
                 Logger.d(TAG + "可以继续参与");
                 //判断是否打开新手模式
                 if (ABSwitch.Ins().isOpenCritModelByNewUser()) {

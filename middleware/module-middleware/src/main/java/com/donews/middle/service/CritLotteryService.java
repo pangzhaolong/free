@@ -46,7 +46,7 @@ import io.reactivex.disposables.Disposable;
 public class CritLotteryService extends Service {
 
     private static String INTEGRAL_BASE = BuildConfig.API_INTEGRAL_URL;
-    public static String INTEGRAL_REWARD = INTEGRAL_BASE + "v1/wall-task-report";
+    public static String INTEGRAL_REWARD = INTEGRAL_BASE + "v1/has-wall-reward";
     private Timer mTimer;
     //暴击体验时长
     private int mStartTime;
@@ -62,18 +62,6 @@ public class CritLotteryService extends Service {
     DownloadStateDean mDownloadStateDean;
     //访问服务器请求参数
     private String wall_request_id;
-    private String source_request_id;
-    private String source_ad_type;
-    private String package_name;
-    private String app_name;
-    private String icon;
-    private String deep_link;
-    private String source_platform;
-    private String desc;
-    private String task_type;
-    private String price;
-    private String apk_url;
-    private String wall_event;
 
     @Nullable
     @Override
@@ -108,18 +96,6 @@ public class CritLotteryService extends Service {
             mStartTime = intent.getIntExtra("start_time", 0);
             mStartSumTime = mStartTime;
             wall_request_id = intent.getStringExtra("wall_request_id");
-            source_request_id = intent.getStringExtra("source_request_id");
-            source_ad_type = intent.getStringExtra("source_ad_type");
-            package_name = intent.getStringExtra("package_name");
-            app_name = intent.getStringExtra("app_name");
-            icon = intent.getStringExtra("icon");
-            deep_link = intent.getStringExtra("deep_link");
-            source_platform = intent.getStringExtra("source_platform");
-            desc = intent.getStringExtra("desc");
-            task_type = intent.getStringExtra("task_type");
-            price = intent.getStringExtra("price");
-            apk_url = intent.getStringExtra("apk_url");
-            wall_event = intent.getStringExtra("wall_event");
             if (startCrit) {
                 //开始服务
                 //判断暴击模式是否在运行
@@ -144,25 +120,12 @@ public class CritLotteryService extends Service {
     public void getDownloadStatus() {
         if (wall_request_id != null) {
             Map<String, String> params = new HashMap<>();
-            params.put("wall_request_id", wall_request_id);
-            params.put("source_request_id", source_request_id);
-            params.put("source_ad_type", source_ad_type);
-            params.put("package_name", package_name);
-            params.put("app_name", app_name);
-            params.put("icon", icon);
-            params.put("deep_link", deep_link);
-            params.put("source_platform", source_platform);
-            params.put("desc", desc);
-            params.put("task_type", task_type);
-            params.put("price", price);
-            params.put("apk_url", apk_url);
-            params.put("wall_event", wall_event);
-            JSONObject json = new JSONObject(params);
+            params.put("req_id", wall_request_id);
             unDisposable();
-            addDisposable(EasyHttp.post(INTEGRAL_REWARD)
+            addDisposable(EasyHttp.get(INTEGRAL_REWARD)
                     .cacheMode(CacheMode.NO_CACHE)
                     .isShowToast(false)
-                    .upJson(json.toString())
+                    .params(params)
                     .execute(new SimpleCallBack<DownloadStateDean>() {
                         @Override
                         public void onError(ApiException e) {
