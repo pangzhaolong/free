@@ -54,6 +54,7 @@ public class LoginHelp {
             }
             String spUserInfo = SPUtils.getInformain(KeySharePreferences.USER_INFO, "");
             if (spUserInfo.isEmpty()) {
+                userInfoBean = new UserInfoBean();
                 return;
             }
             userInfoBean = GsonUtils.fromLocalJson(spUserInfo, UserInfoBean.class);
