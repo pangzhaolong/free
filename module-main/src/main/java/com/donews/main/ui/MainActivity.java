@@ -184,7 +184,11 @@ public class MainActivity
                 .build(RouterFragmentPath.Integral.PAGER_INTEGRAL)
                 .navigation());
 
-        mDataBinding.mainFloatingBtn.setVisibility(AppInfo.checkIsWXLogin() ? View.VISIBLE : View.GONE);
+        if (ABSwitch.Ins().getOpenCritModel() && AppInfo.checkIsWXLogin()) {
+            mDataBinding.mainFloatingBtn.setVisibility(View.VISIBLE);
+        } else {
+            mDataBinding.mainFloatingBtn.setVisibility(View.GONE);
+        }
         mDataBinding.mainFloatingRp.setListener(this);
         mDataBinding.mainFloatingRp.reLoadTask();
     }

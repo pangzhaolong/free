@@ -175,4 +175,12 @@ public class ABSwitch {
     public int getScoreTaskPlayTime() {
         return mAbBean.getScoreTaskPlayTime();
     }
+
+    public boolean isOpenScoreTask() {
+        return mAbBean.isOpenScoreTask();
+    }
+
+    public int getOpenScoreTaskMax() {
+        return mAbBean.getOpenScoreTaskMax();
+    }
 }

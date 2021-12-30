@@ -47,6 +47,18 @@ public class ABBean extends BaseCustomViewModel {
 
     @SerializedName("scoreTaskPlayTime")            //积分墙任务，玩多少时间，单位：秒
     private int scoreTaskPlayTime = 60;
+    @SerializedName("openScoreTask")                //积分墙总开关
+    private boolean openScoreTask = false;
+    @SerializedName("openScoreTaskMax")             //积分任务次数上限
+    private int openScoreTaskMax = 3;
+
+    public boolean isOpenScoreTask() {
+        return openScoreTask;
+    }
+
+    public int getOpenScoreTaskMax() {
+        return openScoreTaskMax;
+    }
 
     public int getRefreshInterval() {
         return refreshInterval;
