@@ -57,6 +57,9 @@ public class LoginHelp {
                 return;
             }
             userInfoBean = GsonUtils.fromLocalJson(spUserInfo, UserInfoBean.class);
+            if (userInfoBean == null) {
+                userInfoBean = new UserInfoBean();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

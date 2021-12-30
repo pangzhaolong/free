@@ -189,10 +189,15 @@ public class MainActivity
         } else {
             mDataBinding.mainFloatingBtn.setVisibility(View.GONE);
         }
-        mDataBinding.mainFloatingRp.setListener(this);
-        mDataBinding.mainFloatingRp.reLoadTask();
-    }
 
+        if (ABSwitch.Ins().isOpenScoreTask()) {
+            mDataBinding.mainFloatingRp.setVisibility(View.GONE);
+            mDataBinding.mainFloatingRp.setListener(this);
+            mDataBinding.mainFloatingRp.reLoadTask();
+        } else {
+            mDataBinding.mainFloatingRp.setVisibility(View.VISIBLE);
+        }
+    }
 
     /**
      * 用来初始化暴击模式的状态
@@ -305,6 +310,12 @@ public class MainActivity
 
 //        mDataBinding.mainFloatingRp.reLoadTask();
         checkRetentionTask();
+
+        if (CriticalModelTool.ifCoincide()) {
+            mDataBinding.mainFloatingRp.setVisibility(View.VISIBLE);
+        } else {
+            mDataBinding.mainFloatingRp.setVisibility(View.GONE);
+        }
     }
 
     //上报测试多参数事件
