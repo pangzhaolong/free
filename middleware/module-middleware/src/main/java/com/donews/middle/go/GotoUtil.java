@@ -1,5 +1,7 @@
 package com.donews.middle.go;
 
+import static com.donews.utilslibrary.utils.KeySharePreferences.CURRENT_SCORE_TASK_COUNT;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -11,8 +13,10 @@ import com.dn.drouter.ARouteHelper;
 import com.dn.sdk.bean.integral.ProxyIntegral;
 import com.dn.sdk.utils.IntegralComponent;
 import com.donews.base.utils.ToastUtil;
+import com.donews.common.contract.BaseCustomViewModel;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
+import com.donews.middle.BuildConfig;
 import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.api.MiddleApi;
 import com.donews.middle.bean.TaskActionBean;
@@ -21,6 +25,7 @@ import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
+import com.donews.utilslibrary.utils.SPUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -151,9 +156,7 @@ public class GotoUtil {
                     break;
                 case TaskActionBean.INTEGRAL:
                     // 积分墙
-//                    if (ABSwitch.Ins().getOpenScoreTaskMax() > //todo) {
-                        getIntegralTask(context);
-//                    }
+                    checkIntegralTask(context);
                     break;
                 case TaskActionBean.MONEY:
                     //提现页
@@ -166,10 +169,14 @@ public class GotoUtil {
     }
 
     private static void getIntegralTask(Context context) {
+        if (SPUtils.getInformain(CURRENT_SCORE_TASK_COUNT, 0) >= ABSwitch.Ins().getOpenScoreTaskMax()) {
+            return;
+        }
+
         IntegralComponent.getInstance().getIntegralList(new IntegralComponent.IntegralHttpCallBack() {
             @Override
             public void onSuccess(List<ProxyIntegral> var1) {
-                if (var1 != null &&var1.size()> 0) {
+                if (var1 != null && var1.size() > 0) {
                     // 积分墙
                     ARouter.getInstance()
                             .build(RouterFragmentPath.Integral.PAGER_INTEGRAL)
@@ -190,5 +197,32 @@ public class GotoUtil {
                 ToastUtil.showShort(context, "暂无积分任务");
             }
         });
+    }
+
+    private static void checkIntegralTask(Context context) {
+        EasyHttp.get(BuildConfig.API_INTEGRAL_URL + "v1/active-task-times")
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new SimpleCallBack<ActiveTaskBean>() {
+                    @Override
+                    public void onError(ApiException e) {
+                        getIntegralTask(context);
+                    }
+
+                    @Override
+                    public void onSuccess(ActiveTaskBean queryBean) {
+                        if (queryBean != null) {
+                            SPUtils.setInformain(CURRENT_SCORE_TASK_COUNT, queryBean.times);
+                        }
+                        getIntegralTask(context);
+                    }
+                });
+    }
+
+    /**
+     *
+     */
+    public static class ActiveTaskBean extends BaseCustomViewModel {
+
+        public int times;
     }
 }
