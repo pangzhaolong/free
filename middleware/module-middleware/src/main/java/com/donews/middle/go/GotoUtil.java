@@ -10,7 +10,6 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.drouter.ARouteHelper;
 import com.dn.sdk.bean.integral.ProxyIntegral;
 import com.dn.sdk.utils.IntegralComponent;
-import com.donews.base.utils.GsonUtils;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
@@ -151,7 +150,9 @@ public class GotoUtil {
                     break;
                 case TaskActionBean.INTEGRAL:
                     // 积分墙
-                    getIntegralTask(context);
+//                    if (ABSwitch.Ins().getOpenScoreTaskMax() > //todo) {
+                        getIntegralTask(context);
+//                    }
                     break;
                 case TaskActionBean.MONEY:
                     //提现页
