@@ -38,6 +38,8 @@ public class MainFloatingBtn extends FrameLayout implements IntegralComponent.IS
 
         mRootView = LayoutInflater.from(context).inflate(R.layout.main_floating_rp, this, true);
         mAppIcon = mRootView.findViewById(R.id.main_rp_icon);
+
+        this.setVisibility(GONE);
     }
 
     public void reLoadTask() {

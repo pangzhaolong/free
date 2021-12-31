@@ -194,12 +194,19 @@ public class GotoUtil {
                 ARouter.getInstance()
                         .build(RouterFragmentPath.Integral.PAGER_INTEGRAL_NOT_TASK)
                         .navigation();
-                ToastUtil.showShort(context, "暂无积分任务");
+//                ToastUtil.showShort(context, "暂无积分任务");
             }
         });
     }
 
     private static void checkIntegralTask(Context context) {
+        if (!ABSwitch.Ins().isOpenScoreTask()) {
+//            ARouter.getInstance()
+//                    .build(RouterFragmentPath.Integral.PAGER_INTEGRAL_NOT_TASK)
+//                    .navigation();
+//            ToastUtil.showShort(context, "暂无积分任务");
+            return;
+        }
         EasyHttp.get(BuildConfig.API_INTEGRAL_URL + "v1/active-task-times")
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<ActiveTaskBean>() {

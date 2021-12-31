@@ -185,14 +185,12 @@ public class MainActivity
                         .navigation());
 
         showCriticalBtn();
+        initScoreTaskFloatingBtn();
+    }
 
-        if (ABSwitch.Ins().isOpenScoreTask()) {
-            mDataBinding.mainFloatingRp.setVisibility(View.GONE);
-            mDataBinding.mainFloatingRp.setListener(this);
-            mDataBinding.mainFloatingRp.reLoadTask();
-        } else {
-            mDataBinding.mainFloatingRp.setVisibility(View.VISIBLE);
-        }
+    private void initScoreTaskFloatingBtn() {
+        mDataBinding.mainFloatingRp.setListener(this);
+        mDataBinding.mainFloatingRp.reLoadTask();
     }
 
     private void showCriticalBtn() {

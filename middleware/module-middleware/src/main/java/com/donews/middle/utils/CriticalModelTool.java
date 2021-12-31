@@ -70,7 +70,21 @@ public class CriticalModelTool {
     }
 
     public static boolean canShowCriticalBtn() {
-        return ABSwitch.Ins().getOpenCritModel() && DateManager.getInstance().isAllowCritical();
+        if (!AppInfo.checkIsWXLogin()) {
+            return false;
+        }
+        if (!ABSwitch.Ins().getOpenCritModel()) {
+            return false;
+        }
+        if (!DateManager.getInstance().isAllowCritical()) {
+            return false;
+        }
+
+        if (SPUtils.getInformain(CritParameterConfig.CRIT_STATE, 0) == 1) {
+            return false;
+        }
+        
+        return true;
     }
 
 
