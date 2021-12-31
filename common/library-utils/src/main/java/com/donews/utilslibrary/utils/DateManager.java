@@ -123,7 +123,7 @@ public class DateManager {
         int lotterySunNumber = com.blankj.utilcode.util.SPUtils.getInstance().getInt(DateManager.LOTTERY_SUN_NUMBER);
         //当前暴击的次数
         int lotteryJd = com.blankj.utilcode.util.SPUtils.getInstance().getInt(DateManager.LOTTERY_JD);
-        if (lotteryJd > lotterySunNumber) {
+        if (lotteryJd >= lotterySunNumber) {
             return false;
         } else {
             return true;
