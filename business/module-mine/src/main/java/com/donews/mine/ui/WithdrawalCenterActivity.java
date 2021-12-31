@@ -62,6 +62,7 @@ public class WithdrawalCenterActivity extends
         MvvmBaseLiveDataActivity<MineActivityWithdrawalCenterBinding, WithdrawalCenterViewModel> {
 
     private ScaleAnimation mScaleAnimation;
+    private boolean updateDataLoaing = false;
 
     @Override
     protected int getLayoutId() {
@@ -195,9 +196,21 @@ public class WithdrawalCenterActivity extends
                 mDataBinding.mineDrawSubmitLbv.refreshData(resu.getList());
             }
         });
+        mViewModel.withdrawTaskCurrentCountLivData.observe(this, count -> {
+            if (count < 0) {
+                if(updateDataLoaing){
+                    ToastUtil.showShort(this,"获取配置异常");
+                }
+            } else {
+                mViewModel.updateIntegralTask();
+            }
+            updateDataLoaing = false;
+        });
         setYYW();
         mViewModel.getWiningRotation();
-        mViewModel.updateIntegralTask();
+        //加载一次服务数据数据
+        updateDataLoaing = true;
+        mViewModel.requestWithdrawTaskCurrentCount();
     }
 
     private MineWithdraWallBean mineWithdraWallBean = null;
@@ -263,9 +276,15 @@ public class WithdrawalCenterActivity extends
     @Override
     protected void onResume() {
         super.onResume();
+        //更新数量
+        if (!updateDataLoaing) {
+            updateDataLoaing = true;
+            mViewModel.requestWithdrawTaskCurrentCount();
+        }
         if (mDataBinding.mineDrawSubmitLbv != null) {
             mDataBinding.mineDrawSubmitLbv.resumeScroll();
         }
+
     }
 
     @Override
@@ -309,13 +328,14 @@ public class WithdrawalCenterActivity extends
     //积分任务
     private void getTaskList() {
         if (!ABSwitch.Ins().isOpenScoreTask()) {
-            ToastUtil.showShort(this,"此任务已关闭");
+            ToastUtil.showShort(this, "此任务已关闭");
             return;
         }
         int maxCount = ABSwitch.Ins().getOpenScoreTaskMax();
-        int curT = com.donews.utilslibrary.utils.SPUtils.getInformain(CURRENT_SCORE_TASK_COUNT,0);;
-        if(curT >= maxCount){
-            ToastUtil.showShort(this,"今日任务已达上限");
+        int curT = com.donews.utilslibrary.utils.SPUtils.getInformain(CURRENT_SCORE_TASK_COUNT, 0);
+        ;
+        if (curT >= maxCount) {
+            ToastUtil.showShort(this, "今日任务已达上限");
             return;
         }
 

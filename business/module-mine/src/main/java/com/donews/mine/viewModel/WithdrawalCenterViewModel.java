@@ -65,6 +65,10 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
     public MutableLiveData<Integer> withdrawLivData =
             new MutableLiveData<>();
 
+    //提现任务已完成次数的数据
+    public MutableLiveData<Integer> withdrawTaskCurrentCountLivData =
+            new MutableLiveData<>();
+
     //当前请求的操作对象
     public WithdrawConfigResp.WithdrawListDTO withdrawSelectDto = null;
 
@@ -148,6 +152,13 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
      */
     public void getLoadWithdraWalletDite() {
         mModel.requestWithdraWallet(withdrawDatilesLivData);
+    }
+
+    /**
+     * 提现任务的当前已完成次数
+     */
+    public void requestWithdrawTaskCurrentCount() {
+        mModel.requestWithdraTaskCurrentCount(withdrawTaskCurrentCountLivData, baseActivity);
     }
 
     /**

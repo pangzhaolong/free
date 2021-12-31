@@ -1,5 +1,7 @@
 package com.donews.mine.model;
 
+import static com.donews.utilslibrary.utils.KeySharePreferences.CURRENT_SCORE_TASK_COUNT;
+
 import android.content.Context;
 
 import androidx.lifecycle.MutableLiveData;
@@ -12,6 +14,7 @@ import com.donews.middle.bean.front.AwardBean;
 import com.donews.middle.bean.front.LotteryOpenRecord;
 import com.donews.middle.bean.front.WinningRotationBean;
 import com.donews.mine.BuildConfig;
+import com.donews.mine.bean.ActiveTaskBean;
 import com.donews.mine.bean.QueryBean;
 import com.donews.mine.Api.MineHttpApi;
 import com.donews.mine.bean.reqs.WidthdrawalReq;
@@ -429,6 +432,38 @@ public class MineModel extends BaseLiveDataModel {
                         }
                         if (livData != null) {
                             livData.postValue(queryBean);
+                        }
+                    }
+                });
+        addDisposable(disop);
+        return disop;
+    }
+
+    /**
+     * 获取当日体现任务已完成的次数
+     *
+     * @param livData 完成的次数
+     * @param context
+     * @return
+     */
+    public Disposable requestWithdraTaskCurrentCount(
+            MutableLiveData<Integer> livData, Context context) {
+        Disposable disop = EasyHttp.get(BuildConfig.API_INTEGRAL_URL + "v1/active-task-times")
+//                .upObject(req)
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new SimpleCallBack<ActiveTaskBean>() {
+                    @Override
+                    public void onError(ApiException e) {
+                        livData.postValue(com.donews.utilslibrary.utils.SPUtils.getInformain(CURRENT_SCORE_TASK_COUNT,0));
+                    }
+
+                    @Override
+                    public void onSuccess(ActiveTaskBean queryBean) {
+                        if (queryBean != null) {
+                            com.donews.utilslibrary.utils.SPUtils.setInformain(CURRENT_SCORE_TASK_COUNT, queryBean.times);
+                            livData.postValue(queryBean.times);
+                        } else {
+                            livData.postValue(com.donews.utilslibrary.utils.SPUtils.getInformain(CURRENT_SCORE_TASK_COUNT,0));
                         }
                     }
                 });
