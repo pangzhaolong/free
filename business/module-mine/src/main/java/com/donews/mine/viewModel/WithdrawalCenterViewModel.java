@@ -267,7 +267,7 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
             int maxCount = ABSwitch.Ins().getOpenScoreTaskMax();
             int curT = com.donews.utilslibrary.utils.SPUtils.getInformain(CURRENT_SCORE_TASK_COUNT, 0);
             //如果任务开关打开。并且未达到最大限制的情况下。显示任务
-            taskIsShow = taskIsShow && curT >= maxCount;
+            taskIsShow = taskIsShow && curT <= maxCount;
         }
         Iterator<WithdrawConfigResp.WithdrawListDTO> iter = newAddList.iterator();
         while (taskIsShow && iter.hasNext()) {
