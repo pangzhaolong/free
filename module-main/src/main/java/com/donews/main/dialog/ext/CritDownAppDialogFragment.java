@@ -380,12 +380,13 @@ public class CritDownAppDialogFragment extends DialogFragment {
 
             @Override
             public void onRewardVerify() {
-
+                dismiss();
+                ToastUtil.showShort(getActivity(), "任务已完成");
             }
 
             @Override
             public void onRewardVerifyError(String s) {
-
+                ToastUtil.showShort(getActivity(), "任务奖励领取失败");
             }
         };
         boolean isExitTask = MainIntegralTaskManager.getCheckTaskIsExties(data.srcData);

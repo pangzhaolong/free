@@ -28,6 +28,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.EncryptUtils;
 import com.dn.events.events.DoubleRpEvent;
 import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.RedPackageStatus;
@@ -525,7 +526,9 @@ public class MainActivity
             return;
         }
         HighValueGoodsBean.GoodsInfo info = t.getList().get(0);
+        //达到暴击需要的总次数
         int count = CriticalModelTool.getCurrentUserModulCount();
+        //当前已完成的次数
         int currCount = LotteryAdCount.INSTANCE.getCriticalModelLotteryNumber();
         CritWelfareDialogFragment.OnSurListener surListener = (int type, int curJd, int totalJd) -> {
             ARouter.getInstance()

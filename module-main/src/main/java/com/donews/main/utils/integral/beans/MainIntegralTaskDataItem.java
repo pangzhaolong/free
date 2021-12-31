@@ -37,6 +37,9 @@ public class MainIntegralTaskDataItem extends BaseCustomViewModel {
     private boolean onComplete = false;
     private boolean onInstalled = false;
     private boolean onError = false;
+    private boolean onRewardVerify = false;
+    private boolean onRewardVerifyError = false;
+    private String onRewardVerifyErrorStr = null;
     private Throwable onErrorThrow = null;
     //-------------------------------------------------------------
 
@@ -92,7 +95,10 @@ public class MainIntegralTaskDataItem extends BaseCustomViewModel {
             @Override
             public void onInstalled() {
                 onInstalled = true;
-                MainIntegralTaskManager.removeTask(getTaskId());
+                if (onRewardVerify || onRewardVerifyError) {
+                    //如果后续逻辑已经触发。那么移除任务
+                    MainIntegralTaskManager.removeTask(getTaskId());
+                }
                 if (attchSrcToNewListener != null) {
                     attchSrcToNewListener.onInstalled();
                 }
@@ -110,16 +116,23 @@ public class MainIntegralTaskDataItem extends BaseCustomViewModel {
 
             @Override
             public void onRewardVerify() {
+                onRewardVerify = true;
                 //告知后台计时服务
                 CommonUtils.startCritService(BaseApplication.getInstance(), srcData);
+                if (attchSrcToNewListener != null) {
+                    attchSrcToNewListener.onRewardVerify();
+                }
+                MainIntegralTaskManager.removeTask(getTaskId());
             }
 
             @Override
             public void onRewardVerifyError(String s) {
-
-
-
-
+                MainIntegralTaskManager.removeTask(getTaskId());
+                onRewardVerifyError = true;
+                onRewardVerifyErrorStr = s;
+                if (attchSrcToNewListener != null) {
+                    attchSrcToNewListener.onRewardVerify();
+                }
             }
         };
     }
@@ -213,6 +226,12 @@ public class MainIntegralTaskDataItem extends BaseCustomViewModel {
         //保证两个终点事件在最后调用
         if (attchSrcToNewListener != null && onInstalled) {
             attchSrcToNewListener.onInstalled();
+        }
+        if (attchSrcToNewListener != null && onRewardVerify) {
+            attchSrcToNewListener.onRewardVerify();
+        }
+        if (attchSrcToNewListener != null && onRewardVerifyError) {
+            attchSrcToNewListener.onRewardVerifyError(onRewardVerifyErrorStr);
         }
         if (attchSrcToNewListener != null && onError) {
             attchSrcToNewListener.onError(onErrorThrow);
