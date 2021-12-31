@@ -158,7 +158,12 @@ public class CritDownAppDialogFragment extends DialogFragment {
             if (closeListener != null) {
                 closeListener.close(this);
             }
-            dismiss();
+            try {
+                getDialog().dismiss();
+                dismiss();
+            }catch (Exception e){
+                dismiss();
+            }
         });
         getDialog().setOnDismissListener(dialog -> {
             if (dissListener != null) {
@@ -380,7 +385,11 @@ public class CritDownAppDialogFragment extends DialogFragment {
 
             @Override
             public void onRewardVerify() {
-                dismiss();
+                try {
+                    getDialog().dismiss();
+                }catch (Exception e){
+                    dismiss();
+                }
                 ToastUtil.showShort(getActivity(), "任务已完成");
             }
 

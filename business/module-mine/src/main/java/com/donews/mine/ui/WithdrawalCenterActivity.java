@@ -333,7 +333,6 @@ public class WithdrawalCenterActivity extends
         }
         int maxCount = ABSwitch.Ins().getOpenScoreTaskMax();
         int curT = com.donews.utilslibrary.utils.SPUtils.getInformain(CURRENT_SCORE_TASK_COUNT, 0);
-        ;
         if (curT >= maxCount) {
             ToastUtil.showShort(this, "今日任务已达上限");
             return;

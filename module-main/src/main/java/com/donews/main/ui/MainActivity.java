@@ -98,6 +98,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import me.majiajie.pagerbottomtabstrip.NavigationController;
 
 /**
@@ -247,7 +248,12 @@ public class MainActivity
             showCriticalBtn();
             showPopWindow(CruelDuration, CruelDuration);
             if (appDownDialog != null) {
-                appDownDialog.dismiss();
+                runOnUiThread(()->{
+                    appDownDialog.dismiss();
+                    if(appDownDialog.getDialog() != null) {
+                        appDownDialog.getDialog().dismiss();
+                    }
+                });
             }
         }
     }
@@ -566,7 +572,14 @@ public class MainActivity
                 runOnUiThread(() -> {
                     mDataBinding.mainFloatingBtn.setEnabled(true);
                     if (appDownDialog != null) {
-                        appDownDialog.dismiss();
+                        try {
+                            appDownDialog.dismiss();
+                            if(appDownDialog.getDialog() != null){
+                                appDownDialog.getDialog().dismiss();
+                            }
+                        }catch (Exception e){
+                            appDownDialog.dismiss();
+                        }
                     }
                     hideLoading();
                     //下载列表弹窗
