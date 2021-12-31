@@ -40,6 +40,9 @@ dependencies {
     //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
     api 'com.tencent.bugly:nativecrashreport:3.9.2'
 
+    // 穿山甲行为sdk
+    implementation 'com.bytedance.applog:RangersAppLog-Lite-cn:6.2.2'
+
     //日志库
     api rootProject.ext.dependencies["logger"]
 

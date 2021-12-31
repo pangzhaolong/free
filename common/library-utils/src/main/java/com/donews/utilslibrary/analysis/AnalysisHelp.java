@@ -9,6 +9,9 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.bytedance.applog.AppLog;
+import com.bytedance.applog.InitConfig;
+import com.bytedance.applog.util.UriConstants;
 import com.dnstatistics.sdk.agent.DonewsAgent;
 import com.dnstatistics.sdk.agent.DonewsConfigure;
 import com.dnstatistics.sdk.entity.SexEnums;
@@ -73,6 +76,16 @@ public class AnalysisHelp {
 
     // register
     public static void register(Application application) {
+        /* 穿山甲 用户行为sdk 初始化开始 */
+        final InitConfig config = new InitConfig(BuildConfig.Applog_SDK_APPID, DeviceUtils.getChannelName()); // appid和渠道，appid如不清楚请联系客户成功经理，注意第二个参数 channel 不能为空
+
+        config.setUriConfig (UriConstants.DEFAULT);//上报地址
+        // 加密开关，SDK 5.5.1 及以上版本支持，false 为关闭加密，上线前建议设置为 true
+        AppLog.setEncryptAndCompress(true);
+
+        config.setAutoStart(true);
+        AppLog.init(application, config);
+        /* 初始化结束 */
         DonewsAgent.setOaId(DeviceUtils.getOaid());
         DonewsAgent.setExtDev(String.format("versionCode=%s", DeviceUtils.getAppVersionCode()));
         LogUtil.d("register 统计SDK");

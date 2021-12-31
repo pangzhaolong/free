@@ -28,7 +28,6 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.blankj.utilcode.util.EncryptUtils;
 import com.dn.events.events.DoubleRpEvent;
 import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.RedPackageStatus;
@@ -182,14 +181,10 @@ public class MainActivity
         mDataBinding.occupyPosition.post(this::initializeCritState);
         mDataBinding.occupyPosition.setOnClickListener(v -> /*CommonUtils.startCrit()*/
                 ARouter.getInstance()
-                .build(RouterFragmentPath.Integral.PAGER_INTEGRAL)
-                .navigation());
+                        .build(RouterFragmentPath.Integral.PAGER_INTEGRAL)
+                        .navigation());
 
-        if (ABSwitch.Ins().getOpenCritModel() && AppInfo.checkIsWXLogin()) {
-            mDataBinding.mainFloatingBtn.setVisibility(View.VISIBLE);
-        } else {
-            mDataBinding.mainFloatingBtn.setVisibility(View.GONE);
-        }
+        showCriticalBtn();
 
         if (ABSwitch.Ins().isOpenScoreTask()) {
             mDataBinding.mainFloatingRp.setVisibility(View.GONE);
@@ -197,6 +192,14 @@ public class MainActivity
             mDataBinding.mainFloatingRp.reLoadTask();
         } else {
             mDataBinding.mainFloatingRp.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void showCriticalBtn() {
+        if (CriticalModelTool.canShowCriticalBtn()) {
+            mDataBinding.mainFloatingBtn.setVisibility(View.VISIBLE);
+        } else {
+            mDataBinding.mainFloatingBtn.setVisibility(View.GONE);
         }
     }
 
@@ -233,8 +236,8 @@ public class MainActivity
         SPUtils.setInformain(CritParameterConfig.LOTTERY_MARK, false);
         //结束后重置暴击模式的次数，下次达到后在进入下轮
         LotteryAdCount.INSTANCE.resetCriticalModelNumber();
-        mDataBinding.mainFloatingBtn.setVisibility(View.VISIBLE);
         mDataBinding.mainFloatingBtn.setModel(FrontFloatingBtn.CRITICAL_MODEL);
+        showCriticalBtn();
         EventBus.getDefault().post(new CritMessengerBean(300));
     }
 
@@ -242,8 +245,8 @@ public class MainActivity
     public void UnlockEvent(CritMessengerBean critMessenger) {
         if (critMessenger != null && critMessenger.mStatus == 200) {
             //开始暴击模式
-            mDataBinding.mainFloatingBtn.setVisibility(View.GONE);
             mDataBinding.mainFloatingBtn.setModel(FrontFloatingBtn.CRITICAL_MODEL);
+            showCriticalBtn();
             showPopWindow(CruelDuration, CruelDuration);
             if (appDownDialog != null) {
                 appDownDialog.dismiss();
@@ -311,12 +314,7 @@ public class MainActivity
 
 //        mDataBinding.mainFloatingRp.reLoadTask();
         checkRetentionTask();
-
-        if (CriticalModelTool.canShowCriticalBtn()) {
-            mDataBinding.mainFloatingBtn.setVisibility(View.VISIBLE);
-        } else {
-            mDataBinding.mainFloatingBtn.setVisibility(View.GONE);
-        }
+        showCriticalBtn();
     }
 
     //上报测试多参数事件
@@ -335,14 +333,9 @@ public class MainActivity
             //登录刷新广告id
             String url = HttpConfigUtilsKt.withConfigParams(BuildConfig.AD_ID_CONFIG, false);
             AdManager.INSTANCE.init();
-
-            if (ABSwitch.Ins().getOpenCritModel() && 0 == SPUtils.getInformain(CritParameterConfig.CRIT_STATE, 0)) {
-                mDataBinding.mainFloatingBtn.setVisibility(View.VISIBLE);
-                mDataBinding.mainFloatingBtn.setModel(FrontFloatingBtn.CRITICAL_MODEL);
-            }
-        } else {
-            mDataBinding.mainFloatingBtn.setVisibility(View.GONE);
         }
+
+        showCriticalBtn();
     }
 
     /**
@@ -482,18 +475,13 @@ public class MainActivity
         });
         AppStatusManager.getInstance().setAppStatus(AppStatusConstant.STATUS_NORMAL);
 
-        if (ABSwitch.Ins().isOpenAB()) {
-            mDataBinding.mainFloatingBtn.setVisibility(View.GONE);
-        } else {
-            //暴击模式是否打开
-            mDataBinding.mainFloatingBtn.setVisibility(ABSwitch.Ins().getOpenCritModel() ? View.VISIBLE : View.GONE);
-            mDataBinding.mainFloatingBtn.setOnClickListener(v -> {
-                toggleStatusBar(0);
-                mDataBinding.cvContentView.setCurrentItem(0);
-                mPosition = 0;
-                bjClick();
-            });
-        }
+        showCriticalBtn();
+        mDataBinding.mainFloatingBtn.setOnClickListener(v -> {
+            toggleStatusBar(0);
+            mDataBinding.cvContentView.setCurrentItem(0);
+            mPosition = 0;
+            bjClick();
+        });
 
         int intoFrontCounts = SPUtils.getInformain(KeySharePreferences.INTO_FRONT_COUNTS, 0);
         if (!SPUtils.getInformain(KeySharePreferences.HAS_DO_INTO_FRONT, false)) {

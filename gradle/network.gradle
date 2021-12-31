@@ -118,6 +118,9 @@ ext {
     // 微信API
     WX_API = "wx9f4a624ca2fb66b2"
 
+    //穿山甲行为sdk appid
+    Applog_SDK_APPID = "297390"
+
     //桌面通知
     APP_NOTIFY_LUNCHER = BASE_CONFIG_URL + APP_IDENTIFICATION+"-notify"+BASE_RULE
 
