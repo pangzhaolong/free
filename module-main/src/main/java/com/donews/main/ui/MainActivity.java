@@ -210,7 +210,7 @@ public class MainActivity
         //暴击模式在运行中
         if (critState == 1) {
             //获取暴击模式的开始时间
-            long critStartTime = SPUtils.getInformain(CritParameterConfig.CRIT_START_TIME, 0);
+            long critStartTime = SPUtils.getLongInformain(CritParameterConfig.CRIT_START_TIME, 0);
             if (critStartTime != 0) {
                 //当前时间
                 long time = SystemClock.elapsedRealtime();
