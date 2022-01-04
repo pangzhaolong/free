@@ -14,6 +14,8 @@ import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
 
+import com.donews.utilslibrary.utils.AppInfo;
+
 
 public class NotifyAnimationView extends LinearLayout {
 
@@ -30,6 +32,15 @@ public class NotifyAnimationView extends LinearLayout {
      */
     private int mShowAniTime = 800;
     private int mHideAniTime = 240;
+
+    /**
+     * 通知的类型，参考: {@link com.donews.notify.launcher.utils.NotifyItemUtils} 相关常量
+     */
+    public int notifyType = 0;
+    /**
+     * 是否为顶部通知。T:是，F:底部通知
+     */
+    public boolean isTopNotify = false;
 
     private ViewStatusListener mViewStatusListener = new DefaultViewStatusListener();
 
@@ -48,19 +59,19 @@ public class NotifyAnimationView extends LinearLayout {
     }
 
     public void setHideDuration(long hideDuration) {
-        if(hideDuration >=0){
+        if (hideDuration >= 0) {
             this.mHideDuration = hideDuration;
         }
     }
 
     public void setShowAniTime(int showAniTime) {
-        if(showAniTime >=0){
+        if (showAniTime >= 0) {
             this.mShowAniTime = showAniTime;
         }
     }
 
     public void setHideAniTime(int hideAniTime) {
-        if(hideAniTime >=0){
+        if (hideAniTime >= 0) {
             this.mHideAniTime = hideAniTime;
         }
     }
@@ -84,7 +95,11 @@ public class NotifyAnimationView extends LinearLayout {
     public void start() {
         try {
             setVisibility(View.VISIBLE);
-            startWithAnimation();
+            if (isTopNotify) {
+                startWithAnimation(); //顶部动画
+            } else {
+                startBotWithAnimation(); //底部动画
+            }
         } catch (Throwable t) {
             t.printStackTrace();
         }
@@ -115,8 +130,30 @@ public class NotifyAnimationView extends LinearLayout {
         this.startAnimation(translateAnimation);
     }
 
+    //底部动画
+    private void startBotWithAnimation() {
+        TranslateAnimation translateAnimation = createTranslateAnimation(0f, 0f, 1f, 0f);
+        translateAnimation.setDuration(mShowAniTime);
+        translateAnimation.setInterpolator(new OvershootInterpolator());
+        translateAnimation.setAnimationListener(new DefaultAnimationListener() {
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mViewStatusListener.onNotifyShow(NotifyAnimationView.this);
+                if (mAutoHide) {
+                    mHandler.postDelayed(mHideRunnable, mHideDuration);
+                }
+            }
+        });
+        this.startAnimation(translateAnimation);
+    }
+
     private void hideWithAnimation() {
-        TranslateAnimation translateAnimation = createTranslateAnimation(0f, 0f, 0f, -1f);
+        TranslateAnimation translateAnimation;
+        if (isTopNotify) {
+            translateAnimation = createTranslateAnimation(0f, 0f, 0f, -1f);
+        } else {
+            translateAnimation = createTranslateAnimation(0f, 0f, 0f, 1f);
+        }
         translateAnimation.setDuration(mHideAniTime);
         translateAnimation.setInterpolator(new LinearInterpolator());
         translateAnimation.setAnimationListener(new DefaultAnimationListener() {

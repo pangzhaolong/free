@@ -12,10 +12,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +30,7 @@ import com.donews.base.base.AppManager;
 import com.donews.common.NotifyLuncherConfigManager;
 import com.donews.keepalive.LaunchStart;
 import com.donews.notify.R;
+import com.donews.notify.launcher.utils.NotifyItemUtils;
 import com.donews.utilslibrary.analysis.AnalysisParam;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.gyf.immersionbar.ImmersionBar;
@@ -40,126 +43,6 @@ public class NotifyActivity extends Activity {
 
     private static WeakReference<NotifyActionActivity> sPopActionRefer = null;
     private static final LaunchStart launchStart = new LaunchStart();
-
-
-    private ViewGroup mLayoutNotifyRoot = null;
-    private ImageView mNotifyIv = null;
-    private NotifyAnimationView mNotifyAnimationView = null;
-
-    @SuppressLint("ClickableViewAccessibility")
-    private final View.OnTouchListener touch = (view, motionEvent) -> {
-        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-            //if else
-            int action = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyActionType;
-            Log.w(TAG, "open action = " + action);
-            switch (action) {
-                case 0:
-                    mNotifyAnimationView.hide();
-                    break;
-                case 1:
-                    destroy();
-                    break;
-                case 2:
-                    schemeOpen(true);
-                    break;
-            }
-        }
-        return false;
-    };
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.notify_top_banner);
-        //统计展示
-        try {
-            AnalysisUtils.onEvent(this, AnalysisParam.DESKTOP_DISPLAY);
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-        NotifyScreenDelegate.putTodayShowCount(this);
-
-        sPopActionRefer = new WeakReference(this);
-        mLayoutNotifyRoot = findViewById(R.id.layout_notifyroot);
-        mNotifyIv = findViewById(R.id.img_notify);
-        int notifyShowSizeType = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyShowSizeType;
-        if (notifyShowSizeType == 0) {
-            mNotifyIv.setImageResource(R.drawable.notifycation_notify_content);
-        } else {
-            mNotifyIv.setImageResource(R.drawable.launcher_notify_big);
-        }
-        mNotifyAnimationView = findViewById(R.id.layout_notifyanimation);
-        mLayoutNotifyRoot.setBackgroundColor(Color.TRANSPARENT);
-        mNotifyAnimationView.setViewDimissListener(new NotifyAnimationView.ViewStatusListener() {
-            @Override
-            public void onNotifyClose(View view) {
-                Log.d(TAG, "NotifyActivity onNotifyClose");
-                destroy();
-            }
-
-            @Override
-            public void onNotifyShow(View view) {
-                Log.d(TAG, "NotifyActivity onNotifyShow");
-            }
-        });
-        mLayoutNotifyRoot.setOnTouchListener(touch);
-        mNotifyAnimationView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                schemeOpen(false);
-            }
-        });
-        String url = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyLauncherImg;
-        Log.d(TAG, "start url ,url = " + url);
-        if (!TextUtils.isEmpty(url) && url.startsWith("http")) {
-            Glide.with(this).asBitmap().load(url).into(new CustomTarget<Bitmap>() {
-                @Override
-                public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                    mNotifyIv.setImageBitmap(resource);
-                    mNotifyAnimationView.setHideDuration(NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyShowTime);
-                    Log.d(TAG, "img url loaded , url = " + url);
-                    mNotifyAnimationView.start();
-                }
-
-                @Override
-                public void onLoadCleared(@Nullable Drawable placeholder) {
-                    Log.d(TAG, "img url onLoadCleared , url =" + url);
-                }
-
-                @Override
-                public void onLoadFailed(@Nullable Drawable errorDrawable) {
-                    super.onLoadFailed(errorDrawable);
-                    Log.d(NotifyInitProvider.TAG, "tryLoadNewImg onLoadFailed , url = " + url);
-                    mNotifyAnimationView.setHideDuration(NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyShowTime);
-                    mNotifyAnimationView.start();
-                }
-            });
-        } else {
-            mNotifyAnimationView.setHideDuration(NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyShowTime);
-            mNotifyAnimationView.start();
-        }
-        launchStart.cancel();
-
-        ImmersionBar.with(this)
-                .statusBarColor(R.color.transparent)
-                .fitsSystemWindows(true)
-                .autoDarkModeEnable(false)
-                .init();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG, "NotifyActivity onResume");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //关闭队列中的所有当前页面类型的页面
-        AppManager.getInstance().finishAllActivity(getClass());
-        Log.d(TAG, "NotifyActivity onDestroy");
-    }
 
     public static void actionStart(Context context) {
         Log.i(TAG, "NotifyActivity actionStart");
@@ -200,6 +83,108 @@ public class NotifyActivity extends Activity {
         } catch (Throwable t) {
             t.printStackTrace();
         }
+    }
+
+    private ViewGroup mLayoutNotifyRoot = null;
+    private NotifyAnimationView mNotifyAnimationView = null;
+
+    @SuppressLint("ClickableViewAccessibility")
+    private final View.OnTouchListener touch = (view, motionEvent) -> {
+        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+            //if else
+            int action = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyActionType;
+            Log.w(TAG, "open action = " + action);
+            switch (action) {
+                case 0:
+                    mNotifyAnimationView.hide();
+                    break;
+                case 1:
+                    destroy();
+                    break;
+                case 2:
+                    schemeOpen(true);
+                    break;
+            }
+        }
+        return false;
+    };
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.notify_top_banner);
+        //统计展示
+        try {
+            AnalysisUtils.onEvent(this, AnalysisParam.DESKTOP_DISPLAY);
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+        NotifyScreenDelegate.putTodayShowCount(this);
+
+        sPopActionRefer = new WeakReference(this);
+        mLayoutNotifyRoot = findViewById(R.id.layout_notifyroot);
+
+        mNotifyAnimationView = findViewById(R.id.layout_notifyanimation);
+        mLayoutNotifyRoot.setBackgroundColor(Color.TRANSPARENT);
+        mNotifyAnimationView.setViewDimissListener(new NotifyAnimationView.ViewStatusListener() {
+            @Override
+            public void onNotifyClose(View view) {
+                Log.d(TAG, "NotifyActivity onNotifyClose");
+                destroy();
+            }
+
+            @Override
+            public void onNotifyShow(View view) {
+                Log.d(TAG, "NotifyActivity onNotifyShow");
+            }
+        });
+        mLayoutNotifyRoot.setOnTouchListener(touch);
+        mNotifyAnimationView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                schemeOpen(false);
+            }
+        });
+        setNotifyAttrs();
+        launchStart.cancel();
+
+        ImmersionBar.with(this)
+                .statusBarColor(R.color.transparent)
+                .fitsSystemWindows(true)
+                .autoDarkModeEnable(false)
+                .init();
+    }
+
+    //设置通知属性相关内容
+    private void setNotifyAttrs() {
+        //判断方向
+        if (!mNotifyAnimationView.isTopNotify) {
+            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mNotifyAnimationView.getLayoutParams();
+            lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+            mNotifyAnimationView.setLayoutParams(lp);
+        }
+        //设置通知模式
+        mNotifyAnimationView.notifyType = NotifyItemUtils.TYPE_LOTT_1;
+        //添加当前类型的通知视图
+        NotifyItemUtils.addItemView(mNotifyAnimationView);
+        //绑定数据
+        NotifyItemUtils.bindData(mNotifyAnimationView, () -> {
+            //需要特殊处理UI的类型。再此处处理即可
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "NotifyActivity onResume");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //关闭队列中的所有当前页面类型的页面
+        AppManager.getInstance().finishAllActivity(getClass());
+        Log.d(TAG, "NotifyActivity onDestroy");
     }
 
     /**

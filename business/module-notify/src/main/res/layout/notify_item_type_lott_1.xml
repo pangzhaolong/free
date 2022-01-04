@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_notifyroot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:ignore="MissingConstraints"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/notify_item_lott_icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="15dp"
+        android:src="@drawable/noti_icon"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/notify_item_lott_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:text="提醒"
+        app:layout_constraintBottom_toBottomOf="@+id/notify_item_lott_icon"
+        app:layout_constraintLeft_toRightOf="@+id/notify_item_lott_icon"
+        app:layout_constraintTop_toTopOf="@+id/notify_item_lott_icon" />
+
+    <TextView
+        android:id="@+id/notify_item_lott_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="15dp"
+        android:text="昵称"
+        app:layout_constraintLeft_toLeftOf="@+id/notify_item_lott_icon"
+        app:layout_constraintRight_toLeftOf="@+id/notify_item_lott_jp"
+        app:layout_constraintTop_toBottomOf="@+id/notify_item_lott_icon" />
+
+    <TextView
+        android:id="@+id/notify_item_lott_desc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="2dp"
+        android:text="请确认你的奖品"
+        app:layout_constraintLeft_toLeftOf="@+id/notify_item_lott_icon"
+        app:layout_constraintRight_toLeftOf="@+id/notify_item_lott_jp"
+        app:layout_constraintTop_toBottomOf="@+id/notify_item_lott_name" />
+
+    <TextView
+        android:id="@+id/notify_item_lott_jp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginRight="15dp"
+        android:text="[奖品]"
+        app:layout_constraintBottom_toBottomOf="@+id/notify_item_lott_desc"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/notify_item_lott_name" />
+</androidx.constraintlayout.widget.ConstraintLayout>
