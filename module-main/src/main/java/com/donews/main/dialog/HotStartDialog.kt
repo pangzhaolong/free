@@ -12,6 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import com.dn.events.ad.HotStartEvent
 import com.dn.sdk.bean.PreloadAdState
 import com.dn.sdk.bean.preload.PreloadAd
 import com.dn.sdk.listener.impl.SimpleSplashListener
@@ -25,6 +26,7 @@ import com.donews.main.databinding.MainDialogHotStartBinding
 import com.donews.main.utils.HotStartCacheUtils
 import com.donews.utilslibrary.utils.DensityUtils
 import com.gyf.immersionbar.ImmersionBar
+import org.greenrobot.eventbus.EventBus
 import java.lang.reflect.Field
 
 /**
@@ -84,6 +86,7 @@ class HotStartDialog : DialogFragment(), DialogInterface.OnKeyListener {
         super.onDismiss(dialog)
         HotStartCacheUtils.clear()
         HotStartCacheUtils.checkActivity(AppManager.getInstance().topActivity)
+        EventBus.getDefault().post(HotStartEvent(false))
     }
 
 
