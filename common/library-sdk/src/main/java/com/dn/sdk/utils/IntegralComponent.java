@@ -89,12 +89,17 @@ public class IntegralComponent {
                             integralHttpCallBack.onNoTask();
                             return;
                         }
+                        boolean isCall = false;
                         for (int i = 0; i < integralAds.size(); i++) {
                             if (integralAds.get(i).getTaskType().equals("ACTIVATION_TASK")) {
                                 ProxyIntegral integralBean = new ProxyIntegral(integralAds.get(i));
                                 integralHttpCallBack.onSuccess(integralBean);
+                                isCall = true;
                                 break;
                             }
+                        }
+                        if(!isCall){
+                            integralHttpCallBack.onNoTask();
                         }
                     }
 
