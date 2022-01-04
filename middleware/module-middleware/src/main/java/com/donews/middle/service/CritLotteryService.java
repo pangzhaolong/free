@@ -32,6 +32,7 @@ import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
 import com.donews.utilslibrary.utils.SPUtils;
+import com.orhanobut.logger.Logger;
 
 import org.json.JSONObject;
 
@@ -44,20 +45,13 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
 public class CritLotteryService extends Service {
-
+    private static final String TAG = "CritLotteryService";
     private static String INTEGRAL_BASE = BuildConfig.API_INTEGRAL_URL;
     public static String INTEGRAL_REWARD = INTEGRAL_BASE + "v1/has-wall-reward";
     private Timer mTimer;
     //暴击体验时长
     private int mStartTime;
     private int mStartSumTime;
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            super.handleMessage(msg);
-            ToastUtil.showShort(getApplicationContext(), msg.obj + "");
-        }
-    };
     private boolean ifTimerRun = false;
     DownloadStateDean mDownloadStateDean;
     //访问服务器请求参数
@@ -108,15 +102,6 @@ public class CritLotteryService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
-    public void test(String valsue) {
-
-        Message mes = new Message();
-        mes.obj = valsue;
-        handler.sendMessage(mes);
-
-    }
-
-
     public void getDownloadStatus() {
         if (wall_request_id != null) {
             Map<String, String> params = new HashMap<>();
@@ -131,6 +116,7 @@ public class CritLotteryService extends Service {
                         public void onError(ApiException e) {
                             mDownloadStateDean = null;
                             if (!ifTimerRun) {
+                                Logger.d(TAG + "任务失败，请从本页面下载并打开对应APP" + e);
                                 ToastUtil.showShort(getApplicationContext(), "任务失败，请从本页面下载并打开对应APP");
                             }
                         }
@@ -141,10 +127,11 @@ public class CritLotteryService extends Service {
                                 mDownloadStateDean = stateDean;
                                 if (!ifTimerRun) {
                                     if (mDownloadStateDean.getHandout()) {
-                                        ToastUtil.showShort(getApplicationContext(), "任务激活成功");
+                                        Logger.d(TAG + "任务激活成功");
                                         jump();
                                     } else {
-                                        ToastUtil.showShort(getApplicationContext(), "任务激活失败");
+                                        Logger.d(TAG + "任务激活失败");
+                                        ToastUtil.showShort(getApplicationContext(), "领取失败，请从本页面下载并体验应用");
                                     }
 
                                 }
@@ -169,20 +156,20 @@ public class CritLotteryService extends Service {
             public void run() {
                 //只有应用不在前台才会继续倒计时
                 boolean foreground = AppUtils.isAppForeground();
-                test("开始倒计时");
+                Logger.d(TAG + "开始倒计时" + mStartTime);
                 if (!foreground) {
                     if (mStartTime > 0) {
                         ifTimerRun = true;
-                        test("没在前台,倒计时中" + mStartTime);
+                        Logger.d(TAG + "没在前台,倒计时中" + mStartTime);
                         mStartTime = mStartTime - 1;
 
                         if (mStartTime == (mStartSumTime / 2)) {
                             //请求服务器处理结果
-                            Log.d("startTask", "请求服务器获取结果");
+                            Logger.d(TAG + "请求服务器获取结果" + mStartTime);
                             getDownloadStatus();
                         }
                     } else {
-                        test("可以开始暴击模式了");
+                        Logger.d(TAG + "可以开始暴击模式了" + mStartTime);
                     }
                 } else {
                     if (mStartTime <= 0 && foreground) {
@@ -191,12 +178,12 @@ public class CritLotteryService extends Service {
                             if (((FragmentActivity) activity).getSupportFragmentManager() != null) {
                                 Fragment hotStartDialogFragment = ((FragmentActivity) activity).getSupportFragmentManager().findFragmentByTag("HotStartDialog");
                                 if (hotStartDialogFragment != null) {
-                                    test("齐平页面等待");
+                                    Logger.d(TAG + "齐平页面等待" + mStartTime);
                                 } else {
                                     if ((activity.getClass().getSimpleName().equals("MainActivity") || activity.getClass().getSimpleName().equals("LotteryActivity"))) {
                                         cancelTimer();
                                     } else {
-                                        test("等待首页，或者抽奖页显示后，弹起暴击弹框" + mStartTime);
+                                        Logger.d(TAG + "等待首页，或者抽奖页显示后，弹起暴击弹框" + mStartTime);
                                     }
                                 }
                             }
@@ -205,7 +192,7 @@ public class CritLotteryService extends Service {
                         }
 
                     } else {
-                        test("在前台，体验体验时间不足" + mStartTime);
+                        Logger.d(TAG + "体验体验时间不足" + mStartTime);
                     }
                 }
             }
@@ -218,14 +205,14 @@ public class CritLotteryService extends Service {
             mTimer = null;
         }
         ifTimerRun = false;
-        Log.d("startTask", "任务完成");
+        Logger.d(TAG + "倒计时结束");
         if (mDownloadStateDean == null || !mDownloadStateDean.getHandout()) {
             //请求服务器处理结果
             mStartTime = 0;
-            Log.d("startTask", "上次没有请求到或者请求失败");
+            Logger.d(TAG + "上次没有请求到或者请求失败");
             getDownloadStatus();
         } else {
-            Log.d("startTask", "上次请求成功");
+            Logger.d(TAG + "上次请求成功");
             jump();
         }
     }
