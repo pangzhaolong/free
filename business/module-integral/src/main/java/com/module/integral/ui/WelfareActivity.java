@@ -174,7 +174,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
 
     //安装的情况下
     private void refreshSecondStayPageView(ProxyIntegral integralBean) {
-        mDataBinding.downloadBt.setText("打开APP玩1分钟");
+        mDataBinding.downloadBt.setText("打开APP玩" + ABSwitch.Ins().getScoreTaskPlayTime() + "分钟");
         mDataBinding.downloadBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -371,7 +371,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
                 mDataBinding.downloadBt.post(new Runnable() {
                     @Override
                     public void run() {
-                        mDataBinding.downloadBt.setText("激活失败" + s);
+                        mDataBinding.downloadBt.setText("打开APP玩" + ABSwitch.Ins().getScoreTaskPlayTime() + "分钟");
                     }
                 });
             }
