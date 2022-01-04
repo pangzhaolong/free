@@ -15,6 +15,8 @@ import com.dn.sdk.bean.integral.ProxyIntegral;
 import com.dn.sdk.utils.IntegralComponent;
 import com.donews.main.R;
 import com.donews.main.listener.RetentionTaskListener;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.LogUtil;
 
 import org.raphets.roundimageview.RoundImageView;
@@ -72,6 +74,7 @@ public class MainFloatingBtn extends FrameLayout implements IntegralComponent.IS
                     @Override
                     public void onAdClick() {
                         LogUtil.e("dn_integral onSecondStayTask onAdClick");
+                        AnalysisUtils.onEventEx(mContext, Dot.RETENTION_CLICK);
                     }
 
                     @Override

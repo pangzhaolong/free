@@ -293,4 +293,11 @@ public class Dot {
     public final static String LOTTERY_TWO_REQUEST_SERVICE = "lottery_two_request_service";
 
 
+
+
+    //-- 首页 ->
+    public final static String TASK_CLICK = "task_click";
+
+    public final static String RETENTION_CLICK = "retention_click";
+
 }
