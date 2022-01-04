@@ -24,6 +24,7 @@ import androidx.fragment.app.FragmentActivity;
 import com.blankj.utilcode.util.AppUtils;
 import com.donews.base.BuildConfig;
 import com.donews.base.base.AppManager;
+import com.donews.base.base.BaseApplication;
 import com.donews.base.utils.ToastUtil;
 import com.donews.middle.bean.DownloadStateDean;
 import com.donews.middle.ui.GoodLuckDoubleDialog;
@@ -31,6 +32,8 @@ import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.SPUtils;
 import com.orhanobut.logger.Logger;
 
@@ -118,6 +121,8 @@ public class CritLotteryService extends Service {
                             if (!ifTimerRun) {
                                 Logger.d(TAG + "任务失败，请从本页面下载并打开对应APP" + e);
                                 ToastUtil.showShort(getApplicationContext(), "任务失败，请从本页面下载并打开对应APP");
+                            } else {
+                                AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.LOTTERY_ONE_REQUEST_SERVICE, "false");
                             }
                         }
 
@@ -133,8 +138,11 @@ public class CritLotteryService extends Service {
                                         Logger.d(TAG + "任务激活失败");
                                         ToastUtil.showShort(getApplicationContext(), "领取失败，请从本页面下载并体验应用");
                                     }
-
+                                    AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.LOTTERY_TWO_REQUEST_SERVICE, stateDean.getHandout() + "");
+                                } else {
+                                    AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.LOTTERY_ONE_REQUEST_SERVICE, stateDean.getHandout() + "");
                                 }
+
                             }
                         }
                     }));
@@ -218,6 +226,7 @@ public class CritLotteryService extends Service {
     }
 
     private void jump() {
+        AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.LOTTERY_APP_CRITICAL);
         //倒计时结束 可以打开开启暴击模式的弹框
         Intent intent = new Intent(CritLotteryService.this, GoodLuckDoubleDialog.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
