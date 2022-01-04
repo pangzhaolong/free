@@ -16,6 +16,8 @@ import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.application.MiddleModuleInit;
 import com.donews.middle.bean.CriticalNumberBean;
 import com.donews.middle.service.CritLotteryService;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.DateManager;
 import com.donews.utilslibrary.utils.SPUtils;
 
@@ -45,6 +47,9 @@ public class CommonUtils {
                         //判断开启了多少次
                         //通知开始暴击模式  模拟开启暴击模式
                         EventBus.getDefault().post(new CritMessengerBean(200));
+                        AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.CRITICAL_NUMBER_AND_SUM_NUMBER,numberBean.getUseTimes()+"/"+numberBean.getTotalTimes()+"");
+
+
                     }
                 }
             },"true");

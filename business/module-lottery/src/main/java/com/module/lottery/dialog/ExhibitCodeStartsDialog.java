@@ -126,6 +126,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
 
     private void setIntegralView(ProxyIntegral integralBean) {
         if (integralBean != null) {
+            AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.LOTTERY_APP_NAME, integralBean.getAppName() + "");
             mDataBinding.critDownload.setVisibility(View.VISIBLE);
             Glide.with(getContext()).asDrawable().load(integralBean.getIcon()).into(mDataBinding.integralIcon);
             mDataBinding.integralName.setText(integralBean.getAppName());
@@ -138,10 +139,14 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
                 @Override
                 public void onAdShow() {
 
+
+                    AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.LOTTERY_APP_SHOW);
+
                 }
 
                 @Override
                 public void onAdClick() {
+                    AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.LOTTERY_APP_CLICK);
                 }
 
                 @Override
@@ -165,6 +170,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
 
                 @Override
                 public void onComplete() {
+                    AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.LOTTERY_APP_COMPLETE);
                     mDataBinding.integralBt.post(new Runnable() {
                         @Override
                         public void run() {
@@ -176,6 +182,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
 
                 @Override
                 public void onInstalled() {
+                    AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.LOTTERY_APP_INSTALLED);
                     //安装完成 请求服务器是否开启暴击模式
                     if (mOnFinishListener != null) {
                         mDataBinding.integralBt.post(new Runnable() {
@@ -189,11 +196,13 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
 
                 @Override
                 public void onError(Throwable throwable) {
-
+                    AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.LOTTERY_APP_ERROR);
                 }
 
                 @Override
                 public void onRewardVerify() {
+                    AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.LOTTERY_APP_REWARD_S);
+
                     if (mOnFinishListener != null) {
                         mDataBinding.integralBt.post(new Runnable() {
                             @Override
@@ -207,6 +216,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
 
                 @Override
                 public void onRewardVerifyError(String s) {
+                    AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.LOTTERY_APP_REWARD_N);
                     mDataBinding.integralBt.post(new Runnable() {
                         @Override
                         public void run() {
@@ -286,7 +296,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
                 Logger.d(TAG + "可以继续参与");
                 //判断是否打开新手模式
                 if (ABSwitch.Ins().isOpenCritModelByNewUser()) {
-                    Logger.d(TAG + "打来了新手模式");
+                    Logger.d(TAG + "新手模式");
                     //判断是否处于新手阶段
                     if (CriticalModelTool.isNewUser()) {
                         Logger.d(TAG + "新手阶段");
@@ -295,12 +305,12 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
                     } else {
                         //老用户模式
                         oldUserModel();
-                        Logger.d(TAG + "老用户模式 1");
+                        Logger.d(TAG + "老用户模式 one");
                     }
                 } else {
                     //老用户模式
                     oldUserModel();
-                    Logger.d(TAG + "老用户模式 2");
+                    Logger.d(TAG + "老用户模式 two");
                 }
             } else {
                 //不能触发了 每天参与的次数用完
@@ -361,6 +371,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
         } else {
             mDataBinding.critDraw.setVisibility(View.VISIBLE);
             mDataBinding.numberCode.setText((sumNumber - participateNumber) < 0 ? 0 + "" : (sumNumber - participateNumber) + "");
+            AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.LOTTERY_NUMBER_AND_SUM_NUMBER, participateNumber + "/" + sumNumber + "");
         }
     }
 

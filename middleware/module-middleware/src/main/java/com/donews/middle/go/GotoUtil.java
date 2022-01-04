@@ -12,11 +12,11 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.drouter.ARouteHelper;
 import com.dn.sdk.bean.integral.ProxyIntegral;
 import com.dn.sdk.utils.IntegralComponent;
+import com.donews.base.BuildConfig;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.contract.BaseCustomViewModel;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
-import com.donews.middle.BuildConfig;
 import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.api.MiddleApi;
 import com.donews.middle.bean.TaskActionBean;
@@ -25,6 +25,8 @@ import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.SPUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -126,10 +128,13 @@ public class GotoUtil {
         }
     }
 
-    public static void doAction(Context context, String action, String title) {
+    public static void doAction(Context context, String action, String title, String from) {
         if (action == null || action.equalsIgnoreCase("")) {
             return;
         }
+
+        AnalysisUtils.onEventEx(context, action, from);
+
         if (action.startsWith("http")) {
             Bundle bundle = new Bundle();
             bundle.putString("url", action);

@@ -39,7 +39,7 @@ public class MineWithdraWallBean extends BaseCustomViewModel {
 
         @Override
         public void onClick(View view, MineOperatingPosView.IOperatingData data) {
-            GotoUtil.doAction(view.getContext(), action, title);
+            GotoUtil.doAction(view.getContext(), action, title, "withdraw");
         }
     }
 

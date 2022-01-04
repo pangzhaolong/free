@@ -288,7 +288,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         if (ti == null) {
             return;
         }
-        fl.setOnClickListener(v -> GotoUtil.doAction(context, ti.getAction(), ti.getTitle()));
+        fl.setOnClickListener(v -> GotoUtil.doAction(context, ti.getAction(), ti.getTitle(), "front"));
         if (ti.getModel() == 1) {
             mixIv.setVisibility(View.GONE);
             iv.setVisibility(View.VISIBLE);
@@ -296,20 +296,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             Glide.with(this).load(ti.getIcon()).into(iv);
             tv.setText(ti.getTitle());
         } else {
-/*            switch (idx) {
-                case 1:
-                    mixIv.setBackgroundResource(R.drawable.front_task_pic1);
-                    break;
-                case 2:
-                    mixIv.setBackgroundResource(R.drawable.front_task_pic2);
-                    break;
-                case 3:
-                    mixIv.setBackgroundResource(R.drawable.front_task_pic3);
-                    break;
-                case 4:
-                    mixIv.setBackgroundResource(R.drawable.front_task_pic4);
-                    break;
-            }*/
             iv.setVisibility(View.GONE);
             tv.setVisibility(View.GONE);
             mixIv.setVisibility(View.VISIBLE);
@@ -345,7 +331,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             return;
         }
 
-        GotoUtil.doAction(getContext(), bi.getAction(), bi.getTitle());
+        GotoUtil.doAction(getContext(), bi.getAction(), bi.getTitle(), "front_banner");
     }
 
     private static class FrontHandler extends Handler {

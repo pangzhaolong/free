@@ -181,4 +181,123 @@ public class Dot {
     //抽奖码失败
     public final static String PAY_FAIL = "pay_fail";
 
+
+   //积分墙
+    //页面进入
+    public final static String WELFARE_PAGE_IN = "welfare_page_in";
+
+    //页面进入
+    public final static String WELFARE_PAGE_OUT = "welfare_page_out";
+
+    //app显示
+    public final static String WELFARE_APP_SHOW = "welfare_app_show";
+
+    //app点击
+    public final static String WELFARE_APP_CLICK = "welfare_app_click";
+
+    //app应用名称
+    public final static String WELFARE_APP_NAME = "welfare_app_name";
+
+
+    //app下载完成
+    public final static String WELFARE_APP_COMPLETE = "welfare_app_complete";
+    //app安装完成
+    public final static String WELFARE_APP_INSTALLED = "welfare_app_installed";
+
+
+    //app激活成功
+    public final static String WELFARE_APP_REWARD_S = "welfare_app_reward_s";
+
+
+    //app激活失败
+    public final static String WELFARE_APP_REWARD_N = "welfare_app_reward_n";
+
+
+
+
+    //开始积分计时任务
+    public final static String WELFARE_START_REWARD = "welfare_start_reward";
+
+
+    //第一次请求服务器激活状态
+    public final static String WELFARE_ONE_REQUEST_SERVICE = "welfare_one_request_service";
+    //第二次请求服务器激活状态
+    public final static String WELFARE_TWO_REQUEST_SERVICE = "welfare_two_request_service";
+
+
+    //退出页面时任务是否完成
+    public final static String WELFARE_QUIT_STATE = "welfare_quit_state";
+
+
+    //退出页面时是否触发积分任务
+    public final static String WELFARE_QUIT_POINT_STASE = "welfare_quit_point_stase";
+
+
+
+    //任务完成
+    public final static String WELFARE_TASK_SUCCESS = "welfare_task_success";
+
+
+
+
+
+    //当前暴击次数/总次数
+    public final static String CRITICAL_NUMBER_AND_SUM_NUMBER = "critical_number_and_sum_number";
+
+
+
+    //当前抽奖次数/剩余次数(开启暴击模式)
+    public final static String LOTTERY_NUMBER_AND_SUM_NUMBER = "lottery_number_and_sum_number";
+
+
+
+
+
+    //app显示
+    public final static String LOTTERY_APP_SHOW = "lottery_app_show";
+
+    //app点击
+    public final static String LOTTERY_APP_CLICK = "lottery_app_click";
+
+    //app下载完成
+    public final static String LOTTERY_APP_COMPLETE = "lottery_app_complete";
+
+    //app下载出错
+    public final static String LOTTERY_APP_ERROR = "lottery_app_error";
+
+
+    //app安装完成
+    public final static String LOTTERY_APP_INSTALLED = "lottery_app_installed";
+
+
+    //app激活成功
+    public final static String LOTTERY_APP_REWARD_S = "lottery_app_reward_s";
+
+
+    //app激活失败
+    public final static String LOTTERY_APP_REWARD_N = "lottery_app_reward_n";
+
+
+
+    //app应用名称
+    public final static String LOTTERY_APP_NAME = "lottery_app_name";
+
+    //app开始暴击
+    public final static String LOTTERY_APP_CRITICAL = "lottery_app_critical";
+
+
+
+    //第一次请求服务器激活状态
+    public final static String LOTTERY_ONE_REQUEST_SERVICE = "lottery_one_request_service";
+    //第二次请求服务器激活状态
+    public final static String LOTTERY_TWO_REQUEST_SERVICE = "lottery_two_request_service";
+
+
+
+
+    //-- 首页 ->
+    public final static String TASK_CLICK = "task_click";
+
+    public final static String RETENTION_CLICK = "retention_click";
+
 }

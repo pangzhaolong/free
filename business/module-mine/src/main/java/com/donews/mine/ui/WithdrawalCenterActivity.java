@@ -269,7 +269,7 @@ public class WithdrawalCenterActivity extends
             GlideUtils.loadImageView(this, item.img, mDataBinding.mindYywJd);
             mDataBinding.mindYywJd.setOnClickListener(v -> {
 
-                GotoUtil.doAction(this, item.action, item.title);
+                GotoUtil.doAction(this, item.action, item.title, "withdrawCenter");
             });
         }
     }
