@@ -155,8 +155,6 @@ public class CritLotteryService extends Service {
         if (mTimer != null) {
             mTimer.cancel();
             mTimer = null;
-
-
         }
         mTimer = new Timer();
         mTimer.schedule(new TimerTask() {
