@@ -28,6 +28,7 @@ import com.donews.base.utils.ToastUtil;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.dialog.ActivityRuleDialog;
 import com.donews.middle.service.CritLotteryService;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
@@ -96,7 +97,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
 
     private void showBenefitUpgradeDialog() {
         mTaskStateSchedule = true;
-        AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.WELFARE_TASK_SUCCESS,  "true");
+        AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.WELFARE_TASK_SUCCESS, "true");
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -123,6 +124,8 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
         return R.layout.integral_welfare_layout;
     }
 
+    ActivityRuleDialog mActivityRuleDialog;
+
     @Override
     public void initView() {
         ImmersionBar.with(this)
@@ -134,6 +137,16 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
         setSupportActionBar(mDataBinding.toolbar);
         ARouter.getInstance().inject(this);
         setData();
+        mDataBinding.rule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mActivityRuleDialog == null) {
+                    mActivityRuleDialog = new ActivityRuleDialog(WelfareActivity.this);
+                }
+                mActivityRuleDialog.show();
+            }
+        });
+
         AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.WELFARE_PAGE_IN);
         setObserveList();
     }
@@ -144,14 +157,16 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
         //上报任务状态
         AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.WELFARE_QUIT_STATE, mTaskStateSchedule + "");
 
-        if(mTimer==null){
+        if (mTimer == null) {
             //上报退出页面时是否触发积分任务
-            AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.WELFARE_QUIT_POINT_STASE,  "false");
-        }else{
+            AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.WELFARE_QUIT_POINT_STASE, "false");
+        } else {
             //上报退出页面时是否触发积分任务
-            AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.WELFARE_QUIT_POINT_STASE,  "true");
+            AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.WELFARE_QUIT_POINT_STASE, "true");
         }
-
+        if (mActivityRuleDialog != null && mActivityRuleDialog.isShowing()) {
+            mActivityRuleDialog.dismiss();
+        }
         super.onDestroy();
         if (mTimer != null) {
             mTimer.cancel();
@@ -304,7 +319,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
 
     //刷新页面
     private void refreshPage(ProxyIntegral integralBean) {
-        if(integralBean==null){
+        if (integralBean == null) {
             return;
         }
         AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.WELFARE_APP_NAME, integralBean.getAppName() + "");

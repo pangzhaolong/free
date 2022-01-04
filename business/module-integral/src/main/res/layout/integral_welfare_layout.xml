@@ -45,6 +45,7 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -293,6 +294,22 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <TextView
+            android:layout_below="@+id/app_bar_layout"
+            android:id="@+id/rule"
+            android:layout_width="28dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rule_shape"
+            android:ems="1"
+            android:paddingStart="9dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="活动规则"
+            android:textColor="#AF642D"
+            android:textSize="12dp"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 </layout>
