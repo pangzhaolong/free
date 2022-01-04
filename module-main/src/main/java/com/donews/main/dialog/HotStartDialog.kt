@@ -71,16 +71,19 @@ class HotStartDialog : DialogFragment(), DialogInterface.OnKeyListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
-        dialog?.setOnDismissListener {
-            HotStartCacheUtils.clear()
-            HotStartCacheUtils.checkActivity(AppManager.getInstance().topActivity)
-        }
         dialog?.setOnKeyListener(this)
     }
 
     override fun onResume() {
         super.onResume()
         showProgress()
+    }
+
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        HotStartCacheUtils.clear()
+        HotStartCacheUtils.checkActivity(AppManager.getInstance().topActivity)
     }
 
 

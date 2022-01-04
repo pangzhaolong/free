@@ -47,6 +47,9 @@ object RewardVideoCount {
     /** 小时内达到最大播放次数的限制开始时间 */
     private const val REWARD_VIDEO_HOUR_PLAY_NUMBER_LIMIT_TIME = "RewardVideoHourPlayNumberLimitTime"
 
+    /** 今日点击率计算的播放次数 */
+    private const val REWARD_VIDEO_CLICK_PLAY_NUMBER = "RewardVideoClickPlayNumber"
+
     /** 小时内播放时间限制开始时间 */
     private const val REWARD_VIDEO_HOUR_CLICK_LIMIT_TIME = "RewardVideoHourClickLimitTime"
 
@@ -56,9 +59,12 @@ object RewardVideoCount {
 
     private var lastPlayTime: Long by mmkv.long(REWARD_VIDEO_LAST_PLAY_TIME, 0L)
     private var todayPlayNumber: Int by mmkv.int(REWARD_VIDEO_TODAY_PLAY_NUMBER, 0)
+
     private var hourStartTime: Long by mmkv.long(REWARD_VIDEO_HOUR_START_PLAY_TIME, 0L)
     private var hourPlayNumber: Int by mmkv.int(REWARD_VIDEO_HOUR_PLAY_NUMBER, 0)
     private var hourPlayNumberLimitTime: Long by mmkv.long(REWARD_VIDEO_HOUR_PLAY_NUMBER_LIMIT_TIME, 0L)
+
+    private var clickPlayNumber: Int by mmkv.int(REWARD_VIDEO_CLICK_PLAY_NUMBER, 0)
     private var hourClickNumber: Int by mmkv.int(REWARD_VIDEO_HOUR_CLICK_NUMBER, 0)
     private var hourClickLimitTime: Long by mmkv.long(REWARD_VIDEO_HOUR_CLICK_LIMIT_TIME, 0L)
 
@@ -71,15 +77,15 @@ object RewardVideoCount {
             if (currentTime - hourStartTime > HOUR_TIME) {
                 hourStartTime = currentTime
                 hourPlayNumber = 0
-                hourClickNumber = 0
                 hourPlayNumberLimitTime = 0L
-                hourClickLimitTime = 0L
             }
         } else {
             todayPlayNumber = 0
             hourStartTime = currentTime
             hourPlayNumber = 0
             hourPlayNumberLimitTime = 0L
+            //不是今天，则重置播放次数
+            clickPlayNumber = 0
             hourClickNumber = 0
             hourClickLimitTime = 0L
         }
@@ -92,11 +98,6 @@ object RewardVideoCount {
             return false
         }
 
-        if (hourPlayNumber == 0) {
-            log(3)
-            return true
-        }
-
         //1小时内达到最大次数
         if (hourPlayNumber >= jddAdConfigBean.hourRewardVideoNumber) {
             //判断限制时间是否已经过了
@@ -104,6 +105,7 @@ object RewardVideoCount {
                 //过了限制时间，则要重新开始 小时计时
                 hourStartTime = currentTime
                 hourPlayNumber = 0
+                clickPlayNumber = 0
                 hourClickNumber = 0
                 log(3)
                 return true
@@ -112,8 +114,14 @@ object RewardVideoCount {
             return false
         }
 
-        if (hourPlayNumber >= jddAdConfigBean.hourClickAdMaxNumber) {
-            val p = hourClickNumber * 1.0f / hourPlayNumber
+        if (clickPlayNumber == 0) {
+            log(3)
+            return true
+        }
+
+        //计算点击率
+        if (clickPlayNumber >= jddAdConfigBean.hourClickAdMaxNumber) {
+            val p = hourClickNumber * 1.0f / clickPlayNumber
             //判断点击率是否达标
             if (p >= jddAdConfigBean.hourClickRate) {
                 //判断禁用时间是否超时
@@ -121,6 +129,7 @@ object RewardVideoCount {
                     //过了限制时间，则要重新开始 小时计时
                     hourStartTime = currentTime
                     hourPlayNumber = 0
+                    clickPlayNumber = 0
                     hourClickNumber = 0
                     return true
                 }
@@ -143,9 +152,16 @@ object RewardVideoCount {
         //统计总次数
         if (!lastPlayTime.isToday()) {
             todayPlayNumber = 1
+            clickPlayNumber = 1
+
+            hourClickNumber = 0
+            hourClickLimitTime = 0L
+
         } else {
             todayPlayNumber += 1
+            clickPlayNumber += 1
         }
+
 
         lastPlayTime = currentTime
 
@@ -156,8 +172,6 @@ object RewardVideoCount {
             //这里播放次数为1
             hourPlayNumber = 1
             hourPlayNumberLimitTime = 0L
-            hourClickNumber = 0
-            hourClickLimitTime = 0L
         } else {
             val duration = currentTime - hourStartTime;
             if (duration >= HOUR_TIME) {
@@ -165,39 +179,37 @@ object RewardVideoCount {
                 hourStartTime = currentTime
                 hourPlayNumber = 1
                 hourPlayNumberLimitTime = 0
-                hourClickNumber = 0
-                hourClickLimitTime = 0
             } else {
                 //小时播放次数+1
                 hourPlayNumber += 1
             }
         }
 
+        //达到今天最大次数，上报事件
         if (todayPlayNumber >= jddAdConfigBean.todayMaxRewardVideoNumber) {
-            adLimit()
+            adLimit(2)
         }
-
 
         if (hourPlayNumber >= jddAdConfigBean.hourRewardVideoNumber) {
             if (hourPlayNumberLimitTime <= hourStartTime) {
                 //设置时间，开始限制
                 hourPlayNumberLimitTime = currentTime
-                adLimit()
+                adLimit(1)
             }
         }
 
-        if (hourPlayNumber == 0) {
+        if (clickPlayNumber == 0) {
             log(1)
             return
         }
 
-        if (hourPlayNumber >= jddAdConfigBean.hourClickAdMaxNumber) {
-            val p = hourClickNumber * 1.0f / hourPlayNumber
+        if (clickPlayNumber >= jddAdConfigBean.hourClickAdMaxNumber) {
+            val p = hourClickNumber * 1.0f / clickPlayNumber
             if (p > jddAdConfigBean.hourClickRate) {
                 if (hourClickLimitTime <= hourStartTime) {
                     //设置时间，开始点击限制
                     hourClickLimitTime = currentTime
-                    adLimit()
+                    adLimit(3)
                 }
             }
         }
@@ -208,23 +220,20 @@ object RewardVideoCount {
     fun rewardVideoClick() {
         //统计 小时数据
         val currentTime = System.currentTimeMillis()
-        val duration = currentTime - hourStartTime;
 
         //如果点击的时候，距离1小时的判断已经过期，则不再记录点击次数
-        if (duration < HOUR_TIME) {
-            hourClickNumber += 1
-            val jddAdConfigBean = JddAdConfigManager.jddAdConfigBean
-            var p = 0f
-            if (hourPlayNumber > 0) {
-                p = hourClickNumber * 1.0f / hourPlayNumber
-            }
-            if (hourPlayNumber >= jddAdConfigBean.hourClickAdMaxNumber) {
-                if (p >= jddAdConfigBean.hourClickRate) {
-                    if (hourClickLimitTime <= hourStartTime) {
-                        //开始限制
-                        hourClickLimitTime = currentTime
-                        adLimit()
-                    }
+        hourClickNumber += 1
+        val jddAdConfigBean = JddAdConfigManager.jddAdConfigBean
+        var p = 0f
+        if (clickPlayNumber > 0) {
+            p = hourClickNumber * 1.0f / clickPlayNumber
+        }
+        if (clickPlayNumber >= jddAdConfigBean.hourClickAdMaxNumber) {
+            if (p >= jddAdConfigBean.hourClickRate) {
+                if (hourClickLimitTime <= hourStartTime) {
+                    //开始限制
+                    hourClickLimitTime = currentTime
+                    adLimit(3)
                 }
             }
         }
@@ -263,9 +272,10 @@ object RewardVideoCount {
                 append("  1小时开始计时时间：${hourStartTime.toDataString()},\n")
                 append("  1小时播放量：${hourPlayNumber},\n")
                 append("  1小时播放量开始限制时间：${hourPlayNumberLimitTime.toDataString()},\n")
+                append("  点击播放数：${clickPlayNumber},\n")
                 append("  点击量：${hourClickNumber},\n")
-                if (hourPlayNumber != 0) {
-                    append("  点击率：${hourClickNumber * 1.0f / hourPlayNumber},\n")
+                if (clickPlayNumber != 0) {
+                    append("  点击率：${hourClickNumber * 1.0f / clickPlayNumber},\n")
                 } else {
                     append("  点击率：0,\n")
                 }
@@ -275,14 +285,20 @@ object RewardVideoCount {
         AdLoggerUtils.d(stringBuilder.toString())
     }
 
-
-    private fun adLimit() {
+    /**
+     *
+     * @param type Int     1-> 1小时内广告次数达到限制条件
+     *                     2-> 今天广告次数达到最大限制次数
+     *                     3-> 广告点击率达到限制次数
+     */
+    private fun adLimit(type: Int) {
         try {
             var jsonString = ""
             val jsonObject = JSONObject()
             jsonObject.put("suuid", DeviceUtils.getMyUUID())
             jsonObject.put("user_id", AppInfo.getUserId())
             jsonObject.put("package_name", DeviceUtils.getPackage())
+            jsonObject.put("type", "$type")
             jsonString = jsonObject.toString()
 
             val url = if (BuildConfig.HTTP_DEBUG) {
