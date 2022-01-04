@@ -1,9 +1,11 @@
 package com.donews.main.utils
 
 import android.app.Activity
+import com.dn.events.ad.HotStartEvent
 import com.donews.base.base.AppManager
 import com.donews.common.base.MvvmBaseLiveDataActivity
 import com.donews.main.dialog.HotStartDialog
+import org.greenrobot.eventbus.EventBus
 
 /**
  *
@@ -42,6 +44,7 @@ object HotStartCacheUtils {
             return
         }
         mHotStartDialog!!.showAd()
+        EventBus.getDefault().post(HotStartEvent(true))
     }
 
     fun dismiss() {
