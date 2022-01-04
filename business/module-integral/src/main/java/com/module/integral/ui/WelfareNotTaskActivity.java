@@ -29,6 +29,7 @@ import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.middle.dialog.ActivityRuleDialog;
+import com.donews.middle.dialog.IntegralRuleDialog;
 import com.donews.utilslibrary.utils.JsonUtils;
 import com.module.integral.down.DownApkUtil;
 import com.donews.network.BuildConfig;
@@ -57,7 +58,7 @@ public class WelfareNotTaskActivity extends MvvmBaseLiveDataActivity<IntegralWel
     protected int getLayoutId() {
         return R.layout.integral_welfare_not_task_layout;
     }
-    ActivityRuleDialog mActivityRuleDialog;
+    IntegralRuleDialog mActivityRuleDialog;
     @Override
     public void initView() {
         ARouter.getInstance().inject(this);
@@ -75,7 +76,7 @@ public class WelfareNotTaskActivity extends MvvmBaseLiveDataActivity<IntegralWel
             @Override
             public void onClick(View v) {
                 if (mActivityRuleDialog == null) {
-                    mActivityRuleDialog = new ActivityRuleDialog(WelfareNotTaskActivity.this);
+                    mActivityRuleDialog = new IntegralRuleDialog(WelfareNotTaskActivity.this);
                 }
                 mActivityRuleDialog.show();
             }

@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:gravity="center"
-                android:text="活动规则"
+                android:text="红包规则"
                 android:textColor="#884900"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -46,7 +46,23 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
-                        android:text="活动规则："
+                        android:text="参与条件："
+                        android:textColor="#884900"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="本活动仅面向奖多多APP注册用户开放，且用户登录时所绑定的微信账户须通过实名认证，避免参加活动时出现异常。"
+                        android:textColor="#884900"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="活动玩法及规则："
                         android:textColor="#884900"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -55,8 +71,7 @@
                         android:id="@+id/front_rule_dialog_html_tv2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="1、用户需再本页面内完成任务，其它途径无效；"
+                        android:text="@string/front_rule_2text"
                         android:textColor="#884900"
                         android:textSize="14sp" />
 
@@ -64,16 +79,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
-                        android:text="2、下载完成后点击安装，安装时请选择继续安装，否则无法获得奖励。"
+                        android:text="提现规则："
                         android:textColor="#884900"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/front_rule_dialog_html_tv3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="3、请默认安装通过本应用下载的软件，而非应用商店的版本。（安装时默认跳入应用商店的例外）"
+                        android:text="@string/front_rule_3text"
                         android:textColor="#884900"
                         android:textSize="14sp" />
 
@@ -81,15 +96,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
-                        android:text="4、安装完成后在此页面打开任务应用，试玩1分钟后返回本应用才算任务完成。"
+                        android:text="特别声明："
                         android:textColor="#884900"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="5、限时任务每日不定时更新，请多多关注。"
+                        android:text="1、任何人通过不正当手段（包括但不限于作弊、批量注册、插件、外挂、篡改设备等方式）获得本次活动利益，一经发现，奖多多APP有权撤销奖励，收回奖励等利益，同时依照相关规则进行处理，必要时追究法律责任。如因此给用户造成损失，奖多多APP不进行任何赔偿和补偿。\n2、如遇不可抗力或情势变更时（包括但不限于重大灾害事件、软件受政府机关指令需要停止举办或调整的、软件遭受严重网络攻击或因系统故障需要暂停举办的），奖多多APP将依据相关法律规定主张免责。\n3、奖多多APP可以根据实际情况对本规则进行变动或调整，相关变动或调整将公布在页面上，并于公布时即时生效。"
                         android:textColor="#884900"
                         android:textSize="14sp" />
 

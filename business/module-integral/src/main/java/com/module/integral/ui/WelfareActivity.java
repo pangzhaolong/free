@@ -29,6 +29,7 @@ import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.dialog.ActivityRuleDialog;
+import com.donews.middle.dialog.IntegralRuleDialog;
 import com.donews.middle.service.CritLotteryService;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
@@ -124,7 +125,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
         return R.layout.integral_welfare_layout;
     }
 
-    ActivityRuleDialog mActivityRuleDialog;
+    IntegralRuleDialog mActivityRuleDialog;
 
     @Override
     public void initView() {
@@ -141,7 +142,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
             @Override
             public void onClick(View v) {
                 if (mActivityRuleDialog == null) {
-                    mActivityRuleDialog = new ActivityRuleDialog(WelfareActivity.this);
+                    mActivityRuleDialog = new IntegralRuleDialog(WelfareActivity.this);
                 }
                 mActivityRuleDialog.show();
             }

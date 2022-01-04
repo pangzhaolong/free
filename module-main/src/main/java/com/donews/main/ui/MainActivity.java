@@ -28,6 +28,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.dn.events.ad.HotStartEvent;
 import com.dn.events.events.DoubleRpEvent;
 import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.RedPackageStatus;
@@ -66,6 +67,7 @@ import com.donews.main.dialog.ext.CritWelfareDialogFragment;
 import com.donews.main.listener.RetentionTaskListener;
 import com.donews.main.utils.ExitInterceptUtils;
 import com.donews.main.utils.ExtDialogUtil;
+import com.donews.main.utils.HotStartCacheUtils;
 import com.donews.main.viewModel.MainViewModel;
 import com.donews.main.views.CornerMarkUtils;
 import com.donews.main.views.MainBottomTanItem;
@@ -317,7 +319,9 @@ public class MainActivity
         }
 
 //        mDataBinding.mainFloatingRp.reLoadTask();
-        checkRetentionTask();
+        if (!HotStartCacheUtils.INSTANCE.isShowing()) {
+            checkRetentionTask();
+        }
         showCriticalBtn();
     }
 
@@ -846,11 +850,11 @@ public class MainActivity
 
         mViewModel.getRetentionTask(wallReqId).observe(this, retentionTaskBean -> {
             if (retentionTaskBean == null || !retentionTaskBean.getHandout()) {
-                if (mRetryCount > 10) {
+                if (mRetryCount > 4) {
                     return;
                 }
                 mRetryCount++;
-                new Handler().postDelayed(this::checkRetentionTask, 6000);
+                new Handler().postDelayed(this::checkRetentionTask, 5000);
                 return;
             }
 
@@ -884,6 +888,13 @@ public class MainActivity
             mDataBinding.cvContentView.setCurrentItem(1);
             toggleStatusBar(1);
             mPosition = 1;
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onHotStartEvent(HotStartEvent event) {
+        if (!event.getShow()) {
+            checkRetentionTask();
         }
     }
 }
