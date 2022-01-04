@@ -35,13 +35,11 @@ import com.module.integral.bean.IntegralDownloadStateDean;
 import com.module.integral.dialog.BenefitUpgradeDialog;
 import com.module.integral.dialog.exit.ExitProgressInterceptDialog;
 import com.module.integral.dialog.exit.ExitRadPackDialog;
-import com.module.integral.model.IntegralModel;
 import com.module.integral.viewModel.IntegralViewModel;
 import com.module.lottery.ui.BaseParams;
+import com.orhanobut.logger.Logger;
 
 import java.lang.ref.WeakReference;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +49,7 @@ import java.util.TimerTask;
 //限时福利
 @Route(path = RouterFragmentPath.Integral.PAGER_INTEGRAL)
 public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, IntegralViewModel> implements Toolbar.OnMenuItemClickListener {
-
+    private static final String TAG = "WelfareActivity";
     private static final int DELAY = 1000;
 
     private WelfareHandler mWelfareHandler = new WelfareHandler(this);
@@ -236,7 +234,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
      * 任务完成
      */
     private void taskCompleted() {
-        showToast("执行跳转");
+        Logger.d(TAG + "执行跳转");
         if (mIntegralDownloadStateDean != null && mIntegralDownloadStateDean.getHandout()) {
             cleanMessage();
             //满足了体验时间  弹框准备跳转
@@ -331,7 +329,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
             //安装完成
             @Override
             public void onInstalled() {
-                Log.d("startTask", "安装完成");
+                Logger.d(TAG + "安装完成");
                 mDataBinding.downloadBt.post(new Runnable() {
                     @Override
                     public void run() {
@@ -350,7 +348,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
             //激活成功
             @Override
             public void onRewardVerify() {
-                Log.d("startTask", "激活完成");
+                Logger.d(TAG + "激活成功");
                 mDataBinding.downloadBt.post(new Runnable() {
                     @Override
                     public void run() {
@@ -369,8 +367,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
 
             @Override
             public void onRewardVerifyError(String s) {
-
-                Log.d("startTask", "激活失败" + s);
+                Logger.d(TAG + " 任务 激活失败" + s);
                 mDataBinding.downloadBt.post(new Runnable() {
                     @Override
                     public void run() {
@@ -398,19 +395,19 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
     private void requestServiceData(ProxyIntegral integralBean) {
         Map<String, String> params = BaseParams.getMap();
         params.put("req_id", integralBean.getWallRequestId());
+        params.put("type", "1");
         mViewModel.getDownloadStatus(CritLotteryService.INTEGRAL_REWARD, params);
     }
 
     public void setObserveList() {
         mViewModel.getMutableLiveData().observe(this, IntegralDownloadStateDean -> {
-            Log.d("startTask", "服务器请求回来了");
             if (IntegralDownloadStateDean == null || !IntegralDownloadStateDean.getHandout()) {
                 if (IntegralDownloadStateDean != null) {
-                    Log.d("startTask", "服务器请求回来了" + IntegralDownloadStateDean.getHandout());
+                    Logger.d(TAG + "激活失败");
                 }
                 return;
             }
-            Log.d("startTask", "服务器请求回来了asdsad" + IntegralDownloadStateDean.getHandout());
+            Logger.d(TAG + "==" + IntegralDownloadStateDean.getHandout());
             //任务成功
             mIntegralDownloadStateDean = IntegralDownloadStateDean;
             if (!ifTimerRun) {
@@ -420,19 +417,9 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
     }
 
 
-    private void showToast(String msg) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ToastUtil.showShort(getApplicationContext(), msg);
-            }
-        });
-
-    }
-
     private void startTask(ProxyIntegral integralBean) {
         if (mTimer != null) {
-            Log.d("startTask", "记时正在进行");
+            Logger.d(TAG + "不能重复创建");
             return;
         }
         //初始化暴击体验时长
@@ -448,21 +435,19 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
             public void run() {
                 ifTimerRun = true;
                 //只有应用不在前台才会继续倒计时
-                Log.d("startTask", "开始倒计时");
                 if (!mReception) {
                     if (mStartTime > 0) {
-                        Log.d("startTask", "没在前台,倒计时中" + mStartTime);
                         mStartTime = mStartTime - 1;
                         if (mStartTime == (ABSwitch.Ins().getScoreTaskPlayTime() / 2)) {
                             //请求服务器处理结果
-                            Log.d("startTask", "请求服务器获取结果");
+                            Logger.d(TAG + "请求服务器获取结果");
                             if (integralBean != null) {
                                 requestServiceData(integralBean);
                             }
 
                         }
                     } else {
-                        Log.d("startTask", "可以开始暴击模式了");
+                        Logger.d(TAG + "可以开始暴击模式了");
                     }
                 } else {
                     if (mStartTime <= 0 && mReception) {
@@ -470,22 +455,20 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
                         mTimer = null;
                         ifTimerRun = false;
                         //倒计时结束 任务完成
-                        Log.d("startTask", "任务完成");
                         if (mIntegralDownloadStateDean == null || !mIntegralDownloadStateDean.getHandout()) {
                             //请求服务器处理结果
                             mStartTime = 0;
-                            Log.d("startTask", "上次没有请求到或者请求失败");
                             if (integralBean != null) {
-                                showToast("开始访问服务器");
+                                Logger.d(TAG + "上次没有请求到或者请求失败，重新请求");
                                 requestServiceData(integralBean);
                             }
                         } else {
-                            Log.d("startTask", "上次请求成功");
+                            Logger.d(TAG + "上次请求成功");
                             taskCompleted();
                         }
 
                     } else {
-                        Log.d("startTask", "在前台，体验体验时间不足");
+                        Logger.d(TAG + "在前台，体验体验时间不足");
                     }
                 }
             }
