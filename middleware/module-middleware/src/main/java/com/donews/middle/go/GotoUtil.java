@@ -170,6 +170,9 @@ public class GotoUtil {
 
     private static void getIntegralTask(Context context) {
         if (SPUtils.getInformain(CURRENT_SCORE_TASK_COUNT, 0) >= ABSwitch.Ins().getOpenScoreTaskMax()) {
+            ARouter.getInstance()
+                    .build(RouterFragmentPath.Integral.PAGER_INTEGRAL_NOT_TASK)
+                    .navigation();
             return;
         }
 
