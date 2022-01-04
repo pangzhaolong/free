@@ -27,6 +27,12 @@ public class Dot {
     public final static String Page_PartInRecords = "Page_PartInRecords";
     //    提现页
     public final static String Page_Cash = "Page_Cash";
+    //    提现页前往无积分任务页面
+    public final static String Page_Cash_Go_Not_Task = "Page_Cash_GO_Not_Task";
+    //    提现页前往积分墙页面
+    public final static String Page_Cash_Go_Intgral = "Page_Cash_Go_Intgral";
+    //    提现页前往首页
+    public final static String Page_Cash_Go_Home = "Page_Cash_Go_Home";
     //    中奖攻略
     public final static String Page_WinDoc = "Page_WinDoc";
     //    详细规则
