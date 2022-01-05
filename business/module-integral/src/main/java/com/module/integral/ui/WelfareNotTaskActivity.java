@@ -28,6 +28,8 @@ import com.donews.base.utils.glide.GlideUtils;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
+import com.donews.middle.dialog.ActivityRuleDialog;
+import com.donews.middle.dialog.IntegralRuleDialog;
 import com.donews.utilslibrary.utils.JsonUtils;
 import com.module.integral.down.DownApkUtil;
 import com.donews.network.BuildConfig;
@@ -56,7 +58,7 @@ public class WelfareNotTaskActivity extends MvvmBaseLiveDataActivity<IntegralWel
     protected int getLayoutId() {
         return R.layout.integral_welfare_not_task_layout;
     }
-
+    IntegralRuleDialog mActivityRuleDialog;
     @Override
     public void initView() {
         ARouter.getInstance().inject(this);
@@ -70,6 +72,15 @@ public class WelfareNotTaskActivity extends MvvmBaseLiveDataActivity<IntegralWel
         mDataBinding.welfaeList.setLayoutManager(new LinearLayoutManager(this));
         addHeadView();
         mDataBinding.welfaeList.setAdapter(adapter);
+        mDataBinding.rule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mActivityRuleDialog == null) {
+                    mActivityRuleDialog = new IntegralRuleDialog(WelfareNotTaskActivity.this);
+                }
+                mActivityRuleDialog.show();
+            }
+        });
         setData();
         getTaskList();
     }
@@ -77,6 +88,9 @@ public class WelfareNotTaskActivity extends MvvmBaseLiveDataActivity<IntegralWel
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (mActivityRuleDialog != null && mActivityRuleDialog.isShowing()) {
+            mActivityRuleDialog.dismiss();
+        }
     }
 
     //添加头视图

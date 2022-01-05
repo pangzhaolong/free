@@ -115,7 +115,7 @@ public class MiddleModuleInit implements IModuleInit {
                     @Override
                     public void onSuccess(CriticalNumberBean numberBean) {
                         if (numberBean != null) {
-                            ToastUtil.showShort(BaseApplication.getInstance(), "暴击当前次数" + numberBean.getUseTimes() + "总次数" + numberBean.getTotalTimes());
+//                            ToastUtil.showShort(BaseApplication.getInstance(), "暴击当前次数" + numberBean.getUseTimes() + "总次数" + numberBean.getTotalTimes());
                             //同步暴击的总次数
                             SPUtils.getInstance().put(DateManager.LOTTERY_SUN_NUMBER, numberBean.getTotalTimes());
                             //同步当前暴击的次数

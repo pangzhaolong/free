@@ -12,9 +12,7 @@ import com.donews.ads.mediation.v2.integral.DnIntegralNativeAd;
 import com.donews.ads.mediation.v2.integral.DoNewsIntegralHolder;
 import com.donews.ads.mediation.v2.integral.api.DnIntegralHttpCallBack;
 import com.donews.ads.mediation.v2.integral.api.DnIntegralIntegralError;
-import com.donews.utilslibrary.utils.AppInfo;
-import com.donews.utilslibrary.utils.DeviceUtils;
-import com.donews.utilslibrary.utils.LogUtil;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,7 +96,7 @@ public class IntegralComponent {
                                 break;
                             }
                         }
-                        if(!isCall){
+                        if (!isCall) {
                             integralHttpCallBack.onNoTask();
                         }
                     }
@@ -189,6 +187,7 @@ public class IntegralComponent {
         if (context == null || var1 == null || var2 == null || clickViews == null) {
             return;
         }
+        var2.setTag("false");
         var1.getDnIntegralNativeAd().bindView(context, var2, clickViews, new DnIntegralAdListener() {
             /**
              * 广告曝光
@@ -209,6 +208,7 @@ public class IntegralComponent {
             public void onAdClick() {
                 if (integralAdListener != null) {
                     integralAdListener.onAdClick();
+                    var2.setTag("false");
                 }
                 var1.getDnIntegralNativeAd().downLoadApk(context, automaticInstallation);
             }
@@ -264,8 +264,12 @@ public class IntegralComponent {
             //应用激活
             @Override
             public void onRewardVerify() {
-                if (integralAdListener != null) {
-                    integralAdListener.onRewardVerify();
+                String tag = (String) var2.getTag();
+                if (tag != null && tag.equals("false")) {
+                    if (integralAdListener != null) {
+                        integralAdListener.onRewardVerify();
+                    }
+                    var2.setTag("true");
                 }
             }
 

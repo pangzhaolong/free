@@ -1,4 +1,4 @@
-package com.donews.front.dialog;
+package com.donews.middle.dialog;
 
 import android.app.Dialog;
 import android.content.Context;

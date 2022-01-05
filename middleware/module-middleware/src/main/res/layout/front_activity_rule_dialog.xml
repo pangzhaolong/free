@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data></data>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="60dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/front_rule_dialog_bg"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="20dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="活动规则"
+                android:textColor="#884900"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="14dp"
+                android:scrollbarStyle="insideOverlay"
+                android:scrollbars="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="活动规则："
+                        android:textColor="#884900"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/front_rule_dialog_html_tv2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="1、用户需再本页面内完成任务，其它途径无效；"
+                        android:textColor="#884900"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="2、下载完成后点击安装，安装时请选择继续安装，否则无法获得奖励。"
+                        android:textColor="#884900"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/front_rule_dialog_html_tv3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="3、请默认安装通过本应用下载的软件，而非应用商店的版本。（安装时默认跳入应用商店的例外）"
+                        android:textColor="#884900"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="4、安装完成后在此页面打开任务应用，试玩1分钟后返回本应用才算任务完成。"
+                        android:textColor="#884900"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="5、限时任务每日不定时更新，请多多关注。"
+                        android:textColor="#884900"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+            </ScrollView>
+
+            <TextView
+                android:id="@+id/front_rule_known_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/front_rule_known_bg"
+                android:gravity="center"
+                android:paddingStart="40dp"
+                android:paddingEnd="40dp"
+                android:text="我知道了"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/front_rule_dialog_close_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:src="@drawable/front_rule_dialog_close" />
+    </FrameLayout>
+
+</layout>

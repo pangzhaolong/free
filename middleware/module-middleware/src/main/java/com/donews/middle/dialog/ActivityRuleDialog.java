@@ -1,4 +1,4 @@
-package com.donews.front.dialog;
+package com.donews.middle.dialog;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -8,8 +8,8 @@ import android.view.KeyEvent;
 
 import androidx.annotation.NonNull;
 
-import com.donews.front.R;
-import com.donews.front.databinding.FrontActivityRuleDialogBinding;
+import com.donews.middle.R;
+import com.donews.middle.databinding.FrontActivityRuleDialogBinding;
 
 public class ActivityRuleDialog extends BaseDialog<FrontActivityRuleDialogBinding> {
 

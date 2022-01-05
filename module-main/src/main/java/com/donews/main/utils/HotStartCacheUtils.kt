@@ -31,6 +31,14 @@ object HotStartCacheUtils {
         mHotStartDialog!!.showAllowingStateLoss(activity.supportFragmentManager, "HotStartDialog")
     }
 
+    fun isShowing(): Boolean {
+        if (mHotStartDialog == null || mHotStartDialog?.dialog == null) {
+            return false;
+        }
+
+        return mHotStartDialog!!.dialog!!.isShowing;
+    }
+
     fun loadAd() {
         if (mHotStartDialog != null && mHotStartDialog!!.isAdded) {
             mHotStartDialog!!.preloadFirstAd()
