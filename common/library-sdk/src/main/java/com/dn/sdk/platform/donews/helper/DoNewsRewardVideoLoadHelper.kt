@@ -12,6 +12,7 @@ import com.dn.sdk.listener.IAdRewardVideoListener
 import com.dn.sdk.platform.donews.preloadad.DoNewsPreloadRewardVideoAd
 import com.dn.sdk.utils.AdLoggerUtils
 import com.donews.ads.mediation.v2.api.DoNewsAdManagerHolder
+import com.donews.ads.mediation.v2.api.DoNewsAdManagerHolder.getSuuid
 import com.donews.ads.mediation.v2.api.DoNewsAdNative
 import com.donews.ads.mediation.v2.framework.bean.DnUnionBean
 import com.donews.ads.mediation.v2.framework.bean.DoNewsAD
@@ -19,6 +20,9 @@ import com.donews.network.EasyHttp
 import com.donews.network.cache.model.CacheMode
 import com.donews.network.callback.SimpleCallBack
 import com.donews.network.exception.ApiException
+import com.donews.utilslibrary.utils.KeySharePreferences
+import com.donews.utilslibrary.utils.SPUtils
+import com.donews.utilslibrary.utils.SPUtils.getInformain
 import org.json.JSONObject
 
 /**
@@ -240,6 +244,8 @@ object DoNewsRewardVideoLoadHelper : BaseHelper() {
                 params.put("ecpm", ecpm)
                 //广告类型,0 缺省,1激励视频
                 params.put("type", 1)
+                params.put("suuid", getSuuid())
+                params.put("user_id", SPUtils.getInformain(KeySharePreferences.USER_ID, "0"))
 
                 val jsonString = params.toString()
 
