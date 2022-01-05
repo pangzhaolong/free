@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="center">
+    android:layout_gravity="center"
+    android:orientation="vertical">
 
     <FrameLayout
         android:id="@+id/main_floating_fl"
@@ -49,4 +50,8 @@
             android:textSize="14sp" />
     </FrameLayout>
 
+    <ImageView
+        android:id="@+id/main_rp_yyw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 </LinearLayout>
