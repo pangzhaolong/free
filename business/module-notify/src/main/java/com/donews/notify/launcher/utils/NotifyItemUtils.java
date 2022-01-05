@@ -99,8 +99,8 @@ public class NotifyItemUtils {
         } else if (targetView.notifyType == TYPE_LOTT_2) { //抽奖引导2通知(底部)
             bindTypeLott2Data(targetView);
         } else if (targetView.notifyType == TYPE_LOTT_3) { //抽奖引导3：顶部
-            ssss
-        }else if (targetView.notifyType == TYPE_RED_4) { //红包引导4：桌面底部
+            bindTypeLott3Data(targetView);
+        } else if (targetView.notifyType == TYPE_RED_4) { //红包引导4：桌面底部
             bindTypeLott2Data(targetView);
         }
         if (lastBindTask != null) {
@@ -124,6 +124,25 @@ public class NotifyItemUtils {
         TextView good = targetView.findViewById(R.id.notify_item_red4_good);
         //按钮
         TextView but = targetView.findViewById(R.id.notify_item_red4_but);
+
+        //开始显示
+        targetView.setHideDuration(NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyShowTime);
+        targetView.start();
+    }
+
+    /**
+     * 抽奖引导3：顶部 {@link NotifyItemUtils.TYPE_LOTT_3}
+     *
+     * @param targetView
+     */
+    private static void bindTypeLott3Data(NotifyAnimationView targetView) {
+        //获取视图
+        ImageView close = targetView.findViewById(R.id.notify_item_lott2_close);
+        ImageView icon = targetView.findViewById(R.id.notify_item_lott2_jp);
+        TextView wxName = targetView.findViewById(R.id.notify_item_lott2_name);
+        TextView goodName = targetView.findViewById(R.id.notify_item_lott2_good);
+        //按钮
+        TextView but = targetView.findViewById(R.id.notify_item_lott2_bug);
 
         //开始显示
         targetView.setHideDuration(NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyShowTime);
