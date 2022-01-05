@@ -38,6 +38,19 @@ public class NotifyItemUtils {
      * 抽奖类型1(抽奖引导1：桌面顶部)
      */
     public static int TYPE_LOTT_1 = 1;
+    /**
+     * 抽奖引导类型2(抽奖引导2：底部)
+     */
+    public static int TYPE_LOTT_2 = 2;
+    /**
+     * 抽奖引导类型3(抽奖引导3：顶部)
+     */
+    public static int TYPE_LOTT_3 = 3;
+
+    /**
+     * 红包引导4(红包引导4：桌面底部)
+     */
+    public static int TYPE_RED_4 = 7;
 
     /**
      * 需要望指定的item视图中加入当前的消息通知视图
@@ -53,6 +66,14 @@ public class NotifyItemUtils {
             View v = LayoutInflater.from(targetView.getContext())
                     .inflate(R.layout.notify_item_type_lott_1, targetView, false);
             targetView.addView(v);
+        } else if (targetView.notifyType == TYPE_LOTT_2) { //抽奖引导2通知(底部)
+            View v = LayoutInflater.from(targetView.getContext())
+                    .inflate(R.layout.notify_item_type_lott_2, targetView, false);
+            targetView.addView(v);
+        } else if (targetView.notifyType == TYPE_RED_4) { //红包引导4：桌面底部
+            View v = LayoutInflater.from(targetView.getContext())
+                    .inflate(R.layout.notify_item_type_red_4, targetView, false);
+            targetView.addView(v);
         }
     }
 
@@ -63,10 +84,24 @@ public class NotifyItemUtils {
      * @param lastBindTask 之后的任务。给外部一个更改视图的时机。再默认更新之后，如果不需要特殊处理为:NULL 即可
      */
     public static void bindData(NotifyAnimationView targetView, Runnable lastBindTask) {
+        if (targetView.getChildCount() <= 0) {
+            targetView.setHideDuration(NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyShowTime);
+            targetView.start();
+            if (lastBindTask != null) {
+                lastBindTask.run(); //调用外部更新视图
+            }
+            return; //没有添加视图
+        }
         if (targetView.notifyType == TYPE_1) { //原始类型的通知显示
             bindType1Data(targetView);
         } else if (targetView.notifyType == TYPE_LOTT_1) { //原始类型的通知显示
             bindTypeLott1Data(targetView);
+        } else if (targetView.notifyType == TYPE_LOTT_2) { //抽奖引导2通知(底部)
+            bindTypeLott2Data(targetView);
+        } else if (targetView.notifyType == TYPE_LOTT_3) { //抽奖引导3：顶部
+            ssss
+        }else if (targetView.notifyType == TYPE_RED_4) { //红包引导4：桌面底部
+            bindTypeLott2Data(targetView);
         }
         if (lastBindTask != null) {
             lastBindTask.run(); //调用外部更新视图
@@ -74,21 +109,58 @@ public class NotifyItemUtils {
     }
 
     /**
-     * 抽奖引导类型1的通知弹窗
+     * 红包引导4：桌面底部 {@link NotifyItemUtils.TYPE_RED_4}
+     *
+     * @param targetView
+     */
+    private static void bindTypeRed4Data(NotifyAnimationView targetView) {
+        //获取视图
+        ImageView close = targetView.findViewById(R.id.notify_item_red4_close);
+        ImageView icon = targetView.findViewById(R.id.notify_item_lott2_jp);
+        TextView num = targetView.findViewById(R.id.notify_item_red4_rz_num);
+        //零钱的位置
+        TextView name = targetView.findViewById(R.id.notify_item_red4_name);
+        //备注(商品)
+        TextView good = targetView.findViewById(R.id.notify_item_red4_good);
+        //按钮
+        TextView but = targetView.findViewById(R.id.notify_item_red4_but);
+
+        //开始显示
+        targetView.setHideDuration(NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyShowTime);
+        targetView.start();
+    }
+
+    /**
+     * 抽奖引导2：底部 {@link NotifyItemUtils.TYPE_LOTT_2}
+     *
+     * @param targetView
+     */
+    private static void bindTypeLott2Data(NotifyAnimationView targetView) {
+        //获取视图
+        ImageView close = targetView.findViewById(R.id.notify_item_lott2_close);
+        ImageView icon = targetView.findViewById(R.id.notify_item_lott2_jp);
+        TextView wxName = targetView.findViewById(R.id.notify_item_lott2_name);
+        TextView goodName = targetView.findViewById(R.id.notify_item_lott2_good);
+        //按钮
+        TextView but = targetView.findViewById(R.id.notify_item_lott2_bug);
+
+        //开始显示
+        targetView.setHideDuration(NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyShowTime);
+        targetView.start();
+    }
+
+    /**
+     * 抽奖引导1：桌面顶部 {@link NotifyItemUtils.TYPE_LOTT_1}
      *
      * @param targetView
      */
     private static void bindTypeLott1Data(NotifyAnimationView targetView) {
-        if (targetView.getChildCount() <= 0) {
-            targetView.setHideDuration(NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyShowTime);
-            targetView.start();
-            return; //没有添加视图
-        }
         //获取视图
         ImageView icon = targetView.findViewById(R.id.notify_item_lott_icon);
         TextView title = targetView.findViewById(R.id.notify_item_lott_title);
         TextView name = targetView.findViewById(R.id.notify_item_lott_name);
         TextView desc = targetView.findViewById(R.id.notify_item_lott_desc);
+        ImageView goodIcon = targetView.findViewById(R.id.notify_item_lott_jp);
 
         //设置值
         title.setText("测试标题(提示)");
@@ -104,11 +176,6 @@ public class NotifyItemUtils {
      * @param targetView
      */
     private static void bindType1Data(NotifyAnimationView targetView) {
-        if (targetView.getChildCount() <= 0) {
-            targetView.setHideDuration(NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyShowTime);
-            targetView.start();
-            return; //没有添加视图
-        }
         ImageView mNotifyIv = targetView.findViewById(R.id.img_notify);
         int notifyShowSizeType = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyShowSizeType;
         if (notifyShowSizeType == 0) {

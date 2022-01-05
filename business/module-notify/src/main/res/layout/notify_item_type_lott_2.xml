@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_notifyroot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:paddingTop="15dp"
+    android:paddingBottom="25dp"
+    tools:ignore="MissingConstraints">
+
+    <ImageView
+        android:id="@+id/notify_item_lott2_close"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="15dp"
+        android:padding="10dp"
+        android:src="@drawable/glod_reward_close"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <ImageView
+        android:id="@+id/notify_item_lott2_jp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/notify_item_lott2_close" />
+
+    <LinearLayout
+        android:id="@+id/notify_item_lott2_name_ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:paddingRight="15dp"
+        app:layout_constraintLeft_toLeftOf="@+id/notify_item_lott2_close"
+        app:layout_constraintTop_toBottomOf="@+id/notify_item_lott2_jp">
+
+        <TextView
+            android:id="@+id/notify_item_lott2_name_d"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="账户名称:" />
+
+        <TextView
+            android:id="@+id/notify_item_lott2_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="微信名称"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/notify_item_lott2_good_ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingRight="15dp"
+        app:layout_constraintLeft_toLeftOf="@+id/notify_item_lott2_close"
+        app:layout_constraintTop_toBottomOf="@+id/notify_item_lott2_name_ll">
+
+        <TextView
+            android:id="@+id/notify_item_lott2_good_d"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="备注信息:"/>
+
+        <TextView
+            android:id="@+id/notify_item_lott2_good"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="商品名称"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/notify_item_lott2_bug"
+        android:layout_width="180dp"
+        android:layout_height="45dp"
+        android:text="立即领取"
+        android:gravity="center"
+        android:background="@color/search_hot_main"
+        android:layout_marginTop="30dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notify_item_lott2_good_ll" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
