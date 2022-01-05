@@ -182,10 +182,6 @@ public class MainActivity
         //上报一个测试友盟多参数事件
         testUMMuliParams();
         mDataBinding.occupyPosition.post(this::initializeCritState);
-        mDataBinding.occupyPosition.setOnClickListener(v -> /*CommonUtils.startCrit()*/
-                ARouter.getInstance()
-                        .build(RouterFragmentPath.Integral.PAGER_INTEGRAL)
-                        .navigation());
 
         showCriticalBtn();
         initScoreTaskFloatingBtn();

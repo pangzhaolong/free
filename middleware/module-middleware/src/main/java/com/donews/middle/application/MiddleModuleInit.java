@@ -109,7 +109,6 @@ public class MiddleModuleInit implements IModuleInit {
                         if (iCriticalWalletListener != null) {
                             iCriticalWalletListener.onError();
                         }
-                        ToastUtil.showShort(BaseApplication.getInstance(), "同步出错");
                     }
 
                     @Override
@@ -127,7 +126,6 @@ public class MiddleModuleInit implements IModuleInit {
                             if (iCriticalWalletListener != null) {
                                 iCriticalWalletListener.onError();
                             }
-                            ToastUtil.showShort(BaseApplication.getInstance(), "同步失败");
                         }
                     }
                 });

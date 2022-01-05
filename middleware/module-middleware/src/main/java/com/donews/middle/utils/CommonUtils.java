@@ -33,7 +33,6 @@ public class CommonUtils {
             MiddleModuleInit.requestCriticalWallet(new MiddleModuleInit.ICriticalWalletListener() {
                 @Override
                 public void onError() {
-                    ToastUtil.showShort(BaseApplication.getInstance(), "暴击服务器同步出错");
                 }
                 @Override
                 public void onSuccess(CriticalNumberBean numberBean) {
