@@ -10,8 +10,9 @@ import androidx.annotation.NonNull;
 
 import com.donews.middle.R;
 import com.donews.middle.databinding.FrontActivityRuleDialogBinding;
+import com.donews.middle.databinding.MiddleIntegralRuleDialogBinding;
 
-public class IntegralRuleDialog extends BaseDialog<FrontActivityRuleDialogBinding> {
+public class IntegralRuleDialog extends BaseDialog<MiddleIntegralRuleDialogBinding> {
 
     public IntegralRuleDialog(Context context) {
         super(context, R.style.dialogTransparent);
