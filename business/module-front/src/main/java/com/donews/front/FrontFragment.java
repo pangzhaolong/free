@@ -731,6 +731,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         }
 
         if (rpBean.getOpened()) {
+            mOpenedRpCounts++;
             iv.setAlpha(0.7f);
             iv.setBackgroundResource(R.drawable.front_rp_oen);
             tv.setText("已开");
@@ -790,7 +791,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         mDataBinding.frontRpOpenFl5.setAlpha(0.7f);
     }
 
-    int nCloseRpCounts = 0;
+    private int nCloseRpCounts = 0;
+    private int mOpenedRpCounts = 0;
 
     @SuppressLint("SetTextI18n")
     private void showRpData(WalletBean walletBean, boolean autoGetRp) {
@@ -804,6 +806,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         SPUtils.setInformain(KeySharePreferences.FIRST_RP_IS_OPEN, rpBean.getOpened());
 
         nCloseRpCounts = 0;
+        mOpenedRpCounts = 0;
         mFindFirstReadyRp = false;
         int topColor = Color.parseColor("#764D38");
         int bottomColor = Color.parseColor("#FFF3D3");
@@ -825,6 +828,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         mDataBinding.frontRpOpenFl5.setOnClickListener(this);
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mDataBinding.frontRpTv5.getLayoutParams();
         if (rpBean.getOpened()) {
+            mOpenedRpCounts++;
             stopTimer();
             mDataBinding.frontRpIv5.setBackgroundResource(R.drawable.front_rp_gold_open);
             params.gravity = Gravity.CENTER;
@@ -852,6 +856,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         }
 
         SPUtils.setInformain(KeySharePreferences.CLOSE_RED_PACKAGE_COUNTS, nCloseRpCounts);
+        SPUtils.setInformain(KeySharePreferences.OPENED_RED_PACKAGE_COUNTS, mOpenedRpCounts);
         if (rpBean.getOpened()) {
             SPUtils.setInformain(KeySharePreferences.STEPS_TO_GOLD_RED_PACKAGE_COUNTS, 0);
             SPUtils.setInformain(KeySharePreferences.LOTTERY_COUNTS, rpBean.getLotteryTotal());

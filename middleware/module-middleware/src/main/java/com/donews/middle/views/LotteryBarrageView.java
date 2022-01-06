@@ -24,6 +24,8 @@ public class LotteryBarrageView extends FrameLayout {
     private final int ITEM_NUMS = 6;
     private final static int MSG_ID = 10001;
     private final LotteryBarrageItemView[] mLotteryBarrageViews = new LotteryBarrageItemView[ITEM_NUMS];
+    private final TranslateAnimation[] mTAs = new TranslateAnimation[ITEM_NUMS];
+
     private final List<WinningRotationBean.WinnerItem> mAwardList = new ArrayList<>();
 
     private ScrollHandler mScrollHandler = null;
@@ -125,12 +127,11 @@ public class LotteryBarrageView extends FrameLayout {
 
         for (int i = 0; i < mLotteryBarrageViews.length; i++) {
             if (mLotteryBarrageViews[i] != null) {
+                mLotteryBarrageViews[i].clearAnimation();
                 mLotteryBarrageViews[i] = null;
             }
         }
     }
-
-    private final TranslateAnimation[] mTAs = new TranslateAnimation[6];
 
     private int getIdleTransAnimatorIdx() {
         for (int idx = 0; idx < mTAs.length; idx++) {
@@ -188,6 +189,7 @@ public class LotteryBarrageView extends FrameLayout {
         mLotteryBarrageViews[viewIdx].setUserAwardInfo(winnerItem.getAvatar(), winnerItem.getName(), winnerItem.getMessage());
         mLotteryBarrageViews[viewIdx].measure(0, 0);
         mLotteryBarrageViews[viewIdx].clearAnimation();
+        mTAs[transIdx] = null;
         mTAs[transIdx] = new TranslateAnimation(0,
                 -viewGroupWidth - mLotteryBarrageViews[viewIdx].getMeasuredWidth(), 0, 0);
         mTAs[transIdx].setAnimationListener(new Animation.AnimationListener() {
