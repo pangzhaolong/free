@@ -7,11 +7,10 @@
     android:layout_gravity="center"
     android:gravity="center">
 
-    <ImageView
+    <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/common_critical_hit_iv"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:src="@drawable/middle_critical_hit"
         android:visibility="visible" />
 
     <ImageView

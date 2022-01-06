@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.donews.common.views.CircleProgressBarView;
 import com.donews.middle.R;
@@ -29,7 +30,7 @@ public class FrontFloatingBtn extends LinearLayout {
 
     private Context mContext;
 
-    private final ImageView mCriticalHitIv;
+    private final LottieAnimationView mCriticalHitIv;
     private final LinearLayout mRpLl;
     private final CircleProgressBarView mCircleProgress;
     private final TextView mProgressTv;
@@ -74,6 +75,10 @@ public class FrontFloatingBtn extends LinearLayout {
     }
 
     private void refreshModel() {
+        if (mCriticalHitIv.getAnimation() != null) {
+            mCriticalHitIv.cancelAnimation();
+            mCriticalHitIv.clearAnimation();
+        }
         if (mCurrModel == RP_MODEL) {
             mCriticalHitIv.setVisibility(GONE);
             mYywImageView.setVisibility(GONE);
@@ -82,10 +87,21 @@ public class FrontFloatingBtn extends LinearLayout {
             mCriticalHitIv.setVisibility(VISIBLE);
             mRpLl.setVisibility(GONE);
             mYywImageView.setVisibility(GONE);
+            initLottie(mCriticalHitIv);
         } else if (mCurrModel == YYW_MODEL) {
             mCriticalHitIv.setVisibility(GONE);
             mRpLl.setVisibility(GONE);
             mYywImageView.setVisibility(VISIBLE);
+        }
+    }
+
+    private void initLottie(LottieAnimationView view) {
+        if ((view != null && !view.isAnimating())) {
+            view.setImageAssetsFolder("images");
+            view.clearAnimation();
+            view.setAnimation("middle_critical_ani.json");
+            view.loop(true);
+            view.playAnimation();
         }
     }
 
