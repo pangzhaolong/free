@@ -121,7 +121,7 @@ public class MainActivity
 
     private long mFirstClickBackTime = 0;
     //计算 暴击时刻的总时间 5分钟
-    private final long CruelDuration = 1 * 60 * 1000;
+    private final long CruelDuration = 5 * 60 * 1000;
     //下载应用的积分墙弹窗
     DialogFragment appDownDialog;
 
