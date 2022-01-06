@@ -306,4 +306,6 @@ public class Dot {
 
     public final static String RETENTION_CLICK = "retention_click";
 
+    public final static String RETENTION_DO_FINISH = "retention_do_finish";
+
 }

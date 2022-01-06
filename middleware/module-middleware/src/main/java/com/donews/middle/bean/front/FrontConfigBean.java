@@ -123,6 +123,12 @@ public class FrontConfigBean extends BaseCustomViewModel {
         private String img;
         @SerializedName("action")
         private String action;
+        @SerializedName("title")
+        private String title;
+
+        public String getTitle() {
+            return title;
+        }
 
         public String getImg() {
             return img;

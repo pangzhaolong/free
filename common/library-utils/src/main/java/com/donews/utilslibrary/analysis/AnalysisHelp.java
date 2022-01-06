@@ -79,7 +79,7 @@ public class AnalysisHelp {
         /* 穿山甲 用户行为sdk 初始化开始 */
         final InitConfig config = new InitConfig(BuildConfig.Applog_SDK_APPID, DeviceUtils.getChannelName()); // appid和渠道，appid如不清楚请联系客户成功经理，注意第二个参数 channel 不能为空
 
-        config.setUriConfig (UriConstants.DEFAULT);//上报地址
+        config.setUriConfig(UriConstants.DEFAULT);//上报地址
         // 加密开关，SDK 5.5.1 及以上版本支持，false 为关闭加密，上线前建议设置为 true
         AppLog.setEncryptAndCompress(true);
 
@@ -147,6 +147,7 @@ public class AnalysisHelp {
         eventData.put("dms" + 11, DeviceUtils.getMyUUID());// suuid
         eventData.put("dms" + 12, DeviceUtils.getOaid());//oaid
         eventData.put("dms" + 13, DeviceUtils.getAndroidID() + "");//androiid
+        eventData.put("dms" + 14, AppInfo.getUserRegisterTime());
         eventData.put("dms" + 23, DeviceUtils.getShuMeiDeviceId());//数美id
         try {
             DonewsAgent.onEvent(mActivity, eventName, eventData);

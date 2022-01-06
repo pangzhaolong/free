@@ -133,7 +133,7 @@ public class GotoUtil {
             return;
         }
 
-        AnalysisUtils.onEventEx(context, action, from);
+        AnalysisUtils.onEventEx(context, Dot.TASK_CLICK, action);
 
         if (action.startsWith("http")) {
             Bundle bundle = new Bundle();

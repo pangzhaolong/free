@@ -51,7 +51,6 @@ import com.donews.common.router.RouterFragmentPath;
 import com.donews.common.updatedialog.UpdateManager;
 import com.donews.common.updatedialog.UpdateReceiver;
 import com.donews.common.views.CountdownView;
-import com.donews.common.views.FrontFloatingBtn;
 import com.donews.main.BuildConfig;
 import com.donews.main.R;
 import com.donews.main.adapter.MainPageAdapter;
@@ -76,8 +75,10 @@ import com.donews.middle.bean.HighValueGoodsBean;
 import com.donews.middle.bean.RedEnvelopeUnlockBean;
 import com.donews.middle.bean.TaskActionBean;
 import com.donews.middle.cache.GoodsCache;
+import com.donews.middle.front.FrontConfigManager;
 import com.donews.middle.request.RequestUtil;
 import com.donews.middle.utils.CriticalModelTool;
+import com.donews.middle.views.FrontFloatingBtn;
 import com.donews.utilslibrary.analysis.AnalysisHelp;
 import com.donews.utilslibrary.analysis.AnalysisParam;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
@@ -100,7 +101,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import me.majiajie.pagerbottomtabstrip.NavigationController;
 
 /**
@@ -194,9 +194,15 @@ public class MainActivity
 
     private void showCriticalBtn() {
         if (CriticalModelTool.canShowCriticalBtn()) {
-            mDataBinding.mainFloatingBtn.setVisibility(View.VISIBLE);
+            mDataBinding.mainFloatingBtn.showCriticalBtn();
+            mDataBinding.mainFloatingBtn.setOnClickListener(v -> {
+                toggleStatusBar(0);
+                mDataBinding.cvContentView.setCurrentItem(0);
+                mPosition = 0;
+                bjClick();
+            });
         } else {
-            mDataBinding.mainFloatingBtn.setVisibility(View.GONE);
+            mDataBinding.mainFloatingBtn.setYywInfo(FrontConfigManager.Ins().getConfigBean().getFloatingItem());
         }
     }
 
@@ -314,7 +320,7 @@ public class MainActivity
             });
         }
 
-//        mDataBinding.mainFloatingRp.reLoadTask();
+        mDataBinding.mainFloatingRp.reLoadTask();
         if (!HotStartCacheUtils.INSTANCE.isShowing()) {
             checkRetentionTask();
         }
@@ -844,21 +850,29 @@ public class MainActivity
             return;
         }
 
+        LogUtil.e("onHotStartEvent2:");
         mViewModel.getRetentionTask(wallReqId).observe(this, retentionTaskBean -> {
             if (retentionTaskBean == null || !retentionTaskBean.getHandout()) {
-                if (mRetryCount > 4) {
+                if (mRetryCount > 2) {
+                    LogUtil.e("onHotStartEvent3:");
                     return;
                 }
                 mRetryCount++;
-                new Handler().postDelayed(this::checkRetentionTask, 5000);
+                new Handler().postDelayed(this::checkRetentionTask, 3000);
                 return;
             }
 
+            LogUtil.e("onHotStartEvent4:");
             mRetryCount = 0;
             mViewModel.getWallTaskRp(wallReqId).observe(this, wallTaskRpBean -> {
                 if (wallTaskRpBean == null) {
+                    LogUtil.e("onHotStartEvent5:");
                     return;
                 }
+
+                AnalysisUtils.onEventEx(MainActivity.this, Dot.RETENTION_DO_FINISH);
+
+                LogUtil.e("onHotStartEvent6:");
                 SPUtils.setInformain(KeySharePreferences.RETENTION_TASK_WALL_REQUEST_ID, "");
                 ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
                         .withString("from", "wallTask")
@@ -889,7 +903,10 @@ public class MainActivity
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onHotStartEvent(HotStartEvent event) {
+        LogUtil.e("onHotStartEvent:" + event.getShow());
         if (!event.getShow()) {
+            LogUtil.e("onHotStartEvent1:" + event.getShow());
+            mRetryCount = 0;
             checkRetentionTask();
         }
     }

@@ -95,7 +95,7 @@ public class MainFloatingBtn extends FrameLayout implements IntegralComponent.IS
                     @Override
                     public void onInstalled() {
                         LogUtil.e("dn_integral onSecondStayTask onInstalled");
-                        mListener.onTaskClick(var1.getSourceRequestId(), var1.getWallRequestId());
+//                        mListener.onTaskClick(var1.getSourceRequestId(), var1.getWallRequestId());
                     }
 
                     @Override
@@ -105,7 +105,7 @@ public class MainFloatingBtn extends FrameLayout implements IntegralComponent.IS
 
                     @Override
                     public void onRewardVerify() {
-
+                        mListener.onTaskClick(var1.getSourceRequestId(), var1.getWallRequestId());
                     }
 
                     @Override

@@ -11,8 +11,14 @@
         android:id="@+id/common_critical_hit_iv"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:src="@drawable/common_critical_hit"
+        android:src="@drawable/middle_critical_hit"
         android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/common_critical_yyw"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:id="@+id/common_rp_ll"

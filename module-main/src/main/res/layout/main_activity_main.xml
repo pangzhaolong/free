@@ -37,7 +37,7 @@
             android:elevation="8dp"
             skin:enable="true" />
 
-        <com.donews.common.views.FrontFloatingBtn
+        <com.donews.middle.views.FrontFloatingBtn
             android:id="@+id/main_floating_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
