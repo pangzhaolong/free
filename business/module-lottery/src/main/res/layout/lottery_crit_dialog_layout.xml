@@ -54,7 +54,6 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="125dp"
                 android:background="@drawable/crit_dialog_layout_bg"
-                android:paddingBottom="27dp"
                 tools:ignore="MissingConstraints">
 
                 <LinearLayout
@@ -141,43 +140,72 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/buootn_hint_layout" />
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/startLottery"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="29dp"
-                    android:background="@drawable/panic_buying_button_bg"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:paddingTop="9dp"
-                    android:paddingBottom="9dp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/lottery_tips">
 
-
-                    <ImageView
-                        android:layout_width="23dp"
-                        android:layout_height="23dp"
-                        android:layout_marginStart="52dp"
-                        android:scaleType="fitXY"
-                        android:src="@mipmap/crit_play_icon" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/jump_bt"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="7dp"
-                        android:layout_marginEnd="52dp"
-                        android:text="暴击抽奖"
-                        android:textColor="#673A23"
-                        android:textSize="20dp"
+                        android:layout_marginStart="17dp"
+                        android:layout_marginEnd="17dp"
+                        android:layout_marginBottom="27dp"
+                        android:background="@drawable/panic_buying_button_bg"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingTop="9dp"
+                        android:paddingBottom="9dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent">
+
+                        <ImageView
+                            android:layout_width="23dp"
+                            android:layout_height="23dp"
+                            android:layout_marginStart="52dp"
+                            android:scaleType="fitXY"
+                            android:src="@mipmap/crit_play_icon" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="7dp"
+                            android:layout_marginEnd="52dp"
+                            android:text="暴击抽奖"
+                            android:textColor="#673A23"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
 
 
-                        />
+                    <!--小手-->
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/json_hand"
+                        android:layout_width="57dp"
+                        android:layout_height="58dp"
+                        android:layout_marginEnd="25dp"
+                        android:layout_marginBottom="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:lottie_loop="true"
+                        tools:ignore="MissingConstraints" />
 
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
 
 
             <!-- 顶部布局 -->

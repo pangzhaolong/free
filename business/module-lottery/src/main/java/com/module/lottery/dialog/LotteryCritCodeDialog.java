@@ -60,6 +60,10 @@ public class LotteryCritCodeDialog extends BaseDialog<LotteryCritDialogLayoutBin
                 }
             }
         });
+        mDataBinding.jsonHand.setImageAssetsFolder("images");
+        mDataBinding.jsonHand.setAnimation("lottery_finger.json");
+        mDataBinding.jsonHand.loop(true);
+        mDataBinding.jsonHand.playAnimation();
     }
 
     @Override
