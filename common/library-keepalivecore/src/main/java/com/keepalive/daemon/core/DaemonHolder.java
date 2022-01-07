@@ -105,6 +105,7 @@ public class DaemonHolder {
                 Logger.v(Logger.TAG, String.format("====> [%s] destroyed", activity.getLocalClassName()));
                 if (connCache.containsKey(activity)) {
                     ServiceHolder.getInstance().unbindService(activity, connCache.get(activity));
+                    connCache.remove(activity);
                 }
             }
         });
