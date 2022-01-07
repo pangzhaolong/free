@@ -85,17 +85,19 @@ class HotStartDialog : DialogFragment(), DialogInterface.OnKeyListener {
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         HotStartCacheUtils.clear()
-        HotStartCacheUtils.checkActivity(AppManager.getInstance().topActivity)
+        if (AppManager.getInstance() != null && AppManager.getInstance().topActivity != null) {
+            HotStartCacheUtils.checkActivity(AppManager.getInstance().topActivity)
+        }
         EventBus.getDefault().post(HotStartEvent(false))
     }
 
 
     fun initView() {
         ImmersionBar.with(this)
-            .fullScreen(true)
-            .transparentStatusBar()
-            .fitsSystemWindows(false)
-            .init()
+                .fullScreen(true)
+                .transparentStatusBar()
+                .fitsSystemWindows(false)
+                .init()
 
         JddAdConfigManager.addListener {
             val configBean = JddAdConfigManager.jddAdConfigBean;
@@ -105,7 +107,7 @@ class HotStartDialog : DialogFragment(), DialogInterface.OnKeyListener {
             mFullAd = configBean.hotStartSplashStyle != 1
 
             val params: ConstraintLayout.LayoutParams =
-                mDataBinding.adFllContainer.layoutParams as ConstraintLayout.LayoutParams
+                    mDataBinding.adFllContainer.layoutParams as ConstraintLayout.LayoutParams
             if (mFullAd) {
                 params.bottomMargin = 0
             } else {
@@ -150,17 +152,17 @@ class HotStartDialog : DialogFragment(), DialogInterface.OnKeyListener {
 
         if (mFullAd) {
             AdManager.preloadFullScreenSplashAd(
-                requireActivity(),
-                mDataBinding.adFllContainer,
-                preloadListener,
-                splashListener
+                    requireActivity(),
+                    mDataBinding.adFllContainer,
+                    preloadListener,
+                    splashListener
             )
         } else {
             AdManager.preloadHalfScreenSplashAd(
-                requireActivity(),
-                mDataBinding.adFllContainer,
-                preloadListener,
-                splashListener
+                    requireActivity(),
+                    mDataBinding.adFllContainer,
+                    preloadListener,
+                    splashListener
             )
         }
     }
@@ -193,17 +195,17 @@ class HotStartDialog : DialogFragment(), DialogInterface.OnKeyListener {
 
         if (mFullAd) {
             AdManager.preloadFullScreenSplashAd(
-                requireActivity(),
-                mDataBinding.adFllContainer,
-                preloadListener,
-                splashListener
+                    requireActivity(),
+                    mDataBinding.adFllContainer,
+                    preloadListener,
+                    splashListener
             )
         } else {
             AdManager.preloadHalfScreenSplashAd(
-                requireActivity(),
-                mDataBinding.adFllContainer,
-                preloadListener,
-                splashListener
+                    requireActivity(),
+                    mDataBinding.adFllContainer,
+                    preloadListener,
+                    splashListener
             )
         }
     }
@@ -227,15 +229,15 @@ class HotStartDialog : DialogFragment(), DialogInterface.OnKeyListener {
 
         if (mFullAd) {
             AdManager.loadFullScreenSplashAd(
-                requireActivity(),
-                mDataBinding.adFllContainer,
-                splashListener
+                    requireActivity(),
+                    mDataBinding.adFllContainer,
+                    splashListener
             )
         } else {
             AdManager.loadHalfScreenSplashAd(
-                requireActivity(),
-                mDataBinding.adFllContainer,
-                splashListener
+                    requireActivity(),
+                    mDataBinding.adFllContainer,
+                    splashListener
             )
         }
     }
@@ -255,15 +257,15 @@ class HotStartDialog : DialogFragment(), DialogInterface.OnKeyListener {
 
         if (mFullAd) {
             AdManager.loadFullScreenSplashAd(
-                requireActivity(),
-                mDataBinding.adFllContainer,
-                splashListener
+                    requireActivity(),
+                    mDataBinding.adFllContainer,
+                    splashListener
             )
         } else {
             AdManager.loadHalfScreenSplashAd(
-                requireActivity(),
-                mDataBinding.adFllContainer,
-                splashListener
+                    requireActivity(),
+                    mDataBinding.adFllContainer,
+                    splashListener
             )
         }
     }
@@ -323,33 +325,33 @@ class HotStartDialog : DialogFragment(), DialogInterface.OnKeyListener {
             progressAnim!!.cancel()
         }
         progressAnim = ValueAnimator.ofInt(0, 100)
-            .apply {
-                addUpdateListener {
-                    if (mDataBinding != null) {
-                        mDataBinding.pbProgress.progress = it.animatedValue as Int
+                .apply {
+                    addUpdateListener {
+                        if (mDataBinding != null) {
+                            mDataBinding.pbProgress.progress = it.animatedValue as Int
+                        }
                     }
+
+                    addListener(object : Animator.AnimatorListener {
+                        override fun onAnimationStart(animation: Animator?) {
+                            mDataBinding.pbProgress.visibility = View.VISIBLE
+                        }
+
+                        override fun onAnimationEnd(animation: Animator?) {
+                            mDataBinding.pbProgress.visibility = View.INVISIBLE
+                        }
+
+                        override fun onAnimationCancel(animation: Animator?) {
+                            mDataBinding.pbProgress.visibility = View.INVISIBLE
+                        }
+
+                        override fun onAnimationRepeat(animation: Animator?) {
+
+                        }
+
+                    })
+                    duration = 5000
                 }
-
-                addListener(object : Animator.AnimatorListener {
-                    override fun onAnimationStart(animation: Animator?) {
-                        mDataBinding.pbProgress.visibility = View.VISIBLE
-                    }
-
-                    override fun onAnimationEnd(animation: Animator?) {
-                        mDataBinding.pbProgress.visibility = View.INVISIBLE
-                    }
-
-                    override fun onAnimationCancel(animation: Animator?) {
-                        mDataBinding.pbProgress.visibility = View.INVISIBLE
-                    }
-
-                    override fun onAnimationRepeat(animation: Animator?) {
-
-                    }
-
-                })
-                duration = 5000
-            }
         progressAnim?.start()
     }
 
