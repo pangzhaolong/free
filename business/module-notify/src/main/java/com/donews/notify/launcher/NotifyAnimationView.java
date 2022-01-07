@@ -14,6 +14,7 @@ import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
 
+import com.donews.notify.launcher.utils.NotifyItemType;
 import com.donews.utilslibrary.utils.AppInfo;
 
 
@@ -34,9 +35,9 @@ public class NotifyAnimationView extends LinearLayout {
     private int mHideAniTime = 240;
 
     /**
-     * 通知的类型，参考: {@link com.donews.notify.launcher.utils.NotifyItemUtils} 相关常量
+     * 通知的类型，参考: {@link com.donews.notify.launcher.utils.NotifyItemType} 相关常量
      */
-    public int notifyType = 0;
+    public NotifyItemType notifyType;
     /**
      * 是否为顶部通知。T:是，F:底部通知
      */

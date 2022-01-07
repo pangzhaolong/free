@@ -16,6 +16,7 @@ import com.donews.common.NotifyLuncherConfigManager;
 import com.donews.common.config.ModuleLifecycleConfig;
 import com.donews.keepalive.global.KeepAliveAPI;
 import com.donews.notify.launcher.NotificationCreate;
+import com.donews.notify.launcher.configs.Notify2ConfigManager;
 import com.donews.utilslibrary.analysis.AnalysisParam;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.utils.KeyConstant;
@@ -81,6 +82,9 @@ public class MyApplication extends BaseApplication {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            //桌面通知数据配置初始化
+            Notify2ConfigManager.Ins().init();
         }
 
         //其余进程初始化keepalive模块

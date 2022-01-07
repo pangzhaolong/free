@@ -5,32 +5,29 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 
 import com.blankj.utilcode.util.SPUtils;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.donews.base.base.AppManager;
 import com.donews.common.NotifyLuncherConfigManager;
+import com.donews.common.contract.LoginHelp;
 import com.donews.keepalive.LaunchStart;
 import com.donews.notify.R;
+import com.donews.notify.launcher.configs.Notify2ConfigManager;
+import com.donews.notify.launcher.configs.baens.Notify2DataConfigBean;
+import com.donews.notify.launcher.utils.NotifyItemType;
 import com.donews.notify.launcher.utils.NotifyItemUtils;
+import com.donews.notify.launcher.utils.fix.FixTagUtils;
 import com.donews.utilslibrary.analysis.AnalysisParam;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.gyf.immersionbar.ImmersionBar;
@@ -38,7 +35,7 @@ import com.gyf.immersionbar.ImmersionBar;
 import java.lang.ref.WeakReference;
 import java.util.Random;
 
-public class NotifyActivity extends Activity {
+public class NotifyActivity extends FragmentActivity {
     public static final String TAG = NotifyInitProvider.TAG;
 
     private static WeakReference<NotifyActionActivity> sPopActionRefer = null;
@@ -153,22 +150,31 @@ public class NotifyActivity extends Activity {
                 .fitsSystemWindows(true)
                 .autoDarkModeEnable(false)
                 .init();
+
     }
+
+    private static int a = 0;
 
     //设置通知属性相关内容
     private void setNotifyAttrs() {
+        String content =
+                "${title}:你好啊";
+        Notify2DataConfigBean.UiTemplat uiTemplat = Notify2ConfigManager.Ins().getNotifyConfigBean().notifyConfigs.get(0).uiTemplate.get(0);
+        FixTagUtils.buildContentTag(uiTemplat,content);
+        //设置消息类型
+        int pos = a % NotifyItemType.values().length;
+        a++;
+        NotifyItemType type = NotifyItemType.values()[pos];
+        mNotifyAnimationView.isTopNotify = type.orientation == 0;
+        mNotifyAnimationView.notifyType = type;
         //判断方向
         if (!mNotifyAnimationView.isTopNotify) {
             RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mNotifyAnimationView.getLayoutParams();
             lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
             mNotifyAnimationView.setLayoutParams(lp);
         }
-        //设置通知模式
-        mNotifyAnimationView.notifyType = NotifyItemUtils.TYPE_LOTT_1;
-        //添加当前类型的通知视图
-        NotifyItemUtils.addItemView(mNotifyAnimationView);
-        //绑定数据
-        NotifyItemUtils.bindData(mNotifyAnimationView, () -> {
+        //添加当前类型的通知视图和绑定数据
+        NotifyItemUtils.addItemView(this, mNotifyAnimationView, type, () -> {
             //需要特殊处理UI的类型。再此处处理即可
         });
     }
