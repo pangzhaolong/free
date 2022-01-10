@@ -110,7 +110,7 @@ ext {
 
     //友盟Key
 //    ANALYSIS_U_MENG = ext.DEBUG ? "" : "616d1dd2ac9567566e9b97e3"
-    ANALYSIS_U_MENG = "616d1dd2ac9567566e9b97e3"
+    ANALYSIS_U_MENG = "61db9e36e0f9bb492bc4834b"
 
     //腾讯Bugly
     BUGLY_ID = "dd19bd7626"
