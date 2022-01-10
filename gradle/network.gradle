@@ -1,6 +1,6 @@
 ext {
     // true 表示测试环境，false表示正式环境
-    DEBUG = false
+    DEBUG = true
 
     //版本号，版本名称 版本号对应于版本名称，
     // 例如：1.2.1->12010;1.3.2->13020
@@ -11,7 +11,7 @@ ext {
     APP_IDENTIFICATION = "plus"
 
     //包名
-    APPLICATION_ID = "com.cdyfnts.lottery.jdd.plus"
+    APPLICATION_ID = "com.cdyfnts.lottery.ddyb"
 
     //打开广告日志,true 打开日志，false 关闭日志
     OPEN_AD_LOGGER = "true"
