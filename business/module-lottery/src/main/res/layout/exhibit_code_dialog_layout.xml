@@ -13,54 +13,81 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#24000000"
         android:paddingBottom="23dp">
-
-        <ImageView
-            android:id="@+id/closure"
-            android:layout_width="33dp"
-            android:layout_height="33dp"
-            android:layout_gravity="right"
-            android:layout_marginBottom="5dp"
-            android:src="@mipmap/closure_icon"
-            app:layout_constraintRight_toRightOf="parent"
-            tools:ignore="MissingConstraints" />
-
 
         <LinearLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="356dp"
             android:layout_marginTop="63dp"
-            android:background="@drawable/red_bg_shape"
-            android:gravity="center"
+            android:background="@drawable/white_bg_shape"
             android:orientation="vertical"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints,ResourceName">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/closure"
+                    android:layout_width="33dp"
+                    android:layout_height="33dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@mipmap/top_closure_button"
+                    android:visibility="invisible"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginEnd="25dp"
+                    android:gravity="center"
+                    android:text='恭喜获得抽奖码'
+                    android:textColor="#EE702C"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
             <LinearLayout
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="61dp"
-                android:gravity="center_horizontal"
                 android:orientation="vertical"
                 tools:ignore="ResourceName">
 
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginEnd="25dp"
-                    android:gravity="center"
-                    android:text='@{codeBean!=null?codeBean.code+"":""}'
-                    android:textColor="#FFF3C9"
-                    android:textSize="47dp"
-                    android:textStyle="bold" />
-
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="122dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@mipmap/bg_code_picture">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="15dp"
+                        android:gravity="center"
+                        android:text='@{codeBean!=null?codeBean.code+"":""}'
+                        android:textColor="#FFFFFF"
+                        android:textSize="40dp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+
+                <RelativeLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-30dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -88,7 +115,7 @@
                                 android:paddingEnd="6dp"
                                 android:paddingBottom="4dp"
                                 android:text="超过11%的用户"
-                                android:textColor="#E9423E"
+                                android:textColor="#AA7113"
                                 android:textSize="11dp"
                                 app:layout_behavior="com.module.lottery.behavior.progressBehavior" />
 
@@ -131,7 +158,7 @@
                                 android:layout_marginTop="48dp"
                                 android:layout_marginEnd="7dp"
                                 android:text="最大中奖率"
-                                android:textColor="#FFF3C9"
+                                android:textColor="#AA7113"
                                 android:textSize="11dp"
                                 android:textStyle="bold" />
                         </RelativeLayout>
@@ -146,8 +173,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:background="@mipmap/return_button_bg"
+                android:layout_marginTop="27dp"
                 android:orientation="vertical">
 
 
@@ -156,7 +182,6 @@
                     android:layout_width="342dp"
                     android:layout_height="78dp"
                     android:layout_marginStart="34dp"
-                    android:layout_marginTop="52dp"
                     android:layout_marginEnd="34dp"
                     android:gravity="center"
                     android:orientation="horizontal">
@@ -179,6 +204,15 @@
                         android:layout_marginEnd="8dp"
                         app:lottie_autoPlay="true"
                         app:lottie_loop="true" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/jsonAnimation"
+                        android:layout_marginTop="13dp"
+                        android:gravity="center"
+                        android:text="拿6个抽奖码，赢最高中奖率"
+                        android:textColor="#AA7113" />
 
                 </RelativeLayout>
 
@@ -210,63 +244,7 @@
         </LinearLayout>
 
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="198dp"
-            android:layout_height="42dp"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="right"
-            android:layout_marginTop="58dp"
-            android:layout_marginBottom="5dp"
-            android:background="@mipmap/exhibit_top_bg"
-            android:gravity="center"
-            android:text="恭喜获得抽奖码"
-            android:textColor="#764D38"
-            android:textSize="19dp"
-            android:textStyle="bold"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="MissingConstraints" />
-
-
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="110dp"
-            android:orientation="vertical"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="MissingConstraints">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/draw_bg_text_shape"
-                android:paddingStart="10dp"
-                android:paddingTop="5dp"
-                android:paddingEnd="10dp"
-                android:paddingBottom="5dp"
-                android:text="明日10:00开奖"
-                android:textColor="#764D38"
-                android:textSize="13dp" />
-
-            <ImageView
-                android:layout_width="13dp"
-                android:layout_height="6dp"
-                android:layout_marginStart="25dp"
-                android:src="@mipmap/exhibit_triangle"
-
-                />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:visibility="gone"
             android:id="@+id/crit_draw"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -274,6 +252,7 @@
             android:background="@mipmap/unlock_button_bg"
             android:gravity="center"
             android:orientation="vertical"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/container"
@@ -350,13 +329,13 @@
         </LinearLayout>
 
         <RelativeLayout
-            android:visibility="gone"
             android:id="@+id/crit_download"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@mipmap/unlock_button_bg"
             android:orientation="horizontal"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/crit_draw"
@@ -373,13 +352,13 @@
                 android:src="@drawable/red_linear_shape" />
 
             <LinearLayout
-                android:layout_toRightOf="@+id/integral_icon"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/integral_icon"
+                android:clipChildren="false"
                 android:orientation="vertical"
                 android:paddingTop="10dp"
                 android:paddingEnd="10dp"
-                android:clipChildren="false"
                 tools:ignore="MissingConstraints">
 
                 <TextView
@@ -391,11 +370,11 @@
                     android:textSize="13dp" />
 
                 <RelativeLayout
-                    android:layout_marginBottom="10dp"
-                    android:clipChildren="false"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:clipChildren="false"
                     android:gravity="bottom"
                     android:orientation="horizontal">
 
