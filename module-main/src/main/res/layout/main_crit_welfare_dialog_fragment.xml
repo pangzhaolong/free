@@ -138,7 +138,7 @@
             android:background="@drawable/main_red_circle_bg"/>
 
         <TextView
-            android:layout_width="81dp"
+            android:layout_width="wrap_content"
             android:layout_height="17dp"
             android:text="将为您随机抽奖"
             android:textSize="12sp"
