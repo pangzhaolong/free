@@ -31,7 +31,7 @@ import com.vmadalin.easypermissions.EasyPermissions
  * @version v1.0
  * @date 2021/12/3
  */
-class AnAdditionalDialog(
+class MoreAwardDialog(
         /** 金额 */
         var restId: String,
         var preId: String,
@@ -50,7 +50,7 @@ class AnAdditionalDialog(
     }
 
     override fun getLayoutId(): Int {
-        return R.layout.an_additional_dialog_layout
+        return R.layout.main_more_award_dialog_layout
     }
 
     @SuppressLint("SetTextI18n", "ObjectAnimatorBinding")

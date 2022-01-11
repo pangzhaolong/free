@@ -295,6 +295,17 @@ public class MainActivity
     @Override
     protected void onResume() {
         super.onResume();
+        AnAdditionalDialog mDrawDialog = new AnAdditionalDialog("123", "123", 123,
+                123, 400);
+        mDrawDialog.setEventListener(() -> {
+            try {
+                if (mDrawDialog.isAdded() && !MainActivity.this.isFinishing()) {
+                    mDrawDialog.dismiss();
+                }
+            } catch (Exception e) {
+            }
+        });
+        mDrawDialog.show(getSupportFragmentManager(), "AnAddDialog");
 
         if (SPUtils.getInformain(KeySharePreferences.FIRST_RP_CAN_OPEN, false)) {
             SPUtils.setInformain(KeySharePreferences.FIRST_RP_CAN_OPEN, false);
