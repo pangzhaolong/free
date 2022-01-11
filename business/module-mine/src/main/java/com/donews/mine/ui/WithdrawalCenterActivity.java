@@ -224,7 +224,7 @@ public class WithdrawalCenterActivity extends
             mineWithdraWallBean = GsonUtils.fromLocalJson(localJson, MineWithdraWallBean.class);
             updateYYWData();
         }
-        EasyHttp.get(BuildConfig.BASE_CONFIG_URL + "plus-mineWithdrawal" + com.donews.common.BuildConfig.BASE_RULE_URL
+        EasyHttp.get(BuildConfig.BASE_CONFIG_URL + "ddyb-mineWithdrawal" + com.donews.common.BuildConfig.BASE_RULE_URL
                 + JsonUtils.getCommonJson(false))
                 .cacheMode(CacheMode.NO_CACHE)
                 .isShowToast(false)

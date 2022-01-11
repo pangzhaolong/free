@@ -69,7 +69,7 @@ public class ABSwitch {
 
     private static void update() {
         LogUtil.e("ABSwitch update");
-        EasyHttp.get(HttpConfigUtilsKt.withConfigParams(BuildConfig.BASE_CONFIG_URL + "plus-abswitch"
+        EasyHttp.get(HttpConfigUtilsKt.withConfigParams(BuildConfig.BASE_CONFIG_URL + "ddyb-abswitch"
                 + BuildConfig.BASE_RULE_URL, true))
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<ABBean>() {

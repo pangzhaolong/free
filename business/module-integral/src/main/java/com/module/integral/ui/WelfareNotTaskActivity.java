@@ -150,7 +150,7 @@ public class WelfareNotTaskActivity extends MvvmBaseLiveDataActivity<IntegralWel
 
     //获取任务
     private void getTaskList() {
-        EasyHttp.get(BuildConfig.BASE_CONFIG_URL + "plus-appsWall" + com.donews.common.BuildConfig.BASE_RULE_URL
+        EasyHttp.get(BuildConfig.BASE_CONFIG_URL + "ddyb-appsWall" + com.donews.common.BuildConfig.BASE_RULE_URL
                 + JsonUtils.getCommonJson(false))
                 .cacheMode(CacheMode.NO_CACHE)
                 .isShowToast(false)
