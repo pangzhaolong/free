@@ -27,40 +27,40 @@ public enum NotifyItemType {
             R.layout.notify_item_type_lott_1,
             0
     ),
-//    /**
-//     * UI模板2(抽奖引导2：顶部)
-//     */
-//    TYPE_LOTT_TOP_2(
-//            2,
-//            "TYPE_LOTT_TOP_2",
-//            0,
-//            0
-//    ),
-//    /**
-//     * UI模板3(红包引导1：顶部 — 头像、红包引导1：顶部 — 昵称)
-//     */
-//    TYPE_LOTT_TOP_3(
-//            3,
-//            "TYPE_LOTT_TOP_3",
-//            0,
-//            0
-//    ),
-//    /**
-//     * UI模板3(红包引导1：顶部 — 头像、红包引导1：顶部 — 昵称)
-//     */
-//    TYPE_LOTT_TOP_4(
-//            4,
-//            "TYPE_LOTT_TOP_4",
-//            0,
-//            0
-//    ),
+    /**
+     * UI模板2(抽奖引导2：顶部)
+     */
+    TYPE_LOTT_TOP_2(
+            2,
+            "TYPE_LOTT_TOP_2",
+            R.layout.notify_item_type_lott_2,
+            0
+    ),
+    /**
+     * UI模板3(红包引导1：顶部 — 头像、红包引导1：顶部 — 昵称)
+     */
+    TYPE_LOTT_TOP_3(
+            3,
+            "TYPE_LOTT_TOP_3",
+            R.layout.notify_item_type_lott_3,
+            0
+    ),
+    /**
+     * UI模板3(红包引导1：顶部 — 头像、红包引导1：顶部 — 昵称)
+     */
+    TYPE_LOTT_TOP_4(
+            4,
+            "TYPE_LOTT_TOP_4",
+            R.layout.notify_item_type_lott_4,
+            0
+    ),
     /**
      * UI模板5(红包引导3：底部 — 金额、红包引导4：底部 — 配图)
      */
     TYPE_LOTT_BOTTOM_5(
             5,
             "TYPE_LOTT_BOTTOM_5",
-            R.layout.notify_item_type_lott_2,
+            R.layout.notify_item_type_lott_5,
             1
     ),
     ;

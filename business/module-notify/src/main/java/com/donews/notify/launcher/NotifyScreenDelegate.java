@@ -38,13 +38,14 @@ public class NotifyScreenDelegate {
     private boolean isLoaded;
     private boolean isOpen;
 
-    private Runnable mShowNotifyRunnable = null;
+    private static Runnable mShowNotifyRunnable = null;
 
     /**
      * 解决多次解锁时，间隙，cd时间默认为10秒内不出
      */
-    private long mIntervalLockShowTime = 10 * 1000;
-    private long mLastShowTime = 0;
+    private static long mIntervalLockShowTime = 10 * 1000;
+    //最后一次显示的时间
+    private static long mLastShowTime = 0;
 
     /**
      * 网络变换
@@ -80,7 +81,6 @@ public class NotifyScreenDelegate {
 
             case Intent.ACTION_USER_PRESENT:
                 NotifyActionActivity.destroy();
-
                 if (canShowNotify() && canShowAct() && canShowFastClick()) {
                     tryLoadNewImg(context);
                     long delayTime = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyDelayShowTime;
@@ -113,6 +113,62 @@ public class NotifyScreenDelegate {
                 mCurruntCount++;
                 break;
         }
+    }
+
+    /**
+     * 显示通知
+     *
+     * @param context 上下文
+     */
+    public void showNotify(Context context) {
+        NotifyActionActivity.destroy();
+        if (canShowNotify() && canShowAct() && canShowFastClick()) {
+            String url = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyLauncherImg;
+            if (url == null || url.isEmpty()) {
+                long delayTime = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyDelayShowTime;
+                mLastShowTime = System.currentTimeMillis();
+                Log.w(NotifyInitProvider.TAG, " show , delayTime=" + delayTime);
+                mHandler.postDelayed(getShowNotifyRunnable(context), delayTime);
+            } else {
+                //加载网络图片。然后显示
+                tryLoadNewImg2(context);
+            }
+        }
+    }
+
+    //网络图片加载
+    private void tryLoadNewImg2(Context context) {
+        isLoaded = false;
+        isOpen = false;
+        String url = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyLauncherImg;
+        Glide.with(context).asBitmap().load(url).into(new CustomTarget<Bitmap>() {
+            long delayTime = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyDelayShowTime;
+
+            @Override
+            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                isLoaded = true;
+                if (!isOpen) {
+                    mLastShowTime = System.currentTimeMillis();
+                    mHandler.postDelayed(getShowNotifyRunnable(context), delayTime);
+                }
+                Log.d(NotifyInitProvider.TAG, "tryLoadNewImg success , url = " + url);
+            }
+
+            @Override
+            public void onLoadCleared(@Nullable Drawable placeholder) {
+                isLoaded = true;
+                Log.d(NotifyInitProvider.TAG, "tryLoadNewImg onLoadCleared , url = " + url);
+            }
+
+            @Override
+            public void onLoadFailed(@Nullable Drawable errorDrawable) {
+
+                super.onLoadFailed(errorDrawable);
+                isLoaded = true;
+                Log.d(NotifyInitProvider.TAG, "tryLoadNewImg onLoadFailed , url = " + url);
+            }
+        });
+
     }
 
     private void tryLoadNewImg(Context context) {

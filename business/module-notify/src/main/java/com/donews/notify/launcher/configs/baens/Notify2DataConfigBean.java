@@ -38,6 +38,10 @@ public class Notify2DataConfigBean {
      */
     public static class NotifyItemConfig {
         /**
+         * 通知分类配置的 id
+         */
+        public int id;
+        /**
          * 条件1：注册超过的时间
          */
         public int registerMore;
@@ -49,6 +53,14 @@ public class Notify2DataConfigBean {
          * 条件3：当日获取抽奖码的数量
          */
         public int dayLotteryCodeCount;
+        /**
+         * 当前类型的通知是否启用(true:启用，F:关闭)
+         */
+        public boolean isOpen = true;
+        /**
+         * 当前类型通知最大次数
+         */
+        public int notifyMaxCount;
         /**
          * 当前条件下的UI模板集合
          */
@@ -62,7 +74,15 @@ public class Notify2DataConfigBean {
         /**
          * 通用字段：ui模板的编号
          */
-        public String id;
+        public int id;
+        /**
+         * 通用字段：当前通知模板是否启用(true:启用，F:关闭)
+         */
+        public boolean isOpen = false;
+        /**
+         * 通用字段：当前通知的弹出方式(<0:未配置,使用客户端默认配置,0:顶部，1:底部,>=2:中间)
+         */
+        public int orientation = -1;
         /**
          * 通用字段：标题(建议通过getXxx系列方法获取)
          */
@@ -96,13 +116,76 @@ public class Notify2DataConfigBean {
         private String iconRight = null;
 
         /**
+         * [UI模板2 特有]
          * 非通用：左侧的按钮文字(建议通过getXxx系列方法获取)
          */
         private String buttonLeft = null;
+
         /**
+         * [UI模板2 特有]
          * 非通用：右侧的按钮文字(建议通过getXxx系列方法获取)
          */
         private String buttonRight = null;
+
+        /**
+         * [UI模板5 特有]
+         * 非通用：UI类型 (0：金额模式，1：图标模式)
+         */
+        private int type = 0;
+
+        /**
+         * [UI模板5 特有]
+         * 非通用：标题的前缀文案
+         */
+        private String titlePrefix;
+
+        /**
+         * [UI模板5 特有]
+         * 非通用：描述的前缀文案
+         */
+        private String descPrefix;
+
+        /**
+         * [UI模板5 特有]
+         * 非通用：描述的前缀文案
+         */
+        private List<UiTemplatImageItem> goodImages;
+
+
+        //本地字段。非中台配置字段
+        /**
+         * 本地字段：当前UI模板归宿的分类id，上级所属分类的id
+         */
+        public int notifyTypeId;
+
+        /**
+         * 构建和处理标签标签
+         */
+        public void buildFixTag() {
+            this.title = FixTagUtils.buildContentTag(this, title);
+            this.name = FixTagUtils.buildContentTag(this, name);
+            this.desc = FixTagUtils.buildContentTag(this, desc);
+            this.action = FixTagUtils.buildContentTag(this, action);
+            this.iconLeft = FixTagUtils.buildContentTag(this, iconLeft);
+            this.iconLeftTopMin = FixTagUtils.buildContentTag(this, iconLeftTopMin);
+            this.iconRight = FixTagUtils.buildContentTag(this, iconRight);
+            this.buttonLeft = FixTagUtils.buildContentTag(this, buttonLeft);
+            this.buttonRight = FixTagUtils.buildContentTag(this, buttonRight);
+            this.titlePrefix = FixTagUtils.buildContentTag(this, titlePrefix);
+            this.descPrefix = FixTagUtils.buildContentTag(this, descPrefix);
+            //反向处理一次。因为有可能存在反向引用
+            this.descPrefix = FixTagUtils.buildContentTag(this, descPrefix);
+            this.titlePrefix = FixTagUtils.buildContentTag(this, titlePrefix);
+            this.buttonRight = FixTagUtils.buildContentTag(this, buttonRight);
+            this.buttonLeft = FixTagUtils.buildContentTag(this, buttonLeft);
+            this.iconRight = FixTagUtils.buildContentTag(this, iconRight);
+            this.iconLeftTopMin = FixTagUtils.buildContentTag(this, iconLeftTopMin);
+            this.iconLeft = FixTagUtils.buildContentTag(this, iconLeft);
+            this.action = FixTagUtils.buildContentTag(this, action);
+            this.desc = FixTagUtils.buildContentTag(this, desc);
+            this.name = FixTagUtils.buildContentTag(this, name);
+            this.title = FixTagUtils.buildContentTag(this, title);
+        }
 
         /**
          * 获取标题。会处理掉标签内容
@@ -185,45 +268,104 @@ public class Notify2DataConfigBean {
             return buttonRight;
         }
 
-        public void setId(String id) {
+        /**
+         * 获取UI模板5的类型
+         *
+         * @return (0 ： 金额模式 ， 1 ： 图标模式)
+         */
+        public int getType() {
+            return type;
+        }
+
+        /**
+         * 获取UI模板5的标题前缀
+         *
+         * @return
+         */
+        public String getTitlePrefix() {
+            return titlePrefix;
+        }
+
+        /**
+         * 获取UI模板5的描述前缀
+         * @return
+         */
+        public String getDescPrefix() {
+            return descPrefix;
+        }
+
+        /**
+         * 获取ui模板5的商品图标集合
+         * @return
+         */
+        public List<UiTemplatImageItem> getGoodImages() {
+            return goodImages;
+        }
+
+        public void setId(int id) {
             this.id = id;
         }
 
         public void setTitle(String title) {
-            this.title = FixTagUtils.buildContentTag(this, title);
+            this.title = title;
         }
 
         public void setName(String name) {
-            this.name = FixTagUtils.buildContentTag(this, name);
+            this.name = name;
         }
 
         public void setDesc(String desc) {
-            this.desc = FixTagUtils.buildContentTag(this, desc);
+            this.desc = desc;
         }
 
         public void setAction(String action) {
-            this.action = FixTagUtils.buildContentTag(this, action);
+            this.action = action;
         }
 
         public void setIconLeft(String iconLeft) {
-            this.iconLeft = FixTagUtils.buildContentTag(this, iconLeft);
+            this.iconLeft = iconLeft;
         }
 
         public void setIconLeftTopMin(String iconLeftTopMin) {
-            this.iconLeftTopMin = FixTagUtils.buildContentTag(this, iconLeftTopMin);
+            this.iconLeftTopMin = iconLeftTopMin;
         }
 
         public void setIconRight(String iconRight) {
-            this.iconRight = FixTagUtils.buildContentTag(this, iconRight);
+            this.iconRight = iconRight;
         }
 
         public void setButtonLeft(String buttonLeft) {
-            this.buttonLeft = FixTagUtils.buildContentTag(this, buttonLeft);
+            this.buttonLeft = buttonLeft;
         }
 
         public void setButtonRight(String buttonRight) {
-            this.buttonRight = FixTagUtils.buildContentTag(this, buttonRight);
+            this.buttonRight = buttonRight;
         }
 
+        public void setType(int type) {
+            this.type = type;
+        }
+
+        public void setTitlePrefix(String titlePrefix) {
+            this.titlePrefix = titlePrefix;
+        }
+
+        public void setDescPrefix(String descPrefix) {
+            this.descPrefix = descPrefix;
+        }
+
+        public void setGoodImages(List<UiTemplatImageItem> goodImages) {
+            this.goodImages = goodImages;
+        }
+    }
+
+    /**
+     * ui模板5中的图片集合实体
+     */
+    public static class UiTemplatImageItem{
+        /**
+         * 商品的图标地址
+         */
+        public String goodIcon;
     }
 }

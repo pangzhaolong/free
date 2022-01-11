@@ -146,7 +146,7 @@ public class LaunchStart {
                 }
             }
 
-                @Override
+            @Override
             public void cancel() {
                 super.cancel();
             }
@@ -251,7 +251,7 @@ public class LaunchStart {
         start.run(context, intent);
     }
 
-    public ActionStart getActionStart(){
+    public ActionStart getActionStart() {
         return start;
     }
 

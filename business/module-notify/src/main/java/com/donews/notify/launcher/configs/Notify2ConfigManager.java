@@ -1,5 +1,7 @@
 package com.donews.notify.launcher.configs;
 
+import static com.donews.utilslibrary.utils.KeySharePreferences.TIME_SERVICE;
+
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -13,7 +15,9 @@ import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
+import com.donews.notify.launcher.configs.baens.CurrentServiceTime;
 import com.donews.notify.launcher.configs.baens.Notify2DataConfigBean;
+import com.donews.notify.launcher.utils.AppNotifyForegroundUtils;
 import com.donews.utilslibrary.utils.JsonUtils;
 import com.donews.utilslibrary.utils.LogUtil;
 
@@ -36,6 +40,7 @@ public class Notify2ConfigManager {
 
     /**
      * 获取配置数据
+     *
      * @return
      */
     public Notify2DataConfigBean getNotifyConfigBean() {
@@ -57,10 +62,22 @@ public class Notify2ConfigManager {
 
     /**
      * 更新数据
+     *
      * @param bean
      */
     private void setNotifyConfigBean(Notify2DataConfigBean bean) {
         try {
+            if (bean.notifyConfigs != null) {
+                for (Notify2DataConfigBean.NotifyItemConfig notifyConfig : bean.notifyConfigs) {
+                    if (notifyConfig.uiTemplate != null) {
+                        for (Notify2DataConfigBean.UiTemplat uiTemplat : notifyConfig.uiTemplate) {
+                            //解析标签数据
+                            uiTemplat.notifyTypeId = notifyConfig.id;
+                            uiTemplat.buildFixTag();
+                        }
+                    }
+                }
+            }
             SPUtils.getInstance(this.getClass().getSimpleName()).put(cacheKey, GsonUtils.toJson(bean));
         } catch (Exception e) {
             SPUtils.getInstance(this.getClass().getSimpleName()).put(cacheKey, "");
@@ -84,10 +101,46 @@ public class Notify2ConfigManager {
             return;
         }
         isInit = true;
+        //更新通知配置数据
         update();
+        //注册后台通知监听
+        AppNotifyForegroundUtils.startForegroundCheck();
+    }
+
+    //获取服务器时间
+    private static void getServiceTime() {
+        EasyHttp.get(BuildConfig.API_LOTTERY_URL + "v1/get-now-time")
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new SimpleCallBack<CurrentServiceTime>() {
+                    @Override
+                    public void onError(ApiException e) {
+                        long curTime = System.currentTimeMillis();
+                        long saveTime = com.donews.utilslibrary.utils.SPUtils.getLongInformain(TIME_SERVICE, 0L);
+                        if (curTime < saveTime) {
+                            return; //放弃保存。因为时间不可能往前走。
+                        }
+                        com.donews.utilslibrary.utils.SPUtils.setInformain(TIME_SERVICE, curTime);
+                    }
+
+                    @Override
+                    public void onSuccess(CurrentServiceTime queryBean) {
+                        long curTime = System.currentTimeMillis();
+                        long saveTime = com.donews.utilslibrary.utils.SPUtils.getLongInformain(TIME_SERVICE, 0L);
+                        if (queryBean == null || queryBean.now == null || queryBean.now.isEmpty()) {
+                            if (curTime < saveTime) {
+                                return; //放弃保存。因为时间不可能往前走。
+                            }
+                            com.donews.utilslibrary.utils.SPUtils.setInformain(TIME_SERVICE, curTime);
+                        } else {
+                            com.donews.utilslibrary.utils.SPUtils.setInformain(TIME_SERVICE,
+                                    Long.parseLong(queryBean.now));
+                        }
+                    }
+                });
     }
 
     private static void update() {
+        getServiceTime();
         LogUtil.i("Notify2ConfigManager update");
         EasyHttp.get(BuildConfig.BASE_CONFIG_URL + "plus-notify-datas" + BuildConfig.BASE_RULE_URL +
                 JsonUtils.getCommonJson(false))

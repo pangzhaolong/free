@@ -23,9 +23,9 @@ import com.donews.notify.launcher.utils.AbsNotifyInvokTask;
  * @author lcl
  * Date on 2022/1/5
  * Description:
- *  初始类型的处理逻辑。原类型的处理对象
+ *  ui模板0的处理逻辑
  */
-public class NotifyItemTypeTop1Impl extends AbsNotifyInvokTask {
+public class NotifyItemTypeTop0Impl extends AbsNotifyInvokTask {
 
     @Override
     public void bindTypeData(NotifyAnimationView targetView,Runnable lastBindTask) {

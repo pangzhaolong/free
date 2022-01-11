@@ -191,8 +191,11 @@ public class MainActivity
         if(!BuildConfig.DEBUG){
             mDataBinding.occupyNotify.setVisibility(View.GONE);
         }
+        //通知测试相关
         mDataBinding.occupyNotify.setOnClickListener(v -> {
-            testGotoNotify();
+            mDataBinding.occupyNotify.postDelayed(()->{
+                testGotoNotify();
+            },2500);
         });
     }
 

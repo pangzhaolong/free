@@ -15,6 +15,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginLeft="15dp"
+        android:scaleType="fitXY"
         android:src="@drawable/noti_icon"
         app:layout_constraintLeft_toLeftOf="parent" />
 
@@ -57,7 +58,6 @@
         android:layout_marginLeft="5dp"
         android:layout_marginTop="2dp"
         android:layout_marginRight="15dp"
-        android:text="[奖品]"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

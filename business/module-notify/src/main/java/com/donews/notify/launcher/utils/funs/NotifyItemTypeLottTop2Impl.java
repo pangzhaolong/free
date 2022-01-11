@@ -1,38 +1,24 @@
 package com.donews.notify.launcher.utils.funs;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.text.Html;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.donews.base.utils.glide.GlideUtils;
 import com.donews.common.NotifyLuncherConfigManager;
 import com.donews.notify.R;
-import com.donews.notify.launcher.NotifyActivity;
 import com.donews.notify.launcher.NotifyAnimationView;
-import com.donews.notify.launcher.NotifyInitProvider;
-import com.donews.notify.launcher.configs.Notify2ConfigManager;
 import com.donews.notify.launcher.configs.baens.Notify2DataConfigBean;
 import com.donews.notify.launcher.utils.AbsNotifyInvokTask;
-import com.donews.notify.launcher.utils.NotifyItemUtils;
 
 /**
  * @author lcl
  * Date on 2022/1/5
  * Description:
- * ui模板1的处理逻辑
+ * ui模板2的处理逻辑
  */
-public class NotifyItemTypeLottTop1Impl extends AbsNotifyInvokTask {
+public class NotifyItemTypeLottTop2Impl extends AbsNotifyInvokTask {
 
     @Override
     public void bindTypeData(NotifyAnimationView targetView, Runnable lastBindTask) {
@@ -46,31 +32,38 @@ public class NotifyItemTypeLottTop1Impl extends AbsNotifyInvokTask {
         }
         //获取视图
         //通知的图标
-        ImageView icon = targetView.findViewById(R.id.notify_item_lott_icon);
+        ImageView iconLeft = targetView.findViewById(R.id.notify_item_icon);
         //通知的title
-        TextView title = targetView.findViewById(R.id.notify_item_lott_title);
-        //昵称(微信昵称)
-        TextView name = targetView.findViewById(R.id.notify_item_lott_name);
+        TextView title = targetView.findViewById(R.id.notify_item_title);
         //描述信息
-        TextView desc = targetView.findViewById(R.id.notify_item_lott_desc);
-        //右侧商品icon
-        ImageView goodIcon = targetView.findViewById(R.id.notify_item_lott_jp);
+        TextView desc = targetView.findViewById(R.id.notify_item_desc);
+        //左侧按钮
+        TextView leftBut = targetView.findViewById(R.id.notify_item_but_left);
+        //右侧侧按钮
+        TextView rightBut = targetView.findViewById(R.id.notify_item_but_right);
 
         Notify2DataConfigBean.UiTemplat uiTemplat = (Notify2DataConfigBean.UiTemplat) targetView.getTag();
 
         //设置值
-        if(uiTemplat.getIconLeftTopMin() == null || uiTemplat.getIconLeftTopMin().isEmpty()){
-            icon.setVisibility(View.GONE);
-        }else{
-            GlideUtils.loadImageView(targetView.getContext(),uiTemplat.getIconLeftTopMin(),icon);
+        if (uiTemplat.getIconLeftTopMin() != null && !uiTemplat.getIconLeftTopMin().isEmpty()) {
+            GlideUtils.loadImageView(targetView.getContext(), uiTemplat.getIconLeftTopMin(), iconLeft);
         }
         title.setText(Html.fromHtml(uiTemplat.getTitle()));
-        name.setText(Html.fromHtml(uiTemplat.getName()));
         desc.setText(Html.fromHtml(uiTemplat.getDesc()));
-        if(uiTemplat.getIconRight() == null || uiTemplat.getIconRight().isEmpty()){
-            goodIcon.setVisibility(View.GONE);
-        }else{
-            GlideUtils.loadImageView(targetView.getContext(),uiTemplat.getIconRight(),goodIcon);
+        if (uiTemplat.getButtonLeft() == null || uiTemplat.getButtonLeft().isEmpty()) {
+            leftBut.setVisibility(View.INVISIBLE);
+        } else {
+            leftBut.setText(Html.fromHtml(uiTemplat.getButtonLeft()));
+        }
+        if (uiTemplat.getButtonLeft() == null || uiTemplat.getButtonLeft().isEmpty()) {
+            rightBut.setVisibility(View.INVISIBLE);
+        } else {
+            rightBut.setText(Html.fromHtml(uiTemplat.getButtonRight()));
+        }
+        if(leftBut.getVisibility() != View.VISIBLE &&
+                rightBut.getVisibility() != View.VISIBLE){
+            leftBut.setVisibility(View.GONE);
+            rightBut.setVisibility(View.GONE);
         }
 
         //回调视图任务

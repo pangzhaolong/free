@@ -1,7 +1,12 @@
 package com.donews.notify.launcher;
 
+import static java.lang.Thread.sleep;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -12,20 +17,18 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.donews.base.base.AppManager;
 import com.donews.common.NotifyLuncherConfigManager;
-import com.donews.common.contract.LoginHelp;
 import com.donews.keepalive.LaunchStart;
 import com.donews.notify.R;
 import com.donews.notify.launcher.configs.Notify2ConfigManager;
 import com.donews.notify.launcher.configs.baens.Notify2DataConfigBean;
-import com.donews.notify.launcher.utils.NotifyItemType;
 import com.donews.notify.launcher.utils.NotifyItemUtils;
 import com.donews.notify.launcher.utils.fix.FixTagUtils;
 import com.donews.utilslibrary.analysis.AnalysisParam;
@@ -33,6 +36,7 @@ import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.gyf.immersionbar.ImmersionBar;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 import java.util.Random;
 
 public class NotifyActivity extends FragmentActivity {
@@ -40,6 +44,7 @@ public class NotifyActivity extends FragmentActivity {
 
     private static WeakReference<NotifyActionActivity> sPopActionRefer = null;
     private static final LaunchStart launchStart = new LaunchStart();
+    private boolean isShowNotify = false;
 
     public static void actionStart(Context context) {
         Log.i(TAG, "NotifyActivity actionStart");
@@ -56,7 +61,6 @@ public class NotifyActivity extends FragmentActivity {
             launchStart.doStart(context, intent);
         }
     }
-
 
     public static void destroy() {
         Log.d(TAG, "NotifyActivity destroy");
@@ -136,12 +140,7 @@ public class NotifyActivity extends FragmentActivity {
             }
         });
         mLayoutNotifyRoot.setOnTouchListener(touch);
-        mNotifyAnimationView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                schemeOpen(false);
-            }
-        });
+        mNotifyAnimationView.setOnClickListener(v -> schemeOpen(false));
         setNotifyAttrs();
         launchStart.cancel();
 
@@ -157,26 +156,39 @@ public class NotifyActivity extends FragmentActivity {
 
     //设置通知属性相关内容
     private void setNotifyAttrs() {
+        if (isShowNotify) {
+            return;
+        }
+        isShowNotify = true;
         String content =
                 "${title}:你好啊";
         Notify2DataConfigBean.UiTemplat uiTemplat = Notify2ConfigManager.Ins().getNotifyConfigBean().notifyConfigs.get(0).uiTemplate.get(0);
-        FixTagUtils.buildContentTag(uiTemplat,content);
-        //设置消息类型
-        int pos = a % NotifyItemType.values().length;
-        a++;
-        NotifyItemType type = NotifyItemType.values()[pos];
-        mNotifyAnimationView.isTopNotify = type.orientation == 0;
-        mNotifyAnimationView.notifyType = type;
-        //判断方向
-        if (!mNotifyAnimationView.isTopNotify) {
-            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mNotifyAnimationView.getLayoutParams();
-            lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-            mNotifyAnimationView.setLayoutParams(lp);
-        }
-        //添加当前类型的通知视图和绑定数据
-        NotifyItemUtils.addItemView(this, mNotifyAnimationView, type, () -> {
+        FixTagUtils.buildContentTag(uiTemplat, content);
+
+        //初始化参数,真实显示操作
+        NotifyItemUtils.initNotifyParams(this, mNotifyAnimationView, () -> {
             //需要特殊处理UI的类型。再此处处理即可
         });
+
+//        //模拟设置消息参数
+//        int pos = a % NotifyItemType.values().length;
+//        NotifyItemType type = NotifyItemType.values()[pos];
+//        mNotifyAnimationView.orientation = a % 3;
+//        mNotifyAnimationView.notifyType = type;
+//        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mNotifyAnimationView.getLayoutParams();
+//        if(mNotifyAnimationView.orientation == 0){
+//            lp.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+//        }if (mNotifyAnimationView.orientation == 1) {
+//            lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+//        } else if (mNotifyAnimationView.orientation >= 2) {
+//            lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+//        }
+//        mNotifyAnimationView.setLayoutParams(lp);
+//        //添加当前类型的通知视图和绑定数据
+//        NotifyItemUtils.addItemView(this, mNotifyAnimationView, type, () -> {
+//            //需要特殊处理UI的类型。再此处处理即可
+//        });
+//        a++;
     }
 
     @Override
