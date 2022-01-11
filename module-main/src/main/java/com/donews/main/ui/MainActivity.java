@@ -545,9 +545,12 @@ public class MainActivity
         //当前已完成的次数
         int currCount = LotteryAdCount.INSTANCE.getCriticalModelLotteryNumber();
         CritWelfareDialogFragment.OnSurListener surListener = (int type, int curJd, int totalJd) -> {
+//            if(ABSwitch.Ins().getOpenAutoLotteryCount() >= )
+
             ARouter.getInstance()
                     .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                     .withString("goods_id", info.getGoodsId())
+                    .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
 //                            .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
 //                            .withBoolean("privilege", true)
                     .navigation();
