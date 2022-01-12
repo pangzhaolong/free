@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/home_goods_item_bg"
-    android:orientation="vertical"
-    android:paddingBottom="10dp">
+    android:orientation="vertical">
 
     <org.raphets.roundimageview.RoundImageView
         android:id="@+id/home_top_goods_item_iv"
@@ -33,7 +32,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="24dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="5dp"
@@ -44,77 +43,87 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/home_top_goods_item_gift_atv"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
+            android:layout_height="28dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="8dp"
             android:background="@drawable/home_search_item_price_bg"
             android:gravity="center"
             android:paddingStart="4dp"
             android:paddingEnd="4dp"
-            android:text="￥%s 元券"
+            android:text="%s 元券"
             android:textColor="#F33838"
             android:textSize="12sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="10dp"
+            android:layout_alignParentStart="true"
             android:gravity="center"
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/home_top_goods_item_logo_iv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:src="@drawable/middle_item_money" />
+                android:src="@drawable/home_logo_tb" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/home_top_goods_item_price_atv"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginStart="4dp"
                 android:gravity="center_vertical|left"
                 android:text="￥1699"
                 android:textColor="#A9AEB1"
-                android:textSize="15sp"
+                android:textSize="12sp"
                 tools:ignore="RtlHardcoded" />
         </LinearLayout>
     </RelativeLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/home_top_goods_item_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="38dp"
-        android:layout_gravity="center"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="7dp"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginEnd="5dp"
-        android:layout_marginBottom="10dp"
-        android:paddingStart="10dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="12dp"
-        android:paddingBottom="8dp"
-        android:background="@drawable/home_top_item_price_bg">
+        android:layout_marginBottom="4dp"
+        android:orientation="horizontal"
+        android:layout_marginStart="5dp"
+        android:paddingStart="2dp"
+        android:gravity="center"
+        tools:ignore="RtlSymmetry">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/home_top_goods_item_char"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:text="￥"
+            android:textColor="#EA443C"
+            android:paddingBottom="5dp"
+            android:textSize="12sp" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/home_top_goods_item_price"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="10dp"
             android:gravity="center_vertical"
-            android:text="￥5344"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:text="5344"
+            android:textColor="#EA443C"
+            android:textSize="16sp" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:background="@drawable/home_crzay_item_price_bg"
             android:gravity="center_vertical"
+            android:paddingStart="6dp"
+            android:paddingEnd="8dp"
             android:text="抢购价"
-            android:textColor="#F53E3C"
-            android:textSize="11sp" />
-    </RelativeLayout>
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+    </LinearLayout>
 </LinearLayout>

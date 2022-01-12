@@ -244,27 +244,27 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
 
         SecKilBean.goodsInfo goodsInfo = secKilBean.getGoodsList().get(0);
         Glide.with(this).load(UrlUtils.formatUrlPrefix(goodsInfo.getMainPic())).into(mDataBinding.homeSeckilRiv1);
-        mDataBinding.homeSeckilTv1.setText("直降" + goodsInfo.getDiscounts());
-        mDataBinding.homeSeckilPriceTv1.setText("￥" + goodsInfo.getActualPrice());
+        mDataBinding.homeSeckilTv1.setText("直降￥" + goodsInfo.getDiscounts());
+        mDataBinding.homeSeckilPriceTv1.setText(String.valueOf(goodsInfo.getActualPrice()));
         goodsInfo = secKilBean.getGoodsList().get(1);
         Glide.with(this).load(UrlUtils.formatUrlPrefix(goodsInfo.getMainPic())).into(mDataBinding.homeSeckilRiv2);
-        mDataBinding.homeSeckilTv2.setText("直降" + goodsInfo.getDiscounts());
-        mDataBinding.homeSeckilPriceTv2.setText("￥" + goodsInfo.getActualPrice());
+        mDataBinding.homeSeckilTv2.setText("直降￥" + goodsInfo.getDiscounts());
+        mDataBinding.homeSeckilPriceTv2.setText(String.valueOf(goodsInfo.getActualPrice()));
         if (secKilBean.getGoodsList().size() > 2) {
             goodsInfo = secKilBean.getGoodsList().get(2);
             Glide.with(this).load(UrlUtils.formatUrlPrefix(goodsInfo.getMainPic())).into(mDataBinding.homeSeckilRiv3);
-            mDataBinding.homeSeckilTv3.setText("直降" + goodsInfo.getDiscounts());
-            mDataBinding.homeSeckilPriceTv3.setText("￥" + goodsInfo.getActualPrice());
+            mDataBinding.homeSeckilTv3.setText("直降￥" + goodsInfo.getDiscounts());
+            mDataBinding.homeSeckilPriceTv3.setText(String.valueOf(goodsInfo.getActualPrice()));
         }
         if (secKilBean.getGoodsList().size() > 3) {
             goodsInfo = secKilBean.getGoodsList().get(3);
             Glide.with(this).load(UrlUtils.formatUrlPrefix(goodsInfo.getMainPic())).into(mDataBinding.homeSeckilRiv4);
-            mDataBinding.homeSeckilTv4.setText("直降" + goodsInfo.getDiscounts());
-            mDataBinding.homeSeckilPriceTv4.setText("￥" + goodsInfo.getActualPrice());
+            mDataBinding.homeSeckilTv4.setText("直降￥" + goodsInfo.getDiscounts());
+            mDataBinding.homeSeckilPriceTv4.setText(String.valueOf(goodsInfo.getActualPrice()));
         }
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
     private void showRankListBean(RealTimeBean realTimeBean) {
         if (realTimeBean == null || realTimeBean.getList() == null || realTimeBean.getList().size() <= 0
                 || realTimeBean.getList().size() < 2) {
@@ -276,23 +276,23 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
 
         RealTimeBean.goodsInfo goodsInfo = realTimeBean.getList().get(0);
         Glide.with(this).load(UrlUtils.formatUrlPrefix(goodsInfo.getMainPic())).into(mDataBinding.homeSeckilRiv1);
-        mDataBinding.homeSeckilTv1.setText("直降" + goodsInfo.getCouponPrice());
-        mDataBinding.homeSeckilPriceTv1.setText("￥" + goodsInfo.getActualPrice());
+        mDataBinding.homeSeckilTv1.setText("直降￥" + String.format("%d", (int)goodsInfo.getCouponPrice()));
+        mDataBinding.homeSeckilPriceTv1.setText(String.format("%d", (int)goodsInfo.getActualPrice()));
         goodsInfo = realTimeBean.getList().get(1);
         Glide.with(this).load(UrlUtils.formatUrlPrefix(goodsInfo.getMainPic())).into(mDataBinding.homeSeckilRiv2);
-        mDataBinding.homeSeckilTv2.setText("直降" + goodsInfo.getCouponPrice());
-        mDataBinding.homeSeckilPriceTv2.setText("￥" + goodsInfo.getActualPrice());
+        mDataBinding.homeSeckilTv2.setText("直降￥" + String.format("%d", (int)goodsInfo.getCouponPrice()));
+        mDataBinding.homeSeckilPriceTv2.setText(String.format("%d", (int)goodsInfo.getActualPrice()));
         if (realTimeBean.getList().size() > 2) {
             goodsInfo = realTimeBean.getList().get(2);
             Glide.with(this).load(UrlUtils.formatUrlPrefix(goodsInfo.getMainPic())).into(mDataBinding.homeSeckilRiv3);
-            mDataBinding.homeSeckilTv3.setText("直降" + goodsInfo.getCouponPrice());
-            mDataBinding.homeSeckilPriceTv3.setText("￥" + goodsInfo.getActualPrice());
+            mDataBinding.homeSeckilTv3.setText("直降￥" + String.format("%d", (int)goodsInfo.getCouponPrice()));
+            mDataBinding.homeSeckilPriceTv3.setText(String.format("%d", (int)goodsInfo.getActualPrice()));
         }
         if (realTimeBean.getList().size() > 3) {
             goodsInfo = realTimeBean.getList().get(3);
             Glide.with(this).load(UrlUtils.formatUrlPrefix(goodsInfo.getMainPic())).into(mDataBinding.homeSeckilRiv4);
-            mDataBinding.homeSeckilTv4.setText("直降" + goodsInfo.getCouponPrice());
-            mDataBinding.homeSeckilPriceTv4.setText("￥" + goodsInfo.getActualPrice());
+            mDataBinding.homeSeckilTv4.setText("直降￥" + String.format("%d", (int)goodsInfo.getCouponPrice()));
+            mDataBinding.homeSeckilPriceTv4.setText(String.format("%d", (int)goodsInfo.getActualPrice()));
         }
     }
 

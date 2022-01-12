@@ -20,7 +20,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -34,6 +33,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_toStartOf="@+id/home_jdd_help"
                     android:background="@drawable/home_search_bg">
 
@@ -91,6 +91,7 @@
                     android:text="教程"
                     android:textColor="#A9AEB1"
                     android:textSize="10sp"
+                    android:visibility="gone"
                     tools:ignore="MissingConstraints,RtlSymmetry" />
             </RelativeLayout>
 
@@ -102,7 +103,7 @@
                     android:id="@+id/home_app_bar_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"
+                    android:background="#F5F5F5"
                     android:orientation="vertical">
 
                     <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -124,10 +125,14 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
+                                android:layout_marginStart="10dp"
                                 android:layout_marginTop="10dp"
-                                android:background="@color/white"
+                                android:layout_marginEnd="10dp"
+                                android:background="@drawable/home_banner_bg"
                                 android:gravity="center"
                                 android:orientation="horizontal"
+                                android:paddingTop="12dp"
+                                android:paddingBottom="15dp"
                                 android:weightSum="4">
 
                                 <LinearLayout
@@ -252,16 +257,13 @@
                                 android:layout_marginEnd="10dp"
                                 android:layout_marginBottom="10dp"
                                 android:background="@drawable/home_banner_bg"
-                                android:orientation="vertical"
-                                android:padding="4dp">
+                                android:orientation="vertical">
 
                                 <RelativeLayout
                                     android:id="@+id/front_rp_rl"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="10dp"
                                     android:layout_marginTop="8dp"
-                                    android:layout_marginEnd="10dp"
                                     tools:ignore="MissingConstraints">
 
                                     <TextView
@@ -272,8 +274,8 @@
                                         android:layout_marginTop="4dp"
                                         android:gravity="center"
                                         android:text="精选推荐"
-                                        android:textColor="#FFEEB9"
-                                        android:textSize="18sp"
+                                        android:textColor="@color/black"
+                                        android:textSize="17sp"
                                         android:textStyle="bold" />
 
                                     <LinearLayout
@@ -289,13 +291,13 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="25dp"
                                             android:layout_gravity="center_vertical"
-                                            android:layout_marginEnd="10dp"
+                                            android:layout_marginEnd="20dp"
                                             android:layout_toStartOf="@+id/front_cash_get_tv">
 
                                             <org.raphets.roundimageview.RoundImageView
                                                 android:id="@+id/home_banner_header_riv1"
-                                                android:layout_width="20dp"
-                                                android:layout_height="20dp"
+                                                android:layout_width="25dp"
+                                                android:layout_height="25dp"
                                                 android:layout_gravity="center_vertical"
                                                 android:layout_marginStart="10dp"
                                                 app:type="circle"
@@ -303,30 +305,49 @@
 
                                             <org.raphets.roundimageview.RoundImageView
                                                 android:id="@+id/home_banner_header_riv2"
-                                                android:layout_width="20dp"
-                                                android:layout_height="20dp"
+                                                android:layout_width="25dp"
+                                                android:layout_height="25dp"
                                                 android:layout_gravity="center_vertical"
-                                                android:layout_marginStart="20dp"
+                                                android:layout_marginStart="30dp"
                                                 app:type="circle" />
 
                                             <org.raphets.roundimageview.RoundImageView
                                                 android:id="@+id/home_banner_header_riv3"
-                                                android:layout_width="20dp"
-                                                android:layout_height="20dp"
+                                                android:layout_width="25dp"
+                                                android:layout_height="25dp"
                                                 android:layout_gravity="center_vertical"
-                                                android:layout_marginStart="30dp"
+                                                android:layout_marginStart="50dp"
                                                 app:type="circle" />
                                         </FrameLayout>
 
-                                        <TextView
-                                            android:id="@+id/front_cash_get_tv"
+                                        <LinearLayout
                                             android:layout_width="wrap_content"
                                             android:layout_height="28dp"
-                                            android:layout_marginEnd="10dp"
-                                            android:drawableRight="@drawable/home_banner_go"
-                                            android:gravity="center"
-                                            android:text="正在疯抢中 "
-                                            android:textColor="@color/white" />
+                                            android:background="@drawable/home_crazy_tip_bg"
+                                            android:orientation="horizontal"
+                                            android:paddingStart="8dp"
+                                            android:paddingEnd="8dp">
+
+                                            <ImageView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="center_vertical"
+                                                android:src="@drawable/home_crazy_tip_fire" />
+
+                                            <TextView
+                                                android:id="@+id/front_cash_get_tv"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="match_parent"
+                                                android:gravity="center"
+                                                android:text=" 正在疯抢中 "
+                                                android:textColor="@color/white" />
+
+                                            <ImageView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="center_vertical"
+                                                android:src="@drawable/home_banner_go" />
+                                        </LinearLayout>
                                     </LinearLayout>
 
                                 </RelativeLayout>
@@ -370,27 +391,41 @@
                                                 android:background="@drawable/home_banner_item_tip_bg"
                                                 android:gravity="center"
                                                 android:text="直降￥200"
-                                                android:textColor="#E9423E"
-                                                android:textSize="10sp"
-                                                tools:ignore="RtlHardcoded,SmallSp" />
+                                                android:textColor="@color/white"
+                                                android:textSize="12sp" />
                                         </FrameLayout>
 
-                                        <TextView
-                                            android:id="@+id/home_seckil_price_tv1"
+                                        <LinearLayout
                                             android:layout_width="62dp"
                                             android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
                                             android:layout_marginTop="10dp"
-                                            android:background="@drawable/home_banner_item_bg"
-                                            android:ellipsize="end"
                                             android:gravity="center"
-                                            android:maxLines="1"
-                                            android:paddingStart="5dp"
-                                            android:paddingTop="2dp"
-                                            android:paddingEnd="5dp"
-                                            android:paddingBottom="2dp"
-                                            android:text="￥48"
-                                            android:textColor="#E9423E"
-                                            android:textSize="12sp" />
+                                            android:orientation="horizontal">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="bottom"
+                                                android:text="￥"
+                                                android:textColor="#E9423E"
+                                                android:textSize="8sp"
+                                                android:textStyle="bold" />
+
+                                            <TextView
+                                                android:id="@+id/home_seckil_price_tv1"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="bottom"
+                                                android:background="@drawable/home_banner_item_bg"
+                                                android:ellipsize="end"
+                                                android:gravity="bottom"
+                                                android:maxLines="1"
+                                                android:text="48"
+                                                android:textColor="#E9423E"
+                                                android:textSize="12sp"
+                                                android:textStyle="bold" />
+                                        </LinearLayout>
                                     </LinearLayout>
 
                                     <LinearLayout
@@ -422,26 +457,41 @@
                                                 android:background="@drawable/home_banner_item_tip_bg"
                                                 android:gravity="center"
                                                 android:text="直降￥200"
-                                                android:textColor="#E9423E"
-                                                android:textSize="10sp" />
+                                                android:textColor="@color/white"
+                                                android:textSize="12sp" />
                                         </FrameLayout>
 
-                                        <TextView
-                                            android:id="@+id/home_seckil_price_tv2"
+                                        <LinearLayout
                                             android:layout_width="62dp"
                                             android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
                                             android:layout_marginTop="10dp"
-                                            android:background="@drawable/home_banner_item_bg"
-                                            android:ellipsize="end"
                                             android:gravity="center"
-                                            android:maxLines="1"
-                                            android:paddingStart="5dp"
-                                            android:paddingTop="2dp"
-                                            android:paddingEnd="5dp"
-                                            android:paddingBottom="2dp"
-                                            android:text="￥48"
-                                            android:textColor="#E9423E"
-                                            android:textSize="12sp" />
+                                            android:orientation="horizontal">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="bottom"
+                                                android:text="￥"
+                                                android:textColor="#E9423E"
+                                                android:textSize="8sp"
+                                                android:textStyle="bold" />
+
+                                            <TextView
+                                                android:id="@+id/home_seckil_price_tv2"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="bottom"
+                                                android:background="@drawable/home_banner_item_bg"
+                                                android:ellipsize="end"
+                                                android:gravity="bottom"
+                                                android:maxLines="1"
+                                                android:text="48"
+                                                android:textColor="#E9423E"
+                                                android:textSize="12sp"
+                                                android:textStyle="bold" />
+                                        </LinearLayout>
                                     </LinearLayout>
 
                                     <LinearLayout
@@ -473,26 +523,41 @@
                                                 android:background="@drawable/home_banner_item_tip_bg"
                                                 android:gravity="center"
                                                 android:text="直降￥200"
-                                                android:textColor="#E9423E"
-                                                android:textSize="10sp" />
+                                                android:textColor="@color/white"
+                                                android:textSize="12sp" />
                                         </FrameLayout>
 
-                                        <TextView
-                                            android:id="@+id/home_seckil_price_tv3"
+                                        <LinearLayout
                                             android:layout_width="62dp"
                                             android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
                                             android:layout_marginTop="10dp"
-                                            android:background="@drawable/home_banner_item_bg"
-                                            android:ellipsize="end"
                                             android:gravity="center"
-                                            android:maxLines="1"
-                                            android:paddingStart="5dp"
-                                            android:paddingTop="2dp"
-                                            android:paddingEnd="5dp"
-                                            android:paddingBottom="2dp"
-                                            android:text="￥48"
-                                            android:textColor="#E9423E"
-                                            android:textSize="12sp" />
+                                            android:orientation="horizontal">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="bottom"
+                                                android:text="￥"
+                                                android:textColor="#E9423E"
+                                                android:textSize="8sp"
+                                                android:textStyle="bold" />
+
+                                            <TextView
+                                                android:id="@+id/home_seckil_price_tv3"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="bottom"
+                                                android:background="@drawable/home_banner_item_bg"
+                                                android:ellipsize="end"
+                                                android:gravity="bottom"
+                                                android:maxLines="1"
+                                                android:text="48"
+                                                android:textColor="#E9423E"
+                                                android:textSize="12sp"
+                                                android:textStyle="bold" />
+                                        </LinearLayout>
                                     </LinearLayout>
 
                                     <LinearLayout
@@ -521,29 +586,45 @@
                                                 android:layout_width="62dp"
                                                 android:layout_height="wrap_content"
                                                 android:layout_gravity="left|bottom"
+                                                android:alpha="0.8"
                                                 android:background="@drawable/home_banner_item_tip_bg"
                                                 android:gravity="center"
                                                 android:text="直降￥200"
-                                                android:textColor="#E9423E"
-                                                android:textSize="10sp" />
+                                                android:textColor="@color/white"
+                                                android:textSize="12sp" />
                                         </FrameLayout>
 
-                                        <TextView
-                                            android:id="@+id/home_seckil_price_tv4"
+                                        <LinearLayout
                                             android:layout_width="62dp"
                                             android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
                                             android:layout_marginTop="10dp"
-                                            android:background="@drawable/home_banner_item_bg"
-                                            android:ellipsize="end"
                                             android:gravity="center"
-                                            android:maxLines="1"
-                                            android:paddingStart="5dp"
-                                            android:paddingTop="2dp"
-                                            android:paddingEnd="5dp"
-                                            android:paddingBottom="2dp"
-                                            android:text="￥48"
-                                            android:textColor="#E9423E"
-                                            android:textSize="12sp" />
+                                            android:orientation="horizontal">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="bottom"
+                                                android:text="￥"
+                                                android:textColor="#E9423E"
+                                                android:textSize="8sp"
+                                                android:textStyle="bold" />
+
+                                            <TextView
+                                                android:id="@+id/home_seckil_price_tv4"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="bottom"
+                                                android:background="@drawable/home_banner_item_bg"
+                                                android:ellipsize="end"
+                                                android:gravity="bottom"
+                                                android:maxLines="1"
+                                                android:text="48"
+                                                android:textColor="#E9423E"
+                                                android:textSize="12sp"
+                                                android:textStyle="bold" />
+                                        </LinearLayout>
                                     </LinearLayout>
 
                                 </LinearLayout>
@@ -566,15 +647,15 @@
                         app:tabPaddingStart="10dp"
                         app:tabRippleColor="@color/transparent"
                         app:tabSelectedTextColor="#F64A43"
-                        app:tabTextColor="#6D6D6D" />
+                        app:tabTextColor="#6D6D6D"
+                        tools:ignore="SpeakableTextPresentCheck" />
                 </com.google.android.material.appbar.AppBarLayout>
-
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/home_category_vp2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#F9F9F9"
+                    android:background="#F5F5F5"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
                     app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />

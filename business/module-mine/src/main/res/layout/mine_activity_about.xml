@@ -61,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="奖多多"
+                android:text="欢迎来到多多有宝"
                 android:textColor="@color/black"
                 android:textSize="23sp" />
 
@@ -80,7 +80,7 @@
                 android:lineHeight="20dp"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:text="奖多多是一款互动创意购物平台，以休闲时间，抢好物 为目标理想，打造一个公平公正，正品保证的休闲平台"
+                android:text="多多有宝是一款互动创意购物平台，以休闲时间，抢好物 为目标理想，打造一个公平公正，正品保证的休闲平台"
                 android:textSize="13sp" />
 
             <TextView

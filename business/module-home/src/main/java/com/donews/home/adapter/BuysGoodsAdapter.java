@@ -49,7 +49,7 @@ public class BuysGoodsAdapter extends RecyclerView.Adapter<BuysGoodsAdapter.Buys
     @NonNull
     @Override
     public BuysViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_search_buys_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_fragment_top_goods_item, parent, false);
         final BuysViewHolder holder = new BuysViewHolder(view);
         return holder;
     }
@@ -57,7 +57,6 @@ public class BuysGoodsAdapter extends RecyclerView.Adapter<BuysGoodsAdapter.Buys
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull BuysViewHolder holder, int position) {
-
         HomeGoodsBean.GoodsInfo gi = mGoodsList.get(position);
         if (gi == null) {
             return;
@@ -66,12 +65,24 @@ public class BuysGoodsAdapter extends RecyclerView.Adapter<BuysGoodsAdapter.Buys
         holder.itemView.setTag(gi);
         holder.itemView.setOnClickListener(this::onClick);
         Glide.with(mContext).load(UrlUtils.formatUrlPrefix(gi.getMainPic())).into(holder.picIv);
-        holder.desTv.setText(getTitleString(gi));
+        holder.desTv.setText(gi.getTitle());
 
         holder.priceTv.setText("￥" + gi.getOriginalPrice());
-        holder.priceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
-        holder.giftTv.setText(String.format("￥%.0f元券", gi.getCouponPrice()));
-        holder.actualPriceTv.setText("￥" + gi.getActualPrice());
+//        holder.priceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
+        holder.giftTv.setText(String.format("%.0f元券", gi.getCouponPrice()));
+        holder.actualPriveTv.setText(String.format("%.1f", gi.getActualPrice()));
+
+        switch (gi.getSrc()) {
+            case 1:
+                holder.logoIv.setImageResource(R.drawable.home_logo_tb);
+                break;
+            case 2:
+                holder.logoIv.setImageResource(R.drawable.home_logo_pdd);
+                break;
+            case 3:
+                holder.logoIv.setImageResource(R.drawable.home_logo_jd);
+                break;
+        }
     }
 
     private SpannableString getTitleString(HomeGoodsBean.GoodsInfo goodsInfo) {
@@ -121,8 +132,9 @@ public class BuysGoodsAdapter extends RecyclerView.Adapter<BuysGoodsAdapter.Buys
         private final ImageView picIv;
         private final TextView desTv;
         private final TextView priceTv;
-        private final TextView actualPriceTv;
+        private final TextView actualPriveTv;
         private final TextView giftTv;
+        private final ImageView logoIv;
 
         public BuysViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -130,8 +142,9 @@ public class BuysGoodsAdapter extends RecyclerView.Adapter<BuysGoodsAdapter.Buys
             picIv = itemView.findViewById(R.id.home_top_goods_item_iv);
             desTv = itemView.findViewById(R.id.home_top_goods_item_des);
             priceTv = itemView.findViewById(R.id.home_top_goods_item_price_atv);
-            actualPriceTv = itemView.findViewById(R.id.home_top_goods_item_price);
+            actualPriveTv = itemView.findViewById(R.id.home_top_goods_item_price);
             giftTv = itemView.findViewById(R.id.home_top_goods_item_gift_atv);
+            logoIv = itemView.findViewById(R.id.home_top_goods_item_logo_iv);
         }
     }
 }

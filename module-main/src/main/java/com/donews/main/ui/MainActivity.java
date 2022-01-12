@@ -295,7 +295,7 @@ public class MainActivity
     @Override
     protected void onResume() {
         super.onResume();
-        AnAdditionalDialog mDrawDialog = new AnAdditionalDialog("123", "123", 123,
+/*        AnAdditionalDialog mDrawDialog = new AnAdditionalDialog("123", "123", 123,
                 123, 400);
         mDrawDialog.setEventListener(() -> {
             try {
@@ -305,7 +305,7 @@ public class MainActivity
             } catch (Exception e) {
             }
         });
-        mDrawDialog.show(getSupportFragmentManager(), "AnAddDialog");
+        mDrawDialog.show(getSupportFragmentManager(), "AnAddDialog");*/
 
         if (SPUtils.getInformain(KeySharePreferences.FIRST_RP_CAN_OPEN, false)) {
             SPUtils.setInformain(KeySharePreferences.FIRST_RP_CAN_OPEN, false);
@@ -497,12 +497,17 @@ public class MainActivity
         AppStatusManager.getInstance().setAppStatus(AppStatusConstant.STATUS_NORMAL);
 
         showCriticalBtn();
-        mDataBinding.mainFloatingBtn.setOnClickListener(v -> {
-            toggleStatusBar(0);
-            mDataBinding.cvContentView.setCurrentItem(0);
-            mPosition = 0;
-            bjClick();
-        });
+        if (!ABSwitch.Ins().isOpenAB()) {
+            mDataBinding.mainFloatingBtn.setVisibility(View.VISIBLE);
+            mDataBinding.mainFloatingBtn.setOnClickListener(v -> {
+                toggleStatusBar(0);
+                mDataBinding.cvContentView.setCurrentItem(0);
+                mPosition = 0;
+                bjClick();
+            });
+        } else {
+            mDataBinding.mainFloatingBtn.setVisibility(View.GONE);
+        }
 
         int intoFrontCounts = SPUtils.getInformain(KeySharePreferences.INTO_FRONT_COUNTS, 0);
         if (!SPUtils.getInformain(KeySharePreferences.HAS_DO_INTO_FRONT, false)) {
@@ -512,7 +517,8 @@ public class MainActivity
 
         if (ABSwitch.Ins().isOpenHomeGuid() != 0
                 && SPUtils.getInformain(KeySharePreferences.INTO_FRONT_COUNTS, 0) >= ABSwitch.Ins().isOpenHomeGuid()
-                && !SPUtils.getInformain(KeySharePreferences.HAS_DO_INTO_FRONT, false)) {
+                && !SPUtils.getInformain(KeySharePreferences.HAS_DO_INTO_FRONT, false)
+                && !ABSwitch.Ins().isOpenAB()) {
             mDataBinding.mainHomeGuidCl.setVisibility(View.VISIBLE);
             mDataBinding.mainHomeBtn.setOnClickListener(v -> {
                 mDataBinding.mainHomeGuidCl.setVisibility(View.GONE);
