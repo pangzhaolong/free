@@ -3,18 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="ResourceName">
 
-    <item android:drawable="@color/common_F9F7F7" />
-    <item>
-        <bitmap
-            android:gravity="center"
-            android:src="@drawable/main_splash_bg" />
-    </item>
+    <item android:drawable="@color/common_F9F9F9" />
     <item
         android:bottom="100dp"
         android:gravity="center">
         <bitmap
             android:gravity="center"
             android:src="@drawable/main_splash_content" />
+    </item>
+
+    <item
+        android:bottom="300dp"
+        android:gravity="center">
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/main_splash_title" />
     </item>
 
     <item

@@ -28,7 +28,7 @@ class RemindDialog : AbstractFragmentDialog<MainExitDialogRemindBinding>(),
         EasyPermissions.PermissionCallbacks {
 
     companion object {
-        private const val CALENDAR_TITLE = "奖多多开奖提醒"
+        private const val CALENDAR_TITLE = "多多有宝开奖提醒"
         private const val REQUEST_PER_CODE = 10001
         private const val PARAMS_CONFIG = "config"
 

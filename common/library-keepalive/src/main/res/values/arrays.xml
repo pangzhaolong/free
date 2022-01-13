@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <resources>
     <string-array name="yx_am_title">
-        <item>【奖多多】今日好物已上新🌟</item>
-        <item>【奖多多】500元话费已到账💶</item>
+        <item>【多多有宝】今日好物已上新🌟</item>
+        <item>【多多有宝】500元话费已到账💶</item>
         <item>您的夏日清凉好物已上线❗️</item>
     </string-array>
     <string-array name="yx_am_content">
@@ -12,7 +12,7 @@
     </string-array>
     <string-array name="nf_am_title">
         <item>📱本期锦鲤开奖啦</item>
-        <item>【奖多多】苹果笔记本电脑已抽中💻</item>
+        <item>【多多有宝】苹果笔记本电脑已抽中💻</item>
         <item>【中奖通知】📱</item>
     </string-array>
     <string-array name="nf_am_content">

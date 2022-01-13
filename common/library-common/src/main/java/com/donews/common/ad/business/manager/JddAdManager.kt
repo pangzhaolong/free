@@ -17,7 +17,7 @@ import com.orhanobut.logger.Logger
 import com.tencent.mmkv.MMKV
 
 /**
- * 奖多多 广告 管理类
+ * 多多有宝 广告 管理类
  *
  * @author XuShuai
  * @version v1.0
