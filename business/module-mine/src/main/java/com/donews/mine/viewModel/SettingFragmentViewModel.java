@@ -63,9 +63,9 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
             put(0, (Runnable) () -> { //用户协议
                 Bundle bundle = new Bundle();
                 if (ABSwitch.Ins().isOpenAB() && DeviceUtils.getChannelName().equalsIgnoreCase("huawei")) {
-                    bundle.putString("url", "http://ad-static-xg.tagtic.cn/wangzhuan/file/4fb165459cd438f9a3987841d7707d8a.html");
+                    bundle.putString("url", "http://ad-static-xg.tagtic.cn/wangzhuan/file/e0175957f8bb037da313fa23caae5944.html");
                 } else {
-                    bundle.putString("url", "http://ad-static-xg.tagtic.cn/wangzhuan/file/9e5f7a06cbf80a2186e3e34a70f0c360.html");
+                    bundle.putString("url", "http://ad-static-xg.tagtic.cn/wangzhuan/file/e0175957f8bb037da313fa23caae5944.html");
                 }
                 bundle.putString("title", "用户协议");
                 ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
@@ -73,9 +73,9 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
             put(1, (Runnable) () -> { //隐私政策
                 Bundle bundle = new Bundle();
                 if (ABSwitch.Ins().isOpenAB() && DeviceUtils.getChannelName().equalsIgnoreCase("huawei")) {
-                    bundle.putString("url", "http://ad-static-xg.tagtic.cn/wangzhuan/file/739eaf3002ea80d1a2232c9cd5a8b9f4.html");
+                    bundle.putString("url", "http://ad-static-xg.tagtic.cn/wangzhuan/file/6970b84a455591b81911894a4ff95ade.html");
                 } else {
-                    bundle.putString("url", "http://ad-static-xg.tagtic.cn/wangzhuan/file/b7f18dcb857e80eab353cfb99c3f042e.html");
+                    bundle.putString("url", "http://ad-static-xg.tagtic.cn/wangzhuan/file/6970b84a455591b81911894a4ff95ade.html");
                 }
                 bundle.putString("title", "隐私政策");
                 ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);

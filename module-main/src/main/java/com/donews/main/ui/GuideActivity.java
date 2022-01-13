@@ -147,14 +147,14 @@ public class GuideActivity
         mDataBinding.tvUserXy.setOnClickListener(v -> { //用户协议
             Bundle bundle = new Bundle();
             bundle.putString("url",
-                    "http://ad-static-xg.tagtic.cn/wangzhuan/file/9e5f7a06cbf80a2186e3e34a70f0c360.html");
+                    "http://ad-static-xg.tagtic.cn/wangzhuan/file/e0175957f8bb037da313fa23caae5944.html");
             bundle.putString("title", "用户协议");
             ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
         });
         mDataBinding.tvYxXy.setOnClickListener(v -> { //隐私协议
             Bundle bundle = new Bundle();
             bundle.putString("url",
-                    "http://ad-static-xg.tagtic.cn/wangzhuan/file/b7f18dcb857e80eab353cfb99c3f042e.html");
+                    "http://ad-static-xg.tagtic.cn/wangzhuan/file/6970b84a455591b81911894a4ff95ade.html");
             bundle.putString("title", "隐私政策");
             ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
         });
