@@ -8,6 +8,7 @@ import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
 
 import com.donews.notify.launcher.NotifyAnimationView;
+import com.donews.notify.launcher.configs.baens.Notify2DataConfigBean;
 
 import java.util.Map;
 
@@ -35,6 +36,15 @@ public abstract class AbsNotifyInvokTask {
      * @param lastBindTask 再完成之后给上层一个改变视图的机会。再完成绑定之后回调方法
      */
     public abstract void bindTypeData(NotifyAnimationView targetView, Runnable lastBindTask);
+
+    /**
+     * item的点击操作
+     *
+     * @param targetView 点击的视图
+     * @param uiTemplat  点击对应的数据
+     * @return 是否消费掉这个点击动作，T:已消费,终止流程，F:不消费。继续上层逻辑
+     */
+    public abstract boolean itemClick(NotifyAnimationView targetView, Notify2DataConfigBean.UiTemplat uiTemplat);
 
     /**
      * 关联生命周期组件

@@ -1,5 +1,6 @@
 package com.donews.notify.launcher.utils.funs;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.text.Html;
@@ -15,8 +16,10 @@ import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.donews.base.utils.ToastUtil;
 import com.donews.base.utils.glide.GlideUtils;
 import com.donews.common.NotifyLuncherConfigManager;
+import com.donews.notify.BuildConfig;
 import com.donews.notify.R;
 import com.donews.notify.launcher.NotifyActivity;
 import com.donews.notify.launcher.NotifyAnimationView;
@@ -24,7 +27,10 @@ import com.donews.notify.launcher.NotifyInitProvider;
 import com.donews.notify.launcher.configs.Notify2ConfigManager;
 import com.donews.notify.launcher.configs.baens.Notify2DataConfigBean;
 import com.donews.notify.launcher.utils.AbsNotifyInvokTask;
+import com.donews.notify.launcher.utils.JumpActionUtils;
 import com.donews.notify.launcher.utils.NotifyItemUtils;
+import com.donews.notify.launcher.utils.fix.FixTagUtils;
+import com.donews.notify.launcher.utils.fix.covert.ResConvertUtils;
 
 /**
  * @author lcl
@@ -33,6 +39,11 @@ import com.donews.notify.launcher.utils.NotifyItemUtils;
  * ui模板1的处理逻辑
  */
 public class NotifyItemTypeLottTop1Impl extends AbsNotifyInvokTask {
+
+    @Override
+    public boolean itemClick(NotifyAnimationView targetView, Notify2DataConfigBean.UiTemplat uiTemplat) {
+        return JumpActionUtils.jump((Activity) targetView.getContext(), uiTemplat.getAction());
+    }
 
     @Override
     public void bindTypeData(NotifyAnimationView targetView, Runnable lastBindTask) {
@@ -62,15 +73,15 @@ public class NotifyItemTypeLottTop1Impl extends AbsNotifyInvokTask {
         if(uiTemplat.getIconLeftTopMin() == null || uiTemplat.getIconLeftTopMin().isEmpty()){
             icon.setVisibility(View.GONE);
         }else{
-            GlideUtils.loadImageView(targetView.getContext(),uiTemplat.getIconLeftTopMin(),icon);
+            ResConvertUtils.buidIcon(icon,uiTemplat.getIconLeftTopMin());
         }
-        title.setText(Html.fromHtml(uiTemplat.getTitle()));
-        name.setText(Html.fromHtml(uiTemplat.getName()));
-        desc.setText(Html.fromHtml(uiTemplat.getDesc()));
+        title.setText(FixTagUtils.convertHtml(uiTemplat.getTitle()));
+        name.setText(FixTagUtils.convertHtml(uiTemplat.getName()));
+        desc.setText(FixTagUtils.convertHtml(uiTemplat.getDesc()));
         if(uiTemplat.getIconRight() == null || uiTemplat.getIconRight().isEmpty()){
             goodIcon.setVisibility(View.GONE);
         }else{
-            GlideUtils.loadImageView(targetView.getContext(),uiTemplat.getIconRight(),goodIcon);
+            ResConvertUtils.buidIcon(goodIcon,uiTemplat.getIconRight());
         }
 
         //回调视图任务

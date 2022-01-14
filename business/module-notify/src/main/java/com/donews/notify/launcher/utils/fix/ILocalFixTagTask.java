@@ -9,7 +9,8 @@ package com.donews.notify.launcher.utils.fix;
 public interface ILocalFixTagTask {
     /**
      * 获取本地标签的值
+     * @param tag 当前的标签名称
      * @return
      */
-    String getTagValue();
+    String getTagValue(String tag);
 }

@@ -192,10 +192,12 @@ public class MainActivity
             mDataBinding.occupyNotify.setVisibility(View.GONE);
         }
         //通知测试相关
+        HotStartCacheUtils.INSTANCE.setDebugNotify(true); //开启debug的通知模块
         mDataBinding.occupyNotify.setOnClickListener(v -> {
-            mDataBinding.occupyNotify.postDelayed(()->{
-                testGotoNotify();
-            },2500);
+            if(!HotStartCacheUtils.INSTANCE.isDebugNotify()){
+                return;
+            }
+            testGotoNotify();
         });
     }
 

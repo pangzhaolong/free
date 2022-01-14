@@ -1,13 +1,25 @@
 package com.donews.notify.launcher.utils.fix;
 
+import android.graphics.drawable.Drawable;
+import android.text.Html;
+import android.text.Spanned;
+
+import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.ImageUtils;
+import com.blankj.utilcode.util.ResourceUtils;
+import com.blankj.utilcode.util.ViewUtils;
 import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.WeChatBean;
 import com.donews.notify.launcher.configs.baens.Notify2DataConfigBean;
+import com.donews.notify.launcher.utils.fix.covert.ResConvertUtils;
 import com.donews.utilslibrary.utils.LogUtil;
 
 import java.lang.reflect.Field;
+import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * @author lcl
@@ -37,7 +49,7 @@ public class FixTagUtils {
      */
     private static final Map<String, ILocalFixTagTask> localFlgTask = new HashMap() {
         {
-            put("${wx_name}", (ILocalFixTagTask) () -> { //注册[微信名称标签]的处理逻辑
+            put("${wx_name}", (ILocalFixTagTask) (tag) -> { //注册[微信名称标签]的处理逻辑
                 WeChatBean wxBean = LoginHelp.getInstance().getUserInfoBean().getWechatExtra();
                 if (wxBean == null) {
                     return defaultFillWxName;
@@ -48,7 +60,7 @@ public class FixTagUtils {
                 }
                 return wxName;
             });
-            put("${wx_head}", (ILocalFixTagTask) () -> { //注册[微信头像标签]的处理逻辑
+            put("${wx_head}", (ILocalFixTagTask) (tag) -> { //注册[微信头像标签]的处理逻辑
                 WeChatBean wxBean = LoginHelp.getInstance().getUserInfoBean().getWechatExtra();
                 if (wxBean == null) {
                     return "";
@@ -58,6 +70,50 @@ public class FixTagUtils {
                     return "";
                 }
                 return wxHead;
+            });
+            put("${app_name}", (ILocalFixTagTask) (tag) -> { //注册[App名称]的处理逻辑
+                String appName = AppUtils.getAppName();
+                if (appName == null) {
+                    return "";
+                }
+                return appName;
+            });
+            put("${app_icon}", (ILocalFixTagTask) (tag) -> { //注册[App图标标签]的处理逻辑
+                Drawable icon = AppUtils.getAppInfo().getIcon();
+                String iconStr = ResConvertUtils.drawable2String(icon);
+                if (iconStr == null || iconStr.isEmpty()) {
+                    return "";
+                }
+                return iconStr;
+            });
+            put("${?random_}", (ILocalFixTagTask) (tag) -> { //处理[随机数]标签处理逻辑
+                Random ran = new Random();
+                if (!tag.contains("(") || !tag.contains(")")) {
+                    return "" + ran.nextInt();
+                }
+                int leftK = tag.indexOf("(");
+                int rightK = tag.indexOf(")");
+                if (rightK < leftK || Math.abs(rightK - leftK) <= 1) {
+                    return "" + ran.nextInt();
+                }
+                String params = tag.substring(leftK + 1, rightK);
+                String[] pList = null;
+                if (params.contains(",")) {
+                    pList = params.split(",");
+                } else if (params.contains("，")) {
+                    pList = params.split("，");
+                }else{
+                    pList = new String[]{params};
+                }
+                if (pList == null || pList.length == 0) {
+                    return "" + ran.nextInt();
+                }
+                if (pList.length == 1) {
+                    return "" + ran.nextInt(Integer.parseInt(pList[0]));
+                } else {
+                    return "" + FixTagUtils.getRandom(
+                            Integer.parseInt(pList[0]), Integer.parseInt(pList[1]));
+                }
             });
         }
     };
@@ -84,12 +140,19 @@ public class FixTagUtils {
                     String fName = tagMap.get(key);
                     if (fName == null || fName.contains("_")) {
                         //不是字段类数据标签。使用本地类型标签处理
-                        ILocalFixTagTask localFix = localFlgTask.get(key);
+                        ILocalFixTagTask localFix = null;
+                        if (fName.startsWith("?")) {
+                            //可变标签处理
+                            localFix = localFlgTask.get(getDynamicTagTask(key));
+                        } else {
+                            //不是可填充字段。直接使用完全匹配获取
+                            localFix = localFlgTask.get(key);
+                        }
                         if (localFix == null) {
                             LogUtil.e("notify 暂不支持的标签：" + key);
                             continue;
                         }
-                        tagValueMap.put(key, localFix.getTagValue());
+                        tagValueMap.put(key, localFix.getTagValue(key));
                         continue;
                     }
                     Field field;
@@ -126,6 +189,52 @@ public class FixTagUtils {
         }
     }
 
+
+    /**
+     * 获取一个范围内随机数
+     *
+     * @param start
+     * @param end
+     * @return
+     */
+    public static float getRandom(float start, float end) {
+        double d = (Math.random() * (end - start) + start);
+        try {
+            NumberFormat nf = NumberFormat.getNumberInstance();
+            // 保留两位小数
+            nf.setMaximumFractionDigits(2);
+            // 如果不需要四舍五入，可以使用RoundingMode.DOWN
+            nf.setRoundingMode(RoundingMode.UP);
+            return Float.parseFloat(nf.format(d));
+        } catch (Exception e) {
+            return ((int) d * 100) / 100F;
+        }
+    }
+
+    /**
+     * 处理为Html内容的独享
+     * @param content
+     * @return
+     */
+    public static Spanned convertHtml(String content){
+        return Html.fromHtml(content);
+    }
+
+    /**
+     * 获取动态标签任务
+     *
+     * @param tag 标签。处理动态标签。变成可以直接获取的key
+     * @return
+     */
+    private static String getDynamicTagTask(String tag) {
+        try {
+            String newTagName = tag.replace(startFlg, "").replace(endFlg, "");
+            return startFlg + newTagName.substring(0, newTagName.indexOf("(")) + endFlg;
+        } catch (Exception e) {
+            return tag;
+        }
+    }
+
     /**
      * 获取指定内容中的标签开始和结束标记的位置集合
      *
@@ -157,5 +266,4 @@ public class FixTagUtils {
         }
         return flgMap;
     }
-
 }

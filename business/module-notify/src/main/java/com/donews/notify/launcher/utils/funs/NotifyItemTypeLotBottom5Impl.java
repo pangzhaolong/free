@@ -3,19 +3,25 @@ package com.donews.notify.launcher.utils.funs;
 import static com.donews.utilslibrary.utils.KeySharePreferences.NOTIFY_RANDOM_RED_AMOUNT;
 import static com.donews.utilslibrary.utils.KeySharePreferences.TIME_SERVICE;
 
+import android.app.Activity;
 import android.text.Html;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.donews.base.utils.ToastUtil;
 import com.donews.base.utils.glide.GlideUtils;
 import com.donews.common.NotifyLuncherConfigManager;
+import com.donews.notify.BuildConfig;
 import com.donews.notify.R;
 import com.donews.notify.launcher.NotifyAnimationView;
 import com.donews.notify.launcher.configs.Notify2ConfigManager;
 import com.donews.notify.launcher.configs.baens.Notify2DataConfigBean;
 import com.donews.notify.launcher.utils.AbsNotifyInvokTask;
+import com.donews.notify.launcher.utils.JumpActionUtils;
+import com.donews.notify.launcher.utils.fix.FixTagUtils;
+import com.donews.notify.launcher.utils.fix.covert.ResConvertUtils;
 
 import java.math.RoundingMode;
 import java.text.NumberFormat;
@@ -29,6 +35,11 @@ import java.util.Random;
  * 初始类型的处理逻辑。原类型的处理对象
  */
 public class NotifyItemTypeLotBottom5Impl extends AbsNotifyInvokTask {
+
+    @Override
+    public boolean itemClick(NotifyAnimationView targetView, Notify2DataConfigBean.UiTemplat uiTemplat) {
+        return JumpActionUtils.jump((Activity) targetView.getContext(), uiTemplat.getAction());
+    }
 
     @Override
     public void bindTypeData(NotifyAnimationView targetView, Runnable lastBindTask) {
@@ -61,16 +72,16 @@ public class NotifyItemTypeLotBottom5Impl extends AbsNotifyInvokTask {
         TextView but = targetView.findViewById(R.id.notify_item_lott2_bug);
 
         Notify2DataConfigBean.UiTemplat uiTemplat = (Notify2DataConfigBean.UiTemplat) targetView.getTag();
-        wxNameFlg.setText(Html.fromHtml(uiTemplat.getTitlePrefix()));
-        wxName.setText(Html.fromHtml(uiTemplat.getTitle()));
-        goodNameFlg.setText(Html.fromHtml(uiTemplat.getDescPrefix()));
-        goodName.setText(Html.fromHtml(uiTemplat.getDesc()));
-        but.setText(Html.fromHtml(uiTemplat.getButtonLeft()));
+        wxNameFlg.setText(FixTagUtils.convertHtml(uiTemplat.getTitlePrefix()));
+        wxName.setText(FixTagUtils.convertHtml(uiTemplat.getTitle()));
+        goodNameFlg.setText(FixTagUtils.convertHtml(uiTemplat.getDescPrefix()));
+        goodName.setText(FixTagUtils.convertHtml(uiTemplat.getDesc()));
+        but.setText(FixTagUtils.convertHtml(uiTemplat.getButtonLeft()));
         if (uiTemplat.getType() == 0) {
             //金额
             jeLL.setVisibility(View.VISIBLE);
             icon.setVisibility(View.GONE);
-            float num = getRandom(
+            float num = FixTagUtils.getRandom(
                     Notify2ConfigManager.Ins().getNotifyConfigBean().redPackageMinAmount,
                     Notify2ConfigManager.Ins().getNotifyConfigBean().redPackageMaxAmount
             );
@@ -98,26 +109,4 @@ public class NotifyItemTypeLotBottom5Impl extends AbsNotifyInvokTask {
         targetView.setHideDuration(NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyShowTime);
         targetView.start();
     }
-
-    /**
-     * 获取一个范围内随机数
-     *
-     * @param start
-     * @param end
-     * @return
-     */
-    public static float getRandom(float start, float end) {
-        double d = (Math.random() * (end - start) + start);
-        try {
-            NumberFormat nf = NumberFormat.getNumberInstance();
-            // 保留两位小数
-            nf.setMaximumFractionDigits(2);
-            // 如果不需要四舍五入，可以使用RoundingMode.DOWN
-            nf.setRoundingMode(RoundingMode.UP);
-            return Float.parseFloat(nf.format(d));
-        } catch (Exception e) {
-            return ((int) d * 100) / 100F;
-        }
-    }
-
 }

@@ -1,16 +1,22 @@
 package com.donews.notify.launcher.utils.funs;
 
+import android.app.Activity;
 import android.text.Html;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.donews.base.utils.ToastUtil;
 import com.donews.base.utils.glide.GlideUtils;
 import com.donews.common.NotifyLuncherConfigManager;
+import com.donews.notify.BuildConfig;
 import com.donews.notify.R;
 import com.donews.notify.launcher.NotifyAnimationView;
 import com.donews.notify.launcher.configs.baens.Notify2DataConfigBean;
 import com.donews.notify.launcher.utils.AbsNotifyInvokTask;
+import com.donews.notify.launcher.utils.JumpActionUtils;
+import com.donews.notify.launcher.utils.fix.FixTagUtils;
+import com.donews.notify.launcher.utils.fix.covert.ResConvertUtils;
 
 /**
  * @author lcl
@@ -19,6 +25,11 @@ import com.donews.notify.launcher.utils.AbsNotifyInvokTask;
  * ui模板2的处理逻辑
  */
 public class NotifyItemTypeLottTop2Impl extends AbsNotifyInvokTask {
+
+    @Override
+    public boolean itemClick(NotifyAnimationView targetView, Notify2DataConfigBean.UiTemplat uiTemplat) {
+        return JumpActionUtils.jump((Activity) targetView.getContext(), uiTemplat.getAction());
+    }
 
     @Override
     public void bindTypeData(NotifyAnimationView targetView, Runnable lastBindTask) {
@@ -45,20 +56,20 @@ public class NotifyItemTypeLottTop2Impl extends AbsNotifyInvokTask {
         Notify2DataConfigBean.UiTemplat uiTemplat = (Notify2DataConfigBean.UiTemplat) targetView.getTag();
 
         //设置值
-        if (uiTemplat.getIconLeftTopMin() != null && !uiTemplat.getIconLeftTopMin().isEmpty()) {
-            GlideUtils.loadImageView(targetView.getContext(), uiTemplat.getIconLeftTopMin(), iconLeft);
+        if (uiTemplat.getIconLeft() != null && !uiTemplat.getIconLeft().isEmpty()) {
+            ResConvertUtils.buidIcon(iconLeft,uiTemplat.getIconLeft());
         }
-        title.setText(Html.fromHtml(uiTemplat.getTitle()));
-        desc.setText(Html.fromHtml(uiTemplat.getDesc()));
+        title.setText(FixTagUtils.convertHtml(uiTemplat.getTitle()));
+        desc.setText(FixTagUtils.convertHtml(uiTemplat.getDesc()));
         if (uiTemplat.getButtonLeft() == null || uiTemplat.getButtonLeft().isEmpty()) {
             leftBut.setVisibility(View.INVISIBLE);
         } else {
-            leftBut.setText(Html.fromHtml(uiTemplat.getButtonLeft()));
+            leftBut.setText(FixTagUtils.convertHtml(uiTemplat.getButtonLeft()));
         }
         if (uiTemplat.getButtonLeft() == null || uiTemplat.getButtonLeft().isEmpty()) {
             rightBut.setVisibility(View.INVISIBLE);
         } else {
-            rightBut.setText(Html.fromHtml(uiTemplat.getButtonRight()));
+            rightBut.setText(FixTagUtils.convertHtml(uiTemplat.getButtonRight()));
         }
         if(leftBut.getVisibility() != View.VISIBLE &&
                 rightBut.getVisibility() != View.VISIBLE){

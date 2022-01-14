@@ -6,8 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:paddingTop="15dp"
-    android:paddingBottom="15dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
     tools:ignore="MissingConstraints">
 
     <LinearLayout
@@ -28,6 +28,8 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="转入提醒"
+            android:textColor="@color/color_333333"
+            android:textSize="15sp"
             app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>
 
@@ -47,6 +49,8 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="服务对象："
+            android:textColor="@color/color_999999"
+            android:textSize="12sp"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -56,6 +60,8 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="--"
+            android:textColor="@color/color_333333"
+            android:textSize="12sp"
             app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>
 
@@ -75,6 +81,8 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="权益内容："
+            android:textColor="@color/color_999999"
+            android:textSize="12sp"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -84,6 +92,8 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="--"
+            android:textColor="@color/color_333333"
+            android:textSize="12sp"
             app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>
 
@@ -103,6 +113,8 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="生效日期："
+            android:textColor="@color/color_999999"
+            android:textSize="12sp"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -112,13 +124,15 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="--"
+            android:textColor="@color/color_333333"
+            android:textSize="12sp"
             app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>
 
     <ImageView
         android:id="@+id/notify_item_icon_right"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginRight="15dp"
         android:scaleType="fitXY"
         app:layout_constraintRight_toRightOf="parent"

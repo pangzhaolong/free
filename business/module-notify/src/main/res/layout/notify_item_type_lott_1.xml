@@ -6,14 +6,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:ignore="MissingConstraints"
-    android:paddingTop="15dp"
-    android:paddingBottom="15dp"
-    android:background="@color/white">
+    android:paddingTop="17dp"
+    android:paddingBottom="17dp"
+    android:background="@drawable/notify_bg">
 
     <ImageView
         android:id="@+id/notify_item_lott_icon"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
         android:layout_marginLeft="15dp"
         android:scaleType="fitXY"
         android:src="@drawable/noti_icon"
@@ -25,6 +25,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:text="提醒"
+        android:textSize="12sp"
+        android:textColor="@color/color_666666"
         app:layout_constraintBottom_toBottomOf="@+id/notify_item_lott_icon"
         app:layout_constraintLeft_toRightOf="@+id/notify_item_lott_icon"
         app:layout_constraintTop_toTopOf="@+id/notify_item_lott_icon" />
@@ -35,6 +37,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="15dp"
+        android:textSize="16sp"
+        android:textColor="@color/color_333333"
         android:text="昵称"
         app:layout_constraintLeft_toLeftOf="@+id/notify_item_lott_icon"
         app:layout_constraintRight_toLeftOf="@+id/notify_item_lott_jp"
@@ -46,18 +50,23 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="2dp"
+        android:textSize="14sp"
         android:text="请确认你的奖品"
+        android:textColor="@color/color_666666"
         app:layout_constraintLeft_toLeftOf="@+id/notify_item_lott_icon"
         app:layout_constraintRight_toLeftOf="@+id/notify_item_lott_jp"
         app:layout_constraintTop_toBottomOf="@+id/notify_item_lott_name" />
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/notify_item_lott_jp"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="53dp"
+        android:layout_height="53dp"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="2dp"
         android:layout_marginRight="15dp"
+        app:cornerFamily="rounded"
+        app:cornerSize="8dp"
+        android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -1,5 +1,6 @@
 package com.donews.notify.launcher.utils.funs;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
@@ -12,23 +13,32 @@ import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.donews.base.utils.ToastUtil;
 import com.donews.common.NotifyLuncherConfigManager;
+import com.donews.notify.BuildConfig;
 import com.donews.notify.R;
 import com.donews.notify.launcher.NotifyActivity;
 import com.donews.notify.launcher.NotifyAnimationView;
 import com.donews.notify.launcher.NotifyInitProvider;
+import com.donews.notify.launcher.configs.baens.Notify2DataConfigBean;
 import com.donews.notify.launcher.utils.AbsNotifyInvokTask;
+import com.donews.notify.launcher.utils.JumpActionUtils;
 
 /**
  * @author lcl
  * Date on 2022/1/5
  * Description:
- *  ui模板0的处理逻辑
+ * ui模板0的处理逻辑
  */
 public class NotifyItemTypeTop0Impl extends AbsNotifyInvokTask {
 
     @Override
-    public void bindTypeData(NotifyAnimationView targetView,Runnable lastBindTask) {
+    public boolean itemClick(NotifyAnimationView targetView, Notify2DataConfigBean.UiTemplat uiTemplat) {
+        return JumpActionUtils.jump((Activity) targetView.getContext(), uiTemplat.getAction());
+    }
+
+    @Override
+    public void bindTypeData(NotifyAnimationView targetView, Runnable lastBindTask) {
         if (targetView.getChildCount() <= 0) {
             targetView.setHideDuration(NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyShowTime);
             targetView.start();

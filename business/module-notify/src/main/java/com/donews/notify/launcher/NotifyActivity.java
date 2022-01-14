@@ -29,6 +29,7 @@ import com.donews.keepalive.LaunchStart;
 import com.donews.notify.R;
 import com.donews.notify.launcher.configs.Notify2ConfigManager;
 import com.donews.notify.launcher.configs.baens.Notify2DataConfigBean;
+import com.donews.notify.launcher.utils.AbsNotifyInvokTask;
 import com.donews.notify.launcher.utils.NotifyItemUtils;
 import com.donews.notify.launcher.utils.fix.FixTagUtils;
 import com.donews.utilslibrary.analysis.AnalysisParam;
@@ -160,14 +161,14 @@ public class NotifyActivity extends FragmentActivity {
             return;
         }
         isShowNotify = true;
-        String content =
-                "${title}:你好啊";
-        Notify2DataConfigBean.UiTemplat uiTemplat = Notify2ConfigManager.Ins().getNotifyConfigBean().notifyConfigs.get(0).uiTemplate.get(0);
-        FixTagUtils.buildContentTag(uiTemplat, content);
 
         //初始化参数,真实显示操作
         NotifyItemUtils.initNotifyParams(this, mNotifyAnimationView, () -> {
             //需要特殊处理UI的类型。再此处处理即可
+            mNotifyAnimationView.setOnClickListener((view) -> {
+                //通用一套处理套转逻辑
+                schemeOpen(true);
+            });
         });
 
 //        //模拟设置消息参数
@@ -209,6 +210,19 @@ public class NotifyActivity extends FragmentActivity {
      * @param isProbability T:启用概率
      */
     private void schemeOpen(boolean isProbability) {
+        AbsNotifyInvokTask task = NotifyItemUtils.notifyTypeInvokList.get(mNotifyAnimationView.notifyType);
+        if (task != null &&
+                task.itemClick(mNotifyAnimationView,
+                        (Notify2DataConfigBean.UiTemplat) mNotifyAnimationView.getTag())) {
+            //已经由于每个通知自己处理。明确告知不在轴原逻辑了。直接取消处理
+            mNotifyAnimationView.hide();
+            return;
+        }
+        oldClickInvok(isProbability);
+    }
+
+    //原始的点击操作
+    private void oldClickInvok(boolean isProbability) {
         //打开应用的概率
         int po = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyProbabilityOpen;
         if (isProbability) {
