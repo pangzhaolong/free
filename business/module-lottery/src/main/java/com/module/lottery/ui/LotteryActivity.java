@@ -9,6 +9,8 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,7 @@ import android.view.animation.CycleInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -195,7 +198,18 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             ifOpenAutoLotteryAndCount();
         }
         mStart_lottery = false;
+        Message mes = new Message();
+        handler.sendMessageDelayed(mes, 2000);
     }
+
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            showLessMaxDialog();
+        }
+    };
 
 
     private void showLotteryCritCodeDialog(GenerateCodeBean generateCodeBean) {
@@ -1252,6 +1266,10 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             }
             if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() == 0) {
                 //登录未抽奖
+
+
+
+                //首页红包是否开完
                 showReturnDialog(TYPE_2);
                 return;
             }

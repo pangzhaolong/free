@@ -23,6 +23,7 @@
             tools:ignore="MissingConstraints">
 
             <ImageView
+                android:id="@+id/top_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -34,7 +35,7 @@
 
                 android:id="@+id/return_root_layout"
                 android:layout_width="match_parent"
-                android:layout_height="360dp"
+                android:layout_height="340dp"
                 android:orientation="vertical"
                 tools:ignore="ResourceName">
 
@@ -53,7 +54,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="80dp"
+                            android:layout_marginTop="75dp"
                             android:orientation="vertical">
 
 
@@ -131,31 +132,32 @@
                         android:layout_alignParentBottom="true"
                         android:layout_marginStart="40dp"
                         android:layout_marginEnd="40dp"
-                        android:paddingBottom="15dp">
+                        android:paddingBottom="25dp">
 
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:layout_marginStart="40dp"
+                            android:layout_marginEnd="40dp"
                             android:background="@drawable/panic_buying_button_bg"
                             android:orientation="horizontal"
-                            android:paddingStart="47dp"
-                            android:paddingEnd="47dp"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent">
+
                             <TextView
+                                android:gravity="center_horizontal"
+                                android:layout_gravity="center_horizontal"
                                 android:id="@+id/jump_button"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="7dp"
                                 android:layout_weight="5"
                                 android:paddingTop="9dp"
                                 android:paddingBottom="9dp"
-
                                 android:text="立即登录领取"
                                 android:textColor="#D82D2A"
                                 android:textSize="20dp"
-
                                 android:textStyle="bold"
                                 tools:ignore="MissingConstraints" />
 

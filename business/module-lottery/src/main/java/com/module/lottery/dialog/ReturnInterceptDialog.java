@@ -156,6 +156,7 @@ public class ReturnInterceptDialog extends BaseDialog<InterceptDialogLayoutBindi
                 }
             });
         } else {
+            mDataBinding.topIcon.setVisibility(View.GONE);
             mDataBinding.protocolLayout.setVisibility(View.GONE);
             mDataBinding.hint.setText("参与抽奖，立即获得");
             mDataBinding.hintTitle.setText("最高");
