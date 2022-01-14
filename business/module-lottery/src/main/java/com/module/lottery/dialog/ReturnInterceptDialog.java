@@ -46,15 +46,13 @@ public class ReturnInterceptDialog extends BaseDialog<InterceptDialogLayoutBindi
     public static int TYPE_2 = 2;
     private Context mContext;
     private int limitNumber = 1;
-    private int mType = -1;// 1 表示登录 2 表示未登录
     private LotteryHandler mLotteryHandler;
     private long fastVibrateTime = 0;
 
-    public ReturnInterceptDialog(Context context, int type) {
+    public ReturnInterceptDialog(Context context) {
         super(context, R.style.dialogTransparent);//内容样式在这里引入
         this.mContext = context;
         mLotteryHandler = new LotteryHandler(this);
-        this.mType = type;
     }
 
     @Override
@@ -107,75 +105,51 @@ public class ReturnInterceptDialog extends BaseDialog<InterceptDialogLayoutBindi
         }
 
     }
+
     private boolean isSendCloseEvent = true;
+
     // 1 表示未登录 2 表示登录未抽奖
     private void initView() {
-        if (mType == TYPE_1) {
-            //登录时
-            LinearLayout.LayoutParams rootLayout = (LinearLayout.LayoutParams) mDataBinding.returnRootLayout.getLayoutParams();
-            rootLayout.height = getContext().getResources().getDimensionPixelOffset(R.dimen.lottery_constant_328);
-            mDataBinding.returnRootLayout.setLayoutParams(rootLayout);
-            mDataBinding.title.setText(getContext().getResources().getString(R.string.return_intercept_title));
-            mDataBinding.hintTitle.setText(getContext().getResources().getString(R.string.return_intercept_hint));
-            mDataBinding.hint.setVisibility(View.GONE);
-            mDataBinding.withdrawHint.setText(getContext().getResources().getString(R.string.return_intercept_withdraw));
-            mDataBinding.jumpButton.setText(getContext().getResources().getString(R.string.return_intercept_button));
-            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mDataBinding.withdrawHintLayout.getLayoutParams();
-            layoutParams.bottomMargin = getContext().getResources().getDimensionPixelOffset(R.dimen.lottery_constant_15);
-            mDataBinding.withdrawHintLayout.setLayoutParams(layoutParams);
-            mDataBinding.protocolLayout.setVisibility(View.GONE);
-        } else if (mType == TYPE_2) {
-            //未登录时
-            boolean protocol = getSharedPreferences().getBoolean("protocol", false) ||
-                    ABSwitch.Ins().isOpenAutoAgreeProtocol();
-            mDataBinding.checkBox.setChecked(protocol);
-            mDataBinding.title.setText(getContext().getResources().getString(R.string.return_intercept_title));
-            mDataBinding.hintTitle.setText(getContext().getResources().getString(R.string.return_intercept_hint_no));
-            mDataBinding.hint.setVisibility(View.VISIBLE);
-            mDataBinding.withdrawHint.setText(getContext().getResources().getString(R.string.return_intercept_withdraw_no));
-            mDataBinding.jumpButton.setText(getContext().getResources().getString(R.string.return_intercept_button_no));
-            mDataBinding.protocolLayout.setVisibility(View.VISIBLE);
-            mDataBinding.userProtocol.setOnClickListener(this);
-            mDataBinding.privacyProtocol.setOnClickListener(this);
+        boolean protocol = getSharedPreferences().getBoolean("protocol", false) ||
+                ABSwitch.Ins().isOpenAutoAgreeProtocol();
+        mDataBinding.checkBox.setChecked(protocol);
+        mDataBinding.hintTitle.setText(getContext().getResources().getString(R.string.return_intercept_hint_no));
+        mDataBinding.hint.setVisibility(View.VISIBLE);
+        mDataBinding.jumpButton.setText(getContext().getResources().getString(R.string.return_intercept_button_no));
+        mDataBinding.protocolLayout.setVisibility(View.VISIBLE);
+        mDataBinding.userProtocol.setOnClickListener(this);
+        mDataBinding.privacyProtocol.setOnClickListener(this);
 
-            mDataBinding.protocolLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mDataBinding.checkBox.setChecked(!mDataBinding.checkBox.isChecked());
-                }
-            });
+        mDataBinding.protocolLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDataBinding.checkBox.setChecked(!mDataBinding.checkBox.isChecked());
+            }
+        });
 
-        }
         mDataBinding.jumpButton.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("MissingPermission")
             @Override
             public void onClick(View v) {
-                //登录时
-                if (mType == TYPE_1) {
-                    immediatelySnappedUp();
-                }
-                //未登录时
-                if (mType == TYPE_2) {
-                    //判断是否同意了隐私协议
-                    if (mDataBinding.checkBox.isChecked()) {
-                        //存储状态
-                        isSendCloseEvent = false;
-                        AnalysisUtils.onEventEx(mContext, Dot.Lottery_Not_Login_Dialog_Continue);
-                        getEditor().putBoolean("protocol", true).commit();
-                        RouterActivityPath.LoginProvider.getLoginProvider()
-                                .loginWX(null, "抽奖页退出拦截弹窗");
-                    } else {
-                        //檢查是否勾选协议
-                        if (System.currentTimeMillis() - fastVibrateTime > 1500) {
-                            fastVibrateTime = System.currentTimeMillis();
-                            VibrateUtils.vibrate(100); //震动50毫秒
-                        }
-                        ToastUtil.showShort(mContext, "请先同意相关协议");
-
-                        mDataBinding.protocolLayout.clearAnimation();
-                        Animation anim = AnimationUtils.loadAnimation(mContext, R.anim.anim_not_select);
-                        mDataBinding.protocolLayout.startAnimation(anim);
+                //判断是否同意了隐私协议
+                if (mDataBinding.checkBox.isChecked()) {
+                    //存储状态
+                    isSendCloseEvent = false;
+                    AnalysisUtils.onEventEx(mContext, Dot.Lottery_Not_Login_Dialog_Continue);
+                    getEditor().putBoolean("protocol", true).commit();
+                    RouterActivityPath.LoginProvider.getLoginProvider()
+                            .loginWX(null, "抽奖页退出拦截弹窗");
+                } else {
+                    //檢查是否勾选协议
+                    if (System.currentTimeMillis() - fastVibrateTime > 1500) {
+                        fastVibrateTime = System.currentTimeMillis();
+                        VibrateUtils.vibrate(100); //震动50毫秒
                     }
+                    ToastUtil.showShort(mContext, "请先同意相关协议");
+
+                    mDataBinding.protocolLayout.clearAnimation();
+                    Animation anim = AnimationUtils.loadAnimation(mContext, R.anim.anim_not_select);
+                    mDataBinding.protocolLayout.startAnimation(anim);
                 }
             }
         });
@@ -190,7 +164,7 @@ public class ReturnInterceptDialog extends BaseDialog<InterceptDialogLayoutBindi
 
     @Override
     public float setSize() {
-        return 0.9f;
+        return 1.0f;
     }
 
 
@@ -208,14 +182,14 @@ public class ReturnInterceptDialog extends BaseDialog<InterceptDialogLayoutBindi
 
     @Override
     public void onDismiss(DialogInterface dialog) {
-        if(isSendCloseEvent) {
-            if(TYPE_2 == mType) {
-                //未登录关闭
-                AnalysisUtils.onEventEx(mContext, Dot.Lottery_Not_Login_Dialog_Close);
-            }else{
-                //已登录关闭
-                AnalysisUtils.onEventEx(mContext, Dot.Lottery_Login_Dialog_Close);
-            }
+        if (isSendCloseEvent) {
+//            if(TYPE_2 == mType) {
+//                //未登录关闭
+//                AnalysisUtils.onEventEx(mContext, Dot.Lottery_Not_Login_Dialog_Close);
+//            }else{
+//                //已登录关闭
+//                AnalysisUtils.onEventEx(mContext, Dot.Lottery_Login_Dialog_Close);
+//            }
         }
         if (mLotteryHandler != null) {
             mLotteryHandler.removeMessages(0);
