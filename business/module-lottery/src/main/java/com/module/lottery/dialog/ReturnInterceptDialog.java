@@ -42,17 +42,20 @@ import java.lang.ref.WeakReference;
 
 //抽奖页返回拦截dialog
 public class ReturnInterceptDialog extends BaseDialog<InterceptDialogLayoutBinding> implements DialogInterface.OnDismissListener, View.OnClickListener {
+    //未登录
     public static int TYPE_1 = 1;
+    //登录未抽奖
     public static int TYPE_2 = 2;
     private Context mContext;
     private int limitNumber = 1;
     private LotteryHandler mLotteryHandler;
     private long fastVibrateTime = 0;
 
-    public ReturnInterceptDialog(Context context) {
+    public ReturnInterceptDialog(Context context, int dialogType) {
         super(context, R.style.dialogTransparent);//内容样式在这里引入
         this.mContext = context;
         mLotteryHandler = new LotteryHandler(this);
+        this.limitNumber = dialogType;
     }
 
     @Override
@@ -110,49 +113,64 @@ public class ReturnInterceptDialog extends BaseDialog<InterceptDialogLayoutBindi
 
     // 1 表示未登录 2 表示登录未抽奖
     private void initView() {
-        boolean protocol = getSharedPreferences().getBoolean("protocol", false) ||
-                ABSwitch.Ins().isOpenAutoAgreeProtocol();
-        mDataBinding.checkBox.setChecked(protocol);
-        mDataBinding.hintTitle.setText(getContext().getResources().getString(R.string.return_intercept_hint_no));
-        mDataBinding.hint.setVisibility(View.VISIBLE);
-        mDataBinding.jumpButton.setText(getContext().getResources().getString(R.string.return_intercept_button_no));
-        mDataBinding.protocolLayout.setVisibility(View.VISIBLE);
-        mDataBinding.userProtocol.setOnClickListener(this);
-        mDataBinding.privacyProtocol.setOnClickListener(this);
-
-        mDataBinding.protocolLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDataBinding.checkBox.setChecked(!mDataBinding.checkBox.isChecked());
-            }
-        });
-
-        mDataBinding.jumpButton.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("MissingPermission")
-            @Override
-            public void onClick(View v) {
-                //判断是否同意了隐私协议
-                if (mDataBinding.checkBox.isChecked()) {
-                    //存储状态
-                    isSendCloseEvent = false;
-                    AnalysisUtils.onEventEx(mContext, Dot.Lottery_Not_Login_Dialog_Continue);
-                    getEditor().putBoolean("protocol", true).commit();
-                    RouterActivityPath.LoginProvider.getLoginProvider()
-                            .loginWX(null, "抽奖页退出拦截弹窗");
-                } else {
-                    //檢查是否勾选协议
-                    if (System.currentTimeMillis() - fastVibrateTime > 1500) {
-                        fastVibrateTime = System.currentTimeMillis();
-                        VibrateUtils.vibrate(100); //震动50毫秒
-                    }
-                    ToastUtil.showShort(mContext, "请先同意相关协议");
-
-                    mDataBinding.protocolLayout.clearAnimation();
-                    Animation anim = AnimationUtils.loadAnimation(mContext, R.anim.anim_not_select);
-                    mDataBinding.protocolLayout.startAnimation(anim);
+        if (limitNumber == TYPE_1) {
+            boolean protocol = getSharedPreferences().getBoolean("protocol", false) ||
+                    ABSwitch.Ins().isOpenAutoAgreeProtocol();
+            mDataBinding.checkBox.setChecked(protocol);
+            mDataBinding.hintTitle.setText(getContext().getResources().getString(R.string.return_intercept_hint_no));
+            mDataBinding.jumpButton.setText(getContext().getResources().getString(R.string.return_intercept_button_no));
+            mDataBinding.protocolLayout.setVisibility(View.VISIBLE);
+            mDataBinding.userProtocol.setOnClickListener(this);
+            mDataBinding.privacyProtocol.setOnClickListener(this);
+            mDataBinding.protocolLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mDataBinding.checkBox.setChecked(!mDataBinding.checkBox.isChecked());
                 }
-            }
-        });
+            });
+            mDataBinding.jumpButton.setOnClickListener(new View.OnClickListener() {
+                @SuppressLint("MissingPermission")
+                @Override
+                public void onClick(View v) {
+
+                    //判断是否同意了隐私协议
+                    if (mDataBinding.checkBox.isChecked()) {
+                        //存储状态
+                        isSendCloseEvent = false;
+                        AnalysisUtils.onEventEx(mContext, Dot.Lottery_Not_Login_Dialog_Continue);
+                        getEditor().putBoolean("protocol", true).commit();
+                        RouterActivityPath.LoginProvider.getLoginProvider()
+                                .loginWX(null, "抽奖页退出拦截弹窗");
+                    } else {
+                        //檢查是否勾选协议
+                        if (System.currentTimeMillis() - fastVibrateTime > 1500) {
+                            fastVibrateTime = System.currentTimeMillis();
+                            VibrateUtils.vibrate(100); //震动50毫秒
+                        }
+                        ToastUtil.showShort(mContext, "请先同意相关协议");
+
+                        mDataBinding.protocolLayout.clearAnimation();
+                        Animation anim = AnimationUtils.loadAnimation(mContext, R.anim.anim_not_select);
+                        mDataBinding.protocolLayout.startAnimation(anim);
+                    }
+                }
+            });
+        } else {
+            mDataBinding.protocolLayout.setVisibility(View.GONE);
+            mDataBinding.hint.setText("参与抽奖，立即获得");
+            mDataBinding.hintTitle.setText("最高");
+            mDataBinding.jumpButton.setText("立即抢购");
+            mDataBinding.jumpButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnFinishListener != null) {
+                        mOnFinishListener.onDismissAd();
+                        mOnFinishListener.onDismiss();
+                    }
+                }
+            });
+        }
+
 
         //手
         mDataBinding.maskingHand.setImageAssetsFolder("images");
