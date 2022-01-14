@@ -143,14 +143,6 @@
                             android:paddingEnd="47dp"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent">
-
-                            <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="22dp"
-                                android:layout_gravity="center_vertical"
-                                android:scaleType="fitXY"
-                                android:src="@mipmap/play_video_icon" />
-
                             <TextView
                                 android:id="@+id/jump_button"
                                 android:layout_width="wrap_content"

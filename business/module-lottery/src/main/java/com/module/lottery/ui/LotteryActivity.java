@@ -1199,13 +1199,15 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     }
 
 
-    private void showReturnDialog() {
+    private void showReturnDialog(int type) {
         dialogShow = true;
-        ReturnInterceptDialog mReturnInterceptDialog = new ReturnInterceptDialog(LotteryActivity.this);
+        ReturnInterceptDialog mReturnInterceptDialog = new ReturnInterceptDialog(LotteryActivity.this, type);
         mReturnInterceptDialog.setFinishListener(new ReturnInterceptDialog.OnFinishListener() {
             @Override
             public void onDismiss() {
-                mReturnInterceptDialog.dismiss();
+                if (mReturnInterceptDialog.isShowing()) {
+                    mReturnInterceptDialog.dismiss();
+                }
             }
 
             @Override
@@ -1227,7 +1229,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         if (!logType && !dialogShow) {
             //未登录
             //判断抽奖码的数量显示对应的dialog
-            showReturnDialog();
+            showReturnDialog(TYPE_1);
             dialogShow = true;
             return;
         } else {
@@ -1250,7 +1252,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             }
             if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() == 0) {
                 //登录未抽奖
-                showReturnDialog();
+                showReturnDialog(TYPE_2);
                 return;
             }
 
