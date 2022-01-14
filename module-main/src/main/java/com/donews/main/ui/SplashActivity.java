@@ -35,7 +35,6 @@ import com.donews.common.ad.business.manager.JddAdConfigManager;
 import com.donews.common.ad.business.monitor.LotteryAdCount;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.contract.LoginHelp;
-import com.donews.jpush.JPushHelper;
 import com.donews.main.BuildConfig;
 import com.donews.main.R;
 import com.donews.main.databinding.MainActivitySplashBinding;
@@ -192,8 +191,8 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
             AnalysisHelp.register(getApplication());
         }
         //极光推送
-        JPushHelper.setDebugMode(BuildConfig.DEBUG);
-        JPushHelper.init(getApplication());
+//        JPushHelper.setDebugMode(BuildConfig.DEBUG);
+//        JPushHelper.init(getApplication());
     }
 
     private void showPersonGuideDialog() {

@@ -21,7 +21,6 @@ dependencies {
     implementation project(':common:library-sdk')
     implementation project(':common:lib_eventbus')
     implementation project(':middleware:module-middleware')
-    implementation project(':common:library-jpush')
 
     implementation('org.raphets:roundimageview:1.2.0')
     api 'me.majiajie:pager-bottom-tab-strip:2.3.0X'

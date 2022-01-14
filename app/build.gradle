@@ -125,7 +125,6 @@ dependencies {
         implementation project(path: ':module-main')
         implementation project(path: ':module-login')
         implementation project(path: ':common:library-webview')
-        implementation project(path: ':common:library-jpush')
         implementation project(path: ':business:module-mine')
         implementation project(path: ':business:module-home')
         implementation project(path: ':business:module-front')

@@ -14,7 +14,6 @@ import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.UserInfoBean;
 import com.donews.common.router.RouterFragmentPath;
-import com.donews.jpush.utils.JPushSwitch;
 import com.donews.middle.abswitch.ABSwitch;
 import com.donews.mine.common.CommonParams;
 import com.donews.mine.databinding.MineSettingFragmentBinding;
@@ -135,17 +134,17 @@ public class MineSettingFragment extends
             TextView tvDesc = item.findViewById(R.id.tv_right_desc);
             tvTitle.setText(mViewModel.getItemTitleName(itemViewCount));
             if (swControl != null) {
-                boolean type = JPushSwitch.getSwitchType(getContext());
-                swControl.setChecked(!type);
+//                boolean type = JPushSwitch.getSwitchType(getContext());
+//                swControl.setChecked(!type);
                 swControl.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if (isChecked) {
                             ToastUtil.show(getContext(), "消息通知已开启");
-                            JPushSwitch.resumePush(getContext());
+//                            JPushSwitch.resumePush(getContext());
                         } else {
                             ToastUtil.show(getContext(), "消息通知已关闭");
-                            JPushSwitch.stopPush(getContext());
+//                            JPushSwitch.stopPush(getContext());
                         }
                     }
                 });

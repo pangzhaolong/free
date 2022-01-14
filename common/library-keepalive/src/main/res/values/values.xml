@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <drawable name="one_pixel_bg">@android:color/holo_red_dark</drawable>
-</resources>
