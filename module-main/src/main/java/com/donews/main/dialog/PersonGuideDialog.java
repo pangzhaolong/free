@@ -44,7 +44,6 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
         dataBinding.tvRefuse.setOnClickListener(v -> {
             AnalysisUtils.onEventEx(getActivity(), Dot.Btn_ServiceThink);
             dataBinding.llGuide.setVisibility(View.GONE);
-            dataBinding.imgMainPeople.setVisibility(View.GONE);
             dataBinding.llRefuseHint.setVisibility(View.VISIBLE);
         });
         dataBinding.tvRefuseHint.setText(
@@ -63,7 +62,6 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
         //必须设置才能响应点击事件
         dataBinding.tvDeal.setMovementMethod(LinkMovementMethod.getInstance());
 
-
         //退出应用
         dataBinding.tvExit.setOnClickListener(v -> {
             AnalysisUtils.onEventEx(getActivity(), Dot.Btn_ServiceThinkExit);
@@ -81,8 +79,6 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
             }
             disMissDialog();
         });
-
-
     }
 
     public PersonGuideDialog setSureListener(SureListener sureListener) {
@@ -151,12 +147,10 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
                         .withString("title", "隐私政策").navigation();
                 //重新设置文字背景为透明色。否则会出现淡绿色背景
                 dataBinding.tvDeal.setHighlightColor(Color.TRANSPARENT);
-
             }
 
             @Override
             public void updateDrawState(@NonNull TextPaint ds) {
-
                 //设置颜色
                 ds.setColor(Color.parseColor("#F33838"));
                 ds.setFakeBoldText(true);
@@ -165,7 +159,6 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
             }
         }, privacyIndex, privacyLength, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
         return span;
-
     }
 
     public static String getAppName(Context context) {
