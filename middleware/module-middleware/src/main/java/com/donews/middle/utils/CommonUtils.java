@@ -19,6 +19,7 @@ import com.donews.middle.service.CritLotteryService;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.DateManager;
+import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.SPUtils;
 import com.orhanobut.logger.Logger;
 
@@ -78,5 +79,9 @@ public class CommonUtils {
             }
 
         }
+    }
+
+    public static boolean isAllRpOpened() {
+        return SPUtils.getInformain(KeySharePreferences.OPENED_RED_PACKAGE_COUNTS, 0) >= 5;
     }
 }
