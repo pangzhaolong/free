@@ -60,6 +60,7 @@ import com.module.lottery.bean.CritCodeBean;
 import com.module.lottery.bean.GenerateCodeBean;
 import com.module.lottery.bean.LotteryCodeBean;
 import com.module.lottery.dialog.CongratulationsDialog;
+import com.module.lottery.dialog.EnvelopeStateDialog;
 import com.module.lottery.dialog.ExclusiveLotteryCodeDialog;
 import com.module.lottery.dialog.ExhibitCodeStartsDialog;
 import com.module.lottery.dialog.GenerateCodeDialog;
@@ -198,8 +199,8 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             ifOpenAutoLotteryAndCount();
         }
         mStart_lottery = false;
-        Message mes = new Message();
-        handler.sendMessageDelayed(mes, 2000);
+//        Message mes = new Message();
+//        handler.sendMessageDelayed(mes, 2000);
     }
 
 
@@ -207,7 +208,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
-            showLessMaxDialog();
+            showEnvelopeStateDialog();
         }
     };
 
@@ -1238,6 +1239,26 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     }
 
 
+    private void showEnvelopeStateDialog() {
+        dialogShow = true;
+        EnvelopeStateDialog envelopeStateDialog = new EnvelopeStateDialog(LotteryActivity.this);
+        envelopeStateDialog.setFinishListener(new EnvelopeStateDialog.OnFinishListener() {
+            @Override
+            public void onFinish() {
+
+            }
+
+            @Override
+            public void onFinishAd() {
+
+            }
+        });
+        envelopeStateDialog.create();
+        envelopeStateDialog.show(LotteryActivity.this);
+        return;
+    }
+
+
     private void returnIntercept() {
         boolean logType = AppInfo.checkIsWXLogin();
         if (!logType && !dialogShow) {
@@ -1266,11 +1287,12 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             }
             if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() == 0) {
                 //登录未抽奖
-
-
-
-                //首页红包是否开完
-                showReturnDialog(TYPE_2);
+                if (CommonUtils.isAllRpOpened()) {
+                    //首页红包开完
+                    showEnvelopeStateDialog();
+                }else{
+                    showReturnDialog(TYPE_2);
+                }
                 return;
             }
 
