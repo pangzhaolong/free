@@ -199,8 +199,8 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             ifOpenAutoLotteryAndCount();
         }
         mStart_lottery = false;
-//        Message mes = new Message();
-//        handler.sendMessageDelayed(mes, 2000);
+        Message mes = new Message();
+        handler.sendMessageDelayed(mes, 2000);
     }
 
 
@@ -208,7 +208,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
-            showEnvelopeStateDialog();
+            showExclusiveCodeDialog();
         }
     };
 

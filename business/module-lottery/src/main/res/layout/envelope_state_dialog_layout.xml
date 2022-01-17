@@ -34,6 +34,9 @@
             tools:ignore="ResourceName">
 
             <com.airbnb.lottie.LottieAnimationView
+                android:background="#E9662C"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
                 android:id="@+id/jsonAnimation"
                 android:layout_width="match_parent"
                 android:layout_height="96dp"
