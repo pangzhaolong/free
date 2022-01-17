@@ -12,6 +12,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
@@ -253,7 +254,8 @@ public class NotifyScreenDelegate {
 
     private boolean canShowAct() {
         Log.w(NotifyInitProvider.TAG, "App  Activity Stack Size: " + AppManager.getInstance().getActivitySize());
-        return AppManager.getInstance().getActivitySize() <= 0;
+        return AppManager.getInstance().getActivitySize() <= 0 ||
+                !AppUtils.isAppForeground();
     }
 
     //检查是否距离上一次点击进入应用达到了足够值,T:已达到间隔时间，F:还未达到间隔时间
