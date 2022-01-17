@@ -26,7 +26,8 @@ public class ABBean extends BaseCustomViewModel {
     private boolean openGuidGif = false;
     @SerializedName("lotteryLine")
     private int lotteryLine = 0;
-
+    @SerializedName("lotteryPriceShow")
+    private int lotteryPriceShow = 1;  //应用显示的抽奖价格 默认1元
     @SerializedName("openCritModel")                //暴击模式开关；true: 打开；false:关闭
     private boolean openCritModel = true;
     @SerializedName("openCritModelByOldUserCount")  //老用户抽奖几次开启暴击
@@ -183,7 +184,13 @@ public class ABBean extends BaseCustomViewModel {
                 "ab='" + openAB + '\'' +
                 '}';
     }
+    public int getLotteryPriceShow() {
+        return lotteryPriceShow;
+    }
 
+    public void setLotteryPriceShow(int lotteryPriceShow) {
+        this.lotteryPriceShow = lotteryPriceShow;
+    }
     public boolean isOpenAB() {
         return openAB;
     }
