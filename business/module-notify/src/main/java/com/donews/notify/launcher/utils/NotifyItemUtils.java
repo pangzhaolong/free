@@ -142,7 +142,7 @@ public class NotifyItemUtils {
     public static List<Notify2DataConfigBean.UiTemplat> getMeetConditionalUiTemplats() {
         initAdCountMMkv();
         //当前的时间
-        long currentTime = com.donews.utilslibrary.utils.SPUtils.getLongInformain(TIME_SERVICE, 0L);
+        long currentTime = com.donews.utilslibrary.utils.SPUtils.getLongInformain(TIME_SERVICE, 0L) * 1000;
         //获取本地的保存已经限制的次数(各种类型的通知已经提示过的次数)
         // key:分类id，value:分类当日已经展示的次数
         Map<Integer, Integer> notifyCountMap = new HashMap<Integer, Integer>();
