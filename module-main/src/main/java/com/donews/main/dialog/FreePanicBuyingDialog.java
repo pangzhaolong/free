@@ -1,5 +1,7 @@
 package com.donews.main.dialog;
 
+import static com.donews.middle.utils.CommonUtils.LOTTERY_FINGER;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -184,7 +186,7 @@ public class FreePanicBuyingDialog extends BaseDialog<FreePanicDialogLayoutBindi
 
         //手
         mDataBinding.maskingHand.setImageAssetsFolder("images");
-        mDataBinding.maskingHand.setAnimation("lottery_finger.json");
+        mDataBinding.maskingHand.setAnimation(LOTTERY_FINGER);
         mDataBinding.maskingHand.loop(true);
         mDataBinding.maskingHand.playAnimation();
 

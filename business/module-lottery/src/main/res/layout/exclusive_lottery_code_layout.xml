@@ -49,6 +49,7 @@
 
 
             <RelativeLayout
+                android:layout_marginTop="-1dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/top_layout"
@@ -127,7 +128,7 @@
                         android:id="@+id/tips"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="50dp"
+                        android:layout_marginEnd="20dp"
                         android:background="@drawable/limited_time_bg"
                         android:paddingStart="13dp"
                         android:paddingTop="3dp"

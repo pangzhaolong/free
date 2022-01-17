@@ -8,6 +8,8 @@
 
 package com.donews.mine.dialogs;
 
+import static com.donews.middle.utils.CommonUtils.LOTTERY_FINGER;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -101,7 +103,7 @@ public class MineCongratulationsDialog extends BaseDialog<MineCongratulationsDia
             dismiss();
         });
         mDataBinding.jsonHand.setImageAssetsFolder("images");
-        mDataBinding.jsonHand.setAnimation("lottery_finger.json");
+        mDataBinding.jsonHand.setAnimation(LOTTERY_FINGER);
         mDataBinding.jsonHand.loop(true);
         mDataBinding.jsonHand.playAnimation();
         startAnimation();

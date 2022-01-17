@@ -1,6 +1,8 @@
 package com.donews.main.ui;
 
 
+import static com.donews.middle.utils.CommonUtils.LOTTERY_FINGER;
+
 import android.content.Context;
 import android.graphics.LinearGradient;
 import android.os.Bundle;
@@ -166,7 +168,7 @@ public class GuideActivity
         mDataBinding.guideCententAnim.playAnimation();
         //手指动画
         mDataBinding.guideFingerAnim.setImageAssetsFolder("images");
-        mDataBinding.guideFingerAnim.setAnimation("lottery_finger.json");
+        mDataBinding.guideFingerAnim.setAnimation(LOTTERY_FINGER);
         mDataBinding.guideFingerAnim.loop(true);
         mDataBinding.guideFingerAnim.playAnimation();
     }

@@ -1,6 +1,7 @@
 package com.module.lottery.ui;
 
 import static com.donews.common.config.CritParameterConfig.CRIT_STATE;
+import static com.donews.middle.utils.CommonUtils.LOTTERY_FINGER;
 import static com.module.lottery.dialog.ReturnInterceptDialog.TYPE_1;
 import static com.module.lottery.dialog.ReturnInterceptDialog.TYPE_2;
 
@@ -98,10 +99,10 @@ import java.util.Map;
  */
 @Route(path = RouterFragmentPath.Lottery.PAGER_LOTTERY)
 public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, LotteryViewModel> {
+
     private static final String TAG = "LotteryActivity";
     private static final String LOTTERY_ACTIVITY = "LOTTERY_ACTIVITY";
     private static final String FIRST_SHOW = "first_show";
-    private static final String LOTTERY_FINGER = "lottery_finger.json";
     private static final String LOTTERY_ROUND = "lottery_round.json";
     private static final String CRIT_ROUND = "cruel_time.json";
     private static final String CRITICAL_BT_TITLE_0 = "暴击";
@@ -396,7 +397,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             //圆 新手引导遮罩层
             initLottie(mDataBinding.maskingButton, "lottery_round.json");
             //小手 新手引导遮罩层
-            initLottie(mDataBinding.maskingHand, "lottery_finger.json");
+            initLottie(mDataBinding.maskingHand, LOTTERY_FINGER);
         } else {
             mDataBinding.maskingLayout.setVisibility(View.GONE);
             mSharedPreferences.edit().putBoolean(FIRST_SHOW, false).apply();
@@ -407,7 +408,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         if (play) {
             //设置动画
             //小手
-            initLottie(mDataBinding.jsonAnimation, "lottery_finger.json");
+            initLottie(mDataBinding.jsonAnimation, LOTTERY_FINGER);
             mDataBinding.jsonAnimation.setVisibility(View.VISIBLE);
             //圆
             if (CriticalModelTool.ifCriticalStrike()) {

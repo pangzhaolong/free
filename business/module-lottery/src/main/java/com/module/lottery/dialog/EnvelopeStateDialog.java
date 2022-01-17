@@ -8,6 +8,8 @@
 
 package com.module.lottery.dialog;
 
+import static com.donews.middle.utils.CommonUtils.LOTTERY_FINGER;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
@@ -68,7 +70,7 @@ public class EnvelopeStateDialog extends BaseDialog<EnvelopeStateDialogLayoutBin
         mDataBinding.jsonAnimation.loop(true);
         mDataBinding.jsonAnimation.playAnimation();
         mDataBinding.jsonHand.setImageAssetsFolder("images");
-        mDataBinding.jsonHand.setAnimation("lottery_finger.json");
+        mDataBinding.jsonHand.setAnimation(LOTTERY_FINGER);
         mDataBinding.jsonHand.loop(true);
         mDataBinding.jsonHand.playAnimation();
 

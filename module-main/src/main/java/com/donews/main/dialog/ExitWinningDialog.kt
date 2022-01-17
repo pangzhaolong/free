@@ -14,6 +14,7 @@ import com.donews.main.databinding.MainExitDialogRedPacketNotAllOpenBinding
 import com.donews.main.databinding.MainExitDialogWinningOpenBinding
 import com.donews.middle.bean.HighValueGoodsBean
 import com.donews.middle.cache.GoodsCache
+import com.donews.middle.utils.CommonUtils
 import com.donews.utilslibrary.utils.KeySharePreferences
 import com.donews.utilslibrary.utils.KeySharePreferences.STEPS_TO_GOLD_RED_PACKAGE_COUNTS
 import com.donews.utilslibrary.utils.SPUtils
@@ -159,7 +160,7 @@ class ExitWinningDialog : AbstractFragmentDialog<MainExitDialogWinningOpenBindin
         showCloseBtn()
         //手
         dataBinding.maskingHand.imageAssetsFolder = "images"
-        dataBinding.maskingHand.setAnimation("lottery_finger.json")
+        dataBinding.maskingHand.setAnimation(CommonUtils.LOTTERY_FINGER)
         dataBinding.maskingHand.loop(true)
         dataBinding.maskingHand.playAnimation()
     }

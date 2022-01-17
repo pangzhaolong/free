@@ -63,7 +63,7 @@ class GoodLuckDoubleDialog() :
         }
         //手
         mDataBinding.maskingHand.imageAssetsFolder = "images"
-        mDataBinding.maskingHand.setAnimation("lottery_finger.json")
+        mDataBinding.maskingHand.setAnimation(CommonUtils.LOTTERY_FINGER)
         mDataBinding.maskingHand.loop(true)
         mDataBinding.maskingHand.playAnimation()
     }

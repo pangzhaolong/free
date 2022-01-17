@@ -1,5 +1,7 @@
 package com.donews.main.dialog;
 
+import static com.donews.middle.utils.CommonUtils.LOTTERY_FINGER;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -143,7 +145,7 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
             }
         });
 
-        initLottie(mDataBinding.mainEnterDialogLottie, "lottery_finger.json");
+        initLottie(mDataBinding.mainEnterDialogLottie, LOTTERY_FINGER);
         setOnDismissListener(dialog -> {
             if (isSendCloseEvent) {
                 if (AppInfo.checkIsWXLogin()) {

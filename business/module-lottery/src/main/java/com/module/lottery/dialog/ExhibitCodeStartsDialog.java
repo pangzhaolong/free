@@ -9,6 +9,7 @@
 package com.module.lottery.dialog;
 
 import static com.donews.common.config.CritParameterConfig.CRIT_STATE;
+import static com.donews.middle.utils.CommonUtils.LOTTERY_FINGER;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
@@ -278,7 +279,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
 
             //手
             mDataBinding.jsonAnimationHand.setImageAssetsFolder("images");
-            mDataBinding.jsonAnimationHand.setAnimation("lottery_finger.json");
+            mDataBinding.jsonAnimationHand.setAnimation(LOTTERY_FINGER);
             mDataBinding.jsonAnimationHand.loop(true);
             mDataBinding.jsonAnimationHand.playAnimation();
 

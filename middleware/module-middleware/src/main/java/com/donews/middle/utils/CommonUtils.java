@@ -26,15 +26,19 @@ import com.orhanobut.logger.Logger;
 import org.greenrobot.eventbus.EventBus;
 
 public class CommonUtils {
+    //小手的动画
+    public static final String LOTTERY_FINGER = "middle_critical_ani.json";
+
     //开始暴击模式
     public static void startCrit() {
-      //判断暴击模式是否处于开启中
+        //判断暴击模式是否处于开启中
         int critState = SPUtils.getInformain(CRIT_STATE, 0);
         if (critState == 0) {
             MiddleModuleInit.requestCriticalWallet(new MiddleModuleInit.ICriticalWalletListener() {
                 @Override
                 public void onError() {
                 }
+
                 @Override
                 public void onSuccess(CriticalNumberBean numberBean) {
                     if (numberBean != null) {
@@ -48,12 +52,12 @@ public class CommonUtils {
                         //判断开启了多少次
                         //通知开始暴击模式  模拟开启暴击模式
                         EventBus.getDefault().post(new CritMessengerBean(200));
-                        AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.CRITICAL_NUMBER_AND_SUM_NUMBER,numberBean.getUseTimes()+"/"+numberBean.getTotalTimes()+"");
+                        AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.CRITICAL_NUMBER_AND_SUM_NUMBER, numberBean.getUseTimes() + "/" + numberBean.getTotalTimes() + "");
 
 
                     }
                 }
-            },"true");
+            }, "true");
         }
     }
 
