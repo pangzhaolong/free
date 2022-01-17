@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.donews.base.utils.GsonUtils;
 import com.donews.base.utils.ToastUtil;
+import com.donews.common.BuildConfig;
 import com.donews.notify.launcher.NotifyAnimationView;
 import com.donews.notify.launcher.configs.Notify2ConfigManager;
 import com.donews.notify.launcher.configs.baens.Notify2DataConfigBean;
@@ -40,6 +41,9 @@ import java.util.Set;
  * 顶部桌面通知工具，支持的类型：{@link NotifyItemType}
  */
 public class NotifyItemUtils {
+
+    //是否开启通知的debug模式。开启之后再UI模板筛选时。就跳过后台逻辑条件可以
+    private static boolean isOpenNotifyDebug = BuildConfig.DEBUG && false;
 
     private static MMKV mmkv;
     /**
@@ -203,8 +207,8 @@ public class NotifyItemUtils {
                     openRedPackCount == notifyConfig.dayReceiveRedCount) &&
                     (notifyConfig.dayLotteryCodeCount < 0 ||
                             getLotteryCodeCount == notifyConfig.dayLotteryCodeCount);
-            //检查上诉条件是否足够
-            if (true || regTimeTj && dayTj2) {
+            //检查上诉条件是否足够(同时优先判断是否开启debug跳过)
+            if (isOpenNotifyDebug || regTimeTj && dayTj2) {
                 for (Notify2DataConfigBean.UiTemplat uiModel : notifyConfig.uiTemplate) {
                     if (!uiModel.isOpen) {
                         continue; //当前通知未打开。忽略
