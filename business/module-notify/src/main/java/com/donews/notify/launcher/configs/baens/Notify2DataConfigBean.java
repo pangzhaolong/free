@@ -135,6 +135,12 @@ public class Notify2DataConfigBean {
 
         /**
          * [UI模板5 特有]
+         * 非通用：金额顶部的描述文字
+         */
+        private String titleNumnerDesc;
+
+        /**
+         * [UI模板5 特有]
          * 非通用：标题的前缀文案
          */
         private String titlePrefix;
@@ -171,11 +177,13 @@ public class Notify2DataConfigBean {
             this.iconRight = FixTagUtils.buildContentTag(this, iconRight);
             this.buttonLeft = FixTagUtils.buildContentTag(this, buttonLeft);
             this.buttonRight = FixTagUtils.buildContentTag(this, buttonRight);
+            this.titleNumnerDesc = FixTagUtils.buildContentTag(this, titleNumnerDesc);
             this.titlePrefix = FixTagUtils.buildContentTag(this, titlePrefix);
             this.descPrefix = FixTagUtils.buildContentTag(this, descPrefix);
             //反向处理一次。因为有可能存在反向引用
             this.descPrefix = FixTagUtils.buildContentTag(this, descPrefix);
             this.titlePrefix = FixTagUtils.buildContentTag(this, titlePrefix);
+            this.titleNumnerDesc = FixTagUtils.buildContentTag(this, titleNumnerDesc);
             this.buttonRight = FixTagUtils.buildContentTag(this, buttonRight);
             this.buttonLeft = FixTagUtils.buildContentTag(this, buttonLeft);
             this.iconRight = FixTagUtils.buildContentTag(this, iconRight);
@@ -287,6 +295,14 @@ public class Notify2DataConfigBean {
         }
 
         /**
+         * 获取标题金额的描述文字
+         * @return
+         */
+        public String getTitleNumnerDesc() {
+            return titleNumnerDesc;
+        }
+
+        /**
          * 获取UI模板5的描述前缀
          * @return
          */
@@ -348,6 +364,10 @@ public class Notify2DataConfigBean {
 
         public void setTitlePrefix(String titlePrefix) {
             this.titlePrefix = titlePrefix;
+        }
+
+        public void setTitleNumnerDesc(String titleNumnerDesc) {
+            this.titleNumnerDesc = titleNumnerDesc;
         }
 
         public void setDescPrefix(String descPrefix) {

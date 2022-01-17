@@ -58,6 +58,8 @@ public class NotifyItemTypeLotBottom5Impl extends AbsNotifyInvokTask {
         ImageView close = targetView.findViewById(R.id.notify_item_lott2_close);
         //顶部图标
         ImageView icon = targetView.findViewById(R.id.notify_item_lott2_icon);
+        //金额描述
+        TextView numnerDesc = targetView.findViewById(R.id.notify_item_lott2_rz);
         //金额
         TextView numner = targetView.findViewById(R.id.notify_item_lott2_num);
         //微信名称前的描述信息
@@ -78,6 +80,7 @@ public class NotifyItemTypeLotBottom5Impl extends AbsNotifyInvokTask {
         goodName.setText(FixTagUtils.convertHtml(uiTemplat.getDesc()));
         but.setText(FixTagUtils.convertHtml(uiTemplat.getButtonLeft()));
         if (uiTemplat.getType() == 0) {
+            numnerDesc.setText(uiTemplat.getTitleNumnerDesc());
             //金额
             jeLL.setVisibility(View.VISIBLE);
             icon.setVisibility(View.GONE);

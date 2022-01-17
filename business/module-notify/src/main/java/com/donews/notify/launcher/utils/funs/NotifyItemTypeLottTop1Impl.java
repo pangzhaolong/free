@@ -32,6 +32,9 @@ import com.donews.notify.launcher.utils.NotifyItemUtils;
 import com.donews.notify.launcher.utils.fix.FixTagUtils;
 import com.donews.notify.launcher.utils.fix.covert.ResConvertUtils;
 
+import java.util.List;
+import java.util.Random;
+
 /**
  * @author lcl
  * Date on 2022/1/5
@@ -78,10 +81,12 @@ public class NotifyItemTypeLottTop1Impl extends AbsNotifyInvokTask {
         title.setText(FixTagUtils.convertHtml(uiTemplat.getTitle()));
         name.setText(FixTagUtils.convertHtml(uiTemplat.getName()));
         desc.setText(FixTagUtils.convertHtml(uiTemplat.getDesc()));
-        if(uiTemplat.getIconRight() == null || uiTemplat.getIconRight().isEmpty()){
+        List<Notify2DataConfigBean.UiTemplatImageItem> ls = uiTemplat.getGoodImages();
+        if (ls == null || ls.isEmpty()) {
             goodIcon.setVisibility(View.GONE);
-        }else{
-            ResConvertUtils.buidIcon(goodIcon,uiTemplat.getIconRight());
+        } else {
+            Notify2DataConfigBean.UiTemplatImageItem item = ls.get(new Random().nextInt(ls.size()));
+            GlideUtils.loadImageView(targetView.getContext(), item.goodIcon, goodIcon);
         }
 
         //回调视图任务

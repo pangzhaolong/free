@@ -22,7 +22,7 @@ object HotStartCacheUtils {
     /**
      * 是否开启debug的调试模式(开启之后。可以直接点击打开通知)
      */
-    var isDebugNotify = false && BuildConfig.DEBUG
+    var isDebugNotify = true && BuildConfig.DEBUG
 
     fun addHotStartAdDialog() {
         val activity = AppManager.getInstance().topActivity
