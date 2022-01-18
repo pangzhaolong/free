@@ -10,7 +10,6 @@ import android.util.Log;
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.Utils;
 import com.donews.base.base.BaseApplication;
-import com.donews.base.utils.ToastUtil;
 import com.donews.common.NotifyLuncherConfigManager;
 import com.donews.notify.launcher.NotifyScreenDelegate;
 

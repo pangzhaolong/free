@@ -21,6 +21,7 @@ import com.donews.base.base.AppManager;
 import com.donews.base.base.BaseApplication;
 import com.donews.base.storage.MmkvHelper;
 import com.donews.base.utils.ToastUtil;
+import com.donews.common.BuildConfig;
 import com.donews.common.NotifyLuncherConfigManager;
 import com.donews.utilslibrary.utils.AppStatusUtils;
 import com.donews.utilslibrary.utils.KeySharePreferences;
@@ -86,9 +87,11 @@ public class NotifyScreenDelegate {
                 Log.e("notifyDes", "解锁成功。开始检查显示弹否");
                 NotifyActionActivity.destroy();
                 if (canShowNotify() && canShowAct() && canShowFastClick()) {
-                    mHandler.post(()->{
-                        ToastUtil.showShort(BaseApplication.getInstance(), "(解锁)条件通过。开始显示通知");
-                    });
+                    if (BuildConfig.DEBUG) {
+                        mHandler.post(() -> {
+                            ToastUtil.showShort(BaseApplication.getInstance(), "(解锁)条件通过。开始显示通知");
+                        });
+                    }
                     tryLoadNewImg(context);
                     long delayTime = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyDelayShowTime;
                     mLastShowTime = System.currentTimeMillis();
@@ -96,9 +99,11 @@ public class NotifyScreenDelegate {
                     Log.e("notifyDes", "检查通知通过。发起延迟通知");
                     mHandler.postDelayed(getShowNotifyRunnable(context), delayTime);
                 } else {
-                    mHandler.post(()->{
-                        ToastUtil.show(BaseApplication.getInstance(), "(解锁)条件检查未通过a=" + canShowNotify() + ",b=" + canShowAct() + ",c=" + canShowFastClick());
-                    });
+                    if (BuildConfig.DEBUG) {
+                        mHandler.post(() -> {
+                            ToastUtil.show(BaseApplication.getInstance(), "(解锁)条件检查未通过a=" + canShowNotify() + ",b=" + canShowAct() + ",c=" + canShowFastClick());
+                        });
+                    }
                     Log.w(NotifyInitProvider.TAG, action + " can't show");
                 }
                 break;
@@ -135,9 +140,11 @@ public class NotifyScreenDelegate {
         Log.e("notifyDes", "(后台)开始显示桌面通知");
         NotifyActionActivity.destroy();
         if (canShowNotify() && canShowAct() && canShowFastClick()) {
-            mHandler.post(()->{
-                ToastUtil.showShort(BaseApplication.getInstance(), "条件检查通过。后台计时通知");
-            });
+            if (BuildConfig.DEBUG) {
+                mHandler.post(() -> {
+                    ToastUtil.showShort(BaseApplication.getInstance(), "条件检查通过。后台计时通知");
+                });
+            }
             Log.e("notifyDes", "(后台)条件通过");
             long delayTime = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyDelayShowTime;
             mLastShowTime = System.currentTimeMillis();
@@ -160,9 +167,11 @@ public class NotifyScreenDelegate {
 //                tryLoadNewImg2(context);
 //            }
         } else {
-            mHandler.post(()->{
-                ToastUtil.show(BaseApplication.getInstance(), "(后台)条件检查未通过a=" + canShowNotify() + ",b=" + canShowAct() + ",c=" + canShowFastClick());
-            });
+            if (BuildConfig.DEBUG) {
+                mHandler.post(() -> {
+                    ToastUtil.show(BaseApplication.getInstance(), "(后台)条件检查未通过a=" + canShowNotify() + ",b=" + canShowAct() + ",c=" + canShowFastClick());
+                });
+            }
         }
     }
 
