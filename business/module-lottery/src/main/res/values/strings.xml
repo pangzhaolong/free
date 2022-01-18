@@ -6,7 +6,7 @@
     <string name="raiders_name3" tools:ignore="ResourceName">中奖规则</string>
     <string name="raiders_name4" tools:ignore="ResourceName">领奖规则</string>
 
-    <string name="zero_dollar_draw" tools:ignore="ResourceName">0元</string>
+    <string name="zero_dollar_draw" tools:ignore="ResourceName">点击</string>
     <string name="lottery_value" tools:ignore="ResourceName">中奖率</string>
     <string name="continue_value" tools:ignore="ResourceName">增加</string>
     <string name="wait_dollar_draw" tools:ignore="ResourceName">待开奖</string>
