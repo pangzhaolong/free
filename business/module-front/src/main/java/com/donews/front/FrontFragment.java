@@ -288,7 +288,10 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         if (ti == null) {
             return;
         }
-        fl.setOnClickListener(v -> GotoUtil.doAction(context, ti.getAction(), ti.getTitle(), "front"));
+        fl.setOnClickListener(v -> {
+            AnalysisUtils.onEventEx(mContext, Dot.TASK_CLICK, "" + idx);
+            GotoUtil.doAction(context, ti.getAction(), ti.getTitle(), "front");
+        });
         if (ti.getModel() == 1) {
             mixIv.setVisibility(View.GONE);
             iv.setVisibility(View.VISIBLE);
@@ -961,10 +964,10 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         }
 
         if (!AppInfo.checkIsWXLogin()) {
-            ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
+            /*ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
                     .withString("from", "privilege")
-                    .navigation();
-
+                    .navigation();*/
+            EventBus.getDefault().post(new DoubleRpEvent(9, 0f, "", "", 0f));
             return;
         }
 
@@ -975,9 +978,11 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         WalletBean.RpBean bean = mWalletBean.getList().get(0);
         if (!bean.getOpened()) {
             if (bean.getHadLotteryTotal() < bean.getLotteryTotal()) {
-                ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
+                /*ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
                         .withString("from", "privilege")
-                        .navigation();
+                        .navigation();*/
+
+                EventBus.getDefault().post(new DoubleRpEvent(9, 0f, "", "", 0f));
                 AnalysisUtils.onEventEx(mContext, Dot.But_Rp_Click, String.valueOf(1));
             } else {
                 openRp();
@@ -1014,7 +1019,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         }
 
         if (allOpened) {
-            EventBus.getDefault().post(new DoubleRpEvent(3, 0f, "", ""));
+            EventBus.getDefault().post(new DoubleRpEvent(3, 0f, "", "", 0f));
         }
     }
 
@@ -1029,10 +1034,13 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 //                Toast.makeText(this.getContext(), "开启红包失败，请稍后再试或者反馈给我们，谢谢！", Toast.LENGTH_SHORT).show();
                 return;
             }
-            ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
+
+            EventBus.getDefault().post(new DoubleRpEvent(10, doubleRedPacketBean.getScore(), doubleRedPacketBean.getRestId(), "", 0f));
+
+            /*ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
                     .withFloat("score", doubleRedPacketBean.getScore())
                     .withString("restId", doubleRedPacketBean.getRestId())
-                    .navigation();
+                    .navigation();*/
             loadRpData(false);
             EventBus.getDefault().post(new WalletRefreshEvent(0));
         });

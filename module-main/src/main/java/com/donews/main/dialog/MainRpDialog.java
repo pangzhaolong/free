@@ -1,33 +1,31 @@
-package com.donews.main.ui;
-
-import static com.donews.utilslibrary.utils.KeySharePreferences.NOTIFY_RANDOM_RED_AMOUNT;
+package com.donews.main.dialog;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Bundle;
+import android.content.DialogInterface;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 
 import androidx.annotation.Keep;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 
-import com.alibaba.android.arouter.facade.annotation.Autowired;
-import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.events.DoubleRpEvent;
 import com.dn.events.events.LoginLodingStartStatus;
 import com.dn.sdk.listener.IAdRewardVideoListener;
+import com.donews.base.fragmentdialog.AbstractFragmentDialog;
+import com.donews.base.fragmentdialog.LoadingHintDialog;
 import com.donews.base.utils.ToastUtil;
-import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.common.ad.cache.AdVideoCacheUtils;
-import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.main.BuildConfig;
 import com.donews.main.R;
-import com.donews.main.databinding.MainRpActivityBinding;
+import com.donews.main.databinding.MainRpDialogLayoutExBindingImpl;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoods;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoodsResp;
 import com.donews.middle.abswitch.ABSwitch;
@@ -44,75 +42,87 @@ import com.donews.utilslibrary.utils.HttpConfigUtilsKt;
 import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.SPUtils;
 import com.donews.utilslibrary.utils.SoundHelp;
-import com.gyf.immersionbar.BarHide;
-import com.gyf.immersionbar.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-@Route(path = RouterActivityPath.Rp.PAGE_RP)
-public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, BaseLiveDataViewModel> {
+public class MainRpDialog extends AbstractFragmentDialog<MainRpDialogLayoutExBindingImpl> {
 
     //此页面退出的。是否显示插屏广告
     public static boolean isShowInnerAd = false;
 
     private Context mContext;
-
-    //    private Animation mScaleAnimation;
     private ExitDialogRecommendGoods mGoods;
-
     private CountDownTimer mCountDownTimer;
-
     private float mRestScore;
     private boolean mIsVerify = false;
 
-    @Autowired
-    String from;
-    @Autowired
-    float score;
-    @Autowired
-    String restId;
-    @Autowired
-    String preId;
+    private String mFrom;
+    private float mScore;
+    private String mRestId;
+    private String mPreId;
 
-
-    @SuppressLint("DefaultLocale")
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = context;
 
         EventBus.getDefault().register(this);
-        mContext = this;
 
-        ARouter.getInstance().inject(this);
-        SoundHelp.newInstance().init(this);
+        SoundHelp.newInstance().init(context);
         SoundHelp.newInstance().onStart();
+    }
 
+    public MainRpDialog(String from, float score, String restId, String preId) {
+        mFrom = from;
+        mScore = score;
+        mRestId = restId;
+        mPreId = preId;
+    }
+/*
+
+    @Override
+    public int setLayout() {
+        return R.layout.main_rp_dialog_layout;
+    }
+
+    @Override
+    public float setSize() {
+        return 0.9f;
+    }
+*/
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.main_rp_dialog_layout_ex;
+    }
+
+
+    protected void initView() {
         if (isFromNotify()) {
-            score = SPUtils.getInformain(NOTIFY_RANDOM_RED_AMOUNT, 0.5f);
             initNotifyRpGet();
         }
-        mDataBinding.mainRpDlgCashTv.setText(String.format("%.2f", score));
-        mDataBinding.mainRpGiveUp.setOnClickListener(v -> {
+        dataBinding.mainRpDlgCashTv.setText(String.format("%.2f", mScore));
+        dataBinding.mainRpGiveUp.setOnClickListener(v -> {
             if (!isFromPrivilege()) {
                 SoundHelp.newInstance().onStart();
-                finish();
+                dismissEx();
             }
         });
-        mDataBinding.mainRpCloseIv.setOnClickListener(v -> {
+        dataBinding.mainRpCloseIv.setOnClickListener(v -> {
             if (!isFromNotify()) {
                 isShowInnerAd = true;
             } else {
                 EventBus.getDefault().post(new DoubleRpEvent(5
-                        , score
-                        , TextUtils.isEmpty(restId) ? "" : restId
-                        , TextUtils.isEmpty(preId) ? "" : preId
+                        , mScore
+                        , TextUtils.isEmpty(mRestId) ? "" : mRestId
+                        , TextUtils.isEmpty(mPreId) ? "" : mPreId
                         , mRestScore));
             }
-            finish();
+            dismissEx();
         });
-        mDataBinding.mainRpDouble.setOnClickListener(v -> {
+        dataBinding.mainRpDouble.setOnClickListener(v -> {
             if (isFromPrivilege()) {
                 if (AppInfo.checkIsWXLogin()) {
                     if (mGoods != null) {
@@ -123,7 +133,7 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
                                 .withBoolean("privilege", true)
                                 .navigation();
                     }
-                    finish();
+                    dismissEx();
                 } else {
                     RouterActivityPath.LoginProvider.getLoginProvider()
                             .loginWX("Front_Rp", "首页>首个红包>登录领红包弹窗");
@@ -132,31 +142,22 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
                 doubleRp();
             }
         });
-        /*if (mScaleAnimation == null) {
-            mScaleAnimation = new ScaleAnimation(1.15f, 0.9f, 1.15f, 0.9f, Animation.RELATIVE_TO_SELF, 0.5f,
-                    Animation.RELATIVE_TO_SELF, 0.5f);
-            mScaleAnimation.setInterpolator(new LinearInterpolator());
-            mScaleAnimation.setRepeatMode(Animation.REVERSE);
-            mScaleAnimation.setRepeatCount(Animation.INFINITE);
-            mScaleAnimation.setDuration(700);
-            mDataBinding.mainRpDouble.startAnimation(mScaleAnimation);
-        }*/
 
         if (isFromPrivilege()) {
             requestPreRp();
             if (AppInfo.checkIsWXLogin()) {
-                mDataBinding.mainRpGiveUp.setText("将随机抽取一款奖品");
-                mDataBinding.mainRpDoubleTv.setText("抽奖领红包");
-                mDataBinding.mainRpPlayIv.setVisibility(View.GONE);
+                dataBinding.mainRpGiveUp.setText("将随机抽取一款奖品");
+                dataBinding.mainRpDoubleTv.setText("抽奖领红包");
+                dataBinding.mainRpPlayIv.setVisibility(View.GONE);
             } else {
-                mDataBinding.mainRpGiveUp.setVisibility(View.INVISIBLE);
-                mDataBinding.mainRpPlayIv.setVisibility(View.GONE);
-                mDataBinding.mainRpDoubleTv.setText("登录领红包");
+                dataBinding.mainRpGiveUp.setVisibility(View.INVISIBLE);
+                dataBinding.mainRpPlayIv.setVisibility(View.GONE);
+                dataBinding.mainRpDoubleTv.setText("登录领红包");
             }
         } else if (isFromNotify()) {
-            mDataBinding.mainRpGiveUp.setText("任意商品抽奖,继续领红包！");
-            mDataBinding.mainRpDoubleTv.setText("翻倍领取");
-            mDataBinding.mainRpPlayIv.setVisibility(View.VISIBLE);
+            dataBinding.mainRpGiveUp.setText("任意商品抽奖,继续领红包！");
+            dataBinding.mainRpDoubleTv.setText("翻倍领取");
+            dataBinding.mainRpPlayIv.setVisibility(View.VISIBLE);
         }
 
         if (mCountDownTimer == null) {
@@ -169,7 +170,7 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
                 @Override
                 public void onFinish() {
                     try {
-                        mDataBinding.mainRpCloseIv.setVisibility(View.VISIBLE);
+                        dataBinding.mainRpCloseIv.setVisibility(View.VISIBLE);
                     } catch (Exception e) {
 
                     }
@@ -177,7 +178,12 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
             };
         }
         mCountDownTimer.start();
-        LottieUtil.initLottieView(mDataBinding.mainRpLittleHandLav);
+        LottieUtil.initLottieView(dataBinding.mainRpLittleHandLav);
+    }
+
+    @Override
+    protected boolean isUseDataBinding() {
+        return true;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -188,18 +194,18 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
         }
 
         MutableLiveData<Integer> mld = event.getLoginLoadingLiveData();
-        mld.observe(this, d -> {
+        mld.observe(this.getViewLifecycleOwner(), d -> {
             if (d == 2) {
                 checkRpData();
             } else if (d == -1) {
-                ToastUtil.showShort(this, "微信登录失败，请重试!");
+                ToastUtil.showShort(mContext, "微信登录失败，请重试!");
             }
         });
     }
 
     private void checkRpData() {
         showLoading("红包状态检查中...");
-        mDataBinding.mainRpDouble.setClickable(false);
+        dataBinding.mainRpDouble.setClickable(false);
         EasyHttp.get(BuildConfig.API_WALLET_URL + "v1/red-packet")
                 .cacheMode(CacheMode.NO_CACHE)
                 .isShowToast(false)
@@ -208,23 +214,23 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
                     @Override
                     public void onError(ApiException e) {
                         hideLoading();
-                        mDataBinding.mainRpDouble.setClickable(true);
+                        dataBinding.mainRpDouble.setClickable(true);
                     }
 
                     @Override
                     public void onSuccess(WalletBean walletBean) {
                         hideLoading();
-                        mDataBinding.mainRpDouble.setClickable(true);
+                        dataBinding.mainRpDouble.setClickable(true);
 
                         if (walletBean == null || walletBean.getList() == null || walletBean.getList().size() <= 0) {
-                            finish();
+                            dismissEx();
                             return;
                         }
 
                         WalletBean.RpBean bean = walletBean.getList().get(0);
                         if (bean.getOpened()) {
                             ToastUtil.showShort(mContext, "奖励已发放");
-                            finish();
+                            dismissEx();
                             return;
                         }
 
@@ -236,35 +242,18 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
                                     .withBoolean("privilege", true)
                                     .navigation();
                         }
-                        finish();
+                        dismissEx();
                     }
                 });
     }
 
-    @Override
-    protected int getLayoutId() {
-        ImmersionBar.with(this)
-                .statusBarColor(R.color.transparent)
-                .navigationBarColor(R.color.black)
-                .fitsSystemWindows(true)
-                .autoDarkModeEnable(true)
-                .hideBar(BarHide.FLAG_HIDE_STATUS_BAR)
-                .init();
-        return R.layout.main_rp_activity;
-    }
-
-    @SuppressLint("DefaultLocale")
-    @Override
-    public void initView() {
-
-    }
 
     private boolean isFromPrivilege() {
-        return from != null && from.equalsIgnoreCase("privilege");
+        return !TextUtils.isEmpty(mFrom) && mFrom.equalsIgnoreCase("privilege");
     }
 
     private boolean isFromNotify() {
-        return !TextUtils.isEmpty(from) && from.equalsIgnoreCase("notify");
+        return !TextUtils.isEmpty(mFrom) && mFrom.equalsIgnoreCase("notify");
     }
 
     private void doubleRp() {
@@ -307,14 +296,14 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
                     return;
                 }
                 // 完整观看视频
-                if (from != null && from.equalsIgnoreCase("wallTask")) {
-                    EventBus.getDefault().post(new DoubleRpEvent(4, score, restId == null ? "" : restId, preId == null ? "" : preId, mRestScore));
+                if (mFrom != null && mFrom.equalsIgnoreCase("wallTask")) {
+                    EventBus.getDefault().post(new DoubleRpEvent(4, mScore, mRestId == null ? "" : mRestId, mPreId == null ? "" : mPreId, mRestScore));
                 } else if (isFromNotify()) {
-                    EventBus.getDefault().post(new DoubleRpEvent(6, score, restId == null ? "" : restId, preId == null ? "" : preId, mRestScore));
-                }else {
-                    EventBus.getDefault().post(new DoubleRpEvent(1, score, restId == null ? "" : restId, preId == null ? "" : preId, mRestScore));
+                    EventBus.getDefault().post(new DoubleRpEvent(6, mScore, mRestId == null ? "" : mRestId, mPreId == null ? "" : mPreId, mRestScore));
+                } else {
+                    EventBus.getDefault().post(new DoubleRpEvent(1, mScore, mRestId == null ? "" : mRestId, mPreId == null ? "" : mPreId, mRestScore));
                 }
-                finish();
+                dismissEx();
             }
 
             @Override
@@ -348,11 +337,11 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
                     @Override
                     public void onSuccess(PreRpBean bean) {
                         if (bean == null) {
-                            mDataBinding.mainRpDlgCashTv.setText("");
+                            dataBinding.mainRpDlgCashTv.setText("");
                             ToastUtil.showShort(mContext, "获取红包失败，请重试");
-                            finish();
+                            dismissEx();
                         } else {
-                            mDataBinding.mainRpDlgCashTv.setText(String.format("%.2f", bean.getPre_score()));
+                            dataBinding.mainRpDlgCashTv.setText(String.format("%.2f", bean.getPre_score()));
                             SPUtils.setInformain(KeySharePreferences.FIRST_RP_OPEN_PRE_ID, bean.getPre_id());
                             SPUtils.setInformain(KeySharePreferences.FIRST_RP_OPEN_PRE_SCORE, bean.getPre_score());
                             requestGoodsInfo();
@@ -362,7 +351,7 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
     }
 
     @Keep
-    public static class notifyRpBean {
+    private static class notifyRpBean {
         String rest_id;
         float rest_score;
     }
@@ -371,7 +360,7 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
     private void initNotifyRpGet() {
         EasyHttp.post(HttpConfigUtilsKt.withConfigParams(BuildConfig.API_WALLET_URL + "v1/landing-page-red-packet", true))
                 .cacheMode(CacheMode.NO_CACHE)
-                .upJson("{\"score\":" + score + "}")
+                .upJson("{\"score\":" + mScore + "}")
                 .execute(new SimpleCallBack<notifyRpBean>() {
                     @Override
                     public void onError(ApiException e) {
@@ -381,16 +370,17 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
                     @Override
                     public void onSuccess(notifyRpBean bean) {
                         if (bean == null) {
-                            mDataBinding.mainRpDlgCashTv.setText("");
+                            dataBinding.mainRpDlgCashTv.setText("");
                             ToastUtil.showShort(mContext, "获取红包失败，请重试");
-                            finish();
+                            dismissEx();
                         } else {
-                            restId = bean.rest_id;
+                            mRestId = bean.rest_id;
                             mRestScore = bean.rest_score;
                         }
                     }
                 });
     }
+
 
     private void requestGoodsInfo() {
         String url = HttpConfigUtilsKt.withConfigParams(BuildConfig.API_LOTTERY_URL + "v1/recommend-goods-list", true)
@@ -402,7 +392,7 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
                     @Override
                     public void onError(ApiException e) {
                         ToastUtil.showShort(mContext, "获取红包失败，请重试");
-                        finish();
+                        dismissEx();
                     }
 
                     @Override
@@ -415,28 +405,67 @@ public class RpActivity extends MvvmBaseLiveDataActivity<MainRpActivityBinding, 
                 });
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
 
+    protected LoadingHintDialog loadingHintDialog;
+
+    public void showLoading() {
+        if (loadingHintDialog != null) {
+            hideLoading();
+        }
+        loadingHintDialog = new LoadingHintDialog();
+        loadingHintDialog.setDismissOnBackPressed(false)
+                .setDescription("提交中...")
+                .show(this.getParentFragmentManager(), "user_cancellation");
+    }
+
+    public void showLoading(String msg) {
+        if (loadingHintDialog != null) {
+            hideLoading();
+        }
+        loadingHintDialog = new LoadingHintDialog();
+        loadingHintDialog.setDismissOnBackPressed(false)
+                .setDescription(msg)
+                .showAllowingStateLoss(this.getParentFragmentManager(), "user_cancellation");
+    }
+
+    public void hideLoading() {
+        if (loadingHintDialog != null) {
+            loadingHintDialog.disMissDialog();
+        }
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
         if (mCountDownTimer != null) {
             mCountDownTimer.cancel();
             mCountDownTimer = null;
         }
 
-        LottieUtil.cancelLottieView(mDataBinding.mainRpLittleHandLav);
-
-        /*if (mDataBinding.mainRpDouble.getAnimation() != null) {
-            mDataBinding.mainRpDouble.clearAnimation();
-        }*/
-
-        /*if (mScaleAnimation != null) {
-            mScaleAnimation.cancel();
-            mScaleAnimation = null;
-        }*/
+        LottieUtil.cancelLottieView(dataBinding.mainRpLittleHandLav);
 
         SoundHelp.newInstance().onRelease();
 
         EventBus.getDefault().unregister(this);
     }
+
+    private void dismissEx() {
+        new Handler().postDelayed(()-> dismiss(), 200);
+    }
+/*
+    @Override
+    public void dismiss() {
+        if (mCountDownTimer != null) {
+            mCountDownTimer.cancel();
+            mCountDownTimer = null;
+        }
+
+        LottieUtil.cancelLottieView(dataBinding.mainRpLittleHandLav);
+
+        SoundHelp.newInstance().onRelease();
+
+        EventBus.getDefault().unregister(this);
+
+        super.dismiss();
+    }*/
 }

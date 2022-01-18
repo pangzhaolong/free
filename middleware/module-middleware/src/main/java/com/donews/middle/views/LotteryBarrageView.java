@@ -21,10 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LotteryBarrageView extends FrameLayout {
-    private final int ITEM_COUNTS = 6;
+    private final int ITEM_NUMS = 6;
     private final static int MSG_ID = 10001;
-    private final LotteryBarrageItemView[] mLotteryBarrageViews = new LotteryBarrageItemView[ITEM_COUNTS];
-    private final TranslateAnimation[] mTAs = new TranslateAnimation[ITEM_COUNTS];
+    private final LotteryBarrageItemView[] mLotteryBarrageViews = new LotteryBarrageItemView[ITEM_NUMS];
+    private final TranslateAnimation[] mTAs = new TranslateAnimation[ITEM_NUMS];
 
     private final List<WinningRotationBean.WinnerItem> mAwardList = new ArrayList<>();
 
@@ -39,7 +39,7 @@ public class LotteryBarrageView extends FrameLayout {
 
     public LotteryBarrageView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        for (int i = 0; i < ITEM_COUNTS; i++) {
+        for (int i = 0; i < ITEM_NUMS; i++) {
             mLotteryBarrageViews[i] = new LotteryBarrageItemView(context, attrs);
             mLotteryBarrageViews[i].setVisibility(INVISIBLE);
             addView(mLotteryBarrageViews[i]);

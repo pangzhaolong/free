@@ -47,6 +47,10 @@ public class KeySharePreferences {
     public final static String OPENED_RED_PACKAGE_COUNTS = "opened_red_package_counts";
 
     public final static String STEPS_TO_GOLD_RED_PACKAGE_COUNTS = "steps_to_gold_red_package_counts";
+    //系统时间
+    public final static String TIME_SERVICE = "TIME_SERVICE";
+    //通知弹窗随机的红包金额
+    public final static String NOTIFY_RANDOM_RED_AMOUNT = "NOTIFY_RANDOM_RED_AMOUNT";
 
     //第一个红包是否开启
     public final static String FIRST_RP_IS_OPEN = "first_rp_is_open";

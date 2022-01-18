@@ -18,6 +18,8 @@ import com.donews.common.views.CircleProgressBarView;
 import com.donews.middle.R;
 import com.donews.middle.bean.front.FrontConfigBean;
 import com.donews.middle.go.GotoUtil;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 
 
 public class FrontFloatingBtn extends LinearLayout {
@@ -110,7 +112,11 @@ public class FrontFloatingBtn extends LinearLayout {
         if (this.isShown()) {
             Glide.with(this).load(floatingItem.getImg()).into(mYywImageView);
         }
-        this.setOnClickListener(v -> GotoUtil.doAction(mContext, floatingItem.getAction()
-                , floatingItem.getTitle(), "front"));
+        this.setOnClickListener(v -> {
+            GotoUtil.doAction(mContext, floatingItem.getAction()
+                    , floatingItem.getTitle(), "front");
+            AnalysisUtils.onEventEx(mContext, Dot.FRONT_YYW_CLICK);
+        });
+//        AnalysisUtils.onEventEx(mContext, Dot.FRONT_YYW_SHOW);
     }
 }

@@ -4,6 +4,7 @@ import android.app.Activity
 import com.dn.events.ad.HotStartEvent
 import com.donews.base.base.AppManager
 import com.donews.common.base.MvvmBaseLiveDataActivity
+import com.donews.main.BuildConfig
 import com.donews.main.dialog.HotStartDialog
 import org.greenrobot.eventbus.EventBus
 
@@ -17,6 +18,11 @@ import org.greenrobot.eventbus.EventBus
 object HotStartCacheUtils {
 
     private var mHotStartDialog: HotStartDialog? = null
+
+    /**
+     * 是否开启debug的调试模式(开启之后。可以直接点击打开通知)
+     */
+    var isDebugNotify = false && BuildConfig.DEBUG
 
     fun addHotStartAdDialog() {
         val activity = AppManager.getInstance().topActivity
@@ -71,8 +77,10 @@ object HotStartCacheUtils {
 
     fun checkActivity(activity: Activity) {
         val name: String = activity::class.java.name
-        if (name.equals("com.donews.notify.launcher.NotifyActivity", true)) {
-            activity.finish()
+        if (!isDebugNotify) {
+            if (name.equals("com.donews.notify.launcher.NotifyActivity", true)) {
+                activity.finish()
+            }
         }
         if (name.equals("com.donews.notify.launcher.NotifyActionActivity", true)) {
             activity.finish()

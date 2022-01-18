@@ -8,6 +8,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 
+import androidx.core.app.NotificationCompat;
+
+import com.blankj.utilcode.util.AppUtils;
 import com.keepalive.daemon.core.R;
 
 import java.io.BufferedReader;
@@ -63,6 +66,7 @@ public class LaunchStart {
                 try {
                     context.startActivity(intent);
                 } catch (Throwable t) {
+                    t.printStackTrace();
                 }
             }
 

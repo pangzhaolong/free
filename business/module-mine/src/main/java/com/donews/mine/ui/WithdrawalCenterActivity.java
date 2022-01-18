@@ -270,9 +270,11 @@ public class WithdrawalCenterActivity extends
             MineWithdraWallBean.DrawalWallBeanItem item = mineWithdraWallBean.withDrawalItems.get(0);
             GlideUtils.loadImageView(this, item.img, mDataBinding.mindYywJd);
             mDataBinding.mindYywJd.setOnClickListener(v -> {
-
                 GotoUtil.doAction(this, item.action, item.title, "withdrawCenter");
+                AnalysisUtils.onEventEx(this, Dot.WITHDRAWAL_YYW_CLICK);
             });
+
+//            AnalysisUtils.onEventEx(this, Dot.WITHDRAWAL_YYW_SHOW);
         }
     }
 

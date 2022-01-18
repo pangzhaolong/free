@@ -37,6 +37,7 @@ enum class AdCustomError(val code: Int, val errorMsg: String) {
     PreloadTimesError(-10030, "预加载时间过长"),
 
     /** 本地缓存及无效广告都加载失败的情况 */
-    PreloadAdEmptyError(-10031, "暂无新视频，请稍后再试")
+    PreloadAdEmptyError(-10031, "暂无新视频，请稍后再试"),
 
+    PreloadAdStatusError(-10032, "预加载广告状态错误")
 }

@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.blankj.utilcode.util.BarUtils
+import com.donews.base.utils.ToastUtil
 import com.donews.common.ad.business.monitor.PageMonitor
 import com.donews.common.base.MvvmLazyLiveDataFragment
 import com.donews.common.router.RouterFragmentPath
@@ -27,7 +28,7 @@ import com.donews.utilslibrary.dot.Dot
  */
 @Route(path = RouterFragmentPath.Unboxing.PAGER_UNBOXING_FRAGMENT)
 class UnboxingFragment :
-    MvvmLazyLiveDataFragment<UnboxingFragUnboxingBinding, UnboxingViewModel>() {
+        MvvmLazyLiveDataFragment<UnboxingFragUnboxingBinding, UnboxingViewModel>() {
 
     private val unboxingRVAdapter = UnboxingRVAdapter(R.layout.unboxing_item_unboxing)
 
@@ -49,9 +50,9 @@ class UnboxingFragment :
             AnalysisUtils.onEventEx(context, Dot.Btn_BeBlessed)
             val data: UnboxingBean = adapter.data[position] as UnboxingBean
             ARouter.getInstance()
-                .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
-                .withString("goods_id", data.goodsId)
-                .navigation();
+                    .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
+                    .withString("goods_id", data.goodsId)
+                    .navigation();
         }
 
         unboxingRVAdapter.setDiffCallback(object : DiffUtil.ItemCallback<UnboxingBean>() {
@@ -73,6 +74,11 @@ class UnboxingFragment :
                 }
             })
         }
+        mDataBinding.tvShowProduct.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                ToastUtil.show(context, "中奖后才可晒单噢！")
+            }
+        })
     }
 
     override fun onFragmentFirstVisible() {
@@ -80,14 +86,23 @@ class UnboxingFragment :
         //加载数据
         mViewModel.refreshing.value = SmartRefreshState(true)
         //显示顶部距离,达到侵入式状态栏
-        val lp = mDataBinding.tvTitle.layoutParams
+        var lp = mDataBinding.tvTitle.layoutParams
         lp.height = lp.height + BarUtils.getStatusBarHeight()
         mDataBinding.tvTitle.layoutParams = lp
         mDataBinding.tvTitle.setPadding(
-            mDataBinding.tvTitle.paddingLeft,
-            mDataBinding.tvTitle.paddingTop + BarUtils.getStatusBarHeight(),
-            mDataBinding.tvTitle.paddingRight,
-            mDataBinding.tvTitle.paddingBottom
+                mDataBinding.tvTitle.paddingLeft,
+                mDataBinding.tvTitle.paddingTop + BarUtils.getStatusBarHeight(),
+                mDataBinding.tvTitle.paddingRight,
+                mDataBinding.tvTitle.paddingBottom
         )
+
+        lp = mDataBinding.tvShowProduct.layoutParams
+        lp.height = lp.height + BarUtils.getStatusBarHeight()
+        mDataBinding.tvShowProduct.layoutParams = lp
+        mDataBinding.tvShowProduct.setPadding(
+                mDataBinding.tvShowProduct.paddingLeft,
+                mDataBinding.tvShowProduct.paddingTop + BarUtils.getStatusBarHeight(),
+                mDataBinding.tvShowProduct.paddingRight,
+                mDataBinding.tvShowProduct.paddingBottom)
     }
 }

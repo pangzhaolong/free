@@ -62,4 +62,7 @@ public class AppGlobalConfigBean {
     public String notifyBarImg;
 
     public int notifyDelay4NewUser;
+
+    /** 桌面通知。应用推到后台之后多久也会弹出通知 */
+    public int notifyBackgroundShowTime;
 }

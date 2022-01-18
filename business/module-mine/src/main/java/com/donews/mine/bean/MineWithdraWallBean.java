@@ -5,6 +5,8 @@ import android.view.View;
 import com.donews.common.contract.BaseCustomViewModel;
 import com.donews.middle.go.GotoUtil;
 import com.donews.mine.views.operating.MineOperatingPosView;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 
 import java.util.List;
 
@@ -40,6 +42,7 @@ public class MineWithdraWallBean extends BaseCustomViewModel {
         @Override
         public void onClick(View view, MineOperatingPosView.IOperatingData data) {
             GotoUtil.doAction(view.getContext(), action, title, "withdraw");
+            AnalysisUtils.onEventEx(view.getContext(), Dot.MINE_YYW_CLICK);
         }
     }
 

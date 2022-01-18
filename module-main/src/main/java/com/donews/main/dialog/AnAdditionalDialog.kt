@@ -32,6 +32,7 @@ import com.vmadalin.easypermissions.EasyPermissions
  * @date 2021/12/3
  */
 class AnAdditionalDialog(
+        var from: Int,  // 0: 普通；1: 通知栏来的
         /** 金额 */
         var restId: String,
         var preId: String,
@@ -61,7 +62,7 @@ class AnAdditionalDialog(
             if (count > 0) {
                 handler.postDelayed(timeTask!!, 1000)
             } else {
-                doubleGetRp()
+                doubleRp()
                 dismiss()
             }
         }
@@ -80,7 +81,7 @@ class AnAdditionalDialog(
             }
         }
         dataBinding.mainDoubleRpGetLl.setOnClickListener {
-            doubleGetRp()
+            doubleRp()
             SoundHelp.newInstance().onRelease()
             dismiss()
         }
@@ -111,9 +112,32 @@ class AnAdditionalDialog(
         addCoinsAnim.start()
     }
 
-    fun doubleGetRp() {
+    fun doubleRp() {
+        if (from == 0) {
+            doubleGetRp()
+        } else if (from == 1) {
+            notifyDoubleGetRp()
+        }
+    }
+
+    private fun doubleGetRp() {
         EasyHttp.post(BuildConfig.API_WALLET_URL + "v1/double-red-packet")
                 .upObject(RestIdBean(restId, preId))
+                .cacheMode(CacheMode.NO_CACHE)
+                .isShowToast(false)
+                .execute(object : SimpleCallBack<DoubleRedPacketBean?>() {
+                    override fun onError(e: ApiException) {
+                    }
+
+                    override fun onSuccess(t: DoubleRedPacketBean?) {
+                        ToastUtil.show(context, "双倍红包领取成功")
+                    }
+                })
+    }
+
+    private fun notifyDoubleGetRp() {
+        EasyHttp.post(BuildConfig.API_WALLET_URL + "v1/rest-red-packet")
+                .upJson("{\"rest_id\": \"$restId\"}")
                 .cacheMode(CacheMode.NO_CACHE)
                 .isShowToast(false)
                 .execute(object : SimpleCallBack<DoubleRedPacketBean?>() {

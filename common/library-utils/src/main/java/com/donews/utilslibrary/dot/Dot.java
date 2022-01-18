@@ -299,11 +299,23 @@ public class Dot {
     public final static String LOTTERY_TWO_REQUEST_SERVICE = "lottery_two_request_service";
 
 
-
-
     //-- 首页 ->
     public final static String TASK_CLICK = "task_click";
+//    public final static String TASK_SHOW = "task_show";
 
+
+    public final static String BANNER_CLICK = "banner_click";
+//    public final static String BANNER_SHOW = "banner_show";
+
+
+//    public final static String FRONT_YYW_SHOW = "front_yyw_show";
+    public final static String FRONT_YYW_CLICK = "front_yyw_click";
+
+//    public final static String MINE_YYW_SHOW = "mine_yyw_show";
+    public final static String MINE_YYW_CLICK = "mine_yyw_click";
+
+//    public final static String WITHDRAWAL_YYW_SHOW = "withdrawal_yyw_show";
+    public final static String WITHDRAWAL_YYW_CLICK = "withdrawal_yyw_click";
     public final static String RETENTION_CLICK = "retention_click";
 
     public final static String RETENTION_DO_FINISH = "retention_do_finish";
