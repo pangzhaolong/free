@@ -192,7 +192,8 @@ public class ABBean extends BaseCustomViewModel {
         this.lotteryPriceShow = lotteryPriceShow;
     }
     public boolean isOpenAB() {
-        return openAB;
+        return false;
+//        return openAB;
     }
 
     public boolean getOpenAB() {

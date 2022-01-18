@@ -1,6 +1,7 @@
 package com.donews.main.ui;
 
 import static com.donews.common.config.CritParameterConfig.CRIT_STATE;
+import static com.donews.utilslibrary.utils.KeySharePreferences.NOTIFY_RANDOM_RED_AMOUNT;
 
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +29,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.dn.events.ad.HotStartEvent;
 import com.dn.events.events.DoubleRpEvent;
 import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.RedPackageStatus;
@@ -40,6 +42,7 @@ import com.donews.base.base.AppStatusManager;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.business.loader.AdManager;
 import com.donews.common.ad.business.monitor.LotteryAdCount;
+import com.donews.common.ad.business.proxy.JddInterstitialListenerProxy;
 import com.donews.common.ad.cache.AdVideoCacheUtils;
 import com.donews.common.adapter.ScreenAutoAdapter;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
@@ -50,7 +53,6 @@ import com.donews.common.router.RouterFragmentPath;
 import com.donews.common.updatedialog.UpdateManager;
 import com.donews.common.updatedialog.UpdateReceiver;
 import com.donews.common.views.CountdownView;
-import com.donews.common.views.FrontFloatingBtn;
 import com.donews.main.BuildConfig;
 import com.donews.main.R;
 import com.donews.main.adapter.MainPageAdapter;
@@ -61,11 +63,14 @@ import com.donews.main.dialog.AnAdditionalDialog;
 import com.donews.main.dialog.DrawDialog;
 import com.donews.main.dialog.EnterShowDialog;
 import com.donews.main.dialog.FreePanicBuyingDialog;
+import com.donews.main.dialog.MainRpDialog;
+import com.donews.main.dialog.MoreAwardDialog;
 import com.donews.main.dialog.RemindDialogExt;
 import com.donews.main.dialog.ext.CritWelfareDialogFragment;
 import com.donews.main.listener.RetentionTaskListener;
 import com.donews.main.utils.ExitInterceptUtils;
 import com.donews.main.utils.ExtDialogUtil;
+import com.donews.main.utils.HotStartCacheUtils;
 import com.donews.main.viewModel.MainViewModel;
 import com.donews.main.views.CornerMarkUtils;
 import com.donews.main.views.MainBottomTanItem;
@@ -74,8 +79,10 @@ import com.donews.middle.bean.HighValueGoodsBean;
 import com.donews.middle.bean.RedEnvelopeUnlockBean;
 import com.donews.middle.bean.TaskActionBean;
 import com.donews.middle.cache.GoodsCache;
+import com.donews.middle.front.FrontConfigManager;
 import com.donews.middle.request.RequestUtil;
 import com.donews.middle.utils.CriticalModelTool;
+import com.donews.middle.views.FrontFloatingBtn;
 import com.donews.utilslibrary.analysis.AnalysisHelp;
 import com.donews.utilslibrary.analysis.AnalysisParam;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
@@ -99,7 +106,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import me.majiajie.pagerbottomtabstrip.NavigationController;
 
 /**
@@ -120,9 +126,12 @@ public class MainActivity
 
     private long mFirstClickBackTime = 0;
     //计算 暴击时刻的总时间 5分钟
-    private final long CruelDuration = 1 * 60 * 1000;
+    private final long CruelDuration = 5 * 60 * 1000;
     //下载应用的积分墙弹窗
     DialogFragment appDownDialog;
+
+    @Autowired
+    String from;
 
     /**
      * 初始选择tab
@@ -181,24 +190,22 @@ public class MainActivity
         //上报一个测试友盟多参数事件
         testUMMuliParams();
         mDataBinding.occupyPosition.post(this::initializeCritState);
-        mDataBinding.occupyPosition.setOnClickListener(v -> /*CommonUtils.startCrit()*/
-                ARouter.getInstance()
-                        .build(RouterFragmentPath.Integral.PAGER_INTEGRAL)
-                        .navigation());
 
         showCriticalBtn();
         initScoreTaskFloatingBtn();
-        if(!BuildConfig.DEBUG){
+        if (!BuildConfig.DEBUG) {
             mDataBinding.occupyNotify.setVisibility(View.GONE);
         }
         //通知测试相关
         HotStartCacheUtils.INSTANCE.setDebugNotify(true); //开启debug的通知模块
         mDataBinding.occupyNotify.setOnClickListener(v -> {
-            if(!HotStartCacheUtils.INSTANCE.isDebugNotify()){
+            if (!HotStartCacheUtils.INSTANCE.isDebugNotify()) {
                 return;
             }
             testGotoNotify();
         });
+
+        isFromNotify();
     }
 
     //去往通知页面
@@ -220,9 +227,15 @@ public class MainActivity
 
     private void showCriticalBtn() {
         if (CriticalModelTool.canShowCriticalBtn()) {
-            mDataBinding.mainFloatingBtn.setVisibility(View.VISIBLE);
+            mDataBinding.mainFloatingBtn.showCriticalBtn();
+            mDataBinding.mainFloatingBtn.setOnClickListener(v -> {
+                toggleStatusBar(0);
+                mDataBinding.cvContentView.setCurrentItem(0);
+                mPosition = 0;
+                bjClick();
+            });
         } else {
-            mDataBinding.mainFloatingBtn.setVisibility(View.GONE);
+            mDataBinding.mainFloatingBtn.setYywInfo(FrontConfigManager.Ins().getConfigBean().getFloatingItem());
         }
     }
 
@@ -315,6 +328,34 @@ public class MainActivity
     @Override
     protected void onResume() {
         super.onResume();
+        /*AnAdditionalDialog mDrawDialog = new AnAdditionalDialog("123", "123", 123,
+                123, 400);
+        mDrawDialog.setEventListener(() -> {
+            try {
+                if (mDrawDialog.isAdded() && !MainActivity.this.isFinishing()) {
+                    mDrawDialog.dismiss();
+                }
+            } catch (Exception e) {
+            }
+        });
+        mDrawDialog.show(getSupportFragmentManager(), "AnAddDialog");*/
+        /*
+        MoreAwardDialog moreAwardDialog = new MoreAwardDialog("123", "123", 123,
+                123);
+        moreAwardDialog.setEventListener(() -> {
+            try {
+                if (moreAwardDialog.isAdded() && !MainActivity.this.isFinishing()) {
+                    moreAwardDialog.dismiss();
+                }
+            } catch (Exception e) {
+            }
+        });
+        moreAwardDialog.show(getSupportFragmentManager(), "MoreAwardDialog");
+        ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
+                .withString("from", "wallTask")
+                .withFloat("score", 10.0f)
+                .withString("restId", "213123")
+                .navigation();*/
 
         if (SPUtils.getInformain(KeySharePreferences.FIRST_RP_CAN_OPEN, false)) {
             SPUtils.setInformain(KeySharePreferences.FIRST_RP_CAN_OPEN, false);
@@ -331,17 +372,20 @@ public class MainActivity
                     return;
                 }
 
-                ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
+                EventBus.getDefault().post(new DoubleRpEvent(10, doubleRedPacketBean.getScore(), doubleRedPacketBean.getRestId(), "", 0f));
+
+                /*ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
                         .withFloat("score", doubleRedPacketBean.getScore())
                         .withString("restId", doubleRedPacketBean.getRestId())
-                        .navigation();
-                //todo
+                        .navigation();*/
                 AnalysisUtils.onEventEx(this, Dot.But_Rp_Double);
             });
         }
 
-//        mDataBinding.mainFloatingRp.reLoadTask();
-        checkRetentionTask();
+        mDataBinding.mainFloatingRp.reLoadTask();
+        if (!HotStartCacheUtils.INSTANCE.isShowing()) {
+            checkRetentionTask();
+        }
         showCriticalBtn();
     }
 
@@ -437,6 +481,15 @@ public class MainActivity
         ARouter.getInstance().inject(this);
         if (mNavigationController != null) {
             mNavigationController.setSelect(mPosition);
+        }
+
+        isFromNotify();
+    }
+
+    private void isFromNotify() {
+        if (!TextUtils.isEmpty(from) && from.equalsIgnoreCase("notify")) {
+            MainRpDialog dialog = new MainRpDialog(from, SPUtils.getInformain(NOTIFY_RANDOM_RED_AMOUNT, 0.5f), "", "");
+            dialog.show(getSupportFragmentManager(), "mainRpDialog");
         }
     }
 
@@ -820,7 +873,48 @@ public class MainActivity
             remindDialog.show(this.getSupportFragmentManager(), "");
         } else if (event.getEvent() == 4) { //积分任务翻倍领取
             postGotDoubleRp(event.getRestId(), event.getPreId(), event.getScore());
+        } else if (event.getEvent() == 5) { //5: 桌面通知模块->红包->关闭
+            MoreAwardDialog moreAwardDialog = new MoreAwardDialog(event.getRestId(), event.getPreId(), event.getScore(), event.getRestScore());
+            moreAwardDialog.setEventListener(() -> {
+                try {
+                    if (moreAwardDialog.isAdded() && !this.isFinishing()) {
+                        moreAwardDialog.dismiss();
+                    }
+                } catch (Exception e) {
+                }
+            });
+            moreAwardDialog.show(getSupportFragmentManager(), "MoreAwardDialog");
+        } else if (event.getEvent() == 6) { //6：桌面通知模块->红包->翻倍领取
+            new Handler().postDelayed(() -> showAnAdditionalDialog(event), 200);
+        } else if (event.getEvent() == 7) { // 7: 桌面通知模块->红包->关闭->领取更多弹窗->关闭
+            AdManager.INSTANCE.loadInterstitialAd(this, new JddInterstitialListenerProxy());
+        } else if (event.getEvent() == 8) { // 8： 桌面通知模块->红包->关闭->领取更多弹窗->领取更多/桌面通知模块->红包->翻倍领取成功
+            new Handler().postDelayed(() -> showAnAdditionalDialog(event), 200);
+        } else if (event.getEvent() == 9) {
+            new Handler().postDelayed(() -> {
+                MainRpDialog dialog = new MainRpDialog("privilege", 0f, "", "");
+                dialog.show(getSupportFragmentManager(), "mainRpDialog");
+            }, 200);
+        } else if (event.getEvent() == 10) {
+            new Handler().postDelayed(() -> {
+                MainRpDialog dialog = new MainRpDialog("", event.getScore(), event.getRestId(), "");
+                dialog.show(getSupportFragmentManager(), "mainRpDialog");
+            }, 200);
         }
+    }
+
+    private void showAnAdditionalDialog(DoubleRpEvent event) {
+        AnAdditionalDialog mDrawDialog = new AnAdditionalDialog(1, event.getRestId(), event.getPreId(), event.getScore(),
+                event.getRestScore(), 300);
+        mDrawDialog.setEventListener(() -> {
+            try {
+                if (mDrawDialog.isAdded() && !MainActivity.this.isFinishing()) {
+                    mDrawDialog.dismiss();
+                }
+            } catch (Exception e) {
+            }
+        });
+        mDrawDialog.show(getSupportFragmentManager(), "doublerp");
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -839,8 +933,8 @@ public class MainActivity
                 return;
             }
 
-            AnAdditionalDialog mDrawDialog = new AnAdditionalDialog(restId, preId, score,
-                    doubleRedPacketBean.getScore(), 4);
+            AnAdditionalDialog mDrawDialog = new AnAdditionalDialog(0, restId, preId, score,
+                    doubleRedPacketBean.getScore(), 3);
             mDrawDialog.setEventListener(() -> {
                 try {
                     if (mDrawDialog.isAdded() && !MainActivity.this.isFinishing()) {
@@ -871,27 +965,37 @@ public class MainActivity
             return;
         }
 
+        LogUtil.e("onHotStartEvent2:");
         mViewModel.getRetentionTask(wallReqId).observe(this, retentionTaskBean -> {
             if (retentionTaskBean == null || !retentionTaskBean.getHandout()) {
-                if (mRetryCount > 10) {
+                if (mRetryCount > 2) {
+                    LogUtil.e("onHotStartEvent3:");
                     return;
                 }
                 mRetryCount++;
-                new Handler().postDelayed(this::checkRetentionTask, 6000);
+                new Handler().postDelayed(this::checkRetentionTask, 3000);
                 return;
             }
 
+            LogUtil.e("onHotStartEvent4:");
             mRetryCount = 0;
             mViewModel.getWallTaskRp(wallReqId).observe(this, wallTaskRpBean -> {
                 if (wallTaskRpBean == null) {
+                    LogUtil.e("onHotStartEvent5:");
                     return;
                 }
+
+                AnalysisUtils.onEventEx(MainActivity.this, Dot.RETENTION_DO_FINISH);
+
+                LogUtil.e("onHotStartEvent6:");
                 SPUtils.setInformain(KeySharePreferences.RETENTION_TASK_WALL_REQUEST_ID, "");
-                ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
+                /*ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
                         .withString("from", "wallTask")
                         .withFloat("score", wallTaskRpBean.getScore())
                         .withString("restId", wallTaskRpBean.getRestId())
-                        .navigation();
+                        .navigation();*/
+                MainRpDialog dialog = new MainRpDialog("wallTask", wallTaskRpBean.getScore(), wallTaskRpBean.getRestId(), "");
+                dialog.show(getSupportFragmentManager(), "mainRpDialog");
                 AnalysisUtils.onEventEx(this, Dot.But_Rp_Double);
             });
         });
@@ -911,6 +1015,16 @@ public class MainActivity
             mDataBinding.cvContentView.setCurrentItem(1);
             toggleStatusBar(1);
             mPosition = 1;
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onHotStartEvent(HotStartEvent event) {
+        LogUtil.e("onHotStartEvent:" + event.getShow());
+        if (!event.getShow()) {
+            LogUtil.e("onHotStartEvent1:" + event.getShow());
+            mRetryCount = 0;
+            checkRetentionTask();
         }
     }
 }
