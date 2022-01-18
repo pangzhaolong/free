@@ -87,6 +87,7 @@ public class NotifyScreenDelegate {
                     long delayTime = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyDelayShowTime;
                     mLastShowTime = System.currentTimeMillis();
                     Log.w(NotifyInitProvider.TAG, action + " show , delayTime=" + delayTime);
+                    mHandler.removeCallbacks(getShowNotifyRunnable(context));
                     mHandler.postDelayed(getShowNotifyRunnable(context), delayTime);
                 } else {
                     Log.w(NotifyInitProvider.TAG, action + " can't show");
@@ -105,6 +106,7 @@ public class NotifyScreenDelegate {
                         tryLoadNewImg(context);
                         long delayTime = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyDelayShowTime;
                         Log.w(NotifyInitProvider.TAG, action + " show , delayTime=" + delayTime);
+                        mHandler.removeCallbacks(getShowNotifyRunnable(context));
                         mHandler.postDelayed(getShowNotifyRunnable(context), delayTime);
                     } else {
                         Log.w(NotifyInitProvider.TAG, action + " can't show");
@@ -129,6 +131,7 @@ public class NotifyScreenDelegate {
                 long delayTime = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyDelayShowTime;
                 mLastShowTime = System.currentTimeMillis();
                 Log.w(NotifyInitProvider.TAG, " show , delayTime=" + delayTime);
+                mHandler.removeCallbacks(getShowNotifyRunnable(context));
                 mHandler.postDelayed(getShowNotifyRunnable(context), delayTime);
             } else {
                 //加载网络图片。然后显示
@@ -150,6 +153,7 @@ public class NotifyScreenDelegate {
                 isLoaded = true;
                 if (!isOpen) {
                     mLastShowTime = System.currentTimeMillis();
+                    mHandler.removeCallbacks(getShowNotifyRunnable(context));
                     mHandler.postDelayed(getShowNotifyRunnable(context), delayTime);
                 }
                 Log.d(NotifyInitProvider.TAG, "tryLoadNewImg success , url = " + url);

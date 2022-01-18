@@ -31,7 +31,7 @@ public class NotifyItemTypeLottTop4Impl extends AbsNotifyInvokTask {
 
     @Override
     public boolean itemClick(NotifyAnimationView targetView, Notify2DataConfigBean.UiTemplat uiTemplat) {
-        return JumpActionUtils.jump((Activity) targetView.getContext(), uiTemplat.getAction());
+        return JumpActionUtils.jump((Activity) targetView.getContext(), uiTemplat);
     }
 
     @Override

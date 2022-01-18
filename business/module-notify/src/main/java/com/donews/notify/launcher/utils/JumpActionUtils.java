@@ -10,6 +10,9 @@ import com.donews.base.base.BaseApplication;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.BuildConfig;
 import com.donews.common.router.RouterActivityPath;
+import com.donews.notify.launcher.configs.baens.Notify2DataConfigBean;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,10 +38,11 @@ public class JumpActionUtils {
 
     /**
      * @param activity
-     * @param action
+     * @param uiTemplat
      * @return T:逻辑已处理,点击已消费(希望拦截本次点击)  F:此逻辑处理不了。希望上层自行处理
      */
-    public static boolean jump(Activity activity, String action) {
+    public static boolean jump(Activity activity, Notify2DataConfigBean.UiTemplat uiTemplat) {
+        String action = uiTemplat.getAction();
         if (action == null || action.isEmpty()) {
             return false;//上层自己处理
         }
@@ -47,7 +51,11 @@ public class JumpActionUtils {
         if (scheme == null || scheme.isEmpty()) {
             return false;//不支持的协议。不处理跳转逻辑
         }
+        AnalysisUtils.onEventEx(BaseApplication.getInstance(),
+                Dot.Desktop_Notify_Click, "分类:" + uiTemplat.notifyTypeId + "->模板:" + uiTemplat.id);
         if (scheme.startsWith(SchemeHttp)) {
+            AnalysisUtils.onEventEx(BaseApplication.getInstance(),
+                    Dot.Desktop_Notify_Click_To, "站外");
             String title = uri.getQueryParameter("title");
             if (title == null || title.isEmpty()) {
                 title = "通知详情";
@@ -60,6 +68,8 @@ public class JumpActionUtils {
         } else if (scheme.equals(NotifyAction)) {
             //自定义的本地协议处理
             try {
+                AnalysisUtils.onEventEx(BaseApplication.getInstance(),
+                        Dot.Desktop_Notify_Click_To, "站内");
                 String actPageCzz = uri.getHost();
                 if (actPageCzz == null || actPageCzz.isEmpty()) {
                     if (BuildConfig.DEBUG) {

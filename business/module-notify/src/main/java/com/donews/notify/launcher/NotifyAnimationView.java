@@ -15,7 +15,11 @@ import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
 
+import com.donews.base.base.BaseApplication;
+import com.donews.notify.launcher.configs.baens.Notify2DataConfigBean;
 import com.donews.notify.launcher.utils.NotifyItemType;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
 
 
@@ -105,6 +109,11 @@ public class NotifyAnimationView extends LinearLayout {
                 startCenterWithAnimation();//居中动画显示
             }else{
                 startWithAnimation(); //顶部动画
+            }
+            if(getTag() instanceof Notify2DataConfigBean.UiTemplat) {
+                Notify2DataConfigBean.UiTemplat item = (Notify2DataConfigBean.UiTemplat) getTag();
+                AnalysisUtils.onEventEx(BaseApplication.getInstance(),
+                        Dot.Desktop_Notify_Show, "分类:" + item.notifyTypeId + "->模板:" + item.id);
             }
         } catch (Throwable t) {
             t.printStackTrace();

@@ -164,6 +164,14 @@ public class Dot {
     //新增:抽奖页 - 恭喜获得抽奖码-关闭
     public final static String Lottery_Drawing_Probability_Close = "Lottery_Drawing_Probability_Close";
 
+    //--桌面通知模块-->
+    //通知展示次数
+    public final static String Desktop_Notify_Show = "desktop_notify_show";
+    //通知点击次数
+    public final static String Desktop_Notify_Click = "desktop_notify_click";
+    //通知点击去往哪里(目标跳转的去处)
+    public final static String Desktop_Notify_Click_To = "desktop_notify_click_to";
+
     //-- 首页按钮 ->
     //红包规则
     public final static String But_Rp_Rule = "But_Rp_Rule";

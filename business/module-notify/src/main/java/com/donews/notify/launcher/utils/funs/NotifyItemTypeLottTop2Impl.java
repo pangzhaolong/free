@@ -28,7 +28,7 @@ public class NotifyItemTypeLottTop2Impl extends AbsNotifyInvokTask {
 
     @Override
     public boolean itemClick(NotifyAnimationView targetView, Notify2DataConfigBean.UiTemplat uiTemplat) {
-        return JumpActionUtils.jump((Activity) targetView.getContext(), uiTemplat.getAction());
+        return JumpActionUtils.jump((Activity) targetView.getContext(), uiTemplat);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class NotifyItemTypeLottTop2Impl extends AbsNotifyInvokTask {
         } else {
             leftBut.setText(FixTagUtils.convertHtml(uiTemplat.getButtonLeft()));
         }
-        if (uiTemplat.getButtonLeft() == null || uiTemplat.getButtonLeft().isEmpty()) {
+        if (uiTemplat.getButtonRight() == null || uiTemplat.getButtonRight().isEmpty()) {
             rightBut.setVisibility(View.INVISIBLE);
         } else {
             rightBut.setText(FixTagUtils.convertHtml(uiTemplat.getButtonRight()));

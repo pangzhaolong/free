@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.donews.base.base.BaseApplication;
 import com.donews.base.utils.ToastUtil;
 import com.donews.base.utils.glide.GlideUtils;
 import com.donews.common.NotifyLuncherConfigManager;
@@ -31,6 +32,8 @@ import com.donews.notify.launcher.utils.JumpActionUtils;
 import com.donews.notify.launcher.utils.NotifyItemUtils;
 import com.donews.notify.launcher.utils.fix.FixTagUtils;
 import com.donews.notify.launcher.utils.fix.covert.ResConvertUtils;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 
 import java.util.List;
 import java.util.Random;
@@ -43,9 +46,10 @@ import java.util.Random;
  */
 public class NotifyItemTypeLottTop1Impl extends AbsNotifyInvokTask {
 
+
     @Override
     public boolean itemClick(NotifyAnimationView targetView, Notify2DataConfigBean.UiTemplat uiTemplat) {
-        return JumpActionUtils.jump((Activity) targetView.getContext(), uiTemplat.getAction());
+        return JumpActionUtils.jump((Activity) targetView.getContext(), uiTemplat);
     }
 
     @Override
@@ -73,10 +77,10 @@ public class NotifyItemTypeLottTop1Impl extends AbsNotifyInvokTask {
         Notify2DataConfigBean.UiTemplat uiTemplat = (Notify2DataConfigBean.UiTemplat) targetView.getTag();
 
         //设置值
-        if(uiTemplat.getIconLeftTopMin() == null || uiTemplat.getIconLeftTopMin().isEmpty()){
+        if (uiTemplat.getIconLeftTopMin() == null || uiTemplat.getIconLeftTopMin().isEmpty()) {
             icon.setVisibility(View.GONE);
-        }else{
-            ResConvertUtils.buidIcon(icon,uiTemplat.getIconLeftTopMin());
+        } else {
+            ResConvertUtils.buidIcon(icon, uiTemplat.getIconLeftTopMin());
         }
         title.setText(FixTagUtils.convertHtml(uiTemplat.getTitle()));
         name.setText(FixTagUtils.convertHtml(uiTemplat.getName()));
