@@ -72,7 +72,6 @@
             android:visibility="gone"/>
 
         <TextView
-            android:id="@+id/mine_me_list_count_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -81,7 +80,44 @@
             android:text="1"
             android:textColor="@color/text_red"
             android:textSize="21sp"
+            android:visibility="gone"
             android:textStyle="bold" />
+        <!-- 新增参考价 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="23dp"
+            android:layout_marginTop="6dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_marginBottom="3dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="2dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/middle_item_money" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text="参考价"
+                android:textColor="#A9AEB1"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/mine_me_list_count_num"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text="￥1699"
+                android:textColor="#A9AEB1"
+                android:textSize="15sp" />
+        </LinearLayout>
     </LinearLayout>
 
     <TextView
@@ -94,6 +130,7 @@
         android:singleLine="true"
         android:text="累计5人参与抽奖"
         android:paddingBottom="8dp"
+        android:visibility="gone"
         android:textColor="@color/text_hint_color"
         android:textSize="13sp"
         app:layout_constraintLeft_toLeftOf="@+id/mine_me_list_title"
@@ -118,7 +155,7 @@
             android:gravity="center"
             android:paddingBottom="8dp"
             android:singleLine="true"
-            android:text="0元抽奖"
+            android:text="免费抽奖"
             android:textColor="@color/white"
             android:textSize="15sp" />
     </LinearLayout>

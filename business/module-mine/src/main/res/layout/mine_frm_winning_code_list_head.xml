@@ -13,7 +13,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/mine_me_open_top_bg"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingTop="67dp">
         <!-- 顶部的数字容器 -->
         <LinearLayout
             android:id="@+id/main_win_code_num_layout"

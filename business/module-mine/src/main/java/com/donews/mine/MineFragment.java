@@ -186,7 +186,7 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
                     .build(RouterActivityPath.Mine.PAGER_ACTIVITY_SETTING)
                     .navigation();
         });
-        getView().findViewById(R.id.mine_me_money_num_ll).setOnClickListener((v) -> {
+        getView().findViewById(R.id.mine_login_zq_but).setOnClickListener((v) -> {
             //提现
             if (!checkIsLogin()) {
                 getView().findViewById(R.id.iv_user_logo).performClick();
@@ -323,15 +323,18 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
         UserInfoBean uf = LoginHelp.getInstance().getUserInfoBean();
         ImageView headIcon = getView().findViewById(R.id.iv_user_logo);
         TextView userName = getView().findViewById(R.id.tv_userinfo_name);
+        TextView txTv = getView().findViewById(R.id.mine_login_zq_but);
         if (uf == null ||
                 !AppInfo.checkIsWXLogin()) { //未登录
             headIcon.setImageResource(R.drawable.mine_not_login_user_head);
             userName.setText("立即登录");
+            txTv.setText("登录赚钱");
         } else { //已登录
             GlideUtils.loadImageViewLoading(getActivity(), uf.getHeadImg(),
                     headIcon, R.drawable.mine_not_login_user_head,
                     R.drawable.mine_not_login_user_head);
             userName.setText(uf.getUserName());
+            txTv.setText("提现");
         }
         vpHei = 0; //让滚动位置重新计算一遍。防止视图变化引起的位置变化计算不及时导致界面滑动错误
     }
