@@ -29,7 +29,6 @@ import com.donews.middle.bean.home.UserBean;
 import com.donews.middle.cache.GoodsCache;
 import com.donews.middle.go.GotoUtil;
 import com.donews.middle.views.TabItem;
-import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.UrlUtils;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
@@ -235,11 +234,17 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
         });
     }
 
-    private AppBarLayout.OnOffsetChangedListener mOnOffSetChangedListener = new AppBarLayout.OnOffsetChangedListener() {
-        @Override
-        public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-            LogUtil.e("appbar offset: " + verticalOffset);
+    private AppBarLayout.OnOffsetChangedListener mOnOffSetChangedListener = (appBarLayout, verticalOffset) -> {
+        float alpha = Math.abs(verticalOffset)/600f;
+        if (alpha > 1.0f ) {
+            alpha = 1.0f;
         }
+        if (alpha < 0) {
+            alpha = 0;
+        }
+        alpha = 1- alpha;
+        mDataBinding.homeTitleBgIv.setAlpha(alpha);
+        mDataBinding.homeTitleCircleIv.setAlpha(alpha);
     };
 
     @SuppressLint("SetTextI18n")

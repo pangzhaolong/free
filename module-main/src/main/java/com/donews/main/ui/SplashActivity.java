@@ -198,10 +198,21 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
 //        JPushHelper.init(getApplication());
     }
 
+    private void initSdk() {
+        // 初始化广告sdk
+        AdManager.INSTANCE.initSDK(this.getApplication(), DeviceUtils.getChannelName(), BuildConfig.DEBUG);
+        SplashUtils.INSTANCE.savePersonExit(true);
+        SPUtils.setInformain(KeySharePreferences.DEAL, true);
+        SPUtils.setInformain(KeySharePreferences.AGREEMENT, true);
+        //初始化大数据/友盟sdk
+        initPushAndDnDi();
+        checkAndRequestPermission();
+    }
+
     private void showPersonGuideDialog() {
         //如果协议已经同意，不需要弹起弹框
         if (SPUtils.getInformain(KeySharePreferences.DEAL, false)) {
-            initPushAndDnDi();
+            initSdk();
             return;
         }
         if (personGuideDialog != null && personGuideDialog.isAdded() && personGuideDialog.isVisible()) {
@@ -210,14 +221,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
             Logger.d("personGuideDialog no isAdded");
             personGuideDialog = new PersonGuideDialog();
             personGuideDialog.setSureListener(() -> {
-                // 初始化广告sdk
-                AdManager.INSTANCE.initSDK(this.getApplication(), DeviceUtils.getChannelName(), BuildConfig.DEBUG);
-                SplashUtils.INSTANCE.savePersonExit(true);
-                SPUtils.setInformain(KeySharePreferences.DEAL, true);
-                SPUtils.setInformain(KeySharePreferences.AGREEMENT, true);
-                //初始化大数据/友盟sdk
-                initPushAndDnDi();
-                checkAndRequestPermission();
+                initSdk();
             }).setCancelListener(new AbstractFragmentDialog.CancelListener() {
                 @Override
                 public void onCancel() {
