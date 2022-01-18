@@ -7,19 +7,16 @@ import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import com.dn.events.events.DoubleRpEvent
+import com.dn.sdk.listener.IAdRewardVideoListener
 import com.donews.base.fragmentdialog.AbstractFragmentDialog
 import com.donews.base.utils.ToastUtil
-import com.donews.main.BuildConfig
+import com.donews.common.ad.cache.AdVideoCacheUtils.showRewardVideo
 import com.donews.main.R
 import com.donews.main.databinding.MainMoreAwardDialogLayoutBinding
-import com.donews.middle.bean.RestIdBean
-import com.donews.middle.bean.front.DoubleRedPacketBean
 import com.donews.middle.utils.LottieUtil
-import com.donews.network.EasyHttp
-import com.donews.network.cache.model.CacheMode
-import com.donews.network.callback.SimpleCallBack
-import com.donews.network.exception.ApiException
 import com.vmadalin.easypermissions.EasyPermissions
+import org.greenrobot.eventbus.EventBus
 
 
 /**
@@ -34,7 +31,7 @@ class MoreAwardDialog(
         var restId: String,
         var preId: String,
         var score: Float,
-        var number: Float
+        var restScore: Float
 ) : AbstractFragmentDialog<MainMoreAwardDialogLayoutBinding>(),
         EasyPermissions.PermissionCallbacks {
     lateinit var eventListener: EventListener
@@ -58,10 +55,11 @@ class MoreAwardDialog(
             }
         }
         dataBinding.mainDoubleRpGetLl.setOnClickListener {
-            doubleGetRp()
+            doubleRp()
             dismiss()
         }
         dataBinding.mainDoubleCloseIv.setOnClickListener {
+            EventBus.getDefault().post(DoubleRpEvent(7, 0.1f, "", "", 0f))
             dismiss()
         }
 
@@ -78,19 +76,37 @@ class MoreAwardDialog(
         cdt.start()
     }
 
-    fun doubleGetRp() {
-        EasyHttp.post(BuildConfig.API_WALLET_URL + "v1/double-red-packet")
-                .upObject(RestIdBean(restId, preId))
-                .cacheMode(CacheMode.NO_CACHE)
-                .isShowToast(false)
-                .execute(object : SimpleCallBack<DoubleRedPacketBean?>() {
-                    override fun onError(e: ApiException) {
-                    }
+    private var mIsVerify: Boolean = false
+    private fun doubleRp() {
+        ToastUtil.show(context, "视频加载中...")
+        val listener: IAdRewardVideoListener = object : IAdRewardVideoListener {
+            override fun onAdStartLoad() {}
+            override fun onAdStatus(code: Int, any: Any?) {}
+            override fun onAdLoad() {}
+            override fun onAdShow() {
+            }
 
-                    override fun onSuccess(t: DoubleRedPacketBean?) {
-                        ToastUtil.show(context, "双倍红包领取成功")
-                    }
-                })
+            override fun onAdVideoClick() {}
+            override fun onRewardVerify(result: Boolean) {
+                mIsVerify = result
+            }
+
+            override fun onAdClose() {
+                if (!mIsVerify) {
+                    ToastUtil.show(context, "未看完视频，不能领取更多红包")
+                } else {
+                    EventBus.getDefault().post(DoubleRpEvent(8, score, restId, preId, restScore))
+                    dismiss()
+                }
+            }
+
+            override fun onVideoCached() {}
+            override fun onVideoComplete() {}
+            override fun onAdError(code: Int, errorMsg: String?) {
+                ToastUtil.showShort(context, "视频加载失败，点击领取更多重试")
+            }
+        }
+        showRewardVideo(listener)
     }
 
     override fun onDismiss(dialog: DialogInterface) {

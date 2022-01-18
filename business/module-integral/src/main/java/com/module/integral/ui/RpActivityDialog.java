@@ -267,7 +267,7 @@ public class RpActivityDialog extends MvvmBaseLiveDataActivity<MainRpDialogLayou
             public void onRewardVerify(boolean result) {
                 if (result) {
                     // 完整观看视频
-                    EventBus.getDefault().post(new DoubleRpEvent(1, score, restId == null ? "" : restId, preId == null ? "" : preId));
+                    EventBus.getDefault().post(new DoubleRpEvent(1, score, restId == null ? "" : restId, preId == null ? "" : preId, 0f));
                     finish();
                 }
             }
