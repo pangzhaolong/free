@@ -280,7 +280,7 @@ public class ExclusiveLotteryCodeDialog extends BaseDialog<ExclusiveLotteryCodeL
 
             Bundle bundle = new Bundle();
             bundle.putString("url",
-                    "http://ad-static-xg.tagtic.cn/wangzhuan/file/6970b84a455591b81911894a4ff95ade.html");
+                    "http://ad-static-xg.tagtic.cn/wangzhuan/file/d9fe5aa628f8dd19ce7432451de970c8.html");
             bundle.putString("title", "隐私政策");
             ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
         }
