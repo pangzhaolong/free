@@ -61,6 +61,7 @@ import com.donews.main.dialog.AnAdditionalDialog;
 import com.donews.main.dialog.DrawDialog;
 import com.donews.main.dialog.EnterShowDialog;
 import com.donews.main.dialog.FreePanicBuyingDialog;
+import com.donews.main.dialog.MoreAwardDialog;
 import com.donews.main.dialog.RemindDialogExt;
 import com.donews.main.dialog.ext.CritWelfareDialogFragment;
 import com.donews.main.listener.RetentionTaskListener;
@@ -295,8 +296,19 @@ public class MainActivity
     @Override
     protected void onResume() {
         super.onResume();
-/*        AnAdditionalDialog mDrawDialog = new AnAdditionalDialog("123", "123", 123,
+        /*AnAdditionalDialog mDrawDialog = new AnAdditionalDialog("123", "123", 123,
                 123, 400);
+        mDrawDialog.setEventListener(() -> {
+            try {
+                if (mDrawDialog.isAdded() && !MainActivity.this.isFinishing()) {
+                    mDrawDialog.dismiss();
+                }
+            } catch (Exception e) {
+            }
+        });
+        mDrawDialog.show(getSupportFragmentManager(), "AnAddDialog");*/
+        MoreAwardDialog mDrawDialog = new MoreAwardDialog("123", "123", 123,
+                123);
         mDrawDialog.setEventListener(() -> {
             try {
                 if (mDrawDialog.isAdded() && !MainActivity.this.isFinishing()) {
@@ -497,17 +509,12 @@ public class MainActivity
         AppStatusManager.getInstance().setAppStatus(AppStatusConstant.STATUS_NORMAL);
 
         showCriticalBtn();
-        if (!ABSwitch.Ins().isOpenAB()) {
-            mDataBinding.mainFloatingBtn.setVisibility(View.VISIBLE);
-            mDataBinding.mainFloatingBtn.setOnClickListener(v -> {
-                toggleStatusBar(0);
-                mDataBinding.cvContentView.setCurrentItem(0);
-                mPosition = 0;
-                bjClick();
-            });
-        } else {
-            mDataBinding.mainFloatingBtn.setVisibility(View.GONE);
-        }
+        mDataBinding.mainFloatingBtn.setOnClickListener(v -> {
+            toggleStatusBar(0);
+            mDataBinding.cvContentView.setCurrentItem(0);
+            mPosition = 0;
+            bjClick();
+        });
 
         int intoFrontCounts = SPUtils.getInformain(KeySharePreferences.INTO_FRONT_COUNTS, 0);
         if (!SPUtils.getInformain(KeySharePreferences.HAS_DO_INTO_FRONT, false)) {
@@ -517,8 +524,7 @@ public class MainActivity
 
         if (ABSwitch.Ins().isOpenHomeGuid() != 0
                 && SPUtils.getInformain(KeySharePreferences.INTO_FRONT_COUNTS, 0) >= ABSwitch.Ins().isOpenHomeGuid()
-                && !SPUtils.getInformain(KeySharePreferences.HAS_DO_INTO_FRONT, false)
-                && !ABSwitch.Ins().isOpenAB()) {
+                && !SPUtils.getInformain(KeySharePreferences.HAS_DO_INTO_FRONT, false)) {
             mDataBinding.mainHomeGuidCl.setVisibility(View.VISIBLE);
             mDataBinding.mainHomeBtn.setOnClickListener(v -> {
                 mDataBinding.mainHomeGuidCl.setVisibility(View.GONE);
@@ -546,9 +552,12 @@ public class MainActivity
         //当前已完成的次数
         int currCount = LotteryAdCount.INSTANCE.getCriticalModelLotteryNumber();
         CritWelfareDialogFragment.OnSurListener surListener = (int type, int curJd, int totalJd) -> {
+//            if(ABSwitch.Ins().getOpenAutoLotteryCount() >= )
+
             ARouter.getInstance()
                     .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                     .withString("goods_id", info.getGoodsId())
+                    .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
 //                            .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
 //                            .withBoolean("privilege", true)
                     .navigation();
