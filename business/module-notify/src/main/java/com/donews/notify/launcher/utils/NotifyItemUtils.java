@@ -25,6 +25,7 @@ import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.SPUtils;
 import com.tencent.mmkv.MMKV;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -108,6 +109,24 @@ public class NotifyItemUtils {
         String saveShowFlg = uiTemp.notifyTypeId + "|" + uiTemp.id;
         com.blankj.utilcode.util.SPUtils.getInstance(notifyLastShowFile).put(notifyLastShowFlgKey, saveShowFlg);
         targetView.setTag(uiTemp);
+        //统计当日显示的数量
+        HashMap<String, String> notifyCountMap = new HashMap<>();
+        String localCountJson = com.blankj.utilcode.util.SPUtils.getInstance(allowDayCountFile)
+                .getString(allowDayCountKey, "");
+        if (localCountJson.length() > 0) {
+            notifyCountMap = GsonUtils.fromLocalJson(localCountJson, notifyCountMap.getClass());
+            if (notifyCountMap == null) {
+                notifyCountMap = new HashMap<>();
+            }
+        }
+        if (notifyCountMap.get(""+uiTemp.notifyTypeId) == null) {
+            notifyCountMap.put("" + uiTemp.notifyTypeId, "1");
+        } else {
+            notifyCountMap.put("" + uiTemp.notifyTypeId,
+                    "" + ((int) Integer.parseInt(notifyCountMap.get("" + uiTemp.notifyTypeId)) + 1));
+        }
+        com.blankj.utilcode.util.SPUtils.getInstance(allowDayCountFile).put(allowDayCountKey,
+                GsonUtils.toJson(notifyCountMap));
         //处理数据
         for (NotifyItemType notifyItemType : NotifyItemType.values()) {
             if (notifyItemType.typeId == uiTemp.id) {
@@ -145,31 +164,39 @@ public class NotifyItemUtils {
         long currentTime = com.donews.utilslibrary.utils.SPUtils.getLongInformain(TIME_SERVICE, 0L) * 1000;
         //获取本地的保存已经限制的次数(各种类型的通知已经提示过的次数)
         // key:分类id，value:分类当日已经展示的次数
-        Map<Integer, Integer> notifyCountMap = new HashMap<Integer, Integer>();
+        HashMap<String, String> notifyCountMap = new HashMap();
         //获取当前生效的日期(格式:yyyyMMdd)
         String localAllowDay = com.blankj.utilcode.util.SPUtils.getInstance(allowDayCountFile).getString(allowDayKey);
+        //检查是否超过了一天。超过需要清除本地的存储
+        SimpleDateFormat sf = new SimpleDateFormat("yyyyMMdd");
+        String currentTimeDay = sf.format(new Date(currentTime));
         if (localAllowDay != null && localAllowDay.length() > 0) {
-            //检查是否超过了一天。超过需要清除本地的存储
-            SimpleDateFormat sf = new SimpleDateFormat("yyyyMMdd");
-            String currentTimeDay = sf.format(new Date(currentTime));
-            if (!currentTimeDay.equals(sf.format(new Date(localAllowDay)))) {
-                //已经超过一天了。更新配置
-                com.blankj.utilcode.util.SPUtils.getInstance(allowDayCountFile).put(allowDayKey, currentTimeDay);
-                com.blankj.utilcode.util.SPUtils.getInstance(allowDayCountFile).put(allowDayCountKey,
-                        GsonUtils.toJson(notifyCountMap));
-                updateTodayLotteryCount();
-                localAllowDay = currentTimeDay;
-            } else {
-                //没有超过一天。那么直接读取本地的配置信息
-                String localCountJson = com.blankj.utilcode.util.SPUtils.getInstance(allowDayCountFile)
-                        .getString(allowDayCountKey, "");
-                if (localCountJson.length() > 0) {
-                    notifyCountMap = GsonUtils.fromLocalJson(localCountJson, notifyCountMap.getClass());
-                    if (notifyCountMap == null) {
-                        notifyCountMap = new HashMap<>();
+            try {
+                if (!currentTimeDay.equals(sf.format(sf.parse(localAllowDay)))) {
+                    //已经超过一天了。更新配置
+                    com.blankj.utilcode.util.SPUtils.getInstance(allowDayCountFile).put(allowDayKey, currentTimeDay);
+                    com.blankj.utilcode.util.SPUtils.getInstance(allowDayCountFile).put(allowDayCountKey,
+                            GsonUtils.toJson(notifyCountMap));
+                    updateTodayLotteryCount();
+                    localAllowDay = currentTimeDay;
+                } else {
+                    //没有超过一天。那么直接读取本地的配置信息
+                    String localCountJson = com.blankj.utilcode.util.SPUtils.getInstance(allowDayCountFile)
+                            .getString(allowDayCountKey, "");
+                    if (localCountJson.length() > 0) {
+                        notifyCountMap = GsonUtils.fromLocalJson(localCountJson, notifyCountMap.getClass());
+                        if (notifyCountMap == null) {
+                            notifyCountMap = new HashMap<>();
+                        }
                     }
                 }
+            } catch (ParseException e) {
+                com.blankj.utilcode.util.SPUtils.getInstance(allowDayCountFile).put(allowDayKey, currentTimeDay);
+                localAllowDay = currentTimeDay;
             }
+        } else {
+            com.blankj.utilcode.util.SPUtils.getInstance(allowDayCountFile).put(allowDayKey, currentTimeDay);
+            localAllowDay = currentTimeDay;
         }
 
         //获取注册时间
@@ -194,8 +221,8 @@ public class NotifyItemUtils {
             }
             //判断是否超过最大的显示次数
             int typeShowCount = 0;
-            if (notifyCountMap.get(notifyConfig.id) != null) {
-                typeShowCount = notifyCountMap.get(notifyConfig.id);
+            if (notifyCountMap.get(""+notifyConfig.id) != null) {
+                typeShowCount = Integer.parseInt(notifyCountMap.get(""+notifyConfig.id));
             }
             if (typeShowCount >= notifyConfig.notifyMaxCount) {
                 continue; //当前分类通知已经显示达到最大值。不在参与显示

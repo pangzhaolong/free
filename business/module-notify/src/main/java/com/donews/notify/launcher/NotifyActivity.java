@@ -4,9 +4,6 @@ import static java.lang.Thread.sleep;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ActivityManager;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +22,7 @@ import androidx.fragment.app.FragmentActivity;
 import com.blankj.utilcode.util.SPUtils;
 import com.donews.base.base.AppManager;
 import com.donews.base.base.BaseApplication;
+import com.donews.base.utils.ToastUtil;
 import com.donews.common.NotifyLuncherConfigManager;
 import com.donews.keepalive.LaunchStart;
 import com.donews.notify.R;
@@ -48,11 +46,11 @@ public class NotifyActivity extends FragmentActivity {
 
     private static WeakReference<NotifyActionActivity> sPopActionRefer = null;
     private static final LaunchStart launchStart = new LaunchStart();
-    private static boolean isShowNotify = false;
 
     public static void actionStart(Context context) {
         Log.i(TAG, "NotifyActivity actionStart");
         destroy();
+        Log.e("notifyDes","显示了通知栏。。。方法");
         try {
             Intent intent = new Intent();
             ComponentName componentName = new ComponentName(context, NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyAlias);
@@ -115,12 +113,17 @@ public class NotifyActivity extends FragmentActivity {
     };
 
     @Override
+    public void onBackPressed() {
+        try {
+            mNotifyAnimationView.hide();
+        }catch (Exception e){
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (isShowNotify) {
-            finish();
-        }
-        isShowNotify = true;
         setContentView(R.layout.notify_top_banner);
         AppNotifyForegroundUtils.updateBackgroundTime();
         //统计展示
@@ -198,11 +201,17 @@ public class NotifyActivity extends FragmentActivity {
 
     @Override
     protected void onDestroy() {
-        isShowNotify = false;
+        AppNotifyForegroundUtils.updateBackgroundTime();
         super.onDestroy();
         //关闭队列中的所有当前页面类型的页面
         AppManager.getInstance().finishAllActivity(getClass());
         Log.d(TAG, "NotifyActivity onDestroy");
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0,0);
     }
 
     /**

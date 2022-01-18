@@ -5,13 +5,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.util.Log;
 
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.Utils;
 import com.donews.base.base.BaseApplication;
+import com.donews.base.utils.ToastUtil;
 import com.donews.common.NotifyLuncherConfigManager;
-import com.donews.keepalive.DazzleActivity;
-import com.donews.notify.launcher.NotifyActivity;
 import com.donews.notify.launcher.NotifyScreenDelegate;
 
 /**
@@ -46,7 +46,9 @@ public class AppNotifyForegroundUtils {
                     return;//未设置。不生效
                 }
                 boolean isSendNotify = System.currentTimeMillis() - exitBackgroundTime >= delayTime;
+                Log.e("notifyDes","(后台)时间更新了...");
                 if (isSendNotify) {
+                    Log.e("notifyDes","(后台)满足发送后台通知的逻辑");
                     //超过了设置的时间。显示通知
                     //正常的限制条件弹出
                     new NotifyScreenDelegate().showNotify(BaseApplication.getInstance());

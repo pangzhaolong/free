@@ -251,6 +251,20 @@ public class LaunchStart {
         start.run(context, intent);
     }
 
+    /**
+     * 立即执行跳转
+     * @param context
+     * @param intent
+     */
+    public void doStartImmediately(Context context, Intent intent) {
+        start.reset();
+        handler.removeCallbacksAndMessages(null);
+        handler.post(()->{
+            context.startActivity(intent);
+        });
+//        start.run(context, intent);
+    }
+
     public ActionStart getActionStart() {
         return start;
     }

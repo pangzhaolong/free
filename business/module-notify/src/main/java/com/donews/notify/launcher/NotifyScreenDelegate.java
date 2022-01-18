@@ -18,7 +18,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.donews.base.base.AppManager;
+import com.donews.base.base.BaseApplication;
 import com.donews.base.storage.MmkvHelper;
+import com.donews.base.utils.ToastUtil;
 import com.donews.common.NotifyLuncherConfigManager;
 import com.donews.utilslibrary.utils.AppStatusUtils;
 import com.donews.utilslibrary.utils.KeySharePreferences;
@@ -81,15 +83,22 @@ public class NotifyScreenDelegate {
                 break;
 
             case Intent.ACTION_USER_PRESENT:
+                Log.e("notifyDes", "解锁成功。开始检查显示弹否");
                 NotifyActionActivity.destroy();
                 if (canShowNotify() && canShowAct() && canShowFastClick()) {
+                    mHandler.post(()->{
+                        ToastUtil.showShort(BaseApplication.getInstance(), "(解锁)条件通过。开始显示通知");
+                    });
                     tryLoadNewImg(context);
                     long delayTime = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyDelayShowTime;
                     mLastShowTime = System.currentTimeMillis();
                     Log.w(NotifyInitProvider.TAG, action + " show , delayTime=" + delayTime);
-                    mHandler.removeCallbacks(getShowNotifyRunnable(context));
+                    Log.e("notifyDes", "检查通知通过。发起延迟通知");
                     mHandler.postDelayed(getShowNotifyRunnable(context), delayTime);
                 } else {
+                    mHandler.post(()->{
+                        ToastUtil.show(BaseApplication.getInstance(), "(解锁)条件检查未通过a=" + canShowNotify() + ",b=" + canShowAct() + ",c=" + canShowFastClick());
+                    });
                     Log.w(NotifyInitProvider.TAG, action + " can't show");
                 }
                 break;
@@ -106,7 +115,6 @@ public class NotifyScreenDelegate {
                         tryLoadNewImg(context);
                         long delayTime = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyDelayShowTime;
                         Log.w(NotifyInitProvider.TAG, action + " show , delayTime=" + delayTime);
-                        mHandler.removeCallbacks(getShowNotifyRunnable(context));
                         mHandler.postDelayed(getShowNotifyRunnable(context), delayTime);
                     } else {
                         Log.w(NotifyInitProvider.TAG, action + " can't show");
@@ -124,52 +132,57 @@ public class NotifyScreenDelegate {
      * @param context 上下文
      */
     public void showNotify(Context context) {
+        Log.e("notifyDes", "(后台)开始显示桌面通知");
         NotifyActionActivity.destroy();
         if (canShowNotify() && canShowAct() && canShowFastClick()) {
-            String url = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyLauncherImg;
-            if (url == null || url.isEmpty()) {
-                long delayTime = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyDelayShowTime;
-                mLastShowTime = System.currentTimeMillis();
-                Log.w(NotifyInitProvider.TAG, " show , delayTime=" + delayTime);
-                mHandler.removeCallbacks(getShowNotifyRunnable(context));
-                mHandler.postDelayed(getShowNotifyRunnable(context), delayTime);
-            } else {
-                //加载网络图片。然后显示
-                tryLoadNewImg2(context);
-            }
+            mHandler.post(()->{
+                ToastUtil.showShort(BaseApplication.getInstance(), "条件检查通过。后台计时通知");
+            });
+            Log.e("notifyDes", "(后台)条件通过");
+            long delayTime = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyDelayShowTime;
+            mLastShowTime = System.currentTimeMillis();
+            Log.w(NotifyInitProvider.TAG, " show , delayTime=" + delayTime);
+            isLoaded = true;
+            Log.e("notifyDes", "(后台)已发送延迟显示");
+            mHandler.postDelayed(getShowNotifyRunnable(context), delayTime);
+            //加载图片
+            tryLoadNewImg2(context);
+//            if (url == null || url.isEmpty()) {
+//                long delayTime = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyDelayShowTime;
+//                mLastShowTime = System.currentTimeMillis();
+//                Log.w(NotifyInitProvider.TAG, " show , delayTime=" + delayTime);
+//                isLoaded = true;
+//                Log.e("notifyDes","(后台)已发送延迟显示");
+//                mHandler.postDelayed(getShowNotifyRunnable(context), delayTime);
+//            } else {
+//                //加载网络图片。然后显示
+//                Log.e("notifyDes","(后台)加载图片显示");
+//                tryLoadNewImg2(context);
+//            }
+        } else {
+            mHandler.post(()->{
+                ToastUtil.show(BaseApplication.getInstance(), "(后台)条件检查未通过a=" + canShowNotify() + ",b=" + canShowAct() + ",c=" + canShowFastClick());
+            });
         }
     }
 
     //网络图片加载
     private void tryLoadNewImg2(Context context) {
-        isLoaded = false;
-        isOpen = false;
         String url = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyLauncherImg;
         Glide.with(context).asBitmap().load(url).into(new CustomTarget<Bitmap>() {
-            long delayTime = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyDelayShowTime;
-
             @Override
             public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                isLoaded = true;
-                if (!isOpen) {
-                    mLastShowTime = System.currentTimeMillis();
-                    mHandler.removeCallbacks(getShowNotifyRunnable(context));
-                    mHandler.postDelayed(getShowNotifyRunnable(context), delayTime);
-                }
                 Log.d(NotifyInitProvider.TAG, "tryLoadNewImg success , url = " + url);
             }
 
             @Override
             public void onLoadCleared(@Nullable Drawable placeholder) {
-                isLoaded = true;
                 Log.d(NotifyInitProvider.TAG, "tryLoadNewImg onLoadCleared , url = " + url);
             }
 
             @Override
             public void onLoadFailed(@Nullable Drawable errorDrawable) {
-
                 super.onLoadFailed(errorDrawable);
-                isLoaded = true;
                 Log.d(NotifyInitProvider.TAG, "tryLoadNewImg onLoadFailed , url = " + url);
             }
         });
