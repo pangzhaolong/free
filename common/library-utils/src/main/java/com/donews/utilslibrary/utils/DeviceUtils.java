@@ -305,6 +305,10 @@ public class DeviceUtils {
      * @return
      */
     public static String getDeviceIds(Context context) {
+        if (!PermissionUtils.isGranted(Manifest.permission.READ_PHONE_STATE)) {
+            return "";
+        }
+
         final int targetSdkVersion = context.getApplicationInfo().targetSdkVersion;
         if (targetSdkVersion > Build.VERSION_CODES.P && Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
             return getUniqueID(context);
@@ -315,11 +319,11 @@ public class DeviceUtils {
 
     @SuppressLint("HardwareIds")
     private static String getTelId(Context context) {
-        final TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-
         if (!PermissionUtils.isGranted(Manifest.permission.READ_PHONE_STATE)) {
             return "";
         }
+
+        final TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         return manager.getDeviceId();
     }
 
