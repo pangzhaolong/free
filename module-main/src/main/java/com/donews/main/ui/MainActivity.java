@@ -317,7 +317,12 @@ public class MainActivity
             } catch (Exception e) {
             }
         });
-        mDrawDialog.show(getSupportFragmentManager(), "AnAddDialog");*/
+        moreAwardDialog.show(getSupportFragmentManager(), "MoreAwardDialog");
+        ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
+                .withString("from", "wallTask")
+                .withFloat("score", 10.0f)
+                .withString("restId", "213123")
+                .navigation();*/
 
         if (SPUtils.getInformain(KeySharePreferences.FIRST_RP_CAN_OPEN, false)) {
             SPUtils.setInformain(KeySharePreferences.FIRST_RP_CAN_OPEN, false);

@@ -42,100 +42,73 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|top"
                 android:layout_marginTop="-24dp"
-                android:src="@drawable/main_rp_top_coin" />
+                android:src="@drawable/main_rp_top_gift_box" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|center_horizontal"
-                android:layout_marginTop="80dp"
+                android:layout_marginTop="100dp"
                 android:gravity="center"
-                android:text="成功获得翻倍奖励"
+                android:text="恭喜你"
                 android:textColor="#F7302B"
-                android:textSize="16sp"
+                android:textSize="21sp"
                 android:textStyle="bold" />
 
-            <LinearLayout
+            <TextView
                 android:id="@+id/main_double_money_ll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="-10dp"
-                android:gravity="bottom"
-                android:orientation="horizontal">
+                android:layout_marginTop="6dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:text="已获得奖励，看视频\n再得超值奖励"
+                android:textColor="#9C4D23"
+                android:textSize="16sp" />
 
-                <TextView
-                    android:id="@+id/tv_num"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:gravity="bottom"
-                    android:text="1.8"
-                    android:textColor="#F7302B"
-                    android:textSize="40sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_num_dw"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:gravity="bottom"
-                    android:text="元"
-                    android:textColor="#F7302B"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/main_double_add_coins_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:gravity="bottom"
-                android:text="+1.3元"
-                android:textColor="#F7302B"
-                android:textSize="17sp" />
-
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/main_double_rp_get_ll"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="210dp"
+                android:layout_height="48dp"
                 android:layout_gravity="center|bottom"
                 android:layout_marginBottom="70dp"
                 android:background="@drawable/main_rp_double_btn_bg"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:paddingStart="30dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="30dp"
-                android:paddingBottom="8dp">
+                android:clipChildren="false"
+                android:orientation="horizontal">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="开心收下"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:layout_centerInParent="true">
 
-                <TextView
-                    android:id="@+id/main_double_get_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="4dp"
-                    android:gravity="center"
-                    android:text="(3s)"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
-            </LinearLayout>
+                    <ImageView
+                        android:id="@+id/main_more_award_video_iv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/main_rp_video_white" />
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:gravity="center"
+                        android:text="领取更多"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/main_more_award_hand_lav"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginEnd="-16dp"
+                    android:layout_marginBottom="-18dp" />
+            </RelativeLayout>
         </FrameLayout>
-
 
         <ImageView
             android:id="@+id/main_double_close_iv"
@@ -143,7 +116,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="40dp"
             android:src="@drawable/main_rp_double_close"
-            android:visibility="visible"
+            android:visibility="invisible"
             app:layout_constraintRight_toRightOf="parent"
             tools:ignore="MissingConstraints" />
 
