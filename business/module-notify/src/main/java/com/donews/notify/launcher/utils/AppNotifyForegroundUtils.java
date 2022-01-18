@@ -59,6 +59,13 @@ public class AppNotifyForegroundUtils {
     };
 
     /**
+     * 刷新后台时间
+     */
+    public static void updateBackgroundTime(){
+        exitBackgroundTime = System.currentTimeMillis();
+    }
+
+    /**
      * 开启前台检查。当切换到后台达到一定时间后。将激活桌面通知（主要覆盖场景是在后台+屏幕常亮情况）
      * 注意:此通知依然遵循中台主配置+分控配置约束
      */

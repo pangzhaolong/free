@@ -171,6 +171,8 @@ public class Dot {
     public final static String Desktop_Notify_Click = "desktop_notify_click";
     //通知点击去往哪里(目标跳转的去处)
     public final static String Desktop_Notify_Click_To = "desktop_notify_click_to";
+    //通知点击，是否误触点击
+    public final static String Desktop_Notify_Click_Is_Accident = "desktop_notify_click_is_accident";
 
     //-- 首页按钮 ->
     //红包规则

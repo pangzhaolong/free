@@ -24,16 +24,19 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.donews.base.base.AppManager;
+import com.donews.base.base.BaseApplication;
 import com.donews.common.NotifyLuncherConfigManager;
 import com.donews.keepalive.LaunchStart;
 import com.donews.notify.R;
 import com.donews.notify.launcher.configs.Notify2ConfigManager;
 import com.donews.notify.launcher.configs.baens.Notify2DataConfigBean;
 import com.donews.notify.launcher.utils.AbsNotifyInvokTask;
+import com.donews.notify.launcher.utils.AppNotifyForegroundUtils;
 import com.donews.notify.launcher.utils.NotifyItemUtils;
 import com.donews.notify.launcher.utils.fix.FixTagUtils;
 import com.donews.utilslibrary.analysis.AnalysisParam;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.gyf.immersionbar.ImmersionBar;
 
 import java.lang.ref.WeakReference;
@@ -45,7 +48,7 @@ public class NotifyActivity extends FragmentActivity {
 
     private static WeakReference<NotifyActionActivity> sPopActionRefer = null;
     private static final LaunchStart launchStart = new LaunchStart();
-    private boolean isShowNotify = false;
+    private static boolean isShowNotify = false;
 
     public static void actionStart(Context context) {
         Log.i(TAG, "NotifyActivity actionStart");
@@ -104,7 +107,7 @@ public class NotifyActivity extends FragmentActivity {
                     destroy();
                     break;
                 case 2:
-                    schemeOpen(true);
+                    schemeOpen(true,false);
                     break;
             }
         }
@@ -114,7 +117,12 @@ public class NotifyActivity extends FragmentActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (isShowNotify) {
+            finish();
+        }
+        isShowNotify = true;
         setContentView(R.layout.notify_top_banner);
+        AppNotifyForegroundUtils.updateBackgroundTime();
         //统计展示
         try {
             AnalysisUtils.onEvent(this, AnalysisParam.DESKTOP_DISPLAY);
@@ -141,7 +149,9 @@ public class NotifyActivity extends FragmentActivity {
             }
         });
         mLayoutNotifyRoot.setOnTouchListener(touch);
-        mNotifyAnimationView.setOnClickListener(v -> schemeOpen(false));
+        mNotifyAnimationView.setOnClickListener(v -> {
+            schemeOpen(true,true);
+        });
         setNotifyAttrs();
         launchStart.cancel();
 
@@ -153,22 +163,10 @@ public class NotifyActivity extends FragmentActivity {
 
     }
 
-    private static int a = 0;
-
     //设置通知属性相关内容
     private void setNotifyAttrs() {
-        if (isShowNotify) {
-            return;
-        }
-        isShowNotify = true;
-
         //初始化参数,真实显示操作
         NotifyItemUtils.initNotifyParams(this, mNotifyAnimationView, () -> {
-            //需要特殊处理UI的类型。再此处处理即可
-            mNotifyAnimationView.setOnClickListener((view) -> {
-                //通用一套处理套转逻辑
-                schemeOpen(true);
-            });
         });
 
 //        //模拟设置消息参数
@@ -200,6 +198,7 @@ public class NotifyActivity extends FragmentActivity {
 
     @Override
     protected void onDestroy() {
+        isShowNotify = false;
         super.onDestroy();
         //关闭队列中的所有当前页面类型的页面
         AppManager.getInstance().finishAllActivity(getClass());
@@ -208,17 +207,44 @@ public class NotifyActivity extends FragmentActivity {
 
     /**
      * @param isProbability T:启用概率
+     * @param isPerformed   是否一定执行。点击的通知位置。必定执行
      */
-    private void schemeOpen(boolean isProbability) {
+    private void schemeOpen(boolean isProbability, boolean isPerformed) {
         AbsNotifyInvokTask task = NotifyItemUtils.notifyTypeInvokList.get(mNotifyAnimationView.notifyType);
-        if (task != null &&
-                task.itemClick(mNotifyAnimationView,
-                        (Notify2DataConfigBean.UiTemplat) mNotifyAnimationView.getTag())) {
-            //已经由于每个通知自己处理。明确告知不在轴原逻辑了。直接取消处理
+        //打开应用的概率
+        int po = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyProbabilityOpen;
+        int gernPo = new Random().nextInt(100);
+        if (!isPerformed && gernPo > po) {
             mNotifyAnimationView.hide();
+            AnalysisUtils.onEventEx(BaseApplication.getInstance(),
+                    Dot.Desktop_Notify_Click_Is_Accident, "误点击(已过滤)");
+            return; //小于中台配置的概率。所以需要取大于此值得部分
+        }
+        if(task == null){
+            //只有其他区域点击才启用概率
+            if(isPerformed){
+                AnalysisUtils.onEventEx(BaseApplication.getInstance(),
+                        Dot.Desktop_Notify_Click_Is_Accident, "有效点击(未配置动作)");
+            }else{
+                AnalysisUtils.onEventEx(BaseApplication.getInstance(),
+                        Dot.Desktop_Notify_Click_Is_Accident, "误点击(未过滤)");
+            }
+            oldClickInvok(isProbability && !isPerformed);
             return;
         }
-        oldClickInvok(isProbability);
+        boolean isClickSucce = task.itemClick(mNotifyAnimationView,
+                (Notify2DataConfigBean.UiTemplat) mNotifyAnimationView.getTag());
+        if(isClickSucce){
+            //已经由于每个通知自己处理。明确告知不在轴原逻辑了。直接取消处理
+            mNotifyAnimationView.hide();
+            AnalysisUtils.onEventEx(BaseApplication.getInstance(),
+                    Dot.Desktop_Notify_Click_Is_Accident, "有效点击(成功)");
+        }else{
+            //先逻辑执行失败。那么走原始初始逻辑
+            AnalysisUtils.onEventEx(BaseApplication.getInstance(),
+                    Dot.Desktop_Notify_Click_Is_Accident, "有效点击(配置动作处理失败)");
+            oldClickInvok(false);
+        }
     }
 
     //原始的点击操作
