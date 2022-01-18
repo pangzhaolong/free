@@ -2,6 +2,7 @@ package com.donews.base.appdialog.permission;
 
 import android.app.AppOpsManager;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
 import android.os.Binder;
 import android.os.Build;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.WindowManager;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
 
 import java.lang.reflect.Method;
 
@@ -20,6 +22,12 @@ import java.lang.reflect.Method;
  * Description:
  */
 public class PermissionUtil {
+
+    static boolean hasPermission(Context context, String permission) {
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.M
+                || ActivityCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
+    }
+
     static boolean hasPermission(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return Settings.canDrawOverlays(context);

@@ -17,12 +17,14 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.Utils;
 import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.NetworkChanageEvnet;
 import com.dn.sdk.listener.IAdSplashListener;
 import com.dn.sdk.listener.impl.SimpleInterstitialListener;
 import com.dn.sdk.listener.impl.SimpleRewardVideoListener;
 import com.dn.sdk.listener.impl.SimpleSplashListener;
+import com.dn.sdk.manager.sdk.AdSdkManager;
 import com.donews.base.base.AppManager;
 import com.donews.base.base.AppStatusConstant;
 import com.donews.base.base.AppStatusManager;
@@ -43,6 +45,7 @@ import com.donews.main.utils.SplashUtils;
 import com.donews.utilslibrary.analysis.AnalysisHelp;
 import com.donews.utilslibrary.base.SmSdkConfig;
 import com.donews.utilslibrary.base.UtilsConfig;
+import com.donews.utilslibrary.utils.DeviceUtils;
 import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.NetworkUtils;
 import com.donews.utilslibrary.utils.SPUtils;
@@ -207,9 +210,12 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
             Logger.d("personGuideDialog no isAdded");
             personGuideDialog = new PersonGuideDialog();
             personGuideDialog.setSureListener(() -> {
+                // 初始化广告sdk
+                AdManager.INSTANCE.initSDK(this.getApplication(), DeviceUtils.getChannelName(), BuildConfig.DEBUG);
                 SplashUtils.INSTANCE.savePersonExit(true);
                 SPUtils.setInformain(KeySharePreferences.DEAL, true);
                 SPUtils.setInformain(KeySharePreferences.AGREEMENT, true);
+                //初始化大数据/友盟sdk
                 initPushAndDnDi();
                 checkAndRequestPermission();
             }).setCancelListener(new AbstractFragmentDialog.CancelListener() {
