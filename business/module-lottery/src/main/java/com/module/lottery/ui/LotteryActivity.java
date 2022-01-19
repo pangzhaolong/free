@@ -71,6 +71,7 @@ import com.module.lottery.dialog.LotteryCodeStartsDialog;
 import com.module.lottery.dialog.LotteryCritCodeDialog;
 import com.module.lottery.dialog.LotteryCritCommodityDialog;
 import com.module.lottery.dialog.LotteryCritOverDialog;
+import com.module.lottery.dialog.OptionalCodeDialog;
 import com.module.lottery.dialog.OptionalCodeInterceptionDialog;
 import com.module.lottery.dialog.ReceiveLotteryDialog;
 import com.module.lottery.dialog.ReturnInterceptDialog;
@@ -210,10 +211,14 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
-//            showOptionalCodeInterceptionDialog();
+            showOptionalCodeDialog();
         }
     };
 
+    private void showOptionalCodeDialog() {
+        OptionalCodeDialog optionalCodeDialog = new OptionalCodeDialog(LotteryActivity.this);
+        optionalCodeDialog.show(LotteryActivity.this);
+    }
 
     private void showLotteryCritCodeDialog(GenerateCodeBean generateCodeBean) {
         runOnUiThread(new Runnable() {
