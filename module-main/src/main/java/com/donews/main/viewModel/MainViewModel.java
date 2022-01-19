@@ -11,6 +11,7 @@ import com.donews.main.bean.WallTaskRpBean;
 import com.donews.main.entitys.resps.HistoryPeopleLottery;
 import com.donews.main.entitys.resps.RewardHistoryBean;
 import com.donews.main.model.MainModel;
+import com.donews.middle.bean.LandingRpTimesBean;
 import com.donews.middle.bean.front.DoubleRedPacketBean;
 import com.donews.middle.bean.front.WinningRotationBean;
 import com.donews.utilslibrary.utils.SPUtils;
@@ -127,4 +128,9 @@ public class MainViewModel extends BaseLiveDataViewModel<MainModel> {
     public MutableLiveData<WallTaskRpBean> getWallTaskRp(String reqId) {
         return mModel.getWallTaskRp(reqId);
     }
+
+    public MutableLiveData<LandingRpTimesBean> getLandingRpTimesBean() {
+        return mModel.getLandingRpTimesBean();
+    }
+
 }

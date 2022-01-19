@@ -8,6 +8,7 @@ import com.donews.main.bean.RetentionTaskBean;
 import com.donews.main.bean.WallTaskRpBean;
 import com.donews.main.entitys.resps.HistoryPeopleLottery;
 import com.donews.main.entitys.resps.RewardHistoryBean;
+import com.donews.middle.bean.LandingRpTimesBean;
 import com.donews.middle.bean.RestIdBean;
 import com.donews.middle.bean.front.DoubleRedPacketBean;
 import com.donews.network.EasyHttp;
@@ -149,6 +150,27 @@ public class MainModel extends BaseLiveDataModel {
 
                     @Override
                     public void onSuccess(WallTaskRpBean bean) {
+                        mutableLiveData.postValue(bean);
+                    }
+                }));
+
+        return mutableLiveData;
+    }
+
+    public MutableLiveData<LandingRpTimesBean> getLandingRpTimesBean() {
+        MutableLiveData<LandingRpTimesBean> mutableLiveData = new MutableLiveData<>();
+        addDisposable(EasyHttp.get(HttpConfigUtilsKt.withConfigParams(BuildConfig.API_WALLET_URL + "v1/landing-page-red-packet-times", true))
+                .cacheMode(CacheMode.NO_CACHE)
+                .isShowToast(false)
+                .execute(new SimpleCallBack<LandingRpTimesBean>() {
+
+                    @Override
+                    public void onError(ApiException e) {
+                        mutableLiveData.postValue(null);
+                    }
+
+                    @Override
+                    public void onSuccess(LandingRpTimesBean bean) {
                         mutableLiveData.postValue(bean);
                     }
                 }));
