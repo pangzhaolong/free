@@ -488,8 +488,18 @@ public class MainActivity
 
     private void isFromNotify() {
         if (!TextUtils.isEmpty(from) && from.equalsIgnoreCase("notify")) {
-            MainRpDialog dialog = new MainRpDialog(from, SPUtils.getInformain(NOTIFY_RANDOM_RED_AMOUNT, 0.5f), "", "");
-            dialog.show(getSupportFragmentManager(), "mainRpDialog");
+            mViewModel.getLandingRpTimesBean().observe(this, landingRpTimesBean -> {
+                if (landingRpTimesBean == null) {
+                    return;
+                }
+                if (landingRpTimesBean.getTimes() <= 0) {
+                    MainRpDialog dialog = new MainRpDialog(from, SPUtils.getInformain(NOTIFY_RANDOM_RED_AMOUNT, 0.5f), "", "");
+                    dialog.show(getSupportFragmentManager(), "mainRpDialog");
+                    return;
+                }
+
+                EventBus.getDefault().post(new DoubleRpEvent(11, 0f,"","",0f));
+            });
         }
     }
 
@@ -890,7 +900,7 @@ public class MainActivity
             AdManager.INSTANCE.loadInterstitialAd(this, new JddInterstitialListenerProxy());
         } else if (event.getEvent() == 8) { // 8： 桌面通知模块->红包->关闭->领取更多弹窗->领取更多/桌面通知模块->红包->翻倍领取成功
             new Handler().postDelayed(() -> showAnAdditionalDialog(event), 200);
-        } else if (event.getEvent() == 9) {
+        } else if (event.getEvent() == 9) { // 9: 首页特权开启红包（可以自动抽奖）
             new Handler().postDelayed(() -> {
                 MainRpDialog dialog = new MainRpDialog("privilege", 0f, "", "");
                 dialog.show(getSupportFragmentManager(), "mainRpDialog");

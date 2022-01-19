@@ -118,6 +118,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        EventBus.getDefault().register(this);
+
         mContext = this.getContext();
 
         mCurSelectPosition = 0;
@@ -220,7 +222,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
         startTimer();
         scrollFloatBar();
-        EventBus.getDefault().register(this);
 
         mDataBinding.frontToTopTv.setOnClickListener(v -> {
             mFragmentAdapter.gotoTopPosition(mCurSelectPosition);
@@ -1112,5 +1113,12 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         }
 
         mDataBinding.frontToTopTv.setVisibility(event.getStatus() == 1 ? View.VISIBLE : View.GONE);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onDoubleRpEvent(DoubleRpEvent event) {
+        if (event.getEvent() == 11) {
+            openRedPackage();
+        }
     }
 }
