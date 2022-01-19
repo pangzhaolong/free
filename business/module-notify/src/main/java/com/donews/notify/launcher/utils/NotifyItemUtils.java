@@ -2,6 +2,7 @@ package com.donews.notify.launcher.utils;
 
 import static com.donews.utilslibrary.utils.KeySharePreferences.TIME_SERVICE;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -119,7 +120,7 @@ public class NotifyItemUtils {
                 notifyCountMap = new HashMap<>();
             }
         }
-        if (notifyCountMap.get(""+uiTemp.notifyTypeId) == null) {
+        if (notifyCountMap.get("" + uiTemp.notifyTypeId) == null) {
             notifyCountMap.put("" + uiTemp.notifyTypeId, "1");
         } else {
             notifyCountMap.put("" + uiTemp.notifyTypeId,
@@ -127,6 +128,7 @@ public class NotifyItemUtils {
         }
         com.blankj.utilcode.util.SPUtils.getInstance(allowDayCountFile).put(allowDayCountKey,
                 GsonUtils.toJson(notifyCountMap));
+        Log.e("notifyDes", "限制次数：" + notifyCountMap.get("" + uiTemp.notifyTypeId));
         //处理数据
         for (NotifyItemType notifyItemType : NotifyItemType.values()) {
             if (notifyItemType.typeId == uiTemp.id) {
@@ -221,8 +223,8 @@ public class NotifyItemUtils {
             }
             //判断是否超过最大的显示次数
             int typeShowCount = 0;
-            if (notifyCountMap.get(""+notifyConfig.id) != null) {
-                typeShowCount = Integer.parseInt(notifyCountMap.get(""+notifyConfig.id));
+            if (notifyCountMap.get("" + notifyConfig.id) != null) {
+                typeShowCount = Integer.parseInt(notifyCountMap.get("" + notifyConfig.id));
             }
             if (typeShowCount >= notifyConfig.notifyMaxCount) {
                 continue; //当前分类通知已经显示达到最大值。不在参与显示
@@ -234,6 +236,8 @@ public class NotifyItemUtils {
                     openRedPackCount == notifyConfig.dayReceiveRedCount) &&
                     (notifyConfig.dayLotteryCodeCount < 0 ||
                             getLotteryCodeCount == notifyConfig.dayLotteryCodeCount);
+
+            Log.e("notifyDes", "条件类型id=" + notifyConfig.id + ",条件：" + regTimeTj + "->" + dayTj2);
             //检查上诉条件是否足够(同时优先判断是否开启debug跳过)
             if (isOpenNotifyDebug || regTimeTj && dayTj2) {
                 for (Notify2DataConfigBean.UiTemplat uiModel : notifyConfig.uiTemplate) {

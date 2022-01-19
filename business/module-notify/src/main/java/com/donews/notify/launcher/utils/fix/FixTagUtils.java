@@ -3,6 +3,7 @@ package com.donews.notify.launcher.utils.fix;
 import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.text.Spanned;
+import android.text.SpannedString;
 
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.ImageUtils;
@@ -217,6 +218,9 @@ public class FixTagUtils {
      * @return
      */
     public static Spanned convertHtml(String content){
+        if(content == null || "".equals(content)){
+            return new SpannedString("--");
+        }
         return Html.fromHtml(content);
     }
 
