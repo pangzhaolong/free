@@ -84,13 +84,7 @@ public class NotifyItemTypeLotBottom5Impl extends AbsNotifyInvokTask {
             //金额
             jeLL.setVisibility(View.VISIBLE);
             icon.setVisibility(View.GONE);
-            float num = FixTagUtils.getRandom(
-                    Notify2ConfigManager.Ins().getNotifyConfigBean().redPackageMinAmount,
-                    Notify2ConfigManager.Ins().getNotifyConfigBean().redPackageMaxAmount
-            );
-            numner.setText("" + num);
-            //将金额保存到文件。做到首页同步
-            com.donews.utilslibrary.utils.SPUtils.setInformain(NOTIFY_RANDOM_RED_AMOUNT, num);
+            numner.setText("" + FixTagUtils.updateLocalRandomRangNumber());
         } else {
             //图标
             jeLL.setVisibility(View.GONE);

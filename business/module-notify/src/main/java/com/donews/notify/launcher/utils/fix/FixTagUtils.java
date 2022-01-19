@@ -1,5 +1,7 @@
 package com.donews.notify.launcher.utils.fix;
 
+import static com.donews.utilslibrary.utils.KeySharePreferences.NOTIFY_RANDOM_RED_AMOUNT;
+
 import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.text.Spanned;
@@ -11,6 +13,7 @@ import com.blankj.utilcode.util.ResourceUtils;
 import com.blankj.utilcode.util.ViewUtils;
 import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.WeChatBean;
+import com.donews.notify.launcher.configs.Notify2ConfigManager;
 import com.donews.notify.launcher.configs.baens.Notify2DataConfigBean;
 import com.donews.notify.launcher.utils.fix.covert.ResConvertUtils;
 import com.donews.utilslibrary.utils.LogUtil;
@@ -210,6 +213,18 @@ public class FixTagUtils {
         } catch (Exception e) {
             return ((int) d * 100) / 100F;
         }
+    }
+
+    /**
+     * 刷新本地金额数据
+     */
+    public static float updateLocalRandomRangNumber(){
+        float num = getRandom(
+                Notify2ConfigManager.Ins().getNotifyConfigBean().redPackageMinAmount,
+                Notify2ConfigManager.Ins().getNotifyConfigBean().redPackageMaxAmount
+        );
+        com.donews.utilslibrary.utils.SPUtils.setInformain(NOTIFY_RANDOM_RED_AMOUNT, num);
+        return num;
     }
 
     /**

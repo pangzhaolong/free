@@ -1,5 +1,6 @@
 package com.donews.notify.launcher;
 
+import static com.donews.utilslibrary.utils.KeySharePreferences.NOTIFY_RANDOM_RED_AMOUNT;
 import static java.lang.Thread.sleep;
 
 import android.annotation.SuppressLint;
@@ -19,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.donews.base.base.AppManager;
 import com.donews.base.base.BaseApplication;
@@ -35,6 +37,7 @@ import com.donews.notify.launcher.utils.fix.FixTagUtils;
 import com.donews.utilslibrary.analysis.AnalysisParam;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
+import com.donews.utilslibrary.utils.AppInfo;
 import com.gyf.immersionbar.ImmersionBar;
 
 import java.lang.ref.WeakReference;
@@ -48,14 +51,21 @@ public class NotifyActivity extends FragmentActivity {
     private static final LaunchStart launchStart = new LaunchStart();
 
     public static void actionStart(Context context) {
+        //刷新一次本地金额数据。以备不时之需
+        FixTagUtils.updateLocalRandomRangNumber();
         //将条件前置。防止计时后台显示。达到限制之后依然启动了界面
+        Log.i(TAG, "NotifyActivity actionStart");
+        destroy();
+        if(AppUtils.isAppForeground()){
+            Log.e("notifyDes","应用已经再前台。放弃展示");
+            launchStart.cancel();
+            return;//在前台。不显示弹窗
+        }
         List<Notify2DataConfigBean.UiTemplat> uiList = NotifyItemUtils.getMeetConditionalUiTemplats();
         if(uiList == null || uiList.isEmpty()){
             Log.e("notifyDes","没有可显示的UI模板。放弃显示");
             return; //没有可展示的UI模板。那么忽略掉
         }
-        Log.i(TAG, "NotifyActivity actionStart");
-        destroy();
         Log.e("notifyDes","显示了通知栏。。。方法");
         try {
             Intent intent = new Intent();
