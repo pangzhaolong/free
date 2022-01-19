@@ -19,7 +19,7 @@ import com.donews.utilslibrary.utils.Utils
 class AdSdkModuleInit : IModuleInit {
     override fun onInitAhead(application: BaseApplication?): Boolean {
         application?.let {
-            AdManager.initSDK(it, DeviceUtils.getChannelName(), BuildConfig.DEBUG)
+//            AdManager.initSDK(it, DeviceUtils.getChannelName(), BuildConfig.DEBUG)
             JddAdConfigManager.init()
             JddAdManager.init()
         }

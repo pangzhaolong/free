@@ -138,9 +138,9 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
             public void onClick(@NonNull View widget) {
                 String url = "";
                 if (ABSwitch.Ins().isOpenAB() && DeviceUtils.getChannelName().equalsIgnoreCase("huawei")) {
-                    url = "http://ad-static-xg.tagtic.cn/wangzhuan/file/6970b84a455591b81911894a4ff95ade.html";
+                    url = "http://ad-static-xg.tagtic.cn/wangzhuan/file/d9fe5aa628f8dd19ce7432451de970c8.html";
                 } else {
-                    url = "http://ad-static-xg.tagtic.cn/wangzhuan/file/6970b84a455591b81911894a4ff95ade.html";
+                    url = "http://ad-static-xg.tagtic.cn/wangzhuan/file/d9fe5aa628f8dd19ce7432451de970c8.html";
                 }
 
                 ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY).withString("url", url)

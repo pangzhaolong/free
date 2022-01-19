@@ -23,10 +23,9 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import androidx.annotation.RequiresApi;
-import androidx.core.app.ActivityCompat;
 
+import com.blankj.utilcode.util.PermissionUtils;
 import com.bytedance.hume.readapk.HumeSDK;
-import com.dnstatistics.sdk.agent.DonewsAgent;
 import com.donews.ads.mediation.v2.suuid.api.DnSuuid;
 import com.donews.utilslibrary.BuildConfig;
 import com.donews.utilslibrary.base.UtilsConfig;
@@ -70,6 +69,9 @@ public class DeviceUtils {
      * android_id 获取
      */
     public static String getAndroidID() {
+        if (!PermissionUtils.isGranted(Manifest.permission.READ_PHONE_STATE)) {
+            return "";
+        }
         try {
             String ANDROID_ID = Settings.System.getString(UtilsConfig.getApplication().getContentResolver(),
                     Settings.System.ANDROID_ID);
@@ -85,6 +87,9 @@ public class DeviceUtils {
      */
     @SuppressLint("HardwareIds")
     public static String getDeviceId() {
+        if (!PermissionUtils.isGranted(Manifest.permission.READ_PHONE_STATE)) {
+            return "";
+        }
         try {
             TelephonyManager tm = (TelephonyManager) UtilsConfig.getApplication().getSystemService(
                     Context.TELEPHONY_SERVICE);
@@ -106,6 +111,9 @@ public class DeviceUtils {
      * @return 当前应用的版本名称
      */
     public static String getVersionName() {
+        if (!PermissionUtils.isGranted(Manifest.permission.READ_PHONE_STATE)) {
+            return "";
+        }
         try {
             PackageManager manager = UtilsConfig.getApplication().getPackageManager();
             PackageInfo info = manager.getPackageInfo(UtilsConfig.getApplication().getPackageName(), 0);
@@ -121,6 +129,9 @@ public class DeviceUtils {
      * @return 应用版本号
      */
     public static int getAppVersionCode() {
+        if (!PermissionUtils.isGranted(Manifest.permission.READ_PHONE_STATE)) {
+            return -1;
+        }
         try {
             PackageManager manager = UtilsConfig.getApplication().getPackageManager();
             PackageInfo info = manager.getPackageInfo(UtilsConfig.getApplication().getPackageName(), 0);
@@ -137,6 +148,9 @@ public class DeviceUtils {
      * 得到包名
      */
     public static String getPackage() {
+        if (!PermissionUtils.isGranted(Manifest.permission.READ_PHONE_STATE)) {
+            return "";
+        }
         try {
             PackageManager manager = UtilsConfig.getApplication().getPackageManager();
             PackageInfo info = manager.getPackageInfo(UtilsConfig.getApplication().getPackageName(), 0);
@@ -149,6 +163,9 @@ public class DeviceUtils {
     }
 
     public static String getMacAddress() {
+        if (!PermissionUtils.isGranted(Manifest.permission.READ_PHONE_STATE)) {
+            return "";
+        }
         String macAddress = "";
         Context context = null;
         try {
@@ -198,7 +215,6 @@ public class DeviceUtils {
     }
 
     public static int getStatusBarHeight(Context context) {
-
         Class<?> c = null;
         Object obj = null;
         Field field = null;
@@ -250,7 +266,7 @@ public class DeviceUtils {
 
     public static String getChannelName() {
         String toutiaoChannel = getTouTiaoChannelName();
-        if (toutiaoChannel !=null && !toutiaoChannel.equalsIgnoreCase("")) {
+        if (toutiaoChannel != null && !toutiaoChannel.equalsIgnoreCase("")) {
             return toutiaoChannel;
         }
 
@@ -289,6 +305,10 @@ public class DeviceUtils {
      * @return
      */
     public static String getDeviceIds(Context context) {
+        if (!PermissionUtils.isGranted(Manifest.permission.READ_PHONE_STATE)) {
+            return "";
+        }
+
         final int targetSdkVersion = context.getApplicationInfo().targetSdkVersion;
         if (targetSdkVersion > Build.VERSION_CODES.P && Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
             return getUniqueID(context);
@@ -299,15 +319,18 @@ public class DeviceUtils {
 
     @SuppressLint("HardwareIds")
     private static String getTelId(Context context) {
-        final TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        if (ActivityCompat.checkSelfPermission(context,
-                Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+        if (!PermissionUtils.isGranted(Manifest.permission.READ_PHONE_STATE)) {
             return "";
         }
+
+        final TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         return manager.getDeviceId();
     }
 
     private static String getUniqueID(Context context) {
+        if (!PermissionUtils.isGranted(Manifest.permission.READ_PHONE_STATE)) {
+            return "";
+        }
         String id = null;
         final String androidId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         if (!TextUtils.isEmpty(androidId) && !"9774d56d682e549c".equals(androidId)) {
@@ -347,10 +370,14 @@ public class DeviceUtils {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
             try {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    if (ActivityCompat.checkSelfPermission(context,
-                            Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+
+                    if (!PermissionUtils.isGranted(Manifest.permission.READ_PHONE_STATE)) {
                         serial = "serial"; // 随便一个初始化
                     }
+                    /*if (ActivityCompat.checkSelfPermission(context,
+                            Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                        serial = "serial"; // 随便一个初始化
+                    }*/
                     serial = android.os.Build.getSerial();
                 } else {
                     serial = Build.SERIAL;
@@ -370,6 +397,9 @@ public class DeviceUtils {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public static int getBattery() {
+        if (!PermissionUtils.isGranted(Manifest.permission.READ_PHONE_STATE)) {
+            return 0;
+        }
         try {
             BatteryManager batteryManager = (BatteryManager) UtilsConfig.getApplication().getSystemService(
                     BATTERY_SERVICE);

@@ -70,7 +70,7 @@ class AnAdditionalDialog(
         SoundHelp.newInstance().init(context)
         SoundHelp.newInstance().onStart()
         dataBinding.tvNum.text = score.toString()
-        dataBinding.mainDoubleAddCoinsTv.text = number.toString()
+        dataBinding.mainDoubleAddCoinsTv.text = String.format("%.02f", number)
         setOnDismissListener {
             handler.removeCallbacksAndMessages(null)
             timeTask?.apply {

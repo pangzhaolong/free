@@ -116,6 +116,13 @@ public class ABSwitch {
         return mAbBean.isOpenVideoToast();
     }
 
+
+
+    public int getLotteryPriceShow() {
+        return mAbBean.getLotteryPriceShow();
+    }
+
+
     public boolean isOpenAutoLottery() {
         return mAbBean.isOpenAutoLottery();
     }

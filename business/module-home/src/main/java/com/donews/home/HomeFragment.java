@@ -30,6 +30,7 @@ import com.donews.middle.cache.GoodsCache;
 import com.donews.middle.go.GotoUtil;
 import com.donews.middle.views.TabItem;
 import com.donews.utilslibrary.utils.UrlUtils;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -89,6 +90,7 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
         super.onViewCreated(view, savedInstanceState);
 
         mContext = this.getContext();
+        mDataBinding.homeAppBarLayout.addOnOffsetChangedListener(mOnOffSetChangedListener);
         mFragmentAdapter = new FragmentAdapter(this);
         mDataBinding.homeCategoryVp2.setAdapter(mFragmentAdapter);
         mDataBinding.homeCategoryTl.setTabMode(TabLayout.MODE_SCROLLABLE);
@@ -141,10 +143,10 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
         });
-        mDataBinding.homeJddHelp.setOnClickListener(v -> {
+        /*mDataBinding.homeJddHelp.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), HomeHelpActivity.class);
             startActivity(intent);
-        });
+        });*/
 
         mDataBinding.homeBannerLl.setOnClickListener(v ->
                 ARouter.getInstance().build(RouterActivityPath.Home.CRAZY_LIST_DETAIL).navigation());
@@ -232,6 +234,19 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
         });
     }
 
+    private AppBarLayout.OnOffsetChangedListener mOnOffSetChangedListener = (appBarLayout, verticalOffset) -> {
+        float alpha = Math.abs(verticalOffset)/600f;
+        if (alpha > 1.0f ) {
+            alpha = 1.0f;
+        }
+        if (alpha < 0) {
+            alpha = 0;
+        }
+        alpha = 1- alpha;
+        mDataBinding.homeTitleBgIv.setAlpha(alpha);
+        mDataBinding.homeTitleCircleIv.setAlpha(alpha);
+    };
+
     @SuppressLint("SetTextI18n")
     private void showSecKilBean(SecKilBean secKilBean) {
         if (secKilBean == null || secKilBean.getGoodsList() == null || secKilBean.getRoundsList().size() <= 0
@@ -276,23 +291,23 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
 
         RealTimeBean.goodsInfo goodsInfo = realTimeBean.getList().get(0);
         Glide.with(this).load(UrlUtils.formatUrlPrefix(goodsInfo.getMainPic())).into(mDataBinding.homeSeckilRiv1);
-        mDataBinding.homeSeckilTv1.setText("直降￥" + String.format("%d", (int)goodsInfo.getCouponPrice()));
-        mDataBinding.homeSeckilPriceTv1.setText(String.format("%d", (int)goodsInfo.getActualPrice()));
+        mDataBinding.homeSeckilTv1.setText("直降￥" + String.format("%d", (int) goodsInfo.getCouponPrice()));
+        mDataBinding.homeSeckilPriceTv1.setText(String.format("%d", (int) goodsInfo.getActualPrice()));
         goodsInfo = realTimeBean.getList().get(1);
         Glide.with(this).load(UrlUtils.formatUrlPrefix(goodsInfo.getMainPic())).into(mDataBinding.homeSeckilRiv2);
-        mDataBinding.homeSeckilTv2.setText("直降￥" + String.format("%d", (int)goodsInfo.getCouponPrice()));
-        mDataBinding.homeSeckilPriceTv2.setText(String.format("%d", (int)goodsInfo.getActualPrice()));
+        mDataBinding.homeSeckilTv2.setText("直降￥" + String.format("%d", (int) goodsInfo.getCouponPrice()));
+        mDataBinding.homeSeckilPriceTv2.setText(String.format("%d", (int) goodsInfo.getActualPrice()));
         if (realTimeBean.getList().size() > 2) {
             goodsInfo = realTimeBean.getList().get(2);
             Glide.with(this).load(UrlUtils.formatUrlPrefix(goodsInfo.getMainPic())).into(mDataBinding.homeSeckilRiv3);
-            mDataBinding.homeSeckilTv3.setText("直降￥" + String.format("%d", (int)goodsInfo.getCouponPrice()));
-            mDataBinding.homeSeckilPriceTv3.setText(String.format("%d", (int)goodsInfo.getActualPrice()));
+            mDataBinding.homeSeckilTv3.setText("直降￥" + String.format("%d", (int) goodsInfo.getCouponPrice()));
+            mDataBinding.homeSeckilPriceTv3.setText(String.format("%d", (int) goodsInfo.getActualPrice()));
         }
         if (realTimeBean.getList().size() > 3) {
             goodsInfo = realTimeBean.getList().get(3);
             Glide.with(this).load(UrlUtils.formatUrlPrefix(goodsInfo.getMainPic())).into(mDataBinding.homeSeckilRiv4);
-            mDataBinding.homeSeckilTv4.setText("直降￥" + String.format("%d", (int)goodsInfo.getCouponPrice()));
-            mDataBinding.homeSeckilPriceTv4.setText(String.format("%d", (int)goodsInfo.getActualPrice()));
+            mDataBinding.homeSeckilTv4.setText("直降￥" + String.format("%d", (int) goodsInfo.getCouponPrice()));
+            mDataBinding.homeSeckilPriceTv4.setText(String.format("%d", (int) goodsInfo.getActualPrice()));
         }
     }
 

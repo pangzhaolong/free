@@ -381,6 +381,7 @@
                     android:src="@mipmap/icon_three" />
 
                 <TextView
+                    android:id="@+id/postage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -644,8 +645,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:background="#F9F9F9"
+            android:gravity="center"
             android:orientation="horizontal"
             android:paddingTop="20dp"
             android:paddingBottom="14dp">
@@ -653,8 +654,8 @@
             <ImageView
                 android:layout_width="26.5dp"
                 android:layout_height="7dp"
-                android:scaleType="fitXY"
                 android:layout_marginEnd="13dp"
+                android:scaleType="fitXY"
                 android:src="@mipmap/little_bit_lift_icon" />
 
             <TextView
@@ -662,14 +663,13 @@
                 android:layout_height="wrap_content"
                 android:text="猜你喜欢"
                 android:textColor="#2C2C2C"
-                android:textSize="16dp"
-             />
+                android:textSize="16dp" />
 
             <ImageView
                 android:layout_width="26.5dp"
                 android:layout_height="7dp"
-                android:scaleType="fitXY"
                 android:layout_marginStart="13dp"
+                android:scaleType="fitXY"
                 android:src="@mipmap/little_bit_right_icon" />
         </LinearLayout>
 

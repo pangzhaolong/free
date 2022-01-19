@@ -110,7 +110,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     private static final String CRITICAL_BT_TITLE_2 = "超级幸运：中奖率X6";
     private static final String CRITICAL_BT_TITLE_3 = "观看视频，参与抽奖";
     private static final String CRITICAL_BT_TITLE_4 = "抽奖码越多，中奖概率越大";
-    private static final String CRITICAL_BT_TITLE_5 = "0元";
+    private static final String CRITICAL_BT_TITLE_5 = "点击";
     @Autowired(name = "goods_id")
     public String mGoodsId;
     private SharedPreferences mSharedPreferences;
@@ -200,8 +200,8 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             ifOpenAutoLotteryAndCount();
         }
         mStart_lottery = false;
-        Message mes = new Message();
-        handler.sendMessageDelayed(mes, 2000);
+//        Message mes = new Message();
+//        handler.sendMessageDelayed(mes, 2000);
     }
 
 

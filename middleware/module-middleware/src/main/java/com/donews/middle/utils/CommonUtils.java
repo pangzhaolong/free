@@ -27,7 +27,7 @@ import org.greenrobot.eventbus.EventBus;
 
 public class CommonUtils {
     //小手的动画
-    public static final String LOTTERY_FINGER = "middle_critical_ani.json";
+    public static final String LOTTERY_FINGER = "littleHand.json";
 
     //开始暴击模式
     public static void startCrit() {

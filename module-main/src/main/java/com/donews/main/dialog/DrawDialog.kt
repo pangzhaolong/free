@@ -8,6 +8,7 @@ import com.donews.main.R
 import com.donews.main.bean.RecentLotteryInfoBean
 import com.donews.main.databinding.DrawDialogLayoutBinding
 import com.donews.main.utils.ExitInterceptUtils
+import com.donews.middle.utils.CommonAnimationUtils
 import com.donews.network.EasyHttp
 import com.donews.network.cache.model.CacheMode
 import com.donews.network.callback.SimpleCallBack
@@ -55,6 +56,7 @@ class DrawDialog : AbstractFragmentDialog<DrawDialogLayoutBinding>(),
             }
             dismiss()
         }
+        dataBinding.light.startAnimation(CommonAnimationUtils.setRotateAnimation(50000))
         if (data != null) {
             dataBinding.lotteryInfo = data
         }
