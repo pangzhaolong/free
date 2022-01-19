@@ -7,8 +7,10 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -419,6 +421,29 @@ public class MineOpenWinningFragment extends
         }
         adapter.getLoadMoreModule().setAutoLoadMore(false);
         mDataBinding.mainWinCodeRefresh.autoRefresh();
+        //处理状态栏背景
+        mDataBinding.mineWinCodeList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            final float flgPx = 300;
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (recyclerView.computeVerticalScrollOffset() < flgPx) {
+                    if(mDataBinding.mainWinTitleBg.getAlpha() != 0){
+                        mDataBinding.mainWinTitleBg.setAlpha(0);
+                    }
+                } else {
+                    float offs = (recyclerView.computeVerticalScrollOffset() - flgPx) / flgPx;
+                    if (offs > 1) {
+                        if(mDataBinding.mainWinTitleBg.getAlpha() != 1){
+                            mDataBinding.mainWinTitleBg.setAlpha(1);
+                        }
+                    } else {
+                        if(mDataBinding.mainWinTitleBg.getAlpha() != offs){
+                            mDataBinding.mainWinTitleBg.setAlpha(offs);
+                        }
+                    }
+                }
+            }
+        });
     }
 
     //添加列表的已开奖头

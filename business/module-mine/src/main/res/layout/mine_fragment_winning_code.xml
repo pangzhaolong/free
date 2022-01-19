@@ -46,6 +46,14 @@
                     android:layout_height="wrap_content"
                     android:fitsSystemWindows="true">
 
+                    <!-- 背景颜色块 -->
+                    <View
+                        android:id="@+id/main_win_title_bg"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:background="@color/read_content_bg"
+                        android:alpha="0"/>
+
                     <TextView
                         android:id="@+id/main_win_code_title_name"
                         android:layout_width="match_parent"
