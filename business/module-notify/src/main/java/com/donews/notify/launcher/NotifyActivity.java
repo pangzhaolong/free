@@ -55,7 +55,7 @@ public class NotifyActivity extends FragmentActivity {
         //刷新一次本地金额数据。以备不时之需
         FixTagUtils.updateLocalRandomRangNumber();
         //将条件前置。防止计时后台显示。达到限制之后依然启动了界面
-        Log.i(TAG, "NotifyActivity actionStart");
+        NotifyLog.logNotToast("NotifyActivity actionStart");
         destroy();
         if(AppUtils.isAppForeground()){
             NotifyLog.logNotToast("应用已经再前台。放弃展示");
@@ -68,6 +68,7 @@ public class NotifyActivity extends FragmentActivity {
             return; //没有可展示的UI模板。那么忽略掉
         }
         NotifyLog.logNotToast("显示了通知栏。。。方法");
+        destroy();
         try {
             Intent intent = new Intent();
             ComponentName componentName = new ComponentName(context, NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyAlias);
