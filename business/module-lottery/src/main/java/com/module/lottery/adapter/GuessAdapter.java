@@ -324,10 +324,15 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                             TextView textView = (TextView) linearLayout.getChildAt(j);
                             textView.setTextColor(mContext.getResources().getColor(R.color.pending));
                             TextPaint paint = textView.getPaint();
-                            if (local == (refer + 1)) {
-                                textView.setText("自选码");
-                                textView.setTextColor(Color.WHITE);
-                                textView.setBackgroundDrawable(mContext.getResources().getDrawable(R.mipmap.optional_code_bg));
+                            if (ABSwitch.Ins().isOpenOptionalCode()) {
+                                if (local == (refer + 1)) {
+                                    textView.setText("自选码");
+                                    textView.setTextColor(Color.WHITE);
+                                    textView.setBackgroundDrawable(mContext.getResources().getDrawable(R.mipmap.optional_code_bg));
+                                } else {
+                                    textView.setText("待领取");
+                                    textView.setBackgroundDrawable(mContext.getResources().getDrawable(R.mipmap.no_lottery_code_bg));
+                                }
                             } else {
                                 textView.setText("待领取");
                                 textView.setBackgroundDrawable(mContext.getResources().getDrawable(R.mipmap.no_lottery_code_bg));

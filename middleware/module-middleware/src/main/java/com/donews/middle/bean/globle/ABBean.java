@@ -52,9 +52,10 @@ public class ABBean extends BaseCustomViewModel {
     private boolean openScoreTask = false;
     @SerializedName("openScoreTaskMax")             //积分任务次数上限
     private int openScoreTaskMax = 3;
-    @SerializedName("selectNumberLocation")             //积分任务次数上限
+    @SerializedName("selectNumberLocation")             //抽奖页自选码出现的位置(1---6)
     private int selectNumberLocation = 6;
-
+    @SerializedName("openOptionalCode")             // 自选码的开关 true 打开 false 关闭
+    private boolean openOptionalCode = true;
     public int getSelectNumberLocation() {
         return selectNumberLocation;
     }
@@ -62,7 +63,13 @@ public class ABBean extends BaseCustomViewModel {
     public void setSelectNumberLocation(int selectNumberLocation) {
         this.selectNumberLocation = selectNumberLocation;
     }
+    public boolean isOpenOptionalCode() {
+        return openOptionalCode;
+    }
 
+    public void setOpenOptionalCode(boolean openOptionalCode) {
+        this.openOptionalCode = openOptionalCode;
+    }
     public boolean isOpenScoreTask() {
         return openScoreTask;
     }
