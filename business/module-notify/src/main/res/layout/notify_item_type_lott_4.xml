@@ -37,13 +37,14 @@
         android:id="@+id/notify_item_name_ll"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="6dp"
         android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="@+id/notify_item_title_ll"
         app:layout_constraintRight_toRightOf="@+id/notify_item_title_ll"
         app:layout_constraintTop_toBottomOf="@+id/notify_item_title_ll">
 
         <TextView
+            android:id="@+id/notify_item_name_prefix"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
@@ -69,13 +70,14 @@
         android:id="@+id/notify_item_desc_ll"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="2dp"
         android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="@+id/notify_item_title_ll"
         app:layout_constraintRight_toRightOf="@+id/notify_item_title_ll"
         app:layout_constraintTop_toBottomOf="@+id/notify_item_name_ll">
 
         <TextView
+            android:id="@+id/notify_item_desc_prefix"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
@@ -101,13 +103,14 @@
         android:id="@+id/notify_item_time_ll"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="2dp"
         android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="@+id/notify_item_title_ll"
         app:layout_constraintRight_toRightOf="@+id/notify_item_title_ll"
         app:layout_constraintTop_toBottomOf="@+id/notify_item_desc_ll">
 
         <TextView
+            android:id="@+id/notify_item_time_prefix"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:ellipsize="end"

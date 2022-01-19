@@ -146,10 +146,22 @@ public class Notify2DataConfigBean {
         private String titlePrefix;
 
         /**
-         * [UI模板5 特有]
+         * [UI模板4 特有]
+         * 非通用字段：(服务对象)描述
+         */
+        private String namePrefix;
+
+        /**
+         * [UI模板4、5 特有]
          * 非通用：描述的前缀文案
          */
         private String descPrefix;
+
+        /**
+         * [UI模板4 特有]
+         * 非通用：(生效时间)前缀文案
+         */
+        private String timePrefix;
 
         /**
          * [UI模板5 特有]
@@ -179,9 +191,13 @@ public class Notify2DataConfigBean {
             this.buttonRight = FixTagUtils.buildContentTag(this, buttonRight);
             this.titleNumnerDesc = FixTagUtils.buildContentTag(this, titleNumnerDesc);
             this.titlePrefix = FixTagUtils.buildContentTag(this, titlePrefix);
+            this.namePrefix = FixTagUtils.buildContentTag(this, namePrefix);
             this.descPrefix = FixTagUtils.buildContentTag(this, descPrefix);
+            this.timePrefix = FixTagUtils.buildContentTag(this, timePrefix);
             //反向处理一次。因为有可能存在反向引用
+            this.timePrefix = FixTagUtils.buildContentTag(this, timePrefix);
             this.descPrefix = FixTagUtils.buildContentTag(this, descPrefix);
+            this.namePrefix = FixTagUtils.buildContentTag(this, namePrefix);
             this.titlePrefix = FixTagUtils.buildContentTag(this, titlePrefix);
             this.titleNumnerDesc = FixTagUtils.buildContentTag(this, titleNumnerDesc);
             this.buttonRight = FixTagUtils.buildContentTag(this, buttonRight);
@@ -316,6 +332,22 @@ public class Notify2DataConfigBean {
          */
         public List<UiTemplatImageItem> getGoodImages() {
             return goodImages;
+        }
+
+        public String getNamePrefix() {
+            return namePrefix;
+        }
+
+        public String getTimePrefix() {
+            return timePrefix;
+        }
+
+        public void setNamePrefix(String namePrefix) {
+            this.namePrefix = namePrefix;
+        }
+
+        public void setTimePrefix(String timePrefix) {
+            this.timePrefix = timePrefix;
         }
 
         public void setId(int id) {

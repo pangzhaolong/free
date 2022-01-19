@@ -46,8 +46,11 @@ public class NotifyItemTypeLottTop4Impl extends AbsNotifyInvokTask {
         }
         //获取视图
         TextView title = targetView.findViewById(R.id.notify_item_title);
+        TextView namePrefix = targetView.findViewById(R.id.notify_item_name_prefix);
         TextView name = targetView.findViewById(R.id.notify_item_name);
+        TextView descPrefix = targetView.findViewById(R.id.notify_item_desc_prefix);
         TextView desc = targetView.findViewById(R.id.notify_item_desc);
+        TextView timePrefix = targetView.findViewById(R.id.notify_item_time_prefix);
         TextView time = targetView.findViewById(R.id.notify_item_time);
         //右侧的icon
         ImageView iconRight = targetView.findViewById(R.id.notify_item_icon_right);
@@ -57,7 +60,10 @@ public class NotifyItemTypeLottTop4Impl extends AbsNotifyInvokTask {
 
         title.setText(FixTagUtils.convertHtml(uiTemplat.getTitle()));
         name.setText(FixTagUtils.convertHtml(uiTemplat.getName()));
+        namePrefix.setText(FixTagUtils.convertHtml(uiTemplat.getNamePrefix()));
         desc.setText(FixTagUtils.convertHtml(uiTemplat.getDesc()));
+        descPrefix.setText(FixTagUtils.convertHtml(uiTemplat.getDescPrefix()));
+        timePrefix.setText(FixTagUtils.convertHtml(uiTemplat.getTimePrefix()));
         SimpleDateFormat sf = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
         time.setText(sf.format(new Date(System.currentTimeMillis())));
         //设置值
