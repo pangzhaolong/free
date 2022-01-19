@@ -311,31 +311,42 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     //初始化抽奖码
     public void initListLottery(GuesslikeHeadLayoutBinding guessLikeHead, LotteryCodeBean lotteryCodeBean) {
-        if (guessLikeHead != null) {
-            int refer = 0;
-            for (int i = 0; i < guessLikeHead.lotteryContainer.getChildCount(); i++) {
-                LinearLayout linearLayout = (LinearLayout) guessLikeHead.lotteryContainer.getChildAt(i);
-                for (int j = 0; j < linearLayout.getChildCount(); j++) {
-                    if (refer >= lotteryCodeBean.getCodes().size()) {
-                        TextView textView = (TextView) linearLayout.getChildAt(j);
-                        textView.setText("待领取");
-                        textView.setTextColor(mContext.getResources().getColor(R.color.pending));
-                        TextPaint paint = textView.getPaint();
-                        textView.setBackgroundDrawable(mContext.getResources().getDrawable(R.mipmap.no_lottery_code_bg));
-                        paint.setFakeBoldText(false);
-                        continue;
-                    } else {
-                        TextView textView = (TextView) linearLayout.getChildAt(j);
-                        textView.setText(lotteryCodeBean.getCodes().get(refer));
-                        textView.setTextColor(mContext.getResources().getColor(R.color.lottery_code));
 
-                        textView.setBackgroundDrawable(mContext.getResources().getDrawable(R.mipmap.select_code_bg));
-                        TextPaint paint = textView.getPaint();
-                        paint.setFakeBoldText(true);
+        try {
+            //获取自选码的为位置
+            int local = ABSwitch.Ins().getSelectNumberLocation();
+            if (guessLikeHead != null) {
+                int refer = 0;
+                for (int i = 0; i < guessLikeHead.lotteryContainer.getChildCount(); i++) {
+                    LinearLayout linearLayout = (LinearLayout) guessLikeHead.lotteryContainer.getChildAt(i);
+                    for (int j = 0; j < linearLayout.getChildCount(); j++) {
+                        if (refer >= lotteryCodeBean.getCodes().size()) {
+                            TextView textView = (TextView) linearLayout.getChildAt(j);
+                            textView.setTextColor(mContext.getResources().getColor(R.color.pending));
+                            TextPaint paint = textView.getPaint();
+                            if (local == (refer + 1)) {
+                                textView.setText("自选码");
+                                textView.setTextColor(Color.WHITE);
+                                textView.setBackgroundDrawable(mContext.getResources().getDrawable(R.mipmap.optional_code_bg));
+                            } else {
+                                textView.setText("待领取");
+                                textView.setBackgroundDrawable(mContext.getResources().getDrawable(R.mipmap.no_lottery_code_bg));
+                            }
+                            paint.setFakeBoldText(false);
+                        } else {
+                            TextView textView = (TextView) linearLayout.getChildAt(j);
+                            textView.setText(lotteryCodeBean.getCodes().get(refer));
+                            textView.setTextColor(mContext.getResources().getColor(R.color.lottery_code));
+
+                            textView.setBackgroundDrawable(mContext.getResources().getDrawable(R.mipmap.select_code_bg));
+                            TextPaint paint = textView.getPaint();
+                            paint.setFakeBoldText(true);
+                        }
+                        refer++;
                     }
-                    refer++;
                 }
             }
+        } catch (Exception e) {
         }
     }
 
