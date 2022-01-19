@@ -52,6 +52,16 @@ public class ABBean extends BaseCustomViewModel {
     private boolean openScoreTask = false;
     @SerializedName("openScoreTaskMax")             //积分任务次数上限
     private int openScoreTaskMax = 3;
+    @SerializedName("selectNumberLocation")             //积分任务次数上限
+    private int selectNumberLocation = 6;
+
+    public int getSelectNumberLocation() {
+        return selectNumberLocation;
+    }
+
+    public void setSelectNumberLocation(int selectNumberLocation) {
+        this.selectNumberLocation = selectNumberLocation;
+    }
 
     public boolean isOpenScoreTask() {
         return openScoreTask;
@@ -68,6 +78,7 @@ public class ABBean extends BaseCustomViewModel {
     public int getEnableOpenCritModelCount() {
         return enableOpenCritModelCount;
     }
+
     public boolean isOpenCritModelByNewUser() {
         return openCritModelByNewUser;
     }
@@ -184,6 +195,7 @@ public class ABBean extends BaseCustomViewModel {
                 "ab='" + openAB + '\'' +
                 '}';
     }
+
     public int getLotteryPriceShow() {
         return lotteryPriceShow;
     }
@@ -191,6 +203,7 @@ public class ABBean extends BaseCustomViewModel {
     public void setLotteryPriceShow(int lotteryPriceShow) {
         this.lotteryPriceShow = lotteryPriceShow;
     }
+
     public boolean isOpenAB() {
         return false;
 //        return openAB;

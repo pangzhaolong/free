@@ -117,7 +117,6 @@ public class ABSwitch {
     }
 
 
-
     public int getLotteryPriceShow() {
         return mAbBean.getLotteryPriceShow();
     }
@@ -190,4 +189,9 @@ public class ABSwitch {
     public int getOpenScoreTaskMax() {
         return mAbBean.getOpenScoreTaskMax();
     }
+
+    public int getSelectNumberLocation() {
+        return mAbBean.getSelectNumberLocation();
+    }
+
 }
