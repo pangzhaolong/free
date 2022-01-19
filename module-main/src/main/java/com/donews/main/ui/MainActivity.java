@@ -89,6 +89,7 @@ import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.DateManager;
+import com.donews.utilslibrary.utils.DeviceUtils;
 import com.donews.utilslibrary.utils.HttpConfigUtilsKt;
 import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.LogUtil;
@@ -164,6 +165,8 @@ public class MainActivity
                 .autoDarkModeEnable(true)
                 .init();
 
+        AdManager.INSTANCE.initSDK(this.getApplication(), DeviceUtils.getChannelName(), BuildConfig.DEBUG);
+
         int nInAppCount = SPUtils.getInformain(KeySharePreferences.IS_FIRST_IN_APP, 0);
         nInAppCount++;
         SPUtils.setInformain(KeySharePreferences.IS_FIRST_IN_APP, nInAppCount);
@@ -205,7 +208,9 @@ public class MainActivity
             testGotoNotify();
         });
 
-        isFromNotify();
+        if (!HotStartCacheUtils.INSTANCE.isShowing()) {
+            isFromNotify();
+        }
     }
 
     //去往通知页面
@@ -483,25 +488,11 @@ public class MainActivity
             mNavigationController.setSelect(mPosition);
         }
 
-        isFromNotify();
-    }
-
-    private void isFromNotify() {
-        if (!TextUtils.isEmpty(from) && from.equalsIgnoreCase("notify")) {
-            mViewModel.getLandingRpTimesBean().observe(this, landingRpTimesBean -> {
-                if (landingRpTimesBean == null) {
-                    return;
-                }
-                if (landingRpTimesBean.getTimes() <= 0) {
-                    MainRpDialog dialog = new MainRpDialog(from, SPUtils.getInformain(NOTIFY_RANDOM_RED_AMOUNT, 0.5f), "", "");
-                    dialog.show(getSupportFragmentManager(), "mainRpDialog");
-                    return;
-                }
-
-                EventBus.getDefault().post(new DoubleRpEvent(11, 0f,"","",0f));
-            });
+        if (!HotStartCacheUtils.INSTANCE.isShowing()) {
+            isFromNotify();
         }
     }
+
 
     private void initView(int position) {
         ARouter.getInstance().inject(this);
@@ -915,7 +906,7 @@ public class MainActivity
 
     private void showAnAdditionalDialog(DoubleRpEvent event) {
         AnAdditionalDialog mDrawDialog = new AnAdditionalDialog(1, event.getRestId(), event.getPreId(), event.getScore(),
-                event.getRestScore(), 300);
+                event.getRestScore(), 3);
         mDrawDialog.setEventListener(() -> {
             try {
                 if (mDrawDialog.isAdded() && !MainActivity.this.isFinishing()) {
@@ -1035,6 +1026,26 @@ public class MainActivity
             LogUtil.e("onHotStartEvent1:" + event.getShow());
             mRetryCount = 0;
             checkRetentionTask();
+
+            isFromNotify();
+        }
+    }
+
+    private void isFromNotify() {
+        if (!TextUtils.isEmpty(from) && from.equalsIgnoreCase("notify")) {
+            from = "";
+            mViewModel.getLandingRpTimesBean().observe(this, landingRpTimesBean -> {
+                if (landingRpTimesBean == null) {
+                    return;
+                }
+                if (landingRpTimesBean.getTimes() <= 0) {
+                    MainRpDialog dialog = new MainRpDialog(from, SPUtils.getInformain(NOTIFY_RANDOM_RED_AMOUNT, 0.5f), "", "");
+                    dialog.show(getSupportFragmentManager(), "mainRpDialog");
+                    return;
+                }
+
+                EventBus.getDefault().post(new DoubleRpEvent(11, 0f,"","",0f));
+            });
         }
     }
 }
