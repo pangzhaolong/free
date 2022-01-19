@@ -48,6 +48,12 @@ public class NotifyActivity extends FragmentActivity {
     private static final LaunchStart launchStart = new LaunchStart();
 
     public static void actionStart(Context context) {
+        //将条件前置。防止计时后台显示。达到限制之后依然启动了界面
+        List<Notify2DataConfigBean.UiTemplat> uiList = NotifyItemUtils.getMeetConditionalUiTemplats();
+        if(uiList == null || uiList.isEmpty()){
+            Log.e("notifyDes","没有可显示的UI模板。放弃显示");
+            return; //没有可展示的UI模板。那么忽略掉
+        }
         Log.i(TAG, "NotifyActivity actionStart");
         destroy();
         Log.e("notifyDes","显示了通知栏。。。方法");
