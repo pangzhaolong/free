@@ -14,8 +14,8 @@
         android:id="@+id/notify_item_lott2_close"
         android:layout_width="21dp"
         android:layout_height="21dp"
-        android:layout_marginLeft="15dp"
-        android:src="@drawable/glod_reward_close"
+        android:layout_marginLeft="13dp"
+        android:src="@drawable/notify_ui_tem_close"
         app:layout_constraintLeft_toLeftOf="parent" />
 
     <LinearLayout
