@@ -115,7 +115,9 @@ public class ABSwitch {
     public boolean isOpenVideoToast() {
         return mAbBean.isOpenVideoToast();
     }
-
+    public boolean isOpenOptionalCode() {
+        return mAbBean.isOpenOptionalCode();
+    }
 
     public int getLotteryPriceShow() {
         return mAbBean.getLotteryPriceShow();
@@ -194,4 +196,7 @@ public class ABSwitch {
         return mAbBean.getSelectNumberLocation();
     }
 
+    public boolean isOpenJumpDlg() {
+        return mAbBean.isOpenJumpDlg();
+    }
 }

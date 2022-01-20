@@ -1,5 +1,6 @@
 package com.donews.home.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
@@ -14,11 +15,14 @@ import com.donews.home.adapter.NorGoodsAdapter;
 import com.donews.home.databinding.HomeFragmentNorBinding;
 import com.donews.home.listener.GoodsClickListener;
 import com.donews.home.viewModel.NorViewModel;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.bean.home.HomeCategoryBean;
 import com.donews.middle.bean.home.HomeGoodsBean;
 import com.donews.middle.cache.GoodsCache;
 import com.donews.middle.decoration.GridSpaceItemDecoration;
+import com.donews.middle.dialog.JumpThirdAppDialog;
 import com.donews.middle.go.GotoUtil;
+import com.donews.middle.listener.JumpThirdAppListener;
 
 public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding, NorViewModel> implements GoodsClickListener {
 
@@ -113,6 +117,23 @@ public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding
 
     @Override
     public void onClick(String goodsId, String materialId, String searchId, int src) {
-        GotoUtil.requestPrivilegeLinkBean(this.getContext(), goodsId, materialId, searchId, src);
+        Context context = this.getContext();
+
+        if (!ABSwitch.Ins().isOpenJumpDlg()) {
+            GotoUtil.requestPrivilegeLinkBean(context, goodsId, materialId, searchId, src);
+            return;
+        }
+
+        new JumpThirdAppDialog(context, src, new JumpThirdAppListener() {
+            @Override
+            public void onClose() {
+
+            }
+
+            @Override
+            public void onGo() {
+                GotoUtil.requestPrivilegeLinkBean(context, goodsId, materialId, searchId, src);
+            }
+        }).show();
     }
 }

@@ -162,7 +162,7 @@ public class ShareToDialogFragment extends DialogFragment {
         shareItem.setIcon("" + R.drawable.mine_share_wx_icon);
         shareItem.setTitle("0元抢华为P40~猛戳>>");
         shareItem.setContent("中奖秒发货，商品抱回家，超多大牌好物等你抽，锦鲤就是你");
-        shareItem.setWebUrl("https://recharge-web.xg.tagtic.cn/jdd/index.html#/download");
+        shareItem.setWebUrl("https://recharge-web.xg.tagtic.cn/ddyb/index.html#/download");
         if (type == 1) {
             shareItem.setCmd(ShareManager.SHARE_COMMAND_WX);
         } else if (type == 2) {

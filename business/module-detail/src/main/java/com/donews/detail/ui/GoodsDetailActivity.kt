@@ -1,7 +1,6 @@
 package com.donews.detail.ui
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.graphics.Paint
 import android.view.View
@@ -22,11 +21,17 @@ import com.gyf.immersionbar.ImmersionBar
 import com.orhanobut.logger.Logger
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.content.Context
 import android.net.Uri
 import android.widget.Toast
 import com.donews.detail.bean.GoodsDetailInfo
 import com.donews.detail.utils.OffsetLinearLayoutManager
+import com.donews.middle.abswitch.ABSwitch
+import com.donews.middle.dialog.JumpThirdAppDialog
+import com.donews.middle.go.GotoUtil
+import com.donews.middle.listener.JumpThirdAppListener
 import com.donews.network.result.LoadResult
+import com.swift.sandhook.xposedcompat.XposedCompat.context
 
 
 /**
@@ -294,6 +299,20 @@ class GoodsDetailActivity : MvvmBaseLiveDataActivity<DetailActivityGoodsDetailBi
         }
 
         fun clickBuy(view: View) {
+            if (!ABSwitch.Ins().isOpenJumpDlg) {
+                gogoog()
+                return
+            } else{
+                JumpThirdAppDialog(this@GoodsDetailActivity, 1, object : JumpThirdAppListener {
+                    override fun onClose() {}
+                    override fun onGo() {
+                        gogoog()
+                    }
+                }).show()
+            }
+        }
+
+        fun gogoog() {
             when (val loadResult = mViewModel.privilegeLinkLiveData.value) {
                 is LoadResult.Loading -> {
                     Toast.makeText(this@GoodsDetailActivity, "数据请求中，清稍后", Toast.LENGTH_SHORT).show()

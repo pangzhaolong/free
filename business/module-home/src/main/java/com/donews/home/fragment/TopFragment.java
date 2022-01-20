@@ -21,9 +21,13 @@ import com.donews.home.adapter.TopGoodsAdapter;
 import com.donews.home.databinding.HomeFragmentTopBinding;
 import com.donews.home.listener.GoodsClickListener;
 import com.donews.home.viewModel.TopViewModel;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.bean.home.HomeGoodsBean;
 import com.donews.middle.cache.GoodsCache;
 import com.donews.middle.decoration.GridSpaceItemDecoration;
+import com.donews.middle.dialog.JumpThirdAppDialog;
+import com.donews.middle.go.GotoUtil;
+import com.donews.middle.listener.JumpThirdAppListener;
 
 public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding, TopViewModel> implements GoodsClickListener {
 
@@ -143,6 +147,23 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
 
     @Override
     public void onClick(String goodsId, String materialId, String searchId, int src) {
+        Context context = this.getContext();
 
+        if (!ABSwitch.Ins().isOpenJumpDlg()) {
+            GotoUtil.requestPrivilegeLinkBean(context, goodsId, materialId, searchId, src);
+            return;
+        }
+
+        new JumpThirdAppDialog(context, src, new JumpThirdAppListener() {
+            @Override
+            public void onClose() {
+
+            }
+
+            @Override
+            public void onGo() {
+                GotoUtil.requestPrivilegeLinkBean(context, goodsId, materialId, searchId, src);
+            }
+        }).show();
     }
 }

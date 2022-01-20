@@ -71,6 +71,8 @@ import com.module.lottery.dialog.LotteryCodeStartsDialog;
 import com.module.lottery.dialog.LotteryCritCodeDialog;
 import com.module.lottery.dialog.LotteryCritCommodityDialog;
 import com.module.lottery.dialog.LotteryCritOverDialog;
+import com.module.lottery.dialog.OptionalCodeDialog;
+import com.module.lottery.dialog.OptionalCodeInterceptionDialog;
 import com.module.lottery.dialog.ReceiveLotteryDialog;
 import com.module.lottery.dialog.ReturnInterceptDialog;
 import com.module.lottery.dialog.UnlockMaxCodeDialog;
@@ -200,8 +202,8 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             ifOpenAutoLotteryAndCount();
         }
         mStart_lottery = false;
-//        Message mes = new Message();
-//        handler.sendMessageDelayed(mes, 2000);
+        Message mes = new Message();
+        handler.sendMessageDelayed(mes, 2000);
     }
 
 
@@ -209,10 +211,14 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
-            showExclusiveCodeDialog();
+            showOptionalCodeDialog();
         }
     };
 
+    private void showOptionalCodeDialog() {
+        OptionalCodeDialog optionalCodeDialog = new OptionalCodeDialog(LotteryActivity.this);
+        optionalCodeDialog.show(LotteryActivity.this);
+    }
 
     private void showLotteryCritCodeDialog(GenerateCodeBean generateCodeBean) {
         runOnUiThread(new Runnable() {
@@ -761,6 +767,24 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         lessMaxDialog.show(LotteryActivity.this);
     }
 
+
+    private void showOptionalCodeInterceptionDialog() {
+        OptionalCodeInterceptionDialog optionalDialog = new OptionalCodeInterceptionDialog(LotteryActivity.this, mLotteryCodeBean);
+        optionalDialog.setFinishListener(new OptionalCodeInterceptionDialog.OnFinishListener() {
+            @Override
+            public void onFinish() {
+
+            }
+
+            @Override
+            public void onFinishAd() {
+                luckyDrawEntrance();
+            }
+        });
+        optionalDialog.show(LotteryActivity.this);
+    }
+
+
     //提示还差多少个抽奖码Dialog
     private void showReceiveLotteryDialog(boolean ifQuit) {
         if (mLotteryCodeBean != null) {
@@ -1282,8 +1306,14 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             //当抽奖码小于6个 登录有抽奖
             if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() < 6 && mLotteryCodeBean.getCodes().size() > 0) {
                 dialogShow = true;
-                //显示立刻领取的dialog
-                showLessMaxDialog();
+                //判断是否开启了自选码
+                if (ABSwitch.Ins().isOpenOptionalCode()) {
+                    //提示自选码弹框
+                    showOptionalCodeInterceptionDialog();
+                } else {
+                    //显示立刻领取的dialog
+                    showLessMaxDialog();
+                }
                 return;
             }
             if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() == 0) {
@@ -1291,7 +1321,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 if (CommonUtils.isAllRpOpened()) {
                     //首页红包开完
                     showEnvelopeStateDialog();
-                }else{
+                } else {
                     showReturnDialog(TYPE_2);
                 }
                 return;

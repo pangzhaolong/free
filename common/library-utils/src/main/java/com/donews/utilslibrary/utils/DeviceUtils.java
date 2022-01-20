@@ -111,9 +111,6 @@ public class DeviceUtils {
      * @return 当前应用的版本名称
      */
     public static String getVersionName() {
-        if (!PermissionUtils.isGranted(Manifest.permission.READ_PHONE_STATE)) {
-            return "";
-        }
         try {
             PackageManager manager = UtilsConfig.getApplication().getPackageManager();
             PackageInfo info = manager.getPackageInfo(UtilsConfig.getApplication().getPackageName(), 0);
@@ -129,9 +126,6 @@ public class DeviceUtils {
      * @return 应用版本号
      */
     public static int getAppVersionCode() {
-        if (!PermissionUtils.isGranted(Manifest.permission.READ_PHONE_STATE)) {
-            return -1;
-        }
         try {
             PackageManager manager = UtilsConfig.getApplication().getPackageManager();
             PackageInfo info = manager.getPackageInfo(UtilsConfig.getApplication().getPackageName(), 0);
@@ -148,9 +142,6 @@ public class DeviceUtils {
      * 得到包名
      */
     public static String getPackage() {
-        if (!PermissionUtils.isGranted(Manifest.permission.READ_PHONE_STATE)) {
-            return "";
-        }
         try {
             PackageManager manager = UtilsConfig.getApplication().getPackageManager();
             PackageInfo info = manager.getPackageInfo(UtilsConfig.getApplication().getPackageName(), 0);
