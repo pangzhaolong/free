@@ -231,6 +231,9 @@ public class MainActivity
     }
 
     private void showCriticalBtn() {
+        if (ABSwitch.Ins().isOpenAB()) {
+            mDataBinding.mainFloatingBtn.setVisibility(View.GONE);
+        }
         if (CriticalModelTool.canShowCriticalBtn()) {
             mDataBinding.mainFloatingBtn.showCriticalBtn();
             mDataBinding.mainFloatingBtn.setOnClickListener(v -> {

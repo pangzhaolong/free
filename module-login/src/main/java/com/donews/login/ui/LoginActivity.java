@@ -104,7 +104,7 @@ public class LoginActivity extends MvvmBaseLiveDataActivity<LoginActivityBinding
         mDataBinding.tvYxXy.setOnClickListener(v -> { //隐私协议
             Bundle bundle = new Bundle();
             bundle.putString("url",
-                    "http://ad-static-xg.tagtic.cn/wangzhuan/file/d9fe5aa628f8dd19ce7432451de970c8.html");
+                    "http://ad-static-xg.tagtic.cn/wangzhuan/file/bd5cf63a41d4155d6d126087612f2e2e.html");
             bundle.putString("title", "隐私政策");
             ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
         });
