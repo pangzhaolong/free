@@ -212,8 +212,8 @@ public class ABBean extends BaseCustomViewModel {
     }
 
     public boolean isOpenAB() {
-        return false;
-//        return openAB;
+//        return false;
+        return openAB;
     }
 
     public boolean getOpenAB() {

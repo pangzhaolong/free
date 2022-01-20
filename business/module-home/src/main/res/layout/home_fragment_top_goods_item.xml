@@ -28,7 +28,7 @@
         android:maxLines="2"
         android:text="【返20元猫超卡】 防嗮衣长袖运动外套"
         android:textColor="#2c2c2c"
-        android:textSize="16dp" />
+        android:textSize="13sp" />
 
     <RelativeLayout
         android:layout_width="match_parent"

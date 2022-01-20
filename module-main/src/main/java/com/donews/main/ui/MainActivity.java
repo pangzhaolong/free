@@ -1033,7 +1033,6 @@ public class MainActivity
 
     private void isFromNotify() {
         if (!TextUtils.isEmpty(from) && from.equalsIgnoreCase("notify")) {
-            from = "";
             mViewModel.getLandingRpTimesBean().observe(this, landingRpTimesBean -> {
                 if (landingRpTimesBean == null) {
                     return;
@@ -1041,6 +1040,7 @@ public class MainActivity
                 if (landingRpTimesBean.getTimes() <= 0) {
                     MainRpDialog dialog = new MainRpDialog(from, SPUtils.getInformain(NOTIFY_RANDOM_RED_AMOUNT, 0.5f), "", "");
                     dialog.show(getSupportFragmentManager(), "mainRpDialog");
+                    from = "";
                     return;
                 }
 
