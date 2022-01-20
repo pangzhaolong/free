@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.arch.core.util.Function;
+
 import com.donews.base.utils.glide.GlideUtils;
 import com.donews.common.NotifyLuncherConfigManager;
 import com.donews.notify.R;
@@ -24,7 +27,6 @@ import java.util.Random;
  * ui模板1的处理逻辑
  */
 public class NotifyItemTypeLottTop1Impl extends AbsNotifyInvokTask {
-
 
     @Override
     public boolean itemClick(NotifyAnimationView targetView, Notify2DataConfigBean.UiTemplat uiTemplat) {

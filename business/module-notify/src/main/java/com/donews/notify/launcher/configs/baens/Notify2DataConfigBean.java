@@ -54,6 +54,15 @@ public class Notify2DataConfigBean {
          */
         public int dayLotteryCodeCount;
         /**
+         * 条件限制集合(限制的条件)
+         */
+        public List<JudgeConditionItem> judgeConditions;
+        /**
+         * {@link judgeConditions 字段所对应的条件限制的参考锚定值处理方法}
+         *  锚定方法要求：返回值(int),参数：无
+         */
+        public List<ConditionalProcessItem> conditionalProcess;
+        /**
          * 当前类型的通知是否启用(true:启用，F:关闭)
          */
         public boolean isOpen = true;
@@ -65,6 +74,34 @@ public class Notify2DataConfigBean {
          * 当前条件下的UI模板集合
          */
         public List<UiTemplat> uiTemplate = new ArrayList<>();
+    }
+
+
+    /**
+     * 条件集合的条件项
+     */
+    public static class JudgeConditionItem{
+        /**
+         * 条件表达式：
+         * 案例：(<1,3,4,8-20,>100)&
+         *  表示(内部各条件是:或者关系):
+         *      <1的满足条案
+         *      3和 4也是满足条件
+         *      8-20之间的也是满足条件的
+         *      >100的也满足条件
+         */
+        public String condition;
+    }
+
+
+    /**
+     * 对应条件集合{@link JudgeConditionItem}的每项处理集合
+     */
+    public static class ConditionalProcessItem{
+        /**
+         * {@link JudgeConditionItem}中所对应的条件判断依据标定方法。这个依据条件的获取处理方法
+         */
+        public String executioMethod;
     }
 
     /**

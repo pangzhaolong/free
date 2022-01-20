@@ -15,6 +15,7 @@ import com.donews.common.BuildConfig;
 import com.donews.notify.launcher.NotifyAnimationView;
 import com.donews.notify.launcher.configs.Notify2ConfigManager;
 import com.donews.notify.launcher.configs.baens.Notify2DataConfigBean;
+import com.donews.notify.launcher.utils.conditions.ConditionProcessUtil;
 import com.donews.notify.launcher.utils.funs.NotifyItemTypeLottTop1Impl;
 import com.donews.notify.launcher.utils.funs.NotifyItemTypeLotBottom5Impl;
 import com.donews.notify.launcher.utils.funs.NotifyItemTypeLottTop2Impl;
@@ -47,11 +48,6 @@ public class NotifyItemUtils {
     //是否开启通知的debug模式。开启之后再UI模板筛选时。就跳过后台逻辑条件可以
     private static boolean isOpenNotifyDebug = BuildConfig.DEBUG && false;
 
-    private static MMKV mmkv;
-    /**
-     * 今天抽奖次数
-     */
-    private static String TODAY_LOTTERY_TIMES = "todayLotteryTimes";
     //------------------------本地次数限制相关的key------------------------------
     //本地配置保存的配置文件
     private static String allowDayCountFile = "notify_allowDayCount_file";
@@ -161,7 +157,6 @@ public class NotifyItemUtils {
      * @return
      */
     public static List<Notify2DataConfigBean.UiTemplat> getMeetConditionalUiTemplats() {
-        initAdCountMMkv();
         //当前的时间
         long currentTime = com.donews.utilslibrary.utils.SPUtils.getLongInformain(TIME_SERVICE, 0L) * 1000;
         //获取本地的保存已经限制的次数(各种类型的通知已经提示过的次数)
@@ -179,7 +174,6 @@ public class NotifyItemUtils {
                     com.blankj.utilcode.util.SPUtils.getInstance(allowDayCountFile).put(allowDayKey, currentTimeDay);
                     com.blankj.utilcode.util.SPUtils.getInstance(allowDayCountFile).put(allowDayCountKey,
                             GsonUtils.toJson(notifyCountMap));
-                    updateTodayLotteryCount();
                     localAllowDay = currentTimeDay;
                 } else {
                     //没有超过一天。那么直接读取本地的配置信息
@@ -203,10 +197,6 @@ public class NotifyItemUtils {
 
         //获取注册时间
         long regTime = Long.parseLong(AppInfo.getUserRegisterTime());
-        //今日已经打开的红包数量
-        int openRedPackCount = SPUtils.getInformain(KeySharePreferences.OPENED_RED_PACKAGE_COUNTS, 0);
-        //今日已经获取了抽奖码的数量
-        int getLotteryCodeCount = getTodayLotteryCount();
         List<Notify2DataConfigBean.UiTemplat> uiTemplats = new ArrayList<>();
         List<Notify2DataConfigBean.NotifyItemConfig> notifyConfigs =
                 Notify2ConfigManager.Ins().getNotifyConfigBean().notifyConfigs;
@@ -229,13 +219,11 @@ public class NotifyItemUtils {
             if (typeShowCount >= notifyConfig.notifyMaxCount) {
                 continue; //当前分类通知已经显示达到最大值。不在参与显示
             }
-            //开始判断条件
+            //开始判断条件(注册时间)
             boolean regTimeTj = notifyConfig.registerMore < 0 ||
                     currentTime - regTime > notifyConfig.registerMore * 1000L;
-            boolean dayTj2 = (notifyConfig.dayReceiveRedCount < 0 ||
-                    openRedPackCount == notifyConfig.dayReceiveRedCount) &&
-                    (notifyConfig.dayLotteryCodeCount < 0 ||
-                            getLotteryCodeCount == notifyConfig.dayLotteryCodeCount);
+            //多条件执行结果(动态条件判断)
+            boolean dayTj2 = ConditionProcessUtil.invokCondition(notifyConfig.judgeConditions,notifyConfig.conditionalProcess);
 
             Log.e("notifyDes", "条件类型id=" + notifyConfig.id + ",条件：" + regTimeTj + "->" + dayTj2);
             //检查上诉条件是否足够(同时优先判断是否开启debug跳过)
@@ -351,31 +339,5 @@ public class NotifyItemUtils {
         Random random = new Random();
         int uiTempPos = random.nextInt(uiTemplatList.size());
         return uiTemplatList.get(uiTempPos);
-    }
-
-    /**
-     * 获取今日参与抽奖的次数
-     *
-     * @return Int
-     */
-    private static int getTodayLotteryCount() {
-        return mmkv.decodeInt(TODAY_LOTTERY_TIMES, 0);
-    }
-
-    /**
-     * 超过一天了。更新抽奖数据
-     *
-     * @return Int
-     */
-    private static void updateTodayLotteryCount() {
-        mmkv.encode(TODAY_LOTTERY_TIMES, 0);
-    }
-
-    //初始化数据存储
-    private static void initAdCountMMkv() {
-        if (mmkv != null) {
-            return;
-        }
-        mmkv = MMKV.mmkvWithID("AdCount", MMKV.MULTI_PROCESS_MODE);
     }
 }
