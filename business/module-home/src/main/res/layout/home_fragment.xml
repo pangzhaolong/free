@@ -475,7 +475,7 @@
                                                     android:layout_gravity="bottom"
                                                     android:text="￥"
                                                     android:textColor="#E9423E"
-                                                    android:textSize="8sp"
+                                                    android:textSize="10sp"
                                                     android:textStyle="bold" />
 
                                                 <TextView
@@ -489,7 +489,7 @@
                                                     android:maxLines="1"
                                                     android:text="48"
                                                     android:textColor="#E9423E"
-                                                    android:textSize="12sp"
+                                                    android:textSize="14sp"
                                                     android:textStyle="bold" />
                                             </LinearLayout>
                                         </LinearLayout>
@@ -541,7 +541,7 @@
                                                     android:layout_gravity="bottom"
                                                     android:text="￥"
                                                     android:textColor="#E9423E"
-                                                    android:textSize="8sp"
+                                                    android:textSize="10sp"
                                                     android:textStyle="bold" />
 
                                                 <TextView
@@ -555,7 +555,7 @@
                                                     android:maxLines="1"
                                                     android:text="48"
                                                     android:textColor="#E9423E"
-                                                    android:textSize="12sp"
+                                                    android:textSize="14sp"
                                                     android:textStyle="bold" />
                                             </LinearLayout>
                                         </LinearLayout>
@@ -607,7 +607,7 @@
                                                     android:layout_gravity="bottom"
                                                     android:text="￥"
                                                     android:textColor="#E9423E"
-                                                    android:textSize="8sp"
+                                                    android:textSize="10sp"
                                                     android:textStyle="bold" />
 
                                                 <TextView
@@ -621,7 +621,7 @@
                                                     android:maxLines="1"
                                                     android:text="48"
                                                     android:textColor="#E9423E"
-                                                    android:textSize="12sp"
+                                                    android:textSize="14sp"
                                                     android:textStyle="bold" />
                                             </LinearLayout>
                                         </LinearLayout>
@@ -674,7 +674,7 @@
                                                     android:layout_gravity="bottom"
                                                     android:text="￥"
                                                     android:textColor="#E9423E"
-                                                    android:textSize="8sp"
+                                                    android:textSize="10sp"
                                                     android:textStyle="bold" />
 
                                                 <TextView
@@ -688,7 +688,7 @@
                                                     android:maxLines="1"
                                                     android:text="48"
                                                     android:textColor="#E9423E"
-                                                    android:textSize="12sp"
+                                                    android:textSize="14sp"
                                                     android:textStyle="bold" />
                                             </LinearLayout>
                                         </LinearLayout>

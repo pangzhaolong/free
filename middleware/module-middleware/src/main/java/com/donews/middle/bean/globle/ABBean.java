@@ -56,6 +56,14 @@ public class ABBean extends BaseCustomViewModel {
     private int selectNumberLocation = 6;
     @SerializedName("openOptionalCode")             // 自选码的开关 true 打开 false 关闭
     private boolean openOptionalCode = true;
+
+    @SerializedName("openJumpDlg")
+    private boolean openJumpDlg = true;
+
+    public boolean isOpenJumpDlg() {
+        return openJumpDlg;
+    }
+
     public int getSelectNumberLocation() {
         return selectNumberLocation;
     }

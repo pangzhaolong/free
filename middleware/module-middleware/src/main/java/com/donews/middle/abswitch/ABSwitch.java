@@ -196,4 +196,7 @@ public class ABSwitch {
         return mAbBean.getSelectNumberLocation();
     }
 
+    public boolean isOpenJumpDlg() {
+        return mAbBean.isOpenJumpDlg();
+    }
 }

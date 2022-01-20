@@ -18,5 +18,6 @@ dependencies {
     kapt rootProject.ext.dependencies["arouter-compiler"]
 
     implementation project(':common:library-common')
+    implementation project(':middleware:module-middleware')
     implementation rootProject.ext.dependencies["bannerViewpager"]
 }

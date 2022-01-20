@@ -1,5 +1,6 @@
 package com.donews.home;
 
+import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.Editable;
@@ -21,8 +22,11 @@ import com.donews.home.databinding.HomeWelfareActivityBinding;
 import com.donews.home.listener.GoodsClickListener;
 import com.donews.home.listener.SearchListener;
 import com.donews.home.viewModel.WelfareViewModel;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.bean.home.HomeGoodsBean;
+import com.donews.middle.dialog.JumpThirdAppDialog;
 import com.donews.middle.go.GotoUtil;
+import com.donews.middle.listener.JumpThirdAppListener;
 import com.gyf.immersionbar.ImmersionBar;
 
 @Route(path = RouterActivityPath.Home.Welfare_Activity)
@@ -213,6 +217,24 @@ public class HomeWelfareActivity extends MvvmBaseLiveDataActivity<HomeWelfareAct
 
     @Override
     public void onClick(String goodsId, String materialId, String searchId, int src) {
-        GotoUtil.requestPrivilegeLinkBean(this, goodsId, materialId, searchId, src);
+        Context context = this;
+
+        if (!ABSwitch.Ins().isOpenJumpDlg()) {
+            GotoUtil.requestPrivilegeLinkBean(context, goodsId, materialId, searchId, src);
+            return;
+        }
+
+        new JumpThirdAppDialog(context, src, new JumpThirdAppListener() {
+            @Override
+            public void onClose() {
+
+            }
+
+            @Override
+            public void onGo() {
+                GotoUtil.requestPrivilegeLinkBean(context, goodsId, materialId, searchId, src);
+            }
+        }).show();
+//        GotoUtil.requestPrivilegeLinkBean(this, goodsId, materialId, searchId, src);
     }
 }

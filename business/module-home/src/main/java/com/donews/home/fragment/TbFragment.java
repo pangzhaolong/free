@@ -1,6 +1,7 @@
 package com.donews.home.fragment;
 
 
+import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
@@ -16,11 +17,14 @@ import com.donews.home.adapter.SearchSugTbAdapter;
 import com.donews.home.databinding.HomeFragmentSearchTbBinding;
 import com.donews.home.listener.GoodsClickListener;
 import com.donews.home.viewModel.TbViewModel;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.bean.home.HomeGoodsBean;
 import com.donews.middle.bean.home.SearchHistory;
 import com.donews.middle.bean.home.TmpSearchHistory;
 import com.donews.middle.cache.GoodsCache;
+import com.donews.middle.dialog.JumpThirdAppDialog;
 import com.donews.middle.go.GotoUtil;
+import com.donews.middle.listener.JumpThirdAppListener;
 
 public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBinding, TbViewModel> implements GoodsClickListener {
 
@@ -31,7 +35,24 @@ public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBin
 
     @Override
     public void onClick(String goodsId, String materialId, String searchId, int src) {
-        GotoUtil.requestPrivilegeLinkBean(this.getContext(), goodsId, materialId, searchId, src);
+        Context context = this.getContext();
+
+        if (!ABSwitch.Ins().isOpenJumpDlg()) {
+            GotoUtil.requestPrivilegeLinkBean(context, goodsId, materialId, searchId, src);
+            return;
+        }
+
+        new JumpThirdAppDialog(context, src, new JumpThirdAppListener() {
+            @Override
+            public void onClose() {
+
+            }
+
+            @Override
+            public void onGo() {
+                GotoUtil.requestPrivilegeLinkBean(context, goodsId, materialId, searchId, src);
+            }
+        }).show();
     }
 
     private static class FragmentStatus {
