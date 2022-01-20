@@ -1,5 +1,7 @@
 package com.donews.notify.launcher.utils.conditions;
 
+import com.donews.base.utils.ToastUtil;
+import com.donews.notify.BuildConfig;
 import com.donews.notify.launcher.configs.baens.Notify2DataConfigBean;
 import com.donews.notify.launcher.utils.NotifyLog;
 import com.tencent.mmkv.MMKV;
@@ -85,6 +87,39 @@ public class ConditionProcessUtil {
             }
         }
         //开始验证逻辑
+        if (conditionResults.size() <= 1) {
+            if (conditionResults.isEmpty()) {
+                return true;//没有条件。无条件满足
+            }
+            //只有一个条件。根据实际情况返回
+            return conditionResults.get(0);
+        }
+        //超过一个条件。那么根据条件返回
+        return checkTJResult(conditionResults, conditionResultRelationship);
+    }
+
+    /**
+     * 检查结果集合和关系运算之间运算之后的最终解雇。此结果是最后返回的结果集合
+     *
+     * @param results            各条件的结果集合
+     * @param resultRelationship 每个条件对下一个条件的运算方式集合
+     * @return
+     */
+    private static boolean checkTJResult(List<Boolean> results, List<String> resultRelationship) {
+        boolean result = results.get(0);
+        for (int i = 0; i < results.size() - 1; i++) {
+            if (Logic_And.equals(resultRelationship.get(i))) {
+                //计算当前条件和下一个条件逻辑结果
+                result = result && results.get(i + 1);
+            } else if (Logic_Or.equals(resultRelationship.get(i))) {
+                //计算当前条件和下一个条件逻辑结果
+                result = result || results.get(i + 1);
+            } else {
+                //如果未知的。那么放弃这个条件。直接进行下一个
+                NotifyLog.log("checkTJResult 未知的逻辑运算符，请检查(-5):" + resultRelationship.get(i));
+            }
+        }
+        return result;
     }
 
     /**
@@ -168,19 +203,42 @@ public class ConditionProcessUtil {
             //去掉括号。以及逻辑关系符号之后的字符串
             String[] conContentArr = bdsConent.split(BDS_FLG_Splie);
             //内部多个小条件的集合
+            List<Boolean> innerTjList = new ArrayList<>();
             for (int i = 0; i < conContentArr.length; i++) {
                 String checkTjFlg = checkIsContainsBDSFlg(conContentArr[i]);
+                boolean innerTjResult = false;
                 if (checkTjFlg.isEmpty()) {
                     //没有表达式,直接转换为数字,没有符号表示直接使用 '=' 即可
-                    invokBdsFlg(anchorNumber,strToIntNumber(conContentArr[i]),"=");
-                }else{
-                    if(checkTjFlg.equals(BDS_FLG_QJ)){
+                    innerTjResult = invokBdsFlg(anchorNumber, strToIntNumber(conContentArr[i]), "=");
+                } else {
+                    if (checkTjFlg.equals(BDS_FLG_QJ)) {
                         //是一个集合。
-                    }else{
+                        String[] qjStrVal = conContentArr[i].split(BDS_FLG_QJ);
+                        int[] qjIntVal = new int[qjStrVal.length];
+                        for (int j = 0; j < qjStrVal.length; j++) {
+                            qjIntVal[j] = strToIntNumber(qjStrVal[j]);
+                        }
+                        innerTjResult = invokBdsFlg(anchorNumber, qjIntVal);
+                    } else {
                         // 正常的表达式处理
+                        innerTjResult = invokBdsFlg(anchorNumber,
+                                strToIntNumber(conContentArr[i]
+                                        .replace(checkTjFlg, "")),
+                                checkTjFlg);
                     }
                 }
+                innerTjList.add(innerTjResult);
             }
+            boolean innerTjListResult = false;
+            for (Boolean aBoolean : innerTjList) {
+                if (aBoolean) {
+                    //因为内部条件是小条件。所以所有条件之间是并且的关系
+                    innerTjListResult = true;
+                    break;
+                }
+            }
+            //将当前条件表达式的内容。结果返回
+            return innerTjListResult;
         } catch (Exception e) {
             NotifyLog.log("中台条件锚定配置错误。请检查配置,e=" + e);
             return true;//配置错误。直接当没有处理
