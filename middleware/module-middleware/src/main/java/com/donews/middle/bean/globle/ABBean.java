@@ -57,6 +57,10 @@ public class ABBean extends BaseCustomViewModel {
     @SerializedName("openOptionalCode")             // 自选码的开关 true 打开 false 关闭
     private boolean openOptionalCode = true;
 
+    public boolean isOpenOptionalCode() {
+        return openOptionalCode;
+    }
+
     @SerializedName("openJumpDlg")
     private boolean openJumpDlg = true;
 
