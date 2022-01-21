@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class ABBean extends BaseCustomViewModel {
     @SerializedName("openAB")
-    private boolean openAB;
+    private boolean openAB = true;
     @SerializedName("refreshInterval")
     private int refreshInterval = 30;
     @SerializedName("openVideoToast")
@@ -221,10 +221,6 @@ public class ABBean extends BaseCustomViewModel {
     }
 
     public boolean isOpenAB() {
-        return openAB;
-    }
-
-    public boolean getOpenAB() {
         return openAB;
     }
 }
