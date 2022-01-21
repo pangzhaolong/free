@@ -80,25 +80,13 @@ public class MainRpDialog extends AbstractFragmentDialog<MainRpDialogLayoutExBin
         mRestId = restId;
         mPreId = preId;
     }
-/*
-
-    @Override
-    public int setLayout() {
-        return R.layout.main_rp_dialog_layout;
-    }
-
-    @Override
-    public float setSize() {
-        return 0.9f;
-    }
-*/
 
     @Override
     protected int getLayoutId() {
         return R.layout.main_rp_dialog_layout_ex;
     }
 
-
+    @SuppressLint("DefaultLocale")
     protected void initView() {
         if (isFromNotify()) {
             initNotifyRpGet();
@@ -111,10 +99,21 @@ public class MainRpDialog extends AbstractFragmentDialog<MainRpDialogLayoutExBin
             }
         });
         dataBinding.mainRpCloseIv.setOnClickListener(v -> {
-            if (!isFromNotify()) {
-                isShowInnerAd = true;
-            } else {
+            if (isFromNotify()) {
+//                isShowInnerAd = true;
                 EventBus.getDefault().post(new DoubleRpEvent(5
+                        , mScore
+                        , TextUtils.isEmpty(mRestId) ? "" : mRestId
+                        , TextUtils.isEmpty(mPreId) ? "" : mPreId
+                        , mRestScore));
+            } else if (isFromFrontRp()) {
+                EventBus.getDefault().post(new DoubleRpEvent(13
+                        , mScore
+                        , TextUtils.isEmpty(mRestId) ? "" : mRestId
+                        , TextUtils.isEmpty(mPreId) ? "" : mPreId
+                        , mRestScore));
+            } else {
+                EventBus.getDefault().post(new DoubleRpEvent(12
                         , mScore
                         , TextUtils.isEmpty(mRestId) ? "" : mRestId
                         , TextUtils.isEmpty(mPreId) ? "" : mPreId
@@ -154,10 +153,14 @@ public class MainRpDialog extends AbstractFragmentDialog<MainRpDialogLayoutExBin
                 dataBinding.mainRpPlayIv.setVisibility(View.GONE);
                 dataBinding.mainRpDoubleTv.setText("登录领红包");
             }
+            dataBinding.mainRpGiveUp.setClickable(false);
         } else if (isFromNotify()) {
             dataBinding.mainRpGiveUp.setText("任意商品抽奖,继续领红包！");
             dataBinding.mainRpDoubleTv.setText("翻倍领取");
             dataBinding.mainRpPlayIv.setVisibility(View.VISIBLE);
+            dataBinding.mainRpGiveUp.setClickable(false);
+        } else {
+            dataBinding.mainRpGiveUp.setClickable(true);
         }
 
         if (mCountDownTimer == null) {
@@ -256,6 +259,10 @@ public class MainRpDialog extends AbstractFragmentDialog<MainRpDialogLayoutExBin
         return !TextUtils.isEmpty(mFrom) && mFrom.equalsIgnoreCase("notify");
     }
 
+    private boolean isFromFrontRp() {
+        return !TextUtils.isEmpty(mFrom) && mFrom.equalsIgnoreCase("front");
+    }
+
     private void doubleRp() {
         showLoading("视频加载中...");
         IAdRewardVideoListener listener = new IAdRewardVideoListener() {
@@ -283,9 +290,6 @@ public class MainRpDialog extends AbstractFragmentDialog<MainRpDialogLayoutExBin
             @Override
             public void onRewardVerify(boolean result) {
                 mIsVerify = result;
-               /* if (result) {
-
-                }*/
             }
 
             @Override
@@ -452,20 +456,4 @@ public class MainRpDialog extends AbstractFragmentDialog<MainRpDialogLayoutExBin
     private void dismissEx() {
         new Handler().postDelayed(()-> dismiss(), 200);
     }
-/*
-    @Override
-    public void dismiss() {
-        if (mCountDownTimer != null) {
-            mCountDownTimer.cancel();
-            mCountDownTimer = null;
-        }
-
-        LottieUtil.cancelLottieView(dataBinding.mainRpLittleHandLav);
-
-        SoundHelp.newInstance().onRelease();
-
-        EventBus.getDefault().unregister(this);
-
-        super.dismiss();
-    }*/
 }

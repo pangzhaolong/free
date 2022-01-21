@@ -878,16 +878,7 @@ public class MainActivity
         } else if (event.getEvent() == 4) { //积分任务翻倍领取
             postGotDoubleRp(event.getRestId(), event.getPreId(), event.getScore());
         } else if (event.getEvent() == 5) { //5: 桌面通知模块->红包->关闭
-            MoreAwardDialog moreAwardDialog = new MoreAwardDialog(event.getRestId(), event.getPreId(), event.getScore(), event.getRestScore());
-            moreAwardDialog.setEventListener(() -> {
-                try {
-                    if (moreAwardDialog.isAdded() && !this.isFinishing()) {
-                        moreAwardDialog.dismiss();
-                    }
-                } catch (Exception e) {
-                }
-            });
-            moreAwardDialog.show(getSupportFragmentManager(), "MoreAwardDialog");
+            showMoreAwardDialog(event);
         } else if (event.getEvent() == 6) { //6：桌面通知模块->红包->翻倍领取
             new Handler().postDelayed(() -> showAnAdditionalDialog(event), 200);
         } else if (event.getEvent() == 7) { // 7: 桌面通知模块->红包->关闭->领取更多弹窗->关闭
@@ -899,12 +890,29 @@ public class MainActivity
                 MainRpDialog dialog = new MainRpDialog("privilege", 0f, "", "");
                 dialog.show(getSupportFragmentManager(), "mainRpDialog");
             }, 200);
-        } else if (event.getEvent() == 10) {
+        } else if (event.getEvent() == 10) {    // 10: 首页开红包(就是5个红包那)
             new Handler().postDelayed(() -> {
-                MainRpDialog dialog = new MainRpDialog("", event.getScore(), event.getRestId(), "");
+                MainRpDialog dialog = new MainRpDialog("front", event.getScore(), event.getRestId(), "");
                 dialog.show(getSupportFragmentManager(), "mainRpDialog");
             }, 200);
+        } else if (event.getEvent() == 12) {    // 12: 首页红包->关闭
+            showMoreAwardDialog(event);
+        } else if (event.getEvent() == 13) {    // 13: 首页红包->关闭->领取更多弹窗
+            showMoreAwardDialog(event);
         }
+    }
+
+    private void showMoreAwardDialog(DoubleRpEvent event) {
+        MoreAwardDialog moreAwardDialog = new MoreAwardDialog(event.getEvent(), event.getRestId(), event.getPreId(), event.getScore(), event.getRestScore());
+        moreAwardDialog.setEventListener(() -> {
+            try {
+                if (moreAwardDialog.isAdded() && !this.isFinishing()) {
+                    moreAwardDialog.dismiss();
+                }
+            } catch (Exception e) {
+            }
+        });
+        moreAwardDialog.show(getSupportFragmentManager(), "MoreAwardDialog");
     }
 
     private void showAnAdditionalDialog(DoubleRpEvent event) {

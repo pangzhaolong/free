@@ -72,16 +72,13 @@ public class ABBean extends BaseCustomViewModel {
         return selectNumberLocation;
     }
 
-    public void setSelectNumberLocation(int selectNumberLocation) {
-        this.selectNumberLocation = selectNumberLocation;
-    }
-    public boolean isOpenOptionalCode() {
-        return openOptionalCode;
+    public boolean isOpenSkipSplashAd4NewUser() {
+        return openSkipSplashAd4NewUser;
     }
 
-    public void setOpenOptionalCode(boolean openOptionalCode) {
-        this.openOptionalCode = openOptionalCode;
-    }
+    @SerializedName("openSkipSplashAd4NewUser")
+    private boolean openSkipSplashAd4NewUser = false;   // # 是否打开新用户不展示开屏广告；true：不展示开屏广告；false：展示开屏广告
+
     public boolean isOpenScoreTask() {
         return openScoreTask;
     }
@@ -224,7 +221,6 @@ public class ABBean extends BaseCustomViewModel {
     }
 
     public boolean isOpenAB() {
-//        return false;
         return openAB;
     }
 

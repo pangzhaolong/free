@@ -42,6 +42,7 @@ import com.donews.main.R;
 import com.donews.main.databinding.MainActivitySplashBinding;
 import com.donews.main.dialog.PersonGuideDialog;
 import com.donews.main.utils.SplashUtils;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.utilslibrary.analysis.AnalysisHelp;
 import com.donews.utilslibrary.base.SmSdkConfig;
 import com.donews.utilslibrary.base.UtilsConfig;
@@ -193,9 +194,6 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         if (!AnalysisHelp.analysisRegister) {
             AnalysisHelp.register(getApplication());
         }
-        //极光推送
-//        JPushHelper.setDebugMode(BuildConfig.DEBUG);
-//        JPushHelper.init(getApplication());
     }
 
     private void initSdk() {
@@ -249,7 +247,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
                 boolean hotDoubleSplash = configBean.getHotStartDoubleSplashOpen()
                         && LoginHelp.getInstance().checkUserRegisterTime(configBean.getHotStartDoubleSplash());
                 loadSplash(configBean.getHotStartSplashStyle() == 1, hotDoubleSplash);
-            }else{
+            } else {
                 goToMain();
             }
             return null;
@@ -273,7 +271,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
                 boolean coldDoubleSplash = configBean.getColdStartDoubleSplashOpen()
                         && LoginHelp.getInstance().checkUserRegisterTime(configBean.getColdStartDoubleSplash());
                 loadSplash(configBean.getColdStartSplashStyle() == 1, coldDoubleSplash);
-            }else{
+            } else {
                 goToMain();
             }
             return null;
@@ -472,13 +470,23 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
     }
 
     private void hadPermissions() {
-        if (NetworkUtils.isAvailableByPing()) {
+        if ((SPUtils.getInformain(KeySharePreferences.IS_FIRST_IN_APP, 0) <= 0 && ABSwitch.Ins().isOpenSkipSplashAd4NewUser())
+                || !NetworkUtils.isAvailableByPing()) {
+            goToMain();
+        } else {
             deviceLogin();
             loadClodStartAd();
-        } else {
-            ToastUtil.show(SplashActivity.this, "");
-            goToMain();
         }
+        /*if (NetworkUtils.isAvailableByPing()) {
+            if (SPUtils.getInformain(KeySharePreferences.IS_FIRST_IN_APP, 0) <= 0 && ABSwitch.Ins().isOpenSkipSplashAd4NewUser()) {
+                goToMain();
+            } else {
+                deviceLogin();
+                loadClodStartAd();
+            }
+        } else {
+            goToMain();
+        }*/
     }
 
     private boolean hasAllPermissionsGranted(int[] grantResults) {

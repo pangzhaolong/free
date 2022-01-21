@@ -199,4 +199,8 @@ public class ABSwitch {
     public boolean isOpenJumpDlg() {
         return mAbBean.isOpenJumpDlg();
     }
+
+    public boolean isOpenSkipSplashAd4NewUser() {
+        return mAbBean.isOpenSkipSplashAd4NewUser();
+    }
 }
