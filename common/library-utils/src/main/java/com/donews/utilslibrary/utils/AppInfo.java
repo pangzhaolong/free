@@ -34,7 +34,7 @@ public class AppInfo {
     }
 
     public static String getUserRegisterTime() {
-        return SPUtils.getInformain(KeySharePreferences.USER_REGISTER_TIME, "");
+        return SPUtils.getInformain(KeySharePreferences.USER_REGISTER_TIME, "0");
     }
 
     public static void setUserRegisterTime(String time) {
