@@ -68,7 +68,6 @@ public class NotifyActivity extends FragmentActivity {
             return; //没有可展示的UI模板。那么忽略掉
         }
         NotifyLog.logNotToast("显示了通知栏。。。方法");
-        destroy();
         try {
             Intent intent = new Intent();
             ComponentName componentName = new ComponentName(context, NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyAlias);
