@@ -23,6 +23,7 @@ import com.donews.base.storage.MmkvHelper;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.BuildConfig;
 import com.donews.common.NotifyLuncherConfigManager;
+import com.donews.notify.launcher.utils.NotifyLog;
 import com.donews.utilslibrary.utils.AppStatusUtils;
 import com.donews.utilslibrary.utils.KeySharePreferences;
 
@@ -36,13 +37,14 @@ public class NotifyScreenDelegate {
     private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     private static final long HOUR = 60 * 60 * 1000;
     private static final long DAY = HOUR * 24;
-
     private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     private boolean isLoaded;
     private boolean isOpen;
 
     private static Runnable mShowNotifyRunnable = null;
+    //是否已经锁屏了
+    public static boolean isLockScreen = false;
 
     /**
      * 解决多次解锁时，间隙，cd时间默认为10秒内不出
@@ -75,6 +77,7 @@ public class NotifyScreenDelegate {
         Log.i(NotifyInitProvider.TAG, action);
         switch (action) {
             case Intent.ACTION_SCREEN_ON:
+                isLockScreen = false;
                 /* 不做业务逻辑处理，只是为了辅助后续的解锁页面弹出,提升解锁弹出的成功率 */
                 if (canShowNotify()) {
                     NotifyActionActivity.actionStart(context);
@@ -82,9 +85,9 @@ public class NotifyScreenDelegate {
                     Log.w(NotifyInitProvider.TAG, action + " can't show");
                 }
                 break;
-
             case Intent.ACTION_USER_PRESENT:
-                Log.e("notifyDes", "解锁成功。开始检查显示弹否");
+                isLockScreen = false;
+                NotifyLog.log("解锁成功。开始检查显示弹否");
                 NotifyActionActivity.destroy();
                 if (canShowNotify() && canShowAct() && canShowFastClick()) {
                     if (BuildConfig.DEBUG) {
@@ -96,7 +99,7 @@ public class NotifyScreenDelegate {
                     long delayTime = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyDelayShowTime;
                     mLastShowTime = System.currentTimeMillis();
                     Log.w(NotifyInitProvider.TAG, action + " show , delayTime=" + delayTime);
-                    Log.e("notifyDes", "检查通知通过。发起延迟通知");
+                    NotifyLog.log("检查通知通过。发起延迟通知");
                     mHandler.postDelayed(getShowNotifyRunnable(context), delayTime);
                 } else {
                     if (BuildConfig.DEBUG) {
@@ -109,6 +112,7 @@ public class NotifyScreenDelegate {
                 break;
 
             case Intent.ACTION_SCREEN_OFF:
+                isLockScreen = true;
                 //  锁屏时注意关闭解锁和亮屏弹出来的透明页面，只是为了体验好些。
                 NotifyActionActivity.destroy();
                 NotifyActivity.destroy();
@@ -137,7 +141,7 @@ public class NotifyScreenDelegate {
      * @param context 上下文
      */
     public void showNotify(Context context) {
-        Log.e("notifyDes", "(后台)开始显示桌面通知");
+        NotifyLog.log("(后台)开始显示桌面通知");
         NotifyActionActivity.destroy();
         if (canShowNotify() && canShowAct() && canShowFastClick()) {
             if (BuildConfig.DEBUG) {
@@ -145,12 +149,12 @@ public class NotifyScreenDelegate {
                     ToastUtil.showShort(BaseApplication.getInstance(), "条件检查通过。后台计时通知");
                 });
             }
-            Log.e("notifyDes", "(后台)条件通过");
+            NotifyLog.logNotToast("(后台)条件通过");
             long delayTime = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyDelayShowTime;
             mLastShowTime = System.currentTimeMillis();
             Log.w(NotifyInitProvider.TAG, " show , delayTime=" + delayTime);
             isLoaded = true;
-            Log.e("notifyDes", "(后台)已发送延迟显示");
+            NotifyLog.logNotToast("(后台)已发送延迟显示");
             mHandler.postDelayed(getShowNotifyRunnable(context), delayTime);
             //加载图片
             tryLoadNewImg2(context);
@@ -167,11 +171,7 @@ public class NotifyScreenDelegate {
 //                tryLoadNewImg2(context);
 //            }
         } else {
-            if (BuildConfig.DEBUG) {
-                mHandler.post(() -> {
-                    ToastUtil.show(BaseApplication.getInstance(), "(后台)条件检查未通过a=" + canShowNotify() + ",b=" + canShowAct() + ",c=" + canShowFastClick());
-                });
-            }
+            NotifyLog.log("(后台)条件检查未通过a=" + canShowNotify() + ",b=" + canShowAct() + ",c=" + canShowFastClick());
         }
     }
 

@@ -124,7 +124,7 @@ public class NotifyItemUtils {
         }
         com.blankj.utilcode.util.SPUtils.getInstance(allowDayCountFile).put(allowDayCountKey,
                 GsonUtils.toJson(notifyCountMap));
-        Log.e("notifyDes", "限制次数：" + notifyCountMap.get("" + uiTemp.notifyTypeId));
+        NotifyLog.logNotToast("限制次数：" + notifyCountMap.get("" + uiTemp.notifyTypeId));
         //处理数据
         for (NotifyItemType notifyItemType : NotifyItemType.values()) {
             if (notifyItemType.typeId == uiTemp.id) {
@@ -223,9 +223,9 @@ public class NotifyItemUtils {
             boolean regTimeTj = notifyConfig.registerMore < 0 ||
                     currentTime - regTime > notifyConfig.registerMore * 1000L;
             //多条件执行结果(动态条件判断)
-            boolean dayTj2 = ConditionProcessUtil.invokCondition(notifyConfig.judgeConditions,notifyConfig.conditionalProcess);
+            boolean dayTj2 = ConditionProcessUtil.invokCondition(notifyConfig);
 
-            Log.e("notifyDes", "条件类型id=" + notifyConfig.id + ",条件：" + regTimeTj + "->" + dayTj2);
+            NotifyLog.logNotToast("条件类型id=" + notifyConfig.id + ",条件1(时间)：" + regTimeTj + ",条件2(复合条件):" + dayTj2);
             //检查上诉条件是否足够(同时优先判断是否开启debug跳过)
             if (isOpenNotifyDebug || regTimeTj && dayTj2) {
                 for (Notify2DataConfigBean.UiTemplat uiModel : notifyConfig.uiTemplate) {

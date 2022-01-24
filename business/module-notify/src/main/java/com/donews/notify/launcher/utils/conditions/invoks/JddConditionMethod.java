@@ -19,7 +19,7 @@ import java.util.HashMap;
  * @author lcl
  * Date on 2022/1/20
  * Description:
- * 奖多多处理业务条件相关工具方法
+ * 奖多多处理业务条件相关工具方法,因为开发基于奖多多。所以默认支持了奖多多的锚定池方法
  */
 public class JddConditionMethod {
 

@@ -33,6 +33,7 @@ import com.donews.notify.launcher.configs.baens.Notify2DataConfigBean;
 import com.donews.notify.launcher.utils.AbsNotifyInvokTask;
 import com.donews.notify.launcher.utils.AppNotifyForegroundUtils;
 import com.donews.notify.launcher.utils.NotifyItemUtils;
+import com.donews.notify.launcher.utils.NotifyLog;
 import com.donews.notify.launcher.utils.fix.FixTagUtils;
 import com.donews.utilslibrary.analysis.AnalysisParam;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
@@ -57,16 +58,16 @@ public class NotifyActivity extends FragmentActivity {
         Log.i(TAG, "NotifyActivity actionStart");
         destroy();
         if(AppUtils.isAppForeground()){
-            Log.e("notifyDes","应用已经再前台。放弃展示");
+            NotifyLog.logNotToast("应用已经再前台。放弃展示");
             launchStart.cancel();
             return;//在前台。不显示弹窗
         }
         List<Notify2DataConfigBean.UiTemplat> uiList = NotifyItemUtils.getMeetConditionalUiTemplats();
         if(uiList == null || uiList.isEmpty()){
-            Log.e("notifyDes","没有可显示的UI模板。放弃显示");
+            NotifyLog.logNotToast("没有可显示的UI模板。放弃显示");
             return; //没有可展示的UI模板。那么忽略掉
         }
-        Log.e("notifyDes","显示了通知栏。。。方法");
+        NotifyLog.logNotToast("显示了通知栏。。。方法");
         try {
             Intent intent = new Intent();
             ComponentName componentName = new ComponentName(context, NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyAlias);

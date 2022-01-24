@@ -1,5 +1,7 @@
 package com.donews.notify.launcher.utils;
 
+import static com.donews.notify.launcher.NotifyScreenDelegate.isLockScreen;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -40,14 +42,17 @@ public class AppNotifyForegroundUtils {
                 if (exitBackgroundTime < 0) {
                     return;//不检查后台
                 }
+                if(isLockScreen){
+                    return;//已经锁屏状态。不在继续处理
+                }
                 long delayTime = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyBackgroundShowTime * 1000L;
                 if (delayTime <= 0) {
                     return;//未设置。不生效
                 }
                 boolean isSendNotify = System.currentTimeMillis() - exitBackgroundTime >= delayTime;
-                Log.e("notifyDes","(后台)时间更新了...");
+                NotifyLog.logNotToast("(后台)时间更新了...");
                 if (isSendNotify) {
-                    Log.e("notifyDes","(后台)满足发送后台通知的逻辑");
+                    NotifyLog.logNotToast("(后台)满足发送后台通知的逻辑");
                     //超过了设置的时间。显示通知
                     //正常的限制条件弹出
                     new NotifyScreenDelegate().showNotify(BaseApplication.getInstance());

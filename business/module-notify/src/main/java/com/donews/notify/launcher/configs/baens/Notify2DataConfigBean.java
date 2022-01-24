@@ -1,6 +1,7 @@
 package com.donews.notify.launcher.configs.baens;
 
 import com.donews.notify.launcher.utils.fix.FixTagUtils;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,12 @@ public class Notify2DataConfigBean {
      * 红包的翻倍比例，可理解为上浮比例
      */
     public float redPackageDoubleProportion;
+    /**
+     * {@link NotifyItemConfig#judgeConditions 字段所对应的条件限制的参考锚定值获取池}
+     * 锚定方法要求：返回值(int),参数：无，如下方法签名：
+     * int xxx()
+     */
+    public List<ConditionalProcessItem> conditionsPools;
     /**
      * 中台对推送的相关配置
      */
@@ -58,10 +65,11 @@ public class Notify2DataConfigBean {
          */
         public List<JudgeConditionItem> judgeConditions;
         /**
-         * {@link judgeConditions 字段所对应的条件限制的参考锚定值处理方法}
-         *  锚定方法要求：返回值(int),参数：无
+         * {@link #judgeConditions} 字段的条件锚定值获取配置。配置值必须来源于锚定池:{@link Notify2DataConfigBean#conditionsPools}
+         * 多个锚定使用","分隔。<br/>
+         * 例如：0,1,3 表示:使用锚定池中第:0,1,3 分别提供个条件对应位置使用
          */
-        public List<ConditionalProcessItem> conditionalProcess;
+        public String anchorCollection = "";
         /**
          * 当前类型的通知是否启用(true:启用，F:关闭)
          */
@@ -80,15 +88,15 @@ public class Notify2DataConfigBean {
     /**
      * 条件集合的条件项
      */
-    public static class JudgeConditionItem{
+    public static class JudgeConditionItem {
         /**
          * 条件表达式：
          * 案例：(<1,3,4,8-20,>100)&
-         *  表示(内部各条件是:或者关系):
-         *      <1的满足条案
-         *      3和 4也是满足条件
-         *      8-20之间的也是满足条件的
-         *      >100的也满足条件
+         * 表示(内部各条件是:或者关系):
+         * <1的满足条案
+         * 3和 4也是满足条件
+         * 8-20之间的也是满足条件的
+         * >100的也满足条件
          */
         public String condition;
     }
@@ -97,7 +105,7 @@ public class Notify2DataConfigBean {
     /**
      * 对应条件集合{@link JudgeConditionItem}的每项处理集合
      */
-    public static class ConditionalProcessItem{
+    public static class ConditionalProcessItem {
         /**
          * {@link JudgeConditionItem}中所对应的条件判断依据标定方法。这个依据条件的获取处理方法
          */
@@ -111,6 +119,7 @@ public class Notify2DataConfigBean {
         /**
          * 通用字段：ui模板的编号
          */
+//        @SerializedName("templatId")
         public int id;
         /**
          * 通用字段：当前通知模板是否启用(true:启用，F:关闭)
@@ -349,6 +358,7 @@ public class Notify2DataConfigBean {
 
         /**
          * 获取标题金额的描述文字
+         *
          * @return
          */
         public String getTitleNumnerDesc() {
@@ -357,6 +367,7 @@ public class Notify2DataConfigBean {
 
         /**
          * 获取UI模板5的描述前缀
+         *
          * @return
          */
         public String getDescPrefix() {
@@ -365,6 +376,7 @@ public class Notify2DataConfigBean {
 
         /**
          * 获取ui模板5的商品图标集合
+         *
          * @return
          */
         public List<UiTemplatImageItem> getGoodImages() {
@@ -451,7 +463,7 @@ public class Notify2DataConfigBean {
     /**
      * ui模板5中的图片集合实体
      */
-    public static class UiTemplatImageItem{
+    public static class UiTemplatImageItem {
         /**
          * 商品的图标地址
          */
