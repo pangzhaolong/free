@@ -55,11 +55,14 @@ public class ConditionProcessUtil {
             return true; //没有条件。默认全部满足
         }
         //处理条件。选取处获取锚定值的方法集合
-        if (notifyConfig.anchorCollection.isEmpty()) {
+        if (notifyConfig.anchorCollection.isEmpty() ||
+                notifyConfig.anchorCollection.replace(" ", "").isEmpty()) {
             NotifyLog.log("invokCondition 没有配置锚定池处理方法编号(2),直接过");
             return true;//没有配置条件。直接都满足
         }
-        String[] tjInvokArr = notifyConfig.anchorCollection.split(BDS_FLG_Splie);
+        String[] tjInvokArr = notifyConfig.anchorCollection
+                .replace(" ", "")
+                .split(BDS_FLG_Splie);
         if (tjInvokArr.length <= 0) {
             NotifyLog.log("invokCondition 锚定池处理方法编号不符合规范(3),直接过");
             return true; //都不符合规范。默认当没有配置处理
@@ -95,12 +98,13 @@ public class ConditionProcessUtil {
         //解析条件
         for (int i = 0; i < conditions.size(); i++) {
             Notify2DataConfigBean.JudgeConditionItem conditionItem = conditions.get(i);
+            String condStr = conditionItem.condition;
             //处理条件连接符号
-            if (conditionItem.condition.contains(Logic_And)) {
+            if (condStr.contains(Logic_And)) {
                 conditionResultRelationship.add(Logic_And);
             } else {
                 //没有and连接符
-                if (conditionItem.condition.contains(Logic_Or)) {
+                if (condStr.contains(Logic_Or)) {
                     conditionResultRelationship.add(Logic_Or);
                 } else {
                     //没有关系连接符,添加默认连接符：and
@@ -126,9 +130,9 @@ public class ConditionProcessUtil {
         //输出匹配之后的条件详情
         StringBuffer sb = new StringBuffer("");
         for (int i = 0; i < conditions.size(); i++) {
-            sb.append(conditions.get(i).condition+" ");
+            sb.append(conditions.get(i).condition + " ");
         }
-        NotifyLog.logNotToast("\n主条件结果集="+sb.toString(),conditionResults);
+        NotifyLog.logNotToast("\n【主条件结果集】=" + sb.toString(), conditionResults);
         //超过一个条件。那么根据条件返回
         return checkTJResult(conditionResults, conditionResultRelationship);
     }
@@ -178,24 +182,26 @@ public class ConditionProcessUtil {
         Class<?> invokClazz = null;
         Method invokMethod = null;
         try {
-            if (conditionItem.condition.length() < 2) {
+            String condStr = conditionItem.condition
+                    .replace(" ","");
+            if (condStr.length() < 2) {
                 NotifyLog.log("中台条件条件表达式不符合规范,请检查(-1)");
                 return false; //条件不满足表达式要求
             }
-            if (!conditionItem.condition.startsWith(BDS_START)) {
+            if (!condStr.startsWith(BDS_START)) {
                 NotifyLog.log("中台条件条件表达式不符合规范,请检查(-2)");
                 return false; //条件不满足表达式要求
             }
-            if (!conditionItem.condition.endsWith(BDS_EDN)) {
-                if (conditionItem.condition.lastIndexOf(BDS_EDN) != conditionItem.condition.length() - 2) {
+            if (!condStr.endsWith(BDS_EDN)) {
+                if (condStr.lastIndexOf(BDS_EDN) != condStr.length() - 2) {
                     NotifyLog.log("中台条件条件表达式不符合规范,请检查(-3)");
                     return false;//条件不满足表达式要求
                 }
             }
             //去掉括号之后的单纯表达式内容(括号内的表达式内容)
-            String bdsConent = conditionItem.condition.substring(
-                    conditionItem.condition.indexOf(BDS_START) + 1,
-                    conditionItem.condition.lastIndexOf(BDS_EDN)
+            String bdsConent = condStr.substring(
+                    condStr.indexOf(BDS_START) + 1,
+                    condStr.lastIndexOf(BDS_EDN)
             );
             if (!invokItem.executioMethod.contains(Method_Splie)) {
                 NotifyLog.log("中台条件锚定配置不符合规范,请检查(1)");
@@ -236,7 +242,7 @@ public class ConditionProcessUtil {
             int anchorNumber = -1;
             try {
                 anchorNumber = (int) invokMethod.invoke(invokObj);
-                NotifyLog.logNotToast("[锚定值]：" + anchorNumber+",方法："+invokMethod.getName());
+                NotifyLog.logNotToast("[锚定值]：" + anchorNumber + ",方法：" + invokMethod.getName());
             } catch (Exception e) {
                 NotifyLog.log("执行锚定方法出现异常,但不中断业务，e=" + e);
             }
@@ -279,7 +285,7 @@ public class ConditionProcessUtil {
                 }
             }
             //输出匹配之后的条件详情
-            NotifyLog.logNotToast("\n内部小条件结果集="+conditionItem.condition,innerTjList);
+            NotifyLog.logNotToast("\n内部小条件结果集=" + condStr, innerTjList);
             //将当前条件表达式的内容。结果返回
             return innerTjListResult;
         } catch (Exception e) {

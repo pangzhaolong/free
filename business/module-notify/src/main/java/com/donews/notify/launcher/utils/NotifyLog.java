@@ -34,7 +34,7 @@ public class NotifyLog {
     public static void logNotToast(String fixFlg, List msg) {
         StringBuffer sb = new StringBuffer("\n");
         for (int i = 0; i < msg.size(); i++) {
-            sb.append("列表对象" + i + " => " + msg.get(i) + "\n");
+            sb.append("列表结果" + i + " => " + msg.get(i) + "\n");
         }
         Log.e(tag, fixFlg + ":" + sb.toString());
     }
