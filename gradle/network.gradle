@@ -96,7 +96,7 @@ ext {
     AD_ID_LEVEL_CONFIG = BASE_CONFIG_URL + APP_IDENTIFICATION + "-adLayering" + BASE_RULE
 
     //groMore平台 app id
-    APP_ID_GROMORE = "5228725"
+    APP_ID_GROMORE = "5267422"
 
     //大数据统计
     ANALYSIS_DATA = "appduoduoyoubao"
@@ -113,7 +113,7 @@ ext {
     WX_API = "wxc4c7ad6257a43d57" //多多有宝
 
     //穿山甲行为sdk appid
-    Applog_SDK_APPID = "297390"
+    Applog_SDK_APPID = "318600"
 
     //桌面通知
     APP_NOTIFY_LUNCHER = BASE_CONFIG_URL + APP_IDENTIFICATION+"-notify"+BASE_RULE
