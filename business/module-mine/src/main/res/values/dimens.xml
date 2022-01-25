@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <dimen name="mine_win_mun_wh">45dp</dimen>
+    <dimen name="mine_win_mun_wh">40dp</dimen>
     <dimen name="mine_operating_hei">89dp</dimen>
 
 </resources>

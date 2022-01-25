@@ -81,8 +81,8 @@
                         android:layout_gravity="right"
                         android:gravity="center"
                         android:paddingRight="17dp"
-                        android:text="往期>"
-                        android:textColor="@color/white"
+                        android:text="往期记录"
+                        android:textColor="#FFF3D0"
                         android:textSize="15sp" />
                 </FrameLayout>
             </RelativeLayout>
