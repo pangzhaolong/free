@@ -101,8 +101,8 @@ import java.util.Map;
  */
 @Route(path = RouterFragmentPath.Lottery.PAGER_LOTTERY)
 public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, LotteryViewModel> {
-
     private static final String TAG = "LotteryActivity";
+    private static final String OPTIONAL_CODE_TXT = "抽奖码存在";
     private static final String LOTTERY_ACTIVITY = "LOTTERY_ACTIVITY";
     private static final String FIRST_SHOW = "first_show";
     private static final String LOTTERY_ROUND = "lottery_round.json";
@@ -143,8 +143,8 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     public IDetailProvider detailProvider;
     private LogToWeChatDialog mLogToWeChatDialog;
     PlayAdUtilsTool mPlayAdUtilsTool;
-
-
+    //是否首次触发自选码
+    private boolean firstOptionalCode = true;
     /**
      * 用来处理暴击时间结束后，在暴击时间内，查看视频，看完广告，当次暴击事件失效
      */
@@ -206,7 +206,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         handler.sendMessageDelayed(mes, 2000);
     }
 
-
+    @SuppressLint("HandlerLeak")
     Handler handler = new Handler() {
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -216,9 +216,52 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     };
 
     private void showOptionalCodeDialog() {
-        OptionalCodeDialog optionalCodeDialog = new OptionalCodeDialog(LotteryActivity.this);
+        OptionalCodeDialog optionalCodeDialog = new OptionalCodeDialog(LotteryActivity.this, mGoodsId);
+        optionalCodeDialog.setFinishListener(new OptionalCodeDialog.OnFinishListener() {
+            @Override
+            public void onReturnSelectValue(String value) {
+                randomCodeDraw(optionalCodeDialog, value);
+            }
+
+            @Override
+            public void onError() {
+                if (optionalCodeDialog.isShowing()) {
+                    optionalCodeDialog.dismiss();
+                    ToastUtil.showShort(getApplicationContext(), "抽奖失败，稍后再试");
+                }
+            }
+        });
         optionalCodeDialog.show(LotteryActivity.this);
     }
+
+
+    /**
+     * 自选码抽奖
+     */
+    private void randomCodeDraw(Dialog dialog, String value) {
+        if (mLotteryCodeBean != null) {
+            if (firstOptionalCode) {
+                firstOptionalCode = false;
+                //先看视频
+                loadAdAndStatusCallback(dialog, value);
+            } else {
+                //本地判断
+                boolean existCode = false;
+                for (int i = 0; i < mLotteryCodeBean.getCodes().size(); i++) {
+                    if (value.equals(mLotteryCodeBean.getCodes().get(i))) {
+                        existCode = true;
+                        ToastUtil.showShort(getApplicationContext(), OPTIONAL_CODE_TXT);
+                        break;
+                    }
+                }
+                if (!existCode) {
+                    loadAdAndStatusCallback(dialog, value);
+                }
+
+            }
+        }
+    }
+
 
     private void showLotteryCritCodeDialog(GenerateCodeBean generateCodeBean) {
         runOnUiThread(new Runnable() {
@@ -331,14 +374,14 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         //0没有登录需要先登录
         if (ABSwitch.Ins().getLotteryLine() == 0 || logType) {
             if (logType) {
-                startLottery();
+                startLottery(null);
             } else {
                 showLogToWeChatDialog();
             }
         } else {
             if (ABSwitch.Ins().getLotteryLine() == 1) {
                 //可以直接开始抽奖
-                startLottery();
+                startLottery(null);
             }
         }
     }
@@ -445,7 +488,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     }
 
     //开始抽奖
-    private void startLottery() {
+    private void startLottery(String optionalCode) {
         AnalysisUtils.onEventEx(this, Dot.Btn_LotteryNow);
         //判断是否打开了视频广告
         boolean isOpenAd = JddAdManager.INSTANCE.isOpenAd();
@@ -457,22 +500,25 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 //当次暴击事件无效
                 mCritTime = false;
             }
-
-            //开始抽奖
-            //弹框抽奖码生成dialog
-            LotteryCodeStartsDialog lotteryCodeStartsDialog = new LotteryCodeStartsDialog(LotteryActivity.this);
-            lotteryCodeStartsDialog.setStateListener(new LotteryCodeStartsDialog.OnStateListener() {
-                @Override
-                public void onLoadAd() {
-                    loadAdAndStatusCallback(lotteryCodeStartsDialog);
-                }
-            });
-            lotteryCodeStartsDialog.create();
-            lotteryCodeStartsDialog.show(LotteryActivity.this);
+            if (ifOptionalCodeLottery()) {
+                showOptionalCodeDialog();
+            } else {
+                //开始抽奖
+                //弹框抽奖码生成dialog
+                LotteryCodeStartsDialog lotteryCodeStartsDialog = new LotteryCodeStartsDialog(LotteryActivity.this);
+                lotteryCodeStartsDialog.setStateListener(new LotteryCodeStartsDialog.OnStateListener() {
+                    @Override
+                    public void onLoadAd() {
+                        loadAdAndStatusCallback(lotteryCodeStartsDialog, null);
+                    }
+                });
+                lotteryCodeStartsDialog.create();
+                lotteryCodeStartsDialog.show(LotteryActivity.this);
+            }
         } else {
             //判断是否支持抽奖
             if (DateManager.getInstance().timesLimit(DateManager.LOTTERY_KEY, DateManager.NUMBER_OF_DRAWS, 24)) {
-                generateLotteryCode();
+                generateLotteryCode(null);
             } else {
                 ToastUtil.showShort(this, "今天次数已用完，明日再来");
             }
@@ -482,10 +528,25 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
 
     /**
+     * 是否进行自选码抽奖
+     */
+    private boolean ifOptionalCodeLottery() {
+        if (ABSwitch.Ins().isOpenOptionalCode() && mLotteryCodeBean != null) {
+            int numberLocation = ABSwitch.Ins().getSelectNumberLocation();
+            int local = mLotteryCodeBean.getCodes().size() + 1;
+            if (local == numberLocation) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /**
      * 用来加载并显示广告和接收广告状态的回调
      */
 
-    private void loadAdAndStatusCallback(final Dialog dialog) {
+    private void loadAdAndStatusCallback(final Dialog dialog, String optionalCode) {
         if (mPlayAdUtilsTool != null) {
             mPlayAdUtilsTool.showRewardVideo(dialog);
             mPlayAdUtilsTool.setIStateListener(new PlayAdUtilsTool.IStateListener() {
@@ -523,7 +584,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                             addCriticalLotteryNumber();
                         }
                     }
-                    generateLotteryCode();
+                    generateLotteryCode(optionalCode);
                 }
             });
         }
@@ -617,21 +678,22 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
 
     //生成抽奖码
-    private void generateLotteryCode() {
+    private void generateLotteryCode(String optionalCode) {
         if (mCritTime) {
             //弹起暴击模式的抽奖码
             showLotteryCritOverDialog();
         } else {
-            showGenerateCodeDialog();
+            showGenerateCodeDialog(optionalCode);
         }
 
     }
 
 
-    //生成抽奖码的Dialog
-    private void showGenerateCodeDialog() {
+    //生成抽奖码的Dialog  optionalCode自选码
+    private void showGenerateCodeDialog(String optionalCode) {
         try {
-            GenerateCodeDialog generateCodeDialog = new GenerateCodeDialog(LotteryActivity.this, mGoodsId);
+            //判断是自选码 还是非自选码
+            GenerateCodeDialog generateCodeDialog = new GenerateCodeDialog(LotteryActivity.this, mGoodsId, optionalCode);
             generateCodeDialog.setStateListener(new GenerateCodeDialog.OnStateListener() {
                 @Override
                 public void onFinish() {
@@ -804,7 +866,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 @Override
                 public void onLottery() {
                     //继续抽奖
-                    startLottery();
+                    startLottery(null);
                 }
             });
             receiveLottery.create();
@@ -895,7 +957,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             @Override
             public void onLottery() {
                 //继续抽奖
-                startLottery();
+                startLottery(null);
             }
 
             @Override

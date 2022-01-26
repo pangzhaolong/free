@@ -20,13 +20,27 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import com.donews.base.utils.ToastUtil;
+import com.donews.network.EasyHttp;
+import com.donews.network.cache.model.CacheMode;
+import com.donews.network.callback.SimpleCallBack;
+import com.donews.network.exception.ApiException;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
+import com.module.lottery.bean.GenerateCodeBean;
+import com.module.lottery.model.LotteryModel;
+import com.module.lottery.ui.BaseParams;
 import com.module_lottery.R;
-import com.module_lottery.databinding.EnvelopeStateDialogLayoutBinding;
 import com.module_lottery.databinding.OptionalCodeDialogBinding;
 
+import org.json.JSONObject;
+
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import io.reactivex.disposables.Disposable;
 
 //自选码dialog
 public class OptionalCodeDialog extends BaseDialog<OptionalCodeDialogBinding> {
@@ -36,10 +50,11 @@ public class OptionalCodeDialog extends BaseDialog<OptionalCodeDialogBinding> {
 
     private OnFinishListener mOnFinishListener;
     private boolean isSendCloseEvent = true;
-
-    public OptionalCodeDialog(Context context) {
+    private String mGoodsId;
+    public OptionalCodeDialog(Context context, String goodsId ) {
         super(context, R.style.dialogTransparent);//内容样式在这里引入
         this.mContext = context;
+        this.mGoodsId = goodsId;
         //延迟一秒出现关闭按钮
         Message message = new Message();
         message.what = 1;
@@ -68,8 +83,17 @@ public class OptionalCodeDialog extends BaseDialog<OptionalCodeDialogBinding> {
         mDataBinding.jsonHand.setAnimation(LOTTERY_FINGER);
         mDataBinding.jsonHand.loop(true);
         mDataBinding.jsonHand.playAnimation();
-
-
+        List<String> data = new ArrayList<String>();
+        for (int i = 0; i < 10; i++) {
+            data.add(i + "");
+        }
+        mDataBinding.minutePv01.setData(data);
+        mDataBinding.minutePv02.setData(data);
+        mDataBinding.minutePv03.setData(data);
+        mDataBinding.minutePv04.setData(data);
+        mDataBinding.minutePv05.setData(data);
+        mDataBinding.minutePv06.setData(data);
+        mDataBinding.minutePv07.setData(data);
         setOnDismissListener((d) -> {
             if (isSendCloseEvent) {
                 AnalysisUtils.onEventEx(mContext, Dot.Lottery_Increase_ChancesDialog_Close);
@@ -88,8 +112,15 @@ public class OptionalCodeDialog extends BaseDialog<OptionalCodeDialogBinding> {
                 isSendCloseEvent = false;
                 AnalysisUtils.onEventEx(mContext, Dot.Lottery_Increase_ChancesDialog_Continue);
                 if (mOnFinishListener != null) {
-                    mOnFinishListener.onFinishAd();
-                    dismiss();
+                    StringBuffer buffer = new StringBuffer();
+                    buffer.append(mDataBinding.minutePv01.getPerformSelectValue() + "");
+                    buffer.append(mDataBinding.minutePv02.getPerformSelectValue() + "");
+                    buffer.append(mDataBinding.minutePv03.getPerformSelectValue() + "");
+                    buffer.append(mDataBinding.minutePv04.getPerformSelectValue() + "");
+                    buffer.append(mDataBinding.minutePv05.getPerformSelectValue() + "");
+                    buffer.append(mDataBinding.minutePv06.getPerformSelectValue() + "");
+                    buffer.append(mDataBinding.minutePv07.getPerformSelectValue() + "");
+                    mOnFinishListener.onReturnSelectValue(buffer.toString());
                 }
             }
         });
@@ -108,12 +139,8 @@ public class OptionalCodeDialog extends BaseDialog<OptionalCodeDialogBinding> {
     }
 
     public interface OnFinishListener {
-        /**
-         * 此时可以关闭Activity了
-         */
-        void onFinish();
-
-        void onFinishAd();
+        void onReturnSelectValue(String value);
+        void onError();
     }
 
 

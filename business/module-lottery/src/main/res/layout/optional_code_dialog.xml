@@ -21,47 +21,104 @@
             android:src="@mipmap/closure_icon"
             android:visibility="invisible" />
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/content_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
             android:layout_below="@+id/closure"
             android:layout_marginStart="22dp"
             android:layout_marginTop="34dp"
             android:layout_marginEnd="22dp"
             android:background="@mipmap/optional_code_dialog_bg"
-            android:gravity="center"
+            android:clipChildren="true"
             android:orientation="vertical"
             tools:ignore="ResourceName">
 
-            <TextView
+
+            <LinearLayout
+                android:id="@+id/minute_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="9"
-                android:textStyle="bold" />
+                android:layout_above="@+id/hint"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="53dp"
+                android:layout_marginBottom="10dp"
+                android:clipChildren="true"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.module.lottery.view.PickerView
+                    android:id="@+id/minute_pv_01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <com.module.lottery.view.PickerView
+                    android:id="@+id/minute_pv_02"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp" />
+
+                <com.module.lottery.view.PickerView
+                    android:id="@+id/minute_pv_03"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp" />
+
+                <com.module.lottery.view.PickerView
+                    android:id="@+id/minute_pv_04"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp" />
+
+                <com.module.lottery.view.PickerView
+                    android:id="@+id/minute_pv_05"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp" />
+
+                <com.module.lottery.view.PickerView
+                    android:id="@+id/minute_pv_06"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp" />
+
+                <com.module.lottery.view.PickerView
+                    android:id="@+id/minute_pv_07"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_marginTop="53dp"
+                android:background="@drawable/mask_linear_upon_shape"
+
+                />
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_marginTop="145dp"
+                android:background="@drawable/mask_linear_down_shape"
+
+                />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/hint"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="9"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="9"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="9"
-                android:textStyle="bold" />
-
-        </LinearLayout>
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="11dp"
+                android:gravity="center"
+                android:text="上下滑动选择号码"
+                android:textColor="#AA7113"
+                android:textSize="12dp" />
+        </RelativeLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/lottery_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/content_layout"
@@ -72,6 +129,7 @@
             android:paddingBottom="100dp">
 
             <LinearLayout
+                android:id="@+id/lottery_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/red_linear_shape"
@@ -107,8 +165,8 @@
                 android:layout_width="57dp"
                 android:layout_height="58dp"
                 android:layout_alignParentBottom="true"
-                android:layout_marginStart="75dp"
-                android:layout_marginBottom="35dp"
+                android:layout_marginStart="710dp"
+                android:layout_marginBottom="310dp"
                 app:layout_constraintRight_toRightOf="parent"
                 app:lottie_loop="true"
                 tools:ignore="MissingConstraints" />
