@@ -39,11 +39,13 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
     private LotteryHandler mLotteryHandler = new LotteryHandler(this);
     private BaseLiveDataModel baseLiveDataModel;
     private String mGoodsId;
+    private String mOptionalCode;
 
-    public GenerateCodeDialog(Context context, String goodsId) {
+    public GenerateCodeDialog(Context context, String goodsId, String optionalCode) {
         super(context, R.style.dialogTransparent);//内容样式在这里引入
         baseLiveDataModel = new BaseLiveDataModel();
         mGoodsId = goodsId;
+        mOptionalCode = optionalCode;
         this.context = context;
     }
 
@@ -101,6 +103,9 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
         //生成一个抽奖码
         if (baseLiveDataModel != null && mGoodsId != null) {
             Map<String, String> params = BaseParams.getMap();
+            if (mOptionalCode != null) {
+                params.put("cus_code", mOptionalCode);
+            }
             params.put("goods_id", mGoodsId);
             getNetData(params, LotteryModel.LOTTERY_GENERATE_CODE);
         }
