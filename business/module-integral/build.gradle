@@ -18,7 +18,7 @@ dependencies {
     api project(':common:library-common')
     api project(':common:library-sdk')
     implementation project(path: ':business:module-spike')
-    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'com.google.android.material:material:1.4.0'
     implementation project(path: ':business:module-lottery')
     implementation'com.alibaba:arouter-api:1.5.2'
     implementation project(path: ':middleware:module-middleware')
