@@ -3,13 +3,13 @@ ext {
     isBuildModule = readLocalProperty("isBuildModule", isBuildModule.toString()).toBoolean()
 
     android_version = [
-            compileSdkVersion: 31,
+            compileSdkVersion: 30,
             buildToolsVersion: "30.0.2",
             minSdkVersion    : 21,
             targetSdkVersion : 26,
             versionCode      : rootProject.ext.VERSION_CODE,
             versionName      : rootProject.ext.VERSION_NAME,
-            java_version     : JavaVersion.VERSION_11
+            java_version     : JavaVersion.VERSION_1_8
     ]
 
     app = [
@@ -18,7 +18,7 @@ ext {
 
     versions = [
             "room"           : "2.3.0",
-            "lifecycle"      : "2.4.0",
+            "lifecycle"      : "2.3.1",
             "androidXCore"   : "1.6.0",
             "kolinCoroutines": "1.5.1",
             "refreshLayout"  : "2.0.3",
@@ -29,7 +29,7 @@ ext {
 
             "multidex"                            : "com.android.support:multidex:1.0.3",
 
-            "androidx-appcompat"                  : "androidx.appcompat:appcompat:1.4.0",
+            "androidx-appcompat"                  : "androidx.appcompat:appcompat:1.3.1",
             "androidx.core"                       : "androidx.core:core:$versions.androidXCore",
             "androidx.core-ktx"                   : "androidx.core:core-ktx:$versions.androidXCore",
             "androidx.annotation"                 : "androidx.annotation:annotation:1.2.0",
