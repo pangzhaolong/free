@@ -111,7 +111,7 @@ public class FrontFloatingBtn extends LinearLayout {
         }
     }
 
-    private void setYywInfo(FrontConfigBean.FloatingItem floatingItem) {
+    private void setYywInfo(FrontConfigBean.YywItem floatingItem) {
         if (this.isShown()) {
             Glide.with(this).load(floatingItem.getImg()).into(mYywImageView);
         }
@@ -135,7 +135,7 @@ public class FrontFloatingBtn extends LinearLayout {
                 }
             }
 
-            ToastUtil.showShort(mContext, "显示第" + mYYWIndex + "个运营位信息");
+//            ToastUtil.showShort(mContext, "显示第" + mYYWIndex + "个运营位信息");
             setYywInfo(FrontConfigManager.Ins().getConfigBean().getFloatingItems().get(mYYWIndex));
         } catch (Exception e) {
             e.printStackTrace();

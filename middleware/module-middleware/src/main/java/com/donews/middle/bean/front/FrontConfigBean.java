@@ -10,8 +10,6 @@ public class FrontConfigBean extends BaseCustomViewModel {
 
     @SerializedName("banner")
     private Boolean banner = false;
-    @SerializedName("bannerItems")
-    private List<BannerItem> bannerItems = new ArrayList<>();
     @SerializedName("lotteryWinner")
     private Boolean lotteryWinner = true;
     @SerializedName("redPackage")
@@ -20,17 +18,22 @@ public class FrontConfigBean extends BaseCustomViewModel {
     private int refreshInterval = 60;
     @SerializedName("task")
     private Boolean task = false;
+    @SerializedName("withDrawal")
+    private Boolean withDrawal = false;
+    @SerializedName("bannerItems")
+    private List<YywItem> bannerItems = new ArrayList<>();
     @SerializedName("taskItems")
-    private List<TaskItem> taskItems = new ArrayList<>();
-
+    private List<YywItem> taskItems = new ArrayList<>();
     @SerializedName("floatingItems")
-    private List<FloatingItem> floatingItems = new ArrayList<>();
+    private List<YywItem> floatingItems = new ArrayList<>();
+    @SerializedName("withDrawalItems")
+    private List<YywItem> withDrawalItems = new ArrayList<>();
 
     public Boolean getBanner() {
         return banner;
     }
 
-    public List<BannerItem> getBannerItems() {
+    public List<YywItem> getBannerItems() {
         return bannerItems;
     }
 
@@ -42,106 +45,60 @@ public class FrontConfigBean extends BaseCustomViewModel {
         return redPackage;
     }
 
-    public int getRefreshInterval() {
-        return refreshInterval;
-    }
-
     public Boolean getTask() {
         return task;
     }
 
-    public List<TaskItem> getTaskItems() {
+    public Boolean getWithDrawal() {
+        return withDrawal;
+    }
+
+    public int getRefreshInterval() {
+        return refreshInterval;
+    }
+
+    public List<YywItem> getTaskItems() {
         return taskItems;
     }
 
-    public List<FloatingItem> getFloatingItems() {
+    public List<YywItem> getFloatingItems() {
         return floatingItems;
     }
 
-    public static class BannerItem extends BaseCustomViewModel {
+    public List<YywItem> getWithDrawalItems() {
+        return withDrawalItems;
+    }
+
+    public static class YywItem extends BaseCustomViewModel {
         @SerializedName("action")
         private String action;
         @SerializedName("id")
         private int id;
         @SerializedName("img")
         private String img;
-        @SerializedName("title")
-        private String title;
-
-        public String getAction() {
-            return action;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public String getImg() {
-            return img;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-    }
-
-    public static class TaskItem extends BaseCustomViewModel {
-        @SerializedName("action")
-        private String action;
-        @SerializedName("icon")
-        private String icon;
-        @SerializedName("id")
-        private int id;
         @SerializedName("title")
         private String title;
         @SerializedName("model")
         private int model;
 
-        public int getModel() {
-            return model;
-        }
-
         public String getAction() {
             return action;
         }
 
-        public String getIcon() {
-            return icon;
-        }
-
         public int getId() {
             return id;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-    }
-
-    public static class FloatingItem extends BaseCustomViewModel {
-        @SerializedName("action")
-        private String action;
-        @SerializedName("id")
-        private int id;
-        @SerializedName("img")
-        private String img;
-        @SerializedName("title")
-        private String title;
-
-        public String getTitle() {
-            return title;
         }
 
         public String getImg() {
             return img;
         }
 
-        public String getAction() {
-            return action;
+        public String getTitle() {
+            return title;
         }
 
-        public int getId() {
-            return id;
+        public int getModel() {
+            return model;
         }
     }
 }

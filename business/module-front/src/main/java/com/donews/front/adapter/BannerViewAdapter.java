@@ -11,7 +11,7 @@ import com.donews.middle.bean.front.FrontConfigBean;
 import com.zhpan.bannerview.BaseBannerAdapter;
 import com.zhpan.bannerview.BaseViewHolder;
 
-public class BannerViewAdapter extends BaseBannerAdapter<FrontConfigBean.BannerItem> implements View.OnClickListener {
+public class BannerViewAdapter extends BaseBannerAdapter<FrontConfigBean.YywItem> implements View.OnClickListener {
 
     private final Context mContext;
 
@@ -23,7 +23,7 @@ public class BannerViewAdapter extends BaseBannerAdapter<FrontConfigBean.BannerI
     }
 
     @Override
-    protected void bindData(BaseViewHolder<FrontConfigBean.BannerItem> holder, FrontConfigBean.BannerItem data, int position, int pageSize) {
+    protected void bindData(BaseViewHolder<FrontConfigBean.YywItem> holder, FrontConfigBean.YywItem data, int position, int pageSize) {
         Glide.with(mContext).load(data.getImg()).into((ImageView) holder.findViewById(R.id.front_banner_item_img));
         holder.setOnClickListener(R.id.front_banner_item_img, this);
         holder.findViewById(R.id.front_banner_item_img).setTag(position);
