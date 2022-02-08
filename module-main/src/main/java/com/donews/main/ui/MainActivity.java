@@ -243,7 +243,8 @@ public class MainActivity
                 bjClick();
             });
         } else {
-            mDataBinding.mainFloatingBtn.setYywInfo(FrontConfigManager.Ins().getConfigBean().getFloatingItem());
+//            mDataBinding.mainFloatingBtn.setYywInfo(FrontConfigManager.Ins().getConfigBean().getFloatingItems());
+            mDataBinding.mainFloatingBtn.refreshYywItem();
         }
     }
 

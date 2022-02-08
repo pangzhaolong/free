@@ -14,9 +14,11 @@ import androidx.annotation.Nullable;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
+import com.donews.base.utils.ToastUtil;
 import com.donews.common.views.CircleProgressBarView;
 import com.donews.middle.R;
 import com.donews.middle.bean.front.FrontConfigBean;
+import com.donews.middle.front.FrontConfigManager;
 import com.donews.middle.go.GotoUtil;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
@@ -30,7 +32,7 @@ public class FrontFloatingBtn extends LinearLayout {
 
     private int mCurrModel = CRITICAL_MODEL;
 
-    private Context mContext;
+    private final Context mContext;
 
     private final LottieAnimationView mCriticalHitIv;
     private final LinearLayout mRpLl;
@@ -38,6 +40,8 @@ public class FrontFloatingBtn extends LinearLayout {
     private final TextView mProgressTv;
 
     private final ImageView mYywImageView;
+
+    private int mYYWIndex = 0;
 
     public FrontFloatingBtn(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -107,8 +111,7 @@ public class FrontFloatingBtn extends LinearLayout {
         }
     }
 
-    public void setYywInfo(FrontConfigBean.FloatingItem floatingItem) {
-        setModel(YYW_MODEL);
+    private void setYywInfo(FrontConfigBean.FloatingItem floatingItem) {
         if (this.isShown()) {
             Glide.with(this).load(floatingItem.getImg()).into(mYywImageView);
         }
@@ -116,7 +119,26 @@ public class FrontFloatingBtn extends LinearLayout {
             GotoUtil.doAction(mContext, floatingItem.getAction()
                     , floatingItem.getTitle(), "front");
             AnalysisUtils.onEventEx(mContext, Dot.FRONT_YYW_CLICK);
+            mYYWIndex++;
+            refreshYywItem();
         });
-//        AnalysisUtils.onEventEx(mContext, Dot.FRONT_YYW_SHOW);
+    }
+
+    public void refreshYywItem() {
+        setModel(YYW_MODEL);
+        try {
+            if (mYYWIndex < 0 || mYYWIndex >= FrontConfigManager.Ins().getConfigBean().getFloatingItems().size()) {
+                if (FrontConfigManager.Ins().getConfigBean().getFloatingItems().size() > 0) {
+                    mYYWIndex = 0;
+                } else {
+                    return;
+                }
+            }
+
+            ToastUtil.showShort(mContext, "显示第" + mYYWIndex + "个运营位信息");
+            setYywInfo(FrontConfigManager.Ins().getConfigBean().getFloatingItems().get(mYYWIndex));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
