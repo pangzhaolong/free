@@ -32,7 +32,6 @@ import com.dn.events.events.WalletRefreshEvent;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
-import com.donews.front.adapter.BannerViewAdapter;
 import com.donews.front.adapter.FragmentAdapter;
 import com.donews.front.databinding.FrontFragmentBinding;
 import com.donews.front.dialog.LotteryMore4RpDialog;
@@ -47,6 +46,7 @@ import com.donews.middle.dialog.ActivityRuleDialog;
 import com.donews.middle.front.FrontConfigManager;
 import com.donews.middle.go.GotoUtil;
 import com.donews.middle.views.TabItem;
+import com.donews.middle.views.YywView;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
@@ -56,7 +56,6 @@ import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.SPUtils;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.zhpan.indicator.enums.IndicatorStyle;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -179,21 +178,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             }
         });
 
-        /*if (mRotateAnimation == null) {
-            mRotateAnimation = new RotateAnimation(0, 8, Animation.RELATIVE_TO_SELF, 0f
-                    , Animation.RELATIVE_TO_SELF, 1f);
-            mRotateAnimation.setInterpolator(new CycleInterpolator(2));
-            mRotateAnimation.setRepeatMode(Animation.REVERSE);
-            mRotateAnimation.setRepeatCount(1);
-            mRotateAnimation.setDuration(400);
-        }*/
-        /*if (mScaleAnimation == null) {
-            mScaleAnimation = new ScaleAnimation(1.15f, 0.9f, 1.15f, 0.9f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-            mScaleAnimation.setInterpolator(new LinearInterpolator());
-            mScaleAnimation.setRepeatMode(Animation.REVERSE);
-            mScaleAnimation.setRepeatCount(Animation.INFINITE);
-            mScaleAnimation.setDuration(1000);
-        }*/
         if (mScaleAnimation == null) {
             mScaleAnimation = new RotateAnimation(-5, 5, Animation.RELATIVE_TO_SELF, 0.5f
                     , Animation.RELATIVE_TO_SELF, 0.5f);
@@ -238,19 +222,24 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             return;
         }
 
+        mDataBinding.frontRpRl.setVisibility(FrontConfigManager.Ins().getConfigBean().getRedPackage() ? View.VISIBLE : View.GONE);
+//        mDataBinding.frontGiftGroupBvp.setVisibility(FrontConfigManager.Ins().getConfigBean().getBanner() ? View.VISIBLE : View.GONE);
+        mDataBinding.frontTaskGroupLl.setVisibility(FrontConfigManager.Ins().getConfigBean().getTask() ? View.VISIBLE : View.GONE);
+        mDataBinding.frontLotteryWinnerCl.setVisibility(FrontConfigManager.Ins().getConfigBean().getLotteryWinner() ? View.VISIBLE : View.GONE);
+        mDataBinding.frontBannerYywYbv.setVisibility(FrontConfigManager.Ins().getConfigBean().getBanner() ? View.VISIBLE : View.GONE);
+
         if (!FrontConfigManager.Ins().getConfigBean().getRedPackage()
                 && !FrontConfigManager.Ins().getConfigBean().getBanner()
                 && !FrontConfigManager.Ins().getConfigBean().getTask()
-                && FrontConfigManager.Ins().getConfigBean().getLotteryWinner()) {
+                && !FrontConfigManager.Ins().getConfigBean().getLotteryWinner()) {
             mDataBinding.frontLotteryRuleRl.setVisibility(View.VISIBLE);
             return;
         }
 
         mDataBinding.frontLotteryRuleRl.setVisibility(View.GONE);
-        mDataBinding.frontRpRl.setVisibility(FrontConfigManager.Ins().getConfigBean().getRedPackage() ? View.VISIBLE : View.GONE);
-        mDataBinding.frontGiftGroupBvp.setVisibility(FrontConfigManager.Ins().getConfigBean().getBanner() ? View.VISIBLE : View.GONE);
-        mDataBinding.frontTaskGroupLl.setVisibility(FrontConfigManager.Ins().getConfigBean().getTask() ? View.VISIBLE : View.GONE);
-        mDataBinding.frontLotteryWinnerCl.setVisibility(FrontConfigManager.Ins().getConfigBean().getLotteryWinner() ? View.VISIBLE : View.GONE);
+        if (FrontConfigManager.Ins().getConfigBean().getBanner()) {
+            mDataBinding.frontBannerYywYbv.refreshYyw(YywView.Model_Banner);
+        }
 
         List<FrontConfigBean.YywItem> taskItems = FrontConfigManager.Ins().getConfigBean().getTaskItems();
         if (taskItems != null && taskItems.size() == 4) {
@@ -267,22 +256,22 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mDataBinding.frontTaskGroupLl.setVisibility(View.GONE);
         }
 
-        List<FrontConfigBean.YywItem> bannerItems = FrontConfigManager.Ins().getConfigBean().getBannerItems();
+        /*List<FrontConfigBean.BannerItem> bannerItems = FrontConfigManager.Ins().getConfigBean().getBannerItems();
         if (bannerItems != null && bannerItems.size() > 0) {
             mDataBinding.frontGiftGroupBvp.setCanLoop(true)
                     .setIndicatorStyle(IndicatorStyle.ROUND_RECT)
                     .setAdapter(new BannerViewAdapter(getContext(), this))
-                    /*.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+                    *//*.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
                         @Override
                         public void onPageSelected(int position) {
                             super.onPageSelected(position);
 
                         }
-                    })*/
+                    })*//*
                     .create(FrontConfigManager.Ins().getConfigBean().getBannerItems());
         } else {
             mDataBinding.frontGiftGroupBvp.setVisibility(View.GONE);
-        }
+        }*/
     }
 
     private void initTaskView(Context context, FrontConfigBean.YywItem ti, FrameLayout fl, ImageView mixIv, ImageView iv, TextView tv, int idx) {
@@ -335,6 +324,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             return;
         }
 
+        AnalysisUtils.onEventEx(mContext, Dot.BANNER_CLICK, position + "");
+
         GotoUtil.doAction(getContext(), bi.getAction(), bi.getTitle(), "front_banner");
     }
 
@@ -385,7 +376,11 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         }
 
         if (!rpBean.getOpened()) {
-            if (rpBean.getHadLotteryTotal() == -1 || rpBean.getHadLotteryTotal() >= rpBean.getLotteryTotal()) {
+            if (fl.getAnimation() == null && !mFindFirstReadyRpAnim) {
+                fl.startAnimation(mScaleAnimation);
+                mFindFirstReadyRpAnim = true;
+            }
+            /*if (rpBean.getHadLotteryTotal() == -1 || rpBean.getHadLotteryTotal() >= rpBean.getLotteryTotal()) {
                 if (fl.getAnimation() == null && !mFindFirstReadyRpAnim) {
                     fl.startAnimation(mScaleAnimation);
                     mFindFirstReadyRpAnim = true;
@@ -396,7 +391,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                         fl.startAnimation(mScaleAnimation);
                     }
                 }
-            }
+            }*/
         }
     }
 
@@ -730,10 +725,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         fl.setTag(rpBean);
         fl.setTag(R.id.tag_first, index);
         fl.setOnClickListener(this);
-        if (fl.getAnimation() != null) {
-            fl.clearAnimation();
-        }
-
         if (rpBean.getOpened()) {
             mOpenedRpCounts++;
             iv.setAlpha(0.7f);
@@ -745,7 +736,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             tv.setTextColor(topColor);
             progressDoneIv.setPadding(0, 0, 0, 0);
             progressDoneIv.setImageResource(R.drawable.front_rp_progress_done);
-//            tvTomorrow.setVisibility(View.VISIBLE);
         } else {
             params.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
             params.bottomMargin = DensityUtils.dp2px(6);
@@ -757,10 +747,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                 iv.setBackgroundResource(R.drawable.front_rp_ready);
                 progressDoneIv.setPadding(0, 0, 0, 0);
                 progressDoneIv.setImageResource(R.drawable.front_rp_progress_done);
-                if (fl.getAnimation() == null && !mFindFirstReadyRp) {
-                    fl.startAnimation(mScaleAnimation);
-                    mFindFirstReadyRp = true;
-                }
             } else if (rpBean.getHadLotteryTotal() < rpBean.getLotteryTotal()) {
                 if (index == 1) {
                     tv.setText("待开启");
@@ -770,11 +756,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                     tv.setText("抽奖" + rpBean.getLotteryTotal() + "次");
                 }
                 iv.setBackgroundResource(R.drawable.front_rp_ready);
-                if (index == 1) {
-                    if (fl.getAnimation() == null) {
-                        fl.startAnimation(mScaleAnimation);
-                    }
-                }
             }
         }
         fl.postInvalidate();
@@ -830,6 +811,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         mDataBinding.frontRpOpenFl5.setTag(rpBean);
         mDataBinding.frontRpOpenFl5.setTag(R.id.tag_first, 5);
         mDataBinding.frontRpOpenFl5.setOnClickListener(this);
+
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mDataBinding.frontRpTv5.getLayoutParams();
         if (rpBean.getOpened()) {
             mOpenedRpCounts++;
@@ -888,9 +870,9 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mDataBinding.frontLotteryCodesBarrageLbv.resumeScroll();
         }
 
-        if (mDataBinding.frontGiftGroupBvp != null) {
+        /*if (mDataBinding.frontGiftGroupBvp != null) {
             mDataBinding.frontGiftGroupBvp.startLoop();
-        }
+        }*/
 
         loadRpData(false);
 
@@ -903,9 +885,9 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         if (mDataBinding.frontLotteryCodesBarrageLbv != null) {
             mDataBinding.frontLotteryCodesBarrageLbv.pauseScroll();
         }
-        if (mDataBinding.frontGiftGroupBvp != null) {
+        /*if (mDataBinding.frontGiftGroupBvp != null) {
             mDataBinding.frontGiftGroupBvp.stopLoop();
-        }
+        }*/
 
         mIsFragmentActive = false;
     }

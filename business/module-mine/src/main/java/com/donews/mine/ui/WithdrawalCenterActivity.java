@@ -31,13 +31,14 @@ import com.donews.common.contract.UserInfoBean;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.front.FrontConfigManager;
 import com.donews.middle.go.GotoUtil;
+import com.donews.middle.views.YywView;
 import com.donews.mine.R;
 import com.donews.mine.bean.MineWithdraWallBean;
 import com.donews.mine.databinding.MineActivityWithdrawalCenterBinding;
 import com.donews.mine.dialogs.MineCongratulationsDialog;
 import com.donews.mine.viewModel.WithdrawalCenterViewModel;
-import com.donews.mine.views.operating.MineOperatingPosView;
 import com.donews.network.BuildConfig;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
@@ -50,9 +51,6 @@ import com.donews.utilslibrary.utils.JsonUtils;
 import com.gyf.immersionbar.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 提现中心
@@ -208,73 +206,28 @@ public class WithdrawalCenterActivity extends
             }
             updateDataLoaing = false;
         });
-//        setYYW();
+        updateYYWData();
         mViewModel.getWiningRotation();
         //加载一次服务数据数据
         updateDataLoaing = true;
         mViewModel.requestWithdrawTaskCurrentCount();
     }
 
-    private MineWithdraWallBean mineWithdraWallBean = null;
-
-    //模拟设置运营位
-    private void setYYW() {
-        String localJson = SPUtils.getInstance(mineYYWCacheFile).getString(mineYYWCache, "");
-        if (localJson.length() > 0) {
-            mineWithdraWallBean = GsonUtils.fromLocalJson(localJson, MineWithdraWallBean.class);
-            updateYYWData();
-        }
-        EasyHttp.get(BuildConfig.BASE_CONFIG_URL + "ddyb-mineWithdrawal" + com.donews.common.BuildConfig.BASE_RULE_URL
-                + JsonUtils.getCommonJson(false))
-                .cacheMode(CacheMode.NO_CACHE)
-                .isShowToast(false)
-                .execute(new SimpleCallBack<MineWithdraWallBean>() {
-                    @Override
-                    public void onError(ApiException e) {
-                        ToastUtil.showShort(WithdrawalCenterActivity.this, "获取数据异常");
-                    }
-
-                    @Override
-                    public void onSuccess(MineWithdraWallBean appWallBean) {
-                        if (appWallBean != null) {
-                            if (mineWithdraWallBean == null) {
-                                mineWithdraWallBean = appWallBean;
-                                updateYYWData();
-                            }
-                            SPUtils.getInstance(mineYYWCacheFile).put(mineYYWCache, GsonUtils.toJson(appWallBean));
-                        }
-                    }
-                });
-    }
-
-
     //更新运营位数据
     private void updateYYWData() {
-        if (mineWithdraWallBean == null) {
+        if (FrontConfigManager.Ins().getConfigBean().getWithDrawalItems().size() <= 0 || !FrontConfigManager.Ins().getConfigBean().getWithDrawal()) {
             return;
         }
-        if (!mineWithdraWallBean.withDrawal || mineWithdraWallBean.withDrawalItems == null ||
-                mineWithdraWallBean.withDrawalItems.size() <= 0) {
-            mDataBinding.mindYywJdNew.setVisibility(View.GONE);
-        } else {
-            mDataBinding.mindYywJdNew.setVisibility(View.VISIBLE);
-            //呼吸动画
-            if (mScaleAnimation == null) {
-                mScaleAnimation = new ScaleAnimation(1.15f, 0.9f, 1.15f, 0.9f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                mScaleAnimation.setInterpolator(new LinearInterpolator());
-                mScaleAnimation.setRepeatMode(Animation.REVERSE);
-                mScaleAnimation.setRepeatCount(Animation.INFINITE);
-                mScaleAnimation.setDuration(1000);
-                mDataBinding.mindYywJdNew.startAnimation(mScaleAnimation);
-            }
-            MineWithdraWallBean.DrawalWallBeanItem item = mineWithdraWallBean.withDrawalItems.get(0);
-            GlideUtils.loadImageView(this, item.img, mDataBinding.mindYywJdNew);
-            mDataBinding.mindYywJdNew.setOnClickListener(v -> {
-                GotoUtil.doAction(this, item.action, item.title, "withdrawCenter");
-                AnalysisUtils.onEventEx(this, Dot.WITHDRAWAL_YYW_CLICK);
-            });
 
-//            AnalysisUtils.onEventEx(this, Dot.WITHDRAWAL_YYW_SHOW);
+        mDataBinding.mindYywJdNew.refreshYyw(YywView.Model_WithDrawl);
+
+        if (mScaleAnimation == null) {
+            mScaleAnimation = new ScaleAnimation(1.15f, 0.9f, 1.15f, 0.9f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            mScaleAnimation.setInterpolator(new LinearInterpolator());
+            mScaleAnimation.setRepeatMode(Animation.REVERSE);
+            mScaleAnimation.setRepeatCount(Animation.INFINITE);
+            mScaleAnimation.setDuration(1000);
+            mDataBinding.mindYywJdNew.startAnimation(mScaleAnimation);
         }
     }
 
