@@ -208,7 +208,7 @@ public class WithdrawalCenterActivity extends
             }
             updateDataLoaing = false;
         });
-        setYYW();
+//        setYYW();
         mViewModel.getWiningRotation();
         //加载一次服务数据数据
         updateDataLoaing = true;
@@ -255,9 +255,9 @@ public class WithdrawalCenterActivity extends
         }
         if (!mineWithdraWallBean.withDrawal || mineWithdraWallBean.withDrawalItems == null ||
                 mineWithdraWallBean.withDrawalItems.size() <= 0) {
-            mDataBinding.mindYywJd.setVisibility(View.GONE);
+            mDataBinding.mindYywJdNew.setVisibility(View.GONE);
         } else {
-            mDataBinding.mindYywJd.setVisibility(View.VISIBLE);
+            mDataBinding.mindYywJdNew.setVisibility(View.VISIBLE);
             //呼吸动画
             if (mScaleAnimation == null) {
                 mScaleAnimation = new ScaleAnimation(1.15f, 0.9f, 1.15f, 0.9f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
@@ -265,11 +265,11 @@ public class WithdrawalCenterActivity extends
                 mScaleAnimation.setRepeatMode(Animation.REVERSE);
                 mScaleAnimation.setRepeatCount(Animation.INFINITE);
                 mScaleAnimation.setDuration(1000);
-                mDataBinding.mindYywJd.startAnimation(mScaleAnimation);
+                mDataBinding.mindYywJdNew.startAnimation(mScaleAnimation);
             }
             MineWithdraWallBean.DrawalWallBeanItem item = mineWithdraWallBean.withDrawalItems.get(0);
-            GlideUtils.loadImageView(this, item.img, mDataBinding.mindYywJd);
-            mDataBinding.mindYywJd.setOnClickListener(v -> {
+            GlideUtils.loadImageView(this, item.img, mDataBinding.mindYywJdNew);
+            mDataBinding.mindYywJdNew.setOnClickListener(v -> {
                 GotoUtil.doAction(this, item.action, item.title, "withdrawCenter");
                 AnalysisUtils.onEventEx(this, Dot.WITHDRAWAL_YYW_CLICK);
             });

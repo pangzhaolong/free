@@ -252,9 +252,9 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         mDataBinding.frontTaskGroupLl.setVisibility(FrontConfigManager.Ins().getConfigBean().getTask() ? View.VISIBLE : View.GONE);
         mDataBinding.frontLotteryWinnerCl.setVisibility(FrontConfigManager.Ins().getConfigBean().getLotteryWinner() ? View.VISIBLE : View.GONE);
 
-        List<FrontConfigBean.TaskItem> taskItems = FrontConfigManager.Ins().getConfigBean().getTaskItems();
+        List<FrontConfigBean.YywItem> taskItems = FrontConfigManager.Ins().getConfigBean().getTaskItems();
         if (taskItems != null && taskItems.size() == 4) {
-            FrontConfigBean.TaskItem ti = FrontConfigManager.Ins().getConfigBean().getTaskItems().get(0);
+            FrontConfigBean.YywItem ti = FrontConfigManager.Ins().getConfigBean().getTaskItems().get(0);
             initTaskView(this.getContext(), ti, mDataBinding.frontTaskFl1, mDataBinding.frontTaskMixIv1, mDataBinding.frontTaskIv1, mDataBinding.frontTaskTv1, 1);
             ti = FrontConfigManager.Ins().getConfigBean().getTaskItems().get(1);
             initTaskView(this.getContext(), ti, mDataBinding.frontTaskFl2, mDataBinding.frontTaskMixIv2, mDataBinding.frontTaskIv2, mDataBinding.frontTaskTv2, 2);
@@ -267,7 +267,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mDataBinding.frontTaskGroupLl.setVisibility(View.GONE);
         }
 
-        List<FrontConfigBean.BannerItem> bannerItems = FrontConfigManager.Ins().getConfigBean().getBannerItems();
+        List<FrontConfigBean.YywItem> bannerItems = FrontConfigManager.Ins().getConfigBean().getBannerItems();
         if (bannerItems != null && bannerItems.size() > 0) {
             mDataBinding.frontGiftGroupBvp.setCanLoop(true)
                     .setIndicatorStyle(IndicatorStyle.ROUND_RECT)
@@ -285,7 +285,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         }
     }
 
-    private void initTaskView(Context context, FrontConfigBean.TaskItem ti, FrameLayout fl, ImageView mixIv, ImageView iv, TextView tv, int idx) {
+    private void initTaskView(Context context, FrontConfigBean.YywItem ti, FrameLayout fl, ImageView mixIv, ImageView iv, TextView tv, int idx) {
         if (ti == null) {
             return;
         }
@@ -297,13 +297,13 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mixIv.setVisibility(View.GONE);
             iv.setVisibility(View.VISIBLE);
             tv.setVisibility(View.VISIBLE);
-            Glide.with(this).load(ti.getIcon()).into(iv);
+            Glide.with(this).load(ti.getImg()).into(iv);
             tv.setText(ti.getTitle());
         } else {
             iv.setVisibility(View.GONE);
             tv.setVisibility(View.GONE);
             mixIv.setVisibility(View.VISIBLE);
-            Glide.with(this).load(ti.getIcon()).into(mixIv);
+            Glide.with(this).load(ti.getImg()).into(mixIv);
         }
     }
 
@@ -330,7 +330,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             return;
         }
 
-        FrontConfigBean.BannerItem bi = FrontConfigManager.Ins().getConfigBean().getBannerItems().get(position);
+        FrontConfigBean.YywItem bi = FrontConfigManager.Ins().getConfigBean().getBannerItems().get(position);
         if (bi == null) {
             return;
         }
