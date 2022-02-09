@@ -18,6 +18,8 @@ public class FrontConfigBean extends BaseCustomViewModel {
     private int refreshInterval = 60;
     @SerializedName("task")
     private Boolean task = false;
+    @SerializedName("mine")
+    private Boolean mine = false;
     @SerializedName("withDrawal")
     private Boolean withDrawal = false;
     @SerializedName("bannerItems")
@@ -28,6 +30,10 @@ public class FrontConfigBean extends BaseCustomViewModel {
     private List<YywItem> floatingItems = new ArrayList<>();
     @SerializedName("withDrawalItems")
     private List<YywItem> withDrawalItems = new ArrayList<>();
+    @SerializedName("frontTask")
+    private TaskItem frontTask;
+    @SerializedName("mineTask")
+    private TaskItem mineTask;
 
     public Boolean getBanner() {
         return banner;
@@ -69,6 +75,18 @@ public class FrontConfigBean extends BaseCustomViewModel {
         return withDrawalItems;
     }
 
+    public Boolean getMine() {
+        return mine;
+    }
+
+    public TaskItem getFrontTask() {
+        return frontTask;
+    }
+
+    public TaskItem getMineTask() {
+        return mineTask;
+    }
+
     public static class YywItem extends BaseCustomViewModel {
         @SerializedName("action")
         private String action;
@@ -101,4 +119,30 @@ public class FrontConfigBean extends BaseCustomViewModel {
             return model;
         }
     }
+
+    public static class TaskItem extends BaseCustomViewModel {
+        @SerializedName("taskGroup")
+        private int taskGroup;
+        @SerializedName("items")
+        List<SubItems> items = new ArrayList<>();
+
+        public int getTaskGroup() {
+            return taskGroup;
+        }
+
+        public List<SubItems> getItems() {
+            return items;
+        }
+    }
+
+    public static class SubItems extends BaseCustomViewModel {
+        @SerializedName("subItems")
+        private List<YywItem> subItems = new ArrayList<>();
+
+        public List<YywItem> getSubItems() {
+            return subItems;
+        }
+    }
+
+
 }

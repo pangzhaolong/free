@@ -434,6 +434,16 @@
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
+                            <com.donews.middle.views.TaskView
+                                android:id="@+id/front_task_group_ll_new"
+                                android:layout_width="match_parent"
+                                android:layout_height="100dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:background="@drawable/middle_rp_group_bg"
+                                app:layout_constraintTop_toBottomOf="@+id/front_rp_rl" />
+
                             <LinearLayout
                                 android:id="@+id/front_task_group_ll"
                                 android:layout_width="match_parent"
@@ -443,6 +453,7 @@
                                 android:layout_marginEnd="10dp"
                                 android:background="@drawable/front_rp_group_bg"
                                 android:orientation="horizontal"
+                                android:visibility="gone"
                                 android:weightSum="4"
                                 app:layout_constraintTop_toBottomOf="@+id/front_rp_rl">
 
@@ -596,7 +607,7 @@
                                 android:layout_marginEnd="10dp"
                                 android:background="@drawable/front_lottery_codes_bg"
                                 android:paddingTop="12dp"
-                                app:layout_constraintTop_toBottomOf="@+id/front_task_group_ll">
+                                app:layout_constraintTop_toBottomOf="@+id/front_task_group_ll_new">
 
                                 <LinearLayout
                                     android:id="@+id/front_lottery_cup_ll"
