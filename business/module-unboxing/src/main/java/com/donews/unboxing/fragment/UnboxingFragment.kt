@@ -19,6 +19,7 @@ import com.donews.unboxing.smartrefreshlayout.SmartRefreshState
 import com.donews.unboxing.viewmodel.UnboxingViewModel
 import com.donews.utilslibrary.analysis.AnalysisUtils
 import com.donews.utilslibrary.dot.Dot
+import com.orhanobut.logger.Logger
 
 /**
  * 晒单页 fragment
@@ -29,7 +30,7 @@ import com.donews.utilslibrary.dot.Dot
  */
 @Route(path = RouterFragmentPath.Unboxing.PAGER_UNBOXING_FRAGMENT)
 class UnboxingFragment :
-        MvvmLazyLiveDataFragment<UnboxingFragUnboxingBinding, UnboxingViewModel>() {
+    MvvmLazyLiveDataFragment<UnboxingFragUnboxingBinding, UnboxingViewModel>() {
 
     private val unboxingRVAdapter = UnboxingRVAdapter(R.layout.unboxing_item_unboxing)
 
@@ -46,14 +47,15 @@ class UnboxingFragment :
         super.onViewCreated(view, savedInstanceState)
 
         mDataBinding.viewModel = mViewModel
+        mDataBinding.onEventListener = OnEventListener()
 
         unboxingRVAdapter.setOnItemChildClickListener { adapter, _, position ->
             AnalysisUtils.onEventEx(context, Dot.Btn_BeBlessed)
             val data: UnboxingBean = adapter.data[position] as UnboxingBean
             ARouter.getInstance()
-                    .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
-                    .withString("goods_id", data.goodsId)
-                    .navigation();
+                .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
+                .withString("goods_id", data.goodsId)
+                .navigation();
         }
 
         unboxingRVAdapter.setDiffCallback(object : DiffUtil.ItemCallback<UnboxingBean>() {
@@ -92,19 +94,29 @@ class UnboxingFragment :
         lp.height = lp.height + BarUtils.getStatusBarHeight()
         mDataBinding.tvTitle.layoutParams = lp
         mDataBinding.tvTitle.setPadding(
-                mDataBinding.tvTitle.paddingLeft,
-                mDataBinding.tvTitle.paddingTop + BarUtils.getStatusBarHeight(),
-                mDataBinding.tvTitle.paddingRight,
-                mDataBinding.tvTitle.paddingBottom
+            mDataBinding.tvTitle.paddingLeft,
+            mDataBinding.tvTitle.paddingTop + BarUtils.getStatusBarHeight(),
+            mDataBinding.tvTitle.paddingRight,
+            mDataBinding.tvTitle.paddingBottom
         )
 
         lp = mDataBinding.tvShowProduct.layoutParams
         lp.height = lp.height + BarUtils.getStatusBarHeight()
         mDataBinding.tvShowProduct.layoutParams = lp
         mDataBinding.tvShowProduct.setPadding(
-                mDataBinding.tvShowProduct.paddingLeft,
-                mDataBinding.tvShowProduct.paddingTop + BarUtils.getStatusBarHeight(),
-                mDataBinding.tvShowProduct.paddingRight,
-                mDataBinding.tvShowProduct.paddingBottom)
+            mDataBinding.tvShowProduct.paddingLeft,
+            mDataBinding.tvShowProduct.paddingTop + BarUtils.getStatusBarHeight(),
+            mDataBinding.tvShowProduct.paddingRight,
+            mDataBinding.tvShowProduct.paddingBottom
+        )
     }
+
+
+    inner class OnEventListener {
+        fun refresh() {
+            Logger.d("刷新")
+            mViewModel.onRefresh.invoke()
+        }
+    }
+
 }

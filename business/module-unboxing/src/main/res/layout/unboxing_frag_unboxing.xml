@@ -8,6 +8,10 @@
         <variable
             name="viewModel"
             type="com.donews.unboxing.viewmodel.UnboxingViewModel" />
+
+        <variable
+            name="onEventListener"
+            type="com.donews.unboxing.fragment.UnboxingFragment.OnEventListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -57,7 +61,7 @@
             android:layout_height="0dp"
             app:binding_smart_loadMoreState="@={viewModel.loadMore}"
             app:binding_smart_onLoadMore="@{viewModel.onLoadMore}"
-            app:binding_smart_onRefresh="@{viewModel.onRefresh}"
+            app:binding_smart_onRefresh="@{onEventListener.refresh}"
             app:binding_smart_refreshState="@={viewModel.refreshing}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
