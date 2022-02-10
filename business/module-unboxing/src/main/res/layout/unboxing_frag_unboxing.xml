@@ -14,27 +14,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/middle_title_bg"
-            tools:ignore="MissingConstraints" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/middle_title_circle"
-            tools:ignore="MissingConstraints" />
-
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="0dp"
             android:layout_height="48dp"
-            android:layout_marginTop="20dp"
-            android:background="@color/transparent"
+            android:background="@color/white"
             android:gravity="center"
             android:text="@string/unboxing_title"
-            android:textColor="@color/white"
+            android:textColor="#2c2c2c"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -49,24 +36,21 @@
             android:paddingStart="13dp"
             android:paddingEnd="13dp"
             android:text="我要晒单"
-            android:textColor="#FFF3D0"
+            android:textColor="#2c2c2c"
             android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="@id/tv_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_title" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:background="#F5F5F5"
-            app:layout_constraintTop_toBottomOf="@id/tv_title"
-            tools:ignore="MissingConstraints" />
-
         <com.donews.middle.views.TaskView
             android:id="@+id/unboxing_task_view"
             android:layout_width="match_parent"
             android:layout_height="90dp"
-            app:layout_constraintTop_toBottomOf="@id/tv_title"/>
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:id="@+id/srl_refresh"
             android:layout_width="0dp"
@@ -88,7 +72,7 @@
                 android:id="@+id/rv_unboxing"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#F5F5F5"
+                android:background="#f4f4f4"
                 android:clipToPadding="false"
                 android:orientation="vertical"
                 android:overScrollMode="never"

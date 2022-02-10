@@ -10,6 +10,7 @@ import com.donews.base.utils.ToastUtil
 import com.donews.common.ad.business.monitor.PageMonitor
 import com.donews.common.base.MvvmLazyLiveDataFragment
 import com.donews.common.router.RouterFragmentPath
+import com.donews.middle.views.TaskView
 import com.donews.unboxing.R
 import com.donews.unboxing.adapter.UnboxingRVAdapter
 import com.donews.unboxing.bean.UnboxingBean
@@ -79,6 +80,7 @@ class UnboxingFragment :
                 ToastUtil.show(context, "中奖后才可晒单噢！")
             }
         })
+        mDataBinding.unboxingTaskView.refreshYyw(TaskView.Place_Show)
     }
 
     override fun onFragmentFirstVisible() {

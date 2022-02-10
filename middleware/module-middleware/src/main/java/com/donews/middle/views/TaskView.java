@@ -1,6 +1,9 @@
 package com.donews.middle.views;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,28 +17,37 @@ import com.donews.middle.front.FrontConfigManager;
 import com.donews.middle.go.GotoUtil;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
-import com.donews.utilslibrary.utils.LogUtil;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class TaskView extends LinearLayout {
 
+    private static final int MESSAGE_ID = 10002;
+
     private final Context mContext;
 
+    private final int ARRAY_COUNT = 4;
+
     public final static int Place_Front = 0;
-    public final static int Place_Mine = 1;
+    public final static int Place_Show = 1;
+    public final static int Place_Mine = 2;
     private int mCurrentModel = Place_Front;
+
+    private final TaskHandler mTaskHandler;
 
     private List<FrontConfigBean.SubItems> mYywItemList = new ArrayList<>();
 
-    private int mYYWIndex = 0;
     private int mTaskGroup = 1;
+    private boolean mEnableYyw = false;
+    private final int mYywIdxs[] = new int[ARRAY_COUNT];
     private final ImageView[] mImageViews = new ImageView[4];
     private final LayoutParams mLayoutParams1 = new LayoutParams(0, LayoutParams.MATCH_PARENT, 1);
     private final LayoutParams mLayoutParams2 = new LayoutParams(0, LayoutParams.MATCH_PARENT, 2);
 
+    private String mDotFrom = "";
 
     public TaskView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -48,6 +60,11 @@ public class TaskView extends LinearLayout {
         for (ImageView iv : mImageViews) {
             iv.setScaleType(ImageView.ScaleType.FIT_XY);
         }
+        for (int i = 0; i < ARRAY_COUNT; i++) {
+            mYywIdxs[i] = 0;
+        }
+
+        mTaskHandler = new TaskHandler(Looper.getMainLooper(), this);
     }
 
     public void refreshYyw(int model) {
@@ -56,10 +73,23 @@ public class TaskView extends LinearLayout {
         if (mCurrentModel == Place_Front) {
             mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getFrontTask().getItems());
             mTaskGroup = FrontConfigManager.Ins().getConfigBean().getFrontTask().getTaskGroup();
+            mEnableYyw = FrontConfigManager.Ins().getConfigBean().getTask();
         } else if (mCurrentModel == Place_Mine) {
             mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getMineTask().getItems());
             mTaskGroup = FrontConfigManager.Ins().getConfigBean().getMineTask().getTaskGroup();
+            mEnableYyw = FrontConfigManager.Ins().getConfigBean().getMine();
+        } else if (mCurrentModel == Place_Show) {
+            mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getShowTask().getItems());
+            mTaskGroup = FrontConfigManager.Ins().getConfigBean().getShowTask().getTaskGroup();
+            mEnableYyw = FrontConfigManager.Ins().getConfigBean().getShowTime();
         }
+
+        if (!mEnableYyw) {
+            this.setVisibility(GONE);
+            return;
+        }
+
+        mDotFrom = "place_" + mCurrentModel;
 
         initViews();
 
@@ -108,50 +138,125 @@ public class TaskView extends LinearLayout {
 
     private void refreshYywItem() {
         try {
-            int nSize = mYywItemList.size();
-            if (mYYWIndex < 0 || mYYWIndex >= nSize) {
-                if (nSize > 0) {
-                    mYYWIndex = 0;
-                } else {
-                    return;
-                }
-            }
             this.setVisibility(VISIBLE);
 
-            LogUtil.e("显示第" + mYYWIndex + "个Banner运营位信息");
             setYywItem();
+
+            if (mTaskHandler != null) {
+                mTaskHandler.removeCallbacksAndMessages(null);
+                mTaskHandler.sendEmptyMessageDelayed(MESSAGE_ID, 5 * 1000);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void setYywItem() {
+
+        checkYywIndex();
+
         switch (mTaskGroup) {
             case 0:
-                Glide.with(this).load(mYywItemList.get(0).getSubItems().get(mYYWIndex).getImg()).into(mImageViews[0]);
-                Glide.with(this).load(mYywItemList.get(1).getSubItems().get(mYYWIndex).getImg()).into(mImageViews[1]);
-                Glide.with(this).load(mYywItemList.get(2).getSubItems().get(mYYWIndex).getImg()).into(mImageViews[2]);
-                Glide.with(this).load(mYywItemList.get(3).getSubItems().get(mYYWIndex).getImg()).into(mImageViews[3]);
+                Glide.with(this).load(mYywItemList.get(0).getSubItems().get(mYywIdxs[0]).getImg()).into(mImageViews[0]);
+                Glide.with(this).load(mYywItemList.get(1).getSubItems().get(mYywIdxs[1]).getImg()).into(mImageViews[1]);
+                Glide.with(this).load(mYywItemList.get(2).getSubItems().get(mYywIdxs[2]).getImg()).into(mImageViews[2]);
+                Glide.with(this).load(mYywItemList.get(3).getSubItems().get(mYywIdxs[3]).getImg()).into(mImageViews[3]);
                 break;
             case 1:
-                Glide.with(this).load(mYywItemList.get(0).getSubItems().get(mYYWIndex).getImg()).into(mImageViews[0]);
-                Glide.with(this).load(mYywItemList.get(1).getSubItems().get(mYYWIndex).getImg()).into(mImageViews[1]);
+                Glide.with(this).load(mYywItemList.get(0).getSubItems().get(mYywIdxs[0]).getImg()).into(mImageViews[0]);
+                Glide.with(this).load(mYywItemList.get(1).getSubItems().get(mYywIdxs[1]).getImg()).into(mImageViews[1]);
                 break;
             case 2:
-                Glide.with(this).load(mYywItemList.get(0).getSubItems().get(mYYWIndex).getImg()).into(mImageViews[0]);
+                Glide.with(this).load(mYywItemList.get(0).getSubItems().get(mYywIdxs[0]).getImg()).into(mImageViews[0]);
                 break;
             case 3:
             case 4:
-                Glide.with(this).load(mYywItemList.get(0).getSubItems().get(mYYWIndex).getImg()).into(mImageViews[0]);
-                Glide.with(this).load(mYywItemList.get(1).getSubItems().get(mYYWIndex).getImg()).into(mImageViews[1]);
-                Glide.with(this).load(mYywItemList.get(2).getSubItems().get(mYYWIndex).getImg()).into(mImageViews[2]);
+                Glide.with(this).load(mYywItemList.get(0).getSubItems().get(mYywIdxs[0]).getImg()).into(mImageViews[0]);
+                Glide.with(this).load(mYywItemList.get(1).getSubItems().get(mYywIdxs[1]).getImg()).into(mImageViews[1]);
+                Glide.with(this).load(mYywItemList.get(2).getSubItems().get(mYywIdxs[2]).getImg()).into(mImageViews[2]);
                 break;
         }
-        this.setOnClickListener(v -> {
-            GotoUtil.doAction(mContext, mYywItemList.get(0).getSubItems().get(mYYWIndex).getAction()
-                    , mYywItemList.get(0).getSubItems().get(mYYWIndex).getTitle(), "front");
-            AnalysisUtils.onEventEx(mContext, Dot.BANNER_CLICK);
-            refreshYywItem();
-        });
+        int nSize = mYywItemList.size();
+        if (nSize >= 1) {
+            mImageViews[0].setOnClickListener(v -> {
+                GotoUtil.doAction(mContext, mYywItemList.get(0).getSubItems().get(mYywIdxs[0]).getAction()
+                        , mYywItemList.get(0).getSubItems().get(mYywIdxs[0]).getTitle(), mDotFrom);
+                AnalysisUtils.onEventEx(mContext, Dot.BANNER_CLICK);
+                mYywIdxs[0]++;
+                refreshYywItem();
+            });
+        }
+        if (nSize >= 2) {
+            mImageViews[1].setOnClickListener(v -> {
+                GotoUtil.doAction(mContext, mYywItemList.get(1).getSubItems().get(mYywIdxs[1]).getAction()
+                        , mYywItemList.get(1).getSubItems().get(mYywIdxs[1]).getTitle(), mDotFrom);
+                AnalysisUtils.onEventEx(mContext, Dot.BANNER_CLICK);
+                mYywIdxs[1]++;
+                refreshYywItem();
+            });
+        }
+        if (nSize >= 3) {
+            mImageViews[2].setOnClickListener(v -> {
+                GotoUtil.doAction(mContext, mYywItemList.get(2).getSubItems().get(mYywIdxs[2]).getAction()
+                        , mYywItemList.get(2).getSubItems().get(mYywIdxs[2]).getTitle(), mDotFrom);
+                AnalysisUtils.onEventEx(mContext, Dot.BANNER_CLICK);
+                mYywIdxs[2]++;
+                refreshYywItem();
+            });
+        }
+        if (nSize >= 4) {
+            mImageViews[3].setOnClickListener(v -> {
+                GotoUtil.doAction(mContext, mYywItemList.get(3).getSubItems().get(mYywIdxs[3]).getAction()
+                        , mYywItemList.get(3).getSubItems().get(mYywIdxs[3]).getTitle(), mDotFrom);
+                AnalysisUtils.onEventEx(mContext, Dot.BANNER_CLICK);
+                mYywIdxs[3]++;
+                refreshYywItem();
+            });
+        }
+    }
+
+    private void checkYywIndex() {
+        int nSize = mYywItemList.size();
+        if (nSize > 0) {
+            if (mYywIdxs[0] < 0 || mYywIdxs[0] >= mYywItemList.get(0).getSubItems().size()) {
+                mYywIdxs[0] = 0;
+            }
+        }
+        if (nSize > 1) {
+            if (mYywIdxs[1] < 0 || mYywIdxs[1] >= mYywItemList.get(1).getSubItems().size()) {
+                mYywIdxs[1] = 0;
+            }
+        }
+        if (nSize > 2) {
+            if (mYywIdxs[2] < 0 || mYywIdxs[2] >= mYywItemList.get(2).getSubItems().size()) {
+                mYywIdxs[2] = 0;
+            }
+        }
+        if (nSize > 3) {
+            if (mYywIdxs[3] < 0 || mYywIdxs[3] >= mYywItemList.get(3).getSubItems().size()) {
+                mYywIdxs[3] = 0;
+            }
+        }
+    }
+
+    private static class TaskHandler extends Handler {
+
+        private final WeakReference<TaskView> mTaskView;
+
+        public TaskHandler(Looper looper, TaskView view) {
+            super(looper);
+            mTaskView = new WeakReference<>(view);
+        }
+
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == MESSAGE_ID) {
+                TaskView view = mTaskView.get();
+                if (view != null) {
+                    view.refreshYywItem();
+                }
+            }
+        }
     }
 }

@@ -5,7 +5,6 @@ import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.view.View
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import com.alibaba.android.arouter.launcher.ARouter
@@ -14,13 +13,13 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.donews.base.utils.ToastUtil
 import com.donews.common.decoration.GridItemDecoration
 import com.donews.common.router.RouterActivityPath
-import com.donews.utilslibrary.utils.DensityUtils
 import com.donews.unboxing.R
 import com.donews.unboxing.bean.UnboxingBean
 import com.donews.unboxing.databinding.UnboxingItemUnboxingBinding
 import com.donews.utilslibrary.utils.AppInfo
+import com.donews.utilslibrary.utils.DensityUtils
 import com.tencent.mmkv.MMKV
-import java.util.ArrayList
+import java.util.*
 
 /**
  * 晒单页RecyclerView Adapter
@@ -59,6 +58,7 @@ class UnboxingRVAdapter(layoutResId: Int) : BaseQuickAdapter<UnboxingBean, BaseV
                 setHasFixedSize(true)
                 isNestedScrollingEnabled = false
                 setItemViewCacheSize(10)
+                isFocusableInTouchMode=false
                 layoutManager = GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
 
                 val num = (0 until itemDecorationCount).reversed()
