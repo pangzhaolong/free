@@ -31,7 +31,7 @@ public class SPUtils {
      * @param key     文件名称
      */
     public static void init(Context context, String key) {
-        init(context, key, false);
+        init(context, key, true);
     }
 
     /**

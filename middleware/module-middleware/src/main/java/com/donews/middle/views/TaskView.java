@@ -34,6 +34,7 @@ public class TaskView extends LinearLayout {
     public final static int Place_Front = 0;
     public final static int Place_Show = 1;
     public final static int Place_Mine = 2;
+    public final static int Place_Show_Msg = 3;
     private int mCurrentModel = Place_Front;
 
     private final TaskHandler mTaskHandler;
@@ -82,6 +83,10 @@ public class TaskView extends LinearLayout {
             mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getShowTask().getItems());
             mTaskGroup = FrontConfigManager.Ins().getConfigBean().getShowTask().getTaskGroup();
             mEnableYyw = FrontConfigManager.Ins().getConfigBean().getShowTime();
+        } else if (mCurrentModel == Place_Show_Msg) {
+            mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getShowMsgTask().getItems());
+            mTaskGroup = FrontConfigManager.Ins().getConfigBean().getShowMsgTask().getTaskGroup();
+            mEnableYyw = FrontConfigManager.Ins().getConfigBean().getShowTimeMsg();
         }
 
         if (!mEnableYyw) {

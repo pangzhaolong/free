@@ -20,6 +20,8 @@ public class FrontConfigBean extends BaseCustomViewModel {
     private Boolean task = false;
     @SerializedName("showTime")
     private Boolean showTime = false;
+    @SerializedName("showTimeMsg")
+    private Boolean showTimeMsg = false;
     @SerializedName("mine")
     private Boolean mine = false;
     @SerializedName("withDrawal")
@@ -36,6 +38,8 @@ public class FrontConfigBean extends BaseCustomViewModel {
     private TaskItem frontTask;
     @SerializedName("showTask")
     private TaskItem showTask;
+    @SerializedName("showMsgTask")
+    private TaskItem showMsgTask;
     @SerializedName("mineTask")
     private TaskItem mineTask;
 
@@ -58,6 +62,8 @@ public class FrontConfigBean extends BaseCustomViewModel {
     public Boolean getTask() {
         return task;
     }
+
+    public Boolean getShowTimeMsg() { return showTimeMsg; }
 
     public Boolean getShowTime() { return showTime; }
 
@@ -91,6 +97,10 @@ public class FrontConfigBean extends BaseCustomViewModel {
 
     public TaskItem getShowTask() {
         return showTask;
+    }
+
+    public TaskItem getShowMsgTask() {
+        return showMsgTask;
     }
 
     public TaskItem getMineTask() {

@@ -13,6 +13,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.donews.base.utils.ToastUtil
 import com.donews.common.decoration.GridItemDecoration
 import com.donews.common.router.RouterActivityPath
+import com.donews.middle.views.TaskView
 import com.donews.unboxing.R
 import com.donews.unboxing.bean.UnboxingBean
 import com.donews.unboxing.databinding.UnboxingItemUnboxingBinding
@@ -47,18 +48,21 @@ class UnboxingRVAdapter(layoutResId: Int) : BaseQuickAdapter<UnboxingBean, BaseV
             val dataBinding: UnboxingItemUnboxingBinding = helper.getBinding()!!
             dataBinding.unboxingBean = bean
 
+            if (helper.layoutPosition == 0) {
+                dataBinding.yywTaskView.visibility = View.VISIBLE;
+                dataBinding.yywTaskView.refreshYyw(TaskView.Place_Show_Msg)
+            }
 
             val picAdapter = UnboxingPicAdapter(R.layout.unboxing_item_pic)
             picAdapter.setOnItemClickListener { adapter, _, position ->
                 RouterActivityPath.Pictures.toBigImageActivity(adapter.data as ArrayList<String>?, position)
             }
 
-
             dataBinding.rvPics.apply {
                 setHasFixedSize(true)
                 isNestedScrollingEnabled = false
                 setItemViewCacheSize(10)
-                isFocusableInTouchMode=false
+                isFocusableInTouchMode = false
                 layoutManager = GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
 
                 val num = (0 until itemDecorationCount).reversed()
@@ -81,18 +85,18 @@ class UnboxingRVAdapter(layoutResId: Int) : BaseQuickAdapter<UnboxingBean, BaseV
                 val builder = SpannableStringBuilder(codeString)
                 if (resultCodeString.isBlank()) {
                     builder.setSpan(
-                        ForegroundColorSpan(Color.parseColor("#2C2C2C")),
-                        codeString.length - 1,
-                        codeString.length,
-                        Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+                            ForegroundColorSpan(Color.parseColor("#2C2C2C")),
+                            codeString.length - 1,
+                            codeString.length,
+                            Spannable.SPAN_INCLUSIVE_EXCLUSIVE
                     )
                 } else {
                     val length = codeString.length.coerceAtMost(resultCodeString.length)
                     for (index in 0 until length) {
                         if (codeString[index] != resultCodeString[index]) {
                             builder.setSpan(
-                                ForegroundColorSpan(Color.parseColor("#2C2C2C")),
-                                index, index + 1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+                                    ForegroundColorSpan(Color.parseColor("#2C2C2C")),
+                                    index, index + 1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE
                             )
                         }
                     }
@@ -103,8 +107,8 @@ class UnboxingRVAdapter(layoutResId: Int) : BaseQuickAdapter<UnboxingBean, BaseV
             val clickListener = View.OnClickListener {
                 if (!AppInfo.checkIsWXLogin()) {
                     ARouter.getInstance()
-                        .build(RouterActivityPath.User.PAGER_LOGIN)
-                        .navigation()
+                            .build(RouterActivityPath.User.PAGER_LOGIN)
+                            .navigation()
                     return@OnClickListener
                 }
                 val key = bean.id.toString()
