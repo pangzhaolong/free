@@ -117,7 +117,7 @@ public class FrontFloatingBtn extends LinearLayout {
         }
         this.setOnClickListener(v -> {
             GotoUtil.doAction(mContext, floatingItem.getAction()
-                    , floatingItem.getTitle(), "front");
+                    , floatingItem.getTitle());
             AnalysisUtils.onEventEx(mContext, Dot.FRONT_YYW_CLICK);
             mYYWIndex++;
             refreshYywItem();
@@ -127,16 +127,15 @@ public class FrontFloatingBtn extends LinearLayout {
     public void refreshYywItem() {
         setModel(YYW_MODEL);
         try {
-            if (mYYWIndex < 0 || mYYWIndex >= FrontConfigManager.Ins().getConfigBean().getFloatingItems().size()) {
-                if (FrontConfigManager.Ins().getConfigBean().getFloatingItems().size() > 0) {
+            if (mYYWIndex < 0 || mYYWIndex >= FrontConfigManager.Ins().getConfigBean().getFloatingItems().getItems().size()) {
+                if (FrontConfigManager.Ins().getConfigBean().getFloatingItems().getItems().size() > 0) {
                     mYYWIndex = 0;
                 } else {
                     return;
                 }
             }
 
-//            ToastUtil.showShort(mContext, "显示第" + mYYWIndex + "个运营位信息");
-            setYywInfo(FrontConfigManager.Ins().getConfigBean().getFloatingItems().get(mYYWIndex));
+            setYywInfo(FrontConfigManager.Ins().getConfigBean().getFloatingItems().getItems().get(mYYWIndex));
         } catch (Exception e) {
             e.printStackTrace();
         }

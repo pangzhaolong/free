@@ -30,6 +30,7 @@ public class TaskView extends LinearLayout {
     private final Context mContext;
 
     private final int ARRAY_COUNT = 4;
+    private int mSwitchInterval = 10;
 
     public final static int Place_Front = 0;
     public final static int Place_Show = 1;
@@ -66,27 +67,36 @@ public class TaskView extends LinearLayout {
         }
 
         mTaskHandler = new TaskHandler(Looper.getMainLooper(), this);
+
+        this.setVisibility(GONE);
     }
 
     public void refreshYyw(int model) {
         mCurrentModel = model;
+
+        mDotFrom = "place_" + mCurrentModel;
+
         mYywItemList.clear();
         if (mCurrentModel == Place_Front) {
             mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getFrontTask().getItems());
             mTaskGroup = FrontConfigManager.Ins().getConfigBean().getFrontTask().getTaskGroup();
             mEnableYyw = FrontConfigManager.Ins().getConfigBean().getTask();
+            mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getFrontTask().getSwitchInterval();
         } else if (mCurrentModel == Place_Mine) {
             mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getMineTask().getItems());
             mTaskGroup = FrontConfigManager.Ins().getConfigBean().getMineTask().getTaskGroup();
             mEnableYyw = FrontConfigManager.Ins().getConfigBean().getMine();
+            mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getMineTask().getSwitchInterval();
         } else if (mCurrentModel == Place_Show) {
             mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getShowTask().getItems());
             mTaskGroup = FrontConfigManager.Ins().getConfigBean().getShowTask().getTaskGroup();
             mEnableYyw = FrontConfigManager.Ins().getConfigBean().getShowTime();
+            mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getShowTask().getSwitchInterval();
         } else if (mCurrentModel == Place_Show_Msg) {
             mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getShowMsgTask().getItems());
             mTaskGroup = FrontConfigManager.Ins().getConfigBean().getShowMsgTask().getTaskGroup();
             mEnableYyw = FrontConfigManager.Ins().getConfigBean().getShowTimeMsg();
+            mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getShowMsgTask().getSwitchInterval();
         }
 
         if (!mEnableYyw) {
@@ -94,7 +104,7 @@ public class TaskView extends LinearLayout {
             return;
         }
 
-        mDotFrom = "place_" + mCurrentModel;
+        this.setVisibility(VISIBLE);
 
         initViews();
 
@@ -143,13 +153,11 @@ public class TaskView extends LinearLayout {
 
     private void refreshYywItem() {
         try {
-            this.setVisibility(VISIBLE);
-
             setYywItem();
 
             if (mTaskHandler != null) {
                 mTaskHandler.removeCallbacksAndMessages(null);
-                mTaskHandler.sendEmptyMessageDelayed(MESSAGE_ID, 5 * 1000);
+                mTaskHandler.sendEmptyMessageDelayed(MESSAGE_ID, mSwitchInterval * 1000L);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -185,7 +193,7 @@ public class TaskView extends LinearLayout {
         if (nSize >= 1) {
             mImageViews[0].setOnClickListener(v -> {
                 GotoUtil.doAction(mContext, mYywItemList.get(0).getSubItems().get(mYywIdxs[0]).getAction()
-                        , mYywItemList.get(0).getSubItems().get(mYywIdxs[0]).getTitle(), mDotFrom);
+                        , mYywItemList.get(0).getSubItems().get(mYywIdxs[0]).getTitle());
                 AnalysisUtils.onEventEx(mContext, Dot.BANNER_CLICK);
                 mYywIdxs[0]++;
                 refreshYywItem();
@@ -194,7 +202,7 @@ public class TaskView extends LinearLayout {
         if (nSize >= 2) {
             mImageViews[1].setOnClickListener(v -> {
                 GotoUtil.doAction(mContext, mYywItemList.get(1).getSubItems().get(mYywIdxs[1]).getAction()
-                        , mYywItemList.get(1).getSubItems().get(mYywIdxs[1]).getTitle(), mDotFrom);
+                        , mYywItemList.get(1).getSubItems().get(mYywIdxs[1]).getTitle());
                 AnalysisUtils.onEventEx(mContext, Dot.BANNER_CLICK);
                 mYywIdxs[1]++;
                 refreshYywItem();
@@ -203,7 +211,7 @@ public class TaskView extends LinearLayout {
         if (nSize >= 3) {
             mImageViews[2].setOnClickListener(v -> {
                 GotoUtil.doAction(mContext, mYywItemList.get(2).getSubItems().get(mYywIdxs[2]).getAction()
-                        , mYywItemList.get(2).getSubItems().get(mYywIdxs[2]).getTitle(), mDotFrom);
+                        , mYywItemList.get(2).getSubItems().get(mYywIdxs[2]).getTitle());
                 AnalysisUtils.onEventEx(mContext, Dot.BANNER_CLICK);
                 mYywIdxs[2]++;
                 refreshYywItem();
@@ -212,7 +220,7 @@ public class TaskView extends LinearLayout {
         if (nSize >= 4) {
             mImageViews[3].setOnClickListener(v -> {
                 GotoUtil.doAction(mContext, mYywItemList.get(3).getSubItems().get(mYywIdxs[3]).getAction()
-                        , mYywItemList.get(3).getSubItems().get(mYywIdxs[3]).getTitle(), mDotFrom);
+                        , mYywItemList.get(3).getSubItems().get(mYywIdxs[3]).getTitle());
                 AnalysisUtils.onEventEx(mContext, Dot.BANNER_CLICK);
                 mYywIdxs[3]++;
                 refreshYywItem();
@@ -259,6 +267,9 @@ public class TaskView extends LinearLayout {
             if (msg.what == MESSAGE_ID) {
                 TaskView view = mTaskView.get();
                 if (view != null) {
+                    for (int i = 0; i < view.ARRAY_COUNT; i++) {
+                        view.mYywIdxs[i]++;
+                    }
                     view.refreshYywItem();
                 }
             }

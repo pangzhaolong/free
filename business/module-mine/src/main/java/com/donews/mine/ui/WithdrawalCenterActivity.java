@@ -215,7 +215,7 @@ public class WithdrawalCenterActivity extends
 
     //更新运营位数据
     private void updateYYWData() {
-        if (FrontConfigManager.Ins().getConfigBean().getWithDrawalItems().size() <= 0 || !FrontConfigManager.Ins().getConfigBean().getWithDrawal()) {
+        if (FrontConfigManager.Ins().getConfigBean().getWithDrawalItems().getItems().size() <= 0 || !FrontConfigManager.Ins().getConfigBean().getWithDrawal()) {
             return;
         }
 

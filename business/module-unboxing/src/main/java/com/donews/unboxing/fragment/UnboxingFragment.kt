@@ -1,5 +1,6 @@
 package com.donews.unboxing.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.DiffUtil
@@ -30,7 +31,7 @@ import com.orhanobut.logger.Logger
  */
 @Route(path = RouterFragmentPath.Unboxing.PAGER_UNBOXING_FRAGMENT)
 class UnboxingFragment :
-    MvvmLazyLiveDataFragment<UnboxingFragUnboxingBinding, UnboxingViewModel>() {
+        MvvmLazyLiveDataFragment<UnboxingFragUnboxingBinding, UnboxingViewModel>() {
 
     private val unboxingRVAdapter = UnboxingRVAdapter(R.layout.unboxing_item_unboxing)
 
@@ -53,9 +54,9 @@ class UnboxingFragment :
             AnalysisUtils.onEventEx(context, Dot.Btn_BeBlessed)
             val data: UnboxingBean = adapter.data[position] as UnboxingBean
             ARouter.getInstance()
-                .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
-                .withString("goods_id", data.goodsId)
-                .navigation();
+                    .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
+                    .withString("goods_id", data.goodsId)
+                    .navigation();
         }
 
         unboxingRVAdapter.setDiffCallback(object : DiffUtil.ItemCallback<UnboxingBean>() {
@@ -94,28 +95,31 @@ class UnboxingFragment :
         lp.height = lp.height + BarUtils.getStatusBarHeight()
         mDataBinding.tvTitle.layoutParams = lp
         mDataBinding.tvTitle.setPadding(
-            mDataBinding.tvTitle.paddingLeft,
-            mDataBinding.tvTitle.paddingTop + BarUtils.getStatusBarHeight(),
-            mDataBinding.tvTitle.paddingRight,
-            mDataBinding.tvTitle.paddingBottom
+                mDataBinding.tvTitle.paddingLeft,
+                mDataBinding.tvTitle.paddingTop + BarUtils.getStatusBarHeight(),
+                mDataBinding.tvTitle.paddingRight,
+                mDataBinding.tvTitle.paddingBottom
         )
 
         lp = mDataBinding.tvShowProduct.layoutParams
         lp.height = lp.height + BarUtils.getStatusBarHeight()
         mDataBinding.tvShowProduct.layoutParams = lp
         mDataBinding.tvShowProduct.setPadding(
-            mDataBinding.tvShowProduct.paddingLeft,
-            mDataBinding.tvShowProduct.paddingTop + BarUtils.getStatusBarHeight(),
-            mDataBinding.tvShowProduct.paddingRight,
-            mDataBinding.tvShowProduct.paddingBottom
+                mDataBinding.tvShowProduct.paddingLeft,
+                mDataBinding.tvShowProduct.paddingTop + BarUtils.getStatusBarHeight(),
+                mDataBinding.tvShowProduct.paddingRight,
+                mDataBinding.tvShowProduct.paddingBottom
         )
     }
 
 
     inner class OnEventListener {
+        @SuppressLint("NotifyDataSetChanged")
         fun refresh() {
             Logger.d("刷新")
             mViewModel.onRefresh.invoke()
+            mDataBinding.unboxingTaskView.refreshYyw(TaskView.Place_Show)
+            mDataBinding.rvUnboxing.adapter?.notifyDataSetChanged()
         }
     }
 

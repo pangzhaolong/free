@@ -27,13 +27,13 @@ public class FrontConfigBean extends BaseCustomViewModel {
     @SerializedName("withDrawal")
     private Boolean withDrawal = false;
     @SerializedName("bannerItems")
-    private List<YywItem> bannerItems = new ArrayList<>();
+    private SingleItem bannerItems;
     @SerializedName("taskItems")
     private List<YywItem> taskItems = new ArrayList<>();
     @SerializedName("floatingItems")
-    private List<YywItem> floatingItems = new ArrayList<>();
+    private SingleItem floatingItems;
     @SerializedName("withDrawalItems")
-    private List<YywItem> withDrawalItems = new ArrayList<>();
+    private SingleItem withDrawalItems;
     @SerializedName("frontTask")
     private TaskItem frontTask;
     @SerializedName("showTask")
@@ -47,7 +47,7 @@ public class FrontConfigBean extends BaseCustomViewModel {
         return banner;
     }
 
-    public List<YywItem> getBannerItems() {
+    public SingleItem getBannerItems() {
         return bannerItems;
     }
 
@@ -79,11 +79,11 @@ public class FrontConfigBean extends BaseCustomViewModel {
         return taskItems;
     }
 
-    public List<YywItem> getFloatingItems() {
+    public SingleItem getFloatingItems() {
         return floatingItems;
     }
 
-    public List<YywItem> getWithDrawalItems() {
+    public SingleItem getWithDrawalItems() {
         return withDrawalItems;
     }
 
@@ -140,11 +140,32 @@ public class FrontConfigBean extends BaseCustomViewModel {
         }
     }
 
+    public static class SingleItem extends BaseCustomViewModel {
+        @SerializedName("switchInterval")
+        private int switchInterval = 10;
+        @SerializedName("items")
+        List<YywItem> items = new ArrayList<>();
+
+        public int getSwitchInterval() {
+            return switchInterval;
+        }
+
+        public List<YywItem> getItems() {
+            return items;
+        }
+    }
+
     public static class TaskItem extends BaseCustomViewModel {
+        @SerializedName("switchInterval")
+        private int switchInterval = 10;
         @SerializedName("taskGroup")
         private int taskGroup;
         @SerializedName("items")
         List<SubItems> items = new ArrayList<>();
+
+        public int getSwitchInterval() {
+            return switchInterval;
+        }
 
         public int getTaskGroup() {
             return taskGroup;
@@ -163,6 +184,4 @@ public class FrontConfigBean extends BaseCustomViewModel {
             return subItems;
         }
     }
-
-
 }

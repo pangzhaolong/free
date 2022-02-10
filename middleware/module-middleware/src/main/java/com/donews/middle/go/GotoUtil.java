@@ -128,7 +128,7 @@ public class GotoUtil {
         }
     }
 
-    public static void doAction(Context context, String action, String title, String from) {
+    public static void doAction(Context context, String action, String title) {
         if (action == null || action.equalsIgnoreCase("")) {
             return;
         }

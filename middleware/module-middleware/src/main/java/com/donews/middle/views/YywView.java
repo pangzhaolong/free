@@ -15,7 +15,6 @@ import com.donews.middle.front.FrontConfigManager;
 import com.donews.middle.go.GotoUtil;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
-import com.donews.utilslibrary.utils.LogUtil;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -27,6 +26,8 @@ public class YywView extends androidx.appcompat.widget.AppCompatImageView {
     private static final int MESSAGE_ID = 10001;
     private final Context mContext;
 
+    private int mSwitchInterval = 10;
+    private boolean mEnableYyw = false;
     public final static int Model_Banner = 0;
     public final static int Model_WithDrawl = 1;
     private int mCurrentModel = Model_Banner;
@@ -48,8 +49,9 @@ public class YywView extends androidx.appcompat.widget.AppCompatImageView {
     private void setYywItem(FrontConfigBean.YywItem bannerItem) {
         Glide.with(this).load(bannerItem.getImg()).into(this);
         this.setOnClickListener(v -> {
-            GotoUtil.doAction(mContext, bannerItem.getAction(), bannerItem.getTitle(), "front");
+            GotoUtil.doAction(mContext, bannerItem.getAction(), bannerItem.getTitle());
             AnalysisUtils.onEventEx(mContext, Dot.BANNER_CLICK);
+            mYYWIndex++;
             refreshYywItem();
         });
     }
@@ -58,14 +60,25 @@ public class YywView extends androidx.appcompat.widget.AppCompatImageView {
         mCurrentModel = model;
         mYywItemList.clear();
         if (mCurrentModel == Model_Banner) {
-            mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getBannerItems());
+            mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getBannerItems().getItems());
+            mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getBannerItems().getSwitchInterval();
+            mEnableYyw = FrontConfigManager.Ins().getConfigBean().getBanner();
         } else if (mCurrentModel == Model_WithDrawl) {
-            mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getWithDrawalItems());
+            mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getWithDrawalItems().getItems());
+            mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getWithDrawalItems().getSwitchInterval();
+            mEnableYyw = FrontConfigManager.Ins().getConfigBean().getWithDrawal();
         }
+
+        if (!mEnableYyw) {
+            this.setVisibility(GONE);
+            return;
+        }
+
+        this.setVisibility(VISIBLE);
 
         if (mYywHandler != null) {
             mYywHandler.removeCallbacksAndMessages(null);
-            mYywHandler.sendEmptyMessageDelayed(MESSAGE_ID, 5*1000);
+            mYywHandler.sendEmptyMessageDelayed(MESSAGE_ID, mSwitchInterval * 1000L);
         }
 
         refreshYywItem();
@@ -73,7 +86,6 @@ public class YywView extends androidx.appcompat.widget.AppCompatImageView {
 
     private void refreshYywItem() {
         try {
-            mYYWIndex++;
             int nSize = mYywItemList.size();
             if (mYYWIndex < 0 || mYYWIndex >= nSize) {
                 if (nSize > 0) {
@@ -83,13 +95,12 @@ public class YywView extends androidx.appcompat.widget.AppCompatImageView {
                     return;
                 }
             }
-            this.setVisibility(VISIBLE);
 
             setYywItem(mYywItemList.get(mYYWIndex));
 
             if (mYywHandler != null) {
                 mYywHandler.removeCallbacksAndMessages(null);
-                mYywHandler.sendEmptyMessageDelayed(MESSAGE_ID, 5*1000);
+                mYywHandler.sendEmptyMessageDelayed(MESSAGE_ID, mSwitchInterval * 1000L);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -98,6 +109,7 @@ public class YywView extends androidx.appcompat.widget.AppCompatImageView {
 
     private static class YywHandler extends Handler {
         private final WeakReference<YywView> mYywView;
+
         public YywHandler(Looper looper, YywView yywView) {
             super(looper);
             mYywView = new WeakReference<>(yywView);
@@ -109,6 +121,7 @@ public class YywView extends androidx.appcompat.widget.AppCompatImageView {
             if (msg.what == MESSAGE_ID) {
                 YywView yywView = mYywView.get();
                 if (yywView != null) {
+                    yywView.mYYWIndex++;
                     yywView.refreshYywItem();
                 }
             }

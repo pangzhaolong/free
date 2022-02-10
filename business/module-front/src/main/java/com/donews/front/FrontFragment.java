@@ -23,7 +23,6 @@ import androidx.annotation.Nullable;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.BarUtils;
-import com.bumptech.glide.Glide;
 import com.dn.events.events.DoubleRpEvent;
 import com.dn.events.events.FrontScrollEvent;
 import com.dn.events.events.LoginLodingStartStatus;
@@ -35,16 +34,13 @@ import com.donews.common.router.RouterFragmentPath;
 import com.donews.front.adapter.FragmentAdapter;
 import com.donews.front.databinding.FrontFragmentBinding;
 import com.donews.front.dialog.LotteryMore4RpDialog;
-import com.donews.front.listener.FrontBannerClickListener;
 import com.donews.front.viewModel.FrontViewModel;
 import com.donews.middle.bean.WalletBean;
-import com.donews.middle.bean.front.FrontConfigBean;
 import com.donews.middle.bean.front.LotteryCategoryBean;
 import com.donews.middle.bean.home.ServerTimeBean;
 import com.donews.middle.cache.GoodsCache;
 import com.donews.middle.dialog.ActivityRuleDialog;
 import com.donews.middle.front.FrontConfigManager;
-import com.donews.middle.go.GotoUtil;
 import com.donews.middle.views.TabItem;
 import com.donews.middle.views.TaskView;
 import com.donews.middle.views.YywView;
@@ -67,13 +63,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 @Route(path = RouterFragmentPath.Front.PAGER_FRONT)
 public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding, FrontViewModel>
-        implements View.OnClickListener, FrontBannerClickListener {
+        implements View.OnClickListener {
 
     private FragmentAdapter mFragmentAdapter;
     private LotteryCategoryBean mLotteryCategoryBean;
@@ -224,7 +219,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         }
 
         mDataBinding.frontRpRl.setVisibility(FrontConfigManager.Ins().getConfigBean().getRedPackage() ? View.VISIBLE : View.GONE);
-//        mDataBinding.frontGiftGroupBvp.setVisibility(FrontConfigManager.Ins().getConfigBean().getBanner() ? View.VISIBLE : View.GONE);
         mDataBinding.frontTaskGroupLlNew.setVisibility(FrontConfigManager.Ins().getConfigBean().getTask() ? View.VISIBLE : View.GONE);
         mDataBinding.frontLotteryWinnerCl.setVisibility(FrontConfigManager.Ins().getConfigBean().getLotteryWinner() ? View.VISIBLE : View.GONE);
         mDataBinding.frontBannerYywYbv.setVisibility(FrontConfigManager.Ins().getConfigBean().getBanner() ? View.VISIBLE : View.GONE);
@@ -239,64 +233,19 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
         mDataBinding.frontLotteryRuleRl.setVisibility(View.GONE);
         if (FrontConfigManager.Ins().getConfigBean().getBanner()) {
+            mDataBinding.frontBannerYywYbv.setVisibility(View.VISIBLE);
             mDataBinding.frontBannerYywYbv.refreshYyw(YywView.Model_Banner);
+        } else {
+            mDataBinding.frontBannerYywYbv.setVisibility(View.GONE);
         }
 
-        mDataBinding.frontTaskGroupLlNew.refreshYyw(TaskView.Place_Front);
-        /*List<FrontConfigBean.YywItem> taskItems = FrontConfigManager.Ins().getConfigBean().getTaskItems();
-        if (taskItems != null && taskItems.size() == 4) {
-            FrontConfigBean.YywItem ti = FrontConfigManager.Ins().getConfigBean().getTaskItems().get(0);
-            initTaskView(this.getContext(), ti, mDataBinding.frontTaskFl1, mDataBinding.frontTaskMixIv1, mDataBinding.frontTaskIv1, mDataBinding.frontTaskTv1, 1);
-            ti = FrontConfigManager.Ins().getConfigBean().getTaskItems().get(1);
-            initTaskView(this.getContext(), ti, mDataBinding.frontTaskFl2, mDataBinding.frontTaskMixIv2, mDataBinding.frontTaskIv2, mDataBinding.frontTaskTv2, 2);
-            ti = FrontConfigManager.Ins().getConfigBean().getTaskItems().get(2);
-            initTaskView(this.getContext(), ti, mDataBinding.frontTaskFl3, mDataBinding.frontTaskMixIv3, mDataBinding.frontTaskIv3, mDataBinding.frontTaskTv3, 3);
-            ti = FrontConfigManager.Ins().getConfigBean().getTaskItems().get(3);
-            initTaskView(this.getContext(), ti, mDataBinding.frontTaskFl4, mDataBinding.frontTaskMixIv4, mDataBinding.frontTaskIv4, mDataBinding.frontTaskTv4, 4);
-            mDataBinding.frontTaskGroupLl.postInvalidate();
+        if (FrontConfigManager.Ins().getConfigBean().getTask()) {
+            mDataBinding.frontTaskGroupLlNew.setVisibility(View.VISIBLE);
+            mDataBinding.frontTaskGroupLlNew.refreshYyw(TaskView.Place_Front);
         } else {
-            mDataBinding.frontTaskGroupLl.setVisibility(View.GONE);
-        }*/
-
-        /*List<FrontConfigBean.BannerItem> bannerItems = FrontConfigManager.Ins().getConfigBean().getBannerItems();
-        if (bannerItems != null && bannerItems.size() > 0) {
-            mDataBinding.frontGiftGroupBvp.setCanLoop(true)
-                    .setIndicatorStyle(IndicatorStyle.ROUND_RECT)
-                    .setAdapter(new BannerViewAdapter(getContext(), this))
-                    *//*.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-                        @Override
-                        public void onPageSelected(int position) {
-                            super.onPageSelected(position);
-
-                        }
-                    })*//*
-                    .create(FrontConfigManager.Ins().getConfigBean().getBannerItems());
-        } else {
-            mDataBinding.frontGiftGroupBvp.setVisibility(View.GONE);
-        }*/
+            mDataBinding.frontTaskGroupLlNew.setVisibility(View.GONE);
+        }
     }
-/*
-    private void initTaskView(Context context, FrontConfigBean.YywItem ti, FrameLayout fl, ImageView mixIv, ImageView iv, TextView tv, int idx) {
-        if (ti == null) {
-            return;
-        }
-        fl.setOnClickListener(v -> {
-            AnalysisUtils.onEventEx(mContext, Dot.TASK_CLICK, "" + idx);
-            GotoUtil.doAction(context, ti.getAction(), ti.getTitle(), "front");
-        });
-        if (ti.getModel() == 1) {
-            mixIv.setVisibility(View.GONE);
-            iv.setVisibility(View.VISIBLE);
-            tv.setVisibility(View.VISIBLE);
-            Glide.with(this).load(ti.getImg()).into(iv);
-            tv.setText(ti.getTitle());
-        } else {
-            iv.setVisibility(View.GONE);
-            tv.setVisibility(View.GONE);
-            mixIv.setVisibility(View.VISIBLE);
-            Glide.with(this).load(ti.getImg()).into(mixIv);
-        }
-    }*/
 
     private void sendDotData() {
         if (mLotteryCategoryBean == null || mLotteryCategoryBean.getList() == null || mLotteryCategoryBean.getList().size() <= 0) {
@@ -313,22 +262,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         }
 
         AnalysisUtils.onEventEx(mContext, Dot.But_Category_Click, bean.getName());
-    }
-
-    @Override
-    public void onClick(int position) {
-        if (position < 0 || position >= FrontConfigManager.Ins().getConfigBean().getBannerItems().size()) {
-            return;
-        }
-
-        FrontConfigBean.YywItem bi = FrontConfigManager.Ins().getConfigBean().getBannerItems().get(position);
-        if (bi == null) {
-            return;
-        }
-
-        AnalysisUtils.onEventEx(mContext, Dot.BANNER_CLICK, position + "");
-
-        GotoUtil.doAction(getContext(), bi.getAction(), bi.getTitle(), "front_banner");
     }
 
     private static class FrontHandler extends Handler {
