@@ -24,11 +24,13 @@ import com.donews.base.utils.ToastUtil;
 import com.donews.common.BuildConfig;
 import com.donews.common.NotifyLuncherConfigManager;
 import com.donews.notify.launcher.utils.NotifyLog;
+import com.donews.notify.launcher.utils.NotifyTimeRangeCheckUtil;
 import com.donews.utilslibrary.utils.AppStatusUtils;
 import com.donews.utilslibrary.utils.KeySharePreferences;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 
 public class NotifyScreenDelegate {
@@ -261,6 +263,11 @@ public class NotifyScreenDelegate {
      * 时间对的上
      */
     private boolean canShowNotify() {
+        List<String> time3 = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyTimeInterval;
+        if(time3 != null && !time3.isEmpty()){
+            //如果存在数据新版的时间控制。那么启用新版时间控制。不在继续使用老版本的
+            return NotifyTimeRangeCheckUtil.canTimeInterval(time3);
+        }
         //时间，比如12代表12点
         int time1 = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyTimeStart1;
         int time2 = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyTimeStart2;

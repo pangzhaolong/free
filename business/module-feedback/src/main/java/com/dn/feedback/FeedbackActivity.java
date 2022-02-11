@@ -6,6 +6,7 @@ import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.MotionEvent;
@@ -25,6 +26,7 @@ import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ResourceUtils;
 import com.blankj.utilcode.util.UriUtils;
+import com.dn.drouter.ARouteHelper;
 import com.dn.feedback.databinding.ActivityFeedbackBinding;
 import com.dn.feedback.reqs.FeedbackReq;
 import com.dn.feedback.request.PhotoAlbumResultContract;
@@ -35,12 +37,15 @@ import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.common.adapter.ScreenAutoAdapter;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.contract.BaseCustomViewModel;
+import com.donews.common.router.RouterActivityPath;
 import com.donews.network.EasyHttp;
 import com.donews.network.body.ProgressResponseCallBack;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.CallBack;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.DeviceUtils;
 import com.donews.utilslibrary.utils.HttpConfigUtilsKt;
@@ -126,7 +131,12 @@ public class FeedbackActivity extends MvvmBaseLiveDataActivity<ActivityFeedbackB
         }
         //联系客服
         mDataBinding.feedCallKf.setOnClickListener(v -> {
-            ToastUtil.showShort(this, "联系客服");
+            AnalysisUtils.onEventEx(this, Dot.Page_ContactService);
+            Bundle bundle = new Bundle();
+            bundle.putString("url",
+                    "https://recharge-web.xg.tagtic.cn/jdd/index.html#/customer");
+            bundle.putString("title", "客服");
+            ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
         });
         //设置关闭
         mDataBinding.feedSubmit.setOnClickListener(v -> {

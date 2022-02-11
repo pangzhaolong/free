@@ -2,6 +2,9 @@ package com.donews.common.bean;
 
 import androidx.annotation.Keep;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author by SnowDragon
  * Date on 2021/4/6
@@ -38,6 +41,11 @@ public class AppGlobalConfigBean {
      * 起始实际，即16-20点
      */
     public int notifyTimeStart2 = 21;
+    /**
+     * 通知的时间段区间集合。只有在此时间段区间才会通知
+     * 数据项说明：x-y,x:开始时间，y:结束时间，xy的取值范围:0-24
+     */
+    public List<String> notifyTimeInterval = new ArrayList<>();
 
 
     public String notifyActionAlias = "com.alibaba.sdk.android.login.ui.WebViewActivity";
