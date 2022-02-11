@@ -48,6 +48,7 @@ import com.donews.utilslibrary.base.SmSdkConfig;
 import com.donews.utilslibrary.base.UtilsConfig;
 import com.donews.utilslibrary.utils.DeviceUtils;
 import com.donews.utilslibrary.utils.KeySharePreferences;
+import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.NetworkUtils;
 import com.donews.utilslibrary.utils.SPUtils;
 import com.orhanobut.logger.Logger;
@@ -140,19 +141,6 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         Log.e("SplashActivity", "onResume");
         showPersonGuideDialog();
         Uri referrer = this.getReferrer();
-
-        /*Log.e("Notify", "----------------->");
-        if (referrer != null) {
-            try {
-
-                Log.e("Notify", referrer.toString());
-                Log.e("Notify", referrer.getPath());
-                Log.e("Notify", referrer.getLastPathSegment());
-            } catch (Exception e) {
-
-            }
-        }
-        Log.e("Notify", "-----------------<");*/
     }
 
     @Subscribe //网络状态变化监听
@@ -200,7 +188,12 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         }
     }
 
+    private boolean mIsInitSdk = false;
     private void initSdk() {
+        if (mIsInitSdk) {
+            return;
+        }
+        mIsInitSdk = true;
         // 初始化广告sdk
         AdManager.INSTANCE.initSDK(this.getApplication(), DeviceUtils.getChannelName(), BuildConfig.DEBUG);
         SplashUtils.INSTANCE.savePersonExit(true);
@@ -222,15 +215,10 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         } else {
             Logger.d("personGuideDialog no isAdded");
             personGuideDialog = new PersonGuideDialog();
-            personGuideDialog.setSureListener(() -> {
-                initSdk();
-            }).setCancelListener(new AbstractFragmentDialog.CancelListener() {
-                @Override
-                public void onCancel() {
-                    loadDisagreePrivacyPolicyAd();
-                    moveTaskToBack(true);
-                    personGuideDialog.dismiss();
-                }
+            personGuideDialog.setSureListener(this::initSdk).setCancelListener(() -> {
+                loadDisagreePrivacyPolicyAd();
+                moveTaskToBack(true);
+                personGuideDialog.dismiss();
             }).show(getSupportFragmentManager(), "PersonGuideDialog");
         }
     }
@@ -404,21 +392,17 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
 
     private void goToMain() {
         stopProgressAnim();
-//        Log.e("xxxx", "xxx" + mIsBackgroundToFore);
         if (!mIsBackgroundToFore) {
-//            Log.e("xxxx", "xxx111111111111");
             if (AppStatusManager.getInstance().getAppStatus() != AppStatusConstant.STATUS_NORMAL) {
-//                Log.e("xxxx", "xxx222222222222222");
                 LotteryAdCount.INSTANCE.init();
                 GuideActivity.start(this);
             }
         } else {
-//            Log.e("xxxx", "xxx22222222222222");
             if (AppManager.getInstance().getActivity(MainActivity.class) == null) {
-//                Log.e("xxxx", "xxx33333333333333333333");
                 MainActivity.start(this);
             }
         }
+        mHadPermissions = false;
         finish();
     }
 
@@ -473,24 +457,22 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
 //        }
     }
 
+    private boolean mHadPermissions = false;
+
     private void hadPermissions() {
-        if ((SPUtils.getInformain(KeySharePreferences.IS_FIRST_IN_APP, 0) <= 0 && ABSwitch.Ins().isOpenSkipSplashAd4NewUser())
+        if (mHadPermissions) {
+            return;
+        }
+        mHadPermissions = true;
+        if ((SPUtils.getInformain(KeySharePreferences.IS_FIRST_IN_APP, 0) <= 0 && ABSwitch.Ins().isSkipSplashAd4NewUser())
                 || !NetworkUtils.isAvailableByPing()) {
+            LogUtil.e("hadPermissions()： gomain");
             goToMain();
         } else {
+            LogUtil.e("hadPermissions()： load ad");
             deviceLogin();
             loadClodStartAd();
         }
-        /*if (NetworkUtils.isAvailableByPing()) {
-            if (SPUtils.getInformain(KeySharePreferences.IS_FIRST_IN_APP, 0) <= 0 && ABSwitch.Ins().isOpenSkipSplashAd4NewUser()) {
-                goToMain();
-            } else {
-                deviceLogin();
-                loadClodStartAd();
-            }
-        } else {
-            goToMain();
-        }*/
     }
 
     private boolean hasAllPermissionsGranted(int[] grantResults) {

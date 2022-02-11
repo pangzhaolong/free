@@ -28,6 +28,7 @@ import com.donews.network.https.HttpsUtils;
 import com.donews.network.interceptor.BaseDynamicInterceptor;
 import com.donews.network.interceptor.CacheInterceptor;
 import com.donews.network.interceptor.CacheInterceptorOffline;
+import com.donews.network.interceptor.EncrypAndDecryptiontionInterceptor;
 import com.donews.network.interceptor.HeadersInterceptor;
 import com.donews.network.interceptor.LoginHeaderInterceptor;
 import com.donews.network.interceptor.NoCacheInterceptor;
@@ -420,15 +421,17 @@ public abstract class BaseRequest<R extends BaseRequest> {
             if (proxy != null) newClientBuilder.proxy(proxy);
             if (cookies.size() > 0) EasyHttp.getCookieJar().addCookies(cookies);
 
+            //添加加解密的拦截器(为了防止其他拦截器出现乱码。所以放在第一个)
+//            newClientBuilder.addInterceptor(new EncrypAndDecryptiontionInterceptor());
             //添加头  头添加放在最前面方便其他拦截器可能会用到
             newClientBuilder.addInterceptor(new HeadersInterceptor(headers));
             //添加头  头添加放在最前面方便其他拦截器可能会用到
             newClientBuilder.addInterceptor(new LoginHeaderInterceptor(headers));
 
-            if (BuildConfig.DEBUG) {
-                //添加代理调试
-                newClientBuilder.addInterceptor(new OkHttpProfilerInterceptor());
-            }
+//            if (BuildConfig.DEBUG) {
+//                //添加代理调试
+//                newClientBuilder.addInterceptor(new OkHttpProfilerInterceptor());
+//            }
 
             for (Interceptor interceptor : interceptors) {
                 if (interceptor instanceof BaseDynamicInterceptor) {

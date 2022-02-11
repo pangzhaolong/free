@@ -30,14 +30,14 @@ class LoggerBannerListenerProxy(
     }
 
     override fun onAdShow() {
-        countTrack.onAdShow()
+        listener?.onAdShow()
         AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "Banner onAdShow()"))
     }
 
     override fun onAdExposure() {
         AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "Banner onAdExposure()"))
+        countTrack.onAdShow()
         listener?.onAdExposure()
-        listener?.onAdShow()
     }
 
     override fun onAdClicked() {

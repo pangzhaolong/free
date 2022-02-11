@@ -16,6 +16,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.dn.events.events.EnterShowDialogEvent;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.front.BuildConfig;
 import com.donews.front.R;
@@ -31,6 +32,8 @@ import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
 import com.donews.utilslibrary.utils.HttpConfigUtilsKt;
 import com.donews.utilslibrary.utils.UrlUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class LotteryMore4RpDialog extends BaseDialog<FrontLotteryMore4RpDialogBinding> {
 
@@ -68,6 +71,7 @@ public class LotteryMore4RpDialog extends BaseDialog<FrontLotteryMore4RpDialogBi
     @SuppressLint("RestrictedApi")
     void initView() {
         mDataBinding.frontLotteryMore4RpCloseIv.setOnClickListener(v -> {
+            EventBus.getDefault().post(new EnterShowDialogEvent(2));
             Activity activity = getOwnerActivity();
             if (activity != null && !activity.isFinishing()) {
                 dismiss();

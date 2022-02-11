@@ -56,7 +56,7 @@ public class NotifyLuncherConfigManager {
     public static void update() {
         EasyHttp.get(BuildConfig.APP_NOTIFY_LUNCHER + JsonUtils.getCommonJson(false))
                 .cacheMode(CacheMode.NO_CACHE)
-                .addInterceptor(new AppGlobalInterceptor())
+//                .addInterceptor(new AppGlobalInterceptor())
                 .isShowToast(BuildConfig.DEBUG)
                 .execute(new SimpleCallBack<AppGlobalConfigBean>() {
                     @Override
@@ -66,12 +66,16 @@ public class NotifyLuncherConfigManager {
                             if (mHandler.hasMessages(0)) {
                                 mHandler.removeMessages(0);
                             }
-                            mHandler.sendEmptyMessageDelayed(0, getInstance().getAppGlobalConfigBean().refreshInterval * 1000);
+                            mHandler.sendEmptyMessageDelayed(0, getInstance().getAppGlobalConfigBean().refreshInterval * 1000L);
                         }
                     }
 
                     @Override
                     public void onSuccess(AppGlobalConfigBean bean) {
+                        if (bean != null) {
+                            SPUtils.setInformain(KeySharePreferences.APP_GLOBAL_CRASH_CONFIG, GsonUtils.toJson(bean));
+                        }
+
                         if (mHandler != null) {
                             if (mHandler.hasMessages(0)) {
                                 mHandler.removeMessages(0);
@@ -84,10 +88,8 @@ public class NotifyLuncherConfigManager {
                             NotifyLuncherConfigManager.getInstance().setAppGlobalConfigBean(bean);
                         }
                         if (mHandler != null) {
-                            mHandler.sendEmptyMessageDelayed(0, refreshInterval * 1000);
+                            mHandler.sendEmptyMessageDelayed(0, refreshInterval * 1000L);
                         }
-
-
                     }
                 });
     }

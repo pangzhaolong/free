@@ -338,35 +338,6 @@ public class MainActivity
     @Override
     protected void onResume() {
         super.onResume();
-        /*AnAdditionalDialog mDrawDialog = new AnAdditionalDialog("123", "123", 123,
-                123, 400);
-        mDrawDialog.setEventListener(() -> {
-            try {
-                if (mDrawDialog.isAdded() && !MainActivity.this.isFinishing()) {
-                    mDrawDialog.dismiss();
-                }
-            } catch (Exception e) {
-            }
-        });
-        mDrawDialog.show(getSupportFragmentManager(), "AnAddDialog");*/
-        /*
-        MoreAwardDialog moreAwardDialog = new MoreAwardDialog("123", "123", 123,
-                123);
-        moreAwardDialog.setEventListener(() -> {
-            try {
-                if (moreAwardDialog.isAdded() && !MainActivity.this.isFinishing()) {
-                    moreAwardDialog.dismiss();
-                }
-            } catch (Exception e) {
-            }
-        });
-        moreAwardDialog.show(getSupportFragmentManager(), "MoreAwardDialog");
-        ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
-                .withString("from", "wallTask")
-                .withFloat("score", 10.0f)
-                .withString("restId", "213123")
-                .navigation();*/
-
         if (SPUtils.getInformain(KeySharePreferences.FIRST_RP_CAN_OPEN, false)) {
             SPUtils.setInformain(KeySharePreferences.FIRST_RP_CAN_OPEN, false);
             String preId = SPUtils.getInformain(KeySharePreferences.FIRST_RP_OPEN_PRE_ID, "");
@@ -374,7 +345,6 @@ public class MainActivity
                 ToastUtil.showShort(MainActivity.this, "获取奖励失败");
                 return;
             }
-//        float preScore = SPUtils.getInformain(KeySharePreferences.FIRST_RP_OPEN_PRE_SCORE, 0f);
 
             mViewModel.postDoubleRp("", preId).observe(this, doubleRedPacketBean -> {
                 if (doubleRedPacketBean == null) {
@@ -383,11 +353,6 @@ public class MainActivity
                 }
 
                 EventBus.getDefault().post(new DoubleRpEvent(10, doubleRedPacketBean.getScore(), doubleRedPacketBean.getRestId(), "", 0f));
-
-                /*ARouter.getInstance().build(RouterActivityPath.Rp.PAGE_RP)
-                        .withFloat("score", doubleRedPacketBean.getScore())
-                        .withString("restId", doubleRedPacketBean.getRestId())
-                        .navigation();*/
                 AnalysisUtils.onEventEx(this, Dot.But_Rp_Double);
             });
         }
@@ -1041,6 +1006,13 @@ public class MainActivity
             checkRetentionTask();
 
             isFromNotify();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)    //今日热门商品推荐关闭
+    public void onEnterShowDialogEvent(EnterShowDialogEvent event) {
+        if (event.getEvent() == 1 || event.getEvent() == 2) {
+            AdManager.INSTANCE.loadInterstitialAd(this, new JddInterstitialListenerProxy());
         }
     }
 
