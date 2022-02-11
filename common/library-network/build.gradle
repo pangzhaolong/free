@@ -23,6 +23,8 @@ android {
 }
 
 dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
     //第三方依赖库
     api rootProject.ext.dependencies["okhttp"]
     api rootProject.ext.dependencies["okhttp-logging-interceptor"]
