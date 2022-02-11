@@ -93,9 +93,12 @@ public class FeedbackActivity extends MvvmBaseLiveDataActivity<ActivityFeedbackB
 
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            View v = getCurrentFocus();
-            if(!(v instanceof EditText)){
+            View v = getTouchTarget(getRootView(), (int) ev.getX(), (int) ev.getY());
+            if (v == null || isShouldHideKeyboard(v, ev)) {
                 KeyboardUtils.hideSoftInput(this);
+                if(getCurrentFocus() instanceof EditText){
+                    getCurrentFocus().clearFocus();
+                }
             }
         }
         return super.dispatchTouchEvent(ev);
@@ -123,7 +126,7 @@ public class FeedbackActivity extends MvvmBaseLiveDataActivity<ActivityFeedbackB
         }
         //联系客服
         mDataBinding.feedCallKf.setOnClickListener(v -> {
-            ToastUtil.showShort(this,"联系客服");
+            ToastUtil.showShort(this, "联系客服");
         });
         //设置关闭
         mDataBinding.feedSubmit.setOnClickListener(v -> {
@@ -132,6 +135,24 @@ public class FeedbackActivity extends MvvmBaseLiveDataActivity<ActivityFeedbackB
         //设置关闭
         mDataBinding.feedBack.setOnClickListener(v -> {
             finish();
+        });
+        mDataBinding.feedTel.setOnFocusChangeListener((v, hasFocus) -> {
+            if(!hasFocus){
+                if(!RegexUtils.isMobileSimple(mDataBinding.feedTel.getText().toString())){
+                    v.setBackgroundResource(R.drawable.feedback_def_err_bg);
+                }else{
+                    v.setBackgroundResource(R.drawable.feedback_def_bg);
+                }
+            }
+        });
+        mDataBinding.feedDesc.setOnFocusChangeListener((v, hasFocus) -> {
+            if(!hasFocus){
+                if(mDataBinding.feedDesc.getText().toString().trim().length() < 10){
+                    v.setBackgroundResource(R.drawable.feedback_def_err_bg);
+                }else{
+                    v.setBackgroundResource(R.drawable.feedback_def_bg);
+                }
+            }
         });
         //设置
         for (int i = 0; i < selectImgs.length; i++) {
@@ -219,7 +240,7 @@ public class FeedbackActivity extends MvvmBaseLiveDataActivity<ActivityFeedbackB
             String path = null;
             if (i < selectImgs.size()) {
                 path = getPath(selectImgs.get(i));
-            }else{
+            } else {
                 //此处表示超过了选择内容。控制提示不在展示
                 isToast = true;
             }
@@ -287,7 +308,7 @@ public class FeedbackActivity extends MvvmBaseLiveDataActivity<ActivityFeedbackB
             ToastUtil.showShort(this, "请输入正确的手机号");
             return;
         }
-        if(!RegexUtils.isMobileSimple(mDataBinding.feedTel.getText().toString())){
+        if (!RegexUtils.isMobileSimple(mDataBinding.feedTel.getText().toString())) {
             ToastUtil.showShort(this, "手机号码格式不正确");
             return;
         }
@@ -360,8 +381,6 @@ public class FeedbackActivity extends MvvmBaseLiveDataActivity<ActivityFeedbackB
         }
     }
 
-    int con = 0;
-
     //提交反馈数据
     private void submitFeedbackData(FeedbackReq req, String[] httpImgUrls) {
         if (httpImgUrls != null && httpImgUrls.length > 0) {
@@ -373,11 +392,6 @@ public class FeedbackActivity extends MvvmBaseLiveDataActivity<ActivityFeedbackB
                 resuList.add(httpImgUrl);
             }
             req.attachments = resuList;
-        }
-        con++;
-        if (con < 10) {
-            hideLoading();
-            return;
         }
         showLoading("提交中");
         EasyHttp.post(BuildConfig.LOGIN_URL + "xtasks/v2/feedback/store")
@@ -402,5 +416,63 @@ public class FeedbackActivity extends MvvmBaseLiveDataActivity<ActivityFeedbackB
                         finish();
                     }
                 });
+    }
+
+    /**
+     * 根据EditText所在坐标和用户点击的坐标相对比，来判断是否隐藏键盘，因为当用户点击EditText时则不能隐藏
+     *
+     * @param v
+     * @param event
+     * @return T:需要隐藏，F:不需要隐藏
+     */
+    private boolean isShouldHideKeyboard(View v, MotionEvent event) {
+        if (v != null && (v instanceof EditText)) {
+            int[] l = {0, 0};
+            v.getLocationInWindow(l);
+            int left = l[0],
+                    top = l[1],
+                    bottom = top + v.getHeight(),
+                    right = left + v.getWidth();
+            if (event.getX() > left && event.getX() < right
+                    && event.getY() > top && event.getY() < bottom) {
+                // 点击EditText的事件，忽略它。
+                return false;
+            } else {
+                return true;
+            }
+        }
+        // 如果焦点不是EditText则忽略，这个发生在视图刚绘制完，第一个焦点不在EditText上，和用户用轨迹球选择其他的焦点
+        return false;
+    }
+
+    //根据坐标返回触摸到的View
+    private View getTouchTarget(View rootView, int x, int y) {
+        View targetView = null;
+        // 判断view是否可以聚焦
+        ArrayList<View> touchableViews = rootView.getTouchables();
+        for (View touchableView : touchableViews) {
+            if (isTouchPointInView(touchableView, x, y)) {
+                targetView = touchableView;
+                break;
+            }
+        }
+        return targetView;
+    }
+
+    //(x,y)是否在view的区域内
+    private boolean isTouchPointInView(View view, int x, int y) {
+        if (view == null) {
+            return false;
+        }
+        int[] position = new int[2];
+        view.getLocationOnScreen(position);
+        int left = position[0];
+        int top = position[1];
+        int right = left + view.getMeasuredWidth();
+        int bottom = top + view.getMeasuredHeight();
+        if (x >= left && x <= right && y >= top && y <= bottom) {
+            return true;
+        }
+        return false;
     }
 }
