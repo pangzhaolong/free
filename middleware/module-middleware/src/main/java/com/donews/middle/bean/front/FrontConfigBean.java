@@ -18,6 +18,8 @@ public class FrontConfigBean extends BaseCustomViewModel {
     private int refreshInterval = 60;
     @SerializedName("task")
     private Boolean task = false;
+    @SerializedName("floating")
+    private Boolean floating = false;
     @SerializedName("showTime")
     private Boolean showTime = false;
     @SerializedName("showTimeMsg")
@@ -66,6 +68,8 @@ public class FrontConfigBean extends BaseCustomViewModel {
     public Boolean getShowTimeMsg() { return showTimeMsg; }
 
     public Boolean getShowTime() { return showTime; }
+
+    public Boolean getFloating() { return floating; }
 
     public Boolean getWithDrawal() {
         return withDrawal;
