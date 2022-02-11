@@ -28,6 +28,8 @@ public class ABBean extends BaseCustomViewModel {
     private boolean openGuidGif = false;
     @SerializedName("lotteryLine")
     private int lotteryLine = 0;
+    @SerializedName("lotteryPriceShow")
+    private int lotteryPriceShow = 1;  //应用显示的抽奖价格 默认1元
 
     @SerializedName("openCritModel")                //暴击模式开关；true: 打开；false:关闭
     private boolean openCritModel = true;
@@ -53,6 +55,19 @@ public class ABBean extends BaseCustomViewModel {
     private boolean openScoreTask = false;
     @SerializedName("openScoreTaskMax")             //积分任务次数上限
     private int openScoreTaskMax = 3;
+    @SerializedName("selectNumberLocation")             //抽奖页自选码出现的位置(1---6)
+    private int selectNumberLocation = 6;
+    @SerializedName("openOptionalCode")             // 自选码的开关 true 打开 false 关闭
+    private boolean openOptionalCode = true;
+
+    public boolean isOpenOptionalCode() {
+        return openOptionalCode;
+    }
+    @SerializedName("openJumpDlg")
+    private boolean openJumpDlg = true;
+    public boolean isOpenJumpDlg() {
+        return openJumpDlg;
+    }
     @SerializedName("applicationShareJumpSwitch")                //抽奖页分享超链接跳转开关
     private boolean applicationShareJumpSwitch = false;
     @SerializedName("applicationBuyJumpSwitch")                //抽奖页购买超链接跳转开关
@@ -75,6 +90,10 @@ public class ABBean extends BaseCustomViewModel {
 
     public boolean isSkipSplashAd4NewUser() {
         return skipSplashAd4NewUser;
+    }
+
+    public int getSelectNumberLocation() {
+        return selectNumberLocation;
     }
 
     public boolean isOpenScoreTask() {
@@ -265,6 +284,14 @@ public class ABBean extends BaseCustomViewModel {
 
     public void setOpenVideoToast(boolean openVideoToast) {
         this.openVideoToast = openVideoToast;
+    }
+
+    public int getLotteryPriceShow() {
+        return lotteryPriceShow;
+    }
+
+    public void setLotteryPriceShow(int lotteryPriceShow) {
+        this.lotteryPriceShow = lotteryPriceShow;
     }
 
     @Override

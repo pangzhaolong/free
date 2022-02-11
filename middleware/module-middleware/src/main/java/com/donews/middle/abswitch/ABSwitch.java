@@ -117,14 +117,13 @@ public class ABSwitch {
     public boolean isOpenVideoToast() {
         return mAbBean.isOpenVideoToast();
     }
-/*    public boolean isOpenOptionalCode() {
+    public boolean isOpenOptionalCode() {
         return mAbBean.isOpenOptionalCode();
     }
 
     public int getLotteryPriceShow() {
         return mAbBean.getLotteryPriceShow();
-    }*/
-
+    }
 
     public boolean isOpenAutoLottery() {
         return mAbBean.isOpenAutoLottery();
@@ -198,17 +197,13 @@ public class ABSwitch {
         return mAbBean.getSelectNumberLocation();
     }
 
+    public boolean isSkipSplashAd4NewUser() {
+        return mAbBean.isSkipSplashAd4NewUser();
+    }
+
     public boolean isOpenJumpDlg() {
         return mAbBean.isOpenJumpDlg();
     }
-
-    public boolean isOpenSkipSplashAd4NewUser() {
-        return mAbBean.isOpenSkipSplashAd4NewUser();
-    }
-
-
-
-
 
     public boolean isApplicationShareJumpSwitch() {
         return  mAbBean.isApplicationShareJumpSwitch();

@@ -5,18 +5,20 @@
     xmlns:skin="http://schemas.android.com/res/android/skin"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/mine_f6f9fb">
+    android:layout_height="wrap_content"
+    android:background="@color/mine_f6f9fb"
+    android:layout_marginTop="-1dp">
 
     <ImageView
         android:id="@+id/mine_me_top_bt_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/ll_glod_count"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="40dp"
         android:background="@drawable/mine_me_top_bg"
-        skin:enable="true" />
+        skin:enable="true"
+        android:layout_marginRight="-1dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignBottom="@+id/ll_glod_count"
+        android:layout_marginBottom="40dp"/>
 
     <!-- 手机和设置 -->
     <LinearLayout
@@ -25,7 +27,7 @@
         android:layout_height="wrap_content"
         android:gravity="right|center_vertical"
         android:orientation="horizontal"
-        android:paddingTop="45dp">
+        android:paddingTop="46dp">
 
         <ImageView
             android:id="@+id/iv_top_bar_kf"
@@ -133,7 +135,8 @@
             android:paddingBottom="6dp"
             android:text="请绑定手机号"
             android:textColor="@color/white"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:visibility="gone" />
 
     </RelativeLayout>
 
@@ -143,10 +146,109 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rl_center_info"
+        android:layout_marginLeft="13dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginRight="13dp"
+        android:background="@drawable/mine_me_top_q_bg"
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+
+        <!-- 可提现 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mine_me_withdrawal"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:id="@+id/mine_me_money_num_ll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="20dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="现金余额"
+                    android:textColor="#666666"
+                    android:textSize="13.5sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:gravity="center_vertical"
+                    android:minHeight="35dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="4dp"
+                        android:text="¥"
+                        android:textColor="#EA443C" />
+
+                    <TextView
+                        android:id="@+id/mine_me_money_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:autoSizeMaxTextSize="26sp"
+                        android:autoSizeMinTextSize="15sp"
+                        android:autoSizeTextType="uniform"
+                        android:gravity="center"
+                        android:paddingLeft="4dp"
+                        android:text="0"
+                        android:textColor="#EA443C"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintRight_toRightOf="parent"
+                        tools:ignore="MissingConstraints" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- 登录赚钱 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mine_login_zq_cl"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/mine_login_zq_but"
+                android:layout_width="104dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="18dp"
+                android:background="@drawable/mine_login_zq_but"
+                android:gravity="center"
+                android:text="登录赚钱"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <!-- 记录模块区域 -->
+    <LinearLayout
+        android:id="@+id/ll_glod_cy_zj"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_glod_count"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
-        android:background="@drawable/ad_shape_bg"
+        android:background="@drawable/ad_shape_min_bg"
         android:orientation="horizontal"
         android:paddingTop="10dp"
         android:paddingBottom="10dp">
@@ -210,68 +312,6 @@
                     android:textSize="12sp" />
             </LinearLayout>
         </RelativeLayout>
-
-        <!-- 可提现 -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/mine_me_withdrawal"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <LinearLayout
-                android:id="@+id/mine_me_money_num_ll"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="MissingConstraints">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:minHeight="35dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginTop="4dp"
-                        android:text="¥"
-                        android:textColor="@color/black" />
-
-                    <TextView
-                        android:id="@+id/mine_me_money_num"
-                        android:layout_width="wrap_content"
-                        android:layout_height="35dp"
-                        android:autoSizeMaxTextSize="26sp"
-                        android:autoSizeMinTextSize="15sp"
-                        android:autoSizeTextType="uniform"
-                        android:gravity="center"
-                        android:paddingLeft="2dp"
-                        android:text="0"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:layout_constraintRight_toRightOf="parent"
-                        tools:ignore="MissingConstraints" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="现金余额"
-                    android:textColor="@color/black"
-                    android:textSize="12sp" />
-            </LinearLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
     <TextView
@@ -282,6 +322,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginTop="-5dp"
         android:layout_marginRight="25dp"
+        android:visibility="gone"
         android:background="@drawable/cen_cash_js_bg"
         android:paddingLeft="3dp"
         android:paddingTop="2dp"
@@ -298,20 +339,8 @@
         android:id="@+id/mine_me_k_operating"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_below="@+id/ll_glod_count"
+        android:layout_below="@+id/ll_glod_cy_zj"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/ad_shape_bg"
-        android:visibility="gone" />
-
-    <com.donews.middle.views.TaskView
-        android:id="@+id/mine_me_k_operating_ex"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_below="@+id/ll_glod_count"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/ad_shape_bg" />
+        android:layout_marginRight="10dp" />
 </RelativeLayout>

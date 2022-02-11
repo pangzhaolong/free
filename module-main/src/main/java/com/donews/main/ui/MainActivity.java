@@ -32,6 +32,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.ad.HotStartEvent;
 import com.dn.events.events.DoubleRpEvent;
+import com.dn.events.events.EnterShowDialogEvent;
 import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.RedPackageStatus;
 import com.dn.events.events.WalletRefreshEvent;

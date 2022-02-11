@@ -55,7 +55,13 @@
                             <ImageView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="@drawable/front_title"
+                                android:background="@drawable/middle_title_bg"
+                                tools:ignore="MissingConstraints" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/middle_title_circle"
                                 tools:ignore="MissingConstraints" />
 
                             <View
