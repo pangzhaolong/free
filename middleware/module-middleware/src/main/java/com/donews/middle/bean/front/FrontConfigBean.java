@@ -18,6 +18,8 @@ public class FrontConfigBean extends BaseCustomViewModel {
     private int refreshInterval = 60;
     @SerializedName("task")
     private Boolean task = false;
+    @SerializedName("showTime")
+    private Boolean showTime = false;
     @SerializedName("mine")
     private Boolean mine = false;
     @SerializedName("withDrawal")
@@ -32,6 +34,8 @@ public class FrontConfigBean extends BaseCustomViewModel {
     private List<YywItem> withDrawalItems = new ArrayList<>();
     @SerializedName("frontTask")
     private TaskItem frontTask;
+    @SerializedName("showTask")
+    private TaskItem showTask;
     @SerializedName("mineTask")
     private TaskItem mineTask;
 
@@ -54,6 +58,8 @@ public class FrontConfigBean extends BaseCustomViewModel {
     public Boolean getTask() {
         return task;
     }
+
+    public Boolean getShowTime() { return showTime; }
 
     public Boolean getWithDrawal() {
         return withDrawal;
@@ -81,6 +87,10 @@ public class FrontConfigBean extends BaseCustomViewModel {
 
     public TaskItem getFrontTask() {
         return frontTask;
+    }
+
+    public TaskItem getShowTask() {
+        return showTask;
     }
 
     public TaskItem getMineTask() {
