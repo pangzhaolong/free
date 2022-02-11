@@ -29,6 +29,15 @@ public class DateManager {
     //抽奖KEY
     public static String LOTTERY_KEY = "lottery_key";
 
+
+
+    //解锁超链接跳转时间戳KEY
+    public static String JUMP_TIMESTAMP = "jump_timestamp";
+    //抽奖KEY
+    public static String JUMP_NUMBER = "jump_number";
+
+
+
     //抽奖次数
     public static String LOTTERY_COUNT = "lottery_count";
 

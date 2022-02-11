@@ -9,6 +9,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -91,6 +92,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * 抽奖页面
@@ -197,6 +199,10 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         lotteryInfo();
         //设置下拉，和上拉的监听
         setSmartRefresh();
+        //初始化分享
+        refreshShareCharacter();
+        //初始化购买
+        refreshBuyCharacter();
         //自动开始抽奖
         if (mStart_lottery && ABSwitch.Ins().isOpenAutoLottery() || privilege) {
             ifOpenAutoLotteryAndCount();
@@ -262,6 +268,177 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         }
     }
 
+
+    /**
+     * 刷新分享文案
+     */
+    public void refreshShareCharacter() {
+        final List<String> urlList = ABSwitch.Ins().getApplicationShareJumpUrl();
+        if (ABSwitch.Ins().isApplicationShareJumpSwitch() && urlList != null && urlList.size() > 0) {
+            mDataBinding.fxIcon.setImageResource(R.mipmap.lottery_box_icon);
+            mDataBinding.fx.setText("领福利");
+
+            mDataBinding.share.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    jumpUrl(urlList, -1);
+                }
+            });
+
+        } else {
+            mDataBinding.fxIcon.setImageResource(R.mipmap.share_icon);
+            mDataBinding.fx.setText("分享");
+            mDataBinding.share.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //分享
+                    RouterActivityPath.Mine
+                            .goShareWxChatDialogDefaultH5(LotteryActivity.this);
+                }
+            });
+        }
+    }
+
+
+    int mBuyClickNumber = 0;
+
+    /**
+     * 刷新购买功能
+     */
+    public void refreshBuyCharacter() {
+        final List<String> urlList = ABSwitch.Ins().getApplicationBuyJumpUrl();
+        if (ABSwitch.Ins().isApplicationBuyJumpSwitch() && urlList != null && urlList.size() > 0) {
+            mDataBinding.panicBuying.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (ClickDoubleUtil.isFastClick()) {
+                        if (mBuyClickNumber < 2) {
+                            mBuyClickNumber = mBuyClickNumber++;
+                            //判断是那个平台
+                            if (mCommodityBean != null) {
+                                if (mCommodityBean.getSrc() == 0) {
+                                    //淘宝
+                                    jumpUrl(urlList, 0);
+                                    jump();
+                                    return;
+                                }
+                                if (mCommodityBean.getSrc() == 1) {
+                                    //京东
+                                    jumpUrl(urlList, 1);
+                                    jump();
+                                    return;
+                                }
+                                if (mCommodityBean.getSrc() == 2) {
+                                    //拼多多
+                                    jumpUrl(urlList, 2);
+                                    jump();
+                                    return;
+                                }
+                                //随机跳转
+                                //走中台配置
+                                jumpUrl(urlList, -1);
+                            }
+                        } else {
+                            //走商品购买跳转
+                            panicBuyingButtonBusiness(true);
+                        }
+                    }
+                }
+            });
+        } else {
+            panicBuyingButton();
+        }
+    }
+
+
+    private void jump() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(ABSwitch.Ins().getApplicationBuyDelayedJump());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                //走商品购买跳转
+                panicBuyingButtonBusiness(false);
+            }
+        }).start();
+
+
+    }
+
+
+    int mLastTimeRandomId = -1;
+
+    public void jumpUrl(List<String> urlList, int urlValueId) {
+        Uri uri = null;
+        if (urlList != null) {
+            if (urlValueId == -1) {
+                //随机
+                int id = getRandomNumber(urlList);
+                uri = Uri.parse(urlList.get(id));// 商品地址
+            } else {
+                //指定位置
+                if (urlValueId < urlList.size()) {
+                    uri = Uri.parse(urlList.get(urlValueId));// 商品地址
+                }
+            }
+        }
+        if (uri != null) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        }
+    }
+
+    /**
+     * 随机出于上一次不相同的id
+     */
+    private int getRandomNumber(List<String> urlList) {
+        if (urlList != null && urlList.size() > 1) {
+            //随机Intent.ACTION_SCREEN_ON
+            Random rand = new Random();
+            int id = rand.nextInt(urlList.size());
+            if (mLastTimeRandomId == id) {
+                getRandomNumber(urlList);
+            } else {
+                mLastTimeRandomId = id;
+                return id;
+            }
+        }
+        return 0;
+    }
+
+
+    private void panicBuyingButton() {
+        mDataBinding.panicBuying.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                panicBuyingButtonBusiness(true);
+            }
+        });
+    }
+
+
+    private void panicBuyingButtonBusiness(Boolean ifHint) {
+        AnalysisUtils.onEventEx(LotteryActivity.this, Dot.Btn_Buy);
+        if (mCommodityBean != null && mCommodityBean.getItemLink() != null) {
+            if (mCommodityBean.getItemLink().equals("")) {
+                if (ifHint) {
+                    ToastUtil.showShort(getApplicationContext(), "该商品暂不支持购买");
+                }
+            } else {
+                detailProvider.goToTaoBao(LotteryActivity.this, mCommodityBean.getItemLink());
+            }
+        } else {
+            if (ifHint) {
+                ToastUtil.showShort(getApplicationContext(), "该商品暂不支持购买");
+            }
+
+        }
+
+    }
 
     private void showLotteryCritCodeDialog(GenerateCodeBean generateCodeBean) {
         runOnUiThread(new Runnable() {
@@ -410,29 +587,8 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 }
             }
         });
-        mDataBinding.share.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //分享
-                RouterActivityPath.Mine
-                        .goShareWxChatDialogDefaultH5(LotteryActivity.this);
-            }
-        });
-        mDataBinding.panicBuying.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AnalysisUtils.onEventEx(LotteryActivity.this, Dot.Btn_Buy);
-                if (mCommodityBean != null && mCommodityBean.getItemLink() != null) {
-                    if (mCommodityBean.getItemLink().equals("")) {
-                        ToastUtil.showShort(getApplicationContext(), "该商品暂不支持购买");
-                    } else {
-                        detailProvider.goToTaoBao(LotteryActivity.this, mCommodityBean.getItemLink());
-                    }
-                } else {
-                    ToastUtil.showShort(getApplicationContext(), "该商品暂不支持购买");
-                }
-            }
-        });
+
+
         //当抽奖码大于等于6时显示等待开奖
         if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() >= 5) {
             setLottieAnimation(false);

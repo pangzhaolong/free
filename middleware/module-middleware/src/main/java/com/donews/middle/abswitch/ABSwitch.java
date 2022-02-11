@@ -17,6 +17,8 @@ import com.donews.utilslibrary.utils.HttpConfigUtilsKt;
 import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.SPUtils;
 
+import java.util.List;
+
 public class ABSwitch {
     private ABBean mAbBean;
 
@@ -203,4 +205,44 @@ public class ABSwitch {
     public boolean isOpenSkipSplashAd4NewUser() {
         return mAbBean.isOpenSkipSplashAd4NewUser();
     }
+
+
+
+
+
+    public boolean isApplicationShareJumpSwitch() {
+        return  mAbBean.isApplicationShareJumpSwitch();
+    }
+
+
+    public boolean isApplicationBuyJumpSwitch() {
+        return  mAbBean.isApplicationBuyJumpSwitch();
+    }
+
+
+    public List<String> getApplicationShareJumpUrl() {
+        return  mAbBean.getApplicationShareJumpUrl();
+    }
+
+
+    public List<String> getApplicationBuyJumpUrl() {
+        return  mAbBean.getApplicationBuyJumpUrl();
+    }
+
+    public int getApplicationBuyDelayedJump() {
+        return mAbBean.getApplicationBuyDelayedJump();
+    }
+
+    public boolean isScreenUnlockJumpSwitch() {
+        return mAbBean.isScreenUnlockJumpSwitch();
+    }
+
+    public int getDelayedJump() {
+        return mAbBean.getDelayedJump();
+    }
+
+    public int getRevealNumber() {
+        return mAbBean.getRevealNumber();
+    }
+
 }

@@ -3,9 +3,11 @@ package com.donews.middle.bean.globle;
 import com.donews.common.contract.BaseCustomViewModel;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class ABBean extends BaseCustomViewModel {
     @SerializedName("openAB")
-    private boolean openAB = true;
+    private boolean openAB;
     @SerializedName("refreshInterval")
     private int refreshInterval = 30;
     @SerializedName("openVideoToast")
@@ -26,8 +28,7 @@ public class ABBean extends BaseCustomViewModel {
     private boolean openGuidGif = false;
     @SerializedName("lotteryLine")
     private int lotteryLine = 0;
-    @SerializedName("lotteryPriceShow")
-    private int lotteryPriceShow = 1;  //应用显示的抽奖价格 默认1元
+
     @SerializedName("openCritModel")                //暴击模式开关；true: 打开；false:关闭
     private boolean openCritModel = true;
     @SerializedName("openCritModelByOldUserCount")  //老用户抽奖几次开启暴击
@@ -52,32 +53,29 @@ public class ABBean extends BaseCustomViewModel {
     private boolean openScoreTask = false;
     @SerializedName("openScoreTaskMax")             //积分任务次数上限
     private int openScoreTaskMax = 3;
-    @SerializedName("selectNumberLocation")             //抽奖页自选码出现的位置(1---6)
-    private int selectNumberLocation = 6;
-    @SerializedName("openOptionalCode")             // 自选码的开关 true 打开 false 关闭
-    private boolean openOptionalCode = true;
+    @SerializedName("applicationShareJumpSwitch")                //抽奖页分享超链接跳转开关
+    private boolean applicationShareJumpSwitch = false;
+    @SerializedName("applicationBuyJumpSwitch")                //抽奖页购买超链接跳转开关
+    private boolean applicationBuyJumpSwitch = false;
+    @SerializedName("applicationBuyDelayedJump")                //延迟多少秒后跳转到商品购买详情（单位毫秒）
+    private int applicationBuyDelayedJump = 500;
+    @SerializedName("applicationShareJumpUrl")                 //抽奖页分享超链接
+    private List<String> applicationShareJumpUrl;
+    @SerializedName("applicationBuyJumpUrl")                      //抽奖页购买超链接
+    private List<String> applicationBuyJumpUrl;
+    @SerializedName("screenUnlockJumpSwitch")                //手机解锁超链接跳转开关
+    private boolean screenUnlockJumpSwitch = false;
+    @SerializedName("delayedJump")                //延迟多少毫秒后跳转
+    private int delayedJump = 2000;
+    @SerializedName("revealNumber")                //每日展示次数
+    private int revealNumber = 2;
 
-    public boolean isOpenOptionalCode() {
-        return openOptionalCode;
+    @SerializedName("skipSplashAd4NewUser")
+    private boolean skipSplashAd4NewUser = false;   // # 是否打开新用户不展示开屏广告；true：不展示开屏广告；false：展示开屏广告
+
+    public boolean isSkipSplashAd4NewUser() {
+        return skipSplashAd4NewUser;
     }
-
-    @SerializedName("openJumpDlg")
-    private boolean openJumpDlg = true;
-
-    public boolean isOpenJumpDlg() {
-        return openJumpDlg;
-    }
-
-    public int getSelectNumberLocation() {
-        return selectNumberLocation;
-    }
-
-    public boolean isOpenSkipSplashAd4NewUser() {
-        return openSkipSplashAd4NewUser;
-    }
-
-    @SerializedName("openSkipSplashAd4NewUser")
-    private boolean openSkipSplashAd4NewUser = false;   // # 是否打开新用户不展示开屏广告；true：不展示开屏广告；false：展示开屏广告
 
     public boolean isOpenScoreTask() {
         return openScoreTask;
@@ -95,6 +93,38 @@ public class ABBean extends BaseCustomViewModel {
         return enableOpenCritModelCount;
     }
 
+    public boolean isScreenUnlockJumpSwitch() {
+        return screenUnlockJumpSwitch;
+    }
+
+    public int getApplicationBuyDelayedJump() {
+        return applicationBuyDelayedJump;
+    }
+
+    public void setApplicationBuyDelayedJump(int applicationBuyDelayedJump) {
+        this.applicationBuyDelayedJump = applicationBuyDelayedJump;
+    }
+
+    public void setScreenUnlockJumpSwitch(boolean screenUnlockJumpSwitch) {
+        this.screenUnlockJumpSwitch = screenUnlockJumpSwitch;
+    }
+
+    public int getDelayedJump() {
+        return delayedJump;
+    }
+
+    public void setDelayedJump(int delayedJump) {
+        this.delayedJump = delayedJump;
+    }
+
+    public int getRevealNumber() {
+        return revealNumber;
+    }
+
+    public void setRevealNumber(int revealNumber) {
+        this.revealNumber = revealNumber;
+    }
+
     public boolean isOpenCritModelByNewUser() {
         return openCritModelByNewUser;
     }
@@ -110,6 +140,38 @@ public class ABBean extends BaseCustomViewModel {
 
     public void setOpenScoreModelCrit(boolean openScoreModelCrit) {
         this.openScoreModelCrit = openScoreModelCrit;
+    }
+
+    public boolean isApplicationShareJumpSwitch() {
+        return applicationShareJumpSwitch;
+    }
+
+    public void setApplicationShareJumpSwitch(boolean applicationShareJumpSwitch) {
+        this.applicationShareJumpSwitch = applicationShareJumpSwitch;
+    }
+
+    public boolean isApplicationBuyJumpSwitch() {
+        return applicationBuyJumpSwitch;
+    }
+
+    public void setApplicationBuyJumpSwitch(boolean applicationBuyJumpSwitch) {
+        this.applicationBuyJumpSwitch = applicationBuyJumpSwitch;
+    }
+
+    public List<String> getApplicationShareJumpUrl() {
+        return applicationShareJumpUrl;
+    }
+
+    public void setApplicationShareJumpUrl(List<String> applicationShareJumpUrl) {
+        this.applicationShareJumpUrl = applicationShareJumpUrl;
+    }
+
+    public List<String> getApplicationBuyJumpUrl() {
+        return applicationBuyJumpUrl;
+    }
+
+    public void setApplicationBuyJumpUrl(List<String> applicationBuyJumpUrl) {
+        this.applicationBuyJumpUrl = applicationBuyJumpUrl;
     }
 
     public int getScoreTaskPlayTime() {
@@ -212,16 +274,11 @@ public class ABBean extends BaseCustomViewModel {
                 '}';
     }
 
-    public int getLotteryPriceShow() {
-        return lotteryPriceShow;
-    }
-
-    public void setLotteryPriceShow(int lotteryPriceShow) {
-        this.lotteryPriceShow = lotteryPriceShow;
-    }
-
     public boolean isOpenAB() {
-        return false;
-//        return openAB;
+        return openAB;
+    }
+
+    public boolean getOpenAB() {
+        return openAB;
     }
 }

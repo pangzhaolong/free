@@ -82,6 +82,7 @@
                             android:orientation="vertical">
 
                             <ImageView
+                                android:id="@+id/fx_icon_"
                                 android:layout_width="20dp"
                                 android:layout_height="19dp"
                                 android:layout_above="@+id/fx"

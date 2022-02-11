@@ -28,6 +28,8 @@ public class CommodityBean extends BaseCustomViewModel {
     private Integer period;
 
 
+    @SerializedName("src")
+    private Integer src;
 
     @SerializedName("coupon_price")
     private Integer coupon_price;
@@ -39,9 +41,11 @@ public class CommodityBean extends BaseCustomViewModel {
 
     private List<MaylikeBean.ListDTO> guessLikeData;
     private List<String> pics;
+
     public List<String> getPics() {
         return pics;
     }
+
     public void setPics(List<String> pics) {
         this.pics = pics;
     }
@@ -52,6 +56,14 @@ public class CommodityBean extends BaseCustomViewModel {
 
     public void setLotteryCodeBean(LotteryCodeBean lotteryCodeBean) {
         this.lotteryCodeBean = lotteryCodeBean;
+    }
+
+    public Integer getSrc() {
+        return src;
+    }
+
+    public void setSrc(Integer src) {
+        this.src = src;
     }
 
     public List<MaylikeBean.ListDTO> getGuessLikeData() {
@@ -77,6 +89,7 @@ public class CommodityBean extends BaseCustomViewModel {
     public void setCoupon_price(Integer coupon_price) {
         this.coupon_price = coupon_price;
     }
+
     public String getId() {
         return id;
     }
