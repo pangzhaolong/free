@@ -350,6 +350,7 @@ public class UserInfoManage {
         AnalysisUtils.onEventEx(BaseApplication.getInstance(), AnalysisParam.PRE_REGISTER);
         LoginLodingStartStatus eventLoadIngStatus;
         eventLoadIngStatus = new LoginLodingStartStatus();
+        eventLoadIngStatus.setPreReg(true);
         EventBus.getDefault().post(eventLoadIngStatus);
 
         MutableLiveData<PreRegisterBean> mutableLiveData = new MutableLiveData<PreRegisterBean>();
@@ -416,6 +417,7 @@ public class UserInfoManage {
         } else {
             eventLoadIngStatus = new LoginLodingStartStatus(tag);
         }
+        eventLoadIngStatus.setPreReg(false);
         EventBus.getDefault().post(eventLoadIngStatus);
         MutableLiveData<UserInfoBean> mutableLiveData = new MutableLiveData<UserInfoBean>();
         EasyHttp.post(LoginApi.LOGIN)

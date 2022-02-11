@@ -135,6 +135,7 @@ dependencies {
         implementation project(path: ':business:module-reward')
         implementation project(path: ':business:module-lottery')
         implementation project(path: ':business:module-integral')
+        implementation project(path: ':business:module-feedback')
         implementation project(path: ':middleware:module-middleware')
 
         //Swei新增桌面通知模块

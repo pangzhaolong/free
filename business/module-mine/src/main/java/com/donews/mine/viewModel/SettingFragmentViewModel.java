@@ -1,5 +1,6 @@
 package com.donews.mine.viewModel;
 
+import static com.donews.common.router.RouterActivityPath.Feedback.PAGER_ACTIVITY_FEEDBACK;
 import static com.donews.common.router.RouterActivityPath.Mine.PAGER_MINE_ABOUT_ACTIVITY;
 
 import android.os.Bundle;
@@ -81,12 +82,20 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
                 ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
             });
             put(2, (Runnable) () -> { //意见反馈
-                Bundle bundle = new Bundle();
-                bundle.putString("url",
-                        "https://www.wjx.top/vm/YhnxHHh.aspx");
-                bundle.putString("title", "意见反馈");
-                ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
-                AnalysisUtils.onEventEx(baseActivity, Dot.Page_Feedback);
+//                Bundle bundle = new Bundle();
+//                bundle.putString("url",
+//                        "https://www.wjx.top/vm/YhnxHHh.aspx");
+//                bundle.putString("title", "意见反馈");
+//                ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
+                if(AppInfo.checkIsWXLogin()){
+                    ARouter.getInstance().build(PAGER_ACTIVITY_FEEDBACK)
+                            .navigation(baseActivity);
+                    AnalysisUtils.onEventEx(baseActivity, Dot.Page_Feedback);
+                }else{
+                    ARouter.getInstance()
+                            .build(RouterActivityPath.User.PAGER_LOGIN)
+                            .navigation();
+                }
             });
             put(3, (Runnable) () -> { //关于我们
                 ARouter.getInstance().build(PAGER_MINE_ABOUT_ACTIVITY)

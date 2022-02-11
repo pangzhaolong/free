@@ -72,6 +72,8 @@ public class NotifyActivity extends FragmentActivity {
             Intent intent = new Intent();
             ComponentName componentName = new ComponentName(context, NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyAlias);
             intent.setComponent(componentName);
+            //排除再最近任务之外
+//            intent.setFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
             launchStart.doStart(context, intent);
         } catch (Throwable t) {
             t.printStackTrace();

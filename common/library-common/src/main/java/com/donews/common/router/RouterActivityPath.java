@@ -78,6 +78,17 @@ public class RouterActivityPath {
         }
     }
 
+    /**
+     * 意见反馈模块
+     */
+    public static class Feedback {
+        private static final String FEEDBACK = "/feedback";
+        /**
+         * 意见反馈页面
+         */
+        public static final String PAGER_ACTIVITY_FEEDBACK = FEEDBACK + "/FeedbackActivity";
+    }
+
     public static class Mine {
 
         /**

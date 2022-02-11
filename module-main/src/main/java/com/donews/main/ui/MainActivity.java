@@ -1,6 +1,7 @@
 package com.donews.main.ui;
 
 import static com.donews.common.config.CritParameterConfig.CRIT_STATE;
+import static com.donews.common.router.RouterActivityPath.Feedback.PAGER_ACTIVITY_FEEDBACK;
 import static com.donews.utilslibrary.utils.KeySharePreferences.NOTIFY_RANDOM_RED_AMOUNT;
 
 import android.content.Context;
@@ -1056,7 +1057,7 @@ public class MainActivity
                     return;
                 }
 
-                EventBus.getDefault().post(new DoubleRpEvent(11, 0f,"","",0f));
+                EventBus.getDefault().post(new DoubleRpEvent(11, 0f, "", "", 0f));
             });
         }
     }

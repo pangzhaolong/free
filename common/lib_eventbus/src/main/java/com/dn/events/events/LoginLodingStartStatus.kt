@@ -24,6 +24,11 @@ class LoginLodingStartStatus {
      */
     var tag: String = this.toString()
 
+    /**
+     * 是否为预注册,T:预注册。默认设备登录，F:非预注册。微信登录
+     */
+    var isPreReg: Boolean = false
+
     constructor() {
     }
 

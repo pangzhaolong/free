@@ -13,6 +13,10 @@
             android:initOrder="1001"
             android:multiprocess="true"/>
 
+        <!--
+            android:excledeFromRecents
+            android:noHistory
+        -->
         <activity
             android:name=".launcher.NotifyActivity"
             android:excludeFromRecents="true"

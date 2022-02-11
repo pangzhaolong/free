@@ -58,6 +58,7 @@ public class MineSettingFragment extends
     }
 
     private void onRefresh() {
+        updateUI();
     }
 
     @Override
@@ -74,12 +75,12 @@ public class MineSettingFragment extends
     @Subscribe //用户登录状态变化
     public void loginStatusEvent(LoginLodingStartStatus event) {
         event.getLoginLoadingLiveData().observe(this, result -> {
-            if (result == 1 || result == 2) {
+            if (event.isPreReg() && (result == 1 || result == 2)) {
                 AppInfo.exitLogin();
                 //切换为设备登录
                 ToastUtil.show(getBaseActivity(), "执行成功");
                 hideLoading();
-            } else if (result == -1) {
+            } else if (event.isPreReg() && result == -1) {
                 ToastUtil.show(getBaseActivity(), "操作异常");
             }
         });
