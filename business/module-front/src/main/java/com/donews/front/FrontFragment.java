@@ -46,6 +46,7 @@ import com.donews.middle.dialog.ActivityRuleDialog;
 import com.donews.middle.front.FrontConfigManager;
 import com.donews.middle.go.GotoUtil;
 import com.donews.middle.views.TabItem;
+import com.donews.middle.views.TaskView;
 import com.donews.middle.views.YywView;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
@@ -224,7 +225,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
         mDataBinding.frontRpRl.setVisibility(FrontConfigManager.Ins().getConfigBean().getRedPackage() ? View.VISIBLE : View.GONE);
 //        mDataBinding.frontGiftGroupBvp.setVisibility(FrontConfigManager.Ins().getConfigBean().getBanner() ? View.VISIBLE : View.GONE);
-        mDataBinding.frontTaskGroupLl.setVisibility(FrontConfigManager.Ins().getConfigBean().getTask() ? View.VISIBLE : View.GONE);
+        mDataBinding.frontTaskGroupLlNew.setVisibility(FrontConfigManager.Ins().getConfigBean().getTask() ? View.VISIBLE : View.GONE);
         mDataBinding.frontLotteryWinnerCl.setVisibility(FrontConfigManager.Ins().getConfigBean().getLotteryWinner() ? View.VISIBLE : View.GONE);
         mDataBinding.frontBannerYywYbv.setVisibility(FrontConfigManager.Ins().getConfigBean().getBanner() ? View.VISIBLE : View.GONE);
 
@@ -241,7 +242,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mDataBinding.frontBannerYywYbv.refreshYyw(YywView.Model_Banner);
         }
 
-        List<FrontConfigBean.YywItem> taskItems = FrontConfigManager.Ins().getConfigBean().getTaskItems();
+        mDataBinding.frontTaskGroupLlNew.refreshYyw(TaskView.Place_Front);
+        /*List<FrontConfigBean.YywItem> taskItems = FrontConfigManager.Ins().getConfigBean().getTaskItems();
         if (taskItems != null && taskItems.size() == 4) {
             FrontConfigBean.YywItem ti = FrontConfigManager.Ins().getConfigBean().getTaskItems().get(0);
             initTaskView(this.getContext(), ti, mDataBinding.frontTaskFl1, mDataBinding.frontTaskMixIv1, mDataBinding.frontTaskIv1, mDataBinding.frontTaskTv1, 1);
@@ -254,7 +256,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mDataBinding.frontTaskGroupLl.postInvalidate();
         } else {
             mDataBinding.frontTaskGroupLl.setVisibility(View.GONE);
-        }
+        }*/
 
         /*List<FrontConfigBean.BannerItem> bannerItems = FrontConfigManager.Ins().getConfigBean().getBannerItems();
         if (bannerItems != null && bannerItems.size() > 0) {
@@ -273,7 +275,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mDataBinding.frontGiftGroupBvp.setVisibility(View.GONE);
         }*/
     }
-
+/*
     private void initTaskView(Context context, FrontConfigBean.YywItem ti, FrameLayout fl, ImageView mixIv, ImageView iv, TextView tv, int idx) {
         if (ti == null) {
             return;
@@ -294,7 +296,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             mixIv.setVisibility(View.VISIBLE);
             Glide.with(this).load(ti.getImg()).into(mixIv);
         }
-    }
+    }*/
 
     private void sendDotData() {
         if (mLotteryCategoryBean == null || mLotteryCategoryBean.getList() == null || mLotteryCategoryBean.getList().size() <= 0) {
