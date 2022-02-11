@@ -279,7 +279,11 @@ public class FeedbackActivity extends MvvmBaseLiveDataActivity<ActivityFeedbackB
     //获取路径
     public String getPath(String contentPath) {
         if (contentPath.startsWith("content")) {
-            return UriUtils.uri2File(Uri.parse(contentPath)).getPath();
+            try {
+                return UriUtils.uri2File(Uri.parse(contentPath)).getPath();
+            }catch (Exception e){
+                return null;
+            }
         } else {
             return contentPath;
         }
