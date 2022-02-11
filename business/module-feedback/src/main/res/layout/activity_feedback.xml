@@ -211,22 +211,6 @@
                     android:focusableInTouchMode="true"
                     android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/feed_tel"
-                        android:layout_width="match_parent"
-                        android:layout_height="46dp"
-                        android:background="@drawable/feedback_def_bg"
-                        android:gravity="center_vertical"
-                        android:hint="您的手机号码"
-                        android:inputType="phone"
-                        android:maxLength="11"
-                        android:maxLines="1"
-                        android:paddingLeft="33dp"
-                        android:paddingRight="5dp"
-                        android:textColor="#2C2C2C"
-                        android:textColorHint="#6E6E6E"
-                        android:textSize="15sp" />
-
                     <ImageView
                         android:layout_width="12dp"
                         android:layout_height="17dp"
@@ -234,6 +218,22 @@
                         android:layout_marginLeft="15dp"
                         android:scaleType="fitXY"
                         android:src="@drawable/feedback_tel" />
+
+                    <EditText
+                        android:id="@+id/feed_tel"
+                        android:layout_width="match_parent"
+                        android:layout_height="46dp"
+                        android:gravity="center_vertical"
+                        android:hint="您的手机号码"
+                        android:inputType="phone"
+                        android:maxLength="11"
+                        android:maxLines="1"
+                        android:background="@drawable/feedback_def_bg"
+                        android:paddingLeft="33dp"
+                        android:paddingRight="5dp"
+                        android:textColor="#2C2C2C"
+                        android:textColorHint="#6E6E6E"
+                        android:textSize="15sp" />
                 </RelativeLayout>
 
                 <!-- 咨询反馈内容 -->
@@ -273,11 +273,11 @@
                         android:id="@+id/feed_desc"
                         android:layout_width="match_parent"
                         android:layout_height="110dp"
-                        android:background="@drawable/feedback_def_bg"
                         android:gravity="top"
                         android:hint="反馈内容"
                         android:maxEms="300"
                         android:padding="5dp"
+                        android:background="@drawable/feedback_def_bg"
                         android:textColor="#2C2C2C"
                         android:textColorHint="#6E6E6E"
                         android:textSize="15sp" />
