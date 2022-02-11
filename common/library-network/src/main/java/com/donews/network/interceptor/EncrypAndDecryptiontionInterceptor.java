@@ -22,7 +22,6 @@ import com.donews.ads.mediation.v2.encrypt.DoNewsEncryptUtils;
 import com.donews.network.BuildConfig;
 import com.donews.network.model.HttpHeaders;
 import com.donews.network.utils.HttpLog;
-import com.donews.utilslibrary.utils.LogUtil;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
