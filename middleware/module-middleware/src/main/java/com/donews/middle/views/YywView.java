@@ -32,11 +32,12 @@ public class YywView extends androidx.appcompat.widget.AppCompatImageView {
     public final static int Model_WithDrawl = 1;
     private int mCurrentModel = Model_Banner;
 
-    private final YywHandler mYywHandler;
+    private YywHandler mYywHandler;
 
     private List<FrontConfigBean.YywItem> mYywItemList = new ArrayList<>();
 
     private int mYYWIndex = 0;
+    private String mFrom;
 
     public YywView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -50,7 +51,7 @@ public class YywView extends androidx.appcompat.widget.AppCompatImageView {
         Glide.with(this).load(bannerItem.getImg()).into(this);
         this.setOnClickListener(v -> {
             GotoUtil.doAction(mContext, bannerItem.getAction(), bannerItem.getTitle());
-            AnalysisUtils.onEventEx(mContext, Dot.BANNER_CLICK);
+            AnalysisUtils.onEventEx(mContext, Dot.BANNER_CLICK, mFrom);
             mYYWIndex++;
             refreshYywItem();
         });
@@ -60,10 +61,12 @@ public class YywView extends androidx.appcompat.widget.AppCompatImageView {
         mCurrentModel = model;
         mYywItemList.clear();
         if (mCurrentModel == Model_Banner) {
+            mFrom = "Place_banner";
             mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getBannerItems().getItems());
             mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getBannerItems().getSwitchInterval();
             mEnableYyw = FrontConfigManager.Ins().getConfigBean().getBanner();
         } else if (mCurrentModel == Model_WithDrawl) {
+            mFrom = "Place_withdrawal";
             mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getWithDrawalItems().getItems());
             mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getWithDrawalItems().getSwitchInterval();
             mEnableYyw = FrontConfigManager.Ins().getConfigBean().getWithDrawal();
@@ -104,6 +107,15 @@ public class YywView extends androidx.appcompat.widget.AppCompatImageView {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (mYywHandler != null) {
+            mYywHandler.removeCallbacksAndMessages(null);
+            mYywHandler = null;
         }
     }
 

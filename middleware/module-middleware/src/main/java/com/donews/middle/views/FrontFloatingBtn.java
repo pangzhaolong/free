@@ -2,6 +2,9 @@ package com.donews.middle.views;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +17,6 @@ import androidx.annotation.Nullable;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
-import com.donews.base.utils.ToastUtil;
 import com.donews.common.views.CircleProgressBarView;
 import com.donews.middle.R;
 import com.donews.middle.bean.front.FrontConfigBean;
@@ -23,8 +25,12 @@ import com.donews.middle.go.GotoUtil;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 
+import java.lang.ref.WeakReference;
+
 
 public class FrontFloatingBtn extends LinearLayout {
+
+    private static final int MESSAGE_ID = 10003;
 
     public static final int CRITICAL_MODEL = 0;
     public static final int RP_MODEL = 1;
@@ -41,6 +47,9 @@ public class FrontFloatingBtn extends LinearLayout {
 
     private final ImageView mYywImageView;
 
+    private FloatHandler mFloatHandler;
+    private int mSwitchInterval = 10;
+
     private int mYYWIndex = 0;
 
     public FrontFloatingBtn(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -55,6 +64,8 @@ public class FrontFloatingBtn extends LinearLayout {
         mProgressTv = view.findViewById(R.id.common_floating_tv);
 
         mYywImageView = view.findViewById(R.id.common_critical_yyw);
+
+        mFloatHandler = new FloatHandler(Looper.getMainLooper(), this);
 
         refreshModel();
     }
@@ -116,19 +127,31 @@ public class FrontFloatingBtn extends LinearLayout {
             Glide.with(this).load(floatingItem.getImg()).into(mYywImageView);
         }
         this.setOnClickListener(v -> {
-            GotoUtil.doAction(mContext, floatingItem.getAction()
-                    , floatingItem.getTitle());
+            GotoUtil.doAction(mContext, floatingItem.getAction(), floatingItem.getTitle());
             AnalysisUtils.onEventEx(mContext, Dot.FRONT_YYW_CLICK);
             mYYWIndex++;
-            refreshYywItem();
+            refreshYywItemEx();
         });
     }
 
     public void refreshYywItem() {
         setModel(YYW_MODEL);
+
+        if (!FrontConfigManager.Ins().getConfigBean().getFloating()) {
+            this.setVisibility(GONE);
+            return;
+        }
+
+        mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getFloatingItems().getSwitchInterval();
+
+        refreshYywItemEx();
+    }
+
+    private void refreshYywItemEx() {
         try {
-            if (mYYWIndex < 0 || mYYWIndex >= FrontConfigManager.Ins().getConfigBean().getFloatingItems().getItems().size()) {
-                if (FrontConfigManager.Ins().getConfigBean().getFloatingItems().getItems().size() > 0) {
+            int nSize = FrontConfigManager.Ins().getConfigBean().getFloatingItems().getItems().size();
+            if (mYYWIndex < 0 || mYYWIndex >= nSize) {
+                if (nSize > 0) {
                     mYYWIndex = 0;
                 } else {
                     return;
@@ -138,6 +161,41 @@ public class FrontFloatingBtn extends LinearLayout {
             setYywInfo(FrontConfigManager.Ins().getConfigBean().getFloatingItems().getItems().get(mYYWIndex));
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        if (mFloatHandler != null) {
+            mFloatHandler.removeCallbacksAndMessages(null);
+            mFloatHandler.sendEmptyMessageDelayed(MESSAGE_ID, mSwitchInterval * 1000L);
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+
+        if (mFloatHandler != null) {
+            mFloatHandler.removeCallbacksAndMessages(null);
+            mFloatHandler = null;
+        }
+    }
+
+    private static class FloatHandler extends Handler {
+
+        private final WeakReference<FrontFloatingBtn> mFloatingBtn;
+
+        public FloatHandler(Looper looper, FrontFloatingBtn btn) {
+            super(looper);
+            mFloatingBtn = new WeakReference<>(btn);
+        }
+
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            FrontFloatingBtn btn = mFloatingBtn.get();
+            if (btn != null) {
+                btn.mYYWIndex++;
+                btn.refreshYywItemEx();
+            }
         }
     }
 }
