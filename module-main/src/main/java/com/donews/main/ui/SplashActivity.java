@@ -183,6 +183,10 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
      * 检查用户是否同意协议
      */
     private void checkDeal() {
+        if (SPUtils.getInformain(KeySharePreferences.DEAL, false)) {
+            initSdk();
+            return;
+        }
         //如果协议已经同意，直接检查权限进入app
         if (SPUtils.getInformain(KeySharePreferences.DEAL, false)) {
             checkAndRequestPermission();
