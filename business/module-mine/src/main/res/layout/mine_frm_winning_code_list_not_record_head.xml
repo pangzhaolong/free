@@ -20,21 +20,21 @@
         <ImageView
             android:layout_width="200dp"
             android:layout_height="40dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/mine_mrkj_time"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="40dp"/>
+            android:layout_marginTop="40dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/mine_mrkj_time" />
 
         <LinearLayout
             android:id="@+id/mine_win_code_scan_scroll_ll"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_marginLeft="15dp"
+            android:layout_marginTop="40dp"
             android:layout_marginRight="15dp"
             android:background="@drawable/ad_shape_bg"
             android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:layout_marginTop="40dp">
+            android:orientation="horizontal">
             <!-- 通知、滚动区域 -->
             <ImageView
                 android:layout_width="20dp"
@@ -118,9 +118,21 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="次)"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/mine_win_my_cjjl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@drawable/mine_wind_my_add_more"
+                    android:drawablePadding="5dp"
+                    android:gravity="right|center_vertical"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:text="抽奖记录" />
             </LinearLayout>
 
             <!--
@@ -177,8 +189,8 @@
         <ImageView
             android:layout_width="26.5dp"
             android:layout_height="7dp"
-            android:scaleType="fitXY"
             android:layout_marginEnd="13dp"
+            android:scaleType="fitXY"
             android:src="@mipmap/little_bit_lift_icon" />
 
         <TextView
@@ -192,8 +204,8 @@
         <ImageView
             android:layout_width="26.5dp"
             android:layout_height="7dp"
-            android:scaleType="fitXY"
             android:layout_marginStart="13dp"
+            android:scaleType="fitXY"
             android:src="@mipmap/little_bit_right_icon" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

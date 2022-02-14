@@ -52,8 +52,17 @@
             </RelativeLayout>
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="抢购码"
+                android:textSize="12sp"
+                android:textColor="#9C4D23"
+                android:gravity="right"
+                android:layout_marginRight="10dp"/>
+            <TextView
                 android:id="@+id/main_win_code_sele_item_code"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:text="1234567"
@@ -131,8 +140,7 @@
                 android:id="@+id/main_win_code_sele_good_goto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="7dp"
-                android:background="@drawable/mine_win_code_but_bg"
+                android:background="@drawable/mine_shape_winning_goto_read"
                 android:gravity="center"
                 android:paddingLeft="15dp"
                 android:paddingTop="5dp"
@@ -151,7 +159,7 @@
             android:id="@+id/main_win_code_sele_item_seal"
             android:layout_width="65dp"
             android:layout_height="65dp"
-            android:layout_marginRight="109dp"
+            android:layout_marginRight="163dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/mine_win_code_sele_item_seal0_bg"
             android:gravity="center"

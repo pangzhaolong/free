@@ -5,6 +5,8 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:background="@drawable/mine_city_bg"
+    android:paddingLeft="2.5dp"
+    android:paddingRight="2.5dp"
     tools:ignore="MissingDefaultResource">
 
     <TextView
@@ -15,6 +17,7 @@
         android:layout_marginTop="4dp"
         android:gravity="center_horizontal"
         android:text="北京"
+        android:textSize="10sp"
         android:textColor="@color/white" />
 
     <TextView
@@ -24,11 +27,12 @@
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="4dp"
         android:background="@drawable/mine_city_car_speed_bk"
-        android:paddingStart="4dp"
-        android:paddingEnd="4dp"
+        android:paddingStart="3dp"
+        android:paddingEnd="3dp"
         android:textColor="#2C2C2C"
-        android:text="2.02"
-        android:textSize="13sp" />
+        android:text="22.02"
+        android:singleLine="true"
+        android:textSize="12sp" />
 
 
 </FrameLayout>

@@ -423,7 +423,7 @@ public class MineOpenWinningFragment extends
         mDataBinding.mainWinCodeRefresh.autoRefresh();
         //处理状态栏背景
         mDataBinding.mineWinCodeList.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            final float flgPx = 300; //滑动距离
+            final float flgPx = 200; //滑动距离
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 if (recyclerView.computeVerticalScrollOffset() < flgPx) {
