@@ -48,7 +48,7 @@
                     android:minHeight="56dp"
                     android:layout_alignParentTop="true"
                     android:layout_alignBottom="@+id/main_win_code_title_layout"
-                    android:background="@color/read_content_bg"
+                    android:background="#F87F3D"
                     android:alpha="0"/>
                 <FrameLayout
                     android:id="@+id/main_win_code_title_layout"
