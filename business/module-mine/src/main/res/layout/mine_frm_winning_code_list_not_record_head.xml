@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/mine_me_open_top_bg"
+        android:paddingTop="97dp"
         android:orientation="vertical"
         android:paddingBottom="30dp">
         <!-- 类似搜索块区域(通知) -->

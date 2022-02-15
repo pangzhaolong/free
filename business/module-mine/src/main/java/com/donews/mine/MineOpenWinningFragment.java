@@ -430,20 +430,21 @@ public class MineOpenWinningFragment extends
         //处理状态栏背景
         mDataBinding.mineWinCodeList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             final float flgPx = 200; //滑动距离
+
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 if (recyclerView.computeVerticalScrollOffset() < flgPx) {
-                    if(mDataBinding.mainWinTitleBg.getAlpha() != 0){
+                    if (mDataBinding.mainWinTitleBg.getAlpha() != 0) {
                         mDataBinding.mainWinTitleBg.setAlpha(0);
                     }
                 } else {
                     float offs = (recyclerView.computeVerticalScrollOffset() - flgPx) / flgPx;
                     if (offs > 1) {
-                        if(mDataBinding.mainWinTitleBg.getAlpha() != 1){
+                        if (mDataBinding.mainWinTitleBg.getAlpha() != 1) {
                             mDataBinding.mainWinTitleBg.setAlpha(1);
                         }
                     } else {
-                        if(mDataBinding.mainWinTitleBg.getAlpha() != offs){
+                        if (mDataBinding.mainWinTitleBg.getAlpha() != offs) {
                             mDataBinding.mainWinTitleBg.setAlpha(offs);
                         }
                     }
@@ -569,7 +570,7 @@ public class MineOpenWinningFragment extends
                             .loginWX(this.toString(), "开奖页>登录按钮");
                 });
             }
-            mViewModel.updateCountDownUI(timeHH, timeMM, timeSS);
+            mViewModel.updateCountDownUI(timeHH, timeHH1, timeMM, timeMM1, timeSS, timeSS1);
             if (!isInitCommData) {
                 isInitCommData = true;
                 mViewModel.loadRecommendData(adapter.pageSize); //加载推荐数据

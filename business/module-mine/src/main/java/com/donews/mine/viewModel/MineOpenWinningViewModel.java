@@ -334,7 +334,14 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
      * @param mm 分钟
      * @param ss 秒
      */
-    public void updateCountDownUI(TextView hh, TextView mm, TextView ss) {
+    public void updateCountDownUI(
+            TextView hh,
+            TextView hh1,
+            TextView mm,
+            TextView mm1,
+            TextView ss,
+            TextView ss1
+    ) {
         Integer oldBaseTime = openWinCountdown.getValue();
         int timeHH = 0;
         int timeMM = 0;
@@ -348,20 +355,27 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
         timeHH = oldBaseTime / (60 * 60);
         timeMM = (oldBaseTime - (timeHH * 60 * 60)) / (60);
         timeSS = (oldBaseTime - (timeHH * 60 * 60) - (timeMM * 60));
+
         if (timeHH < 10) {
-            hh.setText("0" + timeHH);
+            hh.setText("0");
+            hh1.setText("" + timeHH);
         } else {
-            hh.setText("" + timeHH);
+            hh.setText("" + timeHH / 10);
+            hh.setText("" + timeHH % 10);
         }
         if (timeMM < 10) {
-            mm.setText("0" + timeMM);
+            mm.setText("0");
+            mm1.setText("" + timeMM);
         } else {
-            mm.setText("" + timeMM);
+            mm.setText("" + timeMM / 10);
+            mm1.setText("" + timeMM % 10);
         }
         if (timeSS < 10) {
-            ss.setText("0" + timeSS);
+            ss.setText("0");
+            ss1.setText("" + timeSS);
         } else {
-            ss.setText("" + timeSS);
+            ss.setText("" + timeSS / 10);
+            ss1.setText("" + timeSS % 10);
         }
     }
 
@@ -483,7 +497,7 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
      */
     @SuppressLint("SetTextI18n")
     public void addSelectGoods(View view) {
-        ImageView titleLL = view.findViewById(R.id.mine_win_code_win_title_ll);
+        LinearLayout titleLL = view.findViewById(R.id.mine_win_code_win_title_ll);
         ImageView statusIcon = view.findViewById(R.id.mine_win_code_win_desc_icon);
         TextView statusName = view.findViewById(R.id.mine_win_code_win_desc_name);
         ViewGroup vGroup = view.findViewById(R.id.mine_win_code_win_desc_good_ll);
@@ -620,11 +634,11 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             nameTvNum.setText("" + detailLivData.getValue().record.size());
         }
         //更多参与记录
-        moreMyAdd.setOnClickListener(v->{
-            if(detailLivData.getValue().record.isEmpty()){
-                ToastUtil.showShort(v.getContext(),"你还未参与抽奖");
-            }else{
-                ToastUtil.showShort(v.getContext(),"去往更多参与记录");
+        moreMyAdd.setOnClickListener(v -> {
+            if (detailLivData.getValue().record.isEmpty()) {
+                ToastUtil.showShort(v.getContext(), "你还未参与抽奖");
+            } else {
+                ToastUtil.showShort(v.getContext(), "去往更多参与记录");
             }
         });
         if (detailLivData.getValue().record == null ||
