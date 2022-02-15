@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/mine_ddyb_win_top_bg"
+        android:paddingTop="97dp"
         android:gravity="center"
         android:layout_marginTop="-2dp"
         android:orientation="vertical"
@@ -30,7 +31,7 @@
         <!-- 中间白色背景区域 -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="114dp"
             android:orientation="vertical"
             android:gravity="center"
             android:layout_marginLeft="13dp"
@@ -71,69 +72,99 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
+                android:paddingTop="10dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
                 <!-- 小时 -->
                 <TextView
                     android:id="@+id/mine_frm_win_h"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/mine_open_win_doun_time_bg"
+                    android:layout_width="36dp"
+                    android:layout_height="41dp"
+                    android:background="@drawable/mine_wind_djs_bg"
                     android:gravity="center"
                     android:includeFontPadding="false"
-                    android:padding="15dp"
-                    android:text="00"
-                    android:textColor="#E52F2F"
-                    android:textSize="35sp" />
+                    android:text="0"
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
+                <!-- 小时 -->
+                <TextView
+                    android:id="@+id/mine_frm_win_h1"
+                    android:layout_width="36dp"
+                    android:layout_height="41dp"
+                    android:background="@drawable/mine_wind_djs_bg"
+                    android:gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:includeFontPadding="false"
+                    android:text="0"
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="4dp"
+                    android:layout_height="10dp"
+                    android:background="@drawable/mine_wind_djs_mh"
                     android:gravity="center"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
                     android:includeFontPadding="false"
-                    android:padding="5dp"
-                    android:text=":"
-                    android:textSize="30sp"
                     android:textStyle="bold" />
 
                 <!-- 分钟 -->
                 <TextView
                     android:id="@+id/mine_frm_win_m"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/mine_open_win_doun_time_bg"
+                    android:layout_width="36dp"
+                    android:layout_height="41dp"
+                    android:background="@drawable/mine_wind_djs_bg"
                     android:gravity="center"
                     android:includeFontPadding="false"
-                    android:padding="15dp"
-                    android:text="00"
-                    android:textColor="#E52F2F"
-                    android:textSize="35sp" />
+                    android:text="0"
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
+                <TextView
+                    android:id="@+id/mine_frm_win_m1"
+                    android:layout_width="36dp"
+                    android:layout_height="41dp"
+                    android:background="@drawable/mine_wind_djs_bg"
+                    android:gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:includeFontPadding="false"
+                    android:text="0"
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="4dp"
+                    android:layout_height="10dp"
+                    android:background="@drawable/mine_wind_djs_mh"
                     android:gravity="center"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
                     android:includeFontPadding="false"
-                    android:padding="5dp"
-                    android:text=":"
-                    android:textSize="30sp"
                     android:textStyle="bold" />
 
                 <!-- 秒 -->
                 <TextView
                     android:id="@+id/mine_frm_win_s"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/mine_open_win_doun_time_bg"
+                    android:layout_width="36dp"
+                    android:layout_height="41dp"
+                    android:background="@drawable/mine_wind_djs_bg"
                     android:gravity="center"
                     android:includeFontPadding="false"
-                    android:padding="15dp"
-                    android:text="00"
-                    android:textColor="#E52F2F"
-                    android:textSize="35sp" />
+                    android:text="0"
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
+                <TextView
+                    android:id="@+id/mine_frm_win_s1"
+                    android:layout_width="36dp"
+                    android:layout_height="41dp"
+                    android:background="@drawable/mine_wind_djs_bg"
+                    android:gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:includeFontPadding="false"
+                    android:text="0"
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
             </LinearLayout>
         </LinearLayout>
 
