@@ -54,6 +54,7 @@
                     android:src="@drawable/mine_wind_js_icon"
                     android:layout_marginRight="8dp"/>
                 <TextView
+                    android:id="@+id/mine_frm_win_djs_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="开奖倒计时"

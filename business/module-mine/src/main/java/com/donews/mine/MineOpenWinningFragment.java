@@ -537,6 +537,7 @@ public class MineOpenWinningFragment extends
             adapterNotOpenWinHead.setVisibility(View.VISIBLE);
             addListNotOpenWinHead();
 
+            TextView djsTitle = adapterNotOpenWinHead.findViewById(R.id.mine_frm_win_djs_title);
             TextView lgoinOkTv = adapterNotOpenWinHead.findViewById(R.id.mine_tv_djgb);
             TextView lgoinBut = adapterNotOpenWinHead.findViewById(R.id.mine_tv_login);
             LinearLayout myAddll = adapterNotOpenWinHead.findViewById(R.id.mine_win_code_win_connect_layout);
@@ -551,6 +552,7 @@ public class MineOpenWinningFragment extends
                         mViewModel.detailLivData.getValue().record.size() > 0) {
                     myAddll.setVisibility(View.VISIBLE); //有参与记录
                     lgoinOkTv.setText("大奖即将公布");
+//                    djsTitle.setText("开奖倒计时");
                     if (adapterNotOpenWinHead.getTag() == null ||
                             adapterNotOpenWinHead.getTag() != mViewModel.detailLivData.getValue()) {
                         adapterNotOpenWinHead.setTag(mViewModel.detailLivData.getValue());
