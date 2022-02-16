@@ -4,13 +4,22 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ConvertUtils;
+import com.donews.base.base.BaseApplication;
+import com.donews.base.utils.ToastUtil;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
+import com.donews.common.router.RouterFragmentPath;
+import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.bean.HighValueGoodsBean;
+import com.donews.middle.cache.GoodsCache;
+import com.donews.middle.request.RequestUtil;
 import com.donews.mine.R;
 import com.donews.mine.adapters.MineWinningRecordAdapter;
 import com.donews.mine.bean.resps.WinRecordResp;
@@ -106,6 +115,27 @@ public class MineWinningRecordActivity extends
                     );
                     View notDataView = mDataBinding.mineWinRecodLayout.getStateLayout().findViewById(R.id.mine_open_win_not_data_ll);
                     ImageView icon = mDataBinding.mineWinRecodLayout.getStateLayout().findViewById(R.id.mine_open_win_not_data_icon);
+                    TextView tv = mDataBinding.mineWinRecodLayout.getStateLayout().findViewById(R.id.mine_open_win_not_data);
+                    TextView but = mDataBinding.mineWinRecodLayout.getStateLayout().findViewById(R.id.mine_open_win_not_data_but);
+                    tv.setText("一个奖都没有中\n你考虑过奖品的感受吗");
+                    but.setText("立即抽奖");
+                    but.setOnClickListener(v -> {
+                        HighValueGoodsBean t = GoodsCache.readGoodsBean(HighValueGoodsBean.class, "exit");
+                        if (t.getList() == null ||
+                                t.getList().isEmpty()) {
+                            ToastUtil.showShort(this, "商品获取失败。请重试");
+                            RequestUtil.requestHighValueGoodsInfo();
+                            return;
+                        }
+                        HighValueGoodsBean.GoodsInfo info = t.getList().get(0);
+                        AnalysisUtils.onEventEx(BaseApplication.getInstance(),
+                                Dot.But_Goto_Lottery, "中奖记录>没有中奖>立即抽奖");
+                        ARouter.getInstance()
+                                .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
+                                .withString("goods_id", info.getGoodsId())
+                                .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
+                                .navigation();
+                    });
                     notDataView.setPadding(notDataView.getPaddingLeft()
                             , notDataView.getPaddingTop() + ConvertUtils.dp2px(40F),
                             notDataView.getPaddingRight(),
