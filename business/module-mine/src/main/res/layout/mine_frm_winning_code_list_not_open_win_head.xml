@@ -260,6 +260,7 @@
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
                     android:drawablePadding="5dp"
+                    android:visibility="gone"
                     android:drawableRight="@drawable/mine_wind_my_add_more"
                     android:text="抽奖记录" />
             </LinearLayout>

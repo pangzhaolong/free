@@ -1,7 +1,9 @@
 package com.donews.mine.adapters;
 
+import android.graphics.Paint;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,6 +41,12 @@ public class MineFragmentAdapter extends BaesLoadMoreAdapter<RecommendGoodsResp.
         if (corenrLayout != null) {
             corenrLayout.setCornerRadius(ConvertUtils.dp2px(10));
             corenrLayout.setTopCornerMode();
+        }
+        //添加删除线
+        try {
+            TextView oldTv = ho.getView(R.id.mine_me_list_count_num);
+            oldTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
+        }catch (Exception e){
         }
         return ho;
     }

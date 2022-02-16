@@ -5,6 +5,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <application>
         <activity
+            android:name=".ui.MyAddRecordListActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.WithdrawalRecordActivity"
             android:screenOrientation="portrait" />
         <activity

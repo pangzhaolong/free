@@ -638,7 +638,10 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             if (detailLivData.getValue().record.isEmpty()) {
                 ToastUtil.showShort(v.getContext(), "你还未参与抽奖");
             } else {
-                ToastUtil.showShort(v.getContext(), "去往更多参与记录");
+                ARouter.getInstance()
+                        .build(RouterActivityPath.Mine.PAGER_MINE_MY_ADD_RECORD_LIST_ACTIVITY)
+                        .withInt("proid", openWinPeriod.getValue())
+                        .navigation();
             }
         });
         if (detailLivData.getValue().record == null ||

@@ -192,12 +192,15 @@ public class MineParticipateRecordActivity extends
         View mItemView = View.inflate(this, adapterHeadItemRes, null);
         ImageView icon = mItemView.findViewById(R.id.mine_par_rec_ls_head_icon);
         TextView showFlg = mItemView.findViewById(R.id.mine_par_rec_ls_head_flg);
+        TextView desc = mItemView.findViewById(R.id.mine_par_rec_ls_head_desc);
         if (period.opend) {
             //已经开奖
             icon.setVisibility(View.VISIBLE);
             icon.setImageResource(R.drawable.mine_win_open);
+            desc.setText("");
         } else {
-            icon.setVisibility(View.INVISIBLE);
+            icon.setVisibility(View.GONE);
+            desc.setText("待开奖");
             //未开奖
         }
         if (SPUtils.getInstance().getInt("" + period.period, 0) == 0) {

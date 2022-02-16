@@ -86,14 +86,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="23dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="3dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:layout_marginBottom="3dp">
+            android:layout_marginBottom="1.5dp">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
                 android:layout_gravity="center"
                 android:padding="2dp"
                 android:scaleType="centerInside"
@@ -105,8 +105,10 @@
                 android:gravity="center_vertical"
                 android:maxLines="1"
                 android:text="参考价"
+                android:layout_marginLeft="5dp"
+                android:paddingRight="5dp"
                 android:textColor="#A9AEB1"
-                android:textSize="15sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/mine_me_list_count_num"
@@ -116,7 +118,7 @@
                 android:maxLines="1"
                 android:text="￥1699"
                 android:textColor="#A9AEB1"
-                android:textSize="15sp" />
+                android:textSize="13sp" />
         </LinearLayout>
     </LinearLayout>
 

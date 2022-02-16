@@ -155,6 +155,11 @@ public class RouterActivityPath {
          */
         public static final String PAGER_MINE_ABOUT_ACTIVITY = MINE + "/AboutActivity";
 
+        /**
+         * 我参与的更多详情
+         */
+        public static final String PAGER_MINE_MY_ADD_RECORD_LIST_ACTIVITY = MINE + "/MyAddRecordListActivity";
+
 
         /**
          * 往期开奖
