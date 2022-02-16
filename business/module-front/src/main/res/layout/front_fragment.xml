@@ -609,76 +609,94 @@
                                     android:background="#E7E7E7"
                                     app:layout_constraintTop_toBottomOf="@+id/front_lottery_codes" />
 
-                                <RelativeLayout
+                                <androidx.constraintlayout.widget.ConstraintLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="23dp"
                                     android:layout_marginTop="10dp"
                                     app:layout_constraintTop_toBottomOf="@+id/front_lottery_codes_line">
 
-                                    <LinearLayout
+                                    <TextView
+                                        android:id="@+id/tv_rule1_1"
                                         android:layout_width="wrap_content"
                                         android:layout_height="match_parent"
-                                        android:layout_alignParentStart="true"
-                                        android:layout_marginStart="15dp"
-                                        android:orientation="horizontal">
+                                        android:gravity="center"
+                                        android:text="选择商品"
+                                        android:textColor="#989898"
+                                        android:textSize="12sp"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
 
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="match_parent"
-                                            android:gravity="center"
-                                            android:text="选择商品"
-                                            android:textColor="#989898"
-                                            android:textSize="12sp" />
+                                    <ImageView
+                                        android:id="@+id/tv_rule1_2"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginStart="5dp"
+                                        android:layout_marginEnd="5dp"
+                                        android:src="@drawable/front_lottery_code_splite"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintStart_toEndOf="@+id/tv_rule1_1"
+                                        app:layout_constraintTop_toTopOf="parent" />
 
-                                        <ImageView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center"
-                                            android:layout_marginStart="5dp"
-                                            android:layout_marginEnd="5dp"
-                                            android:src="@drawable/front_lottery_code_splite" />
+                                    <TextView
+                                        android:id="@+id/tv_rule1_3"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center"
+                                        android:text="参与抢购"
+                                        android:textColor="#989898"
+                                        android:textSize="12sp"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintStart_toEndOf="@+id/tv_rule1_2"
+                                        app:layout_constraintTop_toTopOf="parent" />
 
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="match_parent"
-                                            android:gravity="center"
-                                            android:text="参与抢购"
-                                            android:textColor="#989898"
-                                            android:textSize="12sp" />
+                                    <ImageView
+                                        android:id="@+id/tv_rule1_4"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginStart="5dp"
+                                        android:layout_marginEnd="5dp"
+                                        android:src="@drawable/front_lottery_code_splite"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintStart_toEndOf="@+id/tv_rule1_3"
+                                        app:layout_constraintTop_toTopOf="parent" />
 
-                                        <ImageView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center"
-                                            android:layout_marginStart="5dp"
-                                            android:layout_marginEnd="5dp"
-                                            android:src="@drawable/front_lottery_code_splite" />
+                                    <TextView
+                                        android:id="@+id/tv_rule1_5"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center"
+                                        android:text="定时开奖"
+                                        android:textColor="#989898"
+                                        android:textSize="12sp"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintStart_toEndOf="@+id/tv_rule1_4"
+                                        app:layout_constraintTop_toTopOf="parent" />
 
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="match_parent"
-                                            android:gravity="center"
-                                            android:text="定时开奖"
-                                            android:textColor="#989898"
-                                            android:textSize="12sp" />
+                                    <ImageView
+                                        android:id="@+id/tv_rule1_6"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginStart="5dp"
+                                        android:layout_marginEnd="5dp"
+                                        android:src="@drawable/front_lottery_code_splite"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintStart_toEndOf="@+id/tv_rule1_5"
+                                        app:layout_constraintTop_toTopOf="parent" />
 
-                                        <ImageView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center"
-                                            android:layout_marginStart="5dp"
-                                            android:layout_marginEnd="5dp"
-                                            android:src="@drawable/front_lottery_code_splite" />
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="match_parent"
-                                            android:gravity="center"
-                                            android:text="中奖收货"
-                                            android:textColor="#FA4E48"
-                                            android:textSize="12sp" />
-
-                                    </LinearLayout>
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center"
+                                        android:text="中奖收货"
+                                        android:textColor="#FA4E48"
+                                        android:textSize="12sp"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintStart_toEndOf="@+id/tv_rule1_6"
+                                        app:layout_constraintTop_toTopOf="parent" />
 
                                     <LinearLayout
                                         android:id="@+id/front_lottery_goto_ll"
@@ -688,6 +706,9 @@
                                         android:background="@drawable/front_lottery_code_rule"
                                         android:gravity="end|center_vertical"
                                         android:orientation="horizontal"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent"
                                         tools:ignore="MissingConstraints">
 
                                         <TextView
@@ -706,89 +727,110 @@
                                             android:layout_marginEnd="5dp"
                                             android:src="@drawable/front_lottery_code_right_arrow" />
                                     </LinearLayout>
-                                </RelativeLayout>
+                                </androidx.constraintlayout.widget.ConstraintLayout>
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
                             <com.donews.middle.views.YywView
                                 android:id="@+id/front_banner_yyw_ybv"
                                 android:layout_width="match_parent"
-                                android:layout_height="70dp"
+                                android:layout_height="80dp"
                                 android:layout_marginStart="10dp"
                                 android:layout_marginTop="10dp"
                                 android:layout_marginEnd="10dp"
                                 app:layout_constraintTop_toBottomOf="@+id/front_lottery_winner_cl" />
 
-                            <RelativeLayout
+                            <androidx.constraintlayout.widget.ConstraintLayout
                                 android:id="@+id/front_lottery_rule_rl"
                                 android:layout_width="match_parent"
                                 android:layout_height="23dp"
+                                android:layout_marginStart="10dp"
                                 android:layout_marginTop="20dp"
+                                android:layout_marginEnd="10dp"
                                 app:layout_constraintTop_toBottomOf="@+id/front_banner_yyw_ybv">
 
-                                <LinearLayout
+
+                                <TextView
+                                    android:id="@+id/tv_rule_1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
-                                    android:layout_alignParentStart="true"
-                                    android:layout_marginStart="15dp"
-                                    android:orientation="horizontal">
+                                    android:gravity="center"
+                                    android:text="选择商品"
+                                    android:textColor="@color/white"
+                                    android:textSize="13sp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
 
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="match_parent"
-                                        android:gravity="center"
-                                        android:text="选择商品"
-                                        android:textColor="@color/white"
-                                        android:textSize="13sp" />
+                                <ImageView
+                                    android:id="@+id/iv_rule_2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="5dp"
+                                    android:layout_marginEnd="5dp"
+                                    android:src="@drawable/front_lottery_rule_arrow"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/tv_rule_1"
+                                    app:layout_constraintTop_toTopOf="parent" />
 
-                                    <ImageView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center"
-                                        android:layout_marginStart="5dp"
-                                        android:layout_marginEnd="5dp"
-                                        android:src="@drawable/front_lottery_rule_arrow" />
+                                <TextView
+                                    android:id="@+id/tv_rule_3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center"
+                                    android:text="参与抢购"
+                                    android:textColor="@color/white"
+                                    android:textSize="13sp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/iv_rule_2"
+                                    app:layout_constraintTop_toTopOf="parent" />
 
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="match_parent"
-                                        android:gravity="center"
-                                        android:text="参与抢购"
-                                        android:textColor="@color/white"
-                                        android:textSize="13sp" />
+                                <ImageView
+                                    android:id="@+id/tv_rule_4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="5dp"
+                                    android:layout_marginEnd="5dp"
+                                    android:src="@drawable/front_lottery_rule_arrow"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/tv_rule_3"
+                                    app:layout_constraintTop_toTopOf="parent" />
 
-                                    <ImageView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center"
-                                        android:layout_marginStart="5dp"
-                                        android:layout_marginEnd="5dp"
-                                        android:src="@drawable/front_lottery_rule_arrow" />
+                                <TextView
+                                    android:id="@+id/tv_rule_5"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center"
+                                    android:text="定时开奖"
+                                    android:textColor="@color/white"
+                                    android:textSize="13sp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/tv_rule_4"
+                                    app:layout_constraintTop_toTopOf="parent" />
 
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="match_parent"
-                                        android:gravity="center"
-                                        android:text="定时开奖"
-                                        android:textColor="@color/white"
-                                        android:textSize="13sp" />
+                                <ImageView
+                                    android:id="@+id/tv_rule_6"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="5dp"
+                                    android:layout_marginEnd="5dp"
+                                    android:src="@drawable/front_lottery_rule_arrow"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/tv_rule_5"
+                                    app:layout_constraintTop_toTopOf="parent" />
 
-                                    <ImageView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center"
-                                        android:layout_marginStart="5dp"
-                                        android:layout_marginEnd="5dp"
-                                        android:src="@drawable/front_lottery_rule_arrow" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="match_parent"
-                                        android:gravity="center"
-                                        android:text="中奖收货"
-                                        android:textColor="#FBEDAD"
-                                        android:textSize="13sp" />
-
-                                </LinearLayout>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center"
+                                    android:text="中奖收货"
+                                    android:textColor="#FBEDAD"
+                                    android:textSize="13sp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/tv_rule_6"
+                                    app:layout_constraintTop_toTopOf="parent" />
 
                                 <LinearLayout
                                     android:id="@+id/front_lottery_rule_btn_ll"
@@ -798,6 +840,9 @@
                                     android:background="@drawable/front_lottery_rule_btn_bg"
                                     android:gravity="end|center_vertical"
                                     android:orientation="horizontal"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
                                     tools:ignore="MissingConstraints">
 
                                     <TextView
@@ -814,7 +859,8 @@
                                         android:layout_marginEnd="5dp"
                                         android:src="@drawable/front_lottery_rule_btn_go" />
                                 </LinearLayout>
-                            </RelativeLayout>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
                         </androidx.constraintlayout.widget.ConstraintLayout>
                     </LinearLayout>
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
