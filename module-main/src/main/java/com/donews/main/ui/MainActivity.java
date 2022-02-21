@@ -894,7 +894,9 @@ public class MainActivity
             } catch (Exception e) {
             }
         });
-        mDrawDialog.show(getSupportFragmentManager(), "doublerp");
+        if (!MainActivity.this.isFinishing() && !MainActivity.this.isDestroyed()) {
+            mDrawDialog.show(getSupportFragmentManager(), "doublerp");
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

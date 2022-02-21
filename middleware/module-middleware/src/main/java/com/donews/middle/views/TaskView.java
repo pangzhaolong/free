@@ -1,5 +1,6 @@
 package com.donews.middle.views;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
@@ -167,6 +168,9 @@ public class TaskView extends LinearLayout {
     }
 
     private void setYywItem() {
+        if (((Activity) mContext).isDestroyed() || ((Activity) mContext).isFinishing()) {
+            return;
+        }
 
         checkYywIndex();
 
@@ -196,7 +200,7 @@ public class TaskView extends LinearLayout {
             mImageViews[0].setOnClickListener(v -> {
                 GotoUtil.doAction(mContext, mYywItemList.get(0).getSubItems().get(mYywIdxs[0]).getAction()
                         , mYywItemList.get(0).getSubItems().get(mYywIdxs[0]).getTitle());
-                AnalysisUtils.onEventEx(mContext, Dot.TASK_CLICK, mDotFrom + 0);
+                AnalysisUtils.onEventEx(mContext, Dot.TASK_CLICK, mDotFrom + "-" + mTaskGroup + "-0-" + mYywIdxs[0]);
                 mYywIdxs[0]++;
                 refreshYywItem();
             });
@@ -205,7 +209,7 @@ public class TaskView extends LinearLayout {
             mImageViews[1].setOnClickListener(v -> {
                 GotoUtil.doAction(mContext, mYywItemList.get(1).getSubItems().get(mYywIdxs[1]).getAction()
                         , mYywItemList.get(1).getSubItems().get(mYywIdxs[1]).getTitle());
-                AnalysisUtils.onEventEx(mContext, Dot.TASK_CLICK, mDotFrom + 1);
+                AnalysisUtils.onEventEx(mContext, Dot.TASK_CLICK, mDotFrom + "-" + mTaskGroup + "-1-" + mYywIdxs[1]);
                 mYywIdxs[1]++;
                 refreshYywItem();
             });
@@ -214,7 +218,7 @@ public class TaskView extends LinearLayout {
             mImageViews[2].setOnClickListener(v -> {
                 GotoUtil.doAction(mContext, mYywItemList.get(2).getSubItems().get(mYywIdxs[2]).getAction()
                         , mYywItemList.get(2).getSubItems().get(mYywIdxs[2]).getTitle());
-                AnalysisUtils.onEventEx(mContext, Dot.TASK_CLICK, mDotFrom + 2);
+                AnalysisUtils.onEventEx(mContext, Dot.TASK_CLICK, mDotFrom + "-" + mTaskGroup + "-2-" + mYywIdxs[2]);
                 mYywIdxs[2]++;
                 refreshYywItem();
             });
@@ -223,7 +227,7 @@ public class TaskView extends LinearLayout {
             mImageViews[3].setOnClickListener(v -> {
                 GotoUtil.doAction(mContext, mYywItemList.get(3).getSubItems().get(mYywIdxs[3]).getAction()
                         , mYywItemList.get(3).getSubItems().get(mYywIdxs[3]).getTitle());
-                AnalysisUtils.onEventEx(mContext, Dot.TASK_CLICK, mDotFrom + 3);
+                AnalysisUtils.onEventEx(mContext, Dot.TASK_CLICK, mDotFrom + "-" + mTaskGroup + "-3-" + mYywIdxs[3]);
                 mYywIdxs[3]++;
                 refreshYywItem();
             });

@@ -1,5 +1,6 @@
 package com.donews.middle.views;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
@@ -48,10 +49,13 @@ public class YywView extends androidx.appcompat.widget.AppCompatImageView {
     }
 
     private void setYywItem(FrontConfigBean.YywItem bannerItem) {
+        if (((Activity) mContext).isDestroyed() || ((Activity) mContext).isFinishing()) {
+            return;
+        }
         Glide.with(this).load(bannerItem.getImg()).into(this);
         this.setOnClickListener(v -> {
             GotoUtil.doAction(mContext, bannerItem.getAction(), bannerItem.getTitle());
-            AnalysisUtils.onEventEx(mContext, Dot.BANNER_CLICK, mFrom);
+            AnalysisUtils.onEventEx(mContext, Dot.BANNER_CLICK, mFrom + "-" + mYYWIndex);
             mYYWIndex++;
             refreshYywItem();
         });
