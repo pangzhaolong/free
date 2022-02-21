@@ -208,7 +208,9 @@ public class ABSwitch {
     public boolean isApplicationShareJumpSwitch() {
         return  mAbBean.isApplicationShareJumpSwitch();
     }
-
+    public List<Integer> getOpenOptionalLocationList() {
+        return mAbBean.getOpenOptionalLocationList();
+    }
 
     public boolean isApplicationBuyJumpSwitch() {
         return  mAbBean.isApplicationBuyJumpSwitch();

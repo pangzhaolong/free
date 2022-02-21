@@ -59,7 +59,8 @@ public class ABBean extends BaseCustomViewModel {
     private int selectNumberLocation = 6;
     @SerializedName("openOptionalCode")             // 自选码的开关 true 打开 false 关闭
     private boolean openOptionalCode = true;
-
+    @SerializedName("openOptionalLocationList")                      //抽奖页购买超链接
+    private List<Integer> openOptionalLocationList;
     public boolean isOpenOptionalCode() {
         return openOptionalCode;
     }
@@ -122,6 +123,13 @@ public class ABBean extends BaseCustomViewModel {
 
     public void setApplicationBuyDelayedJump(int applicationBuyDelayedJump) {
         this.applicationBuyDelayedJump = applicationBuyDelayedJump;
+    }
+    public List<Integer> getOpenOptionalLocationList() {
+        return openOptionalLocationList;
+    }
+
+    public void setOpenOptionalLocationList(List<Integer> openOptionalLocationList) {
+        this.openOptionalLocationList = openOptionalLocationList;
     }
 
     public void setScreenUnlockJumpSwitch(boolean screenUnlockJumpSwitch) {

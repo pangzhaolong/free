@@ -38,6 +38,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.utils.CriticalModelTool;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.UrlUtils;
 import com.module.lottery.bean.CommodityBean;
@@ -294,7 +295,6 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                             } catch (Exception e) {
                                 Logger.d(e + "");
                             }
-
                         }
 
                         @Override
@@ -311,10 +311,8 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     //初始化抽奖码
     public void initListLottery(GuesslikeHeadLayoutBinding guessLikeHead, LotteryCodeBean lotteryCodeBean) {
-
         try {
             //获取自选码的为位置
-            int local = ABSwitch.Ins().getSelectNumberLocation();
             if (guessLikeHead != null) {
                 int refer = 0;
                 for (int i = 0; i < guessLikeHead.lotteryContainer.getChildCount(); i++) {
@@ -324,16 +322,19 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                             TextView textView = (TextView) linearLayout.getChildAt(j);
                             textView.setTextColor(mContext.getResources().getColor(R.color.pending));
                             TextPaint paint = textView.getPaint();
-                            if (ABSwitch.Ins().isOpenOptionalCode()) {
-                                if (local == (refer + 1)) {
+                            if (ABSwitch.Ins().isOpenOptionalCode() && !CriticalModelTool.ifCriticalStrike()) {
+                                if (getOptionalCodeType(refer)) {
                                     textView.setText("自选码");
+                                    textView.setTag(true);
                                     textView.setTextColor(Color.WHITE);
                                     textView.setBackgroundDrawable(mContext.getResources().getDrawable(R.mipmap.optional_code_bg));
                                 } else {
+                                    textView.setTag(false);
                                     textView.setText("待领取");
                                     textView.setBackgroundDrawable(mContext.getResources().getDrawable(R.mipmap.no_lottery_code_bg));
                                 }
                             } else {
+                                textView.setTag(false);
                                 textView.setText("待领取");
                                 textView.setBackgroundDrawable(mContext.getResources().getDrawable(R.mipmap.no_lottery_code_bg));
                             }
@@ -353,6 +354,18 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             }
         } catch (Exception e) {
         }
+    }
+
+
+    private boolean getOptionalCodeType(int local) {
+        List<Integer> localList = ABSwitch.Ins().getOpenOptionalLocationList();
+        for (int i = 0; i < localList.size(); i++) {
+            if (local == localList.get(i)) {
+                return true;
+            }
+
+        }
+        return false;
     }
 
     //设置item的,类型

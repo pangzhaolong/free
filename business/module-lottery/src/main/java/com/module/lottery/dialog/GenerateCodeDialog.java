@@ -125,10 +125,9 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
                         if (mOnFinishListener != null) {
                             mOnFinishListener.onFinish();
                         }
-                        Toast.makeText(getContext(), "抽奖码获取失败", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "抽奖码获取失败，"+e.getMessage(), Toast.LENGTH_SHORT).show();
                         AnalysisUtils.onEventEx(getContext(), Dot.PAY_FAIL);
                     }
-
                     @Override
                     public void onSuccess(GenerateCodeBean generateCode) {
                         if (generateCode != null) {

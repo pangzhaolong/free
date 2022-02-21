@@ -104,7 +104,7 @@ import java.util.Random;
 @Route(path = RouterFragmentPath.Lottery.PAGER_LOTTERY)
 public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, LotteryViewModel> {
     private static final String TAG = "LotteryActivity";
-    private static final String OPTIONAL_CODE_TXT = "抽奖码存在";
+    private static final String OPTIONAL_CODE_TXT = "抽奖码已存在，请重新选择";
     private static final String LOTTERY_ACTIVITY = "LOTTERY_ACTIVITY";
     private static final String FIRST_SHOW = "first_show";
     private static final String LOTTERY_ROUND = "lottery_round.json";
@@ -145,6 +145,8 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     public IDetailProvider detailProvider;
     private LogToWeChatDialog mLogToWeChatDialog;
     PlayAdUtilsTool mPlayAdUtilsTool;
+    //是否开启了视频
+    private boolean isOpenAd;
     //是否首次触发自选码
     private boolean firstOptionalCode = true;
     /**
@@ -160,6 +162,8 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //判断是否打开了视频广告
+        isOpenAd = JddAdManager.INSTANCE.isOpenAd();
         mSharedPreferences = this.getSharedPreferences(LOTTERY_ACTIVITY, 0);
         ARouter.getInstance().inject(this);
         EventBus.getDefault().register(this);
@@ -203,11 +207,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         refreshShareCharacter();
         //初始化购买
         refreshBuyCharacter();
-        //自动开始抽奖
-        if (mStart_lottery && ABSwitch.Ins().isOpenAutoLottery() || privilege) {
-            ifOpenAutoLotteryAndCount();
-        }
-        mStart_lottery = false;
+
         Message mes = new Message();
         handler.sendMessageDelayed(mes, 2000);
     }
@@ -217,7 +217,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
-            showOptionalCodeDialog();
         }
     };
 
@@ -643,22 +642,34 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         }
     }
 
+    private boolean getOptionalCodeType(int local) {
+        List<Integer> localList = ABSwitch.Ins().getOpenOptionalLocationList();
+        for (int i = 0; i < localList.size(); i++) {
+            if (local == localList.get(i)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     //开始抽奖
     private void startLottery(String optionalCode) {
-        AnalysisUtils.onEventEx(this, Dot.Btn_LotteryNow);
-        //判断是否打开了视频广告
-        boolean isOpenAd = JddAdManager.INSTANCE.isOpenAd();
-        if (isOpenAd) {
-            if (CriticalModelTool.ifCriticalStrike()) {
-                //当次事件有效
-                mCritTime = true;
-            } else {
-                //当次暴击事件无效
-                mCritTime = false;
-            }
-            if (ifOptionalCodeLottery()) {
-                showOptionalCodeDialog();
-            } else {
+        if (mLotteryCodeBean == null) {
+            return;
+        }
+        //判断是否需要弹起自选码弹框
+        if (getOptionalCodeType(mLotteryCodeBean.getCodes().size()) && !CriticalModelTool.ifCriticalStrike()) {
+            showOptionalCodeDialog();
+        } else {
+            AnalysisUtils.onEventEx(this, Dot.Btn_LotteryNow);
+            if (isOpenAd) {
+                if (CriticalModelTool.ifCriticalStrike()) {
+                    //当次事件有效
+                    mCritTime = true;
+                } else {
+                    //当次暴击事件无效
+                    mCritTime = false;
+                }
                 //开始抽奖
                 //弹框抽奖码生成dialog
                 LotteryCodeStartsDialog lotteryCodeStartsDialog = new LotteryCodeStartsDialog(LotteryActivity.this);
@@ -670,81 +681,78 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 });
                 lotteryCodeStartsDialog.create();
                 lotteryCodeStartsDialog.show(LotteryActivity.this);
-            }
-        } else {
-            //判断是否支持抽奖
-            if (DateManager.getInstance().timesLimit(DateManager.LOTTERY_KEY, DateManager.NUMBER_OF_DRAWS, 24)) {
-                generateLotteryCode(null);
             } else {
-                ToastUtil.showShort(this, "今天次数已用完，明日再来");
+                //判断是否支持抽奖
+                if (DateManager.getInstance().timesLimit(DateManager.LOTTERY_KEY, DateManager.NUMBER_OF_DRAWS, 24)) {
+                    generateLotteryCode(null);
+                } else {
+                    ToastUtil.showShort(this, "今天次数已用完，明日再来");
+                }
             }
         }
 
     }
-
-
-    /**
-     * 是否进行自选码抽奖
-     */
-    private boolean ifOptionalCodeLottery() {
-        if (ABSwitch.Ins().isOpenOptionalCode() && mLotteryCodeBean != null) {
-            int numberLocation = ABSwitch.Ins().getSelectNumberLocation();
-            int local = mLotteryCodeBean.getCodes().size() + 1;
-            if (local == numberLocation) {
-                return true;
-            }
-        }
-        return false;
-    }
-
 
     /**
      * 用来加载并显示广告和接收广告状态的回调
      */
 
     private void loadAdAndStatusCallback(final Dialog dialog, String optionalCode) {
-        if (mPlayAdUtilsTool != null) {
-            mPlayAdUtilsTool.showRewardVideo(dialog);
-            mPlayAdUtilsTool.setIStateListener(new PlayAdUtilsTool.IStateListener() {
-                @Override
-                public void onComplete() {
-                    //广告有效播放完成可以显示抽奖码的弹框
-                    Logger.d(TAG + "showGenerateCodeDialog");
-                    if (ABSwitch.Ins().getOpenCritModel()) {
-                        //判断是否是第0次
-                        int number = LotteryAdCount.INSTANCE.getCriticalModelLotteryNumber();
-                        if (number == 0) {
-                            Logger.d(TAG + "每轮首次抽奖回来，判断是否显示积分");
-                            //判断当前是否有积分逻辑
-                            if (ABSwitch.Ins().isOpenScoreModelCrit() && !CriticalModelTool.isNewUser()) {
-                                CriticalModelTool.getScenesSwitch(new CriticalModelTool.IScenesSwitchListener() {
-                                    @Override
-                                    public void onIntegralNumber(ProxyIntegral integralBean) {
-                                        if (integralBean == null) {
-                                            //暴击模式抽奖次数加一
-                                            addCriticalLotteryNumber();
-                                            Logger.d(TAG + "普通模式次数加一 无积分任务");
-                                        } else {
-                                            Logger.d(TAG + "现在是积分任务模式");
-                                            LotteryAdCount.INSTANCE.resetCriticalModelNumber();
-                                        }
-
-                                    }
-                                });
-                            } else if (CriticalModelTool.isNewUser()) {
-                                addCriticalLotteryNumber();
-                            }
-                        } else {
-                            //暴击模式抽奖次数加一
-                            Logger.d(TAG + "普通模式次数加一 未开启积分情况下");
-                            addCriticalLotteryNumber();
-                        }
+        if (isOpenAd) {
+            if (mPlayAdUtilsTool != null) {
+                mPlayAdUtilsTool.showRewardVideo(dialog);
+                mPlayAdUtilsTool.setIStateListener(new PlayAdUtilsTool.IStateListener() {
+                    @Override
+                    public void onComplete() {
+                        playComplete(optionalCode);
                     }
-                    generateLotteryCode(optionalCode);
-                }
-            });
+                });
+            }
+        } else {
+            playComplete(optionalCode);
         }
     }
+
+
+    //视频播放完成后的操作
+    private void playComplete(String optionalCode) {
+
+        //广告有效播放完成可以显示抽奖码的弹框
+        Logger.d(TAG + "showGenerateCodeDialog");
+        if (ABSwitch.Ins().getOpenCritModel()) {
+            //判断是否是第0次
+            int number = LotteryAdCount.INSTANCE.getCriticalModelLotteryNumber();
+            if (number == 0) {
+                Logger.d(TAG + "每轮首次抽奖回来，判断是否显示积分");
+                //判断当前是否有积分逻辑
+                if (ABSwitch.Ins().isOpenScoreModelCrit() && !CriticalModelTool.isNewUser()) {
+                    CriticalModelTool.getScenesSwitch(new CriticalModelTool.IScenesSwitchListener() {
+                        @Override
+                        public void onIntegralNumber(ProxyIntegral integralBean) {
+                            if (integralBean == null) {
+                                //暴击模式抽奖次数加一
+                                addCriticalLotteryNumber();
+                                Logger.d(TAG + "普通模式次数加一 无积分任务");
+                            } else {
+                                Logger.d(TAG + "现在是积分任务模式");
+                                LotteryAdCount.INSTANCE.resetCriticalModelNumber();
+                            }
+
+                        }
+                    });
+                } else if (CriticalModelTool.isNewUser()) {
+                    addCriticalLotteryNumber();
+                }
+            } else {
+                //暴击模式抽奖次数加一
+                Logger.d(TAG + "普通模式次数加一 未开启积分情况下");
+                addCriticalLotteryNumber();
+            }
+        }
+        generateLotteryCode(optionalCode);
+
+    }
+
 
     private void addCriticalLotteryNumber() {
         boolean logType = AppInfo.checkIsWXLogin();
@@ -1230,7 +1238,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             requestLotteryCode(CommodityBean.getPeriod());
             //请求该商品参与的人数用来viewPager 滚动
             winLotteryInfo();
-
         });
         //观察可能喜欢的数据
         mViewModel.getmGuessLike().observe(this, LotteryBean -> {
@@ -1281,6 +1288,11 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 commodityBean.setLotteryCodeBean(MaylikeBean);
                 guessAdapter.notifyDataSetChanged();
             }
+            //自动开始抽奖
+            if (mStart_lottery && ABSwitch.Ins().isOpenAutoLottery() || privilege) {
+                ifOpenAutoLotteryAndCount();
+            }
+            mStart_lottery = false;
         });
         //观察商品中奖人数集合
         mViewModel.getWinLotteryBean().observe(this, winLotteryBean -> {
