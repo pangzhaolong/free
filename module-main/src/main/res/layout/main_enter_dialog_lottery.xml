@@ -14,9 +14,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginTop="40dp"
             android:background="@color/transparent"
             android:orientation="vertical">
 
@@ -27,72 +25,98 @@
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/main_enter_lottrey_title" />
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_streamer_icon"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tv_probability"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="10dp"
+                    android:gravity="center"
+                    android:text="福气指数:您的抽中概率为"
+                    android:textColor="#764D38"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_probability1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="1dp"
+                    android:layout_toEndOf="@+id/tv_probability"
+                    android:gravity="bottom"
+                    android:text="97.4%"
+                    android:textColor="#E9423E"
+                    android:textSize="24sp" />
+
+            </RelativeLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/main_enter_dialog_bg"
+                android:clipChildren="false"
                 android:orientation="vertical">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center">
-
-                    <TextView
-                        android:id="@+id/tv_probability"
-                        android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <FrameLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginStart="10dp"
-                        android:text="福气指数:您的抽中概率为"
-                        android:textColor="#764D38"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:layout_gravity="center"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="35dp"
+                        android:layout_marginEnd="20dp"
+                        android:clipToPadding="false">
 
-                    <TextView
-                        android:id="@+id/tv_probability1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="1dp"
-                        android:layout_toEndOf="@+id/tv_probability"
-                        android:gravity="bottom"
-                        android:text="97.4%"
-                        android:textColor="#E9423E"
-                        android:textSize="24sp" />
+                        <ImageView
+                            android:id="@+id/iv_goods_pic"
+                            android:layout_width="match_parent"
+                            android:layout_height="220dp"
+                            android:layout_gravity="center"
+                            android:scaleType="fitXY" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right|bottom"
+                            android:background="@drawable/main_enter_dialog_post"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:text="包邮到家"
+                            android:textColor="#FFF3D3"
+                            android:textSize="16sp"
+                            android:visibility="gone" />
+
+
+                    </FrameLayout>
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="38dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="15dp"
+                        android:src="@drawable/next_day_draw" />
 
                 </RelativeLayout>
 
-                <FrameLayout
-                    android:layout_width="280dp"
-                    android:layout_height="280dp"
-                    android:layout_gravity="center"
-                    android:padding="10dp">
-
-                    <ImageView
-                        android:id="@+id/iv_goods_pic"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right|bottom"
-                        android:background="@drawable/main_enter_dialog_post"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:text="包邮到家"
-                        android:textColor="#FFF3D3"
-                        android:textSize="16sp"
-                        android:visibility="gone" />
-                </FrameLayout>
 
                 <TextView
                     android:id="@+id/tv_goods_title"
@@ -112,7 +136,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="20dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
@@ -148,14 +171,12 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginStart="20dp"
-                        android:background="@drawable/main_enter_dialog_people_bg"
                         android:paddingStart="10dp"
                         android:paddingTop="2dp"
                         android:paddingEnd="10dp"
                         android:paddingBottom="2dp"
                         android:text="累计40.5万人参与抢购"
-                        android:textColor="#764D38"
+                        android:textColor="#999999"
                         android:textSize="12sp" />
                 </RelativeLayout>
 
@@ -185,9 +206,9 @@
                         android:layout_height="40dp"
                         android:layout_alignParentEnd="true"
                         android:background="@drawable/main_exit_btn_bg_positive"
-                        android:paddingStart="40dp"
-                        android:paddingEnd="40dp"
-                        android:text="@string/main_exit_lottery"
+                        android:paddingStart="35dp"
+                        android:paddingEnd="35dp"
+                        android:text="参与抽奖"
                         android:textColor="@color/white"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -297,11 +318,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginEnd="10dp"
-            android:layout_marginBottom="8dp"
-            android:src="@drawable/common_close"
-            android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@id/iv_title"
-            app:layout_constraintEnd_toEndOf="@id/iv_title" />
+            android:src="@drawable/common_close" />
 
     </FrameLayout>
 </layout>

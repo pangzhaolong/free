@@ -20,7 +20,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.dn.drouter.ARouteHelper;
 import com.dn.events.events.LoginLodingStartStatus;
@@ -86,7 +88,7 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
 
     @Override
     public float setSize() {
-        return 0.9f;
+        return 0.80f;
     }
 
     @SuppressLint({"RestrictedApi", "SetTextI18n", "DefaultLocale"})
@@ -258,9 +260,12 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
         }
         mGoods = bean.getList().get(0);
         if (mContext != null && mContext instanceof Activity && !((Activity) mContext).isDestroyed()) {
+            RoundedCorners roundedCorners = new RoundedCorners(25);
+            RequestOptions requestOptions=  RequestOptions.bitmapTransform(roundedCorners);
             Glide.with(mContext)
                     .load(UrlUtils.formatUrlPrefix(mGoods.getMainPic()))
                     .diskCacheStrategy(DiskCacheStrategy.DATA)
+                    .apply(requestOptions)
                     .addListener(new RequestListener<Drawable>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
