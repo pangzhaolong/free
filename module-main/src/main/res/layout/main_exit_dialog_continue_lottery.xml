@@ -85,7 +85,7 @@
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="68dp"
+                android:layout_marginTop="75dp"
                 android:text="确定放弃0元福利么?"
                 android:textColor="@color/white"
                 android:textSize="16sp"
