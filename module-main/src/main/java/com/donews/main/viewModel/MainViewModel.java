@@ -88,12 +88,17 @@ public class MainViewModel extends BaseLiveDataViewModel<MainModel> {
                 //本地记录的。已经提示过的最新一期
                 int recordPeriod = SPUtils.getInformain(MAIN_MASK_FLG, 0);
                 for (int i = 0; i < rewardBeans.size(); i++) {
-                    if (peopFastOpenLivData.getValue().get(0).getPeriod() == rewardBeans.get(i).period &&
-                            peopFastOpenLivData.getValue().get(0).getPeriod() > recordPeriod) {
-                        //保存当前已经提示的期数。下次提示只会大于当前期数才会提示
-                        //如果放开只提示一次。目前是当天内只提示一次
+                    try {
+                        if (peopFastOpenLivData.getValue().get(0).getPeriod() == rewardBeans.get(i).period &&
+                                peopFastOpenLivData.getValue().get(0).getPeriod() > recordPeriod) {
+                            //保存当前已经提示的期数。下次提示只会大于当前期数才会提示
+                            //如果放开只提示一次。目前是当天内只提示一次
 //                        SPUtils.setInformain(MAIN_MASK_FLG, peopFastOpenLivData.getValue().get(0).getPeriod());
-                        openWindFastNewPeriod.postValue(true);
+                            openWindFastNewPeriod.postValue(true);
+                            return;
+                        }
+                    } catch (Exception e) {
+                        openWindFastNewPeriod.postValue(false);
                         return;
                     }
                 }

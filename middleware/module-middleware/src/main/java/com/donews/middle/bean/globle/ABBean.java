@@ -59,7 +59,8 @@ public class ABBean extends BaseCustomViewModel {
     private int selectNumberLocation = 6;
     @SerializedName("openOptionalCode")             // 自选码的开关 true 打开 false 关闭
     private boolean openOptionalCode = true;
-
+    @SerializedName("openOptionalLocationList")                      //抽奖页购买超链接
+    private List<Integer> openOptionalLocationList;
     public boolean isOpenOptionalCode() {
         return openOptionalCode;
     }
@@ -73,15 +74,19 @@ public class ABBean extends BaseCustomViewModel {
     @SerializedName("applicationBuyJumpSwitch")                //抽奖页购买超链接跳转开关
     private boolean applicationBuyJumpSwitch = false;
     @SerializedName("applicationBuyDelayedJump")                //延迟多少秒后跳转到商品购买详情（单位毫秒）
-    private int applicationBuyDelayedJump = 500;
+    private long applicationBuyDelayedJump = 500;
+    @SerializedName("intervalsTime")                  //下一次的间隔时间差（单位毫秒）
+    private long intervalsTime = 500;
     @SerializedName("applicationShareJumpUrl")                 //抽奖页分享超链接
     private List<String> applicationShareJumpUrl;
     @SerializedName("applicationBuyJumpUrl")                      //抽奖页购买超链接
     private List<String> applicationBuyJumpUrl;
+    @SerializedName("applicationBuyJumpNumber")
+    private long applicationBuyJumpNumber = 2;                 //抽奖页购买超链接跳转次数
     @SerializedName("screenUnlockJumpSwitch")                //手机解锁超链接跳转开关
     private boolean screenUnlockJumpSwitch = false;
     @SerializedName("delayedJump")                //延迟多少毫秒后跳转
-    private int delayedJump = 2000;
+    private long delayedJump = 2000;
     @SerializedName("revealNumber")                //每日展示次数
     private int revealNumber = 2;
 
@@ -116,19 +121,41 @@ public class ABBean extends BaseCustomViewModel {
         return screenUnlockJumpSwitch;
     }
 
-    public int getApplicationBuyDelayedJump() {
+    public long getApplicationBuyDelayedJump() {
         return applicationBuyDelayedJump;
     }
 
     public void setApplicationBuyDelayedJump(int applicationBuyDelayedJump) {
         this.applicationBuyDelayedJump = applicationBuyDelayedJump;
     }
+    public long getApplicationBuyJumpNumber() {
+        return applicationBuyJumpNumber;
+    }
+
+    public void setApplicationBuyJumpNumber(long applicationBuyJumpNumber) {
+        this.applicationBuyJumpNumber = applicationBuyJumpNumber;
+    }
+    public List<Integer> getOpenOptionalLocationList() {
+        return openOptionalLocationList;
+    }
+
+    public void setOpenOptionalLocationList(List<Integer> openOptionalLocationList) {
+        this.openOptionalLocationList = openOptionalLocationList;
+    }
 
     public void setScreenUnlockJumpSwitch(boolean screenUnlockJumpSwitch) {
         this.screenUnlockJumpSwitch = screenUnlockJumpSwitch;
     }
 
-    public int getDelayedJump() {
+    public long getIntervalsTime() {
+        return intervalsTime;
+    }
+
+    public void setIntervalsTime(int intervalsTime) {
+        this.intervalsTime = intervalsTime;
+    }
+
+    public long getDelayedJump() {
         return delayedJump;
     }
 

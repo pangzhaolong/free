@@ -223,6 +223,9 @@ public class DeviceUtils {
 
     // 获得数美的deviceID
     public static String getShuMeiDeviceId() {
+        if (!PermissionUtils.isGranted(Manifest.permission.READ_PHONE_STATE)) {
+            return "";
+        }
         String deviceId = "";
         try {
             deviceId = SmAntiFraud.getDeviceId();
@@ -234,19 +237,16 @@ public class DeviceUtils {
 
     // suuid获取,保存在sp中，不然每次返回都是不一样的suuid
     public static String getMyUUID() {
-//        String key = "SUUID";
-//        String appSuuid = SPUtils.getInformain(key, "");
-//        if (TextUtils.isEmpty(appSuuid.trim())) {
-//            String suuid = DnSuuid.getInstance().getSuuid(UtilsConfig.getApplication());
-//            String suuid = DonewsAgent.obtainSuuid(UtilsConfig.getApplication());
-//            SPUtils.setInformain(key, suuid);
-//            appSuuid = suuid;
-//        }
+        if (!PermissionUtils.isGranted(Manifest.permission.READ_PHONE_STATE)) {
+            return "";
+        }
         return DnSuuid.getInstance().getSuuid(UtilsConfig.getApplication());
-//        return DonewsAgent.obtainSuuid(UtilsConfig.getApplication());
     }
 
     private static String getTouTiaoChannelName() {
+        if (!PermissionUtils.isGranted(Manifest.permission.READ_PHONE_STATE)) {
+            return null;
+        }
         try {
             return HumeSDK.getChannel(UtilsConfig.getApplication());
         } catch (Exception e) {
@@ -341,6 +341,9 @@ public class DeviceUtils {
     }
 
     private static String getUUID(Context context) {
+        if (!PermissionUtils.isGranted(Manifest.permission.READ_PHONE_STATE)) {
+            return "serial";
+        }
         String serial = null;
 
         String m_szDevIDShort = "35" +

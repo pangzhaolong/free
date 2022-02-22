@@ -62,8 +62,7 @@ class AnAdditionalDialog(
             if (count > 0) {
                 handler.postDelayed(timeTask!!, 1000)
             } else {
-                doubleRp()
-                dismiss()
+                doubleRp(true)
             }
         }
         handler.post(timeTask!!)
@@ -81,13 +80,11 @@ class AnAdditionalDialog(
             }
         }
         dataBinding.mainDoubleRpGetLl.setOnClickListener {
-            doubleRp()
-            SoundHelp.newInstance().onRelease()
-            dismiss()
+            doubleRp(false)
+            dismissEx()
         }
         dataBinding.mainDoubleCloseIv.setOnClickListener {
-            SoundHelp.newInstance().onRelease()
-            dismiss()
+            dismissEx()
         }
 
         val addCoinsAnim: ObjectAnimator = ObjectAnimator.ofFloat(dataBinding.mainDoubleAddCoinsTv, "translationY", 0f, -200f)
@@ -112,42 +109,64 @@ class AnAdditionalDialog(
         addCoinsAnim.start()
     }
 
-    fun doubleRp() {
+    fun doubleRp(needDismiss: Boolean) {
         if (from == 0) {
-            doubleGetRp()
+            doubleGetRp(needDismiss)
         } else if (from == 1) {
-            notifyDoubleGetRp()
+            notifyDoubleGetRp(needDismiss)
         }
     }
 
-    private fun doubleGetRp() {
+    private fun doubleGetRp(needDismiss: Boolean) {
         EasyHttp.post(BuildConfig.API_WALLET_URL + "v1/double-red-packet")
                 .upObject(RestIdBean(restId, preId))
                 .cacheMode(CacheMode.NO_CACHE)
                 .isShowToast(false)
                 .execute(object : SimpleCallBack<DoubleRedPacketBean?>() {
                     override fun onError(e: ApiException) {
+                        if (needDismiss) {
+                            dismissEx()
+                        }
                     }
 
                     override fun onSuccess(t: DoubleRedPacketBean?) {
                         ToastUtil.show(context, "双倍红包领取成功")
+                        if (needDismiss) {
+                            dismissEx()
+                        }
                     }
                 })
     }
 
-    private fun notifyDoubleGetRp() {
+    private fun notifyDoubleGetRp(needDismiss: Boolean) {
         EasyHttp.post(BuildConfig.API_WALLET_URL + "v1/rest-red-packet")
                 .upJson("{\"rest_id\": \"$restId\"}")
                 .cacheMode(CacheMode.NO_CACHE)
                 .isShowToast(false)
                 .execute(object : SimpleCallBack<DoubleRedPacketBean?>() {
                     override fun onError(e: ApiException) {
+                        if (needDismiss) {
+                            dismissEx()
+                        }
                     }
 
                     override fun onSuccess(t: DoubleRedPacketBean?) {
                         ToastUtil.show(context, "双倍红包领取成功")
+                        if (needDismiss) {
+                            dismissEx()
+                        }
                     }
                 })
+    }
+
+    fun dismissEx() {
+        try {
+            SoundHelp.newInstance().onRelease()
+            if (!this.isDetached && !this.isRemoving && !this.isStateSaved) {
+                dismiss()
+            }
+        } catch (e: Exception) {
+        }
     }
 
     override fun onDismiss(dialog: DialogInterface) {

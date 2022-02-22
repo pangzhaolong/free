@@ -21,8 +21,8 @@
 
         <ImageView
             android:id="@+id/iv_window"
-            android:layout_width="232dp"
-            android:layout_height="190dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="@drawable/dialog_main_exit_red_bg"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -61,8 +61,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:text="@{@string/main_exit_remind_msg(remindConfig.remindTime)}"
-            android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textColor="#EA443C"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/iv_window"
             app:layout_constraintStart_toStartOf="@id/iv_window"
@@ -75,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:text="记得查收好运哦!"
-            android:textColor="@color/white"
+            android:textColor="#9C4D23"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/iv_window"
@@ -86,11 +86,11 @@
             android:id="@+id/btn_next"
             android:layout_width="161dp"
             android:layout_height="45dp"
-            android:background="@drawable/main_bg_guide_but"
+            android:background="@drawable/main_bg_guide_but_1"
             android:onClick="@{eventListener::clickRemind}"
             android:paddingBottom="1dp"
             android:text="@string/main_exit_open_remind"
-            android:textColor="@color/common_F43838"
+            android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/iv_window"
@@ -102,7 +102,7 @@
             android:id="@+id/btn_close"
             android:layout_width="161dp"
             android:layout_height="45dp"
-            android:background="@drawable/main_bg_guide_but"
+            android:background="@drawable/main_bg_guide_but_1"
             android:gravity="center"
             android:onClick="@{eventListener::laterClose}"
             android:orientation="horizontal"
@@ -118,7 +118,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
                 android:text="我知道了"
-                android:textColor="#D82D2A"
+                android:textColor="@color/white"
                 android:textSize="20sp" />
 
             <TextView
@@ -127,7 +127,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:text=""
-                android:textColor="#D82D2A"
+                android:textColor="@color/white"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -147,22 +147,31 @@
             app:layout_constraintTop_toBottomOf="@+id/iv_window" />
 
         <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-20dp"
+            android:src="@drawable/main_exit_dialog_sz_bg"
+            app:layout_constraintBottom_toTopOf="@+id/iv_window"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
             android:id="@+id/iv_top_icon"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="-35dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-30dp"
             android:src="@drawable/main_exit_dialog_sz"
+            app:layout_constraintBottom_toTopOf="@+id/iv_window"
             app:layout_constraintLeft_toLeftOf="@+id/iv_window"
-            app:layout_constraintRight_toRightOf="@id/iv_window"
-            app:layout_constraintTop_toTopOf="@+id/iv_window" />
+            app:layout_constraintRight_toRightOf="@id/iv_window" />
 
         <ImageView
             android:id="@+id/iv_top_text"
             android:layout_width="275dp"
             android:layout_height="93dp"
-            android:visibility="gone"
             android:layout_marginBottom="15dp"
             android:src="@drawable/main_exit_all_open_next"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/iv_top_icon"
             app:layout_constraintLeft_toLeftOf="@+id/iv_window"
             app:layout_constraintRight_toRightOf="@id/iv_window" />

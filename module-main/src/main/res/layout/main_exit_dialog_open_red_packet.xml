@@ -18,19 +18,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="40dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="23dp"
             tools:ignore="MissingConstraints">
 
             <ImageView
                 android:id="@+id/iv_close"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
+                android:layout_gravity="end"
+                android:layout_marginEnd="50dp"
                 android:onClick="@{eventListener::clickIvClose}"
                 android:src="@drawable/common_close"
                 android:visibility="invisible"
@@ -42,6 +43,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="23dp"
                 android:src="@drawable/dialog_main_exit_hb_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/iv_close" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -55,128 +58,166 @@
                 app:layout_constraintTop_toBottomOf="@+id/cl_window_top_title">
 
                 <ImageView
-                    android:id="@+id/iv_window_top"
-                    android:layout_width="217dp"
-                    android:layout_height="249dp"
-                    android:layout_marginLeft="81dp"
-                    android:layout_marginRight="81dp"
-                    android:background="@drawable/dialog_main_exit_hb"
-                    app:layout_constraintBottom_toBottomOf="parent" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-20dp"
+                    android:background="@drawable/main_dialog_exit_circle1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <LinearLayout
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-20dp"
+                    android:background="@drawable/main_dialog_exit_circle2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-30dp"
+                    android:background="@drawable/main_dialog_exit_circle3"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/iv_window_top"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/dialog_main_exit_hb"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="-20dp"
+                    android:orientation="horizontal"
+                    android:src="@drawable/main_dialog_exit_left_rocket"
+                    app:layout_constraintBottom_toTopOf="@+id/left_rp"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="60dp"
+                    android:orientation="horizontal"
+                    android:src="@drawable/main_dialog_exit_right_rocket"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/dialog_main_exit_hb_flg"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="70dp"
+                    android:src="@drawable/main_dialog_exit_get_money"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:src="@drawable/main_dialog_exit_left_star"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/main_dialog_exit_rt_star"
+                    app:layout_constraintStart_toEndOf="@+id/iv_window_top"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="60dp"
+                    android:src="@drawable/main_dialog_exit_rb_star"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/iv_window_top" />
+
+                <ImageView
                     android:id="@+id/price_ll"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:orientation="horizontal"
+                    android:src="@drawable/main_dialog_exit_pmoney_88"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="¥"
-                        android:textColor="@color/white"
-                        android:textSize="18sp" />
+                <ImageView
+                    android:id="@+id/left_rp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="36dp"
+                    android:orientation="horizontal"
+                    android:src="@drawable/main_dialog_exit_left_rp"
+                    app:layout_constraintBottom_toBottomOf="@+id/price_ll"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/price_ll" />
 
-                    <TextView
-                        android:id="@+id/tv_price_num"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:text="8.8"
-                        android:textColor="@color/white"
-                        android:textSize="39sp" />
-                </LinearLayout>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="55dp"
+                    android:orientation="horizontal"
+                    android:src="@drawable/main_dialog_exit_right_rp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="-10dp"
-                    android:layout_marginBottom="-10dp"
-                    android:background="@drawable/cen_cash_js_bg"
-                    android:paddingLeft="5dp"
-                    android:paddingTop="2dp"
-                    android:paddingRight="5dp"
-                    android:paddingBottom="2dp"
-                    android:text="最高"
-                    android:textColor="#E9423E"
-                    android:textSize="12sp"
-                    app:layout_constraintBottom_toTopOf="@+id/price_ll"
-                    app:layout_constraintLeft_toRightOf="@+id/price_ll" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="45dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/dialog_main_exit_hb_flg" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:text="可提现至微信"
-                        android:textColor="@color/white"
-                        android:textSize="15sp" />
-                </LinearLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_but_layout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="@+id/cl_window_top_layout"
-                app:layout_constraintRight_toRightOf="@+id/cl_window_top_layout"
-                app:layout_constraintTop_toBottomOf="@+id/cl_window_top_layout">
-
-                <LinearLayout
-                    android:id="@+id/ll_but"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="70dp"
                     android:background="@drawable/main_bg_guide_but"
                     android:gravity="center"
                     android:onClick="@{eventListener::clickOpenPacket}"
-                    android:orientation="horizontal">
+                    android:paddingTop="11dp"
+                    android:paddingBottom="12dp"
+                    android:text="立即领取"
+                    android:textColor="#D82D2A"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="41dp"
-                        android:layout_marginRight="41dp"
-                        android:paddingTop="11dp"
-                        android:paddingBottom="12dp"
-                        android:textStyle="bold"
-                        android:text="立即领取"
-                        android:textColor="#D82D2A"
-                        android:textSize="19sp" />
-                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <!-- 几点失效 -->
-                <TextView
-                    android:id="@+id/tv_failure"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:onClick="@{eventListener::clickLater}"
-                    android:text="稍后再来"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    android:visibility="invisible" />
-            </LinearLayout>
+            <!-- 几点失效 -->
+            <!--
+                android:onClick="@{eventListener::clickLater}"-->
+            <TextView
+                android:id="@+id/tv_failure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-20dp"
+                android:text="0点过期"
+                android:textColor="#D6D6D6"
+                android:textSize="14sp"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cl_window_top_layout" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </layout>

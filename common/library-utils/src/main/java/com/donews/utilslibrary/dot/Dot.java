@@ -196,7 +196,20 @@ public class Dot {
     public final static String PAY_SUCC = "pay";
     //抽奖码失败
     public final static String PAY_FAIL = "pay_fail";
-
+    //领取福利
+    public final static String RECEIVE_BENEFITS = "receive_benefits";
+    //领取福利APP
+    public final static String RECEIVE_BENEFITS_APP = "receive_benefits_app";
+    //领取福利WEB
+    public final static String RECEIVE_BENEFITS_WEB = "receive_benefits_web";
+    //解锁跳转
+    public final static String UNLOCK_JUMP = "unlock_jump";
+    //解锁跳转客服端
+    public final static String UNLOCK_JUMP_APP = "unlock_jump_app";
+    //解锁跳转网页
+    public final static String UNLOCK_JUMP_WEB = "unlock_jump_web";
+    //解锁跳转失败
+    public final static String UNLOCK_JUMP_ERROR = "unlock_jump_error";
 
    //积分墙
     //页面进入
