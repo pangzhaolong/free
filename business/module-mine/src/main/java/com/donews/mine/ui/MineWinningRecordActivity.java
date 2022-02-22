@@ -16,7 +16,7 @@ import com.donews.base.utils.ToastUtil;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.abswitch.OtherSwitch;
 import com.donews.middle.bean.HighValueGoodsBean;
 import com.donews.middle.cache.GoodsCache;
 import com.donews.middle.request.RequestUtil;
@@ -134,7 +134,7 @@ public class MineWinningRecordActivity extends
                         ARouter.getInstance()
                                 .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                                 .withString("goods_id", info.getGoodsId())
-                                .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
+                                .withBoolean("start_lottery", OtherSwitch.Ins().isOpenAutoLottery())
                                 .navigation();
                     });
                     notDataView.setPadding(notDataView.getPaddingLeft()

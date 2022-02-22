@@ -1,22 +1,16 @@
 package com.donews.middle.application;
 
 import android.app.Application;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.donews.base.base.BaseApplication;
 import com.donews.base.utils.GsonUtils;
-import com.donews.base.utils.ToastUtil;
 import com.donews.common.IModuleInit;
 import com.donews.middle.BuildConfig;
-import com.donews.middle.abswitch.ABSwitch;
-import com.donews.middle.api.MiddleApi;
+import com.donews.middle.abswitch.OtherSwitch;
 import com.donews.middle.bean.CriticalNumberBean;
 import com.donews.middle.bean.WithdraWalletResp;
 import com.donews.middle.bean.WithdrawConfigResp;
-import com.donews.middle.bean.globle.CommandBean;
 import com.donews.middle.cache.GoodsCache;
 import com.donews.middle.command.CommandManager;
 import com.donews.middle.request.RequestUtil;
@@ -26,9 +20,7 @@ import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.DateManager;
-import com.donews.utilslibrary.utils.HttpConfigUtilsKt;
 
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,7 +40,7 @@ public class MiddleModuleInit implements IModuleInit {
     public boolean onInitAhead(BaseApplication application) {
         GoodsCache.init(application);
         // 获取A/B开关
-        ABSwitch.Ins().init();
+        OtherSwitch.Ins().init();
         requestCommand(application);
         requestWithdraWallet();
         requestWithdrawCenterConfig();

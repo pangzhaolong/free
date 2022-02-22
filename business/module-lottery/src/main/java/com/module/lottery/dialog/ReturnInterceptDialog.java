@@ -20,7 +20,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 
@@ -29,7 +28,7 @@ import com.donews.base.utils.ToastUtil;
 import com.dn.drouter.ARouteHelper;
 import com.dn.events.events.LoginUserStatus;
 import com.donews.common.router.RouterActivityPath;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.abswitch.OtherSwitch;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
@@ -117,7 +116,7 @@ public class ReturnInterceptDialog extends BaseDialog<InterceptDialogLayoutBindi
     private void initView() {
         if (limitNumber == TYPE_1) {
             boolean protocol = getSharedPreferences().getBoolean("protocol", false) ||
-                    ABSwitch.Ins().isOpenAutoAgreeProtocol();
+                    OtherSwitch.Ins().isOpenAutoAgreeProtocol();
             mDataBinding.checkBox.setChecked(protocol);
             mDataBinding.hintTitle.setText(getContext().getResources().getString(R.string.return_intercept_hint_no));
             mDataBinding.jumpButton.setText(getContext().getResources().getString(R.string.return_intercept_button_no));

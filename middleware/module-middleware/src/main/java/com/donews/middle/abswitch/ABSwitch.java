@@ -7,7 +7,8 @@ import android.os.Message;
 import androidx.annotation.NonNull;
 
 import com.donews.common.BuildConfig;
-import com.donews.middle.bean.globle.ABBean;
+import com.donews.common.contract.BaseCustomViewModel;
+import com.donews.middle.bean.globle.OtherBean;
 import com.donews.middle.cache.GoodsCache;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
@@ -16,11 +17,12 @@ import com.donews.network.exception.ApiException;
 import com.donews.utilslibrary.utils.HttpConfigUtilsKt;
 import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.SPUtils;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
 public class ABSwitch {
-    private ABBean mAbBean;
+    private ABSwitchBean mAbSwitchBean;
 
     private static final int UPDATE_CONFIG_MSG = 11003;
 
@@ -43,21 +45,24 @@ public class ABSwitch {
     }
 
     private ABSwitch() {
-        if (mAbBean == null) {
-            mAbBean = new ABBean();
-            mAbBean.setOpenAB(SPUtils.getInformain("Is_Open_AB", true));
+        if (mAbSwitchBean == null) {
+            mAbSwitchBean = new ABSwitchBean();
+            mAbSwitchBean.setOpenAB(SPUtils.getInformain("Is_Open_AB", true));
         }
     }
 
-    public ABBean getAbBean() {
-        if (mAbBean == null) {
-            mAbBean = new ABBean();
+    public ABSwitchBean getAbBean() {
+        if (mAbSwitchBean == null) {
+            mAbSwitchBean = new ABSwitchBean();
         }
-        return mAbBean;
+        return mAbSwitchBean;
     }
 
-    public void setAbBean(ABBean bean) {
-        mAbBean = bean;
+    public void setAbBean(ABSwitchBean bean) {
+        mAbSwitchBean = bean;
+    }
+    public boolean isOpenAB() {
+        return mAbSwitchBean.isOpenAB();
     }
 
 
@@ -74,14 +79,10 @@ public class ABSwitch {
         EasyHttp.get(HttpConfigUtilsKt.withConfigParams(BuildConfig.BASE_CONFIG_URL + "ddyb-abswitch"
                 + BuildConfig.BASE_RULE_URL, true))
                 .cacheMode(CacheMode.NO_CACHE)
-                .execute(new SimpleCallBack<ABBean>() {
+                .execute(new SimpleCallBack<ABSwitchBean>() {
                     @Override
                     public void onError(ApiException e) {
-                        if (!SPUtils.getInformain("Is_Open_AB", true)) {
-                            ABSwitch.Ins().getAbBean().setOpenAB(false);
-                        } else {
-                            ABSwitch.Ins().getAbBean().setOpenAB(true);
-                        }
+                        ABSwitch.Ins().getAbBean().setOpenAB(SPUtils.getInformain("Is_Open_AB", true));
                         if (mHandler != null) {
                             if (mHandler.hasMessages(UPDATE_CONFIG_MSG)) {
                                 mHandler.removeMessages(UPDATE_CONFIG_MSG);
@@ -91,9 +92,8 @@ public class ABSwitch {
                     }
 
                     @Override
-                    public void onSuccess(ABBean abBean) {
-                        ABSwitch.Ins().setAbBean(abBean);
-                        GoodsCache.saveGoodsBean(abBean, "abswitch");
+                    public void onSuccess(ABSwitchBean abSwitchBean) {
+                        ABSwitch.Ins().setAbBean(abSwitchBean);
                         if (!ABSwitch.Ins().getAbBean().isOpenAB()) {
                             SPUtils.setInformain("Is_Open_AB", false);
                         } else {
@@ -109,145 +109,29 @@ public class ABSwitch {
                 });
     }
 
+    public static class ABSwitchBean extends BaseCustomViewModel {
+        @SerializedName("openAB")
+        private boolean openAB;
+        @SerializedName("refreshInterval")
+        private int refreshInterval = 30;
 
-    public boolean isOpenAB() {
-        return mAbBean.isOpenAB();
+        public int getRefreshInterval() {
+            return refreshInterval;
+        }
+
+        public boolean isOpenAB() {
+            return openAB;
+        }
+
+        public void setOpenAB(boolean openAB) {
+            this.openAB = openAB;
+        }
+
+        @Override
+        public String toString() {
+            return "ABBean{" +
+                    "ab='" + openAB + '\'' +
+                    '}';
+        }
     }
-
-    public boolean isOpenVideoToast() {
-        return mAbBean.isOpenVideoToast();
-    }
-    public boolean isOpenOptionalCode() {
-        return mAbBean.isOpenOptionalCode();
-    }
-
-    public int getLotteryPriceShow() {
-        return mAbBean.getLotteryPriceShow();
-    }
-
-    public boolean isOpenAutoLottery() {
-        return mAbBean.isOpenAutoLottery();
-    }
-
-    public int isOpenHomeGuid() {
-        return mAbBean.getOpenHomeGuid();
-    }
-
-    public boolean isOpenAutoAgreeProtocol() {
-        return mAbBean.isOpenAutoAgreeProtocol();
-    }
-
-    public int getOpenAutoLotteryCount() {
-        return mAbBean.getOpenAutoLotteryCount();
-    }
-
-    public boolean isOpenAutoLotteryAfterLoginWxAtExitDialog() {
-        return mAbBean.isOpenAutoLotteryAfterLoginWxAtExitDialog();
-    }
-
-    public boolean isOpenAutoLotteryAfterLoginWx() {
-        return mAbBean.isOpenAutoLotteryAfterLoginWx();
-    }
-
-    public boolean isOpenGuidGif() {
-        return mAbBean.isOpenGuidGif();
-    }
-
-    public int getLotteryLine() {
-        return mAbBean.getLotteryLine();
-    }
-
-    public int getEnableOpenCritModelCount() {
-        return mAbBean.getEnableOpenCritModelCount();
-    }
-
-    public boolean isOpenCritModelByNewUser() {
-        return mAbBean.isOpenCritModelByNewUser();
-    }
-
-    public int getOpenCritModelByNewUserCount() {
-        return mAbBean.getOpenCritModelByNewUserCount();
-    }
-
-    public int getOpenCritModelByOldUserCount() {
-        return mAbBean.getOpenCritModelByOldUserCount();
-    }
-
-    public boolean isOpenScoreModelCrit() {
-        return mAbBean.isOpenScoreModelCrit();
-    }
-
-    public boolean getOpenCritModel() {
-        return mAbBean.isOpenCritModel();
-    }
-
-    public int getScoreTaskPlayTime() {
-        return mAbBean.getScoreTaskPlayTime();
-    }
-
-    public boolean isOpenScoreTask() {
-        return mAbBean.isOpenScoreTask();
-    }
-
-    public int getOpenScoreTaskMax() {
-        return mAbBean.getOpenScoreTaskMax();
-    }
-
-    public int getSelectNumberLocation() {
-        return mAbBean.getSelectNumberLocation();
-    }
-
-    public boolean isSkipSplashAd4NewUser() {
-        return mAbBean.isSkipSplashAd4NewUser();
-    }
-
-
-    public long getIntervalsTime() {
-        return  mAbBean.getIntervalsTime();
-    }
-
-
-    public boolean isOpenJumpDlg() {
-        return mAbBean.isOpenJumpDlg();
-    }
-
-    public boolean isApplicationShareJumpSwitch() {
-        return  mAbBean.isApplicationShareJumpSwitch();
-    }
-    public List<Integer> getOpenOptionalLocationList() {
-        return mAbBean.getOpenOptionalLocationList();
-    }
-
-    public boolean isApplicationBuyJumpSwitch() {
-        return  mAbBean.isApplicationBuyJumpSwitch();
-    }
-
-
-    public List<String> getApplicationShareJumpUrl() {
-        return  mAbBean.getApplicationShareJumpUrl();
-    }
-    public long getApplicationBuyJumpNumber() {
-        return mAbBean.getApplicationBuyJumpNumber();
-    }
-
-    public List<String> getApplicationBuyJumpUrl() {
-        return  mAbBean.getApplicationBuyJumpUrl();
-    }
-
-    public long getApplicationBuyDelayedJump() {
-        return mAbBean.getApplicationBuyDelayedJump();
-    }
-
-    public boolean isScreenUnlockJumpSwitch() {
-        return mAbBean.isScreenUnlockJumpSwitch();
-    }
-
-    public long getDelayedJump() {
-        return mAbBean.getDelayedJump();
-    }
-
-    public int getRevealNumber() {
-        return mAbBean.getRevealNumber();
-    }
-
 }

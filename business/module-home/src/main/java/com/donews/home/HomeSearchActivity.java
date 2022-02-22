@@ -21,7 +21,7 @@ import com.donews.home.listener.GoodsClickListener;
 import com.donews.home.listener.SearchListener;
 import com.donews.home.viewModel.SearchViewModel;
 import com.donews.home.views.SearchHistoryItem;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.abswitch.OtherSwitch;
 import com.donews.middle.bean.home.SearchHistory;
 import com.donews.middle.bean.home.TmpSearchHistory;
 import com.donews.middle.decoration.GridSpaceItemDecoration;
@@ -294,7 +294,7 @@ public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSe
     public void onClick(String goodsId, String materialId, String searchId, int src) {
         Context context = this;
 
-        if (!ABSwitch.Ins().isOpenJumpDlg()) {
+        if (!OtherSwitch.Ins().isOpenJumpDlg()) {
             GotoUtil.requestPrivilegeLinkBean(context, goodsId, materialId, searchId, src);
             return;
         }

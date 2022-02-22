@@ -30,7 +30,7 @@ import com.donews.base.utils.ToastUtil;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.main.BuildConfig;
 import com.donews.main.dialog.BaseDialog;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.abswitch.OtherSwitch;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.module.lottery.utils.ImageUtils;
 import com.module_lottery.R;
@@ -114,7 +114,7 @@ public class LogToWeChatDialog extends BaseDialog<LogToWechatLayoutBinding> impl
         mDataBinding.userProtocol.setOnClickListener(this);
         mDataBinding.privacyProtocol.setOnClickListener(this);
         boolean protocol = getSharedPreferences().getBoolean("Free", false) ||
-                ABSwitch.Ins().isOpenAutoAgreeProtocol();
+                OtherSwitch.Ins().isOpenAutoAgreeProtocol();
         mDataBinding.checkBox.setChecked(protocol);
         mDataBinding.jumpButton.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("MissingPermission")

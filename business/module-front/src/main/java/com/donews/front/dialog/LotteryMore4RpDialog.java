@@ -24,7 +24,7 @@ import com.donews.front.databinding.FrontLotteryMore4RpDialogBinding;
 import com.donews.front.utils.AnimationUtils;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoods;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoodsResp;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.abswitch.OtherSwitch;
 import com.donews.middle.dialog.BaseDialog;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
@@ -86,7 +86,7 @@ public class LotteryMore4RpDialog extends BaseDialog<FrontLotteryMore4RpDialogBi
                 ARouter.getInstance()
                         .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                         .withString("goods_id", mGoods.getGoodsId())
-                        .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
+                        .withBoolean("start_lottery", OtherSwitch.Ins().isOpenAutoLottery())
                         .navigation();
             } catch (Exception ignored) {
             }

@@ -8,16 +8,13 @@ package com.module.lottery.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
-import android.text.style.ImageSpan;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +24,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
@@ -37,7 +33,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.abswitch.OtherSwitch;
 import com.donews.middle.utils.CriticalModelTool;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.UrlUtils;
@@ -48,7 +44,6 @@ import com.module.lottery.bean.WinLotteryBean;
 import com.module.lottery.ui.LotteryActivity;
 import com.module.lottery.utils.ImageUtils;
 import com.module.lottery.utils.ScrollLinearLayoutManager;
-import com.module.lottery.utils.TopLinearSmoothScroller;
 import com.module.lottery.utils.VerticalImageSpan;
 import com.module_lottery.BuildConfig;
 import com.module_lottery.R;
@@ -104,8 +99,8 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             if (holder instanceof ListHolder && mCommodityBean != null) {
                 ListHolder listHolder = ((ListHolder) (holder));
                 //价格
-                listHolder.mGuesslikeHeadBinding.price.setText(ABSwitch.Ins().getLotteryPriceShow() + "");
-                listHolder.mGuesslikeHeadBinding.postage.setText(ABSwitch.Ins().getLotteryPriceShow() + "元包邮领奖");
+                listHolder.mGuesslikeHeadBinding.price.setText(OtherSwitch.Ins().getLotteryPriceShow() + "");
+                listHolder.mGuesslikeHeadBinding.postage.setText(OtherSwitch.Ins().getLotteryPriceShow() + "元包邮领奖");
                 //参考价格
                 listHolder.mGuesslikeHeadBinding.referPrice.setText("参考价: " + mCommodityBean.getOriginalPrice() + "");
                 listHolder.mGuesslikeHeadBinding.referPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG); //中划线
@@ -322,7 +317,7 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                             TextView textView = (TextView) linearLayout.getChildAt(j);
                             textView.setTextColor(mContext.getResources().getColor(R.color.pending));
                             TextPaint paint = textView.getPaint();
-                            if (ABSwitch.Ins().isOpenOptionalCode() && !CriticalModelTool.ifCriticalStrike()) {
+                            if (OtherSwitch.Ins().isOpenOptionalCode() && !CriticalModelTool.ifCriticalStrike()) {
                                 if (getOptionalCodeType(refer)) {
                                     textView.setText("自选码");
                                     textView.setTag(true);
@@ -358,7 +353,7 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
 
     private boolean getOptionalCodeType(int local) {
-        List<Integer> localList = ABSwitch.Ins().getOpenOptionalLocationList();
+        List<Integer> localList = OtherSwitch.Ins().getOpenOptionalLocationList();
         for (int i = 0; i < localList.size(); i++) {
             if (local == localList.get(i)) {
                 return true;

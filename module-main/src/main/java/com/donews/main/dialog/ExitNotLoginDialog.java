@@ -27,7 +27,7 @@ import com.donews.main.R;
 import com.donews.main.databinding.MainInterceptDialogLayoutBinding;
 import com.donews.main.utils.ClickDoubleUtil;
 import com.donews.main.utils.ExitInterceptUtils;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.abswitch.OtherSwitch;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
@@ -150,7 +150,7 @@ public class ExitNotLoginDialog extends BaseDialog<MainInterceptDialogLayoutBind
         } else if (mType == TYPE_2) {
             //未登录时
             boolean protocol = getSharedPreferences().getBoolean("protocol", false) ||
-                    ABSwitch.Ins().isOpenAutoAgreeProtocol();
+                    OtherSwitch.Ins().isOpenAutoAgreeProtocol();
             mDataBinding.checkBox.setChecked(protocol);
 //            mDataBinding.title.setText(getContext().getResources().getString(R.string.return_intercept_title));
 //            mDataBinding.hintTitle.setText(getContext().getResources().getString(R.string.return_intercept_hint_no));

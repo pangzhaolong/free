@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 
 import com.donews.base.model.BaseLiveDataModel;
 import com.donews.common.ad.business.monitor.LotteryAdCount;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.abswitch.OtherSwitch;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
@@ -20,7 +20,6 @@ import com.donews.network.exception.ApiException;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
-import com.module.lottery.bean.CritCodeBean;
 import com.module.lottery.bean.GenerateCodeBean;
 import com.module.lottery.model.LotteryModel;
 import com.module.lottery.ui.BaseParams;
@@ -62,7 +61,7 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
 
         //生成抽奖码分为两种情况 本地生成  和服务器生成
         boolean logType = AppInfo.checkIsWXLogin();
-        if (ABSwitch.Ins().getLotteryLine() == 1 && !logType) {
+        if (OtherSwitch.Ins().getLotteryLine() == 1 && !logType) {
             mLotteryHandler.sendMessageDelayed(mes, 2000);
         } else {
             mLotteryHandler.sendMessageDelayed(mes, 800);
@@ -88,7 +87,7 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
     public void generateLotteryCode() {
         //生成抽奖码分为两种情况 本地生成  和服务器生成
         boolean logType = AppInfo.checkIsWXLogin();
-        if (ABSwitch.Ins().getLotteryLine() == 1 && !logType) {
+        if (OtherSwitch.Ins().getLotteryLine() == 1 && !logType) {
             //本地生成
             if (mOnFinishListener != null) {
                 mOnFinishListener.onExclusiveBulletFrame();

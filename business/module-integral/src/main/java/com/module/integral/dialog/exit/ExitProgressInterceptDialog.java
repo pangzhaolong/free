@@ -1,28 +1,18 @@
 package com.module.integral.dialog.exit;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.blankj.utilcode.util.VibrateUtils;
-import com.donews.base.utils.ToastUtil;
-import com.donews.common.router.RouterActivityPath;
-import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.utils.CommonAnimationUtils;
 import com.example.module_integral.R;
 import com.example.module_integral.databinding.IntegralScheduleDialogLayoutBinding;
-import com.module.lottery.bean.GenerateCodeBean;
 import com.module.lottery.dialog.BaseDialog;
-import com.module.lottery.dialog.ExclusiveLotteryCodeDialog;
-import com.module.lottery.dialog.LogToWeChatDialog;
 
 import java.lang.ref.WeakReference;
 

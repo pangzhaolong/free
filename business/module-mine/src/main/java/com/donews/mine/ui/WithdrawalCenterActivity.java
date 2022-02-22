@@ -1,7 +1,5 @@
 package com.donews.mine.ui;
 
-import static com.donews.mine.MineFragment.mineYYWCache;
-import static com.donews.mine.MineFragment.mineYYWCacheFile;
 import static com.donews.utilslibrary.utils.KeySharePreferences.CURRENT_SCORE_TASK_COUNT;
 
 import android.graphics.Typeface;
@@ -15,12 +13,10 @@ import androidx.annotation.Nullable;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.blankj.utilcode.util.SPUtils;
 import com.dn.events.events.WalletRefreshEvent;
 import com.dn.sdk.bean.integral.ProxyIntegral;
 import com.dn.sdk.listener.impl.SimpleInterstitialListener;
 import com.dn.sdk.utils.IntegralComponent;
-import com.donews.base.utils.GsonUtils;
 import com.donews.base.utils.ToastUtil;
 import com.donews.base.utils.glide.GlideUtils;
 import com.donews.common.ad.business.loader.AdManager;
@@ -30,24 +26,16 @@ import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.UserInfoBean;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.abswitch.OtherSwitch;
 import com.donews.middle.front.FrontConfigManager;
-import com.donews.middle.go.GotoUtil;
 import com.donews.middle.views.YywView;
 import com.donews.mine.R;
-import com.donews.mine.bean.MineWithdraWallBean;
 import com.donews.mine.databinding.MineActivityWithdrawalCenterBinding;
 import com.donews.mine.dialogs.MineCongratulationsDialog;
 import com.donews.mine.viewModel.WithdrawalCenterViewModel;
-import com.donews.network.BuildConfig;
-import com.donews.network.EasyHttp;
-import com.donews.network.cache.model.CacheMode;
-import com.donews.network.callback.SimpleCallBack;
-import com.donews.network.exception.ApiException;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
-import com.donews.utilslibrary.utils.JsonUtils;
 import com.gyf.immersionbar.ImmersionBar;
 
 import org.greenrobot.eventbus.EventBus;
@@ -285,11 +273,11 @@ public class WithdrawalCenterActivity extends
 
     //积分任务
     private void getTaskList() {
-        if (!ABSwitch.Ins().isOpenScoreTask()) {
+        if (!OtherSwitch.Ins().isOpenScoreTask()) {
             ToastUtil.showShort(this, "此任务已关闭");
             return;
         }
-        int maxCount = ABSwitch.Ins().getOpenScoreTaskMax();
+        int maxCount = OtherSwitch.Ins().getOpenScoreTaskMax();
         int curT = com.donews.utilslibrary.utils.SPUtils.getInformain(CURRENT_SCORE_TASK_COUNT, 0);
         if (curT >= maxCount) {
             ToastUtil.showShort(this, "今日任务已达上限");

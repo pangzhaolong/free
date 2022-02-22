@@ -28,7 +28,7 @@ import com.donews.main.R;
 import com.donews.main.databinding.MainRpDialogLayoutExBindingImpl;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoods;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoodsResp;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.abswitch.OtherSwitch;
 import com.donews.middle.bean.WalletBean;
 import com.donews.middle.bean.rp.PreRpBean;
 import com.donews.middle.utils.LottieUtil;
@@ -128,7 +128,7 @@ public class MainRpDialog extends AbstractFragmentDialog<MainRpDialogLayoutExBin
                         ARouter.getInstance()
                                 .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                                 .withString("goods_id", mGoods.getGoodsId())
-                                .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
+                                .withBoolean("start_lottery", OtherSwitch.Ins().isOpenAutoLottery())
                                 .withBoolean("privilege", true)
                                 .navigation();
                     }
@@ -241,7 +241,7 @@ public class MainRpDialog extends AbstractFragmentDialog<MainRpDialogLayoutExBin
                             ARouter.getInstance()
                                     .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                                     .withString("goods_id", mGoods.getGoodsId())
-                                    .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
+                                    .withBoolean("start_lottery", OtherSwitch.Ins().isOpenAutoLottery())
                                     .withBoolean("privilege", true)
                                     .navigation();
                         }

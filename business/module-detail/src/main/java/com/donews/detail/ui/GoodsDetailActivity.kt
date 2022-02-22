@@ -16,7 +16,6 @@ import com.donews.detail.adapter.GoodsDetailAdapter
 import com.donews.detail.databinding.DetailActivityGoodsDetailBinding
 import com.donews.detail.viewmodel.GoodsDetailViewModel
 import com.google.android.material.tabs.TabLayout
-import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
 import com.orhanobut.logger.Logger
 import android.content.ClipData
@@ -26,12 +25,10 @@ import android.net.Uri
 import android.widget.Toast
 import com.donews.detail.bean.GoodsDetailInfo
 import com.donews.detail.utils.OffsetLinearLayoutManager
-import com.donews.middle.abswitch.ABSwitch
+import com.donews.middle.abswitch.OtherSwitch
 import com.donews.middle.dialog.JumpThirdAppDialog
-import com.donews.middle.go.GotoUtil
 import com.donews.middle.listener.JumpThirdAppListener
 import com.donews.network.result.LoadResult
-import com.swift.sandhook.xposedcompat.XposedCompat.context
 
 
 /**
@@ -299,7 +296,7 @@ class GoodsDetailActivity : MvvmBaseLiveDataActivity<DetailActivityGoodsDetailBi
         }
 
         fun clickBuy(view: View) {
-            if (!ABSwitch.Ins().isOpenJumpDlg) {
+            if (!OtherSwitch.Ins().isOpenJumpDlg) {
                 gogoog()
                 return
             } else{
