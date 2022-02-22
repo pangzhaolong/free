@@ -4,7 +4,6 @@ package com.donews.main.ui;
 import static com.donews.middle.utils.CommonUtils.LOTTERY_FINGER;
 
 import android.content.Context;
-import android.graphics.LinearGradient;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -26,6 +25,7 @@ import com.donews.common.router.RouterActivityPath;
 import com.donews.main.R;
 import com.donews.main.databinding.MainActivityGuideBinding;
 import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.abswitch.OtherSwitch;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
@@ -53,7 +53,7 @@ public class GuideActivity
     private String loginTag = "GuideActivity";
 
     public static void start(Context context) {
-        isCenterConfigShow = ABSwitch.Ins().isOpenGuidGif();//中台配置是否显示
+        isCenterConfigShow = OtherSwitch.Ins().isOpenGuidGif();//中台配置是否显示
         isLoadGuide = SPUtils.getInstance().getBoolean("mainGuideIsShow", true);
         if (isLoadGuide && isCenterConfigShow && !ABSwitch.Ins().isOpenAB()) {
             //需要显示引导页，去往引导页
@@ -145,7 +145,7 @@ public class GuideActivity
                 mDataBinding.rlWachatLoginFloat.setVisibility(View.VISIBLE);
             }
         });
-        mDataBinding.loginCkCheck.setChecked(ABSwitch.Ins().isOpenAutoAgreeProtocol());
+        mDataBinding.loginCkCheck.setChecked(OtherSwitch.Ins().isOpenAutoAgreeProtocol());
         mDataBinding.tvUserXy.setOnClickListener(v -> { //用户协议
             Bundle bundle = new Bundle();
             bundle.putString("url",

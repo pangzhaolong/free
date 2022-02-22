@@ -5,9 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class ABBean extends BaseCustomViewModel {
-    @SerializedName("openAB")
-    private boolean openAB;
+public class OtherBean extends BaseCustomViewModel {
     @SerializedName("refreshInterval")
     private int refreshInterval = 30;
     @SerializedName("openVideoToast")
@@ -293,10 +291,6 @@ public class ABBean extends BaseCustomViewModel {
         this.openHomeGuid = openHomeGuid;
     }
 
-    public void setOpenAB(boolean openAB) {
-        this.openAB = openAB;
-    }
-
     public boolean isOpenAutoLottery() {
         return openAutoLottery;
     }
@@ -319,20 +313,5 @@ public class ABBean extends BaseCustomViewModel {
 
     public void setLotteryPriceShow(int lotteryPriceShow) {
         this.lotteryPriceShow = lotteryPriceShow;
-    }
-
-    @Override
-    public String toString() {
-        return "ABBean{" +
-                "ab='" + openAB + '\'' +
-                '}';
-    }
-
-    public boolean isOpenAB() {
-        return openAB;
-    }
-
-    public boolean getOpenAB() {
-        return openAB;
     }
 }

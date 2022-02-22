@@ -13,11 +13,10 @@ import com.dn.drouter.ARouteHelper;
 import com.dn.sdk.bean.integral.ProxyIntegral;
 import com.dn.sdk.utils.IntegralComponent;
 import com.donews.base.BuildConfig;
-import com.donews.base.utils.ToastUtil;
 import com.donews.common.contract.BaseCustomViewModel;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.abswitch.OtherSwitch;
 import com.donews.middle.api.MiddleApi;
 import com.donews.middle.bean.TaskActionBean;
 import com.donews.middle.bean.home.PrivilegeLinkBean;
@@ -25,8 +24,6 @@ import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
-import com.donews.utilslibrary.analysis.AnalysisUtils;
-import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.SPUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -172,7 +169,7 @@ public class GotoUtil {
     }
 
     private static void getIntegralTask(Context context) {
-        if (SPUtils.getInformain(CURRENT_SCORE_TASK_COUNT, 0) >= ABSwitch.Ins().getOpenScoreTaskMax()) {
+        if (SPUtils.getInformain(CURRENT_SCORE_TASK_COUNT, 0) >= OtherSwitch.Ins().getOpenScoreTaskMax()) {
             ARouter.getInstance()
                     .build(RouterFragmentPath.Integral.PAGER_INTEGRAL_NOT_TASK)
                     .navigation();
@@ -206,7 +203,7 @@ public class GotoUtil {
     }
 
     private static void checkIntegralTask(Context context) {
-        if (!ABSwitch.Ins().isOpenScoreTask()) {
+        if (!OtherSwitch.Ins().isOpenScoreTask()) {
 //            ARouter.getInstance()
 //                    .build(RouterFragmentPath.Integral.PAGER_INTEGRAL_NOT_TASK)
 //                    .navigation();

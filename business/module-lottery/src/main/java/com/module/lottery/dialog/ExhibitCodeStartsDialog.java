@@ -27,16 +27,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
-import com.blankj.utilcode.util.AppUtils;
 import com.bumptech.glide.Glide;
 import com.dn.sdk.bean.integral.IntegralStateListener;
 import com.dn.sdk.bean.integral.ProxyIntegral;
 import com.dn.sdk.utils.IntegralComponent;
 import com.donews.base.base.BaseApplication;
-import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.business.monitor.LotteryAdCount;
-import com.donews.common.bean.CritMessengerBean;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.abswitch.OtherSwitch;
 import com.donews.middle.utils.CriticalModelTool;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
@@ -48,11 +45,7 @@ import com.module_lottery.R;
 import com.module_lottery.databinding.ExhibitCodeDialogLayoutBinding;
 import com.orhanobut.logger.Logger;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.lang.ref.WeakReference;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -189,7 +182,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
                         mDataBinding.integralBt.post(new Runnable() {
                             @Override
                             public void run() {
-                                mDataBinding.integralBt.setText("体验" + ABSwitch.Ins().getScoreTaskPlayTime() + "秒");
+                                mDataBinding.integralBt.setText("体验" + OtherSwitch.Ins().getScoreTaskPlayTime() + "秒");
                             }
                         });
                     }
@@ -290,13 +283,13 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
             mDataBinding.giftBoxOff.playAnimation();
         }
         //开启了暴击模式
-        if (ABSwitch.Ins().getOpenCritModel()) {
+        if (OtherSwitch.Ins().getOpenCritModel()) {
             Logger.d(TAG + "开启了暴击模式");
             //每天参与次数
             if (DateManager.getInstance().isAllowCritical()) {
                 Logger.d(TAG + "可以继续参与");
                 //判断是否打开新手模式
-                if (ABSwitch.Ins().isOpenCritModelByNewUser()) {
+                if (OtherSwitch.Ins().isOpenCritModelByNewUser()) {
                     Logger.d(TAG + "新手模式");
                     //判断是否处于新手阶段
                     if (CriticalModelTool.isNewUser()) {
@@ -328,7 +321,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
     private void oldUserModel() {
         int number = LotteryAdCount.INSTANCE.getCriticalModelLotteryNumber();
         //判断积分墙是否开启
-        if (ABSwitch.Ins().isOpenScoreModelCrit() && number == 0) {
+        if (OtherSwitch.Ins().isOpenScoreModelCrit() && number == 0) {
             //积分下载模式打开的 ，获取是否有积分任务
             //新用户并且抽奖次数未达到开启暴击条件
             CriticalModelTool.getScenesSwitch(new CriticalModelTool.IScenesSwitchListener() {
@@ -361,9 +354,9 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
         //已经参与的次数
         int participateNumber = LotteryAdCount.INSTANCE.getCriticalModelLotteryNumber();
         if (CriticalModelTool.isNewUser()) {
-            sumNumber = ABSwitch.Ins().getOpenCritModelByNewUserCount();
+            sumNumber = OtherSwitch.Ins().getOpenCritModelByNewUserCount();
         } else {
-            sumNumber = ABSwitch.Ins().getOpenCritModelByOldUserCount();
+            sumNumber = OtherSwitch.Ins().getOpenCritModelByOldUserCount();
         }
         if ((sumNumber - participateNumber) == 0) {
             mDataBinding.critDraw.setVisibility(View.GONE);

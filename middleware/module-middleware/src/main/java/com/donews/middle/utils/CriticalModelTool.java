@@ -5,7 +5,7 @@ import com.dn.sdk.utils.IntegralComponent;
 import com.donews.common.ad.business.monitor.LotteryAdCount;
 import com.donews.common.config.CritParameterConfig;
 import com.donews.common.contract.LoginHelp;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.abswitch.OtherSwitch;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.DateManager;
 import com.donews.utilslibrary.utils.SPUtils;
@@ -19,7 +19,7 @@ public class CriticalModelTool {
     //判断是否是新用户
     public static boolean isNewUser() {
         //是否开启新用户模式
-        if (ABSwitch.Ins().isOpenCritModelByNewUser()) {
+        if (OtherSwitch.Ins().isOpenCritModelByNewUser()) {
             //设备时长24小时
             long duration = 24 * 60 * 60 * 1000L;
             //新手标识
@@ -49,7 +49,7 @@ public class CriticalModelTool {
     //判断抽奖次数和最低抽奖次数一样(前提是处于普通次数模式)
     public static boolean ifCoincide() {
         //开启了暴击模式
-        if (ABSwitch.Ins().getOpenCritModel() && DateManager.getInstance().isAllowCritical()) {
+        if (OtherSwitch.Ins().getOpenCritModel() && DateManager.getInstance().isAllowCritical()) {
             //新用户
             int sumNumber = 0;
             //已经参与的次数
@@ -57,9 +57,9 @@ public class CriticalModelTool {
             if (isNewUser()) {
                 //判断次数是否满足最低
                 //总共需要抽多少个抽奖码开始暴击模式
-                sumNumber = ABSwitch.Ins().getOpenCritModelByNewUserCount();
+                sumNumber = OtherSwitch.Ins().getOpenCritModelByNewUserCount();
             } else {
-                sumNumber = ABSwitch.Ins().getOpenCritModelByOldUserCount();
+                sumNumber = OtherSwitch.Ins().getOpenCritModelByOldUserCount();
             }
 
             if (participateNumber >= sumNumber) {
@@ -73,7 +73,7 @@ public class CriticalModelTool {
         if (!AppInfo.checkIsWXLogin()) {
             return false;
         }
-        if (!ABSwitch.Ins().getOpenCritModel()) {
+        if (!OtherSwitch.Ins().getOpenCritModel()) {
             return false;
         }
         if (!DateManager.getInstance().isAllowCritical()) {
@@ -95,11 +95,11 @@ public class CriticalModelTool {
 
     //场景切换
     public static void getScenesSwitch(final IScenesSwitchListener iScenesSwitchListener) {
-        if (ABSwitch.Ins().getOpenCritModel()) {
+        if (OtherSwitch.Ins().getOpenCritModel()) {
             if (iScenesSwitchListener != null) {
                 //新用户并且抽奖次数未达到开启暴击条件
                 //新用户的次数
-                int sumNumber = ABSwitch.Ins().getOpenCritModelByNewUserCount();
+                int sumNumber = OtherSwitch.Ins().getOpenCritModelByNewUserCount();
                 //已经参与的次数
                 int participateNumber = LotteryAdCount.INSTANCE.getCriticalModelLotteryNumber();
                 boolean markTEststst = SPUtils.getInformain(CritParameterConfig.LOTTERY_MARK, true);
@@ -109,7 +109,7 @@ public class CriticalModelTool {
                     return;
                 }
                 //非新手
-                if (ABSwitch.Ins().isOpenScoreModelCrit()) {
+                if (OtherSwitch.Ins().isOpenScoreModelCrit()) {
                     IntegralComponent.getInstance().getIntegral(new IntegralComponent.IntegralHttpCallBack() {
                         @Override
                         public void onSuccess(ProxyIntegral integralBean) {
@@ -150,9 +150,9 @@ public class CriticalModelTool {
         int sumNumber = 0;
         if (isNewUser()) {
             //总共需要抽多少个抽奖码开始暴击模式
-            sumNumber = ABSwitch.Ins().getOpenCritModelByNewUserCount();
+            sumNumber = OtherSwitch.Ins().getOpenCritModelByNewUserCount();
         } else {
-            sumNumber = ABSwitch.Ins().getOpenCritModelByOldUserCount();
+            sumNumber = OtherSwitch.Ins().getOpenCritModelByOldUserCount();
         }
         return sumNumber;
     }
@@ -166,7 +166,7 @@ public class CriticalModelTool {
             return false;
         }
 
-        if (ABSwitch.Ins().getOpenCritModel()) {
+        if (OtherSwitch.Ins().getOpenCritModel()) {
             //判断是否是暴击时刻
             int state = SPUtils.getInformain(CritParameterConfig.CRIT_STATE, 0);
             return state == 1;

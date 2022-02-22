@@ -31,7 +31,7 @@ import com.dn.sdk.listener.impl.SimpleInterstitialListener;
 import com.donews.base.BuildConfig;
 import com.donews.common.ad.business.loader.AdManager;
 import com.donews.common.router.RouterFragmentPath;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.abswitch.OtherSwitch;
 import com.donews.mine.R;
 import com.donews.mine.databinding.MineCongratulationsDialogLayoutBinding;
 import com.donews.mine.dialogs.bean.RecommendBean;
@@ -40,7 +40,6 @@ import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
-import com.donews.network.request.BaseRequest;
 import com.donews.network.request.GetRequest;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
@@ -85,7 +84,7 @@ public class MineCongratulationsDialog extends BaseDialog<MineCongratulationsDia
                 ARouter.getInstance()
                         .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                         .withString("goods_id", mRecommendBean.getGoodsId())
-                        .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
+                        .withBoolean("start_lottery", OtherSwitch.Ins().isOpenAutoLottery())
                         .navigation();
             }
         });

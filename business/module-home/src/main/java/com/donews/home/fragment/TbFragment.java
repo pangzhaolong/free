@@ -17,7 +17,7 @@ import com.donews.home.adapter.SearchSugTbAdapter;
 import com.donews.home.databinding.HomeFragmentSearchTbBinding;
 import com.donews.home.listener.GoodsClickListener;
 import com.donews.home.viewModel.TbViewModel;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.abswitch.OtherSwitch;
 import com.donews.middle.bean.home.HomeGoodsBean;
 import com.donews.middle.bean.home.SearchHistory;
 import com.donews.middle.bean.home.TmpSearchHistory;
@@ -37,7 +37,7 @@ public class TbFragment extends MvvmLazyLiveDataFragment<HomeFragmentSearchTbBin
     public void onClick(String goodsId, String materialId, String searchId, int src) {
         Context context = this.getContext();
 
-        if (!ABSwitch.Ins().isOpenJumpDlg()) {
+        if (!OtherSwitch.Ins().isOpenJumpDlg()) {
             GotoUtil.requestPrivilegeLinkBean(context, goodsId, materialId, searchId, src);
             return;
         }

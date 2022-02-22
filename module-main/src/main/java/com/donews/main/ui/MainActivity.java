@@ -1,7 +1,6 @@
 package com.donews.main.ui;
 
 import static com.donews.common.config.CritParameterConfig.CRIT_STATE;
-import static com.donews.common.router.RouterActivityPath.Feedback.PAGER_ACTIVITY_FEEDBACK;
 import static com.donews.utilslibrary.utils.KeySharePreferences.NOTIFY_RANDOM_RED_AMOUNT;
 
 import android.content.Context;
@@ -77,11 +76,11 @@ import com.donews.main.viewModel.MainViewModel;
 import com.donews.main.views.CornerMarkUtils;
 import com.donews.main.views.MainBottomTanItem;
 import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.abswitch.OtherSwitch;
 import com.donews.middle.bean.HighValueGoodsBean;
 import com.donews.middle.bean.RedEnvelopeUnlockBean;
 import com.donews.middle.bean.TaskActionBean;
 import com.donews.middle.cache.GoodsCache;
-import com.donews.middle.front.FrontConfigManager;
 import com.donews.middle.request.RequestUtil;
 import com.donews.middle.utils.CriticalModelTool;
 import com.donews.middle.views.FrontFloatingBtn;
@@ -542,8 +541,8 @@ public class MainActivity
             SPUtils.setInformain(KeySharePreferences.INTO_FRONT_COUNTS, intoFrontCounts);
         }
 
-        if (ABSwitch.Ins().isOpenHomeGuid() != 0
-                && SPUtils.getInformain(KeySharePreferences.INTO_FRONT_COUNTS, 0) >= ABSwitch.Ins().isOpenHomeGuid()
+        if (OtherSwitch.Ins().isOpenHomeGuid() != 0
+                && SPUtils.getInformain(KeySharePreferences.INTO_FRONT_COUNTS, 0) >= OtherSwitch.Ins().isOpenHomeGuid()
                 && !SPUtils.getInformain(KeySharePreferences.HAS_DO_INTO_FRONT, false)) {
             mDataBinding.mainHomeGuidCl.setVisibility(View.VISIBLE);
             mDataBinding.mainHomeBtn.setOnClickListener(v -> {
@@ -577,7 +576,7 @@ public class MainActivity
             ARouter.getInstance()
                     .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                     .withString("goods_id", info.getGoodsId())
-                    .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
+                    .withBoolean("start_lottery", OtherSwitch.Ins().isOpenAutoLottery())
 //                            .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
 //                            .withBoolean("privilege", true)
                     .navigation();
@@ -600,7 +599,7 @@ public class MainActivity
             return;
         }
         //是否开启了积分任务，T:开启了，F:未开启
-        boolean isOpenJFModel = ABSwitch.Ins().getOpenCritModel();
+        boolean isOpenJFModel = OtherSwitch.Ins().getOpenCritModel();
         if (!isOpenJFModel) {
             //没有开启积分墙任务。那么而直接进行日常任务
             ExtDialogUtil.showCritWelfareDialog(

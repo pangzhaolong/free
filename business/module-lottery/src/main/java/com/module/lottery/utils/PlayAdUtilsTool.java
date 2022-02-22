@@ -19,7 +19,7 @@ import com.dn.sdk.listener.IAdRewardVideoListener;
 import com.donews.base.base.AppManager;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.cache.AdVideoCacheUtils;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.abswitch.OtherSwitch;
 import com.donews.middle.utils.CommonAnimationUtils;
 import com.donews.utilslibrary.utils.DateManager;
 import com.module_lottery.R;
@@ -108,7 +108,7 @@ public class PlayAdUtilsTool {
 
 
     private void videoComplete() {
-        if (ABSwitch.Ins().isOpenVideoToast()) {
+        if (OtherSwitch.Ins().isOpenVideoToast()) {
             try {
                 Activity activity = AppManager.getInstance().getTopActivity();
                 if (activity != null) {
@@ -181,7 +181,7 @@ public class PlayAdUtilsTool {
         try {
             Activity activity = AppManager.getInstance().getTopActivity();
             if (activity != null && !activity.getClass().getSimpleName().equals("MainActivity") && !activity.getClass().getSimpleName().equals("LotteryActivity")) {
-                if (ABSwitch.Ins().isOpenVideoToast()) {
+                if (OtherSwitch.Ins().isOpenVideoToast()) {
                     View view = LayoutInflater.from(mContext).inflate(R.layout.pop_ups_layout, null);
                     LinearLayout linearLayout = view.findViewById(R.id.toast_view);
                     View decorView = activity.getWindow().getDecorView();

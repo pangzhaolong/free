@@ -13,15 +13,13 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
-import com.donews.common.router.RouterActivityPath;
 import com.donews.home.R;
 import com.donews.home.adapter.TopGoodsAdapter;
 import com.donews.home.databinding.HomeFragmentTopBinding;
 import com.donews.home.listener.GoodsClickListener;
 import com.donews.home.viewModel.TopViewModel;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.abswitch.OtherSwitch;
 import com.donews.middle.bean.home.HomeGoodsBean;
 import com.donews.middle.cache.GoodsCache;
 import com.donews.middle.decoration.GridSpaceItemDecoration;
@@ -149,7 +147,7 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
     public void onClick(String goodsId, String materialId, String searchId, int src) {
         Context context = this.getContext();
 
-        if (!ABSwitch.Ins().isOpenJumpDlg()) {
+        if (!OtherSwitch.Ins().isOpenJumpDlg()) {
             GotoUtil.requestPrivilegeLinkBean(context, goodsId, materialId, searchId, src);
             return;
         }

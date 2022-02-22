@@ -9,7 +9,7 @@ import android.os.Message;
 
 import androidx.annotation.NonNull;
 
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.abswitch.OtherSwitch;
 import com.donews.utilslibrary.utils.DateManager;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
@@ -30,15 +30,15 @@ public class ScreenStateReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         mContext = context;
         if (Objects.equals(Intent.ACTION_SCREEN_ON, intent.getAction())) {
-            if (ABSwitch.Ins().isScreenUnlockJumpSwitch()) {
+            if (OtherSwitch.Ins().isScreenUnlockJumpSwitch()) {
                 //判断每日次数
-                if (DateManager.getInstance().timesLimit(DateManager.JUMP_TIMESTAMP, DateManager.JUMP_NUMBER, ABSwitch.Ins().getRevealNumber())) {
+                if (DateManager.getInstance().timesLimit(DateManager.JUMP_TIMESTAMP, DateManager.JUMP_NUMBER, OtherSwitch.Ins().getRevealNumber())) {
                     //开启了解锁后商场跳转
                     Message message = new Message();
                     mScreenHandler.removeMessages(0);
                     mScreenHandler.removeCallbacksAndMessages(null);
                     message.what = 1;
-                    mScreenHandler.sendMessageDelayed(message, ABSwitch.Ins().getDelayedJump());
+                    mScreenHandler.sendMessageDelayed(message, OtherSwitch.Ins().getDelayedJump());
                 }
 
             }
@@ -66,7 +66,7 @@ public class ScreenStateReceiver extends BroadcastReceiver {
         }
         String rulValue = "";
         Uri uri = null;
-        final List<String> urlList = ABSwitch.Ins().getApplicationShareJumpUrl();
+        final List<String> urlList = OtherSwitch.Ins().getApplicationShareJumpUrl();
         if (urlList != null) {
             Random rand = new Random();
             int id = rand.nextInt(urlList.size());
@@ -74,7 +74,7 @@ public class ScreenStateReceiver extends BroadcastReceiver {
             uri = Uri.parse(rulValue);// 商品地址
         }
         if (uri != null) {
-            if ((System.currentTimeMillis() - mIntervalsTime) > ABSwitch.Ins().getIntervalsTime()) {
+            if ((System.currentTimeMillis() - mIntervalsTime) > OtherSwitch.Ins().getIntervalsTime()) {
                 mIntervalsTime = System.currentTimeMillis();
                 try {
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);

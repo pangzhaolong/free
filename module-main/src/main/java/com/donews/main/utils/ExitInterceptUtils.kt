@@ -10,7 +10,6 @@ import com.dn.sdk.listener.impl.SimpleRewardVideoListener
 import com.donews.base.base.AppManager
 import com.donews.base.base.AppStatusConstant
 import com.donews.base.base.AppStatusManager
-import com.donews.base.utils.ToastUtil
 import com.donews.common.ad.business.manager.JddAdConfigManager
 import com.donews.common.ad.business.loader.AdManager
 import com.donews.common.ad.business.monitor.LotteryAdCount
@@ -20,7 +19,7 @@ import com.donews.main.BuildConfig
 import com.donews.main.dialog.*
 import com.donews.main.entitys.resps.ExitInterceptConfig
 import com.donews.main.ui.RpActivity
-import com.donews.middle.abswitch.ABSwitch
+import com.donews.middle.abswitch.OtherSwitch
 import com.donews.middle.bean.HighValueGoodsBean
 import com.donews.middle.cache.GoodsCache
 import com.donews.middle.request.RequestUtil
@@ -265,7 +264,7 @@ object ExitInterceptUtils {
                 ARouter.getInstance()
                     .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                     .withString("goods_id", item!!.goodsId)
-                    .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery)
+                    .withBoolean("start_lottery", OtherSwitch.Ins().isOpenAutoLottery)
                     .navigation()
                 disMissDialog()
             }

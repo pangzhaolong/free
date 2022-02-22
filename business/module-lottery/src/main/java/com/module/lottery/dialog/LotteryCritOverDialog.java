@@ -3,11 +3,9 @@ package com.module.lottery.dialog;
 import android.animation.Animator;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,11 +14,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.blankj.utilcode.util.EncryptUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.donews.base.model.BaseLiveDataModel;
-import com.donews.base.utils.ToastUtil;
 import com.donews.common.ad.business.monitor.LotteryAdCount;
-import com.donews.middle.abswitch.ABSwitch;
-import com.donews.middle.bean.home.UserBean;
-import com.donews.middle.utils.CommonAnimationUtils;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
@@ -29,15 +23,9 @@ import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.module.lottery.bean.CritCodeBean;
-import com.module.lottery.bean.GenerateCodeBean;
-import com.module.lottery.bean.RecommendBean;
 import com.module.lottery.model.LotteryModel;
 import com.module.lottery.ui.BaseParams;
-import com.module.lottery.ui.LotteryActivity;
-import com.module.lottery.utils.ImageUtils;
-import com.module.lottery.utils.RandomProbability;
 import com.module_lottery.R;
-import com.module_lottery.databinding.LotteryCritCommodityLayoutBinding;
 import com.module_lottery.databinding.LotteryCritOverDialogLayoutBinding;
 
 import org.json.JSONObject;
@@ -46,8 +34,6 @@ import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
-
-import io.reactivex.disposables.Disposable;
 
 public class LotteryCritOverDialog extends BaseDialog<LotteryCritOverDialogLayoutBinding> implements DialogInterface.OnDismissListener {
     private CritOverHandler mCritOverHandler = new CritOverHandler(this);

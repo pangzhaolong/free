@@ -1,10 +1,8 @@
 package com.donews.mine.adapters;
 
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,20 +10,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.blankj.utilcode.util.ConvertUtils;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.dn.drouter.ARouteHelper;
 import com.donews.base.base.BaseApplication;
-import com.donews.base.utils.ToastUtil;
 import com.donews.base.utils.glide.GlideUtils;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.abswitch.OtherSwitch;
 import com.donews.mine.R;
 import com.donews.mine.bean.emus.WinTypes;
 import com.donews.mine.bean.resps.WinRecordResp;
 import com.donews.mine.utils.TextWinUtils;
-import com.donews.mine.views.SectionCornerMessageLayout;
 import com.donews.mine.views.refresh.adapters.BaesLoadMoreAdapter;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
@@ -96,7 +91,7 @@ public class MineWinningRecordAdapter extends BaesLoadMoreAdapter<WinRecordResp.
                     ARouter.getInstance()
                             .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                             .withString("goods_id", item.goods.id)
-                            .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
+                            .withBoolean("start_lottery", OtherSwitch.Ins().isOpenAutoLottery())
                             .navigation();
                 });
     }

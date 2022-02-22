@@ -17,19 +17,15 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.blankj.utilcode.util.LogUtils;
-import com.blankj.utilcode.util.Utils;
 import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.NetworkChanageEvnet;
 import com.dn.sdk.listener.IAdSplashListener;
 import com.dn.sdk.listener.impl.SimpleInterstitialListener;
 import com.dn.sdk.listener.impl.SimpleRewardVideoListener;
 import com.dn.sdk.listener.impl.SimpleSplashListener;
-import com.dn.sdk.manager.sdk.AdSdkManager;
 import com.donews.base.base.AppManager;
 import com.donews.base.base.AppStatusConstant;
 import com.donews.base.base.AppStatusManager;
-import com.donews.base.fragmentdialog.AbstractFragmentDialog;
-import com.donews.base.utils.ToastUtil;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.common.ad.business.bean.JddAdConfigBean;
 import com.donews.common.ad.business.loader.AdManager;
@@ -42,7 +38,7 @@ import com.donews.main.R;
 import com.donews.main.databinding.MainActivitySplashBinding;
 import com.donews.main.dialog.PersonGuideDialog;
 import com.donews.main.utils.SplashUtils;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.abswitch.OtherSwitch;
 import com.donews.utilslibrary.analysis.AnalysisHelp;
 import com.donews.utilslibrary.base.SmSdkConfig;
 import com.donews.utilslibrary.base.UtilsConfig;
@@ -464,7 +460,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
             return;
         }
         mHadPermissions = true;
-        if ((SPUtils.getInformain(KeySharePreferences.IS_FIRST_IN_APP, 0) <= 0 && ABSwitch.Ins().isSkipSplashAd4NewUser())
+        if ((SPUtils.getInformain(KeySharePreferences.IS_FIRST_IN_APP, 0) <= 0 && OtherSwitch.Ins().isSkipSplashAd4NewUser())
                 || !NetworkUtils.isAvailableByPing()) {
             LogUtil.e("hadPermissions()： gomain");
             goToMain();

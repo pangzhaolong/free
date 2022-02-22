@@ -9,10 +9,9 @@ import android.os.SystemClock;
 
 import com.dn.sdk.bean.integral.ProxyIntegral;
 import com.donews.base.base.BaseApplication;
-import com.donews.base.utils.ToastUtil;
 import com.donews.common.bean.CritMessengerBean;
 import com.donews.common.config.CritParameterConfig;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.abswitch.OtherSwitch;
 import com.donews.middle.application.MiddleModuleInit;
 import com.donews.middle.bean.CriticalNumberBean;
 import com.donews.middle.service.CritLotteryService;
@@ -21,7 +20,6 @@ import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.DateManager;
 import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.SPUtils;
-import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -73,7 +71,7 @@ public class CommonUtils {
                 //开启暴击校验  (开始服务)
                 Intent intent = new Intent(context, CritLotteryService.class);
                 intent.putExtra("start_crit", true);
-                intent.putExtra("start_time", ABSwitch.Ins().getScoreTaskPlayTime());
+                intent.putExtra("start_time", OtherSwitch.Ins().getScoreTaskPlayTime());
                 intent.putExtra("wall_request_id", integralBean.getWallRequestId());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     context.startForegroundService(intent);

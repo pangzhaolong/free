@@ -34,7 +34,7 @@ import com.donews.main.R;
 import com.donews.main.databinding.MainEnterDialogLotteryBindingImpl;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoods;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoodsResp;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.abswitch.OtherSwitch;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
@@ -114,7 +114,7 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
                 ARouter.getInstance()
                         .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                         .withString("goods_id", mGoods.getGoodsId())
-                        .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
+                        .withBoolean("start_lottery", OtherSwitch.Ins().isOpenAutoLottery())
                         .navigation();
 
                 dismiss();
@@ -166,7 +166,7 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
             mDataBinding.mainEnterNoTipsToday.setVisibility(View.GONE);
             mDataBinding.mainEnterAgreeProtocol.setVisibility(View.VISIBLE);
             boolean protocol = getSharedPreferences().getBoolean("Free", false) ||
-                    ABSwitch.Ins().isOpenAutoAgreeProtocol();
+                    OtherSwitch.Ins().isOpenAutoAgreeProtocol();
             mDataBinding.mainEnterCheckBox.setChecked(protocol);
             mDataBinding.btnLottery.setText("登录抢购");
         }
@@ -316,7 +316,7 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
                 ARouter.getInstance()
                         .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                         .withString("goods_id", mGoods.getGoodsId())
-                        .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
+                        .withBoolean("start_lottery", OtherSwitch.Ins().isOpenAutoLottery())
                         .navigation();
             } catch (Exception ignored) {
             }

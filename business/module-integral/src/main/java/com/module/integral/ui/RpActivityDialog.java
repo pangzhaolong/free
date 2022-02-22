@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
-import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.events.DoubleRpEvent;
 import com.dn.events.events.LoginLodingStartStatus;
@@ -26,7 +25,7 @@ import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoods;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoodsResp;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.abswitch.OtherSwitch;
 import com.donews.middle.bean.WalletBean;
 import com.donews.middle.bean.rp.PreRpBean;
 import com.donews.network.EasyHttp;
@@ -101,7 +100,7 @@ public class RpActivityDialog extends MvvmBaseLiveDataActivity<MainRpDialogLayou
                         ARouter.getInstance()
                                 .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                                 .withString("goods_id", mGoods.getGoodsId())
-                                .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
+                                .withBoolean("start_lottery", OtherSwitch.Ins().isOpenAutoLottery())
                                 .withBoolean("privilege", true)
                                 .navigation();
                     }
@@ -208,7 +207,7 @@ public class RpActivityDialog extends MvvmBaseLiveDataActivity<MainRpDialogLayou
                             ARouter.getInstance()
                                     .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                                     .withString("goods_id", mGoods.getGoodsId())
-                                    .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
+                                    .withBoolean("start_lottery", OtherSwitch.Ins().isOpenAutoLottery())
                                     .withBoolean("privilege", true)
                                     .navigation();
                         }

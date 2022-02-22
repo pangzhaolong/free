@@ -18,7 +18,7 @@ import com.donews.main.BuildConfig
 import com.donews.main.R
 import com.donews.main.databinding.MainMoreAwardDialogLayoutBinding
 import com.donews.main.entitys.resps.ExitDialogRecommendGoodsResp
-import com.donews.middle.abswitch.ABSwitch
+import com.donews.middle.abswitch.OtherSwitch
 import com.donews.middle.utils.LottieUtil
 import com.donews.network.EasyHttp
 import com.donews.network.cache.model.CacheMode
@@ -155,7 +155,7 @@ class MoreAwardDialog(
                             ARouter.getInstance()
                                     .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                                     .withString("goods_id", t.list[0].goodsId)
-                                    .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery)
+                                    .withBoolean("start_lottery", OtherSwitch.Ins().isOpenAutoLottery)
                                     .withBoolean("privilege", true)
                                     .navigation()
                         }
