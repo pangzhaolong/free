@@ -281,6 +281,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 @Override
                 public void onClick(View v) {
                     jumpUrl(urlList, -1);
+                    AnalysisUtils.onEventEx(LotteryActivity.this, Dot.RECEIVE_BENEFITS);
                 }
             });
 
@@ -396,6 +397,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
+                AnalysisUtils.onEventEx(LotteryActivity.this, Dot.RECEIVE_BENEFITS_APP);
             } catch (Exception e) {
                 if (rulValue != null && !rulValue.equals("")) {
                     String splitValueList[] = rulValue.split("//");
@@ -405,11 +407,13 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         startActivity(intent);
+                        AnalysisUtils.onEventEx(LotteryActivity.this, Dot.RECEIVE_BENEFITS_WEB);
                     }
                 }
             }
         }
     }
+
 
 
     /**

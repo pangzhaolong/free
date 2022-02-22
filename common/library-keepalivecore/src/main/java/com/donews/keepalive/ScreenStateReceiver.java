@@ -11,7 +11,8 @@ import androidx.annotation.NonNull;
 
 import com.donews.middle.abswitch.ABSwitch;
 import com.donews.utilslibrary.utils.DateManager;
-
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Objects;
@@ -79,6 +80,7 @@ public class ScreenStateReceiver extends BroadcastReceiver {
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     context.startActivity(intent);
+                    AnalysisUtils.onEventEx(context, Dot.UNLOCK_JUMP_APP);
                 } catch (Exception e) {
                     if (rulValue != null && !rulValue.equals("")) {
                         String splitValueList[] = rulValue.split("//");
@@ -88,10 +90,14 @@ public class ScreenStateReceiver extends BroadcastReceiver {
                             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             context.startActivity(intent);
+                            AnalysisUtils.onEventEx(context, Dot.UNLOCK_JUMP_WEB);
                         }
                     }
                 }
+                AnalysisUtils.onEventEx(context, Dot.UNLOCK_JUMP);
             }
+        } else {
+            AnalysisUtils.onEventEx(context, Dot.UNLOCK_JUMP_ERROR, "" + rulValue + "");
         }
     }
 
