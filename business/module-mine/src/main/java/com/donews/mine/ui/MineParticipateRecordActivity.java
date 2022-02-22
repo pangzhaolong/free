@@ -199,9 +199,9 @@ public class MineParticipateRecordActivity extends
             icon.setImageResource(R.drawable.mine_win_open);
             desc.setText("");
         } else {
+            //未开奖
             icon.setVisibility(View.GONE);
             desc.setText("待开奖");
-            //未开奖
         }
         if (SPUtils.getInstance().getInt("" + period.period, 0) == 0) {
             //未查看

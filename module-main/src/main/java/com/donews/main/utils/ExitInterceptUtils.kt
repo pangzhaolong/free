@@ -119,6 +119,13 @@ object ExitInterceptUtils {
                 mFirstClickBackTime = System.currentTimeMillis()
             }
         } else {
+            //测试只打开某个弹窗
+//            showRedPacketAllOpenDialog(activity)
+//            showWinNotAllOpenDialog(activity)
+//            showNotLoginDialog(activity)
+            showContinueLotteryDialog(activity)
+            return
+
             if (isFinishBack) {
                 if (duration < CLICK_INTERVAL) {
                     exitApp(activity)
@@ -697,7 +704,7 @@ object ExitInterceptUtils {
      */
     @JvmStatic
     fun closeExitDialog(act: Activity) {
-        if(RpActivity.isShowInnerAd){
+        if (RpActivity.isShowInnerAd) {
             RpActivity.isShowInnerAd = false
         }
         AdManager.loadInterstitialAd(act, object : SimpleInterstitialListener() {

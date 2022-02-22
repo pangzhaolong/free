@@ -119,6 +119,7 @@ public class MineWinningRecordActivity extends
                     TextView but = mDataBinding.mineWinRecodLayout.getStateLayout().findViewById(R.id.mine_open_win_not_data_but);
                     tv.setText("一个奖都没有中\n你考虑过奖品的感受吗");
                     but.setText("立即抽奖");
+                    but.setVisibility(View.VISIBLE);
                     but.setOnClickListener(v -> {
                         HighValueGoodsBean t = GoodsCache.readGoodsBean(HighValueGoodsBean.class, "exit");
                         if (t.getList() == null ||

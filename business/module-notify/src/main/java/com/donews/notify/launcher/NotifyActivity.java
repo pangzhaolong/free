@@ -1,7 +1,5 @@
 package com.donews.notify.launcher;
 
-import static com.donews.utilslibrary.utils.KeySharePreferences.NOTIFY_RANDOM_RED_AMOUNT;
-import static java.lang.Thread.sleep;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

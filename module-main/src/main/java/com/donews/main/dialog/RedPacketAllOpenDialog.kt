@@ -13,6 +13,7 @@ import android.view.animation.ScaleAnimation
 import androidx.core.animation.addListener
 import androidx.core.animation.doOnEnd
 import com.blankj.utilcode.util.ConvertUtils
+import com.blankj.utilcode.util.NetworkUtils
 import com.blankj.utilcode.util.ScreenUtils
 import com.donews.base.fragmentdialog.AbstractFragmentDialog
 import com.donews.main.R

@@ -157,7 +157,7 @@ public class ExitNotLoginDialog extends BaseDialog<MainInterceptDialogLayoutBind
 //            mDataBinding.hint.setVisibility(View.VISIBLE);
             mDataBinding.withdrawHint.setText(getContext().getResources().getString(R.string.return_intercept_withdraw_no));
             mDataBinding.jumpButton.setText(getContext().getResources().getString(R.string.return_intercept_button_no));
-            mDataBinding.protocolLayout.setVisibility(View.VISIBLE);
+//            mDataBinding.protocolLayout.setVisibility(View.VISIBLE);
             mDataBinding.userProtocol.setOnClickListener(this);
             mDataBinding.privacyProtocol.setOnClickListener(this);
         }

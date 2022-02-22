@@ -368,7 +368,8 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
             return; //未登录
         } else {
             if (AppInfo.checkIsWXLogin()) {
-                bindTv.setVisibility(View.VISIBLE);
+                bindTv.setVisibility(View.GONE);
+//                bindTv.setVisibility(View.VISIBLE);
             } else {
                 //还未登录(没有实际的登录)
                 bindTv.setVisibility(View.GONE);

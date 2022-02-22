@@ -108,36 +108,36 @@ class ContinueLotteryDialog : AbstractFragmentDialog<MainExitDialogContinueLotte
         dataBinding.maskingHand.loop(true)
         dataBinding.maskingHand.playAnimation()
 
-        handler.postDelayed({
-            val arr = arrayOf(dataBinding.dialogYhL, dataBinding.dialogYhRt)
-            var pd = 100L
-            for (imageView in arr) {
-                handler.postDelayed({
-                    if (activity != null) {
-                        val anim = AnimationUtils.loadAnimation(
-                                activity,
-                                R.anim.anim_yh_in
-                        )
-                        anim.setAnimationListener(object : Animation.AnimationListener {
-                            override fun onAnimationStart(animation: Animation?) {
-                            }
-
-                            override fun onAnimationEnd(animation: Animation?) {
-                                imageView.visibility = View.INVISIBLE
-                            }
-
-                            override fun onAnimationRepeat(animation: Animation?) {
-                            }
-                        })
-                        anim.repeatCount = 1
-                        imageView.startAnimation(anim)
-                        imageView.visibility = View.VISIBLE
-                    }
-                }, pd)
-                pd += java.util.Random().nextInt(200) + 1000
-            }
-        }, 150)
-        times.start()
+//        handler.postDelayed({
+//            val arr = arrayOf(dataBinding.dialogYhL, dataBinding.dialogYhRt)
+//            var pd = 100L
+//            for (imageView in arr) {
+//                handler.postDelayed({
+//                    if (activity != null) {
+//                        val anim = AnimationUtils.loadAnimation(
+//                                activity,
+//                                R.anim.anim_yh_in
+//                        )
+//                        anim.setAnimationListener(object : Animation.AnimationListener {
+//                            override fun onAnimationStart(animation: Animation?) {
+//                            }
+//
+//                            override fun onAnimationEnd(animation: Animation?) {
+//                                imageView.visibility = View.INVISIBLE
+//                            }
+//
+//                            override fun onAnimationRepeat(animation: Animation?) {
+//                            }
+//                        })
+//                        anim.repeatCount = 1
+//                        imageView.startAnimation(anim)
+//                        imageView.visibility = View.VISIBLE
+//                    }
+//                }, pd)
+//                pd += java.util.Random().nextInt(200) + 1000
+//            }
+//        }, 150)
+//        times.start()
     }
 
     override fun isUseDataBinding(): Boolean {
@@ -154,7 +154,7 @@ class ContinueLotteryDialog : AbstractFragmentDialog<MainExitDialogContinueLotte
 
     private fun setTitle() {
 //        val prob = "3千+"//Random.nextInt(300).toString()
-        val result = "全场商品<font color='#FFE8AC'>免费</font>领"
+        val result = "已有<font color='#EA443C'>10</font>获得免单奖"
 //        val spannable: SpannableString = SpannableString(result)
 //        spannable.setSpan(
 //                AbsoluteSizeSpan(DensityUtils.dip2px(28f)),
