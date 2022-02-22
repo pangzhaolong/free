@@ -23,6 +23,8 @@ public class ScreenStateReceiver extends BroadcastReceiver {
     private ScreenHandler mScreenHandler = new ScreenHandler(this);
     private Context mContext;
 
+    private long mIntervalsTime = 0;
+
     @Override
     public void onReceive(Context context, Intent intent) {
         mContext = context;
@@ -61,18 +63,35 @@ public class ScreenStateReceiver extends BroadcastReceiver {
         if (context == null) {
             return;
         }
+        String rulValue = "";
         Uri uri = null;
         final List<String> urlList = ABSwitch.Ins().getApplicationShareJumpUrl();
         if (urlList != null) {
             Random rand = new Random();
             int id = rand.nextInt(urlList.size());
-            //指定位置
-            uri = Uri.parse(urlList.get(id));// 商品地址
+            rulValue = urlList.get(id);
+            uri = Uri.parse(rulValue);// 商品地址
         }
         if (uri != null) {
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            context.startActivity(intent);
+            if ((System.currentTimeMillis() - mIntervalsTime) > ABSwitch.Ins().getIntervalsTime()) {
+                mIntervalsTime = System.currentTimeMillis();
+                try {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    context.startActivity(intent);
+                } catch (Exception e) {
+                    if (rulValue != null && !rulValue.equals("")) {
+                        String splitValueList[] = rulValue.split("//");
+                        if (splitValueList != null && splitValueList.length >= 2) {
+                            String url = "https://" + splitValueList[1];
+                            uri = Uri.parse(url);// 商品地址
+                            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            context.startActivity(intent);
+                        }
+                    }
+                }
+            }
         }
     }
 

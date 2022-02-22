@@ -311,23 +311,27 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 @Override
                 public void onClick(View v) {
                     if (ClickDoubleUtil.isFastClick()) {
-                        if (mBuyClickNumber < 2) {
-                            mBuyClickNumber = mBuyClickNumber++;
+                        if (mBuyClickNumber < ABSwitch.Ins().getApplicationBuyJumpNumber()) {
+                            mBuyClickNumber = mBuyClickNumber + 1;
+                            int channelId = mCommodityBean.getSrc();
+                            if (channelId > 0) {
+                                channelId = channelId - 1;
+                            }
                             //判断是那个平台
                             if (mCommodityBean != null) {
-                                if (mCommodityBean.getSrc() == 0) {
+                                if (channelId == 0) {
                                     //淘宝
                                     jumpUrl(urlList, 0);
                                     jump();
                                     return;
                                 }
-                                if (mCommodityBean.getSrc() == 1) {
+                                if (channelId == 1) {
                                     //京东
                                     jumpUrl(urlList, 1);
                                     jump();
                                     return;
                                 }
-                                if (mCommodityBean.getSrc() == 2) {
+                                if (channelId == 2) {
                                     //拼多多
                                     jumpUrl(urlList, 2);
                                     jump();
@@ -348,7 +352,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             panicBuyingButton();
         }
     }
-
 
     private void jump() {
         new Thread(new Runnable() {
@@ -372,24 +375,42 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
     public void jumpUrl(List<String> urlList, int urlValueId) {
         Uri uri = null;
+        String rulValue = "";
+
         if (urlList != null) {
             if (urlValueId == -1) {
                 //随机
                 int id = getRandomNumber(urlList);
-                uri = Uri.parse(urlList.get(id));// 商品地址
+                rulValue = urlList.get(id);
+                uri = Uri.parse(rulValue);// 商品地址
             } else {
                 //指定位置
                 if (urlValueId < urlList.size()) {
-                    uri = Uri.parse(urlList.get(urlValueId));// 商品地址
+                    rulValue = urlList.get(urlValueId);
+                    uri = Uri.parse(rulValue);// 商品地址
                 }
             }
         }
         if (uri != null) {
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
+            try {
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+            } catch (Exception e) {
+                if (rulValue != null && !rulValue.equals("")) {
+                    String splitValueList[] = rulValue.split("//");
+                    if (splitValueList != null && splitValueList.length >= 2) {
+                        String url = "https://" + splitValueList[1];
+                        uri = Uri.parse(url);// 商品地址
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        startActivity(intent);
+                    }
+                }
+            }
         }
     }
+
 
     /**
      * 随机出于上一次不相同的id

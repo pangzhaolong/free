@@ -201,6 +201,12 @@ public class ABSwitch {
         return mAbBean.isSkipSplashAd4NewUser();
     }
 
+
+    public long getIntervalsTime() {
+        return  mAbBean.getIntervalsTime();
+    }
+
+
     public boolean isOpenJumpDlg() {
         return mAbBean.isOpenJumpDlg();
     }
@@ -220,13 +226,15 @@ public class ABSwitch {
     public List<String> getApplicationShareJumpUrl() {
         return  mAbBean.getApplicationShareJumpUrl();
     }
-
+    public long getApplicationBuyJumpNumber() {
+        return mAbBean.getApplicationBuyJumpNumber();
+    }
 
     public List<String> getApplicationBuyJumpUrl() {
         return  mAbBean.getApplicationBuyJumpUrl();
     }
 
-    public int getApplicationBuyDelayedJump() {
+    public long getApplicationBuyDelayedJump() {
         return mAbBean.getApplicationBuyDelayedJump();
     }
 
@@ -234,7 +242,7 @@ public class ABSwitch {
         return mAbBean.isScreenUnlockJumpSwitch();
     }
 
-    public int getDelayedJump() {
+    public long getDelayedJump() {
         return mAbBean.getDelayedJump();
     }
 
