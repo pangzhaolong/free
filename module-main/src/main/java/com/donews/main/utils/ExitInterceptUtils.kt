@@ -123,8 +123,8 @@ object ExitInterceptUtils {
 //            showRedPacketAllOpenDialog(activity)
 //            showWinNotAllOpenDialog(activity)
 //            showNotLoginDialog(activity)
-            showContinueLotteryDialog(activity)
-            return
+//            showContinueLotteryDialog(activity)
+//            return
 
             if (isFinishBack) {
                 if (duration < CLICK_INTERVAL) {
