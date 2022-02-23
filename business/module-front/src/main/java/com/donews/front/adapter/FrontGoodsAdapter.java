@@ -143,7 +143,7 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
         if (payloads.get(0).equals("lotteryStatus")) {
             switch (goodsInfo.getLotteryStatus()) {
                 case 0:
-                    holder.doTv.setText(OtherSwitch.Ins().getLotteryPriceShow()+"元抽奖");
+                    holder.doTv.setText("免费抽奖");
                     holder.labelIv.setVisibility(View.GONE);
                     holder.doTv.setBackgroundResource(R.drawable.front_goods_item_lottery_bg);
                     break;
@@ -217,7 +217,7 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
 
         switch (goodsInfo.getLotteryStatus()) {
             case 0:
-                holder.doTv.setText(OtherSwitch.Ins().getLotteryPriceShow()+"元抽奖");
+                holder.doTv.setText("免费抽奖");
                 holder.labelIv.setVisibility(View.GONE);
                 holder.doTv.setBackgroundResource(R.drawable.front_goods_item_lottery_bg);
                 break;
