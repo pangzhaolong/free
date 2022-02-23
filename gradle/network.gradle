@@ -33,7 +33,7 @@ ext {
     //积分下载查询接口
     API_INTEGRAL_URL = API_BASE_URL + "wall/"
 
-    WEB_BASE_URL = "https://recharge-web.xg.tagtic.cn/jdd/index.html#/"
+    WEB_BASE_URL = "https://recharge-web.xg.tagtic.cn/ddyb/index.html#/"
 
     // 登录的地址
     LOGIN_TEST_URL = "https://monetization.dev.tagtic.cn/"

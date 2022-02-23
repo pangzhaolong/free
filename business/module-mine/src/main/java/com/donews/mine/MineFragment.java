@@ -167,7 +167,7 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
             AnalysisUtils.onEventEx(getActivity(), Dot.Page_ContactService);
             Bundle bundle = new Bundle();
             bundle.putString("url",
-                    "https://recharge-web.xg.tagtic.cn/jdd/index.html#/customer");
+                    "https://recharge-web.xg.tagtic.cn/ddyb/index.html#/customer");
             bundle.putString("title", "客服");
             ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
         });
