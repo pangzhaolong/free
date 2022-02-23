@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import com.donews.base.base.BaseApplication
 import com.donews.base.fragmentdialog.AbstractFragmentDialog
 import com.donews.main.R
 import com.donews.main.databinding.MainExitDialogRemindBinding
@@ -114,6 +115,13 @@ class RemindDialog : AbstractFragmentDialog<MainExitDialogRemindBinding>(),
     }
 
     private fun checkPermission(): Boolean {
+        var con: Context? = context
+        if (con == null) {
+            con = BaseApplication.getInstance()
+        }
+        if (con == null) {
+            return false
+        }
         return EasyPermissions.hasPermissions(
                 context,
                 Manifest.permission.READ_CALENDAR,
