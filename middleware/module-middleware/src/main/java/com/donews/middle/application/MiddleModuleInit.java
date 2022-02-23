@@ -7,6 +7,7 @@ import com.donews.base.base.BaseApplication;
 import com.donews.base.utils.GsonUtils;
 import com.donews.common.IModuleInit;
 import com.donews.middle.BuildConfig;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.abswitch.OtherSwitch;
 import com.donews.middle.bean.CriticalNumberBean;
 import com.donews.middle.bean.WithdraWalletResp;
@@ -40,6 +41,7 @@ public class MiddleModuleInit implements IModuleInit {
     public boolean onInitAhead(BaseApplication application) {
         GoodsCache.init(application);
         // 获取A/B开关
+        ABSwitch.Ins().init();
         OtherSwitch.Ins().init();
         requestCommand(application);
         requestWithdraWallet();

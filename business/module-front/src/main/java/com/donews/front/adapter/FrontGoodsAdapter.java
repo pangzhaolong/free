@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.donews.front.R;
 import com.donews.front.listener.FrontClickListener;
+import com.donews.middle.abswitch.OtherSwitch;
 import com.donews.middle.bean.front.LotteryGoodsBean;
 import com.donews.utilslibrary.utils.DensityUtils;
 import com.donews.utilslibrary.utils.UrlUtils;
@@ -128,6 +129,7 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
         return new GoodsViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull GoodsViewHolder holder, int position, @NonNull List<Object> payloads) {
         super.onBindViewHolder(holder, position, payloads);
@@ -141,7 +143,7 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
         if (payloads.get(0).equals("lotteryStatus")) {
             switch (goodsInfo.getLotteryStatus()) {
                 case 0:
-                    holder.doTv.setText("0元抽奖");
+                    holder.doTv.setText(OtherSwitch.Ins().getLotteryPriceShow()+"元抽奖");
                     holder.labelIv.setVisibility(View.GONE);
                     holder.doTv.setBackgroundResource(R.drawable.front_goods_item_lottery_bg);
                     break;
@@ -215,7 +217,7 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
 
         switch (goodsInfo.getLotteryStatus()) {
             case 0:
-                holder.doTv.setText("0元抽奖");
+                holder.doTv.setText(OtherSwitch.Ins().getLotteryPriceShow()+"元抽奖");
                 holder.labelIv.setVisibility(View.GONE);
                 holder.doTv.setBackgroundResource(R.drawable.front_goods_item_lottery_bg);
                 break;
