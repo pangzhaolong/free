@@ -13,6 +13,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.VibrateUtils;
 import com.dn.drouter.ARouteHelper;
 import com.dn.events.events.LoginLodingStartStatus;
+import com.donews.base.BuildConfig;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.router.RouterActivityPath;
@@ -95,15 +96,13 @@ public class LoginActivity extends MvvmBaseLiveDataActivity<LoginActivityBinding
         mDataBinding.loginCkCheck.setChecked(OtherSwitch.Ins().isOpenAutoAgreeProtocol());
         mDataBinding.tvUserXy.setOnClickListener(v -> { //用户协议
             Bundle bundle = new Bundle();
-            bundle.putString("url",
-                    "http://ad-static-xg.tagtic.cn/wangzhuan/file/e0175957f8bb037da313fa23caae5944.html");
+            bundle.putString("url", BuildConfig.USER_PROTOCOL);
             bundle.putString("title", "用户协议");
             ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
         });
         mDataBinding.tvYxXy.setOnClickListener(v -> { //隐私协议
             Bundle bundle = new Bundle();
-            bundle.putString("url",
-                    "http://ad-static-xg.tagtic.cn/wangzhuan/file/bd5cf63a41d4155d6d126087612f2e2e.html");
+            bundle.putString("url", BuildConfig.PRIVATE_POLICY_URL);
             bundle.putString("title", "隐私政策");
             ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
         });

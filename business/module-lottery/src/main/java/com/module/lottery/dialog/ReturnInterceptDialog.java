@@ -28,6 +28,7 @@ import com.donews.base.utils.ToastUtil;
 import com.dn.drouter.ARouteHelper;
 import com.dn.events.events.LoginUserStatus;
 import com.donews.common.router.RouterActivityPath;
+import com.donews.main.BuildConfig;
 import com.donews.middle.abswitch.OtherSwitch;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
@@ -235,8 +236,7 @@ public class ReturnInterceptDialog extends BaseDialog<InterceptDialogLayoutBindi
         if (v.getId() == R.id.privacy_protocol) {
 
             Bundle bundle = new Bundle();
-            bundle.putString("url",
-                    "http://ad-static-xg.tagtic.cn/wangzhuan/file/bd5cf63a41d4155d6d126087612f2e2e.html");
+            bundle.putString("url", BuildConfig.PRIVATE_POLICY_URL);
             bundle.putString("title", "隐私政策");
             ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
         }
