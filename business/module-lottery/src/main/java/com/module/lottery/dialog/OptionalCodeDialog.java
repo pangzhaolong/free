@@ -30,6 +30,7 @@ import com.donews.utilslibrary.dot.Dot;
 import com.module.lottery.bean.GenerateCodeBean;
 import com.module.lottery.model.LotteryModel;
 import com.module.lottery.ui.BaseParams;
+import com.module.lottery.utils.ClickDoubleUtil;
 import com.module_lottery.R;
 import com.module_lottery.databinding.OptionalCodeDialogBinding;
 
@@ -109,6 +110,7 @@ public class OptionalCodeDialog extends BaseDialog<OptionalCodeDialogBinding> {
         mDataBinding.lotteryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(ClickDoubleUtil.isFastClick())
                 isSendCloseEvent = false;
                 AnalysisUtils.onEventEx(mContext, Dot.Lottery_Increase_ChancesDialog_Continue);
                 if (mOnFinishListener != null) {

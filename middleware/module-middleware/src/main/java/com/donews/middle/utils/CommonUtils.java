@@ -83,6 +83,7 @@ public class CommonUtils {
         }
     }
 
+    //判断首页红包是否开完
     public static boolean isAllRpOpened() {
         return SPUtils.getInformain(KeySharePreferences.OPENED_RED_PACKAGE_COUNTS, 0) >= 5;
     }
