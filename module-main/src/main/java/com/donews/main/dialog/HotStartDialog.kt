@@ -128,9 +128,9 @@ class HotStartDialog : DialogFragment(), DialogInterface.OnKeyListener {
             override fun onAdError(code: Int, errorMsg: String?) {
                 super.onAdError(code, errorMsg)
                 mFirstAd = null
-                if (mIsShow) {
+                /*if (mIsShow) {
                     dismissAllowingStateLoss()
-                }
+                }*/
             }
 
             override fun onAdExposure() {
@@ -171,9 +171,9 @@ class HotStartDialog : DialogFragment(), DialogInterface.OnKeyListener {
         val preloadListener = object : IPreloadAdListener {
             override fun preloadAd(ad: PreloadAd) {
                 mSecondAd = ad
-                if (mIsShow) {
+                /*if (mIsShow) {
                     dismissAllowingStateLoss()
-                }
+                }*/
             }
         }
 
