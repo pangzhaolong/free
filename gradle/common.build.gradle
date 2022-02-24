@@ -23,6 +23,7 @@ android {
         buildConfigField("String", "APP_ID_GROMORE", "\"${rootProject.APP_ID_GROMORE}\"")
         buildConfigField("String", "APP_COMMON_CONFIG", "\"${rootProject.APP_COMMON_CONFIG}\"")
         buildConfigField("String", "APP_NOTIFY_LUNCHER", "\"${rootProject.APP_NOTIFY_LUNCHER}\"")
+        buildConfigField("String", "APP_NOTIFY_CONFIG_DATAS", "\"${rootProject.APP_NOTIFY_CONFIG_DATAS}\"")
         buildConfigField("String", "ECPM_BASE_URL", "\"${rootProject.ECPM_BASE_URL}\"")
         buildConfigField("String", "API_INTEGRAL_URL", "\"${rootProject.API_INTEGRAL_URL}\"")
         buildConfigField("String", "Applog_SDK_APPID", "\"${rootProject.Applog_SDK_APPID}\"")

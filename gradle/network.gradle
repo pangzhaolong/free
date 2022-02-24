@@ -117,6 +117,8 @@ ext {
 
     //桌面通知
     APP_NOTIFY_LUNCHER = BASE_CONFIG_URL + APP_IDENTIFICATION+"-notify"+BASE_RULE
+    //桌面通知配置数据
+    APP_NOTIFY_CONFIG_DATAS = BASE_CONFIG_URL + APP_IDENTIFICATION+"-notify-datas"+BASE_RULE
 
 }
 
