@@ -3,6 +3,7 @@ package com.donews.main.utils
 import android.app.Activity
 import com.dn.events.ad.HotStartEvent
 import com.donews.base.base.AppManager
+import com.donews.common.ad.business.manager.JddAdConfigManager
 import com.donews.common.base.MvvmBaseLiveDataActivity
 import com.donews.main.BuildConfig
 import com.donews.main.dialog.HotStartDialog
@@ -46,7 +47,7 @@ object HotStartCacheUtils {
     }
 
     fun loadAd() {
-        if (mHotStartDialog != null && mHotStartDialog!!.isAdded) {
+        if (mHotStartDialog != null && mHotStartDialog!!.isAdded && JddAdConfigManager.jddAdConfigBean.hotStartAdEnable) {
             mHotStartDialog!!.preloadFirstAd()
         } else {
             clear()
@@ -54,9 +55,14 @@ object HotStartCacheUtils {
     }
 
     fun showAd() {
-        if (mHotStartDialog == null || mHotStartDialog?.dialog == null || mHotStartDialog?.dialog?.isShowing == true) {
+        if (mHotStartDialog == null || mHotStartDialog?.dialog == null
+                || mHotStartDialog?.dialog?.isShowing == true
+                || !JddAdConfigManager.jddAdConfigBean.hotStartAdEnable) {
+
+            EventBus.getDefault().post(HotStartEvent(false))
             return
         }
+
         mHotStartDialog!!.showAd()
         EventBus.getDefault().post(HotStartEvent(true))
     }
