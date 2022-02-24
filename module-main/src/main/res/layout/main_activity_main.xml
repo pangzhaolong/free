@@ -31,17 +31,17 @@
         <TextView
             android:id="@+id/occupy_notify"
             android:layout_width="wrap_content"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
-            android:textStyle="bold"
-            android:textSize="10dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="280dp"
+            android:background="#BAA80A"
             android:paddingStart="8dp"
+            android:paddingTop="3dp"
             android:paddingEnd="8dp"
-            android:textColor="#FFFFFF"
+            android:paddingBottom="3dp"
             android:text="通知调试入口"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="300dp"
-            android:background="#BAA80A" />
+            android:textColor="#FFFFFF"
+            android:textSize="10dp"
+            android:textStyle="bold" />
 
         <me.majiajie.pagerbottomtabstrip.PageNavigationView
             android:id="@+id/bottom_view"
