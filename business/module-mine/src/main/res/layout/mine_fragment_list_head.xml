@@ -342,5 +342,15 @@
         android:layout_below="@+id/ll_glod_cy_zj"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
+        android:visibility="gone"
         android:layout_marginRight="10dp" />
+    <com.donews.middle.views.TaskView
+        android:id="@+id/mine_me_k_operating_ex"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_below="@+id/ll_glod_count"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/ad_shape_bg" />
 </RelativeLayout>
