@@ -47,22 +47,19 @@ object HotStartCacheUtils {
     }
 
     fun loadAd() {
-        if (mHotStartDialog != null && mHotStartDialog!!.isAdded && JddAdConfigManager.jddAdConfigBean.hotStartAdEnable) {
-            mHotStartDialog!!.preloadFirstAd()
+        if (mHotStartDialog != null && mHotStartDialog!!.isAdded) {
+            if (JddAdConfigManager.jddAdConfigBean.hotStartAdEnable) {
+                mHotStartDialog!!.preloadFirstAd()
+            }
         } else {
             clear()
         }
     }
 
     fun showAd() {
-        if (mHotStartDialog == null || mHotStartDialog?.dialog == null
-                || mHotStartDialog?.dialog?.isShowing == true
-                || !JddAdConfigManager.jddAdConfigBean.hotStartAdEnable) {
-
-            EventBus.getDefault().post(HotStartEvent(false))
+        if (mHotStartDialog == null || mHotStartDialog?.dialog == null || mHotStartDialog?.dialog?.isShowing == true) {
             return
         }
-
         mHotStartDialog!!.showAd()
         EventBus.getDefault().post(HotStartEvent(true))
     }
