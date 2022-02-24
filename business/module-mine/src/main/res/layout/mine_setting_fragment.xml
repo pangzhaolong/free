@@ -87,6 +87,11 @@
                 style="@style/HorizontalLine"
                 android:layout_height="10dp"/>
             <!-- 以下是菜单项目 -->
+            <include android:id="@+id/set_user_id"
+                layout="@layout/mine_setting_fragment_item"/>
+            <View
+                style="@style/HorizontalLine"/>
+
             <include
                 android:id="@+id/set_yhxy"
                 layout="@layout/mine_setting_fragment_item" />
@@ -137,7 +142,8 @@
                 style="@style/HorizontalLine"/>
             <include
                 android:id="@+id/set_message_switch"
-                layout="@layout/mine_setting_push_item"/>
+                layout="@layout/mine_setting_push_item"
+                android:visibility="gone"/>
             <TextView
                 android:id="@+id/tv_exit_login"
                 android:layout_width="match_parent"

@@ -263,7 +263,7 @@ public class MineOpenWinningFragment extends
         adapterOpenWinHead.findViewById(R.id.mine_win_code_sele_rules).setOnClickListener((v) -> {
             Bundle bundle = new Bundle();
             bundle.putString("url",
-                    "https://recharge-web.xg.tagtic.cn/jdd/index.html#/rule");
+                    "https://recharge-web.xg.tagtic.cn/ddyb/index.html#/rule");
             bundle.putString("title", "中奖规则");
             ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
             AnalysisUtils.onEventEx(getActivity(), Dot.Page_DetailRule);

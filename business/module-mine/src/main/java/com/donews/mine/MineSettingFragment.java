@@ -2,6 +2,7 @@ package com.donews.mine;
 
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -130,28 +131,27 @@ public class MineSettingFragment extends
             View item = mDataBinding.setListLayout.getChildAt(i);
             if (item.getTag() == null || item.getTag().toString().isEmpty()) {
                 continue;
-            }
-            Switch swControl = item.findViewById(R.id.sw_control);
+            };
+//            Switch swControl = item.findViewById(R.id.sw_control);
             TextView tvTitle = item.findViewById(R.id.tv_name);
             TextView tvDesc = item.findViewById(R.id.tv_right_desc);
+            ImageView imgArrow = item.findViewById(R.id.iv_right_arrow);
+            if (itemViewCount == 0) {
+                imgArrow.setVisibility(View.INVISIBLE);
+            }
             tvTitle.setText(mViewModel.getItemTitleName(itemViewCount));
-            if (swControl != null) {
-//                boolean type = JPushSwitch.getSwitchType(getContext());
-//                swControl.setChecked(!type);
+            /*if (swControl != null) {
                 swControl.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if (isChecked) {
                             ToastUtil.show(getContext(), "消息通知已开启");
-//                            JPushSwitch.resumePush(getContext());
                         } else {
                             ToastUtil.show(getContext(), "消息通知已关闭");
-//                            JPushSwitch.stopPush(getContext());
                         }
                     }
                 });
-
-            }
+            }*/
 
             tvDesc.setText(mViewModel.getItemDescText(itemViewCount));
             mViewModel.addItemClick(item, itemViewCount);

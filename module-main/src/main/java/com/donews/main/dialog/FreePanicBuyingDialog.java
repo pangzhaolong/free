@@ -219,8 +219,7 @@ public class FreePanicBuyingDialog extends BaseDialog<FreePanicDialogLayoutBindi
         //用户协议
         if (v.getId() == R.id.user_protocol) {
             Bundle bundle = new Bundle();
-            bundle.putString("url",
-                    "http://ad-static-xg.tagtic.cn/wangzhuan/file/e0175957f8bb037da313fa23caae5944.html");
+            bundle.putString("url", BuildConfig.USER_PROTOCOL);
             bundle.putString("title", "用户协议");
             ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
         }
@@ -229,8 +228,7 @@ public class FreePanicBuyingDialog extends BaseDialog<FreePanicDialogLayoutBindi
         if (v.getId() == R.id.privacy_protocol) {
 
             Bundle bundle = new Bundle();
-            bundle.putString("url",
-                    "http://ad-static-xg.tagtic.cn/wangzhuan/file/bd5cf63a41d4155d6d126087612f2e2e.html");
+            bundle.putString("url", BuildConfig.PRIVATE_POLICY_URL);
             bundle.putString("title", "隐私政策");
             ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
         }

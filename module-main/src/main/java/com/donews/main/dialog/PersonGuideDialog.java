@@ -12,6 +12,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.donews.main.BuildConfig;
 import com.donews.main.R;
 import com.donews.main.databinding.MainDialogPeopleGuideBinding;
 import com.donews.base.fragmentdialog.AbstractFragmentDialog;
@@ -115,7 +116,7 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
                 if (ABSwitch.Ins().isOpenAB() && DeviceUtils.getChannelName().equalsIgnoreCase("huawei")) {
                     url = "http://ad-static-xg.tagtic.cn/wangzhuan/file/e0175957f8bb037da313fa23caae5944.html";
                 } else {
-                    url = "http://ad-static-xg.tagtic.cn/wangzhuan/file/e0175957f8bb037da313fa23caae5944.html";
+                    url = BuildConfig.USER_PROTOCOL;
                 }
                 ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY).withString("url", url)
                         .withString("title", "用户协议").navigation();
@@ -141,7 +142,7 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
                 if (ABSwitch.Ins().isOpenAB() && DeviceUtils.getChannelName().equalsIgnoreCase("huawei")) {
                     url = "http://ad-static-xg.tagtic.cn/wangzhuan/file/bd5cf63a41d4155d6d126087612f2e2e.html";
                 } else {
-                    url = "http://ad-static-xg.tagtic.cn/wangzhuan/file/bd5cf63a41d4155d6d126087612f2e2e.html";
+                    url = BuildConfig.PRIVATE_POLICY_URL;
                 }
 
                 ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY).withString("url", url)

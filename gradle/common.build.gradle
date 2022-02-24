@@ -27,5 +27,7 @@ android {
         buildConfigField("String", "ECPM_BASE_URL", "\"${rootProject.ECPM_BASE_URL}\"")
         buildConfigField("String", "API_INTEGRAL_URL", "\"${rootProject.API_INTEGRAL_URL}\"")
         buildConfigField("String", "Applog_SDK_APPID", "\"${rootProject.Applog_SDK_APPID}\"")
+        buildConfigField("String", "PRIVATE_POLICY_URL", "\"${rootProject.PRIVATE_POLICY_URL}\"")
+        buildConfigField("String", "USER_PROTOCOL", "\"${rootProject.USER_PROTOCOL}\"")
     }
 }

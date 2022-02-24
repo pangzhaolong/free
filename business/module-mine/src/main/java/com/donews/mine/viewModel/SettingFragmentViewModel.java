@@ -13,6 +13,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.drouter.ARouteHelper;
+import com.donews.base.BuildConfig;
 import com.donews.base.utils.ToastUtil;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.common.base.popwindow.ConfirmPopupWindow;
@@ -49,6 +50,7 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
     //标题集合
     private List<String> itemTitles = new ArrayList() {
         {
+            add("用户id");
             add("用户协议");
             add("隐私政策");
             add("意见反馈");
@@ -56,33 +58,33 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
             add("清除缓存");
             add("分享App");
             add("账户注销");
-            add("消息通知");
         }
     };
     //点击监听
     private Map<Integer, Runnable> itemClicks = new HashMap() {
         {
-            put(0, (Runnable) () -> { //用户协议
+            put(0, null);
+            put(1, (Runnable) () -> { //用户协议
                 Bundle bundle = new Bundle();
                 if (ABSwitch.Ins().isOpenAB() && DeviceUtils.getChannelName().equalsIgnoreCase("huawei")) {
                     bundle.putString("url", "http://ad-static-xg.tagtic.cn/wangzhuan/file/e0175957f8bb037da313fa23caae5944.html");
                 } else {
-                    bundle.putString("url", "http://ad-static-xg.tagtic.cn/wangzhuan/file/e0175957f8bb037da313fa23caae5944.html");
+                    bundle.putString("url", BuildConfig.USER_PROTOCOL);
                 }
                 bundle.putString("title", "用户协议");
                 ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
             });
-            put(1, (Runnable) () -> { //隐私政策
+            put(2, (Runnable) () -> { //隐私政策
                 Bundle bundle = new Bundle();
                 if (ABSwitch.Ins().isOpenAB() && DeviceUtils.getChannelName().equalsIgnoreCase("huawei")) {
                     bundle.putString("url", "http://ad-static-xg.tagtic.cn/wangzhuan/file/bd5cf63a41d4155d6d126087612f2e2e.html");
                 } else {
-                    bundle.putString("url", "http://ad-static-xg.tagtic.cn/wangzhuan/file/bd5cf63a41d4155d6d126087612f2e2e.html");
+                    bundle.putString("url", BuildConfig.PRIVATE_POLICY_URL);
                 }
                 bundle.putString("title", "隐私政策");
                 ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
             });
-            put(2, (Runnable) () -> { //意见反馈
+            put(3, (Runnable) () -> { //意见反馈
 //                Bundle bundle = new Bundle();
 //                bundle.putString("url",
 //                        "https://www.wjx.top/vm/YhnxHHh.aspx");
@@ -98,12 +100,12 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
                             .navigation();
                 }
             });
-            put(3, (Runnable) () -> { //关于我们
+            put(4, (Runnable) () -> { //关于我们
                 ARouter.getInstance().build(PAGER_MINE_ABOUT_ACTIVITY)
                         .navigation(baseActivity);
                 AnalysisUtils.onEventEx(baseActivity, Dot.Page_AboutUs);
             });
-            put(4, (Runnable) () -> { //清除缓存
+            put(5, (Runnable) () -> { //清除缓存
                 ConfirmPopupWindow confirmPopupWindow = new ConfirmPopupWindow(baseActivity);
                 confirmPopupWindow.show();
                 confirmPopupWindow.setTitleText("确定清除缓存？").setOkOnClick(v -> {
@@ -111,11 +113,11 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
                     clearAppCache();
                 }).setCancelOnClick(v -> confirmPopupWindow.hide());
             });
-            put(5, (Runnable) () -> {//分享APP
+            put(6, (Runnable) () -> {//分享APP
                 RouterActivityPath.Mine
                         .goShareWxChatDialogDefaultH5(baseActivity);
             });
-            put(6, (Runnable) () -> {//账户注销
+            put(7, (Runnable) () -> {//账户注销
                 UserInfoBean uf = LoginHelp.getInstance().getUserInfoBean();
                 if (uf == null ||
                         !AppInfo.checkIsWXLogin()) { //未登录
@@ -180,10 +182,12 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
      * @return
      */
     public String getItemDescText(int pos) {
-        if (pos == 1) {
+        if (pos == 0) {
+            return AppInfo.getUserId();
+        } else if (pos == 2) {
 //            return "邀请好友一起中奖";
             return "";
-        } else if (pos == 4) { //垃圾
+        } else if (pos == 5) { //垃圾
             return getAppCacheSize();
         } else {
             return "";

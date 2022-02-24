@@ -87,7 +87,7 @@ public class ABSwitch {
                             if (mHandler.hasMessages(UPDATE_CONFIG_MSG)) {
                                 mHandler.removeMessages(UPDATE_CONFIG_MSG);
                             }
-                            mHandler.sendEmptyMessageDelayed(UPDATE_CONFIG_MSG, 20 * 1000);
+                            mHandler.sendEmptyMessageDelayed(UPDATE_CONFIG_MSG, 20 * 1000L);
                         }
                     }
 

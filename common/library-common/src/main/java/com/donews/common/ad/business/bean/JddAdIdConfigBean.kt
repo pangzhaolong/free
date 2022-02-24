@@ -15,10 +15,10 @@ import java.lang.StringBuilder
 @Parcelize
 class JddAdIdConfigBean : BaseAdIdConfigBean(), Parcelable {
     init {
-        splashId = "158534"
-        interstitialId = "158536"
-        rewardVideoId = "158530"
-        invalidRewardVideoId = "158532"
+        splashId = "844"
+        interstitialId = "848"
+        rewardVideoId = "845"
+        invalidRewardVideoId = "845"
     }
 
     override fun toString(): String {
