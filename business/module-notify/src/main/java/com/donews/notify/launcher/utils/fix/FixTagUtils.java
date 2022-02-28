@@ -11,6 +11,7 @@ import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.ImageUtils;
 import com.blankj.utilcode.util.ResourceUtils;
 import com.blankj.utilcode.util.ViewUtils;
+import com.donews.base.base.BaseApplication;
 import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.WeChatBean;
 import com.donews.notify.launcher.configs.Notify2ConfigManager;
@@ -46,7 +47,7 @@ public class FixTagUtils {
     /**
      * 本地标签 ${wx_name} 出错的默认填充内容
      */
-    private static final String defaultFillWxName = "奖多多";
+    private static final String defaultFillWxName = BaseApplication.getInstance().getApplicationInfo().name;
 
     /**
      * 本地标签的处理逻辑
@@ -106,7 +107,7 @@ public class FixTagUtils {
                     pList = params.split(",");
                 } else if (params.contains("，")) {
                     pList = params.split("，");
-                }else{
+                } else {
                     pList = new String[]{params};
                 }
                 if (pList == null || pList.length == 0) {
@@ -218,7 +219,7 @@ public class FixTagUtils {
     /**
      * 刷新本地金额数据
      */
-    public static float updateLocalRandomRangNumber(){
+    public static float updateLocalRandomRangNumber() {
         float num = getRandom(
                 Notify2ConfigManager.Ins().getNotifyConfigBean().redPackageMinAmount,
                 Notify2ConfigManager.Ins().getNotifyConfigBean().redPackageMaxAmount
@@ -229,11 +230,12 @@ public class FixTagUtils {
 
     /**
      * 处理为Html内容的独享
+     *
      * @param content
      * @return
      */
-    public static Spanned convertHtml(String content){
-        if(content == null || "".equals(content)){
+    public static Spanned convertHtml(String content) {
+        if (content == null || "".equals(content)) {
             return new SpannedString("--");
         }
         return Html.fromHtml(content);

@@ -76,7 +76,7 @@ public class ConditionProcessUtil {
                     NotifyLog.log("invokCondition 锚定值条件配置错误。超过锚定池范围(5),直接跳过该条件");
                     invokConditions.add(null);
                 } else {
-                    invokConditions.add(pools.get(i));
+                    invokConditions.add(pools.get(pos));
                 }
             } catch (Exception e) {
                 invokConditions.add(null);
@@ -183,7 +183,7 @@ public class ConditionProcessUtil {
         Method invokMethod = null;
         try {
             String condStr = conditionItem.condition
-                    .replace(" ","");
+                    .replace(" ", "");
             if (condStr.length() < 2) {
                 NotifyLog.log("中台条件条件表达式不符合规范,请检查(-1)");
                 return false; //条件不满足表达式要求
