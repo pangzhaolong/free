@@ -59,7 +59,7 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
 
     private ExitDialogRecommendGoods mGoods;
 
-    private boolean mIsNoTipsShow = false;
+    private boolean mSelectedTips = false;
 
     private boolean mChangeOne = false;
     private boolean isSendCloseEvent = true;
@@ -128,17 +128,16 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
 
         mDataBinding.tvProbability1.setText(randLucky());
 
-        if (!SPUtils.getInformain(KeySharePreferences.SHOW_DIALOG_WHEN_LAUNCH, true)) {
-            mDataBinding.mainEnterClickLl.setVisibility(View.INVISIBLE);
-            mIsNoTipsShow = false;
-        } else {
+        if (SPUtils.getInformain(KeySharePreferences.SHOW_DIALOG_WHEN_LAUNCH, true)) {
             mDataBinding.mainEnterClickLl.setVisibility(View.VISIBLE);
-            mIsNoTipsShow = true;
+            mDataBinding.mainEnterClick.setBackgroundResource(R.drawable.main_enter_radio_bg_unselect);
+        } else {
+            mDataBinding.mainEnterClickLl.setVisibility(View.INVISIBLE);
         }
 
         mDataBinding.mainEnterNoTipsToday.setOnClickListener(v -> {
-            mIsNoTipsShow = !mIsNoTipsShow;
-            if (mIsNoTipsShow) {
+            mSelectedTips = !mSelectedTips;
+            if (mSelectedTips) {
                 mDataBinding.mainEnterClick.setBackgroundResource(R.drawable.main_enter_radio_bg_select);
                 SPUtils.setInformain(KeySharePreferences.SHOW_DIALOG_WHEN_LAUNCH, false);
             } else {

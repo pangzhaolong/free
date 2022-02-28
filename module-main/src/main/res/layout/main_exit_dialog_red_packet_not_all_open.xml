@@ -21,8 +21,8 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/central_content"
             android:layout_gravity="right"
-            android:layout_marginBottom="23dp"
             android:layout_marginRight="30dp"
+            android:layout_marginBottom="23dp"
             android:onClick="@{eventListener::clickIvClose}"
             android:src="@drawable/common_close"
             android:visibility="invisible"
@@ -77,42 +77,16 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent" />
 
-                    <LinearLayout
-                        android:id="@+id/ll_top_flg"
-                        android:layout_width="131dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="11dp"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="4dp"
-                        android:visibility="invisible"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <ImageView
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:src="@drawable/dialog_main_exit_hb_flg" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="3dp"
-                            android:text="可提现至微信"
-                            android:textColor="@color/white"
-                            android:textSize="13sp" />
-                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/ll_ts_msg"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="14dp"
+                        android:layout_marginTop="70dp"
                         android:orientation="horizontal"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/ll_top_flg">
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -207,24 +181,6 @@
                         tools:visibility="visible" />
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignRight="@+id/cl_window_top_layout_zwc"
-                android:layout_gravity="end"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="45dp"
-                android:layout_marginRight="20dp"
-                android:background="@drawable/main_rp_coin_bg2" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/cl_window_top_layout_zwc"
-                android:layout_gravity="top"
-                android:layout_marginTop="119dp"
-                android:background="@drawable/main_rp_coin_bg1" />
         </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
