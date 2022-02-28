@@ -560,7 +560,7 @@ public class MainActivity
     //暴击模式的点击
     private void bjClick() {
         HighValueGoodsBean t = GoodsCache.readGoodsBean(HighValueGoodsBean.class, "exit");
-        if (t.getList() == null ||
+        if (t == null || t.getList() == null ||
                 t.getList().isEmpty()) {
             ToastUtil.showShort(this, "商品获取失败。请重试");
             RequestUtil.requestHighValueGoodsInfo();
