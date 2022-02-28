@@ -13,26 +13,35 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal">
 
-        <FrameLayout
+        <ImageView
             android:id="@+id/front_goods_item_edge_fl"
-            android:layout_width="168dp"
+            android:layout_width="match_parent"
             android:layout_height="168dp"
             android:layout_gravity="center"
-            android:background="@drawable/front_goods_item_iv_edge_1"
-            android:padding="6dp">
+            android:background="@drawable/front_goods_item_iv_edge_1" />
+        <!--        <FrameLayout
+                    android:id="@+id/front_goods_item_edge_fl"
+                    android:layout_width="168dp"
+                    android:layout_height="168dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/front_goods_item_iv_edge_1"
+                    android:padding="6dp">-->
 
-            <org.raphets.roundimageview.RoundImageView
-                android:id="@+id/front_goods_item_iv"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="matrix"
-                app:border_color="@color/transparent"
-                app:border_width="0dp"
-                app:leftTop_corner_radius="10dp"
-                app:rightTop_corner_radius="10dp"
-                app:type="round" />
-
-        </FrameLayout>
+        <org.raphets.roundimageview.RoundImageView
+            android:id="@+id/front_goods_item_iv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_margin="4dp"
+            android:scaleType="matrix"
+            app:border_color="@color/transparent"
+            app:border_width="0dp"
+            app:leftTop_corner_radius="10dp"
+            app:rightTop_corner_radius="10dp"
+            app:type="round" />
+        <!--
+                </FrameLayout>-->
 
         <TextView
             android:id="@+id/front_goods_item_tip_tv"
@@ -119,8 +128,9 @@
 
         <TextView
             android:id="@+id/front_item_do_tv"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:background="@drawable/front_goods_item_lottery_bg"
             android:gravity="center"
             android:paddingStart="20dp"

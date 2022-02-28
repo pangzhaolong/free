@@ -17,8 +17,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/unboxing_bg_item">
+        android:background="@drawable/unboxing_bg_item"
+        android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -35,8 +35,8 @@
                 app:imageCircleUrl="@{unboxingBean.avatar}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@tools:sample/avatars"
-                app:shapeAppearanceOverlay="@style/rounded_style"/>
+                app:shapeAppearanceOverlay="@style/rounded_style"
+                tools:srcCompat="@tools:sample/avatars" />
 
             <TextView
                 android:id="@+id/tv_nickname"
@@ -64,9 +64,9 @@
                 android:paddingStart="4dp"
                 android:paddingTop="2dp"
                 android:paddingEnd="4dp"
-                android:textColor="#A9AEB1"
                 android:paddingBottom="2dp"
                 android:text="@={unboxingBean.city}"
+                android:textColor="#A9AEB1"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="@id/tv_nickname"
                 app:layout_constraintStart_toEndOf="@id/tv_nickname"
@@ -108,11 +108,11 @@
                 android:id="@+id/tv_like_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 android:layout_marginEnd="17dp"
                 android:text="@{String.valueOf(zan?unboxingBean.zan+1:unboxingBean.zan)}"
                 android:textColor="#A9AEB1"
                 android:textSize="12sp"
+                android:visibility="gone"
                 app:layout_constraintBaseline_toBaselineOf="@id/tv_lottery_cycles"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_winning_number"
@@ -122,9 +122,9 @@
                 android:id="@+id/iv_ic_like"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
-                android:visibility="gone"
                 android:layout_marginEnd="6.8dp"
                 android:src="@drawable/unboxing_ic_zan"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@id/tv_like_number"
                 app:layout_constraintEnd_toStartOf="@id/tv_like_number"
                 app:layout_constraintTop_toTopOf="@id/tv_like_number"
@@ -255,11 +255,18 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <View
+            android:id="@+id/yyw_task_view_separator"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="#f4f4f4" />
+
         <com.donews.middle.views.TaskView
             android:id="@+id/yyw_task_view"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_marginStart="13.3dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="13.3dp"
             android:layout_marginBottom="10dp"
             android:visibility="visible" />

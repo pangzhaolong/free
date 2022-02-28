@@ -10,6 +10,7 @@ import com.blankj.utilcode.util.BarUtils
 import com.donews.base.utils.ToastUtil
 import com.donews.common.ad.business.monitor.PageMonitor
 import com.donews.common.base.MvvmLazyLiveDataFragment
+import com.donews.common.decoration.GridItemDecoration
 import com.donews.common.router.RouterFragmentPath
 import com.donews.middle.views.TaskView
 import com.donews.unboxing.R
@@ -69,6 +70,7 @@ class UnboxingFragment :
             }
 
         })
+        mDataBinding.rvUnboxing.addItemDecoration(GridItemDecoration(1, 32))
         mDataBinding.rvUnboxing.adapter = unboxingRVAdapter
         mViewModel.run {
             listData.observe(this@UnboxingFragment.viewLifecycleOwner, {

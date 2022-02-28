@@ -13,25 +13,32 @@
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true">
 
-        <FrameLayout
+        <ImageView
+            android:id="@+id/front_goods_item_edge_fl"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center"
+            android:background="@drawable/front_goods_item_iv_edge_1"/>
+<!--        <FrameLayout
             android:id="@+id/front_goods_item_edge_fl"
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_gravity="center"
             android:background="@drawable/front_goods_item_iv_edge_1"
-            android:padding="6dp">
+            android:padding="6dp">-->
 
             <org.raphets.roundimageview.RoundImageView
                 android:id="@+id/front_goods_item_iv"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="116dp"
+                android:layout_height="116dp"
                 android:scaleType="matrix"
+                android:layout_gravity="center"
                 app:border_color="@color/transparent"
                 app:border_width="0dp"
                 app:corner_radius="10dp"
                 app:type="round" />
-
-        </FrameLayout>
+<!--
+        </FrameLayout>-->
 
         <TextView
             android:id="@+id/front_goods_item_tip_tv"
@@ -45,6 +52,7 @@
             android:text="爆款推荐"
             android:textColor="#FFFFFF"
             android:textSize="12sp" />
+
         <ImageView
             android:id="@+id/front_goods_item_label_iv"
             android:layout_width="wrap_content"
@@ -119,8 +127,9 @@
 
             <TextView
                 android:id="@+id/front_item_do_tv"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:background="@drawable/front_goods_item_lottery_bg"
                 android:gravity="center"
                 android:paddingStart="20dp"
