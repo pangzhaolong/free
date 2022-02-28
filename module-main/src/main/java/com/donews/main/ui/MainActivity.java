@@ -203,10 +203,11 @@ public class MainActivity
         //通知测试相关
         HotStartCacheUtils.INSTANCE.setDebugNotify(true); //开启debug的通知模块
         mDataBinding.occupyNotify.setOnClickListener(v -> {
-            if (!HotStartCacheUtils.INSTANCE.isDebugNotify()) {
+            /*if (!HotStartCacheUtils.INSTANCE.isDebugNotify()) {
                 return;
             }
-            testGotoNotify();
+            testGotoNotify();*/
+            EventBus.getDefault().post(new DoubleRpEvent(3, 0f, "", "", 0f));
         });
 
         if (!HotStartCacheUtils.INSTANCE.isShowing()) {
@@ -559,7 +560,7 @@ public class MainActivity
     //暴击模式的点击
     private void bjClick() {
         HighValueGoodsBean t = GoodsCache.readGoodsBean(HighValueGoodsBean.class, "exit");
-        if (t.getList() == null ||
+        if (t == null || t.getList() == null ||
                 t.getList().isEmpty()) {
             ToastUtil.showShort(this, "商品获取失败。请重试");
             RequestUtil.requestHighValueGoodsInfo();
@@ -818,8 +819,10 @@ public class MainActivity
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults,
-                ExitInterceptUtils.INSTANCE.getRemindDialog());
+        if (ExitInterceptUtils.INSTANCE.getRemindDialog() != null) {
+            EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults,
+                    ExitInterceptUtils.INSTANCE.getRemindDialog());
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -837,11 +840,14 @@ public class MainActivity
         } else if (event.getEvent() == 2) {
             postGotDoubleRp(event.getRestId(), event.getPreId(), event.getScore());
         } else if (event.getEvent() == 3) {
-            RemindDialogExt remindDialog = new RemindDialogExt();
-            remindDialog.setOnCloseListener(remindDialog::dismiss);
-            remindDialog.setOnSureListener(remindDialog::dismiss);
-            remindDialog.setOnLaterListener(remindDialog::dismiss);
-            remindDialog.show(this.getSupportFragmentManager(), "");
+            ExitInterceptUtils.INSTANCE.initRemindDialogEx();
+            RemindDialogExt remindDialog = ExitInterceptUtils.INSTANCE.getRemindDialog();
+            if (remindDialog != null) {
+                remindDialog.setOnCloseListener(remindDialog::dismiss);
+                remindDialog.setOnSureListener(remindDialog::dismiss);
+                remindDialog.setOnLaterListener(remindDialog::dismiss);
+                remindDialog.show(this.getSupportFragmentManager(), "");
+            }
         } else if (event.getEvent() == 4) { //积分任务翻倍领取
             postGotDoubleRp(event.getRestId(), event.getPreId(), event.getScore());
         } else if (event.getEvent() == 5) { //5: 桌面通知模块->红包->关闭

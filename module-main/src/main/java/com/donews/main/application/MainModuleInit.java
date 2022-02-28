@@ -51,6 +51,10 @@ public class MainModuleInit implements IModuleInit {
 
         @Override
         public void onActivityStarted(@NotNull Activity activity) {
+            if (!JddAdConfigManager.INSTANCE.getJddAdConfigBean().getHotStartAdEnable()) {
+                return;
+            }
+
             if (appCount <= 0) {
                 toForeGround(activity);
                 HotStartCacheUtils.INSTANCE.checkNotifyActivity(activity);
@@ -71,6 +75,10 @@ public class MainModuleInit implements IModuleInit {
 
         @Override
         public void onActivityStopped(@NotNull Activity activity) {
+            if (!JddAdConfigManager.INSTANCE.getJddAdConfigBean().getHotStartAdEnable()) {
+                return;
+            }
+
             appCount--;
             if (appCount == 0) {
                 stopTime = System.currentTimeMillis();
@@ -106,7 +114,6 @@ public class MainModuleInit implements IModuleInit {
         LogUtil.e(activity.getClass().getName());
         if (seconds > backGroundInt) {
             HotStartCacheUtils.INSTANCE.showAd();
-//            SplashActivity.toForeGround(activity);
         } else {
             HotStartCacheUtils.INSTANCE.dismiss();
         }

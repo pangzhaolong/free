@@ -62,7 +62,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="个码，奖品抱回家"
+                        android:text="个码, 开启自选码"
                         android:textColor="#000000"
                         android:textSize="20dp"
                         android:textStyle="bold" />

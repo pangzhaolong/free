@@ -28,6 +28,7 @@ import androidx.databinding.DataBindingUtil;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.module.lottery.bean.LotteryCodeBean;
+import com.module.lottery.utils.FoundationUtils;
 import com.module_lottery.R;
 import com.module_lottery.databinding.ReceiveDialogLayoutBinding;
 
@@ -121,6 +122,13 @@ public class ReceiveLotteryDialog extends BaseDialog<ReceiveDialogLayoutBinding>
         if (mLotteryCodeBean != null) {
             //设置显示的数量
             if (mLotteryCodeBean.getCodes().size() > 0 && mLotteryCodeBean.getCodes().size() < 6) {
+                if (mLotteryCodeBean != null) {
+                    if (FoundationUtils.getOptionalCodeType(mLotteryCodeBean.getCodes().size())) {
+                        mDataBinding.buttonText.setText("自选码中奖率更高");
+                    } else {
+                        mDataBinding.buttonText.setText(getContext().getResources().getString(R.string.return_receive_button_text));
+                    }
+                }
                 mDataBinding.quantity.setText(" " + (6 - (mLotteryCodeBean.getCodes().size())) + " ");
             }
             //抽奖码满了

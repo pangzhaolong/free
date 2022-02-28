@@ -99,6 +99,8 @@ public class PlayAdUtilsTool {
                 Logger.e(TAG + errorMsg + "");
                 if (code == AdCustomError.PreloadAdEmptyError.getCode()) {
                     ToastUtil.showShort(mContext, "暂无新视频，请稍后再试");
+                } else {
+                    ToastUtil.showShort(mContext, CLOSURE_HINT);
                 }
             }
         };
@@ -170,10 +172,6 @@ public class PlayAdUtilsTool {
 
     private void loadError(Dialog dialog) {
         dismissDialog(dialog);
-        if (mContext != null) {
-            ToastUtil.showShort(mContext, CLOSURE_HINT);
-        }
-
     }
 
 

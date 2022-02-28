@@ -23,6 +23,7 @@ import androidx.annotation.NonNull;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.module.lottery.bean.LotteryCodeBean;
+import com.module.lottery.utils.FoundationUtils;
 import com.module_lottery.R;
 import com.module_lottery.databinding.LessMaxDialogLayoutBinding;
 import com.module_lottery.databinding.OptionalCodeDialogLayoutBinding;
@@ -68,16 +69,14 @@ public class OptionalCodeInterceptionDialog extends BaseDialog<OptionalCodeDialo
     @SuppressLint("RestrictedApi")
     void initView() {
         if (mLotteryCodeBean != null) {
-            mDataBinding.number.setText((6 - mLotteryCodeBean.getCodes().size()) + "");
+            mDataBinding.number.setText(FoundationUtils.getOptionalCodeLocation(mLotteryCodeBean.getCodes().size()) + "");
             mDataBinding.jsonHand.setImageAssetsFolder("images");
             mDataBinding.jsonHand.setAnimation(LOTTERY_FINGER);
             mDataBinding.jsonHand.loop(true);
             mDataBinding.jsonHand.playAnimation();
-
-
         }
-        setOnDismissListener((d)->{
-            if(isSendCloseEvent) {
+        setOnDismissListener((d) -> {
+            if (isSendCloseEvent) {
                 AnalysisUtils.onEventEx(mContext, Dot.Lottery_Increase_ChancesDialog_Close);
             }
         });

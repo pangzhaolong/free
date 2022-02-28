@@ -66,14 +66,24 @@ public class YywView extends androidx.appcompat.widget.AppCompatImageView {
         mYywItemList.clear();
         if (mCurrentModel == Model_Banner) {
             mFrom = "Place_banner";
-            mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getBannerItems().getItems());
-            mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getBannerItems().getSwitchInterval();
-            mEnableYyw = FrontConfigManager.Ins().getConfigBean().getBanner();
+            try {
+                mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getBannerItems().getItems());
+                mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getBannerItems().getSwitchInterval();
+                mEnableYyw = FrontConfigManager.Ins().getConfigBean().getBanner();
+            } catch (Exception e) {
+                this.setVisibility(GONE);
+                return;
+            }
         } else if (mCurrentModel == Model_WithDrawl) {
             mFrom = "Place_withdrawal";
-            mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getWithDrawalItems().getItems());
-            mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getWithDrawalItems().getSwitchInterval();
-            mEnableYyw = FrontConfigManager.Ins().getConfigBean().getWithDrawal();
+            try {
+                mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getWithDrawalItems().getItems());
+                mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getWithDrawalItems().getSwitchInterval();
+                mEnableYyw = FrontConfigManager.Ins().getConfigBean().getWithDrawal();
+            } catch (Exception e) {
+                this.setVisibility(GONE);
+                return;
+            }
         }
 
         if (!mEnableYyw) {

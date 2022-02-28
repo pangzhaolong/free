@@ -35,6 +35,7 @@ import com.donews.front.adapter.FragmentAdapter;
 import com.donews.front.databinding.FrontFragmentBinding;
 import com.donews.front.dialog.LotteryMore4RpDialog;
 import com.donews.front.viewModel.FrontViewModel;
+import com.donews.middle.abswitch.OtherSwitch;
 import com.donews.middle.bean.WalletBean;
 import com.donews.middle.bean.front.LotteryCategoryBean;
 import com.donews.middle.bean.home.ServerTimeBean;
@@ -190,14 +191,8 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         }
         initSrl();
 
-        mDataBinding.frontLotteryRuleBtnLl.setOnClickListener(v -> ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY)
-                .withString("title", "中奖攻略")
-                .withString("url", BuildConfig.WEB_BASE_URL)
-                .navigation());
-        mDataBinding.frontLotteryGotoLl.setOnClickListener(v -> ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY)
-                .withString("title", "中奖攻略")
-                .withString("url", BuildConfig.WEB_BASE_URL)
-                .navigation());
+        mDataBinding.frontLotteryRuleBtnLl.setOnClickListener(v -> gotoLotteryRule());
+        mDataBinding.frontLotteryGotoLl.setOnClickListener(v -> gotoLotteryRule());
         mDataBinding.frontLotteryRuleRl.setVisibility(View.GONE);
 
         startTimer();
@@ -210,6 +205,17 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         });
 
         refreshLayout();
+    }
+
+    private void gotoLotteryRule() {
+        String url = BuildConfig.WEB_BASE_URL;
+        if (OtherSwitch.Ins().getLotteryPriceShow() == 1) {
+            url = "https://recharge-web.xg.tagtic.cn/ddyb/index.html#/introduction";
+        }
+        ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY)
+                .withString("title", "中奖攻略")
+                .withString("url", url)
+                .navigation();
     }
 
     // 更新首页ui布局

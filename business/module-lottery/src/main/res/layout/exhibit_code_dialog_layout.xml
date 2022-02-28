@@ -186,13 +186,38 @@
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                    <com.airbnb.lottie.LottieAnimationView
-                        android:id="@+id/jsonAnimation"
-                        android:layout_width="wrap_content"
-                        android:layout_height="47dp"
-                        android:scaleType="fitXY"
-                        app:lottie_autoPlay="true"
-                        app:lottie_loop="true" />
+
+                    <RelativeLayout
+                        android:id="@+id/startLottie"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/item_lottery_shape"
+                        android:gravity="center"
+                        android:paddingTop="11dp"
+                        android:paddingBottom="11dp">
+
+                        <ImageView
+                            android:id="@+id/play_icon"
+                            android:layout_width="19dp"
+                            android:layout_height="19dp"
+                            android:layout_marginTop="2dp"
+                            android:src="@mipmap/white_play_video_icon" />
+
+                        <TextView
+                            android:id="@+id/button_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="7dp"
+                            android:layout_toRightOf="@+id/play_icon"
+                            android:text="增加中奖率"
+                            android:textStyle="bold"
+                            android:textColor="#FFFFFF"
+                            android:textSize="17dp" />
+
+
+                    </RelativeLayout>
+
 
 
                     <com.airbnb.lottie.LottieAnimationView
@@ -208,7 +233,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/jsonAnimation"
+                        android:layout_below="@+id/startLottie"
                         android:layout_marginTop="13dp"
                         android:gravity="center"
                         android:text="拿6个抽奖码，赢最高中奖率"
@@ -229,7 +254,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="恭喜"
-                        android:textColor="#FFFFFF" />
+                        android:textColor="#AA7113" />
 
                     <TextView
                         android:id="@+id/countdown_hint"
@@ -238,7 +263,7 @@
                         android:layout_marginTop="3dp"
                         android:gravity="center"
                         android:text=""
-                        android:textColor="#FFFFFF" />
+                        android:textColor="#AA7113" />
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>

@@ -78,28 +78,48 @@ public class TaskView extends LinearLayout {
         mYywItemList.clear();
         if (mCurrentModel == Place_Front) {
             mDotFrom = "place_front";
-            mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getFrontTask().getItems());
-            mTaskGroup = FrontConfigManager.Ins().getConfigBean().getFrontTask().getTaskGroup();
-            mEnableYyw = FrontConfigManager.Ins().getConfigBean().getTask();
-            mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getFrontTask().getSwitchInterval();
+            try {
+                mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getFrontTask().getItems());
+                mTaskGroup = FrontConfigManager.Ins().getConfigBean().getFrontTask().getTaskGroup();
+                mEnableYyw = FrontConfigManager.Ins().getConfigBean().getTask();
+                mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getFrontTask().getSwitchInterval();
+            } catch (Exception e) {
+                this.setVisibility(GONE);
+                return;
+            }
         } else if (mCurrentModel == Place_Mine) {
             mDotFrom = "place_mine";
-            mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getMineTask().getItems());
-            mTaskGroup = FrontConfigManager.Ins().getConfigBean().getMineTask().getTaskGroup();
-            mEnableYyw = FrontConfigManager.Ins().getConfigBean().getMine();
-            mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getMineTask().getSwitchInterval();
+            try {
+                mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getMineTask().getItems());
+                mTaskGroup = FrontConfigManager.Ins().getConfigBean().getMineTask().getTaskGroup();
+                mEnableYyw = FrontConfigManager.Ins().getConfigBean().getMine();
+                mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getMineTask().getSwitchInterval();
+            } catch (Exception e) {
+                this.setVisibility(GONE);
+                return;
+            }
         } else if (mCurrentModel == Place_Show) {
             mDotFrom = "place_show";
-            mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getShowTask().getItems());
-            mTaskGroup = FrontConfigManager.Ins().getConfigBean().getShowTask().getTaskGroup();
-            mEnableYyw = FrontConfigManager.Ins().getConfigBean().getShowTime();
-            mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getShowTask().getSwitchInterval();
+            try {
+                mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getShowTask().getItems());
+                mTaskGroup = FrontConfigManager.Ins().getConfigBean().getShowTask().getTaskGroup();
+                mEnableYyw = FrontConfigManager.Ins().getConfigBean().getShowTime();
+                mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getShowTask().getSwitchInterval();
+            } catch (Exception e) {
+                this.setVisibility(GONE);
+                return;
+            }
         } else if (mCurrentModel == Place_Show_Msg) {
             mDotFrom = "place_show_msg";
-            mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getShowMsgTask().getItems());
-            mTaskGroup = FrontConfigManager.Ins().getConfigBean().getShowMsgTask().getTaskGroup();
-            mEnableYyw = FrontConfigManager.Ins().getConfigBean().getShowTimeMsg();
-            mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getShowMsgTask().getSwitchInterval();
+            try {
+                mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getShowMsgTask().getItems());
+                mTaskGroup = FrontConfigManager.Ins().getConfigBean().getShowMsgTask().getTaskGroup();
+                mEnableYyw = FrontConfigManager.Ins().getConfigBean().getShowTimeMsg();
+                mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getShowMsgTask().getSwitchInterval();
+            } catch (Exception e) {
+                this.setVisibility(GONE);
+                return;
+            }
         }
 
         if (!mEnableYyw) {

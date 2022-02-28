@@ -14,12 +14,13 @@
         android:id="@+id/incl_refesh_state"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/incl_refesh_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="always"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
     </com.classic.common.MultipleStatusView>
 
 </com.scwang.smart.refresh.layout.SmartRefreshLayout>

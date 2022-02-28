@@ -42,6 +42,7 @@ import com.module.lottery.bean.LotteryCodeBean;
 import com.module.lottery.bean.MaylikeBean;
 import com.module.lottery.bean.WinLotteryBean;
 import com.module.lottery.ui.LotteryActivity;
+import com.module.lottery.utils.FoundationUtils;
 import com.module.lottery.utils.ImageUtils;
 import com.module.lottery.utils.ScrollLinearLayoutManager;
 import com.module.lottery.utils.VerticalImageSpan;
@@ -318,7 +319,7 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                             textView.setTextColor(mContext.getResources().getColor(R.color.pending));
                             TextPaint paint = textView.getPaint();
                             if (OtherSwitch.Ins().isOpenOptionalCode() && !CriticalModelTool.ifCriticalStrike()) {
-                                if (getOptionalCodeType(refer)) {
+                                if (FoundationUtils.getOptionalCodeType(refer)) {
                                     textView.setText("自选码");
                                     textView.setTag(true);
                                     textView.setTextColor(Color.WHITE);
@@ -352,16 +353,6 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
 
-    private boolean getOptionalCodeType(int local) {
-        List<Integer> localList = OtherSwitch.Ins().getOpenOptionalLocationList();
-        for (int i = 0; i < localList.size(); i++) {
-            if (local == localList.get(i)) {
-                return true;
-            }
-
-        }
-        return false;
-    }
 
     //设置item的,类型
     @Override

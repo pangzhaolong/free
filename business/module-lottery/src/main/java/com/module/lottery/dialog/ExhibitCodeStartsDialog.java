@@ -41,6 +41,7 @@ import com.donews.utilslibrary.utils.DateManager;
 import com.donews.utilslibrary.utils.SPUtils;
 import com.module.lottery.bean.GenerateCodeBean;
 import com.module.lottery.utils.ClickDoubleUtil;
+import com.module.lottery.utils.FoundationUtils;
 import com.module_lottery.R;
 import com.module_lottery.databinding.ExhibitCodeDialogLayoutBinding;
 import com.orhanobut.logger.Logger;
@@ -253,7 +254,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
             mDataBinding.jsonAnimationLayout.setVisibility(View.VISIBLE);
             mDataBinding.hintLayout.setVisibility(View.GONE);
 
-            mDataBinding.jsonAnimation.setOnClickListener(new View.OnClickListener() {
+            mDataBinding.startLottie.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     isSendCloseEvent = false;
@@ -264,12 +265,13 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
                     }
                 }
             });
-            // 增加中奖率
-            mDataBinding.jsonAnimation.setImageAssetsFolder("images");
-            mDataBinding.jsonAnimation.setAnimation("probability_button.json");
-            mDataBinding.jsonAnimation.loop(true);
-            mDataBinding.jsonAnimation.playAnimation();
-
+            if (mGenerateCodeBean != null) {
+                if (FoundationUtils.getOptionalCodeType(6 - mGenerateCodeBean.getRemain())) {
+                    mDataBinding.buttonText.setText("再来一注自选码");
+                }else{
+                    mDataBinding.buttonText.setText("增加中奖率");
+                }
+            }
             //手
             mDataBinding.jsonAnimationHand.setImageAssetsFolder("images");
             mDataBinding.jsonAnimationHand.setAnimation(LOTTERY_FINGER);

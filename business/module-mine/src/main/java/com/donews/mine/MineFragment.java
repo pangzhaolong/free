@@ -30,6 +30,7 @@ import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.UserInfoBean;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
+import com.donews.middle.views.TaskView;
 import com.donews.mine.adapters.MineFragmentAdapter;
 import com.donews.mine.bean.MineWithdraWallBean;
 import com.donews.mine.bean.resps.RecommendGoodsResp;
@@ -71,6 +72,7 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
     MineFragmentAdapter adapter;
     private boolean isRefresh = false;
 
+    private TaskView mTaskView;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -269,6 +271,8 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
         mDataBinding.mineFrmRefesh.autoRefresh();
         scrollFloatBar();
 //        mDataBinding.mineCcsView.refreshData();
+        mTaskView = getView().findViewById(R.id.mine_me_k_operating_ex);
+        mTaskView.refreshYyw(TaskView.Place_Mine);
     }
 
     private MineWithdraWallBean mineWithdraWallBean = null;
@@ -392,7 +396,7 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
         isRefresh = true;
         adapter.refeshStart();
         mViewModel.loadRecommendGoods(25);
-        setYYW();
+//        setYYW();
         if (checkIsLogin()) {
             mViewModel.getLoadWithdrawData();
         } else {

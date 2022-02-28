@@ -77,7 +77,7 @@ object ExitInterceptUtils {
 
     //已登录未抽奖的弹窗
     private var continueLotteryDialog: ContinueLotteryDialog? = null
-    var remindDialog: RemindDialog? = null
+    var remindDialog: RemindDialogExt? = null
 
     /**
      * 重置完成退出拦截的状态。否则退出拦截不生效
@@ -540,34 +540,11 @@ object ExitInterceptUtils {
      * 显示提示弹出框(是否开启提醒、明日开奖的提示框)
      * @param activity AppCompatActivity
      */
-    private fun showRemindDialog(activity: AppCompatActivity) {
+    public fun initRemindDialogEx() {
         if (remindDialog != null && remindDialog!!.dialog != null && remindDialog!!.dialog!!.isShowing) {
             return
         }
-        remindDialog = RemindDialog.newInstance(exitInterceptConfig.remindConfig)
-            .apply {
-                setOnDismissListener {
-                    remindDialog = null
-                }
-                setOnSureListener {
-                    disMissDialog()
-                }
-
-                setOnCancelListener {
-                    disMissDialog()
-                }
-
-                setOnCloseListener {
-                    disMissDialog()
-                    closeExitDialog(activity)
-                }
-
-                setOnLaterListener {
-                    disMissDialog()
-                    exitApp(activity)
-                }
-            }
-        remindDialog?.show(activity.supportFragmentManager, RemindDialog::class.simpleName)
+        remindDialog = RemindDialogExt()
     }
 
     /**
