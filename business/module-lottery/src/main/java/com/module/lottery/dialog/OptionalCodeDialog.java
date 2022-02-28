@@ -84,17 +84,6 @@ public class OptionalCodeDialog extends BaseDialog<OptionalCodeDialogBinding> {
         mDataBinding.jsonHand.setAnimation(LOTTERY_FINGER);
         mDataBinding.jsonHand.loop(true);
         mDataBinding.jsonHand.playAnimation();
-        List<String> data = new ArrayList<String>();
-        for (int i = 0; i < 10; i++) {
-            data.add(i + "");
-        }
-        mDataBinding.minutePv01.setData(data);
-        mDataBinding.minutePv02.setData(data);
-        mDataBinding.minutePv03.setData(data);
-        mDataBinding.minutePv04.setData(data);
-        mDataBinding.minutePv05.setData(data);
-        mDataBinding.minutePv06.setData(data);
-        mDataBinding.minutePv07.setData(data);
         setOnDismissListener((d) -> {
             if (isSendCloseEvent) {
                 AnalysisUtils.onEventEx(mContext, Dot.Lottery_Increase_ChancesDialog_Close);
@@ -111,7 +100,7 @@ public class OptionalCodeDialog extends BaseDialog<OptionalCodeDialogBinding> {
             @Override
             public void onClick(View v) {
                 if(ClickDoubleUtil.isFastClick())
-                isSendCloseEvent = false;
+                    isSendCloseEvent = false;
                 AnalysisUtils.onEventEx(mContext, Dot.Lottery_Increase_ChancesDialog_Continue);
                 if (mOnFinishListener != null) {
                     StringBuffer buffer = new StringBuffer();
