@@ -644,6 +644,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             if (CriticalModelTool.ifCriticalStrike()) {
                 mDataBinding.tips.setText(CRITICAL_BT_TITLE_2);
                 mDataBinding.label01.setText(CRITICAL_BT_TITLE_0);
+                mDataBinding.label01.setVisibility(View.VISIBLE);
                 mDataBinding.jsonAnimationRound.clearAnimation();
                 initLottie(mDataBinding.jsonAnimationRound, CRIT_ROUND);
             } else {
@@ -1101,6 +1102,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
     @Override
     protected void onResume() {
+        logType = AppInfo.checkIsWXLogin();
         super.onResume();
     }
 
@@ -1582,7 +1584,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                         if (FoundationUtils.getOptionalCodeType(mLotteryCodeBean.getCodes().size())) {
                             //直接弹起自选码弹框
                             showOptionalCodeDialog();
-                        }else{
+                        } else {
                             //提示自选码弹框
                             showOptionalCodeInterceptionDialog();
                         }
