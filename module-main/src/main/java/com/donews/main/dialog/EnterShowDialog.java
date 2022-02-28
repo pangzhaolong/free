@@ -88,7 +88,7 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
 
     @Override
     public float setSize() {
-        return 0.80f;
+        return 1.0f;
     }
 
     @SuppressLint({"RestrictedApi", "SetTextI18n", "DefaultLocale"})

@@ -42,8 +42,8 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="10dp"
                     android:gravity="center"
-                    android:text="福气指数:您的抽中概率为"
-                    android:textColor="#764D38"
+                    android:text="福气指数:您的抽中s概率为 "
+                    android:textColor="#FFFFFF"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -57,12 +57,14 @@
                     android:layout_toEndOf="@+id/tv_probability"
                     android:gravity="bottom"
                     android:text="97.4%"
-                    android:textColor="#E9423E"
-                    android:textSize="24sp" />
+                    android:textColor="#FFEFBB"
+                    android:textSize="20sp" />
 
             </RelativeLayout>
 
             <LinearLayout
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
