@@ -123,6 +123,7 @@ object ExitInterceptUtils {
 //            showWinNotAllOpenDialog(activity)
 //            showNotLoginDialog(activity)
 //            showContinueLotteryDialog(activity)
+//            showWinNotAllOpenDialog(activity)
 //            return
 
             if (isFinishBack) {

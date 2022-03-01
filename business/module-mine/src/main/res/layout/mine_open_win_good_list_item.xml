@@ -109,7 +109,6 @@
             android:background="@drawable/mine_win_frm_cj_but"
             android:ellipsize="end"
             android:gravity="center"
-            android:paddingBottom="8dp"
             android:singleLine="true"
             android:text="免费抽奖"
             android:textColor="@color/white"
