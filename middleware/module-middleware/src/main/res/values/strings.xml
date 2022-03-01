@@ -4,7 +4,10 @@
 
     <!-- TODO: Remove or change this placeholder text -->
 
+    <!--
     <string name="middle_gift_text"><![CDATA[<font color="#D17500">%s抽中</font> <font color="red">%s</font>]]></string>
+    -->
+    <string name="middle_gift_text"><![CDATA[<font color="#FFFFFF">%s抽中</font> <font color="#FFFFFF">%s</font>]]></string>
     <string name="middle_lottery_barrage_item_text">抽中%s</string>
 
 

@@ -20,17 +20,19 @@
             android:layout_alignParentRight="true"
             android:layout_gravity="right"
             android:src="@drawable/common_close"
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="20dp"/>
 
         <ImageView
             android:layout_width="240dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:src="@drawable/exit_dialog_zxhb_nhyxjhbwlq"/>
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-30dp">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -42,7 +44,6 @@
                 android:layout_width="270dp"
                 android:layout_height="340dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="17dp"
                 android:orientation="vertical"
                 tools:ignore="ResourceName">
 
@@ -75,7 +76,6 @@
                                 android:layout_width="131dp"
                                 android:layout_height="26dp"
                                 android:layout_gravity="center"
-                                android:layout_marginTop="16dp"
                                 android:background="@drawable/main_exit_dialog_not_all_flg"
                                 android:gravity="center"
                                 android:paddingLeft="5dp"
@@ -201,8 +201,8 @@
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
                         android:scaleType="fitXY"
-                        android:visibility="gone"
-                        android:src="@mipmap/return_button_icon" />
+                        android:src="@mipmap/return_button_icon"
+                        android:visibility="gone" />
 
                 </RelativeLayout>
 
@@ -288,7 +288,8 @@
                     android:scaleType="fitXY"
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="120dp"
-                    android:src="@mipmap/gold_icon_02" />
+                    android:src="@mipmap/gold_icon_02"
+                    android:visibility="gone"/>
             </RelativeLayout>
         </RelativeLayout>
 
@@ -351,12 +352,11 @@
             android:id="@+id/tv_next_lk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:text="残忍离开"
             android:padding="5dp"
+            android:layout_marginTop="-15dp"
             android:layout_marginBottom="26dp"
             android:textColor="#D6D6D6"
-            android:layout_marginTop="17dp"
             android:visibility="invisible"
             android:textSize="13dp"/>
 

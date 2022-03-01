@@ -566,7 +566,7 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             GlideUtils.loadImageView(view.getContext(), UrlUtils.formatUrlPrefix(item.goods.image), icon);
             code.setText(Html.fromHtml(
                     TextWinUtils.drawOldText(detailLivData.getValue().code, item.code)));
-            goTo.setText("去领奖");
+            goTo.setText("立即领奖");
             childView.setOnClickListener((v) -> {
                 AnalysisUtils.onEventEx(mContext, Dot.Page_ContactService);
                 Bundle bundle = new Bundle();
@@ -782,7 +782,7 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             GlideUtils.loadImageView(view.getContext(), UrlUtils.formatUrlPrefix(item.goods.image), goodIcon);
             goodName.setText(item.goods.title);
             goodPice.setText("" + item.goods.price);
-            goTo.setText("点击抢购");
+            goTo.setText("点击抽奖");
             childView.setOnClickListener((v) -> {
                 if (from == 1) {
                     AnalysisUtils.onEventEx(mContext,

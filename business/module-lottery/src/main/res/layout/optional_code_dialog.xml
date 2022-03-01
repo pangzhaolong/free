@@ -91,18 +91,19 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_marginTop="53dp"
-                android:background="@drawable/mask_linear_upon_shape"
-
-                />
-
+                android:layout_height="60dp"
+                android:layout_marginStart="-30dp"
+                android:layout_marginEnd="-30dp"
+                android:background="@mipmap/top_frosted_glass"
+                android:layout_marginTop="25dp" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_marginTop="145dp"
-                android:background="@drawable/mask_linear_down_shape"
+                android:layout_height="60dp"
+                android:layout_marginStart="-30dp"
+                android:layout_marginEnd="-30dp"
+                android:layout_marginTop="130dp"
+                android:background="@mipmap/button_frosted_glass"
 
                 />
 
@@ -111,7 +112,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_marginBottom="11dp"
+                android:layout_marginBottom="13dp"
                 android:gravity="center"
                 android:text="上下滑动选择号码"
                 android:textColor="#AA7113"
