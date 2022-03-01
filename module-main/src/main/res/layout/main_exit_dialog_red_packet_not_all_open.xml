@@ -21,8 +21,8 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/central_content"
             android:layout_gravity="right"
-            android:layout_marginBottom="23dp"
             android:layout_marginRight="30dp"
+            android:layout_marginBottom="23dp"
             android:onClick="@{eventListener::clickIvClose}"
             android:src="@drawable/common_close"
             android:visibility="invisible"
@@ -53,7 +53,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/iv_window_top_text"
-                android:layout_marginTop="15dp"
                 tools:ignore="MissingConstraints">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -68,10 +67,11 @@
 
                     <ImageView
                         android:id="@+id/iv_window_top"
-                        android:layout_width="290dp"
-                        android:layout_height="300dp"
+                        android:layout_width="315dp"
+                        android:layout_height="330dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
+                        app:layout_constraintTop_toTopOf="parent"
                         android:background="@drawable/main_rp_bg"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -108,7 +108,7 @@
                         android:id="@+id/ll_ts_msg"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="14dp"
+                        android:layout_marginTop="50dp"
                         android:orientation="horizontal"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
@@ -173,8 +173,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="41dp"
                             android:layout_marginRight="41dp"
-                            android:text="继续抽奖"
                             android:paddingBottom="8dp"
+                            android:text="继续抽奖"
                             android:textColor="#D82D2A"
                             android:textSize="19sp"
                             android:textStyle="bold" />
@@ -214,16 +214,14 @@
                 android:layout_gravity="end"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="45dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/main_rp_coin_bg2" />
+                android:layout_marginRight="10dp"/>
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/cl_window_top_layout_zwc"
                 android:layout_gravity="top"
-                android:layout_marginTop="119dp"
-                android:background="@drawable/main_rp_coin_bg1" />
+                android:layout_marginTop="119dp" />
         </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
