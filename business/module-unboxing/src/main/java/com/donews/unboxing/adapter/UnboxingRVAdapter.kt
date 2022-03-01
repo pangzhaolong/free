@@ -51,6 +51,8 @@ class UnboxingRVAdapter(layoutResId: Int) : BaseQuickAdapter<UnboxingBean, BaseV
             if (helper.layoutPosition == 0) {
                 dataBinding.yywTaskView.visibility = View.VISIBLE;
                 dataBinding.yywTaskView.refreshYyw(TaskView.Place_Show_Msg)
+            } else {
+                dataBinding.yywTaskViewSeparator.visibility = View.GONE
             }
 
             val picAdapter = UnboxingPicAdapter(R.layout.unboxing_item_pic)

@@ -73,7 +73,7 @@ public class LotteryCritOverDialog extends BaseDialog<LotteryCritOverDialogLayou
         mCritOverHandler.sendMessageDelayed(message, 1000);
         //延迟一秒出现关闭按钮
         setOnDismissListener(this);
-        initLottie(mDataBinding.overView, "over_animation.json");
+        mCritOverHandler.sendMessageDelayed(new Message(),90);
     }
 
     private void initLottie(LottieAnimationView view, String json) {
@@ -103,7 +103,7 @@ public class LotteryCritOverDialog extends BaseDialog<LotteryCritOverDialogLayou
             view.clearAnimation();
             view.setAnimation(json);
             view.loop(false);
-            view.playAnimation();
+//            view.playAnimation();
         }
     }
 
@@ -194,6 +194,8 @@ public class LotteryCritOverDialog extends BaseDialog<LotteryCritOverDialogLayou
             switch (msg.what) {
                 case 1:
                     if (reference.get() != null) {
+
+                        reference.get().initLottie(reference.get().mDataBinding.overView, "over_animation.json");
                     }
                     break;
 

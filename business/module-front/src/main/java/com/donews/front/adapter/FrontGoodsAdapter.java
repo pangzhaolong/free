@@ -267,7 +267,7 @@ public class FrontGoodsAdapter extends RecyclerView.Adapter<FrontGoodsAdapter.Go
         private final TextView titleTv;
         private final TextView priceTv;
         private final TextView doTv;
-        private final FrameLayout edgeFl;
+        private final ImageView edgeFl;
         private final TextView tipTv;
 
         private final ImageView criticalClock;

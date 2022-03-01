@@ -9,14 +9,14 @@
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/common_critical_hit_iv"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:visibility="visible" />
 
     <ImageView
         android:id="@+id/common_critical_yyw"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:visibility="gone"/>
 
     <LinearLayout
