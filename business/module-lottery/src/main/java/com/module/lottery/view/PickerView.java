@@ -73,6 +73,9 @@ public class PickerView extends View {
     private int mCurrentSelected;
     private Paint mPaint;
     private float mMinTextSize = 40;
+
+    private float mTextSize = 50;
+
     private float mLastDownY;
     private int mMaxVelocity = 3000;
     /**
@@ -246,7 +249,7 @@ public class PickerView extends View {
 
     private void drawData(Canvas canvas) {
         // 先绘制选中的text再往上往下绘制其余的text
-        mPaint.setTextSize(mMinTextSize);
+        mPaint.setTextSize(mTextSize);
         // text居中绘制，注意baseline的计算才能达到居中，y值是text中心坐标
         Log.d("=====mMoveLendrawData", mMoveLen + "");
         float y = (float) (getHeight() / 2.0 + mMoveLen);
