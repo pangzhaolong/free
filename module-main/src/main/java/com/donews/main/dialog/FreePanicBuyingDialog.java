@@ -183,7 +183,7 @@ public class FreePanicBuyingDialog extends BaseDialog<FreePanicDialogLayoutBindi
 
     @Override
     public float setSize() {
-        return 0.9f;
+        return 1.0f;
     }
 
 
