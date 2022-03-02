@@ -9,7 +9,7 @@
 
     <FrameLayout
         android:id="@+id/front_goods_item_fl"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal">
 
@@ -19,15 +19,6 @@
             android:layout_height="168dp"
             android:layout_gravity="center"
             android:background="@drawable/front_goods_item_iv_edge_1" />
-        <!--        <FrameLayout
-                    android:id="@+id/front_goods_item_edge_fl"
-                    android:layout_width="168dp"
-                    android:layout_height="168dp"
-                    android:layout_gravity="center"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/front_goods_item_iv_edge_1"
-                    android:padding="6dp">-->
-
         <org.raphets.roundimageview.RoundImageView
             android:id="@+id/front_goods_item_iv"
             android:layout_width="match_parent"
