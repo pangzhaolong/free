@@ -83,6 +83,13 @@ public class OptionalCodeDialog extends BaseDialog<OptionalCodeDialogBinding> {
         mDataBinding.jsonHand.setImageAssetsFolder("images");
         mDataBinding.jsonHand.setAnimation(LOTTERY_FINGER);
         mDataBinding.jsonHand.loop(true);
+        mDataBinding.minutePv01.startSendMessage(90);
+        mDataBinding.minutePv02.startSendMessage(350);
+        mDataBinding.minutePv03.startSendMessage(180);
+        mDataBinding.minutePv04.startSendMessage(360);
+        mDataBinding.minutePv05.startSendMessage(120);
+        mDataBinding.minutePv06.startSendMessage(200);
+        mDataBinding.minutePv07.startSendMessage(60);
         mDataBinding.jsonHand.playAnimation();
         setOnDismissListener((d) -> {
             if (isSendCloseEvent) {

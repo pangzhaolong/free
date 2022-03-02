@@ -94,7 +94,7 @@ public class PickerView extends View {
     private PickerViewTimerTask mTask;
     private Timer timer;
     private PickerViewHandler mPickerViewHand = new PickerViewHandler(this);
-
+    private PickerViewDelayedHandler mPickerViewDelayedHandler = new PickerViewDelayedHandler(this);
 
     /**
      * @param event 向VelocityTracker添加MotionEvent
@@ -113,6 +113,8 @@ public class PickerView extends View {
     protected void onDetachedFromWindow() {
         cleanTimerTask();
         cleanAnimator();
+        cleanHandler();
+
         super.onDetachedFromWindow();
     }
 
@@ -165,6 +167,12 @@ public class PickerView extends View {
     public PickerView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
+    }
+
+    public void startSendMessage(long delayedTime) {
+        if(mPickerViewDelayedHandler!=null){
+            mPickerViewDelayedHandler.sendEmptyMessageDelayed(1, delayedTime);
+        }
     }
 
     public void setOnSelectListener(onSelectListener listener) {
@@ -300,6 +308,7 @@ public class PickerView extends View {
         final VelocityTracker verTracker = mVelocityTracker;
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
+                cleanHandler();
                 cleanAnimator();
                 tstMode = 0;
                 doDown(event);
@@ -438,7 +447,17 @@ public class PickerView extends View {
             valueAnimator.removeAllUpdateListeners();
             valueAnimator.removeAllListeners();
         }
+
     }
+
+    private void cleanHandler() {
+        if (mPickerViewDelayedHandler != null) {
+            mPickerViewDelayedHandler.removeCallbacksAndMessages(null);
+            mPickerViewDelayedHandler.removeMessages(0);
+            mPickerViewDelayedHandler.removeMessages(1);
+        }
+    }
+
 
     class PickerViewTimerTask extends TimerTask {
         Handler handler;
@@ -455,6 +474,30 @@ public class PickerView extends View {
 
     public interface onSelectListener {
         void onSelect(String text);
+    }
+
+
+    private static class PickerViewDelayedHandler extends Handler {
+        private WeakReference<PickerView> reference;   //
+
+        PickerViewDelayedHandler(PickerView context) {
+            reference = new WeakReference(context);
+        }
+
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+
+            switch (msg.what) {
+                case 1:
+                    if (reference.get() != null) {
+                        reference.get().startValueAnimator(20);
+                    }
+                    break;
+
+
+            }
+
+        }
     }
 
 
