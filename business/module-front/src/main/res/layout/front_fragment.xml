@@ -134,10 +134,10 @@
 
                                             <ImageView
                                                 android:id="@+id/front_rp_iv1"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
+                                                android:layout_width="52dp"
+                                                android:layout_height="65dp"
                                                 android:layout_gravity="top|center_horizontal"
-                                                android:background="@drawable/front_rp_oen" />
+                                                android:background="@drawable/front_rp_open" />
 
                                             <TextView
                                                 android:id="@+id/front_rp_tv1"
@@ -188,9 +188,9 @@
 
                                             <ImageView
                                                 android:id="@+id/front_rp_iv2"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:background="@drawable/front_rp_oen" />
+                                                android:layout_width="52dp"
+                                                android:layout_height="65dp"
+                                                android:background="@drawable/front_rp_open" />
 
                                             <TextView
                                                 android:id="@+id/front_rp_tv2"
@@ -223,7 +223,7 @@
                                             android:layout_height="13dp"
                                             android:layout_gravity="center_horizontal|bottom"
                                             android:padding="3dp"
-                                            android:src="@drawable/front_rp_progress_done" />
+                                            android:src="@drawable/front_rp_progress_dot" />
                                     </LinearLayout>
 
                                     <LinearLayout
@@ -243,8 +243,8 @@
 
                                             <ImageView
                                                 android:id="@+id/front_rp_iv3"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
+                                                android:layout_width="52dp"
+                                                android:layout_height="65dp"
                                                 android:background="@drawable/front_rp_ready" />
 
 
@@ -298,8 +298,8 @@
 
                                             <ImageView
                                                 android:id="@+id/front_rp_iv4"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
+                                                android:layout_width="52dp"
+                                                android:layout_height="65dp"
                                                 android:layout_gravity="top|center_horizontal"
                                                 android:background="@drawable/front_rp_ready" />
 
@@ -357,8 +357,8 @@
 
                                             <ImageView
                                                 android:id="@+id/front_rp_iv5"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
+                                                android:layout_width="52dp"
+                                                android:layout_height="65dp"
                                                 android:layout_gravity="top|center_horizontal"
                                                 android:background="@drawable/front_rp_gold" />
 

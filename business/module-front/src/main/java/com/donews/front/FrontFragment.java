@@ -669,7 +669,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         if (rpBean.getOpened()) {
             mOpenedRpCounts++;
             iv.setAlpha(0.7f);
-            iv.setBackgroundResource(R.drawable.front_rp_oen);
+            iv.setBackgroundResource(R.drawable.front_rp_open);
             tv.setText("已开");
             params.gravity = Gravity.CENTER;
             params.bottomMargin = DensityUtils.dp2px(16);
@@ -784,7 +784,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
         mDataBinding.frontRpLl.requestLayout();
         mDataBinding.frontRpLl.postInvalidate();
-        
+
         SPUtils.setInformain(KeySharePreferences.CLOSE_RED_PACKAGE_COUNTS, nCloseRpCounts);
         SPUtils.setInformain(KeySharePreferences.OPENED_RED_PACKAGE_COUNTS, mOpenedRpCounts);
         if (rpBean.getOpened()) {

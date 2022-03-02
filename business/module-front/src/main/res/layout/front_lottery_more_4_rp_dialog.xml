@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="24dp"
             android:background="@drawable/front_lottery_more_4_rp_title"
             android:gravity="center"
             android:orientation="horizontal"
@@ -64,7 +64,7 @@
             android:id="@+id/front_lottery_more_4_rp_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintTop_toBottomOf="@+id/front_lottery_more_4_rp_title">
 
             <ImageView
