@@ -31,6 +31,7 @@ import java.lang.ref.WeakReference;
 public class FrontFloatingBtn extends LinearLayout {
 
     private static final int MESSAGE_ID = 10003;
+    private static final int MESSAGE_SWITCH_ID = 10004;
 
     public static final int CRITICAL_MODEL = 0;
     public static final int RP_MODEL = 1;
@@ -129,8 +130,11 @@ public class FrontFloatingBtn extends LinearLayout {
         this.setOnClickListener(v -> {
             GotoUtil.doAction(mContext, floatingItem.getAction(), floatingItem.getTitle());
             AnalysisUtils.onEventEx(mContext, Dot.FRONT_YYW_CLICK, Dot.FRONT_YYW_CLICK + "-" + mYYWIndex);
-            mYYWIndex++;
-            refreshYywItemEx();
+
+            if (mFloatHandler != null) {
+                mFloatHandler.removeCallbacksAndMessages(null);
+                mFloatHandler.sendEmptyMessageDelayed(MESSAGE_SWITCH_ID, 1500);
+            }
         });
     }
 
@@ -191,10 +195,12 @@ public class FrontFloatingBtn extends LinearLayout {
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
-            FrontFloatingBtn btn = mFloatingBtn.get();
-            if (btn != null) {
-                btn.mYYWIndex++;
-                btn.refreshYywItemEx();
+            if (msg.what == MESSAGE_ID || msg.what == MESSAGE_SWITCH_ID) {
+                FrontFloatingBtn btn = mFloatingBtn.get();
+                if (btn != null) {
+                    btn.mYYWIndex++;
+                    btn.refreshYywItemEx();
+                }
             }
         }
     }

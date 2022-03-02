@@ -27,6 +27,7 @@ import java.util.List;
 public class TaskView extends LinearLayout {
 
     private static final int MESSAGE_ID = 10002;
+    private static final int MESSAGE_SWITCH_ID = 10003;
 
     private final Context mContext;
 
@@ -215,6 +216,7 @@ public class TaskView extends LinearLayout {
                 Glide.with(this).load(mYywItemList.get(2).getSubItems().get(mYywIdxs[2]).getImg()).into(mImageViews[2]);
                 break;
         }
+
         int nSize = mYywItemList.size();
         if (nSize >= 1) {
             mImageViews[0].setOnClickListener(v -> {
@@ -222,7 +224,11 @@ public class TaskView extends LinearLayout {
                         , mYywItemList.get(0).getSubItems().get(mYywIdxs[0]).getTitle());
                 AnalysisUtils.onEventEx(mContext, Dot.TASK_CLICK, mDotFrom + "-" + mTaskGroup + "-0-" + mYywIdxs[0]);
                 mYywIdxs[0]++;
-                refreshYywItem();
+                checkYywIndex();
+                if (mTaskHandler != null) {
+                    mTaskHandler.removeMessages(MESSAGE_SWITCH_ID);
+                    mTaskHandler.sendEmptyMessageDelayed(MESSAGE_SWITCH_ID, 1500);
+                }
             });
         }
         if (nSize >= 2) {
@@ -231,7 +237,11 @@ public class TaskView extends LinearLayout {
                         , mYywItemList.get(1).getSubItems().get(mYywIdxs[1]).getTitle());
                 AnalysisUtils.onEventEx(mContext, Dot.TASK_CLICK, mDotFrom + "-" + mTaskGroup + "-1-" + mYywIdxs[1]);
                 mYywIdxs[1]++;
-                refreshYywItem();
+                checkYywIndex();
+                if (mTaskHandler != null) {
+                    mTaskHandler.removeMessages(MESSAGE_SWITCH_ID);
+                    mTaskHandler.sendEmptyMessageDelayed(MESSAGE_SWITCH_ID, 1500);
+                }
             });
         }
         if (nSize >= 3) {
@@ -240,7 +250,11 @@ public class TaskView extends LinearLayout {
                         , mYywItemList.get(2).getSubItems().get(mYywIdxs[2]).getTitle());
                 AnalysisUtils.onEventEx(mContext, Dot.TASK_CLICK, mDotFrom + "-" + mTaskGroup + "-2-" + mYywIdxs[2]);
                 mYywIdxs[2]++;
-                refreshYywItem();
+                checkYywIndex();
+                if (mTaskHandler != null) {
+                    mTaskHandler.removeMessages(MESSAGE_SWITCH_ID);
+                    mTaskHandler.sendEmptyMessageDelayed(MESSAGE_SWITCH_ID, 1500);
+                }
             });
         }
         if (nSize >= 4) {
@@ -249,7 +263,11 @@ public class TaskView extends LinearLayout {
                         , mYywItemList.get(3).getSubItems().get(mYywIdxs[3]).getTitle());
                 AnalysisUtils.onEventEx(mContext, Dot.TASK_CLICK, mDotFrom + "-" + mTaskGroup + "-3-" + mYywIdxs[3]);
                 mYywIdxs[3]++;
-                refreshYywItem();
+                checkYywIndex();
+                if (mTaskHandler != null) {
+                    mTaskHandler.removeMessages(MESSAGE_SWITCH_ID);
+                    mTaskHandler.sendEmptyMessageDelayed(MESSAGE_SWITCH_ID, 1500);
+                }
             });
         }
     }
@@ -299,14 +317,17 @@ public class TaskView extends LinearLayout {
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
+            TaskView view = mTaskView.get();
+            if (view == null) {
+                return;
+            }
             if (msg.what == MESSAGE_ID) {
-                TaskView view = mTaskView.get();
-                if (view != null) {
-                    for (int i = 0; i < view.ARRAY_COUNT; i++) {
-                        view.mYywIdxs[i]++;
-                    }
-                    view.refreshYywItem();
+                for (int i = 0; i < view.ARRAY_COUNT; i++) {
+                    view.mYywIdxs[i]++;
                 }
+                view.refreshYywItem();
+            } else if (msg.what == MESSAGE_SWITCH_ID) {
+                view.refreshYywItem();
             }
         }
     }
