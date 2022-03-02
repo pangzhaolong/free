@@ -25,6 +25,7 @@ import java.util.List;
 public class YywView extends androidx.appcompat.widget.AppCompatImageView {
 
     private static final int MESSAGE_ID = 10001;
+    private static final int MESSAGE_SWITCH_ID = 10002;
     private final Context mContext;
 
     private int mSwitchInterval = 10;
@@ -53,11 +54,15 @@ public class YywView extends androidx.appcompat.widget.AppCompatImageView {
             return;
         }
         Glide.with(this).load(bannerItem.getImg()).into(this);
+        this.requestLayout();
         this.setOnClickListener(v -> {
             GotoUtil.doAction(mContext, bannerItem.getAction(), bannerItem.getTitle());
             AnalysisUtils.onEventEx(mContext, Dot.BANNER_CLICK, mFrom + "-" + mYYWIndex);
-            mYYWIndex++;
-            refreshYywItem();
+            if (mYywHandler != null) {
+                mYywHandler.removeMessages(MESSAGE_SWITCH_ID);
+                mYywHandler.sendEmptyMessageDelayed(MESSAGE_SWITCH_ID, 1500);
+            }
+//            refreshYywItem();
         });
     }
 
@@ -66,24 +71,14 @@ public class YywView extends androidx.appcompat.widget.AppCompatImageView {
         mYywItemList.clear();
         if (mCurrentModel == Model_Banner) {
             mFrom = "Place_banner";
-            try {
-                mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getBannerItems().getItems());
-                mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getBannerItems().getSwitchInterval();
-                mEnableYyw = FrontConfigManager.Ins().getConfigBean().getBanner();
-            } catch (Exception e) {
-                this.setVisibility(GONE);
-                return;
-            }
+            mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getBannerItems().getItems());
+            mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getBannerItems().getSwitchInterval();
+            mEnableYyw = FrontConfigManager.Ins().getConfigBean().getBanner();
         } else if (mCurrentModel == Model_WithDrawl) {
             mFrom = "Place_withdrawal";
-            try {
-                mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getWithDrawalItems().getItems());
-                mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getWithDrawalItems().getSwitchInterval();
-                mEnableYyw = FrontConfigManager.Ins().getConfigBean().getWithDrawal();
-            } catch (Exception e) {
-                this.setVisibility(GONE);
-                return;
-            }
+            mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getWithDrawalItems().getItems());
+            mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getWithDrawalItems().getSwitchInterval();
+            mEnableYyw = FrontConfigManager.Ins().getConfigBean().getWithDrawal();
         }
 
         if (!mEnableYyw) {
@@ -144,12 +139,13 @@ public class YywView extends androidx.appcompat.widget.AppCompatImageView {
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
-            if (msg.what == MESSAGE_ID) {
-                YywView yywView = mYywView.get();
-                if (yywView != null) {
-                    yywView.mYYWIndex++;
-                    yywView.refreshYywItem();
-                }
+            YywView yywView = mYywView.get();
+            if (yywView == null) {
+                return;
+            }
+            if (msg.what == MESSAGE_ID || msg.what == MESSAGE_SWITCH_ID) {
+                yywView.mYYWIndex++;
+                yywView.refreshYywItem();
             }
         }
     }
