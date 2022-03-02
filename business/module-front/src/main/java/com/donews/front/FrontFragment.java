@@ -734,7 +734,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         nCloseRpCounts = 0;
         mOpenedRpCounts = 0;
         mFindFirstReadyRp = false;
-        int topColor = Color.parseColor("#764D38");
+        int topColor = Color.parseColor("#AC623C");
         int bottomColor = Color.parseColor("#FFF3D3");
         changeRpStatus(rpBean, topColor, bottomColor
                 , mDataBinding.frontRpOpenFl1, mDataBinding.frontRpTv1, mDataBinding.tomorrow01, mDataBinding.frontRpIv1, mDataBinding.frontRpProgressDoneIv1, 1);
@@ -782,6 +782,9 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             EventBus.getDefault().post(new RedPackageStatus(0, rpBean.getHadLotteryTotal()));
         }
 
+        mDataBinding.frontRpLl.requestLayout();
+        mDataBinding.frontRpLl.postInvalidate();
+        
         SPUtils.setInformain(KeySharePreferences.CLOSE_RED_PACKAGE_COUNTS, nCloseRpCounts);
         SPUtils.setInformain(KeySharePreferences.OPENED_RED_PACKAGE_COUNTS, mOpenedRpCounts);
         if (rpBean.getOpened()) {

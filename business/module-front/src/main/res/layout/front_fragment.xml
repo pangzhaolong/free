@@ -223,7 +223,7 @@
                                             android:layout_height="13dp"
                                             android:layout_gravity="center_horizontal|bottom"
                                             android:padding="3dp"
-                                            android:src="@drawable/front_rp_progress_dot" />
+                                            android:src="@drawable/front_rp_progress_done" />
                                     </LinearLayout>
 
                                     <LinearLayout
