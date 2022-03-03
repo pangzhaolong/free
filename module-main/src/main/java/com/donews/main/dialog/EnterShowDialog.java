@@ -194,6 +194,10 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
         requestGoodsInfo(true);
     }
 
+    public void dismissEx() {
+        dismiss();
+    }
+
     @SuppressLint("DefaultLocale")
     private String randLucky() {
         float rand = 80 + 20 * (new Random().nextFloat());
