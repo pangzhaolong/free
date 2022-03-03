@@ -297,7 +297,7 @@ public class FeedbackActivity extends MvvmBaseLiveDataActivity<ActivityFeedbackB
         String userId = AppInfo.getUserId();
         if (!TextUtils.isEmpty(userId)) {
             try {
-                req.user_id = Long.getLong(userId);
+                req.user_id = Long.parseLong(userId);
             } catch (Exception e) {
                 req.user_id = 0L;
                 e.printStackTrace();
