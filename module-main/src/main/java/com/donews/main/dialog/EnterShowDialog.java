@@ -262,7 +262,7 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
         mGoods = bean.getList().get(0);
         if (mContext != null && mContext instanceof Activity && !((Activity) mContext).isDestroyed()) {
             RoundedCorners roundedCorners = new RoundedCorners(25);
-            RequestOptions requestOptions=  RequestOptions.bitmapTransform(roundedCorners);
+            RequestOptions requestOptions = RequestOptions.bitmapTransform(roundedCorners);
             Glide.with(mContext)
                     .load(UrlUtils.formatUrlPrefix(mGoods.getMainPic()))
                     .diskCacheStrategy(DiskCacheStrategy.DATA)
@@ -286,7 +286,8 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
         }
 //        Glide.with(mContext).load(UrlUtils.formatUrlPrefix(mGoods.getMainPic())).into(mDataBinding.ivGoodsPic);
         mDataBinding.tvGoodsTitle.setText(mGoods.getTitle());
-        mDataBinding.tvActualPrice.setText(String.format("￥%.0f", mGoods.getDisplayPrice()));
+        mDataBinding.tvActualPrice.setText(String.format("￥%d", OtherSwitch.Ins().getLotteryPriceShow()));
+//        mDataBinding.tvActualPrice.setText(String.format("￥%.0f", mGoods.getDisplayPrice()));
         mDataBinding.tvOriginalPrice.setText("￥" + mGoods.getOriginalPrice());
         mDataBinding.tvOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
         if (mGoods.getTotalPeople() > 10000) {
