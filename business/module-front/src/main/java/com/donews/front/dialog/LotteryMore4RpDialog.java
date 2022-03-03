@@ -161,7 +161,8 @@ public class LotteryMore4RpDialog extends BaseDialog<FrontLotteryMore4RpDialogBi
         }
 
         mDataBinding.frontLotteryMore4RpDescTv.setText(mGoods.getTitle());
-        mDataBinding.frontLotteryMore4RpCouponPriceTv.setText(String.format("%.0f", mGoods.getDisplayPrice()));
+        mDataBinding.frontLotteryMore4RpCouponPriceTv.setText(String.format("%d", OtherSwitch.Ins().getLotteryPriceShow()));
+//        mDataBinding.frontLotteryMore4RpCouponPriceTv.setText(String.format("%.0f", mGoods.getDisplayPrice()));
 //        mDataBinding.frontLotteryMore4RpOriginPriceTv.setText(String.format("￥%.0f", mGoods.getOriginalPrice()));
 //        mDataBinding.frontLotteryMore4RpOriginPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
         if (mGoods.getTotalPeople() > 10000) {

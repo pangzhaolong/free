@@ -132,6 +132,8 @@ public class MainActivity
     //下载应用的积分墙弹窗
     DialogFragment appDownDialog;
 
+    private EnterShowDialog mEnterShowDialog = null;
+
     @Autowired
     String from;
 
@@ -417,7 +419,13 @@ public class MainActivity
                         mDrawDialog.dismiss();
                     }
                     if (SPUtils.getInformain(KeySharePreferences.SHOW_DIALOG_WHEN_LAUNCH, true)) {
-                        new EnterShowDialog(MainActivity.this).showEx();
+                        if (mEnterShowDialog == null) {
+                            mEnterShowDialog = new EnterShowDialog(MainActivity.this);
+                        }
+                        if (!mEnterShowDialog.isShowing()) {
+                            mEnterShowDialog.showEx();
+                        }
+//                        new EnterShowDialog(MainActivity.this).showEx();
                     }
                 }
 
@@ -435,7 +443,13 @@ public class MainActivity
                 @Override
                 public void onDismiss() {
                     if (SPUtils.getInformain(KeySharePreferences.SHOW_DIALOG_WHEN_LAUNCH, true)) {
-                        new EnterShowDialog(MainActivity.this).showEx();
+//                        new EnterShowDialog(MainActivity.this).showEx();
+                        if (mEnterShowDialog == null) {
+                            mEnterShowDialog = new EnterShowDialog(MainActivity.this);
+                        }
+                        if (!mEnterShowDialog.isShowing()) {
+                            mEnterShowDialog.showEx();
+                        }
                     }
                 }
 
@@ -793,6 +807,10 @@ public class MainActivity
     protected void onStop() {
         super.onStop();
         LogUtil.e("MainActivity onStop");
+        if (mEnterShowDialog != null) {
+            mEnterShowDialog.dismissEx();
+            mEnterShowDialog = null;
+        }
     }
 
     @Override

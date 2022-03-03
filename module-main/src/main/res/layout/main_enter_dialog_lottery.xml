@@ -42,7 +42,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="10dp"
                     android:gravity="center"
-                    android:text="福气指数:您的抽中s概率为 "
+                    android:text="福气指数:您的抽中概率为 "
                     android:textColor="#FFFFFF"
                     android:textSize="18sp"
                     android:textStyle="bold" />
