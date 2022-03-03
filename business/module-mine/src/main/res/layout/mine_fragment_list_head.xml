@@ -13,12 +13,12 @@
         android:id="@+id/mine_me_top_bt_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/mine_me_top_bg"
-        skin:enable="true"
-        android:layout_marginRight="-1dp"
-        android:layout_alignParentTop="true"
         android:layout_alignBottom="@+id/ll_glod_count"
-        android:layout_marginBottom="40dp"/>
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="-1dp"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/mine_me_top_bg"
+        skin:enable="true" />
 
     <!-- 手机和设置 -->
     <LinearLayout
@@ -35,8 +35,8 @@
             android:layout_height="40dp"
             android:layout_marginRight="5dp"
             android:padding="8dp"
-            android:visibility="gone"
-            android:src="@drawable/mine_top_service_icon" />
+            android:src="@drawable/mine_top_service_icon"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/rl_top_bar_seting"
@@ -53,7 +53,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rl_top_bar"
-        android:layout_marginTop="-15dp"
+        android:layout_marginTop="-36dp"
         android:gravity="center_vertical">
 
         <com.donews.common.views.CircleImageView
@@ -147,7 +147,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/rl_center_info"
         android:layout_marginLeft="13dp"
-        android:layout_marginTop="17dp"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="13dp"
         android:background="@drawable/mine_me_top_q_bg"
         android:orientation="horizontal"
