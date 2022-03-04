@@ -114,7 +114,7 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
             public void onClick(@NonNull View widget) {
                 String url = "";
                 if (ABSwitch.Ins().isOpenAB() && DeviceUtils.getChannelName().equalsIgnoreCase("huawei")) {
-                    url = "http://ad-static-xg.tagtic.cn/wangzhuan/file/e0175957f8bb037da313fa23caae5944.html";
+                    url = "https://ad-static-xg.tagtic.cn/wangzhuan/file/e0175957f8bb037da313fa23caae5944.html";
                 } else {
                     url = BuildConfig.USER_PROTOCOL;
                 }
@@ -140,7 +140,7 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
             public void onClick(@NonNull View widget) {
                 String url = "";
                 if (ABSwitch.Ins().isOpenAB() && DeviceUtils.getChannelName().equalsIgnoreCase("huawei")) {
-                    url = "http://ad-static-xg.tagtic.cn/wangzhuan/file/bd5cf63a41d4155d6d126087612f2e2e.html";
+                    url = "https://ad-static-xg.tagtic.cn/wangzhuan/file/bd5cf63a41d4155d6d126087612f2e2e.html";
                 } else {
                     url = BuildConfig.PRIVATE_POLICY_URL;
                 }
