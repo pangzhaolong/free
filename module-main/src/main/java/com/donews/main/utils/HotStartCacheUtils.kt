@@ -47,13 +47,12 @@ object HotStartCacheUtils {
     }
 
     fun loadAd() {
-        if (mHotStartDialog != null && mHotStartDialog!!.isAdded) {
-            if (JddAdConfigManager.jddAdConfigBean.hotStartAdEnable) {
-                mHotStartDialog!!.preloadFirstAd()
-            }
+        // 屏蔽预加载广告-by aaron.din
+        /*if (mHotStartDialog != null && mHotStartDialog!!.isAdded) {
+            mHotStartDialog!!.preloadFirstAd()
         } else {
             clear()
-        }
+        }*/
     }
 
     fun showAd() {

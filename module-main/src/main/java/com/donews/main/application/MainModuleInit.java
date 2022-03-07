@@ -127,14 +127,16 @@ public class MainModuleInit implements IModuleInit {
             return;
         }
         HotStartCacheUtils.INSTANCE.addHotStartAdDialog();
-        mHandler.removeCallbacksAndMessages(null);
+
+        // 屏蔽预加载-by aaron.din
+        /*mHandler.removeCallbacksAndMessages(null);
         //在满足后台时间的需求后再加载广告
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 HotStartCacheUtils.INSTANCE.loadAd();
             }
-        }, backGroundInt * 1000L);
+        }, backGroundInt * 1000L);*/
     }
 
     @Override

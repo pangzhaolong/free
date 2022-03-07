@@ -60,6 +60,8 @@ class HotStartDialog : DialogFragment(), DialogInterface.OnKeyListener {
 
     private var mIsShow: Boolean = false
 
+    private var mIsAdLoaded: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NORMAL, R.style.BaseDialogTheme_FullScreen)
@@ -116,6 +118,8 @@ class HotStartDialog : DialogFragment(), DialogInterface.OnKeyListener {
         }
     }
 
+    // 屏蔽预加载-by aaron.din
+/*
 
     fun preloadFirstAd() {
         val preloadListener = object : IPreloadAdListener {
@@ -128,9 +132,11 @@ class HotStartDialog : DialogFragment(), DialogInterface.OnKeyListener {
             override fun onAdError(code: Int, errorMsg: String?) {
                 super.onAdError(code, errorMsg)
                 mFirstAd = null
-                /*if (mIsShow) {
-                    dismissAllowingStateLoss()
-                }*/
+                if (mIsShow) {
+                    if (isAdded) {
+                        dismissAllowingStateLoss()
+                    }
+                }
             }
 
             override fun onAdExposure() {
@@ -152,17 +158,19 @@ class HotStartDialog : DialogFragment(), DialogInterface.OnKeyListener {
 
         if (mFullAd) {
             AdManager.preloadFullScreenSplashAd(
-                    requireActivity(),
-                    mDataBinding.adFllContainer,
-                    preloadListener,
-                    splashListener
+                requireActivity(),
+                true,
+                mDataBinding.adFllContainer,
+                preloadListener,
+                splashListener
             )
         } else {
             AdManager.preloadHalfScreenSplashAd(
-                    requireActivity(),
-                    mDataBinding.adFllContainer,
-                    preloadListener,
-                    splashListener
+                requireActivity(),
+                true,
+                mDataBinding.adFllContainer,
+                preloadListener,
+                splashListener
             )
         }
     }
@@ -171,9 +179,9 @@ class HotStartDialog : DialogFragment(), DialogInterface.OnKeyListener {
         val preloadListener = object : IPreloadAdListener {
             override fun preloadAd(ad: PreloadAd) {
                 mSecondAd = ad
-                /*if (mIsShow) {
+                if (mIsShow) {
                     dismissAllowingStateLoss()
-                }*/
+                }
             }
         }
 
@@ -195,26 +203,32 @@ class HotStartDialog : DialogFragment(), DialogInterface.OnKeyListener {
 
         if (mFullAd) {
             AdManager.preloadFullScreenSplashAd(
-                    requireActivity(),
-                    mDataBinding.adFllContainer,
-                    preloadListener,
-                    splashListener
+                requireActivity(),
+                true,
+                mDataBinding.adFllContainer,
+                preloadListener,
+                splashListener
             )
         } else {
             AdManager.preloadHalfScreenSplashAd(
-                    requireActivity(),
-                    mDataBinding.adFllContainer,
-                    preloadListener,
-                    splashListener
+                requireActivity(),
+                true,
+                mDataBinding.adFllContainer,
+                preloadListener,
+                splashListener
             )
         }
     }
+*/
 
     private fun loadFirstAd() {
         val splashListener = object : SimpleSplashListener() {
             override fun onAdError(code: Int, errorMsg: String?) {
                 super.onAdError(code, errorMsg)
-                dismissAllowingStateLoss()
+                try {
+                    dismissDialog()
+                    mIsAdLoaded = false
+                } catch (e: Exception) {}
             }
 
             override fun onAdDismiss() {
@@ -222,20 +236,28 @@ class HotStartDialog : DialogFragment(), DialogInterface.OnKeyListener {
                 if (mHotDoubleSplash) {
                     loadSecondAd()
                 } else {
-                    dismissAllowingStateLoss()
+                    dismissDialog()
+                    mIsAdLoaded = false
                 }
+            }
+
+            override fun onAdLoad() {
+                super.onAdLoad()
+                mIsAdLoaded = true
             }
         }
 
         if (mFullAd) {
             AdManager.loadFullScreenSplashAd(
                     requireActivity(),
+                    true,
                     mDataBinding.adFllContainer,
                     splashListener
             )
         } else {
             AdManager.loadHalfScreenSplashAd(
                     requireActivity(),
+                    true,
                     mDataBinding.adFllContainer,
                     splashListener
             )
@@ -246,24 +268,31 @@ class HotStartDialog : DialogFragment(), DialogInterface.OnKeyListener {
         val splashListener = object : SimpleSplashListener() {
             override fun onAdError(code: Int, errorMsg: String?) {
                 super.onAdError(code, errorMsg)
-                dismissAllowingStateLoss()
+                dismissDialog()
             }
 
             override fun onAdDismiss() {
                 super.onAdDismiss()
-                dismissAllowingStateLoss()
+                dismissDialog()
+            }
+
+            override fun onAdLoad() {
+                super.onAdLoad()
+                mIsAdLoaded = true
             }
         }
 
         if (mFullAd) {
             AdManager.loadFullScreenSplashAd(
                     requireActivity(),
+                    true,
                     mDataBinding.adFllContainer,
                     splashListener
             )
         } else {
             AdManager.loadHalfScreenSplashAd(
                     requireActivity(),
+                    true,
                     mDataBinding.adFllContainer,
                     splashListener
             )
@@ -316,6 +345,10 @@ class HotStartDialog : DialogFragment(), DialogInterface.OnKeyListener {
         ft.commitAllowingStateLoss()
     }
 
+    fun dismissDialog() {
+        dismissAllowingStateLoss()
+        stopProgress()
+    }
 
     private var progressAnim: ValueAnimator? = null
 
@@ -339,10 +372,16 @@ class HotStartDialog : DialogFragment(), DialogInterface.OnKeyListener {
 
                         override fun onAnimationEnd(animation: Animator?) {
                             mDataBinding.pbProgress.visibility = View.INVISIBLE
+                            if (!mIsAdLoaded) {
+                                dismissDialog()
+                            }
                         }
 
                         override fun onAnimationCancel(animation: Animator?) {
                             mDataBinding.pbProgress.visibility = View.INVISIBLE
+                            if (!mIsAdLoaded) {
+                                dismissDialog()
+                            }
                         }
 
                         override fun onAnimationRepeat(animation: Animator?) {
@@ -357,6 +396,7 @@ class HotStartDialog : DialogFragment(), DialogInterface.OnKeyListener {
 
     fun stopProgress() {
         progressAnim?.cancel()
+        progressAnim = null
     }
 
     override fun onKey(dialog: DialogInterface?, keyCode: Int, event: KeyEvent?): Boolean {
