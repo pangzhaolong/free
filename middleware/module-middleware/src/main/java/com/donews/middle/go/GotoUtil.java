@@ -134,6 +134,9 @@ public class GotoUtil {
             Bundle bundle = new Bundle();
             bundle.putString("url", action);
             bundle.putString("title", title);
+            if (OtherSwitch.Ins().isShowInterstitialAdWhenOpenYyw()) {
+                bundle.putBoolean("showAd", true);
+            }
             ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
         } else {
             String[] acts = action.split("\\|");

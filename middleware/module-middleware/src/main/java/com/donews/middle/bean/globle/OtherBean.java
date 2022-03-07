@@ -91,6 +91,9 @@ public class OtherBean extends BaseCustomViewModel {
     @SerializedName("skipSplashAd4NewUser")
     private boolean skipSplashAd4NewUser = false;   // # 是否打开新用户不展示开屏广告；true：不展示开屏广告；false：展示开屏广告
 
+    @SerializedName("showInterstitialAdWhenOpenYyw")
+    private boolean showInterstitialAdWhenOpenYyw = false;
+
     public boolean isSkipSplashAd4NewUser() {
         return skipSplashAd4NewUser;
     }
@@ -313,5 +316,9 @@ public class OtherBean extends BaseCustomViewModel {
 
     public void setLotteryPriceShow(int lotteryPriceShow) {
         this.lotteryPriceShow = lotteryPriceShow;
+    }
+
+    public boolean isShowInterstitialAdWhenOpenYyw() {
+        return showInterstitialAdWhenOpenYyw;
     }
 }

@@ -230,4 +230,7 @@ public class OtherSwitch {
         return mOtherBean.getRevealNumber();
     }
 
+    public boolean isShowInterstitialAdWhenOpenYyw() {
+        return mOtherBean.isShowInterstitialAdWhenOpenYyw();
+    }
 }

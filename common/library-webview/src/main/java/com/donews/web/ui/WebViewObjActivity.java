@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -15,6 +16,7 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.drouter.ARouteHelper;
+import com.donews.common.ad.business.loader.AdManager;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.share.ShareWeixinApp;
@@ -39,6 +41,8 @@ public class WebViewObjActivity extends MvvmBaseLiveDataActivity<WebViewObjActiv
     String title;
     @Autowired
     String url = "";
+    @Autowired
+    Boolean showAd = false;
     private WebModel mWebModel;
     @Autowired
     int mOpenType;
@@ -47,6 +51,8 @@ public class WebViewObjActivity extends MvvmBaseLiveDataActivity<WebViewObjActiv
 
     private WebViewManager webViewManager;
     private JavaScriptInterface javaScriptInterface;
+
+    private boolean mIsPaused = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,15 +99,15 @@ public class WebViewObjActivity extends MvvmBaseLiveDataActivity<WebViewObjActiv
         javaScriptInterface.setWebViewModel(mViewModel);
         mDataBinding.webView.addJavascriptInterface(javaScriptInterface, "android");
         mDataBinding.titleBar.setTitle(title);
-        LogUtil.d("url" + url);
+//        LogUtil.d("url" + url);
         url = JsonUtils.H5url(url);
-        LogUtil.d("url" + url);
+//        LogUtil.d("url" + url);
         if (url.contains("report.amap.com")) {
             mDataBinding.webView.loadUrl(url);
-            LogUtil.e("url:" + url);
+//            LogUtil.e("url:" + url);
         } else {
             mDataBinding.webView.loadUrl(url + JsonUtils.getCommonH5Json(url.contains("?") && url.contains("authorization")));
-            LogUtil.e("url:" + url + JsonUtils.getCommonH5Json(url.contains("?") && url.contains("authorization")));
+//            LogUtil.e("url:" + url + JsonUtils.getCommonH5Json(url.contains("?") && url.contains("authorization")));
         }
         mDataBinding.titleBar.setBackOnClick(new View.OnClickListener() {
             @Override
@@ -109,6 +115,14 @@ public class WebViewObjActivity extends MvvmBaseLiveDataActivity<WebViewObjActiv
                 onBackPressed();
             }
         });
+
+        if (showAd) {
+            new Handler().postDelayed(() -> {
+                if (!mIsPaused) {
+                    AdManager.INSTANCE.loadInterstitialAd(WebViewObjActivity.this, null);
+                }
+            }, 500);
+        }
     }
 
     @Override
@@ -138,6 +152,7 @@ public class WebViewObjActivity extends MvvmBaseLiveDataActivity<WebViewObjActiv
         LogUtil.e("=onResume=");
         mWebModel.setResume(true);
         mDataBinding.webView.loadUrl(JavaScriptMethod.getResume());
+        mIsPaused = false;
     }
 
     @Override
@@ -189,5 +204,6 @@ public class WebViewObjActivity extends MvvmBaseLiveDataActivity<WebViewObjActiv
         super.onPause();
         mDataBinding.webView.loadUrl(JavaScriptMethod.getPause());
         mWebModel.setResume(false);
+        mIsPaused = true;
     }
 }

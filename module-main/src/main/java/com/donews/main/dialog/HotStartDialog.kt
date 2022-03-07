@@ -250,14 +250,12 @@ class HotStartDialog : DialogFragment(), DialogInterface.OnKeyListener {
         if (mFullAd) {
             AdManager.loadFullScreenSplashAd(
                     requireActivity(),
-                    true,
                     mDataBinding.adFllContainer,
                     splashListener
             )
         } else {
             AdManager.loadHalfScreenSplashAd(
                     requireActivity(),
-                    true,
                     mDataBinding.adFllContainer,
                     splashListener
             )
@@ -285,14 +283,12 @@ class HotStartDialog : DialogFragment(), DialogInterface.OnKeyListener {
         if (mFullAd) {
             AdManager.loadFullScreenSplashAd(
                     requireActivity(),
-                    true,
                     mDataBinding.adFllContainer,
                     splashListener
             )
         } else {
             AdManager.loadHalfScreenSplashAd(
                     requireActivity(),
-                    true,
                     mDataBinding.adFllContainer,
                     splashListener
             )
