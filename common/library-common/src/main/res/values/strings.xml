@@ -14,5 +14,5 @@
     <string name="common_update_next_time">下次再说</string>
     <string name="common_update_continue">继续更新</string>
     <string name="common_update_skip_title">确定放弃\n本次更新吗?</string>
-    <string name="common_update_tips">您也可在[设置]-[检查更新]中启动更新</string>
+    <string name="common_update_tips">您也可在[设置]-[关于我们]中启动更新</string>
 </resources>

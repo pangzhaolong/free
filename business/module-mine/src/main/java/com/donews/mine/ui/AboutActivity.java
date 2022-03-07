@@ -14,6 +14,7 @@ import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.common.adapter.ScreenAutoAdapter;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
+import com.donews.common.updatedialog.UpdateManager;
 import com.donews.mine.R;
 import com.donews.mine.databinding.MineActivityAboutBinding;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
@@ -71,6 +72,10 @@ public class AboutActivity extends MvvmBaseLiveDataActivity<MineActivityAboutBin
                     Context.CLIPBOARD_SERVICE);
             ClipData clipData = ClipData.newPlainText(null, mDataBinding.mineAboutBd.getText());
             clipboardManager.setPrimaryClip(clipData);
+        });
+
+        mDataBinding.tvCheckUpdate.setOnClickListener(v -> {
+            UpdateManager.getInstance().checkUpdate(AboutActivity.this, true);
         });
     }
 
