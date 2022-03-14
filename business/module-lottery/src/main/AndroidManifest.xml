@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.module_lottery">
+    <application>
+        <activity
+            android:launchMode="singleTask"
+            android:name="com.module.lottery.ui.LotteryActivity"
+            android:screenOrientation="portrait"
+            android:exported="true"/>
+
+    </application>
+
+</manifest>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/front_goods_item_bg"
+    android:padding="10dp">
+
+    <FrameLayout
+        android:id="@+id/front_goods_item_fl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true">
+
+        <ImageView
+            android:id="@+id/front_goods_item_edge_fl"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center|top"
+            android:background="@drawable/front_goods_item_iv_edge_1"/>
+<!--        <FrameLayout
+            android:id="@+id/front_goods_item_edge_fl"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center"
+            android:background="@drawable/front_goods_item_iv_edge_1"
+            android:padding="6dp">-->
+
+            <org.raphets.roundimageview.RoundImageView
+                android:id="@+id/front_goods_item_iv"
+                android:layout_width="116dp"
+                android:layout_height="116dp"
+                android:scaleType="matrix"
+                android:layout_gravity="center"
+                app:border_color="@color/transparent"
+                app:border_width="0dp"
+                app:corner_radius="10dp"
+                app:type="round" />
+<!--
+        </FrameLayout>-->
+
+        <TextView
+            android:id="@+id/front_goods_item_tip_tv"
+            android:layout_width="35dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="1.5dp"
+            android:background="@drawable/front_goods_item_iv_tip_1"
+            android:gravity="top|center_horizontal"
+            android:padding="2dp"
+            android:text="爆款推荐"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/front_goods_item_label_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="13dp"
+            android:src="@drawable/front_goods_item_label"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/front_goods_item_fl"
+        android:clipChildren="false"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/front_goods_item_des_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="波佐见日本进口陶瓷餐具釉下彩日式海波纹家用大餐盘"
+            android:textColor="#2C2C2C"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="23dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="2dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/middle_item_money" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text="参考价"
+                android:textColor="#A9AEB1"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/front_goods_item_price_tv"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text="￥1699"
+                android:textColor="#A9AEB1"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:clipChildren="false">
+
+            <TextView
+                android:id="@+id/front_item_do_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/front_goods_item_lottery_bg"
+                android:gravity="center"
+                android:paddingStart="20dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="8dp"
+                android:text="免费抽奖"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/front_goods_item_clock_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="-1dp"
+                android:src="@drawable/front_goods_item_clock"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/front_goods_item_guid_lav"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="end|bottom"
+                android:layout_marginEnd="-6dp"
+                android:layout_marginBottom="-10dp"
+                android:src="@drawable/front_goods_item_crit_hand"
+                android:visibility="gone" />
+        </FrameLayout>
+    </LinearLayout>
+
+</RelativeLayout>

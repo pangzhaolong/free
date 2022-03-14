@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/home_top_srl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="MissingClass">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:background="@drawable/home_jdd_fragment_title_bg"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="@color/transparent"
+                    android:orientation="vertical">
+
+                    <com.zhpan.bannerview.BannerViewPager
+                        android:id="@+id/home_top_banner_view_pager"
+                        android:layout_width="match_parent"
+                        android:layout_height="160dp"
+                        android:visibility="gone"
+                        app:bvp_round_corner="5dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#e0e0e0"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <GridView
+                            android:id="@+id/home_column_gv"
+                            android:layout_width="match_parent"
+                            android:layout_height="140dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/home_jdd_grid_bg"
+                            android:gravity="center"
+                            android:horizontalSpacing="4dp"
+                            android:numColumns="5"
+                            android:paddingTop="10dp"
+                            android:verticalSpacing="20dp" />
+
+                        <LinearLayout
+                            android:id="@+id/home_top_tj_ll"
+                            android:layout_width="match_parent"
+                            android:layout_height="180dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="5dp"
+                            android:baselineAligned="false"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+                            <RelativeLayout
+                                android:id="@+id/home_top_item1_rl"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginEnd="5dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/home_goods_item_bg">
+
+                                <TextView
+                                    android:id="@+id/home_top_tj1_item_tv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="4dp"
+                                    android:layout_marginTop="10dp"
+                                    android:text="全网热销榜"
+                                    android:textColor="#2c2c2c"
+                                    android:textStyle="bold"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    tools:ignore="MissingConstraints" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginEnd="4dp"
+                                    android:text="实时好货"
+                                    android:textColor="#F33838"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    tools:ignore="MissingConstraints" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_below="@+id/home_top_tj1_item_tv"
+                                    android:layout_marginBottom="10dp"
+                                    android:orientation="horizontal"
+                                    android:weightSum="2">
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginEnd="2dp"
+                                        android:layout_weight="1"
+                                        android:orientation="vertical"
+                                        tools:ignore="Suspicious0dp">
+
+                                        <FrameLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content">
+
+                                            <ImageView
+                                                android:id="@+id/home_top_tj1_item_iv1"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="90dp"
+                                                android:scaleType="matrix" />
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="1"
+                                                android:textColor="@color/white" />
+                                        </FrameLayout>
+
+                                        <androidx.appcompat.widget.AppCompatTextView
+                                            android:id="@+id/home_top_tj1_item_tv1"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:ellipsize="end"
+                                            android:gravity="center"
+                                            android:maxLines="1" />
+
+                                        <androidx.appcompat.widget.AppCompatTextView
+                                            android:id="@+id/home_top_tj1_item_price_tv1"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:ellipsize="end"
+                                            android:gravity="center"
+                                            android:maxLines="1"
+                                            android:textColor="#F33838" />
+
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="2dp"
+                                        android:layout_weight="1"
+                                        android:orientation="vertical"
+                                        tools:ignore="Suspicious0dp">
+
+                                        <FrameLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent">
+
+                                            <ImageView
+                                                android:id="@+id/home_top_tj1_item_iv2"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="90dp"
+                                                android:scaleType="matrix" />
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="2"
+                                                android:textColor="@color/white" />
+                                        </FrameLayout>
+
+                                        <androidx.appcompat.widget.AppCompatTextView
+                                            android:id="@+id/home_top_tj1_item_tv2"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:ellipsize="end"
+                                            android:gravity="center"
+                                            android:maxLines="1" />
+
+                                        <androidx.appcompat.widget.AppCompatTextView
+                                            android:id="@+id/home_top_tj1_item_price_tv2"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:ellipsize="end"
+                                            android:gravity="center"
+                                            android:maxLines="1"
+                                            android:textColor="#F33838" />
+                                    </LinearLayout>
+                                </LinearLayout>
+
+                            </RelativeLayout>
+
+
+                            <RelativeLayout
+                                android:id="@+id/home_top_item2_rl"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="5dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/home_goods_item_bg">
+
+                                <LinearLayout
+                                    android:id="@+id/home_top_tj2_item_ll"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="4dp"
+                                        android:text="限时秒杀"
+                                        android:textColor="#2c2c2c"
+                                        android:textStyle="bold"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        tools:ignore="MissingConstraints" />
+
+                                    <TextView
+                                        android:id="@+id/home_top_item2_time_tv"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_marginStart="10dp"
+                                        android:gravity="center_vertical"
+                                        android:text="20点场"
+                                        android:textColor="#F33838"
+                                        android:textSize="12sp"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        tools:ignore="MissingConstraints" />
+
+                                    <TextView
+                                        android:id="@+id/home_top_item2_countdown_tv"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginEnd="4dp"
+                                        android:ellipsize="end"
+                                        android:gravity="center_vertical"
+                                        android:maxLines="1"
+                                        android:text="倒计时"
+                                        android:textColor="#F33838"
+                                        android:textSize="12sp"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        tools:ignore="MissingConstraints" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/home_top_tj2_item_ll"
+                                    android:layout_marginBottom="10dp"
+                                    android:orientation="horizontal"
+                                    android:weightSum="2">
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginEnd="2dp"
+                                        android:layout_weight="1"
+                                        android:orientation="vertical"
+                                        tools:ignore="Suspicious0dp">
+
+
+                                        <ImageView
+                                            android:id="@+id/home_top_tj2_item_iv1"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="90dp"
+                                            android:scaleType="matrix" />
+
+
+                                        <androidx.appcompat.widget.AppCompatTextView
+                                            android:id="@+id/home_top_tj2_item_tv1"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:ellipsize="end"
+                                            android:gravity="center"
+                                            android:maxLines="1" />
+
+                                        <androidx.appcompat.widget.AppCompatTextView
+                                            android:id="@+id/home_top_tj2_item_price_tv1"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:ellipsize="end"
+                                            android:gravity="center"
+                                            android:maxLines="1"
+                                            android:textColor="#F33838" />
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="2dp"
+                                        android:layout_weight="1"
+                                        android:orientation="vertical"
+                                        tools:ignore="Suspicious0dp">
+
+                                        <ImageView
+                                            android:id="@+id/home_top_tj2_item_iv2"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="90dp"
+                                            android:scaleType="matrix" />
+
+                                        <androidx.appcompat.widget.AppCompatTextView
+                                            android:id="@+id/home_top_tj2_item_tv2"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:ellipsize="end"
+                                            android:gravity="center"
+                                            android:maxLines="1" />
+
+                                        <androidx.appcompat.widget.AppCompatTextView
+                                            android:id="@+id/home_top_tj2_item_price_tv2"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:ellipsize="end"
+                                            android:gravity="center"
+                                            android:maxLines="1"
+                                            android:textColor="#F33838" />
+                                    </LinearLayout>
+                                </LinearLayout>
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/home_good_product_rv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </FrameLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <com.scwang.smart.refresh.footer.ClassicsFooter
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+</layout>

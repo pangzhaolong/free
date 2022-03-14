@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.text.Html" />
+
+        <variable
+            name="detailInfo"
+            type="com.donews.detail.bean.GoodsDetailInfo" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:background="#ff0000">
+
+        <View
+            android:id="@+id/view_recommend"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/detail_bg_circle_10_white"
+            app:layout_constraintBottom_toBottomOf="@id/space_bottom_recommend"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_photo"
+            android:layout_width="29.592dp"
+            android:layout_height="29.592dp"
+            android:layout_marginStart="13.152dp"
+            android:layout_marginTop="13.152dp"
+            android:contentDescription="@null"
+            android:src="@drawable/detail_photo"
+            app:layout_constraintStart_toStartOf="@id/view_recommend"
+            app:layout_constraintTop_toTopOf="@id/view_recommend" />
+
+        <TextView
+            android:id="@+id/tv_recommend_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5.485dp"
+            android:text="@string/detail_recommend_title"
+            android:textColor="@color/detail_ff3738"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/iv_photo"
+            app:layout_constraintStart_toEndOf="@id/iv_photo"
+            app:layout_constraintTop_toTopOf="@id/iv_photo" />
+
+        <ImageView
+            android:id="@+id/iv_recommend_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:src="@drawable/detail_recommend_msg_arrows"
+            app:layout_constraintEnd_toEndOf="@id/tv_recommend_title"
+            app:layout_constraintStart_toStartOf="@id/tv_recommend_title"
+            app:layout_constraintTop_toBottomOf="@id/iv_photo" />
+
+        <TextView
+            android:id="@+id/tv_recommend_msg"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="13.152dp"
+            android:background="@drawable/detail_bg_circle_10_f4f4f4"
+            android:gravity="top|start"
+            android:paddingStart="19.728dp"
+            android:paddingTop="7.672dp"
+            android:paddingEnd="19.728dp"
+            android:paddingBottom="7.672dp"
+            android:text="@{Html.fromHtml(detailInfo.desc)}"
+            android:textColor="@color/detail_555555"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/iv_photo"
+            app:layout_constraintTop_toBottomOf="@id/iv_recommend_arrow"
+            tools:text="asfkdhkjashkjashfkjahsjkfhaskjfhaksjfhkjashfkjash
+asklfjklasjfklasjlfkjaslkjflkasjflkasj
+sajkhfkjashfkjashkjfhkjashfkjas
+sajfkjashfjkhsa" />
+
+        <androidx.legacy.widget.Space
+            android:id="@+id/space_bottom_recommend"
+            android:layout_width="0dp"
+            android:layout_height="12dp"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_recommend_msg" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ResourceName">
+    <item android:id="@android:id/background">
+        <shape
+            android:shape="rectangle"
+            android:useLevel="false">
+            <!-- 实心 -->
+            <solid android:color="@color/white" />
+            <corners android:radius="14dp" />
+            <solid android:color="#F7CD4E" />
+        </shape>
+    </item>
+
+    <item android:id="@android:id/secondaryProgress">
+        <scale android:scaleWidth="100%" >
+            <shape
+                android:shape="rectangle"
+                android:useLevel="false">
+                <corners android:topLeftRadius="14dp"
+                    android:bottomLeftRadius="14dp"
+                    android:bottomRightRadius="14dp"
+                    android:topRightRadius="14dp"/>
+                <gradient
+                    android:angle="270"
+                    android:endColor="#FF3535"
+                    android:startColor="#FF8585"
+                    android:gradientRadius="14dp"/>
+            </shape>
+        </scale>
+    </item>
+
+    <item android:id="@android:id/progress"
+        tools:ignore="UnusedAttribute">
+        <scale
+            android:shape="rectangle"
+            android:scaleWidth="100%" >
+            <bitmap android:src="@mipmap/main_crit_welfare_pro_q_bg"
+                android:tileMode="repeat"/>
+        </scale>
+    </item>
+
+</layer-list>

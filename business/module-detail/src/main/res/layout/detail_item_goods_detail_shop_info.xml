@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.text.Html" />
+
+        <variable
+            name="detailInfo"
+            type="com.donews.detail.bean.GoodsDetailInfo" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/detail_bg_circle_10_white"
+        android:padding="10.96dp">
+
+
+        <ImageView
+            android:id="@+id/iv_ic_shop"
+            android:layout_width="56.98dp"
+            android:layout_height="56.98dp"
+            android:contentDescription="@null"
+            android:src="@drawable/detail_photo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_shop_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10.96dp"
+            android:text="@{detailInfo.shopName}"
+            android:textColor="@color/black"
+            android:textSize="13.152dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/iv_ic_shop"
+            app:layout_constraintTop_toTopOf="@id/iv_ic_shop"
+            tools:text="优信保健食品旗舰店" />
+
+        <TextView
+            android:id="@+id/tv_desc_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10.96dp"
+            android:text="@{@string/detail_dsr_score(String.valueOf(detailInfo.dsrScore))}"
+            android:textColor="@color/detail_8888888"
+            android:textSize="13.152dp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_ic_shop"
+            app:layout_constraintStart_toEndOf="@id/iv_ic_shop"
+            tools:text="@string/detail_dsr_score" />
+
+        <TextView
+            android:id="@+id/tv_service_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16.44dp"
+            android:text="@{@string/detail_service_score(String.valueOf(detailInfo.serviceScore))}"
+            android:textColor="@color/detail_8888888"
+            android:textSize="13.152dp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_desc_score"
+            app:layout_constraintStart_toEndOf="@id/tv_desc_score"
+            tools:text="@string/detail_service_score" />
+
+        <TextView
+            android:id="@+id/tv_ship_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16.44dp"
+            android:text="@{@string/detail_ship_score(String.valueOf(detailInfo.shipScore))}"
+            android:textColor="@color/detail_8888888"
+            android:textSize="13.152dp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_desc_score"
+            app:layout_constraintStart_toEndOf="@id/tv_service_score"
+            tools:text="@string/detail_ship_score" />
+
+        <Button
+            android:layout_width="70dp"
+            android:layout_height="26dp"
+            android:background="@drawable/detail_bg_circle_12_fe3738"
+            android:padding="0dp"
+            android:stateListAnimator="@null"
+            android:text="全部商品"
+            android:textColor="@color/white"
+            android:textSize="12.056dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_ic_shop" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.keepalive.daemon.core">
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.REORDER_TASKS" />
+
+    <!-- 用户同步权限 -->
+    <uses-permission
+        android:name="android.permission.AUTHENTICATE_ACCOUNTS"
+        android:maxSdkVersion="22" />
+    <uses-permission
+        android:name="android.permission.GET_ACCOUNTS"
+        android:maxSdkVersion="22" />
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+
+
+
+    <instrumentation
+        android:name="com.keepalive.daemon.core.component.DaemonInstrumentation"
+        android:targetPackage="${applicationId}"
+        android:targetProcesses="${applicationId},${applicationId}:resident,${applicationId}:daemon,${applicationId}:assist1,${applicationId}:assist2" />
+
+    <application>
+        <!-- 账户同步拉活 -->
+        <provider
+            android:name="com.donews.keepalive.accountsync.AccountSyncInitProvider"
+            android:authorities="${applicationId}.AccountSyncInitprovider"
+            android:exported="true"
+            android:multiprocess="true"
+            android:initOrder="1001"/>
+
+        <receiver
+            android:name="com.donews.keepalive.accountsync.AccountDaemonStaticReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.REBOOT" />
+                <action android:name="android.intent.action.ACTION_SHUTDOWN" />
+                <action android:name="android.intent.action.QUICKBOOT_POWEROFF" />
+            </intent-filter>
+            <intent-filter android:priority="2147483647">
+                <action android:name="android.hardware.usb.action.USB_STATE" />
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+                <action android:name="android.net.wifi.STATE_CHANGE" />
+                <action android:name="com.app.startrecevice" />
+                <action android:name="android.intent.action.TIME_TICK" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.donews.keepalive.accountsync.AccountJobService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <!-- 自动同步服务 入口服务 -->
+        <service
+            android:name="com.donews.keepalive.accountsync.AccountSyncService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/keepalive_sync_adapter" />
+        </service>
+
+        <service
+            android:name="com.donews.keepalive.accountsync.AuthenticationService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/keepalive_sync_account_authenticator" />
+        </service>
+        <!-- 账户结束 -->
+
+        <service
+            android:name="com.keepalive.daemon.core.component.DaemonService"
+            android:exported="true"
+            android:process=":daemon">
+            <intent-filter>
+                <action android:name="${applicationId}.monitor.BIND_SERVICE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="com.keepalive.daemon.core.component.AssistService1"
+            android:exported="true"
+            android:process=":assist1" />
+
+        <service
+            android:name="com.keepalive.daemon.core.component.AssistService2"
+            android:exported="true"
+            android:process=":assist2" />
+
+        <service
+            android:name="com.keepalive.daemon.core.notification.NotifyResidentService"
+            android:process=":resident" />
+
+        <service
+            android:name="com.keepalive.daemon.core.KeepAliveService"
+            android:process="android.process.daemon" />
+
+        <receiver
+            android:name="com.keepalive.daemon.core.component.DaemonReceiver"
+            android:exported="true" />
+
+        <receiver android:name="com.keepalive.daemon.core.receiver.AutoBootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.TIME_TICK" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+
+
+        <!-- 自研保活部分  开始-->
+        <receiver android:name="com.donews.keepalive.ScreenStateReceiver">
+            <intent-filter android:priority="90000">
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.intent.action.SCREEN_ON" />
+                <action android:name="android.intent.action.SCREEN_OFF" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name="com.donews.keepalive.SystemNotifyReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":watch">
+            <intent-filter>
+                <action android:name="android.intent.action.SCREEN_ON" />
+                <action android:name="android.intent.action.SCREEN_OFF" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.intent.action.MEDIA_MOUNTED" />
+                <action android:name="android.intent.action.MEDIA_EJECT" />
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+                <action android:name="android.net.wifi.STATE_CHANGED" />
+                <action android:name="android.intent.action.PHONE_STATE" />
+                <action android:name="android.intent.action.PHONE_STATE_2" />
+                <action android:name="android.intent.action.PHONE_STATE2" />
+                <action android:name="android.intent.action.DUAL_PHONE_STATE" />
+                <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
+                <action android:name="com.cootek.smartdialer.action.PHONE_STATE" />
+                <action android:name="com.cootek.smartdialer.action.INCOMING_CALL" />
+                <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_HANDLE_APP_REGISTER" />
+                <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_HANDLE_APP_UNREGISTER" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="com.donews.keepalive.NotificationClickReceiver" />
+
+        <activity
+            android:name="com.donews.keepalive.DazzleActivity"
+            android:excludeFromRecents="true"
+            android:finishOnTaskLaunch="false"
+            android:launchMode="singleTask"
+            android:taskAffinity="com.android.sdk.one.KeepLive"
+            android:theme="@style/OnePixelActivityTheme" />
+
+        <service android:name="com.donews.keepalive.DazzleService" />
+        <service android:name="com.donews.keepalive.HeartService" />
+
+        <service
+            android:name="com.donews.keepalive.DazzleLiveService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <service
+            android:name="com.donews.keepalive.JobHeartService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <service
+            android:name="com.donews.keepalive.JobHandlerService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <!-- 自研保活部分  结束-->
+    </application>
+</manifest>

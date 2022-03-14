@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:ignore="MissingConstraints">
+
+    <!-- 内容区域 -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/mine_share_bottom_dialog_bg"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="34dp">
+
+        <TextView
+            android:id="@+id/share_select_dialog_t"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="分享到"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/share_select_dialog_py"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textSize="13sp"
+            android:text="联系人"
+            android:layout_marginTop="40dp"
+            android:gravity="center"
+            android:drawablePadding="5dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:drawableTop="@drawable/icon_weixin_image"
+            app:layout_constraintRight_toLeftOf="@+id/share_select_dialog_quan"
+
+            app:layout_constraintTop_toBottomOf="@+id/share_select_dialog_t"/>
+
+        <TextView
+            android:id="@+id/share_select_dialog_quan"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textSize="13sp"
+            android:text="朋友圈"
+            android:gravity="center"
+            android:drawablePadding="5dp"
+            android:drawableTop="@drawable/icon_weixin_quan"
+            app:layout_constraintTop_toTopOf="@+id/share_select_dialog_py"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/share_select_dialog_py"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

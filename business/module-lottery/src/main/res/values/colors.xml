@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+
+    <color name="policec_lick">#F18D8B</color>
+
+    <color name="pending">#D17500</color>
+
+    <color name="policec_lick_red">#EE524F</color>
+    <color name="lottery_code">#D17500</color>
+
+
+
+</resources>

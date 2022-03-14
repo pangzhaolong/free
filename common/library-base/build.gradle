@@ -1,0 +1,55 @@
+apply from: rootProject.file('gradle/library.build.gradle')
+android {
+    //统一资源前缀,规范资源引用
+    resourcePrefix "base_"
+}
+
+
+dependencies {
+
+    api rootProject.ext.androidx["junit"]
+    api rootProject.ext.androidx["androidx.test.ext-junit"]
+    api rootProject.ext.androidx["androidx.test.espresso:espresso-core"]
+
+    api rootProject.ext.androidx["androidx-appcompat"]
+    api rootProject.ext.androidx["androidx.annotation"]
+    api rootProject.ext.androidx["androidx.core"]
+    api rootProject.ext.androidx["androidx.core-ktx"]
+    api rootProject.ext.androidx["androidx.recyclerview"]
+
+    api rootProject.ext.androidx["androidx.lifecycle-runtime"]
+    api rootProject.ext.androidx["androidx.lifecycle-runtime-ktx"]
+    api rootProject.ext.androidx["androidx.lifecycle-viewmodel-ktx"]
+    api rootProject.ext.androidx["androidx.lifecycle-livedata-ktx"]
+    api rootProject.ext.androidx["androidx.lifecycle-process"]
+
+
+    api rootProject.ext.dependencies["kotlin-coroutines"]
+    api rootProject.ext.dependencies["kotlin-coroutines-android"]
+
+    api rootProject.ext.androidx["androidx.constraintlayout"]
+    api rootProject.ext.androidx["android.material"]
+    api rootProject.ext.androidx["androidx.navigation-fragment"]
+    api rootProject.ext.androidx["androidx.navigation-ui:"]
+
+    api rootProject.ext.dependencies["gson"]
+    api rootProject.ext.dependencies["rxjava2"]
+
+    api rootProject.ext.dependencies["BaseRecyclerViewAdapterHelper"]
+    api rootProject.ext.dependencies["immersionbar"]
+
+    //图片加载库
+    api rootProject.ext.dependencies["glide"]
+    api rootProject.ext.dependencies["glideOkHttp"]
+    api rootProject.ext.dependencies["glideTransformations"]
+    kapt rootProject.ext.dependencies["glide-compiler"]
+
+    api rootProject.ext.dependencies["multidex"]
+
+    api rootProject.ext.dependencies["rxBinding"]
+
+    api rootProject.ext.dependencies["easypermissions"]
+    api rootProject.ext.dependencies["easypermissions-ktx"]
+
+    api project(path: ':common:library-utils')
+}

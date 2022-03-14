@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/main_floating_fl"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:background="@drawable/main_floating_rp_bg"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/main_floating_rp_rp_bg" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|top"
+            android:src="@drawable/main_floating_rp_tr_bg" />
+
+        <org.raphets.roundimageview.RoundImageView
+            android:id="@+id/main_rp_icon"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="6dp"
+            app:border_width="0dp"
+            app:corner_radius="5dp"
+            app:type="round" />
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="20dp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/main_floating_rp_btn_bg"
+            android:gravity="center"
+            android:text="5s开红包"
+            android:textColor="@color/white"
+            android:textSize="10sp" />
+    </FrameLayout>
+</LinearLayout>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <cache-path
+        name="dn_cache_down_path"
+        path="/" />
+    <external-path
+        name="dn_ext_down_path"
+        path="/" />
+
+</paths>

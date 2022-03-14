@@ -1,0 +1,29 @@
+apply from: rootProject.file('gradle/library.build.gradle')
+
+android {
+
+    defaultConfig {
+
+    }
+
+
+    //统一资源前缀,规范资源引用
+    resourcePrefix "common_"
+
+}
+
+dependencies {
+    api project(':common:library-base')
+    api project(':common:library-network')
+    api project(':common:library-drouter')
+
+    api project(':common:library-sdk')
+
+    api rootProject.ext.dependencies["lottie"]
+
+    api rootProject.ext.dependencies["refresh-layout-kernel"]
+    api rootProject.ext.dependencies["refresh-header-classics"]
+    api rootProject.ext.dependencies["refresh-footer-classics"]
+
+    kapt rootProject.ext.dependencies["arouter-compiler"]
+}

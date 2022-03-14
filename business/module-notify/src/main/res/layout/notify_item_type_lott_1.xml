@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_notifyroot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/notify_bg"
+    android:paddingTop="17dp"
+    android:paddingBottom="17dp"
+    tools:ignore="MissingConstraints">
+
+    <ImageView
+        android:id="@+id/notify_item_lott_icon"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginLeft="15dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/noti_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/notify_item_lott_title"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/notify_item_lott_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_goneMarginLeft="15dp"
+        android:layout_marginLeft="5dp"
+        android:text="提醒"
+        android:textColor="@color/color_666666"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/notify_item_lott_icon"
+        app:layout_constraintLeft_toRightOf="@+id/notify_item_lott_icon"
+        app:layout_constraintTop_toTopOf="@+id/notify_item_lott_icon" />
+
+    <TextView
+        android:id="@+id/notify_item_lott_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:text="昵称"
+        android:textColor="@color/color_333333"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/notify_item_lott_jp"
+        app:layout_constraintTop_toBottomOf="@+id/notify_item_lott_icon" />
+
+    <TextView
+        android:id="@+id/notify_item_lott_desc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="请确认你的奖品"
+        android:textColor="@color/color_666666"
+        android:textSize="14sp"
+        app:layout_constraintLeft_toLeftOf="@+id/notify_item_lott_name"
+        app:layout_constraintRight_toLeftOf="@+id/notify_item_lott_jp"
+        app:layout_constraintTop_toBottomOf="@+id/notify_item_lott_name" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/notify_item_lott_jp"
+        android:layout_width="53dp"
+        android:layout_height="53dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginRight="15dp"
+        android:scaleType="fitXY"
+        app:cornerFamily="rounded"
+        app:cornerSize="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

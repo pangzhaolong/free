@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="commodity"
+            type="com.doing.spike.bean.SpikeBean.GoodsListDTO" />
+
+        <variable
+            name="period"
+            type="com.doing.spike.bean.SpikeBean.RoundsListDTO" />
+    </data>
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:paddingTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/spike_item_shape"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_marginStart="10dp"
+                android:id="@+id/picture"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
+                android:layout_marginTop="5dp"
+                android:scaleType="fitXY"/>
+
+            <LinearLayout
+                android:layout_marginEnd="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:textSize="14dp"
+                    android:singleLine="true"
+                    android:text='@{commodity.title!=null?commodity.title:""}'
+                    android:textColor="#333333"/>
+
+                <TextView
+                    android:textSize="12dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text='@{commodity.dtitle!=null?commodity.dtitle:""}'
+                    android:textColor="#EA443C"/>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="18dp"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="券"
+                        android:gravity="center"
+                        android:background="@drawable/rectangle_bg"
+                        android:textColor="#EA443C"
+                        android:textSize="12dp"/>
+
+                    <TextView
+                        android:gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/rectangle_bg_shape"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="3dp"
+                        android:text='@{(commodity.couponPrice!=null?commodity.couponPrice+"":"")+"元"}'
+                        android:textColor="#FFFFFF"
+                        android:textSize="12dp"/>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="¥"
+                                android:textColor="#EA443C"
+                                android:textSize="12dp"/>
+
+                            <TextView
+                                android:layout_marginStart="2dp"
+                                android:layout_width="wrap_content"
+                                android:textStyle="bold"
+                                android:layout_height="wrap_content"
+                                android:text="@{commodity.actualPrice.toString()}"
+                                android:textColor="#EA443C"
+                                android:textSize="16dp"/>
+
+                            <TextView
+                                android:id="@+id/original_price"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:text='@{"¥"+commodity.originalPrice.toString()}'
+                                android:textColor="#999999"
+                                android:textSize="12dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="bottom"
+                            android:orientation="horizontal"
+                            android:paddingBottom="15dp">
+
+                            <ImageView
+                                android:layout_width="10dp"
+                                android:layout_height="12dp"
+                                android:layout_gravity="bottom"
+                                android:src="@drawable/fire_icon"/>
+
+                            <TextView
+                                android:layout_marginStart="8dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="月销"
+                                android:textColor="#656565"
+                                android:textSize="12dp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="3dp"
+                                android:text="@{commodity.getSales().toString()}"
+                                android:textColor="#FE3336"
+                                android:textSize="12dp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="3dp"
+                                android:text="件"
+                                android:textColor="#656565"
+                                android:textSize="12dp"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/grabbed_bg"
+                        android:layout_width="86dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/spike_quantity_shape"
+                        android:orientation="vertical"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp">
+
+                        <TextView
+                            android:id="@+id/grabbed_number"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text='@{(period!=null&amp;period.getStatus()==2)?"即将开抢":"已抢"+commodity.monthSales.toString()+"件"}'
+                            android:textColor="#FFFFFF"
+                            android:textSize="12dp"/>
+
+                        <android.widget.ProgressBar
+                            android:id="@+id/spike_progress"
+                            style="@android:style/Widget.ProgressBar.Horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:max="@{commodity.getCoupon_total_num()}"
+                            android:progress="@{commodity.getCoupon_receive_num()}"
+                            android:progressDrawable="@drawable/progressbar_"  />
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

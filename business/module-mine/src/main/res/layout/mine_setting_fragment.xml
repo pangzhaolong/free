@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/res/android/skin"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource,ResourceName">
+
+    <data>
+
+        <import type="com.donews.mine.viewModel.SettingFragmentViewModel" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="listener"
+            type="SettingFragmentViewModel" />
+
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/set_list_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical">
+            <!-- title项目 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/mine_setting_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/text_red"
+                tools:ignore="MissingConstraints"
+                android:paddingTop="40dp"
+                android:paddingBottom="40dp"
+                android:paddingLeft="15dp"
+                android:visibility="gone">
+
+                <com.donews.common.views.CircleImageView
+                    android:id="@+id/set_head_bg"
+                    android:layout_width="58dp"
+                    android:layout_height="58dp"
+                    android:background="@drawable/shape_circle_write_bg" />
+
+                <com.donews.common.views.CircleImageView
+                    android:id="@+id/set_head"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_margin="2dp"
+                    android:src="@drawable/user_logo"
+                    app:layout_constraintBottom_toBottomOf="@+id/set_head_bg"
+                    app:layout_constraintLeft_toLeftOf="@+id/set_head_bg"
+                    app:layout_constraintRight_toRightOf="@+id/set_head_bg"
+                    app:layout_constraintTop_toTopOf="@+id/set_head_bg" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toRightOf="@+id/set_head_bg"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="15dp"
+                    app:layout_constraintTop_toTopOf="@+id/set_head_bg"
+                    app:layout_constraintBottom_toBottomOf="@+id/set_head_bg">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="欢迎来到多多有宝"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:singleLine="true"
+                        android:ellipsize="end"
+                        android:textColor="@color/white"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="奖品免费拿,购物超省钱"
+                        android:textSize="14sp"
+                        android:singleLine="true"
+                        android:ellipsize="end"
+                        android:textColor="@color/interval_line"/>
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <View
+                style="@style/HorizontalLine"
+                android:layout_height="10dp"/>
+            <!-- 以下是菜单项目 -->
+            <include android:id="@+id/set_user_id"
+                layout="@layout/mine_setting_fragment_item"/>
+            <View
+                style="@style/HorizontalLine"/>
+
+            <include
+                android:id="@+id/set_yhxy"
+                layout="@layout/mine_setting_fragment_item" />
+
+            <View
+                style="@style/HorizontalLine"/>
+
+            <include
+                android:id="@+id/set_yszcl"
+                layout="@layout/mine_setting_fragment_item" />
+
+            <View
+                style="@style/HorizontalLine"/>
+
+            <include
+                android:id="@+id/set_yjfk"
+                layout="@layout/mine_setting_fragment_item"/>
+
+            <View
+                style="@style/HorizontalLine"/>
+
+            <include
+                android:id="@+id/set_gywm"
+                layout="@layout/mine_setting_fragment_item"/>
+
+            <View
+                style="@style/HorizontalLine"
+                android:layout_height="10dp"/>
+
+            <include
+                android:id="@+id/set_fxapp"
+                layout="@layout/mine_setting_fragment_item" />
+
+            <View
+                style="@style/HorizontalLine"/>
+
+            <include
+                android:id="@+id/set_qchc"
+                layout="@layout/mine_setting_fragment_item"/>
+
+            <View
+                style="@style/HorizontalLine"/>
+
+            <include
+                android:id="@+id/set_zxzh"
+                layout="@layout/mine_setting_fragment_item"/>
+            <View
+                style="@style/HorizontalLine"/>
+            <include
+                android:id="@+id/set_message_switch"
+                layout="@layout/mine_setting_push_item"
+                android:visibility="gone"/>
+            <TextView
+                android:id="@+id/tv_exit_login"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:background="@drawable/mine_me_open_not_win_but"
+                android:text="退出登录"
+                android:layout_marginTop="60dp"
+                android:layout_marginBottom="30dp"/>
+        </LinearLayout>
+    </ScrollView>
+</layout>

@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F9F9F9"
+        android:clipChildren="false">
+
+        <RelativeLayout
+            android:id="@+id/setting_info_ll_photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false">
+
+            <com.scwang.smart.refresh.layout.SmartRefreshLayout
+                android:id="@+id/mail_sm_refresh"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.scwang.smart.refresh.header.ClassicsHeader
+                    android:id="@+id/refresh_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/lottery_gridview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <com.scwang.smart.refresh.footer.ClassicsFooter
+                    android:id="@+id/refresh_footer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+            <ImageView
+                android:id="@+id/return_icon"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="50dp"
+                android:src="@mipmap/return_icon" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/linear_background"
+                android:clipChildren="false"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="58dp"
+                    android:clipChildren="false"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
+                    <LinearLayout
+                        android:id="@+id/share"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="58dp"
+                            android:layout_height="58dp"
+                            android:layout_marginEnd="30dp"
+                            android:background="@drawable/black_shape_bg"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/fx_icon_"
+                                android:layout_width="20dp"
+                                android:layout_height="19dp"
+                                android:layout_above="@+id/fx"
+                                android:layout_centerHorizontal="true"
+                                android:layout_gravity="center_horizontal"
+                                android:src="@mipmap/share_icon" />
+
+                            <TextView
+                                android:id="@+id/fx"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="3dp"
+                                android:layout_marginBottom="8dp"
+                                android:text="分享"
+                                android:textColor="#FFFFFF"
+                                android:textSize="12dp" />
+                        </RelativeLayout>
+
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/panic_buying"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:clipChildren="false"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_marginStart="30dp"
+                            android:layout_width="58dp"
+                            android:layout_height="58dp"
+                            android:background="@drawable/black_shape_bg"
+                            android:clipChildren="false"
+                            android:orientation="vertical">
+
+
+                            <LinearLayout
+                                android:visibility="gone"
+                                android:id="@+id/coupon_layout"
+                                android:layout_centerHorizontal="true"
+                                android:layout_width="46dp"
+                                android:layout_height="35dp"
+                                android:layout_marginTop="-2dp"
+                                android:background="@mipmap/coupon_bg"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/price_sign"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="¥"
+                                    android:textColor="#A5562D"
+                                    android:textSize="8sp"
+                                    tools:ignore="MissingConstraints" />
+
+                                <TextView
+                                    android:id="@+id/discounted_price"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text=""
+                                    android:textColor="#A5562D"
+                                    android:textSize="13dp"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    tools:ignore="MissingConstraints" />
+
+                            </LinearLayout>
+
+                            <ImageView
+                                android:id="@+id/buy_copywriting_icon"
+                                android:layout_width="20dp"
+                                android:layout_height="19dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_above="@+id/buy_copywriting"
+                                android:src="@mipmap/buy_icon" />
+
+
+                            <TextView
+
+                                android:id="@+id/buy_copywriting"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="3dp"
+                                android:layout_marginBottom="8dp"
+                                android:text="购买"
+                                android:textColor="#FFFFFF"
+                                android:textSize="12dp" />
+                        </RelativeLayout>
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    tools:ignore="MissingConstraints">
+
+                    <LinearLayout
+                        android:id="@+id/lottery_tips"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tips"
+                            android:layout_width="wrap_content"
+                            android:layout_height="43dp"
+                            android:layout_gravity="center"
+                            android:background="@mipmap/button_tips_bg_"
+                            android:gravity="center"
+                            android:paddingStart="27dp"
+                            android:paddingEnd="27dp"
+                            android:paddingBottom="10dp"
+                            android:text="观看视频，参与抽奖"
+                            android:textColor="#E9423E"
+                            android:textSize="16dp" />
+
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/jsonAnimation_round"
+                            android:layout_width="143dp"
+                            android:layout_height="143dp"
+                            android:layout_centerHorizontal="true"
+                            android:scaleType="fitXY"
+                            app:lottie_autoPlay="true"
+                            app:lottie_loop="true" />
+
+                        <LinearLayout
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/label_01"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="@string/zero_dollar_draw"
+                                android:textColor="#FFFFFF"
+                                android:textSize="20dp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/label_02"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/label_01"
+                                android:gravity="center"
+                                android:text="抽奖"
+                                android:textColor="#FFFFFF"
+                                android:textSize="20dp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+                    </RelativeLayout>
+                </LinearLayout>
+
+
+                <!--小手-->
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/jsonAnimation"
+                    android:layout_width="65dp"
+                    android:layout_height="66dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="75dp"
+                    android:layout_marginBottom="35dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:lottie_loop="true"
+                    tools:ignore="MissingConstraints" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </RelativeLayout>
+        <!--  下面是新手引导遮罩层-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/masking_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#CC000000"
+            android:gravity="center_horizontal"
+            android:visibility="gone">
+
+
+            <RelativeLayout
+                android:id="@+id/button_layout"
+                android:layout_width="143dp"
+                android:layout_height="143dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent">
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/masking_button"
+                    android:layout_width="143dp"
+                    android:layout_height="143dp"
+                    android:scaleType="fitXY"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/zero_dollar_draw"
+                        android:textColor="#FFFFFF"
+                        android:textSize="17dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/label_01"
+                        android:gravity="center"
+                        android:text="抽奖"
+                        android:textColor="#FFFFFF"
+                        android:textSize="17dp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </RelativeLayout>
+
+
+            <ImageView
+                android:id="@+id/arrowIcon"
+                android:layout_width="10dp"
+                android:layout_height="19dp"
+                android:layout_marginBottom="10dp"
+                android:src="@mipmap/arrow_icon"
+                app:layout_constraintBottom_toTopOf="@+id/button_layout"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="7dp"
+                android:scaleType="fitXY"
+                android:src="@mipmap/process_guidance"
+                app:layout_constraintBottom_toTopOf="@+id/arrowIcon"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/masking_hand"
+                android:layout_width="65dp"
+                android:layout_height="66dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="75dp"
+                android:layout_marginBottom="35dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:lottie_loop="true"
+                tools:ignore="MissingConstraints" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </RelativeLayout>
+</layout>

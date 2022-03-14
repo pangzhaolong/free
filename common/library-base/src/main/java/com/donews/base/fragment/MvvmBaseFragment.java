@@ -1,0 +1,161 @@
+package com.donews.base.fragment;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
+import androidx.fragment.app.Fragment;
+
+import com.donews.base.activity.IBaseView;
+import com.donews.base.viewmodel.IMvvmBaseViewModel;
+
+/**
+ * 应用模块:fragment
+ * <p>
+ * 类描述: 基类fragment
+ * <p>
+ * <p>
+ * 作者： created by honeylife<br>
+ * 日期：2020-01-27
+ */
+public abstract class MvvmBaseFragment<V extends ViewDataBinding, VM extends IMvvmBaseViewModel>
+        extends Fragment implements IBaseView {
+    protected V viewDataBinding;
+
+    protected VM viewModel;
+
+    protected String mFragmentTag = this.getClass().getSimpleName();
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initParameters();
+        Log.d(mFragmentTag, "onCreate");
+    }
+
+    /**
+     * 初始化参数
+     */
+    protected void initParameters() {
+
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        viewDataBinding =
+                DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
+        Log.d(mFragmentTag, " : onCreateView");
+        return viewDataBinding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view,
+                              @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        viewModel = getViewModel();
+        if (null != viewModel) {
+            viewModel.attachUi(this);
+        }
+        if (getBindingVariable() > 0) {
+            viewDataBinding.setVariable(getBindingVariable(), viewModel);
+            viewDataBinding.executePendingBindings();
+        }
+        Log.d(mFragmentTag, " : onViewCreated");
+    }
+
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        Log.d(mFragmentTag, " : onAttach");
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(mFragmentTag, " : onResume");
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(mFragmentTag, " : onPause");
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d(mFragmentTag, " : onDestroyView");
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (null != viewModel && viewModel.isUiAttach()) {
+            viewModel.detachUi();
+        }
+        Log.d(mFragmentTag, " : onDestroy");
+
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (null != viewModel && viewModel.isUiAttach()) {
+            viewModel.detachUi();
+        }
+        Log.d(mFragmentTag, " : onDetach");
+
+    }
+
+
+    @LayoutRes
+    public abstract int getLayoutId();
+
+    /**
+     * 获取参数
+     */
+    public abstract int getBindingVariable();
+
+    /**
+     * 获取ViewModel
+     */
+    protected abstract VM getViewModel();
+
+    @Override
+    public void showContent() {
+
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void showEmpty() {
+
+    }
+
+    @Override
+    public void showFailure(String message) {
+
+    }
+
+
+}

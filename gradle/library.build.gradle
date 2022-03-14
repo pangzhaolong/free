@@ -1,0 +1,77 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-parcelize'
+
+apply from: rootProject.file('gradle/common.build.gradle')
+
+android {
+    compileSdkVersion rootProject.ext.android_version.compileSdkVersion
+    buildToolsVersion rootProject.ext.android_version.buildToolsVersion
+    defaultConfig {
+        minSdkVersion rootProject.ext.android_version.minSdkVersion
+        targetSdkVersion rootProject.ext.android_version.targetSdkVersion
+        versionCode 100
+        versionName "1.0"
+        multiDexEnabled true
+
+        consumerProguardFiles 'consumer-rules.pro', 'proguard-rules.pro'
+
+        kapt {
+            arguments {
+                arg("AROUTER_MODULE_NAME", project.getName())
+            }
+        }
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main {
+            if (rootProject.ext.isBuildModule) {
+                //在main文件夹下建立alone文件夹，下面可以放java文件，资源文件等测试文件
+                //这里进行设置使用单独运行还是合并运行的Manifest.xml
+                //在main文件夹下建立debug文件夹，下面可以放java文件，资源文件等测试文件
+                //这里进行设置使用单独运行还是合并运行的Manifest.xml,
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+                java.srcDirs = ['src/main/alone/java',
+                                'src/main/java']
+                res.srcDirs = ['src/main/alone/res',
+                               'src/main/res']
+            } else {
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+                java.srcDirs = ['src/main/java']
+            }
+
+            jniLibs.srcDirs = ['libs',"src/main/jniLibs"]
+        }
+    }
+
+    buildFeatures {
+        dataBinding true
+    }
+
+    compileOptions {
+        sourceCompatibility rootProject.ext.android_version.java_version
+        targetCompatibility rootProject.ext.android_version.java_version
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}

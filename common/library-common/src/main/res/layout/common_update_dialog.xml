@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.donews.common.contract.ApplyUpdateBean" />
+
+        <import type="android.view.View" />
+
+        <import type="android.text.Html" />
+
+        <variable
+            name="updataBean"
+            type="com.donews.common.contract.ApplyUpdateBean" />
+
+        <variable
+            name="clickProxy"
+            type="com.donews.common.updatedialog.UpdateActivityDialog.ClickProxy" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:backgroundTint="@color/transparent"
+        tools:background="@color/black"
+        tools:backgroundTint="@color/black">
+
+        <ImageView
+            android:id="@+id/iv_window_top"
+            android:layout_width="283dp"
+            android:layout_height="136dp"
+            android:background="@drawable/common_update_dialog_window_top"
+            app:layout_constraintBottom_toTopOf="@id/iv_window_bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <ImageView
+            android:id="@+id/iv_window_bottom"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:background="@drawable/common_update_dialog_window_bottom"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/iv_window_top"
+            app:layout_constraintStart_toStartOf="@id/iv_window_top"
+            app:layout_constraintTop_toBottomOf="@id/iv_window_top" />
+
+        <View
+            android:id="@+id/space_top_bottom"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:background="@color/white"
+            app:layout_constraintBottom_toTopOf="@id/iv_window_bottom"
+            app:layout_constraintEnd_toEndOf="@id/iv_window_top"
+            app:layout_constraintStart_toStartOf="@id/iv_window_top"
+            app:layout_constraintTop_toBottomOf="@id/iv_window_top" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="27dp"
+            android:layout_marginTop="32dp"
+            android:text="@{updataBean.force_upgrade==1?@string/common_update_title_force:@string/common_update_title_normal}"
+            android:textColor="@color/white"
+            android:textSize="16dp"
+            app:layout_constraintStart_toStartOf="@id/iv_window_top"
+            app:layout_constraintTop_toTopOf="@id/iv_window_top" />
+
+
+        <androidx.legacy.widget.Space
+            android:id="@+id/space_rocket_top"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="42dp"
+            app:layout_constraintBottom_toTopOf="@id/iv_window_top"
+            app:layout_constraintEnd_toEndOf="@id/iv_window_top"
+            app:layout_constraintStart_toStartOf="@id/iv_window_top" />
+
+        <ImageView
+            android:id="@+id/iv_icon_rocket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/common_ic_update_dialog_rocket"
+            app:layout_constraintEnd_toEndOf="@id/iv_window_top"
+            app:layout_constraintStart_toStartOf="@id/iv_window_top"
+            app:layout_constraintTop_toTopOf="@id/space_rocket_top" />
+
+        <TextView
+            android:id="@+id/tv_update_msg"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="start|top"
+            android:includeFontPadding="false"
+            android:lineSpacingExtra="6dp"
+            android:overScrollMode="never"
+            android:padding="20dp"
+            android:text="@{Html.fromHtml(updataBean.upgrade_info)}"
+            android:textColor="#FF2C2C2C"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@id/space_bottom"
+            app:layout_constraintEnd_toEndOf="@id/iv_window_bottom"
+            app:layout_constraintStart_toStartOf="@id/iv_window_bottom"
+            app:layout_constraintTop_toTopOf="@id/iv_window_bottom"
+            tools:text="1.该更新很重要\n2.该更新很作那个有\nasa\nsadas\nsdsa \bbvbz\bbbasda \n dadsa" />
+
+        <!--        <androidx.legacy.widget.Space-->
+        <!--            android:id="@+id/space_close"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginStart="10dp"-->
+        <!--            android:layout_marginBottom="30dp"-->
+        <!--            app:layout_constraintBottom_toTopOf="@id/iv_icon_rocket"-->
+        <!--            app:layout_constraintStart_toEndOf="@id/iv_icon_rocket" />-->
+
+        <!--        <ImageButton-->
+        <!--            android:id="@+id/imgBtn_close"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:background="@null"-->
+        <!--            android:padding="0dp"-->
+        <!--            android:visibility="@{updataBean.force_upgrade==1?View.GONE:View.VISIBLE}"-->
+        <!--            android:src="@drawable/common_update_close"-->
+        <!--            android:stateListAnimator="@null"-->
+        <!--            app:layout_constraintStart_toEndOf="@id/space_close"-->
+        <!--            app:layout_constraintTop_toTopOf="@id/space_close" />-->
+
+        <androidx.legacy.widget.Space
+            android:id="@+id/space_bottom"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="80dp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_window_bottom"
+            app:layout_constraintEnd_toEndOf="@id/iv_window_bottom"
+            app:layout_constraintStart_toStartOf="@id/iv_window_bottom" />
+
+        <ProgressBar
+            android:id="@+id/pb_progress"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="237dp"
+            android:layout_height="16dp"
+            android:progressDrawable="@drawable/common_progress_update_dialog"
+            app:layout_constraintBottom_toBottomOf="@id/iv_window_bottom"
+            app:layout_constraintEnd_toEndOf="@id/iv_window_bottom"
+            app:layout_constraintStart_toStartOf="@id/iv_window_bottom"
+            app:layout_constraintTop_toBottomOf="@id/space_bottom"
+            tools:progress="100" />
+
+        <TextView
+            android:id="@+id/tv_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/pb_progress"
+            app:layout_constraintEnd_toEndOf="@id/pb_progress"
+            app:layout_constraintStart_toStartOf="@id/pb_progress"
+            app:layout_constraintTop_toTopOf="@id/pb_progress" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="pb_progress,tv_progress" />
+
+        <Button
+            android:id="@+id/btn_force_upgrade"
+            android:layout_width="200dp"
+            android:layout_height="48dp"
+            android:background="@drawable/common_bg_update_dialog_btn"
+            android:onClick="@{clickProxy::immUpgrade}"
+            android:stateListAnimator="@null"
+            android:text="@string/common_update_now"
+            android:textColor="@color/white"
+            android:visibility="@{updataBean.force_upgrade==1?View.VISIBLE:View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/iv_window_bottom"
+            app:layout_constraintEnd_toEndOf="@id/iv_window_bottom"
+            app:layout_constraintStart_toStartOf="@id/iv_window_bottom"
+            app:layout_constraintTop_toBottomOf="@id/space_bottom"
+            tools:ignore="TouchTargetSizeCheck,TextContrastCheck"
+            tools:visibility="gone" />
+
+        <Button
+            android:id="@+id/btn_skip"
+            android:layout_width="111dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="25dp"
+            android:background="@drawable/common_bg_update_dialog_nagative"
+            android:onClick="@{clickProxy::skipUpdate}"
+            android:stateListAnimator="@null"
+            android:text="@string/common_update_skip"
+            app:layout_constraintStart_toStartOf="@id/iv_window_bottom"
+            app:layout_constraintTop_toTopOf="@id/btn_update"
+            tools:ignore="TouchTargetSizeCheck"
+            tools:visibility="visible" />
+
+        <Button
+            android:id="@+id/btn_update"
+            android:layout_width="111dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="25dp"
+            android:background="@drawable/common_bg_update_dialog_btn"
+            android:onClick="@{clickProxy::immUpgrade}"
+            android:stateListAnimator="@null"
+            android:text="@string/common_update_now"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/iv_window_bottom"
+            app:layout_constraintEnd_toEndOf="@id/iv_window_bottom"
+            app:layout_constraintTop_toTopOf="@id/space_bottom" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_update_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{updataBean.force_upgrade==1?View.GONE:View.VISIBLE}"
+            app:constraint_referenced_ids="btn_skip,btn_update" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

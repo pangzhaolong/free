@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF">
+
+        <com.donews.common.views.BaseTitleBar
+            android:id="@+id/title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/cicle_login_logo"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100dp"
+            android:layout_below="@+id/title_bar"
+            android:background="@drawable/ic_launcher_round" />
+
+        <TextView
+            android:id="@+id/tv_login_wincom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cicle_login_logo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:text="欢迎来到多多有宝"
+            android:textColor="#4A4A4A"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/tv_login_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_login_wincom"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="奖品免费拿 购物超省钱"
+            android:textColor="#959595"
+            android:textSize="16sp" />
+
+        <!-- 微信登录按钮 -->
+        <RelativeLayout
+            android:id="@+id/rl_wachat_login"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_below="@+id/tv_login_desc"
+            android:layout_marginLeft="53dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginRight="53dp"
+            android:background="@drawable/wachat_login_bg"
+            android:enabled="false">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/weixin_logo" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="微信登录"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <!-- 协议检查按钮 -->
+        <RelativeLayout
+            android:id="@+id/rl_wachat_login_float"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_below="@+id/tv_login_desc"
+            android:layout_marginLeft="53dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginRight="53dp" />
+
+        <!-- 手机登录按钮 -->
+        <RelativeLayout
+            android:id="@+id/rl_mobile_login"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_below="@+id/rl_wachat_login"
+            android:layout_marginLeft="53dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="53dp"
+            android:visibility="gone"
+            android:background="@drawable/mobile_login_bg">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="19dp"
+                android:src="@drawable/shouji_logo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="手机登录"
+                android:textColor="#373737"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_bot_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_mobile_login"
+            android:layout_marginTop="25dp"
+            android:gravity="center"
+            android:layout_alignLeft="@+id/rl_wachat_login"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/login_ck_check"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:checked="false"
+                android:button="@null"
+                android:background="@drawable/wachat_login_check_bg"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="已阅读并同意"
+                android:textSize="12sp"
+                android:layout_marginLeft="4dp"/>
+
+            <TextView
+                android:id="@+id/tv_user_xy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="《用户协议》"
+                android:textColor="#F33838"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_yx_xy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="《隐私政策协议》"
+                android:textColor="#F33838"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</layout>

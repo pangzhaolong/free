@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 圆角图片 -->
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="roundedCornerImageStyle" tools:ignore="ResourceName">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">10dp</item>
+        <item name="android:background">#FFFFFF</item>>
+
+    </style>
+
+</resources>

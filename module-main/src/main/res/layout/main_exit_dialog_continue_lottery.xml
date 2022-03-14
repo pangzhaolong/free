@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.text.SpannableString" />
+
+        <variable
+            name="title"
+            type="SpannableString" />
+
+        <variable
+            name="goodsBean"
+            type="com.donews.main.entitys.resps.ExitDialogRecommendGoods" />
+
+        <variable
+            name="totalPeople"
+            type="String" />
+
+        <variable
+            name="eventListener"
+            type="com.donews.main.dialog.ContinueLotteryDialog.EventListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="23dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_exit_lot_title"
+                android:layout_width="124dp"
+                android:layout_height="35dp"
+                android:visibility="gone"
+                android:src="@drawable/exit_main_not_pack_zy"
+                app:layout_constraintLeft_toLeftOf="@+id/iv_window"
+                app:layout_constraintRight_toRightOf="@+id/iv_window"
+                app:layout_constraintBottom_toTopOf="@+id/iv_window_title"
+                android:layout_marginBottom="21dp"/>
+
+            <ImageView
+                android:id="@+id/iv_window"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:background="@mipmap/main_exit_ddyb_continu_bg"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_window_title" />
+
+            <ImageView
+                android:id="@+id/iv_window_title"
+                android:layout_width="196dp"
+                android:layout_height="33dp"
+                android:visibility="gone"
+                android:layout_marginTop="-12dp"
+                android:background="@drawable/dialog_main_exit_bg_tit"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/iv_window" />
+
+            <ImageView
+                android:id="@+id/iv_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{eventListener::clickClose}"
+                android:src="@drawable/common_close"
+                android:visibility="invisible"
+                android:layout_marginRight="50dp"
+                app:layout_constraintBottom_toTopOf="@id/iv_window"
+                app:layout_constraintEnd_toEndOf="@id/iv_window"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_goneMarginBaseline="0dp" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="75dp"
+                android:text="确定放弃0元福利么?"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintLeft_toLeftOf="@+id/iv_window_title"
+                app:layout_constraintRight_toRightOf="@+id/iv_window_title"
+                app:layout_constraintTop_toTopOf="@+id/iv_window_title" />
+
+            <TextView
+                android:id="@+id/tv_title_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="68dp"
+                android:textColor="#9C4D23"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@id/iv_window"
+                app:layout_constraintStart_toStartOf="@id/iv_window"
+                app:layout_constraintBottom_toTopOf="@+id/btn_lottery"
+                android:layout_marginBottom="13dp"
+                tools:text="已经10人获得免单奖" />
+
+            <ImageView
+                android:id="@+id/iv_goods_pic"
+                android:layout_width="157dp"
+                android:layout_height="157dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/ad_shape_exit_bg"
+                android:scaleType="fitXY"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@id/iv_window"
+                app:layout_constraintStart_toStartOf="@id/iv_window"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_desc"
+                app:url="@{goodsBean.mainPic}" />
+
+            <TextView
+                android:id="@+id/tv_goods_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="11dp"
+                android:ellipsize="end"
+                android:gravity="start|center_vertical"
+                android:maxLines="2"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:text="@{goodsBean.title}"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_goods_pic"
+                tools:text="商品标题" />
+
+            <TextView
+                android:id="@+id/tv_actual_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@{@string/main_exit_price(goodsBean.displayPrice)}"
+                android:textColor="@color/common_e9423e"
+                android:textSize="17sp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@id/tv_goods_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_goods_title"
+                tools:text="¥ 24" />
+
+            <TextView
+                android:id="@+id/tv_original_price"
+                android:layout_width="wrap_content"
+                android:layout_height="21dp"
+                android:layout_marginStart="2dp"
+                android:text="@{@string/main_exit_price(goodsBean.originalPrice)}"
+                android:textSize="15sp"
+                android:visibility="gone"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_actual_price"
+                app:layout_constraintStart_toEndOf="@id/tv_actual_price"
+                app:layout_constraintTop_toTopOf="@id/tv_actual_price"
+                tools:text="¥ 1699" />
+
+            <TextView
+                android:id="@+id/tv_buy_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{@string/main_buy_number(totalPeople)}"
+                android:textSize="12sp"
+                android:visibility="gone"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_actual_price"
+                app:layout_constraintEnd_toEndOf="@id/iv_goods_pic"
+                app:layout_constraintTop_toTopOf="@id/tv_actual_price"
+                tools:text="累计1.8万人抢购" />
+
+            <Button
+                android:id="@+id/btn_next"
+                android:layout_width="94dp"
+                android:layout_height="38dp"
+                android:layout_marginTop="17dp"
+                android:background="@drawable/main_exit_btn_bg_negative"
+                android:onClick="@{eventListener::clickNext}"
+                android:text="@string/main_exit_other"
+                android:textColor="@color/common_F43838"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@id/btn_lottery"
+                app:layout_constraintStart_toStartOf="@id/iv_window"
+                app:layout_constraintTop_toBottomOf="@id/tv_actual_price" />
+
+            <Button
+                android:id="@+id/btn_lottery"
+                android:layout_width="wrap_content"
+                android:layout_height="47dp"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="60dp"
+                android:background="@mipmap/main_exit_ddyb_wind_an"
+                android:onClick="@{eventListener::clickLottery}"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="1dp"
+                android:text="抽奖得现金红包"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_window"
+                app:layout_constraintEnd_toEndOf="@id/iv_window"
+                app:layout_constraintStart_toEndOf="@id/btn_next" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-15dp"
+                android:background="@drawable/green_shape"
+                android:paddingLeft="3dp"
+                android:paddingTop="2dp"
+                android:visibility="gone"
+                android:paddingRight="3dp"
+                android:paddingBottom="2dp"
+                android:text="领8.8元红包"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                app:layout_constraintRight_toRightOf="@+id/btn_lottery"
+                app:layout_constraintTop_toTopOf="@+id/btn_lottery" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/masking_hand"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="-5dp"
+                app:layout_constraintRight_toRightOf="@+id/btn_lottery"
+                app:layout_constraintTop_toTopOf="@+id/btn_lottery"
+                app:lottie_loop="true"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/tv_p_exit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{eventListener::clickLater}"
+                android:padding="5dp"
+                android:text="稍后再说"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                android:layout_marginTop="-10dp"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="@id/iv_window"
+                app:layout_constraintStart_toStartOf="@id/iv_window"
+                app:layout_constraintTop_toBottomOf="@+id/iv_window"
+                tools:text="稍后再说"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/dialog_yh_rt"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="-20dp"
+                android:src="@drawable/main_exit_dialog_winning_yh_r"
+                android:visibility="invisible"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/iv_window"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/dialog_yh_l"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="5dp"
+                android:src="@drawable/main_exit_dialog_winning_yh_lt"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_window"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/iv_window"
+                tools:visibility="visible" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

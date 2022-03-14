@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/res/android/skin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:orientation="horizontal"
+    android:gravity="center"
+    android:background="@color/white"
+    tools:ignore="MissingConstraints"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/mine_par_rec_ls_head_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="name"
+        android:textSize="14sp"
+        android:textColor="@color/mine_5c5b5b"/>
+
+    <TextView
+        android:id="@+id/mine_par_rec_ls_head_flg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="未查看"
+        android:textSize="12sp"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:background="@drawable/mine_me_desc_shape"
+        android:textColor="@color/text_red"/>
+
+    <TextView
+        android:id="@+id/mine_par_rec_ls_head_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="14sp"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:gravity="right|center_vertical"
+        android:textColor="@color/text_red"
+        android:text="待开奖"/>
+
+    <ImageView
+        android:id="@+id/mine_par_rec_ls_head_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/mine_win_open"
+        android:scaleType="fitXY"/>
+
+    <ImageView
+        android:id="@+id/mine_par_rec_ls_head_arr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/right_arrow"
+        android:padding="10dp"
+        android:scaleType="fitXY"/>
+
+</LinearLayout>

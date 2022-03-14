@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".backdoor.BackDoorActivity">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+     <com.donews.common.views.BaseTitleBar
+         android:id="@+id/title_bar"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_suuid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title_bar"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="15dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:visibility="visible">
+
+
+            <TextView
+                android:id="@+id/tv_suuid_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_suuid_name"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/padding_10"
+                android:text=" "
+                android:textColor="@color/A333333"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_suuid_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mine_back_door_suuid"
+                android:textColor="@color/A333333"
+                android:textSize="16sp" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_below="@id/rl_suuid"
+            android:background="@color/black" />
+
+        <RelativeLayout
+            android:id="@+id/rl_user_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_suuid"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="15dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:visibility="visible">
+
+
+            <TextView
+                android:id="@+id/tv_user_id_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/padding_10"
+                android:text=" "
+                android:textColor="@color/A333333"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_user_id_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mine_back_door_userid"
+                android:textColor="@color/A333333"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_below="@id/rl_user_id"
+            android:background="@color/black" />
+
+        <RelativeLayout
+            android:id="@+id/rl_pack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_user_id"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="15dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:visibility="visible">
+
+
+            <TextView
+                android:id="@+id/tv_pack_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/padding_10"
+                android:text=" "
+                android:textColor="@color/A333333"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_pack_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mine_back_door_pack"
+                android:textColor="@color/A333333"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_below="@id/rl_pack"
+            android:background="@color/black" />
+
+        <RelativeLayout
+            android:id="@+id/rl_channel_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_pack"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="15dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:visibility="visible">
+
+
+            <TextView
+                android:id="@+id/tv_channel_code_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/padding_10"
+                android:text=" "
+                android:textColor="@color/A333333"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_channel_code_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mine_back_door_channel"
+                android:textColor="@color/A333333"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_below="@id/rl_channel_code"
+            android:background="@color/black" />
+
+        <RelativeLayout
+            android:id="@+id/rl_surroundings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_channel_code"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="15dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:visibility="visible">
+
+
+            <TextView
+                android:id="@+id/tv_surroundings_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/padding_10"
+                android:text=" "
+                android:textColor="@color/A333333"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_surroundings_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mine_back_door_surroundings"
+                android:textColor="@color/A333333"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_below="@id/rl_surroundings"
+            android:background="@color/black" />
+
+        <RelativeLayout
+            android:id="@+id/rl_version"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_surroundings"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="15dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/tv_version_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/padding_10"
+                android:text=" "
+                android:textColor="@color/A333333"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_version_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mine_back_door_vername"
+                android:textColor="@color/A333333"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_below="@id/rl_version"
+            android:background="@color/black" />
+
+        <RelativeLayout
+            android:id="@+id/rl_version_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_version"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="15dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/tv_version_code_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/padding_10"
+                android:text=" "
+                android:textColor="@color/A333333"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_version_code_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mine_back_door_vercode"
+                android:textColor="@color/A333333"
+                android:textSize="16sp" />
+        </RelativeLayout>
+    </RelativeLayout>
+</layout>

@@ -1,0 +1,36 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+
+
+    <style name="theme_dialog"  parent="android:Theme.Holo.Light.DarkActionBar" tools:ignore="ResourceName">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:backgroundDimAmount">0.5</item>   背景色调整，1全黑，系统默认0.5
+    </style>
+
+    <style name="dialogTransparent" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item> <!--边框-->
+        <item name="android:windowIsFloating">true</item> <!--是否浮现在activity之上-->
+        <item name="android:windowIsTranslucent">true</item> <!--半透明-->
+        <item name="android:windowNoTitle">true</item> <!--无标题-->
+        <item name="android:background">@android:color/transparent</item> <!--背景透明-->
+        <item name="android:windowBackground">@android:color/transparent</item> <!--背景透明-->
+        <item name="android:backgroundDimEnabled">true</item> <!--模糊-->
+        <item name="android:backgroundDimAmount">0.6</item> <!--背景透明度-->
+    </style>
+
+    <style name="toolbar_blue_theme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="colorControlNormal">#000000</item>
+        <item name="android:actionBarSize">46dp</item>
+    </style>
+
+
+    <style name="TabLayoutTextStyle" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">PingFangSC</item>
+    </style>
+</resources>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="MissingDefaultResource">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/closure"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_above="@+id/content_layout"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="right"
+                android:layout_marginEnd="63dp"
+                android:src="@mipmap/closure_icon"
+                tools:ignore="MissingConstraints" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/bg_animation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:scaleType="fitXY" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/content_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true">
+
+                <ImageView
+                    android:id="@+id/red_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="30dp"
+                    android:src="@mipmap/integral_exit_schedule_bg"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:id="@+id/quit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/red_bg"
+                    android:layout_centerHorizontal="true"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="放弃福利"
+                    android:textColor="#D6D6D6"
+                    android:textSize="13dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/red_bg"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:id="@+id/experience"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/quit"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="32dp"
+                    android:background="@drawable/integral_red_shape"
+                    android:paddingStart="28dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="28dp"
+                    android:paddingBottom="8dp"
+                    android:text="试玩60S领取"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20dp"
+                    app:layout_constraintBottom_toTopOf="@+id/quit"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    tools:ignore="MissingConstraints" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </RelativeLayout>
+    </RelativeLayout>
+</layout>

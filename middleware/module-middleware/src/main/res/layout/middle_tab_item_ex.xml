@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
+
+    <ImageView
+        android:id="@+id/middle_tab_item_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:src="@drawable/middle_item_tb" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_toEndOf="@+id/middle_tab_item_logo"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/middle_tab_item_title"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:gravity="center"
+            android:text="淘宝"
+            android:textColor="#2C2C2C"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/middle_tab_item_line"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="1dp"
+            android:src="@drawable/middle_tabitem_ex_line" />
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.text.Html" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="detailInfo"
+            type="com.donews.detail.bean.GoodsDetailInfo" />
+
+        <variable
+            name="eventListener"
+            type="com.donews.detail.ui.GoodsDetailActivity.EventListener" />
+
+        <variable
+            name="hasCoupon"
+            type="Boolean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/view_container"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/detail_bg_container"
+            app:layout_constraintBottom_toBottomOf="@id/space_bottom_container"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_price_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/detail_content_padding"
+            android:baseline="10dp"
+            android:baselineAlignBottom="true"
+            android:text="@string/detail_price_unit"
+            android:textColor="@color/detail_theme_color"
+            android:textSize="17.5dp"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_actual_price"
+            app:layout_constraintBottom_toBottomOf="@id/tv_actual_price"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_actual_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:text="@{String.valueOf(detailInfo.actualPrice)}"
+            android:textColor="@color/detail_theme_color"
+            android:textSize="29.592dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/tv_price_unit"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="5.9" />
+
+        <TextView
+            android:id="@+id/tv_original_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10.9dp"
+            android:text="@{@string/detail_original_price(String.valueOf(detailInfo.originalPrice))}"
+            android:visibility="@{hasCoupon?View.VISIBLE:View.GONE}"
+            android:textColor="@color/detail_8888888"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_actual_price"
+            app:layout_constraintBottom_toBottomOf="@id/tv_actual_price"
+            app:layout_constraintStart_toEndOf="@id/tv_actual_price"
+            tools:text="原价 ¥ 15.9" />
+
+        <TextView
+            android:id="@+id/tv_month_sales"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/detail_content_padding"
+            android:text="@{Html.fromHtml(@string/detail_month_sales(detailInfo.monthSales))}"
+            android:textColor="@color/detail_8888888"
+            app:layout_constraintBottom_toBottomOf="@id/tv_actual_price"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_actual_price"
+            tools:text="已售1119件" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:padding="@dimen/detail_content_padding"
+            android:textColor="@color/black"
+            android:textSize="@dimen/detail_title"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_actual_price"
+            tools:text="优信维生素b族泡腾片vb旗舰店正品补充多种复合维生素B1 B2 B6" />
+
+        <androidx.constraintlayout.widget.Group
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{hasCoupon?View.VISIBLE:View.GONE}"
+            app:constraint_referenced_ids="cl_coupon_left,vcl_coupon_right" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_coupon_left"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/detail_content_padding"
+            android:background="@drawable/detail_bg_conpou_left"
+            android:paddingStart="@dimen/detail_content_padding"
+            android:paddingTop="13.152dp"
+            android:paddingBottom="13.152dp"
+            app:layout_constraintEnd_toStartOf="@id/vcl_coupon_right"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title">
+
+            <TextView
+                android:id="@+id/tv_coupon_price_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/detail_content_padding"
+                android:text="@string/detail_price_unit"
+                android:textColor="@color/detail_ff313e"
+                android:textSize="16.44dp"
+                android:textStyle="bold"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_coupon_price"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_coupon_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{String.valueOf(detailInfo.couponPrice)}"
+                android:textColor="@color/detail_ff313e"
+                android:textSize="26.304dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/tv_coupon_price_unit"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="10" />
+
+            <TextView
+                android:id="@+id/tv_coupon_date_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:text="@string/detail_coupon_date_title"
+                android:textColor="@color/detail_ff313e"
+                android:textSize="13.152dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/tv_coupon_date"
+                app:layout_constraintStart_toStartOf="@id/tv_coupon_date"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/tv_coupon_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/detail_content_padding"
+                android:includeFontPadding="false"
+                android:textColor="@color/detail_ff313e"
+                android:textSize="13.152dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_coupon_date_title"
+                tools:text="2021.10.13-2021.10.14" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/vcl_coupon_right"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="@dimen/detail_content_padding"
+            android:background="@drawable/detail_bg_conpou_right"
+            android:paddingTop="13.152dp"
+            android:paddingBottom="13.152dp"
+            app:layout_constraintBottom_toBottomOf="@id/cl_coupon_left"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/cl_coupon_left"
+            app:layout_constraintTop_toTopOf="@id/cl_coupon_left"
+            app:layout_constraintWidth_percent="0.341">
+
+            <TextView
+                android:id="@+id/tv_get_coupon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{eventListener::clickGetCoupon}"
+                android:paddingLeft="16.44dp"
+                android:text="@string/detail_get_coupon"
+                android:textColor="@color/detail_ff313e"
+                android:textSize="15.344dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.legacy.widget.Space
+            android:id="@+id/space_bottom_container"
+            android:layout_width="0dp"
+            android:layout_height="12dp"
+            android:layout_marginTop="10.960dp"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cl_coupon_left" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

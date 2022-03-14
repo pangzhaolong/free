@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingDefaultResource">
+    <color name="cash_grade_withdraw_color">#FDB12E</color>
+
+    <color name="mine_red_default">#F33838</color>
+    <color name="mine_red_default_w">#FEE5E7</color>
+    <color name="mine_red_min">#D03838</color>
+    <color name="mine_df7b75">#DF7B75</color>
+    <color name="mine_e66a59">#E66A59</color>
+    <color name="mine_5c5b5b">#5C5B5B</color>
+    <color name="mine_e65155">#E65155</color>
+    <color name="mine_f6f9fb">#F6F9FB</color>
+    <color name="mine_f9cbcc">#F9CBCC</color>
+    <color name="mine_fef0ec">#FEF0EC</color>
+    <color name="mine_e7723c">#E7723C</color>
+    <color name="mine_fff5f4">#FFF5F4</color>
+    <color name="mine_d9d8d8">#D9D8D8</color>
+    <color name="mine_e9423e">#E9423E</color>
+</resources>

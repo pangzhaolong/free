@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ResourceName">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:paddingBottom="100dp"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/closure"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/closure_icon"
+            android:visibility="invisible" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/top_layout"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="-20dp"
+            android:layout_marginEnd="22dp"
+            android:background="@drawable/dark_orange_linear_shape"
+            android:gravity="center"
+            android:orientation="vertical"
+            tools:ignore="ResourceName">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:background="#E9662C"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:id="@+id/jsonAnimation"
+                android:layout_width="match_parent"
+                android:layout_height="96dp"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="33dp"
+                android:layout_marginEnd="20dp"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true" />
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/lottery_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="22dp"
+                android:layout_marginTop="21dp"
+                android:layout_marginEnd="22dp"
+            >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/orange_linear_shape"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:paddingStart="20dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="8dp"
+                    tools:ignore="MissingConstraints">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginStart="8dp"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:text="立即抢购"
+                        android:textColor="#A70800"
+                        android:textSize="20dp"
+                        tools:ignore="MissingConstraints" />
+                </LinearLayout>
+
+                <!--小手-->
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/jsonHand"
+                    android:layout_width="57dp"
+                    android:layout_height="58dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="75dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:lottie_loop="true"
+                    tools:ignore="MissingConstraints" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/content_layout"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="14dp"
+                android:gravity="center"
+                android:text="明日10点开奖，不要错过大奖"
+                android:textColor="#99FFFFFF"
+                android:textSize="13dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/top_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/closure"
+            android:layout_marginTop="20dp"
+            android:background="@mipmap/lid_icon"
+            android:gravity="bottom"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginBottom="20dp"
+                android:text="快中奖啦！即将为您发货"
+                android:textColor="#FFFFFF"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+</layout>

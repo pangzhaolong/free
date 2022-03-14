@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource,ResourceName">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/feed_top_layout"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            tools:ignore="MissingConstraints">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="意见反馈"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/feed_back"
+                android:layout_width="56dp"
+                android:layout_height="match_parent"
+                android:paddingLeft="10dp"
+                android:paddingTop="20dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="20dp"
+                android:src="@drawable/common_back_black" />
+        </FrameLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/feed_top_layout">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#F6F6F6"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
+                android:paddingRight="16dp"
+                tools:ignore="MissingConstraints">
+                <!-- 单选题 -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="* 1.您的问题类型"
+                        android:textColor="#2C2C2C"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="【单选题】"
+                        android:textColor="#2C2C2C"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="105dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    android:weightSum="1"
+                    android:padding="0.67dp"
+                    android:background="@drawable/feedback_def_bg">
+
+                    <TableRow
+                        android:layout_weight="0.5"
+                        android:orientation="horizontal"
+                        android:weightSum="1"
+                        tools:ignore="UselessParent">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:background="@drawable/feedback_left_top_line_bg"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="18dp">
+
+                            <CheckBox
+                                android:id="@+id/rad_0"
+                                android:layout_width="wrap_content"
+                                android:layout_height="30dp"
+                                android:button="@drawable/feedback_check_bg"
+                                android:paddingLeft="8dp"
+                                android:text="软件bug"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:gravity="center_vertical"
+                            android:background="@drawable/feedback_right_top_line_bg"
+                            android:paddingLeft="18dp">
+
+                            <CheckBox
+                                android:id="@+id/rad_1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="30dp"
+                                android:button="@drawable/feedback_check_bg"
+                                android:paddingLeft="8dp"
+                                android:text="意见反馈"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_weight="0.5"
+                        android:orientation="horizontal"
+                        android:weightSum="1"
+                        tools:ignore="UselessParent">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="18dp">
+
+                            <CheckBox
+                                android:id="@+id/rad_2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="30dp"
+                                android:paddingLeft="8dp"
+                                android:text="活动咨询"
+                                android:button="@drawable/feedback_check_bg"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:background="@drawable/feedback_right_bot_line_bg"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="18dp">
+
+                            <CheckBox
+                                android:id="@+id/rad_3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="30dp"
+                                android:button="@drawable/feedback_check_bg"
+                                android:checkedButton="@id/rad_0"
+                                android:paddingLeft="8dp"
+                                android:text="其他"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+                    </TableRow>
+                </TableLayout>
+
+                <!-- 手机号 -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="* 2.请输入你的手机号"
+                        android:textColor="#2C2C2C"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:gravity="center_vertical"
+                        android:text="如有必要我们会和您联系"
+                        android:textColor="#6E6E6E"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="11dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/feed_tel"
+                        android:layout_width="match_parent"
+                        android:layout_height="46dp"
+                        android:background="@drawable/feedback_def_bg"
+                        android:gravity="center_vertical"
+                        android:hint="您的手机号码"
+                        android:inputType="phone"
+                        android:maxLength="11"
+                        android:maxLines="1"
+                        android:paddingLeft="33dp"
+                        android:paddingRight="5dp"
+                        android:textColor="#2C2C2C"
+                        android:textColorHint="#6E6E6E"
+                        android:textSize="15sp" />
+
+                    <ImageView
+                        android:layout_width="12dp"
+                        android:layout_height="17dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/feedback_tel" />
+                </RelativeLayout>
+
+                <!-- 咨询反馈内容 -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="* 3.咨询/反馈内容"
+                        android:textColor="#2C2C2C"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:gravity="center_vertical"
+                        android:text="请准确描述您要咨询或反馈的问题，我们会尽快处理。"
+                        android:textColor="#6E6E6E"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="11dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/feed_desc"
+                        android:layout_width="match_parent"
+                        android:layout_height="110dp"
+                        android:background="@drawable/feedback_def_bg"
+                        android:gravity="top"
+                        android:hint="反馈内容"
+                        android:maxEms="300"
+                        android:padding="5dp"
+                        android:textColor="#2C2C2C"
+                        android:textColorHint="#6E6E6E"
+                        android:textSize="15sp" />
+                </RelativeLayout>
+
+                <!-- 上传图片 -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4.请上传图片（非必填）"
+                        android:textColor="#2C2C2C"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/feed_upload_img_vp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="11dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <include layout="@layout/incl_activity_feedback_img" />
+
+                    <include layout="@layout/incl_activity_feedback_img" />
+
+                    <include layout="@layout/incl_activity_feedback_img" />
+                </LinearLayout>
+
+                <!-- 提交按钮 -->
+                <TextView
+                    android:id="@+id/feed_submit"
+                    android:layout_width="280dp"
+                    android:layout_height="47dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/feedback_sub_bg"
+                    android:gravity="center"
+                    android:text="提交"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <!-- 联系客服 -->
+                <TextView
+                    android:id="@+id/feed_call_kf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:layout_marginBottom="20dp"
+                    android:text="联系客服"
+                    android:textColor="#969AA7"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

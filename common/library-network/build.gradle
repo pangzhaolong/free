@@ -1,0 +1,49 @@
+apply from: rootProject.file('gradle/library.build.gradle')
+
+android {
+
+    defaultConfig {
+        versionCode 1
+        versionName "1.0.0"
+
+
+        //Room 配置
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += [
+                        "room.schemaLocation"  : "$projectDir/schemas".toString(),
+                        "room.incremental"     : "true",
+                        "room.expandProjection": "true"]
+            }
+        }
+    }
+
+    //统一资源前缀,规范资源引用
+    resourcePrefix "net_"
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    //第三方依赖库
+    api rootProject.ext.dependencies["okhttp"]
+    api rootProject.ext.dependencies["okhttp-logging-interceptor"]
+    api rootProject.ext.dependencies["okio"]
+    api rootProject.ext.dependencies["diskLruCache"]
+
+    api rootProject.ext.dependencies["rxandroid"]
+    api rootProject.ext.dependencies["rxjava2"]
+    api rootProject.ext.dependencies["retrofit"]
+    api rootProject.ext.dependencies["retrofit-converter-gson"]
+    api rootProject.ext.dependencies["retrofit-adapter-rxjava2"]
+
+    api rootProject.ext.androidx["room-runtime"]
+    kapt rootProject.ext.androidx["room-compiler"]
+    api rootProject.ext.androidx["room-rxJava2"]
+
+    api rootProject.ext.dependencies["logger"]
+    api rootProject.ext.dependencies["okhttpprofiler"]
+
+    compileOnly project(path: ':common:library-utils')
+}
+

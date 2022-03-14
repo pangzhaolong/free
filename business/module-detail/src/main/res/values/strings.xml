@@ -1,0 +1,16 @@
+<resources>
+    <string name="detail_app_name">商品详情</string>
+    <string name="detail_price_unit">¥</string>
+    <string name="detail_original_price">原价 ¥ %s</string>
+    <string name="detail_month_sales"><![CDATA[已售<font color="#F91415">%d</font>件]]></string>
+    <string name="detail_coupon_date_title">优惠券使用期限</string>
+    <string name="detail_coupon_date">%s-%s</string>
+    <string name="detail_get_coupon">立即领券</string>
+    <string name="detail_recommend_title">多多推荐</string>
+    <string name="detail_dsr_score">描述：%s</string>
+    <string name="detail_service_score">卖家：%S</string>
+    <string name="detail_ship_score">物流：%s</string>
+    <string name="detail_buy_price">¥%s</string>
+    <string name="detail_copy_command">复制口令</string>
+    <string name="detail_save_money_buy">省钱购买</string>
+</resources>

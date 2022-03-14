@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:ignore="ResourceName">
+    <item android:id="@android:id/background">
+        <shape
+            android:shape="rectangle"
+            android:useLevel="false">
+            <!-- 实心 -->
+            <corners android:radius="14dp" />
+            <solid android:color="#F38D00" />
+        </shape>
+    </item>
+
+
+<!--    <item android:id="@android:id/progress">-->
+<!--        <clip-->
+<!--            android:clipOrientation="horizontal"-->
+<!--            android:gravity="right">-->
+<!--            <shape>-->
+<!--                <corners android:radius="5dp"/>-->
+<!--                <gradient-->
+<!--                    android:startColor="#F00"-->
+<!--                    android:centerColor="#FF0"-->
+<!--                    android:endColor="#0F0"/>-->
+<!--            </shape>-->
+<!--        </clip>-->
+<!--    </item>-->
+
+    <item android:id="@android:id/secondaryProgress">
+        <scale android:scaleWidth="100%"
+            android:scaleGravity="right"
+            >
+
+            <shape
+
+                android:shape="rectangle"
+                android:useLevel="false">
+                <corners android:topLeftRadius="14dp"
+                    android:bottomLeftRadius="14dp"
+                    android:bottomRightRadius="14dp"
+                    android:topRightRadius="14dp"/>
+                <gradient
+                    android:angle="270"
+                    android:endColor="#FF3535"
+                    android:startColor="#FF8585"
+                    android:gradientRadius="14dp"/>
+            </shape>
+        </scale>
+    </item>
+
+
+    <item android:id="@android:id/progress"
+        tools:ignore="UnusedAttribute">
+        <scale
+            android:scaleGravity="right"
+            android:shape="rectangle"
+            android:scaleWidth="100%" >
+            <bitmap android:src="@mipmap/white_strips"
+                android:tileMode="repeat"
+                />
+        </scale>
+    </item>
+
+</layer-list>

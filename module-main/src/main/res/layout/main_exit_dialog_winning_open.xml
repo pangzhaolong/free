@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="eventListener"
+            type="com.donews.main.dialog.ExitWinningDialog.EventListener" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_window_top_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_title_bg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="10dp"
+                    android:src="@mipmap/main_exit_ddyb_wind_gz"
+                    app:layout_constraintLeft_toLeftOf="@+id/iv_window_top"
+                    app:layout_constraintRight_toRightOf="@+id/iv_window_top"
+                    app:layout_constraintTop_toTopOf="@+id/iv_window_top" />
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="18dp"
+                    android:text="恭喜选中超值大奖"
+                    android:textColor="#764D38"
+                    android:textSize="16sp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_title_bg"
+                    app:layout_constraintLeft_toLeftOf="@+id/iv_title_bg"
+                    app:layout_constraintRight_toRightOf="@+id/iv_title_bg"
+                    app:layout_constraintTop_toTopOf="@+id/iv_title_bg" />
+
+                <ImageView
+                    android:id="@+id/iv_title_jb"
+                    android:layout_width="330dp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="20dp"
+                    android:src="@mipmap/main_exit_ddyb_wind_title"
+                    app:layout_constraintLeft_toLeftOf="@+id/iv_window_top"
+                    app:layout_constraintRight_toRightOf="@+id/iv_window_top"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_close" />
+
+                <ImageView
+                    android:id="@+id/iv_window_dz"
+                    android:layout_width="290dp"
+                    android:layout_height="210dp"
+                    android:layout_marginLeft="-20dp"
+                    android:layout_marginTop="-120dp"
+                    android:src="@mipmap/main_exit_ddyb_wind_dz"
+                    android:paddingBottom="5dp"
+                    app:layout_constraintLeft_toLeftOf="@+id/iv_window_top"
+                    app:layout_constraintRight_toRightOf="@+id/iv_window_top"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_window_top" />
+
+                <ImageView
+                    android:id="@+id/iv_window_top"
+                    android:layout_width="291dp"
+                    android:layout_height="290dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="10dp"
+                    android:src="@mipmap/main_exit_ddyb_wind_pp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_title_jb" />
+                <ImageView
+                    android:id="@+id/iv_window_lh"
+                    android:layout_width="250dp"
+                    android:layout_height="240dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:src="@mipmap/main_exit_ddyb_wind_zh"
+                    app:layout_constraintTop_toBottomOf="@id/iv_title_jb"
+                    app:layout_constraintRight_toRightOf="@+id/iv_window_top"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_window_top"/>
+
+                <ImageView
+                    android:id="@+id/iv_icon"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
+                    android:background="@drawable/ad_shape_bg"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_window_top"
+                    app:layout_constraintLeft_toLeftOf="@+id/iv_window_top"
+                    app:layout_constraintRight_toRightOf="@+id/iv_window_top"
+                    app:layout_constraintTop_toTopOf="@+id/iv_window_top" />
+
+                <TextView
+                    android:id="@+id/tv_goods_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="60dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginRight="60dp"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:text="title"
+                    android:textSize="16sp"
+                    android:textColor="#9C4D23"
+                    app:layout_constraintLeft_toLeftOf="@+id/iv_window_top"
+                    app:layout_constraintRight_toRightOf="@+id/iv_window_top"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_icon" />
+
+                <LinearLayout
+                    android:id="@+id/ll_but"
+                    android:layout_width="145dp"
+                    android:layout_height="44dp"
+                    android:background="@mipmap/main_exit_ddyb_wind_an"
+                    android:gravity="center"
+                    android:onClick="@{eventListener::clickOpenPacket}"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="45dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_window_dz"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_goods_title"
+                    app:layout_constraintRight_toRightOf="@+id/tv_goods_title">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="11dp"
+                        android:paddingBottom="11dp"
+                        android:text="免费领取"
+                        android:textColor="@color/white"
+                        android:textSize="19sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/masking_hand"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintRight_toRightOf="@+id/ll_but"
+                    app:layout_constraintTop_toTopOf="@+id/ll_but"
+                    app:lottie_loop="true"
+                    tools:ignore="MissingConstraints" />
+
+                <ImageView
+                    android:id="@+id/iv_yh_r"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/main_exit_dialog_winning_yh_r"
+                    android:visibility="invisible"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_window_top"
+                    app:layout_constraintTop_toTopOf="@+id/iv_window_top"
+                    tools:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/iv_yh_lt"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="-20dp"
+                    android:src="@drawable/main_exit_dialog_winning_yh_lt"
+                    android:visibility="invisible"
+                    app:layout_constraintLeft_toLeftOf="@+id/iv_title_jb"
+                    app:layout_constraintTop_toTopOf="@+id/iv_title_bg"
+                    tools:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/iv_yh_lb"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginRight="-22.5dp"
+                    android:src="@drawable/main_exit_dialog_winning_yh_lb"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_window_top"
+                    app:layout_constraintRight_toLeftOf="@+id/iv_window_top"
+                    app:layout_constraintTop_toTopOf="@+id/iv_window_top"
+                    tools:visibility="visible" />
+
+                <!-- 关闭按钮 -->
+                <ImageView
+                    android:id="@+id/iv_close"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:onClick="@{eventListener::clickIvClose}"
+                    android:src="@drawable/common_close"
+                    android:visibility="invisible"
+                    app:layout_constraintRight_toRightOf="@id/iv_title_jb" />
+
+                <!-- 抽奖滚动的动画视图 -->
+                <RelativeLayout
+                    android:id="@+id/main_relativelayout"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_icon"
+                    app:layout_constraintLeft_toLeftOf="@+id/iv_icon"
+                    app:layout_constraintRight_toRightOf="@+id/iv_icon"
+                    app:layout_constraintTop_toTopOf="@+id/iv_icon">
+
+                    <com.donews.main.dialog.views.WindGoodsScrollView
+                        android:id="@+id/scro_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/ad_shape_bg" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/iv_icon_by"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="-5dp"
+                    android:background="@drawable/main_exit_dialog_winning_by"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="@+id/iv_window_dz" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_but_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="@+id/cl_window_top_layout"
+                app:layout_constraintRight_toRightOf="@+id/cl_window_top_layout"
+                app:layout_constraintTop_toBottomOf="@+id/cl_window_top_layout">
+
+                <!-- 稍后按钮 -->
+                <TextView
+                    android:id="@+id/tv_failure"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{eventListener::onLaterListener}"
+                    android:text=""
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:visibility="gone"
+                    tools:visibility="gone" />
+
+                <com.donews.common.views.CountdownView
+                    android:id="@+id/countdown_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="4dp"
+                    app:automatically="true"
+                    app:c_text_size="@dimen/textSize_15"
+                    app:colon_color="@color/white"
+                    app:text_view_millisecond_bg="@color/transparent"
+                    app:text_view_millisecond_color="#D6D6D6"
+                    app:text_view_minute_bg="@color/transparent"
+                    app:text_view_minute_color="#D6D6D6"
+                    app:text_view_second_bg="@color/transparent"
+                    app:text_view_second_color="#D6D6D6"
+                    app:time="5" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</layout>
