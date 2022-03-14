@@ -1,0 +1,23 @@
+apply from: rootProject.file('gradle/module.build.gradle')
+
+
+android {
+    defaultConfig {
+        if (rootProject.ext.isBuildModule) {
+            applicationId "com.donews.detail"
+        }
+    }
+
+    //统一资源前缀，规范资源引用
+    resourcePrefix "detail_"
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    kapt rootProject.ext.dependencies["arouter-compiler"]
+
+    implementation project(':common:library-common')
+    implementation project(':middleware:module-middleware')
+    implementation rootProject.ext.dependencies["bannerViewpager"]
+}

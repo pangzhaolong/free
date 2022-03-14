@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="white_transparent">#99ffffff</color>
+    <color name="black_translucent">#99000000</color>
+    <color name="dialog">#11ffffff</color>
+    <color name="app_main_color">#FFFFFF</color>
+    <color name="btn_color_sec">#5B8DF0</color>
+    <!--公共-->
+    <color name="interval_line">#F1F2F7</color>
+    <color name="interval_line2">#979797</color>
+    <color name="color_three">#333333</color>
+    <color name="color_six">#666666</color>
+    <color name="color_nine">#999999</color>
+    <color name="color_big_black">#1E1E1E</color>
+    <color name="text_hint_color">#C9C9C9</color>
+    <color name="text_hint_color2">#D8D8D8</color>
+    <color name="text_logout_color">#CE3D3A</color>
+    <color name="text_black">#2C2C2C</color>
+    <color name="text_red">#FFFE3738</color>
+    <color name="text_red_1">#E9423E</color>
+
+    <color name="dialog_confirm_unpress">#5B8DF0</color>
+    <color name="dialog_confirm_press">#A4C5FC</color>
+
+    <color name="dialog_cancel_unpress">#FFFFFF</color>
+    <color name="dialog_cancel_press">#F2F3F4</color>
+
+    <color name="banner_unselect_bg">#ffd8d8d8</color>
+
+    <color name="read_histroy_bg">#FFF0D2</color>
+    <color name="read_histroy_text_color">#FF7D02</color>
+
+    <!--home-->
+    <color name="tab_home_selected">#5B8DF0</color>
+    <color name="tab_home_unselect">#666666</color>
+
+    <!--search-->
+
+    <color name="search_back">#F3F4F5</color>
+    <color name="search_bg">#F9FAFA</color>
+
+    <!--热搜分类-->
+    <color name="search_hot_novel">#EAF2FF</color>
+    <!--排行-->
+    <color name="search_ranking_vertically">#F5F5F5</color>
+
+    <!--详情页-->
+    <color name="detail_read_color">#5B8DF0</color>
+
+    <color name="btn_history_light">#DDEAFF</color>
+    <color name="tv_history_light">#5B8DF0</color>
+    <color name="btn_history_normal">#F2F3F4</color>
+    <color name="tv_history_normal">#666666</color>
+    <color name="search_hot_main">#F4F8FB</color>
+    <color name="change_source">#ff333333</color>
+
+
+    <!--    阅读器-->
+    <color name="read_drawer_bg">#07080A</color>
+    <color name="read_drawer_catalogue">#5B8DF0</color>
+    <color name="read_progress">#343434</color>
+    <color name="color_yuan_bg">#20FFFFFF</color>
+    <color name="read_content_bg">#3B424C</color>
+    <color name="read_content_bg1">#F1EBDF</color>
+    <color name="A666666">#666666</color>
+    <color name="read_drawer_bg_5">#8007080A</color>
+    <color name="read_drawer_bg_9">#E607080A</color>
+
+    <!--read-->
+    <color name="read_bg_1">#FFFFFF</color>
+    <color name="read_bg_2">#E5D7BC</color>
+    <color name="read_bg_3">#E0E9CE</color>
+    <color name="read_bg_4">#C8EDCC</color>
+    <color name="read_bg_5">#3B424C</color>
+    <color name="read_bg_6">#0A0D14</color>
+
+
+    <color name="read_font_1">#333333</color>
+    <color name="read_font_2">#2F332D</color>
+    <color name="read_font_3">#92918C</color>
+    <color name="read_font_4">#383429</color>
+    <color name="read_font_5">#B4B8BB</color>
+    <color name="read_bg_night">#000000</color>
+    <color name="read_font_night">#99ffffff</color>
+    <color name="A3B424C">#3B424C</color>
+    <color name="AC9C9C9">#C9C9C9</color>
+    <color name="A999999">#999999</color>
+    <color name="A333333">#333333</color>
+    <color name="cartoons">#991E1E1E</color>
+
+    <!--button-->
+    <color name="widget_button_normal">@color/white</color>
+    <color name="widget_button_selected">#E3E3E3</color>
+    <color name="divider_common">#727272</color>
+    <color name="read_history_text_color">#979797</color>
+    <color name="search_shape_color">#333333</color>
+
+    <color name="collect_delete">#CE3D3A</color>
+
+    <color name="fab_color">#249EFC</color>
+    <color name="colorend">#2BB4FF</color>
+    <color name="A2CB5FF">#2CB5FF</color>
+
+    <color name="A25A6FF">#25A6FF</color>
+    <color name="FFA033">#ffa033</color>
+    <color name="FF8030">#ff8030</color>
+    <color name="FFFF990">#FFFF99</color>
+
+</resources>

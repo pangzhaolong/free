@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--    <color name="colorPrimary">#6200EE</color>-->
+    <!--    <color name="colorPrimaryDark">#3700B3</color>-->
+    <!--    <color name="colorAccent">#03DAC5</color>-->
+    <color name="common_white">#FFFFFF</color>
+    <color name="common_black">#000000</color>
+
+    <color name="common_transparent">#00000000</color>
+    <color name="common_white_transparent">#99ffffff</color>
+    <color name="common_black_translucent">#99000000</color>
+    <color name="common_dialog">#11ffffff</color>
+    <color name="common_app_main_color">#FFFFFF</color>
+    <color name="common_btn_color_sec">#F33838</color>
+    <color name="common_them_text1">#5B8DF0</color>
+    <color name="common_them">#5B8DF0</color>
+
+    <color name="common_dialog_confirm_unpress">#5B8DF0</color>
+    <color name="common_dialog_confirm_press">#A4C5FC</color>
+
+    <color name="common_dialog_cancel_unpress">#FFFFFF</color>
+    <color name="common_dialog_cancel_press">#F2F3F4</color>
+
+    <color name="common_A3B424C">#3B424C</color>
+    <color name="common_AC9C9C9">#C9C9C9</color>
+    <color name="common_A999999">#999999</color>
+    <color name="common_A333333">#333333</color>
+    <color name="common_cartoons">#991E1E1E</color>
+    <color name="common_AEAEAEA">#EAEAEA</color>
+    <color name="common_AEAEAE">#AEAEAE</color>
+    <color name="common_D5D5D5">#D5D5D5</color>
+    <color name="common_DFDFDF">#DFDFDF</color>
+    <color name="common_2C2C2C">#2c2c2c</color>
+    <color name="common_eae8e8">#EAE8E8</color>
+    <color name="common_e9423e">#E9423E</color>
+    <color name="common_F43838">#F43838</color>
+    <color name="common_FFE7BD">#FFE7BD</color>
+    <color name="common_F33737">#F33737</color>
+    <color name="common_F9F9F9">#F9F9F9</color>
+</resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.module_integral">
+
+    <application>
+        <activity
+            android:launchMode="singleTask"
+            android:name="com.module.integral.ui.WelfareActivity"
+            android:screenOrientation="portrait"
+            android:exported="true"/>
+        <activity
+            android:name="com.module.integral.ui.RpActivityDialog"
+            android:screenOrientation="portrait"
+            android:theme="@style/main_rp_transparent_style"
+            android:exported="true"/>
+        <activity
+            android:name="com.module.integral.ui.WelfareNotTaskActivity"
+            android:screenOrientation="portrait"
+            android:exported="true"/>
+    </application>
+
+</manifest>

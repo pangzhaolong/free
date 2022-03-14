@@ -1,0 +1,154 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'walle'
+
+def var = rootProject.ext.DEBUG ? "offline" : "online"
+def identification = rootProject.ext.APP_IDENTIFICATION
+
+
+android {
+    compileSdkVersion rootProject.ext.android_version.compileSdkVersion
+    buildToolsVersion rootProject.ext.android_version.buildToolsVersion
+
+    defaultConfig {
+        applicationId rootProject.ext.app["mainApplicationId"]
+        minSdkVersion rootProject.ext.android_version.minSdkVersion
+        targetSdkVersion rootProject.ext.android_version.targetSdkVersion
+        versionCode rootProject.ext.android_version.versionCode
+        versionName rootProject.ext.android_version.versionName
+        multiDexEnabled true
+        flavorDimensions "versionCode"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        kapt {
+            arguments {
+                arg("AROUTER_MODULE_NAME", project.getName())
+            }
+        }
+
+        ndk {
+            // 添加项目所需CPU类型的最小集
+            abiFilters "armeabi-v7a" , "arm64-v8a"//, "armeabi","x86"
+        }
+
+    }
+
+    signingConfigs {
+        release {
+            keyAlias 'ddyb'
+            keyPassword 'ddyb123456'
+            storeFile rootProject.file('keystore/ddyb.jks')
+            storePassword 'ddyb123456'
+//            v2SigningEnabled true
+//            v1SigningEnabled true
+        }
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+
+        }
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+
+        }
+    }
+
+    //统一资源前缀,规范资源引用
+    resourcePrefix "app_"
+
+    sourceSets {
+        main {
+            if (rootProject.ext.isBuildModule) {
+                //在main文件夹下建立alone文件夹，下面可以放java文件，资源文件等测试文件
+                //这里进行设置使用单独运行还是合并运行的Manifest.xml
+                //在main文件夹下建立debug文件夹，下面可以放java文件，资源文件等测试文件
+                //这里进行设置使用单独运行还是合并运行的Manifest.xml,
+                if (file('src/main/alone/AndroidManifest.xml').exists()) {
+                    manifest.srcFile 'src/main/alone/AndroidManifest.xml'
+                } else {
+                    manifest.srcFile 'src/main/AndroidManifest.xml'
+                }
+                java.srcDirs = ['src/main/alone/java',
+                                'src/main/java']
+                res.srcDirs = ['src/main/alone/res',
+                               'src/main/res']
+            } else {
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+                java.srcDirs = ['src/main/java']
+            }
+        }
+    }
+
+    //开启dataBinding
+    buildFeatures {
+        dataBinding true
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+
+    ndkVersion '20.0.5594570'
+
+    useLibrary 'org.apache.http.legacy'
+}
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    kapt rootProject.ext.dependencies["arouter-compiler"]
+
+    //宿主项目中判断组件是否需要独立运行
+    if (rootProject.ext.isBuildModule) {
+        //组件独立运行时，宿主项目直接依赖基础库，避免编译错误
+        implementation project(':common:library-common')
+    } else {
+        implementation project(path: ':module-main')
+        implementation project(path: ':module-login')
+        implementation project(path: ':common:library-webview')
+        implementation project(path: ':business:module-mine')
+        implementation project(path: ':business:module-home')
+        implementation project(path: ':business:module-front')
+        implementation project(path: ':business:module-mail9')
+        implementation project(path: ':business:module-spike')
+        implementation project(path: ':business:module-detail')
+        implementation project(path: ':business:module-unboxing')
+        implementation project(path: ':business:module-reward')
+        implementation project(path: ':business:module-lottery')
+        implementation project(path: ':business:module-integral')
+        implementation project(path: ':business:module-feedback')
+        implementation project(path: ':middleware:module-middleware')
+
+        //Swei新增桌面通知模块
+        implementation project(path: ':business:module-notify')
+    }
+}
+
+walle {
+    // 指定渠道包的输出路径
+    apkOutputFolder = new File("${project.buildDir}/outputs/channels");
+    // apkOutputFolder = new File("E:/health/channel");
+    // 定制渠道包的APK的文件名称
+    apkFileNameFormat = '${appName}-${channel}-v${versionName}-${versionCode}-${buildTime}_' + var + identification + '.apk';
+    // 渠道配置文件
+    configFile = new File("${project.getProjectDir()}/config.json")
+}

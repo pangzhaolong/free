@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/res/android/skin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:ignore="MissingConstraints,MissingDefaultResource,ResourceName">
+
+    <LinearLayout
+        android:id="@+id/mine_open_win_not_data_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingTop="10dp">
+
+        <ImageView
+            android:id="@+id/mine_open_win_not_data_icon"
+            android:layout_width="130dp"
+            android:layout_height="120dp"
+            android:src="@drawable/mine_win_not_data" />
+
+        <TextView
+            android:id="@+id/mine_open_win_not_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="20dp"
+            android:text="快去抽奖吧~\n下一个免单王就是你"
+            android:textColor="@color/text_hint_color"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/mine_open_win_not_data_but"
+            android:layout_width="179dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/mine_me_open_not_win_but"
+            android:gravity="center"
+            android:text="参与更多抽奖"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            tools:visibility="visible" />
+    </LinearLayout>
+
+</LinearLayout>

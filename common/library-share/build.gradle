@@ -1,0 +1,16 @@
+apply from: rootProject.file('gradle/library.build.gradle')
+
+android {
+
+    defaultConfig {
+        buildConfigField("String", "WX_API", "\"${rootProject.ext.WX_API}\"")
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation rootProject.ext.androidx["androidx-appcompat"]
+    api 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
+    implementation project(path: ':common:library-common')
+}

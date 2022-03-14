@@ -1,0 +1,49 @@
+//读取local.properties文件中的配置,这样不用每次本地修改环境都改动需要提交的代码,修改local.properties配置就好
+def readLocalProperty(String key, String defaultValue) {
+    String value = defaultValue
+    def file = rootProject.file("local.properties")
+    if (file.exists() && file.isFile()) {
+        Properties properties = new Properties()
+        properties.load(file.newDataInputStream())
+        value = properties.getProperty(key, defaultValue)
+    }
+    return value
+}
+
+static def dateTime() {
+    return new Date().format("yyyyMMdd_HHmmss", TimeZone.getTimeZone("UTC"))
+}
+
+static def addRepositories(RepositoryHandler handler) {
+    addStandardRepos(handler)
+    addOtherRepos(handler)
+}
+
+//添加标准库
+private static def addStandardRepos(RepositoryHandler handler) {
+    handler.google()
+    handler.jcenter()
+    handler.mavenCentral()
+}
+
+//添加使用国内阿里镜像库
+private static def addAliYunRepos(RepositoryHandler handler) {
+    handler.maven { url 'https://maven.aliyun.com/repository/google' }
+    handler.maven { url 'https://maven.aliyun.com/repository/public' }
+    handler.maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+}
+
+/**
+ * 其他第三方引用库
+ * @param handler
+ * @return
+ */
+private static def addOtherRepos(RepositoryHandler handler) {
+    handler.maven { url 'https://jitpack.io' }
+    handler.maven { url 'https://repo1.maven.org/maven2/' }
+    handler.maven { url 'https://artifact.bytedance.com/repository/Volcengine/' }
+}
+
+ext.addRepositories = this.&addRepositories
+ext.dateTime = this.&dateTime
+ext.readLocalProperty = this.&readLocalProperty

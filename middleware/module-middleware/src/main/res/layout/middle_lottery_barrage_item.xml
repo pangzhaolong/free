@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/middle_lottery_barrage_item_bg"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:paddingEnd="14dp">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/middle_gift_head_iv"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center_vertical"
+        android:background="@color/transparent"
+        android:scaleType="centerInside"
+        app:shapeAppearance="@style/middle_lottery_barrage_item_avatar_style" />
+
+    <!--    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="抽中"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold" />-->
+
+    <TextView
+        android:id="@+id/middle_gift_text"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="3dp"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLength="15"
+        android:maxLines="1"
+        android:text="抽中3P格力立式空调"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+</LinearLayout>
+
+
+
+
+
+
+
+
+
+

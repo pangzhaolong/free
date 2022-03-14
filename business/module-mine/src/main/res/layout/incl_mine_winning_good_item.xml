@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/res/android/skin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mine_win_item_good_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    tools:ignore="MissingDefaultResource,ResourceName">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-10dp"
+        android:background="@drawable/mine_my_wind_bg"
+        app:layout_constraintTop_toBottomOf="@+id/mine_win_item_title_layout"
+        tools:ignore="MissingConstraints">
+
+        <LinearLayout
+            android:id="@+id/main_win_code_sele_item_icon_row"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@drawable/mine_my_wind_title_bg"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="8dp"
+            android:paddingRight="10dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/main_win_code_sele_item_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
+                    android:background="@drawable/mine_win_code_sele_item_name_bg"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="18dp"
+                    android:paddingRight="15dp"
+                    android:text="小飞鱼"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <com.donews.common.views.CircleImageView
+                    android:id="@+id/main_win_code_sele_item_icon"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/white_quan_shape"
+                    android:src="@drawable/user_logo" />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/mine_win_item_good_icon"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="22dp"
+            android:background="@color/white"
+            android:scaleType="fitXY"
+            android:src="@mipmap/ic_launcher"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/main_win_code_sele_item_icon_row" />
+
+        <TextView
+            android:id="@+id/mine_win_item_good_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:paddingRight="10dp"
+            android:text="商品名称"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toRightOf="@+id/mine_win_item_good_icon"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/mine_win_item_good_icon" />
+
+        <TextView
+            android:id="@+id/mine_win_item_good_pic_flg"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="￥"
+            android:textColor="@color/mine_red_default"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/mine_win_item_good_pic"
+            app:layout_constraintLeft_toLeftOf="@+id/mine_win_item_good_name" />
+
+        <TextView
+            android:id="@+id/mine_win_item_good_pic"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="1"
+            android:textColor="@color/mine_red_default"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/mine_win_item_good_icon"
+            app:layout_constraintLeft_toRightOf="@+id/mine_win_item_good_pic_flg"
+            app:layout_constraintTop_toBottomOf="@+id/mine_win_item_good_name" />
+
+        <LinearLayout
+            android:id="@+id/mine_win_item_snap_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="8dp"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="@+id/mine_win_item_good_icon"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mine_win_item_good_icon">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:text="抽奖码："
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/mine_win_item_snap_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:paddingRight="7dp"
+                android:text="0123456 "
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/mine_win_item_snap_number_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:paddingTop="4dp"
+                android:paddingRight="7dp"
+                android:paddingBottom="4dp"
+                android:text="查看全部"
+                android:textColor="#E9423F"
+                android:textSize="14sp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/mine_win_item_snap_layout_new"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="12dp"
+            app:layout_constraintLeft_toRightOf="@+id/mine_win_item_good_icon"
+            app:layout_constraintTop_toBottomOf="@+id/mine_win_item_goto">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="right"
+                android:paddingRight="5dp"
+                android:text="抢购码"
+                android:textColor="#764D38"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/main_win_code_sele_item_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="1234567"
+                android:textColor="#764D38"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/mine_win_item_goto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/mine_shape_winning_goto_read"
+            android:gravity="center"
+            android:paddingLeft="17dp"
+            android:paddingTop="7dp"
+            android:paddingRight="17dp"
+            android:paddingBottom="8dp"
+            android:text="立即领取"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/mine_win_item_good_name" />
+
+        <ImageView
+            android:id="@+id/mine_wind_my_jb"
+            android:layout_width="59dp"
+            android:layout_height="50dp"
+            android:src="@drawable/mine_wind_my_jb"
+            app:layout_constraintBottom_toBottomOf="@+id/mine_win_item_snap_layout_new"
+            app:layout_constraintRight_toLeftOf="@id/mine_win_item_goto" />
+
+        <!-- 盖章的标记 -->
+        <TextView
+            android:id="@+id/mine_win_item_seal"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/mine_win_code_sele_item_seal0_bg"
+            android:gravity="center"
+            android:rotation="-25"
+            android:text="相似\n中奖"
+            android:textColor="#E9423E"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- 顶部head区域 -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mine_win_item_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints"
+        android:paddingTop="15dp">
+
+        <ImageView
+            android:id="@+id/title_icon_bg"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:scaleType="fitXY"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/mine_wind_my_bg_title" />
+
+        <TextView
+            android:id="@+id/wind_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="恭喜你, 获得免单奖"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/title_icon_bg"
+            app:layout_constraintLeft_toLeftOf="@+id/title_icon_bg"
+            app:layout_constraintRight_toRightOf="@+id/title_icon_bg" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

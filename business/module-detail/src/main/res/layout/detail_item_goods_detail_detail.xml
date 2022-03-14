@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="detailInfo"
+            type="com.donews.detail.bean.GoodsDetailInfo" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/detail_bg_top_circle_10_white">
+
+        <View
+            android:id="@+id/view_driver"
+            android:layout_width="3.288dp"
+            android:layout_height="15.344dp"
+            android:layout_marginStart="13.152dp"
+            android:layout_marginTop="13.152dp"
+
+            android:background="@drawable/detail_gradient_vertical_ff3634_ffcccf"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5.48dp"
+            android:text="商品详情"
+            android:textColor="@color/black"
+            android:textSize="13.152dp"
+            app:layout_constraintBottom_toBottomOf="@id/view_driver"
+            app:layout_constraintStart_toEndOf="@id/view_driver"
+            app:layout_constraintTop_toTopOf="@id/view_driver" />
+
+        <LinearLayout
+            android:id="@+id/ll_imgs"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="13.152dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_driver" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

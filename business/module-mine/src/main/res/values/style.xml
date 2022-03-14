@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ResourceName">
+    <style name="HorizontalLine" tools:ignore="ResourceName">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/search_bg</item>
+    </style>
+
+    <!-- 开奖的数字样式 -->
+    <style name="MineWinCodeNum" tools:ignore="ResourceName">
+        <item name="android:layout_width">@dimen/mine_win_mun_wh</item>
+        <item name="android:layout_height">@dimen/mine_win_mun_wh</item>
+        <item name="android:layout_marginLeft">7dp</item>
+    </style>
+
+    <style name="Dialog_BottomToTopAnim" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/bottom_anim_enter</item>
+        <item name="android:windowExitAnimation">@anim/bottom_anim_exit</item>
+    </style>
+</resources>

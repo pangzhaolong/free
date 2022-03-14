@@ -1,0 +1,32 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">module-lottery</string>
+
+    <string name="raiders_name1" tools:ignore="ResourceName">参与抢购</string>
+    <string name="raiders_name2" tools:ignore="ResourceName">开奖规则</string>
+    <string name="raiders_name3" tools:ignore="ResourceName">中奖规则</string>
+    <string name="raiders_name4" tools:ignore="ResourceName">领奖规则</string>
+
+    <string name="zero_dollar_draw" tools:ignore="ResourceName">点击</string>
+    <string name="lottery_value" tools:ignore="ResourceName">中奖率</string>
+    <string name="continue_value" tools:ignore="ResourceName">增加</string>
+    <string name="wait_dollar_draw" tools:ignore="ResourceName">待开奖</string>
+<!-- 返回拦截弹框  -->
+    <string name="return_intercept_title" tools:ignore="ResourceName">参与抽奖，立即获得</string>
+    <string name="return_intercept_hint_no" tools:ignore="ResourceName">新人专享</string>
+    <string name="return_intercept_hint" tools:ignore="ResourceName">最高</string>
+    <string name="return_intercept_withdraw_no" tools:ignore="ResourceName">可提现至</string>
+    <string name="return_intercept_withdraw" tools:ignore="ResourceName">抽奖开红包, 可提现至</string>
+    <string name="return_intercept_button_no" tools:ignore="ResourceName">立即登录抢购</string>
+    <string name="return_intercept_button" tools:ignore="ResourceName">立即抢购</string>
+
+    <!-- 返回拦截弹框 当抽奖码大于0 个小于6个时  -->
+
+    <string name="return_receive_title_forward" tools:ignore="ResourceName">距离中奖只差</string>
+
+    <string name="return_receive_title_rear" tools:ignore="ResourceName">个码</string>
+
+    <string name="return_receive_subtitle" tools:ignore="ResourceName">集齐6个码，中奖概率最大</string>
+
+    <string name="return_receive_button_text" tools:ignore="ResourceName">增加中奖率</string>
+
+</resources>

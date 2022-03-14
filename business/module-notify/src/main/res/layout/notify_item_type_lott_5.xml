@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_notifyroot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/notify_bg"
+    android:paddingTop="13dp"
+    android:paddingBottom="32dp"
+    tools:ignore="MissingConstraints">
+
+    <ImageView
+        android:id="@+id/notify_item_lott2_close"
+        android:layout_width="21dp"
+        android:layout_height="21dp"
+        android:layout_marginLeft="13dp"
+        android:src="@drawable/notify_ui_tem_close"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/notify_item_lott2_jp_ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/notify_item_lott2_close">
+        <ImageView
+            android:id="@+id/notify_item_lott2_icon"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@mipmap/ic_launcher"
+            android:scaleType="fitXY"
+            android:visibility="gone"
+            android:layout_marginTop="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/notify_item_lott2_close" />
+        <LinearLayout
+            android:id="@+id/notify_item_lott2_xj_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/notify_item_lott2_rz"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="入账金额"
+                android:textColor="@color/text_hint_color"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/notify_item_red4_close" />
+
+            <LinearLayout
+                android:id="@+id/notify_item_lott2_num_ll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="bottom"
+                android:layout_marginTop="20dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="¥"
+                    android:textColor="@color/color_333333"
+                    android:textSize="29sp"
+                    android:layout_marginBottom="-2dp"/>
+                <TextView
+                    android:id="@+id/notify_item_lott2_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0.6"
+                    android:textStyle="bold"
+                    android:textColor="@color/color_333333"
+                    android:layout_marginLeft="5dp"
+                    android:textSize="46sp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/notify_item_lott2_name_ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="29dp"
+        android:orientation="horizontal"
+        android:paddingRight="15dp"
+        app:layout_constraintLeft_toLeftOf="@+id/notify_item_lott2_close"
+        app:layout_constraintTop_toBottomOf="@+id/notify_item_lott2_jp_ll">
+
+        <TextView
+            android:id="@+id/notify_item_lott2_name_d"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/color_666666"
+            android:textSize="13.5sp"
+            android:text="账户名称:" />
+
+        <TextView
+            android:id="@+id/notify_item_lott2_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:ellipsize="end"
+            android:textColor="@color/color_333333"
+            android:textSize="13.5sp"
+            android:singleLine="true"
+            android:text="微信名称"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/notify_item_lott2_good_ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingRight="15dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintLeft_toLeftOf="@+id/notify_item_lott2_close"
+        app:layout_constraintTop_toBottomOf="@+id/notify_item_lott2_name_ll">
+
+        <TextView
+            android:id="@+id/notify_item_lott2_good_d"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/color_666666"
+            android:textSize="13.5sp"
+            android:text="备注信息:"/>
+
+        <TextView
+            android:id="@+id/notify_item_lott2_good"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/color_333333"
+            android:textSize="13.5sp"
+            android:text="商品名称"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/notify_item_lott2_bug"
+        android:layout_width="180dp"
+        android:layout_height="45dp"
+        android:text="立即领取"
+        android:gravity="center"
+        android:background="@drawable/notify_but_blu_bg"
+        android:layout_marginTop="32dp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notify_item_lott2_good_ll" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

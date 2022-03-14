@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <com.donews.common.views.BaseTitleBar
+            android:id="@+id/title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/text_red" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="15dp"
+                        android:background="@drawable/mine_withdraw_centent_top"
+                        android:orientation="vertical"
+                        android:paddingLeft="30dp"
+                        android:paddingTop="20dp"
+                        android:paddingRight="20dp"
+                        android:paddingBottom="30dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="可提现余额"
+                            android:textColor="@color/white"
+                            android:textSize="15sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="¥"
+                                android:textColor="@color/white"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:id="@+id/mine_draw_ye"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:text="0"
+                                android:textColor="@color/white"
+                                android:textSize="39sp" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/mine_draw_more"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="-10dp"
+                            android:drawableRight="@drawable/mine_withdraw_centent_top_w"
+                            android:drawablePadding="5dp"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="5dp"
+                            android:paddingRight="10dp"
+                            android:paddingBottom="5dp"
+                            android:text="明细"
+                            android:textColor="@color/white"
+                            android:textSize="15sp"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                    <com.donews.middle.views.YywView
+                        android:id="@+id/mind_yyw_jd_new"
+                        android:layout_width="83dp"
+                        android:layout_height="91dp"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginEnd="28dp"/>
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/mine_tx_center_q"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="13sp"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:text="提现到微信"
+                        android:textColor="#2C2C2C"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <com.donews.common.views.CircleImageView
+                        android:id="@+id/mine_draw_wx_icon"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/mine_tx_center_wx" />
+
+                    <TextView
+                        android:id="@+id/mine_draw_wx_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="5dp"
+                        android:gravity="center"
+                        android:text="--"
+                        android:textColor="#2C2C2C"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- 金额的网格区域 -->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="50dp">
+
+                    <GridLayout
+                        android:id="@+id/mine_draw_grid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:columnCount="3" />
+
+                    <TextView
+                        android:id="@+id/mine_draw_grid_loading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="数据加载中..."
+                        android:visibility="gone" />
+                </FrameLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/mine_draw_desc_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginBottom="-15dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="95dp"
+                        android:layout_marginBottom="-10dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/mine_tx_tips_bg"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        tools:ignore="MissingConstraints" />
+
+                    <ImageView
+                        android:id="@+id/mine_draw_desc_flg"
+                        android:layout_width="8dp"
+                        android:layout_height="11dp"
+                        android:layout_marginLeft="34dp"
+                        android:layout_marginTop="25dp"
+                        android:src="@drawable/mine_draw_desc_icon"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <LinearLayout
+                        android:id="@+id/mine_draw_desc_ll"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="-3dp"
+                        android:orientation="vertical"
+                        app:layout_constraintLeft_toRightOf="@+id/mine_draw_desc_flg"
+                        app:layout_constraintTop_toTopOf="@+id/mine_draw_desc_flg">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="4dp"
+                            android:text="提现条件:"
+                            android:textColor="#A9AEB1"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/mine_draw_desc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="4dp"
+                            android:text=""
+                            android:textColor="#A9AEB1"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/mine_draw_submit"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/mine_un_reg_select_but"
+                    android:enabled="false"
+                    android:gravity="center"
+                    android:text="提现"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+
+                <com.donews.middle.views.LotteryBarrageView
+                    android:id="@+id/mine_draw_submit_lbv"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="35dp"
+                    android:background="@color/transparent" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <data></data>
+
+
+</layout>

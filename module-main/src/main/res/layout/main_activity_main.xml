@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/android/skin"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/cl_main_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.MainActivity">
+
+        <com.donews.main.views.CustomNoTouchViewPager
+            android:id="@+id/cv_content_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="56dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        <TextView
+            android:id="@+id/occupy_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="200dp"
+            android:background="#BAA80A" />
+
+        <TextView
+            android:id="@+id/occupy_notify"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="280dp"
+            android:background="#BAA80A"
+            android:paddingStart="8dp"
+            android:paddingTop="3dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="3dp"
+            android:text="通知调试入口"
+            android:textColor="#FFFFFF"
+            android:textSize="10dp"
+            android:textStyle="bold" />
+
+        <me.majiajie.pagerbottomtabstrip.PageNavigationView
+            android:id="@+id/bottom_view"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_gravity="bottom"
+            android:background="@color/white"
+            android:elevation="8dp"
+            skin:enable="true" />
+
+        <com.donews.middle.views.FrontFloatingBtn
+            android:id="@+id/main_floating_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="240dp" />
+
+        <com.donews.main.views.MainFloatingBtn
+            android:id="@+id/main_floating_rp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="160dp" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/main_home_guid_cl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#cc000000"
+            android:elevation="9dp">
+
+            <FrameLayout
+                android:id="@+id/main_home_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="70dp"
+                android:layout_marginBottom="-20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:ignore="MissingConstraints">
+
+                <com.donews.common.views.CircleProgressBarView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    app:progressColor="#E9423E"
+                    app:progressStrokeWidth="2dp" />
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/main_home_guid_btn_bg"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/main_tab_buy_btn" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="20dp"
+                    android:text="超值购"
+                    android:textColor="#E9423E"
+                    android:textStyle="bold" />
+            </FrameLayout>
+
+            <ImageView
+                android:id="@+id/main_home_guid_aarow_down_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="110dp"
+                android:layout_marginBottom="40dp"
+                android:background="@drawable/main_home_guid_aarow_dowm"
+                app:layout_constraintBottom_toTopOf="@+id/main_home_btn"
+                app:layout_constraintRight_toRightOf="parent" />
+
+            <ImageView
+                android:id="@+id/main_home_guid_bg_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="40dp"
+                android:src="@drawable/main_home_guid_big_bg"
+                app:layout_constraintBottom_toTopOf="@+id/main_home_guid_aarow_down_iv"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

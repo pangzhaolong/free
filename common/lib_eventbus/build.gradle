@@ -1,0 +1,12 @@
+apply from: rootProject.file('gradle/library.build.gradle')
+
+android {
+    //统一资源前缀，规范资源引用
+    resourcePrefix "events_"
+}
+
+dependencies {
+    implementation rootProject.ext.androidx["androidx.core-ktx"]
+    api 'io.github.15198184721:model_dncd_sdk:2.0.3'
+    api 'org.greenrobot:eventbus:3.1.1'
+}

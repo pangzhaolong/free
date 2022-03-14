@@ -1,0 +1,28 @@
+apply from: rootProject.file('gradle/module.build.gradle')
+
+android {
+    defaultConfig {
+        if (isBuildModule.toBoolean()) {
+            applicationId "com.donews.main"
+        }
+    }
+    //统一资源前缀，规范资源引用
+    resourcePrefix "main_"
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar',"*.aar"])
+    //组件中依赖阿里路由编译框架
+    kapt rootProject.ext.dependencies["arouter-compiler"]
+    kapt rootProject.ext.dependencies["glide-compiler"]
+
+    //组件依赖基础库
+    api project(':common:library-common')
+    implementation project(':common:library-sdk')
+    implementation project(':common:lib_eventbus')
+    implementation project(':middleware:module-middleware')
+
+    implementation('org.raphets:roundimageview:1.2.0')
+    api 'me.majiajie:pager-bottom-tab-strip:2.3.0X'
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}

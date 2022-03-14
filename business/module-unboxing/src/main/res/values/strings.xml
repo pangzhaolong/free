@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="unboxing_title">晒单沾福</string>
+    <string name="unboxing_btn_lottery">沾沾福气</string>
+    <string name="unboxing_period">第%s期</string>
+    <string name="unboxing_goods_price">¥ %.2f</string>
+</resources>

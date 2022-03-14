@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF">
+
+        <com.donews.common.views.BaseTitleBar
+            android:id="@+id/include_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_moile_login_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/include_title"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="19dp"
+            android:text="登录"
+            android:textSize="30sp" />
+
+        <RelativeLayout
+            android:id="@+id/rl_mobile_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_moile_login_text"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginRight="30dp">
+
+            <EditText
+                android:id="@+id/edit_mobile_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:maxLength="11"
+                android:hint="输入手机号码"
+                android:inputType="number" />
+
+            <ImageView
+                android:id="@+id/iv_login_close_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/edit_close_logo" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/edit_mobile_code"
+                android:layout_marginTop="9dp"
+                android:background="#F5F2F2" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_verification_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_mobile_code"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="19dp"
+            android:layout_marginRight="30dp">
+
+            <EditText
+                android:id="@+id/edit_verification_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:maxLength="6"
+                android:hint="输入验证码"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/tv_verification_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="获取验证码"
+                android:textColor="@color/colorend"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/btn_verification_code"
+                android:layout_width="52dp"
+                android:layout_height="22dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/mobile_login_bg"
+                android:gravity="center"
+                android:text="60s"
+                android:textColor="#AEAEAE"
+                android:visibility="gone" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/edit_verification_code"
+                android:layout_marginTop="9dp"
+                android:background="#F5F2F2" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_mobile_login"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/rl_verification_code"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/mobile_login_bg">
+
+            <TextView
+                android:id="@+id/tv_login_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="登录"
+                android:textColor="#878787"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+</layout>

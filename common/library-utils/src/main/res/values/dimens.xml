@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <dimen name="design_bottom_navigation_text_size" tools:override="true">10sp</dimen>
+    <dimen name="design_bottom_navigation_active_text_size" tools:override="true">10sp</dimen>
+    <dimen name="home_bottom_navigation_view_height">48dp</dimen>
+
+    <dimen name="tab_min_width">13dp</dimen>
+
+    <dimen name="padding_left">24dp</dimen>
+    <dimen name="padding_right">24dp</dimen>
+    <dimen name="padding_right_14_7">14.7dp</dimen>
+    <dimen name="padding_left_8">8.6dp</dimen>
+    <dimen name="padding_5">5dp</dimen>
+    <dimen name="padding_bottom">15dp</dimen>
+    <dimen name="padding_bottom_48">48dp</dimen>
+    <dimen name="padding_6">6dp</dimen>
+    <dimen name="padding_8">8dp</dimen>
+    <dimen name="padding_10">10dp</dimen>
+    <dimen name="padding_15">15dp</dimen>
+    <dimen name="padding_left_11_6">11.6dp</dimen>
+    <dimen name="padding_12_6">12.6dp</dimen>
+    <dimen name="padding_9_5">9.5dp</dimen>
+    <dimen name="textsize_8">8sp</dimen>
+    <dimen name="textsize_10">10sp</dimen>
+    <dimen name="textsize_12">12sp</dimen>
+    <dimen name="textsize_14">14sp</dimen>
+    <dimen name="textsize_16">16sp</dimen>
+    <dimen name="textsize_18">18sp</dimen>
+    <dimen name="textsize_20">20sp</dimen>
+
+    <dimen name="rank_item_6">6dp</dimen>
+    <dimen name="rank_item_13">13dp</dimen>
+    <dimen name="rank_item_15">15dp</dimen>
+    <dimen name="rank_item_20">20dp</dimen>
+    <dimen name="rank_item_10">10.6dp</dimen>
+    <dimen name="rank_item_14">14.3dp</dimen>
+    <dimen name="rank_item_18">18dp</dimen>
+    <dimen name="rank_item_19">19dp</dimen>
+    <dimen name="rank_item_24">24dp</dimen>
+    <dimen name="rank_item_26">26dp</dimen>
+    <dimen name="rank_item_30">30dp</dimen>
+    <dimen name="rank_item_45">45dp</dimen>
+    <dimen name="rank_item_50">50dp</dimen>
+    <dimen name="rank_item_60">60dp</dimen>
+    <dimen name="padding_top">15dp</dimen>
+    <dimen name="card_padding">7dp</dimen>
+    <dimen name="card_padding_7_6">7.6dp</dimen>
+
+    <dimen name="text_size_17">17sp</dimen>
+    <dimen name="text_size_15_6">15.6sp</dimen>
+    <dimen name="text_size_10_5">10.5sp</dimen>
+    <dimen name="text_size_11_5">11.5sp</dimen>
+    <dimen name="text_size_13_4">13.4sp</dimen>
+    <dimen name="tablayout_indicator_height">5.7dp</dimen>
+
+    <dimen name="text_size_9_6">9.6sp</dimen>
+    <dimen name="textSize_10">10sp</dimen>
+    <dimen name="textSize_12">12sp</dimen>
+    <dimen name="textSize_14">14sp</dimen>
+    <dimen name="textSize_15">15sp</dimen>
+    <dimen name="textSize_16">16sp</dimen>
+    <dimen name="textSize_18">18sp</dimen>
+
+    <dimen name="divider_line">1px</dimen>
+    <dimen name="common_tablayout_height">40dp</dimen>
+    <dimen name="padding_27">27dp</dimen>
+    <dimen name="padding_left_4">4dp</dimen>
+    <dimen name="dimen_28">28dp</dimen>
+    <dimen name="margin_15">15dp</dimen>
+    <dimen name="dimen_9_3">9.3dp</dimen>
+    <dimen name="margin_18">18dp</dimen>
+
+</resources>

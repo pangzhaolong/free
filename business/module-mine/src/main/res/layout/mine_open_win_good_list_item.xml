@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/res/android/skin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    tools:ignore="MissingConstraints"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/ad_shape_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.donews.mine.views.SectionCornerMessageLayout
+        android:id="@+id/mine_par_reco_list_icon_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="4dp"
+        android:background="@color/white"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/mine_par_reco_list_icon"
+            android:layout_width="match_parent"
+            android:layout_height="168dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/ic_launcher" />
+    </com.donews.mine.views.SectionCornerMessageLayout>
+
+    <TextView
+        android:id="@+id/mine_par_reco_list_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="7dp"
+        android:layout_marginTop="7dp"
+        android:ellipsize="end"
+        android:gravity="left|center_horizontal|center_vertical"
+        android:maxLines="2"
+        android:minLines="2"
+        android:text="title"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="@+id/mine_par_reco_list_icon_layout"
+        app:layout_constraintRight_toRightOf="@+id/mine_par_reco_list_icon_layout"
+        app:layout_constraintTop_toBottomOf="@+id/mine_par_reco_list_icon_layout" />
+
+    <LinearLayout
+        android:id="@+id/mine_par_reco_list_count_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginRight="3dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="@+id/mine_par_reco_list_title"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mine_par_reco_list_title">
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/mine_add_record_icon" />
+
+        <TextView
+            android:id="@+id/mine_par_reco_list_count_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="参考价:"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/text_hint_color"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/mine_par_reco_list_count_old"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:includeFontPadding="false"
+            android:paddingLeft="3dp"
+            android:text="￥10"
+            android:textColor="@color/text_hint_color"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/mine_par_reco_list_count_layout">
+        <TextView
+            android:id="@+id/mine_par_reco_list_bot_info"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/mine_win_frm_cj_but"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="免费抽奖"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

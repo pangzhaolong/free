@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/res/android/skin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:ignore="MissingConstraints">
+
+    <!-- 中奖记录 -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ad_shape_bg">
+
+        <LinearLayout
+            android:id="@+id/mine_par_record_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+        <include
+            layout="@layout/incl_open_win_not_data"
+            android:visibility="gone"/>
+    </FrameLayout>
+
+    <!-- 精选的标题 -->
+    <LinearLayout
+        android:id="@+id/mine_par_record_select_bar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_collapseMode="pin"
+        android:layout_marginTop="15dp">
+
+        <ImageView
+            android:layout_width="26.5dp"
+            android:layout_height="7dp"
+            android:scaleType="fitXY"
+            android:layout_marginEnd="13dp"
+            android:src="@mipmap/little_bit_lift_icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#F9F9F9"
+            android:text="精选推荐"
+            android:textColor="#2C2C2C"
+            android:textSize="16dp"
+            />
+
+        <ImageView
+            android:layout_width="26.5dp"
+            android:layout_height="7dp"
+            android:scaleType="fitXY"
+            android:layout_marginStart="13dp"
+            android:src="@mipmap/little_bit_right_icon" />
+    </LinearLayout>
+
+</LinearLayout>

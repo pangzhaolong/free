@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="com.module.integral.ui.WelfareActivity">
+
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="0dp"
+            android:fadingEdge="none">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:elevation="0dp"
+                android:gravity="center"
+                app:navigationIcon="@mipmap/integral_return_icon"
+                app:title=" ">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="限时福利"
+                    android:textColor="#2C2C2C"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/app_bar_layout"
+            android:background="@mipmap/welfare_bg_img"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="31dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="下载试玩"
+                    android:textColor="#743200"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="60秒"
+                    android:textColor="#F74C44"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="领福利"
+                    android:textColor="#743200"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="143dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="97dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="16dp"
+                    android:src="@mipmap/operate_hint_bg" />
+
+                <ImageView
+                    android:layout_width="69dp"
+                    android:layout_height="74dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@mipmap/integrating_sphere" />
+
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/integral_ed_envelope"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingTop="29dp">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:text="最高"
+                        android:textColor="#FDEBCA"
+                        android:textSize="24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="3dp"
+                        android:text="5"
+                        android:textColor="#FFFFFF"
+                        android:textSize="38dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="元提现特权"
+                        android:textColor="#FDEBCA"
+                        android:textSize="24dp" />
+                </LinearLayout>
+
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/apk_icon"
+                    android:layout_width="57dp"
+                    android:layout_height="57dp"
+                    android:layout_marginTop="30dp"
+                    app:shapeAppearanceOverlay="@style/roundedCornerImageStyle" />
+
+                <TextView
+                    android:id="@+id/apk_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
+                    android:text="趣头条"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/adView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/download_bt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18dp"
+                        android:background="@mipmap/download_bt_bg"
+                        android:paddingStart="64dp"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="64dp"
+                        android:paddingBottom="10dp"
+                        android:text="立即下载"
+                        android:textColor="#D82D2A"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="9dp"
+                    android:text="下载安装APP并打开试玩1分钟，"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13dp" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:text="即可解锁最高5元提现特权"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13dp" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:text="无需等待，微信秒打款"
+                    android:textColor="#99FFFFFF"
+                    android:textSize="12dp" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/tips_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="11dp"
+            android:layout_marginRight="11dp"
+            android:layout_marginBottom="34dp"
+            android:background="@drawable/black_shape"
+            android:orientation="horizontal"
+            android:paddingTop="13dp"
+            android:paddingBottom="13dp"
+            android:visibility="invisible">
+
+            <ImageView
+                android:id="@+id/apk_tips_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="17dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                tools:ignore="MissingConstraints" />
+
+            <LinearLayout
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+
+                android:gravity="left"
+                android:orientation="vertical"
+                app:layout_constraintLeft_toRightOf="@+id/apk_tips_icon"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:id="@+id/apk_tips_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="安装成功啦"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:id="@+id/apk_tips_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:text="赶紧打开体验3S后自动跳转"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    tools:ignore="MissingConstraints" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/open_bt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="17dp"
+                android:background="@drawable/tips_button_bg"
+                android:paddingStart="10dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="4dp"
+                android:text="点击打开"
+                android:textColor="#FFBA61"
+                android:textSize="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:layout_below="@+id/app_bar_layout"
+            android:id="@+id/rule"
+            android:layout_width="28dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rule_shape"
+            android:ems="1"
+            android:paddingStart="9dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="活动规则"
+            android:textColor="#AF642D"
+            android:textSize="12dp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+</layout>

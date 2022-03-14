@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/title_bar_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/title_bar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/translate_header"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="80dp"
+        android:ellipsize="middle"
+        android:gravity="center"
+        android:minHeight="45dp"
+        android:singleLine="true"
+        android:text=""
+        android:textColor="@color/A333333"
+        android:textSize="18sp" />
+
+    <ImageView
+        android:id="@+id/title_bar_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/translate_header"
+        android:gravity="center"
+        android:minHeight="45dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:src="@drawable/common_back_black" />
+
+    <TextView
+        android:id="@+id/title_bar_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/translate_header"
+        android:layout_alignParentLeft="true"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:minHeight="45dp"
+        android:paddingLeft="15dp"
+        android:text="返回"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/title_bar_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/translate_header"
+        android:layout_alignParentRight="true"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:minHeight="45dp"
+        android:paddingRight="15dp"
+        android:text=""
+        android:textColor="@color/A333333"
+        android:textSize="14sp" />
+
+
+    <View
+        android:id="@+id/translate_header"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/interval_line" />
+
+</RelativeLayout>

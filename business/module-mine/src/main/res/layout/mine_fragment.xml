@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/res/android/skin"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/mine_frm_refesh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.scwang.smart.refresh.header.ClassicsHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/mine_f6f9fb">
+
+            <!-- 标题部分 -->
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/mine_me_appt_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:elevation="0dp">
+                <com.google.android.material.appbar.CollapsingToolbarLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_collapseMode="parallax"
+                    app:layout_scrollFlags="scroll|enterAlways">
+
+                    <include layout="@layout/mine_fragment_list_head" />
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
+                <!--
+                   layout_collapseMode="pin" 表示不跟随内移动
+                   精选的title
+                -->
+                <LinearLayout
+                    android:id="@+id/mine_me_select_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/mine_f6f9fb"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="7dp"
+                    app:layout_collapseMode="pin"
+                    tools:ignore="MissingClass">
+
+                    <ImageView
+                        android:layout_width="26.5dp"
+                        android:layout_height="7dp"
+                        android:scaleType="fitXY"
+                        android:layout_marginEnd="13dp"
+                        android:src="@mipmap/little_bit_lift_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#F9F9F9"
+                        android:text="热门抽奖"
+                        android:textColor="#2C2C2C"
+                        android:textSize="16sp" />
+
+                    <ImageView
+                        android:layout_width="26.5dp"
+                        android:layout_height="7dp"
+                        android:scaleType="fitXY"
+                        android:layout_marginStart="13dp"
+                        android:src="@mipmap/little_bit_right_icon" />
+                    <!--
+                                    <com.donews.mine.views.CSSView
+                                        android:id="@+id/mine_ccs_view"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="60dp"
+                                        android:background="#e0e0e0" />-->
+                </LinearLayout>
+            </com.google.android.material.appbar.AppBarLayout>
+
+
+            <com.donews.mine.views.refresh.RefeshLayout
+                android:id="@+id/mine_me_list_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+</layout>

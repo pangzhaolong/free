@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="codeBean"
+            type="com.module.lottery.bean.GenerateCodeBean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#24000000"
+        android:paddingBottom="23dp">
+
+        <LinearLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="356dp"
+            android:layout_marginTop="63dp"
+            android:background="@drawable/white_bg_shape"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints,ResourceName">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/closure"
+                    android:layout_width="33dp"
+                    android:layout_height="33dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@mipmap/top_closure_button"
+                    android:visibility="invisible"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginEnd="25dp"
+                    android:gravity="center"
+                    android:text='恭喜获得抽奖码'
+                    android:textColor="#EE702C"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                tools:ignore="ResourceName">
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="122dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@mipmap/bg_code_picture">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="15dp"
+                        android:gravity="center"
+                        android:text='@{codeBean!=null?codeBean.code+"":""}'
+                        android:textColor="#FFFFFF"
+                        android:textSize="40dp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+
+                <RelativeLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-30dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="11dp"
+                        android:orientation="horizontal">
+
+                        <androidx.coordinatorlayout.widget.CoordinatorLayout
+                            android:id="@+id/coordinator_layout"
+                            android:layout_width="match_parent"
+
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/progress_reminder"
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="top"
+                                android:layout_marginBottom="5dp"
+                                android:background="@drawable/exhibit_tips_shape"
+                                android:gravity="center"
+                                android:paddingStart="6dp"
+                                android:paddingTop="4dp"
+                                android:paddingEnd="6dp"
+                                android:paddingBottom="4dp"
+                                android:text="超过11%的用户"
+                                android:textColor="#AA7113"
+                                android:textSize="11dp"
+                                app:layout_behavior="com.module.lottery.behavior.progressBehavior" />
+
+                            <ImageView
+                                android:id="@+id/reminder_icon"
+                                android:layout_width="8dp"
+                                android:layout_height="5dp"
+                                android:layout_gravity="bottom"
+                                android:scaleType="fitXY"
+                                android:src="@mipmap/reminder_icon" />
+                        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+                        <include
+                            android:id="@+id/include_progress_bar"
+                            layout="@layout/progress_bar_layout" />
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginTop="16dp"
+                            android:orientation="vertical">
+
+
+                            <com.airbnb.lottie.LottieAnimationView
+                                android:id="@+id/gift_box_off"
+                                android:layout_width="49dp"
+                                android:layout_height="49dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginTop="0dp"
+                                android:scaleType="fitXY"
+                                app:lottie_autoPlay="true"
+                                app:lottie_loop="true" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginTop="48dp"
+                                android:layout_marginEnd="7dp"
+                                android:text="最大中奖率"
+                                android:textColor="#AA7113"
+                                android:textSize="11dp"
+                                android:textStyle="bold" />
+                        </RelativeLayout>
+
+
+                    </RelativeLayout>
+
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="27dp"
+                android:orientation="vertical">
+
+
+                <RelativeLayout
+                    android:id="@+id/json_animation_layout"
+                    android:layout_width="342dp"
+                    android:layout_height="78dp"
+                    android:layout_marginStart="34dp"
+                    android:layout_marginEnd="34dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+
+                    <RelativeLayout
+                        android:id="@+id/startLottie"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/item_lottery_shape"
+                        android:gravity="center"
+                        android:paddingTop="11dp"
+                        android:paddingBottom="11dp">
+
+                        <ImageView
+                            android:id="@+id/play_icon"
+                            android:layout_width="19dp"
+                            android:layout_height="19dp"
+                            android:layout_marginTop="2dp"
+                            android:src="@mipmap/white_play_video_icon" />
+
+                        <TextView
+                            android:id="@+id/button_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="7dp"
+                            android:layout_toRightOf="@+id/play_icon"
+                            android:text="增加中奖率"
+                            android:textStyle="bold"
+                            android:textColor="#FFFFFF"
+                            android:textSize="17dp" />
+
+
+                    </RelativeLayout>
+
+
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/jsonAnimation_hand"
+                        android:layout_width="63dp"
+                        android:layout_height="64dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="8dp"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="true" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/startLottie"
+                        android:layout_marginTop="13dp"
+                        android:gravity="center"
+                        android:text="拿6个抽奖码，赢最高中奖率"
+                        android:textColor="#AA7113" />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/hint_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="52dp"
+                    android:gravity="bottom"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="恭喜"
+                        android:textColor="#AA7113" />
+
+                    <TextView
+                        android:id="@+id/countdown_hint"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="#AA7113" />
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/crit_draw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@mipmap/unlock_button_bg"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/container"
+            tools:ignore="MissingConstraints">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="再抽"
+                    android:textColor="#2C2C2C"
+                    android:textStyle="bold"
+
+                    />
+
+                <TextView
+                    android:id="@+id/number_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="X"
+                    android:textColor="#E9423E"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="个码，解锁"
+                    android:textColor="#2C2C2C"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="暴击模式"
+                    android:textColor="#E9423E"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="中奖率"
+                    android:textColor="#2C2C2C"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="x6"
+                    android:textColor="#E9423E"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="倍"
+                    android:textColor="#2C2C2C"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/crit_download"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@mipmap/unlock_button_bg"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/crit_draw"
+            tools:ignore="MissingConstraints">
+
+            <ImageView
+                android:id="@+id/integral_icon"
+                android:layout_width="47dp"
+                android:layout_height="47dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/red_linear_shape" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/integral_icon"
+                android:clipChildren="false"
+                android:orientation="vertical"
+                android:paddingTop="10dp"
+                android:paddingEnd="10dp"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:id="@+id/integral_describe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="体验下方App一分钟即可解锁暴击模式"
+                    android:textColor="#2C2C2C"
+                    android:textSize="13dp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:clipChildren="false"
+                    android:gravity="bottom"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/integral_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="快手极速版"
+                        android:textColor="#2C2C2C"
+                        android:textSize="13dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/integral_bt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/red_linear_shape"
+                        android:paddingStart="13dp"
+                        android:paddingTop="4dp"
+                        android:paddingEnd="13dp"
+                        android:paddingBottom="4dp"
+                        android:text="立即下载"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13dp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+        </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

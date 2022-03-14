@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            tools:ignore="MissingConstraints">
+
+            <ImageView
+                android:id="@+id/home_search_back"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="10dp"
+                android:src="@drawable/home_back" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginEnd="20dp"
+                android:layout_toStartOf="@+id/home_search_do"
+                android:layout_toEndOf="@+id/home_search_back"
+                android:background="@drawable/home_search_bg"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/home_jdd_search" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/home_search_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="15dp"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:hint="搜商品 领优惠券"
+                    android:inputType="text"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:outlineSpotShadowColor="@color/transparent"
+                    android:textCursorDrawable="@drawable/home_search_edit_cursor_color"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/home_search_do"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/home_search_button_bg"
+                android:gravity="center"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="搜索"
+                android:textColor="@color/white" />
+        </RelativeLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:id="@+id/home_search_cl"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.appbar.AppBarLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.appbar.CollapsingToolbarLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:expandedTitleGravity="top"
+                        app:expandedTitleMarginEnd="64dp"
+                        app:expandedTitleMarginStart="48dp"
+                        app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+
+                        <RelativeLayout
+                            android:id="@+id/home_search_history_tl"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:background="@color/white">
+
+                            <TextView
+                                android:id="@+id/home_search_history"
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:layout_marginStart="10dp"
+                                android:gravity="center_vertical"
+                                android:text="搜索记录"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:id="@+id/home_search_history_clean_tv"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="10dp"
+                                android:gravity="center"
+                                android:padding="12dp"
+                                android:src="@drawable/home_search_delete" />
+
+                            <com.nex3z.flowlayout.FlowLayout
+                                android:id="@+id/home_search_flow_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/home_search_history"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginEnd="10dp"
+                                app:flChildSpacing="auto"
+                                app:flChildSpacingForLastRow="align"
+                                app:flRowSpacing="8dp" />
+                        </RelativeLayout>
+                    </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+                    <TextView
+                        android:id="@+id/home_search_find_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:text="大家都在买"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </com.google.android.material.appbar.AppBarLayout>
+
+                <com.scwang.smart.refresh.layout.SmartRefreshLayout
+                    android:id="@+id/home_search_srl"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+                    tools:ignore="MissingClass">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/home_search_buys_rv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp" />
+
+                    <com.scwang.smart.refresh.footer.ClassicsFooter
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+            <LinearLayout
+                android:id="@+id/home_search_fragments_ll"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/home_search_platform_tl"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    app:tabBackground="@color/transparent"
+                    app:tabIndicatorColor="@color/transparent"
+                    app:tabIndicatorFullWidth="false"
+                    app:tabIndicatorHeight="0dp"
+                    app:tabRippleColor="@color/transparent" />
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/home_search_platform_vp2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/home_search_suggestion_rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+        </FrameLayout>
+
+
+    </LinearLayout>
+</layout>

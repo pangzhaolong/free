@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+
+        <import type="android.view.View" />
+
+        <variable
+            name="eventListener"
+            type="com.donews.detail.ui.GoodsDetailActivity.EventListener" />
+
+        <variable
+            name="detailInfo"
+            type="com.donews.detail.bean.GoodsDetailInfo" />
+
+        <variable
+            name="hasCoupon"
+            type="Boolean" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/detail_f4f4f4">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/detail_f4f4f4"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/view_bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/view_bg_status_bar"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:background="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.legacy.widget.Space
+            android:id="@+id/space_toolbar"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_bg_status_bar" />
+
+        <ImageView
+            android:id="@+id/iv_toolbar_bg"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:contentDescription="@null"
+            android:src="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/space_toolbar"
+            app:layout_constraintEnd_toEndOf="@id/space_toolbar"
+            app:layout_constraintStart_toStartOf="@id/space_toolbar"
+            app:layout_constraintTop_toTopOf="@id/space_toolbar" />
+
+        <ImageView
+            android:id="@+id/iv_bg_btn_back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@null"
+            android:padding="8dp"
+            android:src="@drawable/detail_circle_black_translucence"
+            app:layout_constraintStart_toStartOf="@id/space_toolbar"
+            app:layout_constraintTop_toTopOf="@id/space_toolbar" />
+
+        <ImageButton
+            android:id="@+id/imgBtn_back_white"
+            style="@style/detail_ImageButton_Style"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@null"
+            android:onClick="@{eventListener::clickBack}"
+            android:padding="14dp"
+            android:src="@drawable/detail_ic_back"
+            app:layout_constraintBottom_toBottomOf="@id/iv_bg_btn_back"
+            app:layout_constraintEnd_toEndOf="@id/iv_bg_btn_back"
+            app:layout_constraintStart_toStartOf="@id/iv_bg_btn_back"
+            app:layout_constraintTop_toTopOf="@id/iv_bg_btn_back"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <ImageButton
+            android:id="@+id/imgBtn_back_black"
+            style="@style/detail_ImageButton_Style"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@null"
+            android:onClick="@{eventListener::clickBack}"
+            android:padding="14dp"
+            android:src="@drawable/detail_ic_back"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@id/space_toolbar"
+            app:layout_constraintTop_toTopOf="@id/space_toolbar"
+            app:tint="@color/black"
+            tools:visibility="invisible" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            app:layout_constraintBottom_toBottomOf="@id/space_toolbar"
+            app:layout_constraintEnd_toEndOf="@id/space_toolbar"
+            app:layout_constraintStart_toStartOf="@id/space_toolbar"
+            app:layout_constraintTop_toTopOf="@id/space_toolbar"
+            app:tabIndicatorColor="@color/detail_theme_color"
+            app:tabIndicatorFullWidth="false"
+            app:tabMode="fixed"
+            app:tabPaddingEnd="12dp"
+            app:tabPaddingStart="12dp"
+            app:tabRippleColor="@android:color/transparent" />
+
+        <View
+            android:id="@+id/view_bottom"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/iv_copy"
+            android:layout_width="0dp"
+            android:layout_height="43.84dp"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/detail_bg_bottom_left"
+            android:gravity="center"
+            android:onClick="@{eventListener::clickCopy}"
+            android:text="@string/detail_copy_command"
+            android:textColor="@color/detail_theme_color"
+            app:layout_constraintBottom_toBottomOf="@id/view_bottom"
+            app:layout_constraintEnd_toStartOf="@id/iv_buy"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/view_bottom" />
+
+        <ImageView
+            android:id="@+id/iv_buy"
+            android:layout_width="0dp"
+            android:layout_height="43.84dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/detail_bg_bottom_right"
+            android:onClick="@{eventListener::clickBuy}"
+            app:layout_constraintBottom_toBottomOf="@id/view_bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/iv_copy"
+            app:layout_constraintTop_toTopOf="@id/view_bottom" />
+
+        <TextView
+            android:id="@+id/tv_actual_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="@{@string/detail_buy_price(String.valueOf(detailInfo.actualPrice))}"
+            android:textColor="@color/white"
+            android:textSize="16.44dp"
+            app:layout_constraintBottom_toTopOf="@id/tv_buy_msg"
+            app:layout_constraintEnd_toStartOf="@id/tv_original_price"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="@id/iv_buy"
+            app:layout_constraintTop_toTopOf="@id/iv_buy"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="¥8.9" />
+
+        <TextView
+            android:id="@+id/tv_original_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0.6"
+            android:text="@{@string/detail_buy_price(String.valueOf(detailInfo.originalPrice))}"
+            android:visibility="@{hasCoupon?View.VISIBLE:View.GONE}"
+            android:textColor="@color/white"
+            android:textSize="12.056dp"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_actual_price"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_actual_price"
+            app:layout_constraintTop_toTopOf="@id/tv_actual_price"
+            tools:text="¥11.9" />
+
+        <TextView
+            android:id="@+id/tv_buy_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/detail_save_money_buy"
+            android:textColor="@color/white"
+            android:textSize="12.056dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/iv_buy"
+            app:layout_constraintStart_toStartOf="@id/iv_buy"
+            app:layout_constraintTop_toBottomOf="@id/tv_actual_price" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ResourceName">
+
+    <data>
+
+        <variable
+            name="lotteryInfo"
+            type="com.donews.main.bean.RecentLotteryInfoBean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="38dp"
+        android:paddingEnd="38dp">
+
+
+        <RelativeLayout
+            android:layout_marginBottom="50dp"
+            android:id="@+id/central_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints">
+
+            <ImageView
+                android:id="@+id/light"
+                android:layout_width="match_parent"
+                android:layout_height="308dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/dialog_light_bg"
+                android:scaleType="fitXY"
+                android:textSize="16dp" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="115dp"
+                android:background="@drawable/white_linear_yellow_bg"
+                android:paddingTop="42dp"
+                android:paddingBottom="44dp">
+
+                <ImageView
+                    android:id="@+id/draw_title_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/draw_title_img"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent" />
+
+
+                <TextView
+                    android:layout_marginTop="-20dp"
+                    android:id="@+id/text_value"
+                    android:layout_width="wrap_content"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content"
+                    android:text='@{lotteryInfo.period+"期"}'
+                    android:textColor="#9C4D23"
+                    android:textSize="16dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/draw_title_img" />
+
+                <TextView
+                    android:id="@+id/hin_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="快去看看您是否中奖"
+                    android:textColor="#9C4D23"
+                    android:textSize="16dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_value" />
+
+
+                <TextView
+                    android:id="@+id/check_button"
+                    android:layout_width="213dp"
+                    android:layout_height="47dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/item_lottery_shape"
+                    android:gravity="center"
+                    android:text="立即查看"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/hin_text"
+
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ImageView
+                android:id="@+id/top_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/dialog_medal_icon"
+                android:textSize="16dp" />
+        </RelativeLayout>
+
+
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/central_content"
+            android:src="@drawable/common_close"
+            app:layout_constraintBottom_toTopOf="@id/central_content"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:ignore="MissingConstraints" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
