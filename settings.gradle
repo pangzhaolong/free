@@ -1,4 +1,4 @@
-rootProject.name = 'lottery'
+rootProject.name = 'Free'
 include ':app'
 include ':common:library-base'
 include ':common:library-network'
