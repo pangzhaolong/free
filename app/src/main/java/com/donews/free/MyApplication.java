@@ -1,4 +1,4 @@
-package com.donews.jdd;
+package com.donews.free;
 
 import android.app.Notification;
 import android.content.Context;

@@ -36,10 +36,10 @@ android {
 
     signingConfigs {
         release {
-            keyAlias 'ddyb'
-            keyPassword 'ddyb123456'
-            storeFile rootProject.file('keystore/ddyb.jks')
-            storePassword 'ddyb123456'
+            keyAlias 'qbn'
+            keyPassword 'qbn123456'
+            storeFile rootProject.file('keystore/cdyfqbn.jks')
+            storePassword 'qbn123456'
 //            v2SigningEnabled true
 //            v1SigningEnabled true
         }
