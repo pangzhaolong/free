@@ -48,7 +48,7 @@ public class AppStatusUtils {
             boolean firstOpenApp = mmkv.decodeBool(MMKV_APP_INSTALL_FLAG, true);
             if (firstOpenApp) {
                 mmkv.encode(MMKV_APP_INSTALL_TIME, System.currentTimeMillis());
-                mmkv.encode(MMKV_APP_INSTALL_FLAG, true);
+                mmkv.encode(MMKV_APP_INSTALL_FLAG, false);
             }
         }
     }

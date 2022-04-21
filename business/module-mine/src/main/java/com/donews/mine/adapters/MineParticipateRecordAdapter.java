@@ -62,7 +62,6 @@ public class MineParticipateRecordAdapter extends BaesLoadMoreAdapter<RecommendG
         ImageView icon = helper.getView(R.id.mine_par_reco_list_icon);
         GlideUtils.loadImageView(icon.getContext(), UrlUtils.formatUrlPrefix(item.mainPic), icon);
         helper.setText(R.id.mine_par_reco_list_title, item.title)
-                .setText(R.id.mine_par_reco_list_count_old, "¥" + item.originalPrice)
                 .setText(R.id.mine_par_reco_list_count_num, "¥" + item.originalPrice)
                 .setText(R.id.mine_par_reco_list_bot_info, "累计" + item.totalPeople + "人参与抽奖");
         TextWinUtils.updateWinStatus(

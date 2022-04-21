@@ -28,4 +28,7 @@ android {
 
 dependencies {
     api project(':common:library-keepalivecore')
+
+    //通知栏通知的工具类的库，参考：https://github.com/yangchong211/YCNotification
+    implementation 'com.github.yangchong211.YCNotification:NotificationLib:1.0.4'
 }

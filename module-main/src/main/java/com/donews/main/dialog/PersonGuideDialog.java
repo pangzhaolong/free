@@ -19,7 +19,6 @@ import com.donews.base.fragmentdialog.AbstractFragmentDialog;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.main.utils.SplashUtils;
 import com.donews.middle.abswitch.ABSwitch;
-import com.donews.middle.abswitch.OtherSwitch;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.DeviceUtils;
@@ -46,6 +45,7 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
         dataBinding.tvRefuse.setOnClickListener(v -> {
             AnalysisUtils.onEventEx(getActivity(), Dot.Btn_ServiceThink);
             dataBinding.llGuide.setVisibility(View.GONE);
+            dataBinding.imgMainPeople.setVisibility(View.GONE);
             dataBinding.llRefuseHint.setVisibility(View.VISIBLE);
         });
         dataBinding.tvRefuseHint.setText(
@@ -64,6 +64,7 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
         //必须设置才能响应点击事件
         dataBinding.tvDeal.setMovementMethod(LinkMovementMethod.getInstance());
 
+
         //退出应用
         dataBinding.tvExit.setOnClickListener(v -> {
             AnalysisUtils.onEventEx(getActivity(), Dot.Btn_ServiceThinkExit);
@@ -81,6 +82,8 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
             }
             disMissDialog();
         });
+
+
     }
 
     public PersonGuideDialog setSureListener(SureListener sureListener) {
@@ -114,9 +117,9 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
             public void onClick(@NonNull View widget) {
                 String url = "";
                 if (ABSwitch.Ins().isOpenAB() && DeviceUtils.getChannelName().equalsIgnoreCase("huawei")) {
-                    url = "https://ad-static-xg.tagtic.cn/wangzhuan/file/e0175957f8bb037da313fa23caae5944.html";
+                    url = "https://ad-static-xg.tagtic.cn/wangzhuan/file/4fb165459cd438f9a3987841d7707d8a.html";
                 } else {
-                    url = BuildConfig.USER_PROTOCOL;
+                    url = BuildConfig.USER_PROCOTOL;
                 }
                 ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY).withString("url", url)
                         .withString("title", "用户协议").navigation();
@@ -140,7 +143,7 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
             public void onClick(@NonNull View widget) {
                 String url = "";
                 if (ABSwitch.Ins().isOpenAB() && DeviceUtils.getChannelName().equalsIgnoreCase("huawei")) {
-                    url = "https://ad-static-xg.tagtic.cn/wangzhuan/file/bd5cf63a41d4155d6d126087612f2e2e.html";
+                    url = "https://ad-static-xg.tagtic.cn/wangzhuan/file/739eaf3002ea80d1a2232c9cd5a8b9f4.html";
                 } else {
                     url = BuildConfig.PRIVATE_POLICY_URL;
                 }
@@ -149,10 +152,12 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
                         .withString("title", "隐私政策").navigation();
                 //重新设置文字背景为透明色。否则会出现淡绿色背景
                 dataBinding.tvDeal.setHighlightColor(Color.TRANSPARENT);
+
             }
 
             @Override
             public void updateDrawState(@NonNull TextPaint ds) {
+
                 //设置颜色
                 ds.setColor(Color.parseColor("#F33838"));
                 ds.setFakeBoldText(true);
@@ -161,6 +166,7 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
             }
         }, privacyIndex, privacyLength, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
         return span;
+
     }
 
     public static String getAppName(Context context) {

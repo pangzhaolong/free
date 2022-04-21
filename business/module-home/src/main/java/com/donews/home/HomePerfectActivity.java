@@ -10,14 +10,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.home.adapter.CrazyListAdapter;
 import com.donews.home.databinding.HomeCrazyListActivityBinding;
 import com.donews.home.listener.GoodsClickListener;
 import com.donews.home.viewModel.CrazyViewModel;
-import com.donews.middle.abswitch.OtherSwitch;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.bean.home.HomeGoodsBean;
+import com.donews.middle.bean.home.RealTimeBean;
 import com.donews.middle.dialog.JumpThirdAppDialog;
 import com.donews.middle.go.GotoUtil;
 import com.donews.middle.listener.JumpThirdAppListener;
@@ -103,9 +105,9 @@ public class HomePerfectActivity extends MvvmBaseLiveDataActivity<HomeCrazyListA
 
     @Override
     public void onClick(String goodsId, String materialId, String searchId, int src) {
-        Context context = this;
 
-        if (!OtherSwitch.Ins().isOpenJumpDlg()) {
+        Context context = this;
+        if (!ABSwitch.Ins().isOpenJumpDlg()) {
             GotoUtil.requestPrivilegeLinkBean(context, goodsId, materialId, searchId, src);
             return;
         }
@@ -121,6 +123,7 @@ public class HomePerfectActivity extends MvvmBaseLiveDataActivity<HomeCrazyListA
                 GotoUtil.requestPrivilegeLinkBean(context, goodsId, materialId, searchId, src);
             }
         }).show();
+
 //        GotoUtil.requestPrivilegeLinkBean(this, goodsId, materialId, searchId, src);
     }
 }

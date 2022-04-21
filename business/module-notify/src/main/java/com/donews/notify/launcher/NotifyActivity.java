@@ -1,5 +1,7 @@
 package com.donews.notify.launcher;
 
+import static com.donews.utilslibrary.utils.KeySharePreferences.NOTIFY_RANDOM_RED_AMOUNT;
+import static java.lang.Thread.sleep;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -53,7 +55,7 @@ public class NotifyActivity extends FragmentActivity {
         //刷新一次本地金额数据。以备不时之需
         FixTagUtils.updateLocalRandomRangNumber();
         //将条件前置。防止计时后台显示。达到限制之后依然启动了界面
-        NotifyLog.logNotToast("NotifyActivity actionStart");
+        Log.i(TAG, "NotifyActivity actionStart");
         destroy();
         if(AppUtils.isAppForeground()){
             NotifyLog.logNotToast("应用已经再前台。放弃展示");

@@ -17,6 +17,8 @@ import java.util.List;
 public class NotifyLog {
 
     private static String tag = "notifyDes";
+
+    private static String tagBar = "notifyBar";
     //是否显示Toast提示
     private static boolean isToast = BuildConfig.DEBUG;
 
@@ -27,8 +29,32 @@ public class NotifyLog {
         }
     }
 
+    /**
+     * 通知栏通知的日志输出
+     *
+     * @param msg
+     */
+    public static void logBar(String msg) {
+        Log.e(tagBar, "[通知栏通知]:" + msg);
+        if (isToast) {
+            ToastUtil.showShort(BaseApplication.getInstance(), msg);
+        }
+    }
+
+    public static void logBarNotToast(String fixFlg, List msg) {
+        StringBuffer sb = new StringBuffer("\n");
+        for (int i = 0; i < msg.size(); i++) {
+            sb.append("列表结果" + i + " => " + msg.get(i) + "\n");
+        }
+        Log.e(tagBar, fixFlg + ":" + sb.toString());
+    }
+
     public static void logNotToast(String msg) {
         Log.e(tag, msg);
+    }
+
+    public static void logBarNotToast(String msg) {
+        Log.e(tagBar, msg);
     }
 
     public static void logNotToast(String fixFlg, List msg) {

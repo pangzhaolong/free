@@ -3,7 +3,7 @@ package com.donews.main.utils;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 
-import com.dn.sdk.bean.integral.ProxyIntegral;
+import com.dn.integral.jdd.integral.ProxyIntegral;
 import com.donews.base.fragmentdialog.AbstractFragmentDialog;
 import com.donews.main.dialog.ext.CritDownAppDialogFragment;
 import com.donews.main.dialog.ext.CritWelfareDialogFragment;

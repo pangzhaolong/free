@@ -9,19 +9,17 @@ import com.donews.ads.mediation.v2.framework.bean.DnUnionBean
  * @version v1.0
  * @date 2021/12/28 10:30
  */
-class AdStatus(private val dnUnionBean: DnUnionBean) {
+class AdStatus(private val dnUnionBean: DnUnionBean?) {
 
-    val reqId: String = dnUnionBean.reqId
-    val appId: String = dnUnionBean.appId
-    val positionId: String = dnUnionBean.positionId
-    val groMorePositionId: String = dnUnionBean.groMorePostionId
-    val currentPositionId: String = dnUnionBean.currentPostionId
-    val platFormType: String = dnUnionBean.platFormType
-    val currentEcpm: String = dnUnionBean.currentEcpm
+    val reqId: String = dnUnionBean?.reqId ?: ""
+    val appId: String = dnUnionBean?.appId ?: ""
+    val positionId: String = dnUnionBean?.positionId ?: ""
+    val groMorePositionId: String = dnUnionBean?.groMorePostionId ?: ""
+    val currentPositionId: String = dnUnionBean?.currentPostionId ?: ""
+    val platFormType: String = dnUnionBean?.platFormType ?: ""
+    val currentEcpm: String = dnUnionBean?.currentEcpm ?: "0"
 
     override fun toString(): String {
         return "AdStatus(reqId='$reqId', appId='$appId', positionId='$positionId', groMorePositionId='$groMorePositionId', currentPositionId='$currentPositionId', platFormType='$platFormType', currentEcpm='$currentEcpm')"
     }
-
-
 }

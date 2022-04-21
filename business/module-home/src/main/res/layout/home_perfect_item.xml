@@ -40,13 +40,6 @@
             android:layout_marginTop="8dp"
             tools:ignore="MissingConstraints">
 
-            <ImageView
-                android:id="@+id/home_crazy_logo_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/home_crazy_item_actprice_rl"
-                android:src="@drawable/home_logo_tb" />
-
             <TextView
                 android:id="@+id/home_crazy_item_price_tip"
                 android:layout_width="wrap_content"
@@ -54,20 +47,19 @@
                 android:layout_above="@+id/home_crazy_item_actprice_rl"
                 android:text="原价:"
                 android:textColor="#A9AEB1"
-                android:textSize="12sp"
-                android:visibility="gone" />
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/home_crazy_item_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/home_crazy_item_actprice_rl"
-                android:layout_toRightOf="@+id/home_crazy_logo_iv"
+                android:layout_toRightOf="@+id/home_crazy_item_price_tip"
                 android:text="￥1699"
                 android:textColor="#A9AEB1"
                 android:textSize="12sp" />
 
-            <RelativeLayout
+            <FrameLayout
                 android:id="@+id/home_crazy_item_actprice_rl"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
@@ -75,81 +67,73 @@
                 android:layout_marginTop="8dp"
                 android:orientation="horizontal">
 
-                <LinearLayout
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/home_top_item_price_bg" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/home_crazy_goods_item_price"
                     android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:orientation="horizontal">
+                    android:layout_height="match_parent"
+                    android:layout_gravity="start|center_vertical"
+                    android:layout_marginStart="10dp"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:text="￥534.4"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="bottom"
-                        android:text="￥"
-                        android:textColor="#EA443C"
-                        android:textSize="12sp" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/home_crazy_goods_item_price"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="bottom"
-                        android:maxLines="1"
-                        android:text="534.4"
-                        android:textColor="#EA443C"
-                        android:textSize="16sp" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="10dp"
-                        android:background="@drawable/home_crzay_item_price_bg"
-                        android:gravity="center_vertical"
-                        android:paddingStart="6dp"
-                        android:paddingEnd="8dp"
-                        android:text="抢购价"
-                        android:textColor="@color/white"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <LinearLayout
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
-                    android:layout_height="23dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="6dp"
-                    android:orientation="horizontal">
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="center_vertical"
+                    android:text="抢购价"
+                    android:textColor="#F53E3C"
+                    android:textSize="11sp" />
+            </FrameLayout>
 
-                    <TextView
-                        android:id="@+id/home_crzay_goods_item_gift_atv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/home_crazy_item_coupon"
-                        android:ellipsize="end"
-                        android:gravity="center"
-                        android:lines="1"
-                        android:maxLines="1"
-                        android:paddingStart="5dp"
-                        android:paddingTop="3dp"
-                        android:paddingEnd="5dp"
-                        android:paddingBottom="5dp"
-                        android:text="50元券"
-                        android:textColor="#EA443C"
-                        android:textSize="12sp" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/home_crzay_item_gift_big_bg"
+                android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/home_crazy_item_coupon_get"
-                        android:gravity="center"
-                        android:paddingTop="2dp"
-                        android:paddingBottom="4dp"
-                        android:text="领取"
-                        android:textColor="@color/white"
-                        android:textSize="12sp" />
-                </LinearLayout>
-            </RelativeLayout>
+                <TextView
+                    android:id="@+id/home_crzay_goods_item_gift_atv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:paddingStart="5dp"
+                    android:paddingTop="3dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="5dp"
+                    android:text="￥50元券"
+                    android:textColor="#F33838"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/home_crazy_item_gift_bg"
+                    android:gravity="center"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="4dp"
+                    android:text="领取"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
         </RelativeLayout>
+
     </LinearLayout>
+
 </LinearLayout>

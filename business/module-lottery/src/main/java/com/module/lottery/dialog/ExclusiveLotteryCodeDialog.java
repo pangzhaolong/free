@@ -29,7 +29,7 @@ import com.donews.common.router.RouterActivityPath;
 import com.donews.common.views.CountdownView;
 import com.donews.main.BuildConfig;
 import com.donews.main.dialog.BaseDialog;
-import com.donews.middle.abswitch.OtherSwitch;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.utils.CommonAnimationUtils;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
@@ -205,7 +205,7 @@ public class ExclusiveLotteryCodeDialog extends BaseDialog<ExclusiveLotteryCodeL
             }
         });
         boolean protocol = getSharedPreferences().getBoolean("Free", false) ||
-                OtherSwitch.Ins().isOpenAutoAgreeProtocol();
+                ABSwitch.Ins().isOpenAutoAgreeProtocol();
         mDataBinding.checkBox.setChecked(protocol);
         mDataBinding.jumpButton.setAnimation(CommonAnimationUtils.setScaleAnimation(1000));
         mDataBinding.jumpButton.setOnClickListener(new View.OnClickListener() {
@@ -269,7 +269,7 @@ public class ExclusiveLotteryCodeDialog extends BaseDialog<ExclusiveLotteryCodeL
         //用户协议
         if (v.getId() == R.id.user_protocol) {
             Bundle bundle = new Bundle();
-            bundle.putString("url", BuildConfig.USER_PROTOCOL);
+            bundle.putString("url", BuildConfig.USER_PROCOTOL);
             bundle.putString("title", "用户协议");
             ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
         }

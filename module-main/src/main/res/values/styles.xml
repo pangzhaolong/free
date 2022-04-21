@@ -62,11 +62,6 @@
         <!--        <item name="android:backgroundDimEnabled">false</item>-->
     </style>
 
-    <style name="BaseDialogTheme.FullScreen" tools:ignore="ResourceName">
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-    </style>
-
     <style name="Dialog_BottomToTopAnim" parent="android:Animation" tools:ignore="ResourceName">
         <item name="android:windowEnterAnimation">@anim/bottom_anim_enter</item>
         <item name="android:windowExitAnimation">@anim/bottom_anim_exit</item>

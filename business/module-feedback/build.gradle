@@ -2,6 +2,7 @@ apply from: rootProject.file('gradle/module.build.gradle')
 
 android {
     defaultConfig {
+        versionName = "1.4.2"
         if (isBuildModule.toBoolean()) {
             applicationId "com.dn.feedback"
         }
@@ -16,5 +17,17 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     kapt rootProject.ext.dependencies["arouter-compiler"]
 
+    //开发时候依赖本地基础库
     implementation project(':common:library-common')
+//    //打包依赖基础库。实际包不包含基础库
+//    compileOnly project(':common:library-common')
 }
+
+////上穿maven的相关配置
+//ext {
+//    PUBLISH_GROUP_ID = "io.github.15198184721"  //申请的mven的GroupId
+//    PUBLISH_ARTIFACT_ID = 'dn-module-feedback'   //项目名,可以理解为除了GroupId之外的二级引用,一般为model名称
+//    PUBLISH_VERSION = android.defaultConfig.versionName  //版本号(直接引用了Model的版本号名称)
+//}
+//
+//apply from: "${rootProject.projectDir}/maven/publish-mavencentral.gradle"

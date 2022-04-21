@@ -1,7 +1,5 @@
 package com.donews.main.dialog;
 
-import static com.donews.middle.utils.CommonUtils.LOTTERY_FINGER;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -23,17 +21,28 @@ import com.donews.base.utils.ToastUtil;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.main.BuildConfig;
 import com.donews.main.R;
+import com.donews.main.bean.NowTimeBean;
 import com.donews.main.databinding.FreePanicDialogLayoutBinding;
 import com.donews.main.utils.ExitInterceptUtils;
-import com.donews.middle.abswitch.OtherSwitch;
+import com.donews.middle.abswitch.ABSwitch;
+import com.donews.network.EasyHttp;
+import com.donews.network.cache.model.CacheMode;
+import com.donews.network.callback.SimpleCallBack;
+import com.donews.network.exception.ApiException;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
+import com.donews.utilslibrary.utils.DateManager;
+import com.donews.utilslibrary.utils.KeySharePreferences;
+import com.donews.utilslibrary.utils.SPUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.lang.ref.WeakReference;
+import java.util.Calendar;
+
+import io.reactivex.disposables.Disposable;
 
 //抽奖页返回拦截dialog
 public class FreePanicBuyingDialog extends BaseDialog<FreePanicDialogLayoutBinding> implements DialogInterface.OnDismissListener, View.OnClickListener {
@@ -144,7 +153,7 @@ public class FreePanicBuyingDialog extends BaseDialog<FreePanicDialogLayoutBindi
         mDataBinding.userProtocol.setOnClickListener(this);
         mDataBinding.privacyProtocol.setOnClickListener(this);
         boolean protocol = getSharedPreferences().getBoolean("Free", false) ||
-                OtherSwitch.Ins().isOpenAutoAgreeProtocol();
+                ABSwitch.Ins().isOpenAutoAgreeProtocol();
         mDataBinding.checkBox.setChecked(protocol);
         mDataBinding.jumpButton.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("MissingPermission")
@@ -175,7 +184,7 @@ public class FreePanicBuyingDialog extends BaseDialog<FreePanicDialogLayoutBindi
 
         //手
         mDataBinding.maskingHand.setImageAssetsFolder("images");
-        mDataBinding.maskingHand.setAnimation(LOTTERY_FINGER);
+        mDataBinding.maskingHand.setAnimation("lottery_finger.json");
         mDataBinding.maskingHand.loop(true);
         mDataBinding.maskingHand.playAnimation();
 
@@ -183,7 +192,7 @@ public class FreePanicBuyingDialog extends BaseDialog<FreePanicDialogLayoutBindi
 
     @Override
     public float setSize() {
-        return 1.0f;
+        return 0.9f;
     }
 
 
@@ -219,7 +228,7 @@ public class FreePanicBuyingDialog extends BaseDialog<FreePanicDialogLayoutBindi
         //用户协议
         if (v.getId() == R.id.user_protocol) {
             Bundle bundle = new Bundle();
-            bundle.putString("url", BuildConfig.USER_PROTOCOL);
+            bundle.putString("url", BuildConfig.USER_PROCOTOL);
             bundle.putString("title", "用户协议");
             ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
         }

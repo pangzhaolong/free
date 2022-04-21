@@ -8,7 +8,6 @@ import com.dn.sdk.BuildConfig
 import com.dn.sdk.utils.AdLoggerUtils
 import com.donews.ads.mediation.v2.api.DoNewsAdManagerHolder
 import com.donews.ads.mediation.v2.integral.DoNewsIntegralHolder
-import com.donews.utilslibrary.utils.DeviceUtils
 
 /**
  * 广告SDK 管理类
@@ -26,8 +25,8 @@ object AdSdkManager : ISdkManager {
     private var hadInit = false
 
     override fun initSDK(context: Application, channelName: String, openDebug: Boolean) {
+        AdSdkManager.context = context.applicationContext
         if (Thread.currentThread() == Looper.getMainLooper().thread) {
-            AdSdkManager.context = context.applicationContext
             if (!hadInit) {
                 AdLoggerUtils.setLoggable(BuildConfig.OPEN_AD_LOGGER)
                 //多牛SDK 初始化
@@ -44,7 +43,11 @@ object AdSdkManager : ISdkManager {
     /** 初始化 多牛sdk */
     private fun initDnSdk(context: Context, channelName: String) {
         DoNewsAdManagerHolder.setChannel(channelName)
-        DoNewsAdManagerHolder.init(context)
-        DoNewsIntegralHolder.getInstance().init(context, channelName, DeviceUtils.getMyUUID(), BuildConfig.DEBUG)
+        //gromore初始化
+//        GMAdManagerHolder.init(context,BuildConfig.APP_ID_GROMORE)
+        DoNewsAdManagerHolder.init(context, BuildConfig.APP_ID_GROMORE)
+        //积分墙SDK 初始化
+        val uuid = DoNewsAdManagerHolder.getSuuid()
+        DoNewsIntegralHolder.getInstance().init(context, channelName, uuid, BuildConfig.DEBUG)
     }
 }

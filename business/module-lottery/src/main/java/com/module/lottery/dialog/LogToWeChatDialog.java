@@ -8,8 +8,6 @@
 
 package com.module.lottery.dialog;
 
-import static com.donews.middle.utils.CommonUtils.LOTTERY_FINGER;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -30,7 +28,7 @@ import com.donews.base.utils.ToastUtil;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.main.BuildConfig;
 import com.donews.main.dialog.BaseDialog;
-import com.donews.middle.abswitch.OtherSwitch;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.module.lottery.utils.ImageUtils;
 import com.module_lottery.R;
@@ -114,7 +112,7 @@ public class LogToWeChatDialog extends BaseDialog<LogToWechatLayoutBinding> impl
         mDataBinding.userProtocol.setOnClickListener(this);
         mDataBinding.privacyProtocol.setOnClickListener(this);
         boolean protocol = getSharedPreferences().getBoolean("Free", false) ||
-                OtherSwitch.Ins().isOpenAutoAgreeProtocol();
+                ABSwitch.Ins().isOpenAutoAgreeProtocol();
         mDataBinding.checkBox.setChecked(protocol);
         mDataBinding.jumpButton.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("MissingPermission")
@@ -143,7 +141,7 @@ public class LogToWeChatDialog extends BaseDialog<LogToWechatLayoutBinding> impl
 
         //手
         mDataBinding.maskingHand.setImageAssetsFolder("images");
-        mDataBinding.maskingHand.setAnimation(LOTTERY_FINGER);
+        mDataBinding.maskingHand.setAnimation("lottery_finger.json");
         mDataBinding.maskingHand.loop(true);
         mDataBinding.maskingHand.playAnimation();
 
@@ -184,7 +182,7 @@ public class LogToWeChatDialog extends BaseDialog<LogToWechatLayoutBinding> impl
         //用户协议
         if (v.getId() == R.id.user_protocol) {
             Bundle bundle = new Bundle();
-            bundle.putString("url", BuildConfig.USER_PROTOCOL);
+            bundle.putString("url", BuildConfig.USER_PROCOTOL);
             bundle.putString("title", "用户协议");
             ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
         }

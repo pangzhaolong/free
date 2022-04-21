@@ -13,6 +13,16 @@ public class LottieUtil {
         }
     }
 
+    public static void initLottieView(LottieAnimationView view, String json) {
+        if ((view != null && !view.isAnimating())) {
+            view.setImageAssetsFolder("");
+            view.clearAnimation();
+            view.setAnimation(json);
+            view.loop(true);
+            view.playAnimation();
+        }
+    }
+
     public static void cancelLottieView(LottieAnimationView view) {
         if (view != null) {
             view.removeAllAnimatorListeners();

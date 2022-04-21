@@ -38,6 +38,7 @@ public class TaskView extends LinearLayout {
     public final static int Place_Show = 1;
     public final static int Place_Mine = 2;
     public final static int Place_Show_Msg = 3;
+    public final static int Place_Win_Code = 4;
     private int mCurrentModel = Place_Front;
 
     private TaskHandler mTaskHandler;
@@ -121,7 +122,19 @@ public class TaskView extends LinearLayout {
                 this.setVisibility(GONE);
                 return;
             }
+        } else if (mCurrentModel == Place_Win_Code) {
+            mDotFrom = "place_win_code";
+            try {
+                mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getWinCodeTask().getItems());
+                mTaskGroup = FrontConfigManager.Ins().getConfigBean().getWinCodeTask().getTaskGroup();
+                mEnableYyw = FrontConfigManager.Ins().getConfigBean().getWinCode();
+                mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getWinCodeTask().getSwitchInterval();
+            } catch (Exception e) {
+                this.setVisibility(GONE);
+                return;
+            }
         }
+
 
         if (!mEnableYyw) {
             this.setVisibility(GONE);
@@ -195,6 +208,7 @@ public class TaskView extends LinearLayout {
 
         checkYywIndex();
 
+        mImageViews[0].setScaleType(ImageView.ScaleType.FIT_XY);
         switch (mTaskGroup) {
             case 0:
                 Glide.with(this).load(mYywItemList.get(0).getSubItems().get(mYywIdxs[0]).getImg()).into(mImageViews[0]);
@@ -208,6 +222,7 @@ public class TaskView extends LinearLayout {
                 break;
             case 2:
                 Glide.with(this).load(mYywItemList.get(0).getSubItems().get(mYywIdxs[0]).getImg()).into(mImageViews[0]);
+                mImageViews[0].setScaleType(ImageView.ScaleType.CENTER_INSIDE);
                 break;
             case 3:
             case 4:
@@ -296,10 +311,17 @@ public class TaskView extends LinearLayout {
         }
     }
 
+    public void release() {
+        if (mTaskHandler != null) {
+            mTaskHandler.removeCallbacksAndMessages(null);
+            mTaskHandler = null;
+        }
+    }
+
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (mTaskHandler != null) {
+        if (mTaskHandler != null && (mCurrentModel != Place_Win_Code)) {
             mTaskHandler.removeCallbacksAndMessages(null);
             mTaskHandler = null;
         }

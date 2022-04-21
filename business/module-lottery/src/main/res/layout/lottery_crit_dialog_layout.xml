@@ -173,7 +173,7 @@
                             android:layout_height="23dp"
                             android:layout_marginStart="52dp"
                             android:scaleType="fitXY"
-                            android:src="@mipmap/brown_play_icon" />
+                            android:src="@mipmap/crit_play_icon" />
 
                         <TextView
                             android:layout_width="wrap_content"

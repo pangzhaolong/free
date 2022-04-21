@@ -25,11 +25,17 @@ enum class AdType(val code: Int, val msg: String) {
     FULL_SCREEN_VIDEO(5, "fullScreenVideo"),
 
     /** 信息流自渲染 */
-    NATIVE(6, "native"),
+    FEED(6, "native"),
 
     /**信息流模板*/
-    NATIVE_TEMPLATE(7, "nativeTemplate"),
+    FEED_TEMPLATE(7, "nativeTemplate"),
 
-    /**Draw*/
-    DRAW(8, "draw")
+    /**Draw */
+    DRAW(8, "draw"),
+
+    /**Draw 模板*/
+    DRAW_TEMPLATE(9, "drawTemplate"),
+
+    /**Draw 模板*/
+    INTERSTITIAL_FULL(10, "Interstitial_Full")
 }

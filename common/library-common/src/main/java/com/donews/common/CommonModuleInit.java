@@ -2,7 +2,6 @@ package com.donews.common;
 
 
 import com.donews.base.base.BaseApplication;
-import com.donews.common.ad.business.monitor.InterstitialAdCount;
 import com.donews.common.appconfig.AppCommonConfigUtils;
 import com.donews.common.lifecycle.SimpleApplicationObServer;
 import com.donews.utilslibrary.utils.AppStatusUtils;
@@ -33,7 +32,7 @@ public class CommonModuleInit implements IModuleInit {
         NotifyLuncherConfigManager.update();
 
         //重置插屏数据
-        InterstitialAdCount.INSTANCE.reset();
+//        InterstitialAdCount.INSTANCE.reset();
 
         return false;
     }

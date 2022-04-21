@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:text="恭喜"
-        android:textColor="@color/white"
+        android:textColor="#D17500"
         android:textSize="14sp"
         android:textStyle="bold" />
 
@@ -34,7 +34,7 @@
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="1"
-        android:textColor="@color/white"
+        android:textColor="#D17500"
         android:textSize="14sp"
         android:textStyle="bold" />
 </LinearLayout>

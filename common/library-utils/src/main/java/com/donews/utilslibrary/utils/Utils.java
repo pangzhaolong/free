@@ -18,7 +18,7 @@ import java.io.IOException;
  */
 public class Utils {
 
-    private static String getCurProcessName(Context context) {
+    public static String getCurProcessName(Context context) {
         int pid = android.os.Process.myPid();
         String processName = "";
         try {

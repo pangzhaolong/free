@@ -31,8 +31,8 @@
         <TextView
             android:id="@+id/occupy_notify"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginTop="280dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="300dp"
             android:background="#BAA80A"
             android:paddingStart="8dp"
             android:paddingTop="3dp"
@@ -42,6 +42,16 @@
             android:textColor="#FFFFFF"
             android:textSize="10dp"
             android:textStyle="bold" />
+
+        <RelativeLayout
+            android:id="@+id/rl_ad_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="60dp"
+            android:background="@color/white"
+            android:gravity="center_vertical|bottom"
+            android:visibility="gone" />
 
         <me.majiajie.pagerbottomtabstrip.PageNavigationView
             android:id="@+id/bottom_view"

@@ -4,7 +4,8 @@ import android.app.Activity
 import com.dn.sdk.AdCustomError
 import com.dn.sdk.bean.AdRequest
 import com.dn.sdk.bean.AdStatus
-import com.dn.sdk.listener.IAdBannerListener
+import com.dn.sdk.listener.banner.IAdBannerListener
+import com.dn.sdk.platform.BaseHelper
 import com.donews.ads.mediation.v2.api.DoNewsAdManagerHolder
 import com.donews.ads.mediation.v2.api.DoNewsAdNative
 import com.donews.ads.mediation.v2.framework.bean.DnUnionBean
@@ -21,7 +22,9 @@ object DoNewsBannerLoadHelper : BaseHelper() {
 
     /** 加载和显示Banner广告 */
     fun loadAndShowAd(activity: Activity, adRequest: AdRequest, listener: IAdBannerListener?) {
-        listener?.onAdStartLoad()
+        runOnUiThread(activity) {
+            listener?.onAdStartLoad()
+        }
         if (adRequest.mAdId.isBlank()) {
             runOnUiThread(activity) {
                 listener?.onAdError(

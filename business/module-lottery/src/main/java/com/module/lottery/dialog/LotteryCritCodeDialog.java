@@ -1,7 +1,5 @@
 package com.module.lottery.dialog;
 
-import static com.donews.middle.utils.CommonUtils.LOTTERY_FINGER;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -63,7 +61,7 @@ public class LotteryCritCodeDialog extends BaseDialog<LotteryCritDialogLayoutBin
             }
         });
         mDataBinding.jsonHand.setImageAssetsFolder("images");
-        mDataBinding.jsonHand.setAnimation(LOTTERY_FINGER);
+        mDataBinding.jsonHand.setAnimation("lottery_finger.json");
         mDataBinding.jsonHand.loop(true);
         mDataBinding.jsonHand.playAnimation();
     }

@@ -38,7 +38,7 @@ object AdLoggerUtils {
         builder.append("广告类型 = ").append(adRequest.mAdType.msg).append(",")
         builder.append("广告平台 = ").append(adRequest.mPlatform.getLoader().getSdkType().msg).append(",")
         builder.append("广告请求id = ").append(adRequest.mAdId).append(",")
-        builder.append("广告AdKey = ").append(adRequest.mAdKey).append(",")
+//        builder.append("广告AdKey = ").append(adRequest.mAdKey).append(",")
         builder.append("customMsg = ").append(customMsg)
         return builder.toString()
     }

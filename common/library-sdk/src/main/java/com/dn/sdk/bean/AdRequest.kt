@@ -19,8 +19,11 @@ class AdRequest(var mAdType: AdType) {
     /** 广告id */
     var mAdId: String = ""
 
-    /** 广告id对应的key */
-    var mAdKey: String = ""
+    /** 请求广告的宽度,单位px */
+    var widthPx: Float = 0f
+
+    /** 请求广告的高度,单位px */
+    var heightPx: Float = 0f
 
     /** 请求广告的宽度,单位dp */
     var mWidthDp: Float = 0f
@@ -51,4 +54,10 @@ class AdRequest(var mAdType: AdType) {
 
     /** 现阶段，激励视频选填用户id */
     var mUserId: String = ""
+
+    /** 是否静音，现阶段只对GroMore 全屏视频生效 */
+    var mMuted: Boolean = false
+
+    /** 音量大小,现阶段只读GroMore 全屏视频生效 */
+    var volume: Float = 1.0f
 }

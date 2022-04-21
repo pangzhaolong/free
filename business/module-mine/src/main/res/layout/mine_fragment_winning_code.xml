@@ -9,7 +9,7 @@
         android:id="@+id/main_win_code_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="-1dp">
+        android:layout_weight="1">
 
         <com.scwang.smart.refresh.header.ClassicsHeader
             android:layout_width="match_parent"
@@ -20,72 +20,56 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <FrameLayout
+                android:id="@+id/main_win_code_title_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
-                <com.classic.common.MultipleStatusView
-                    android:id="@+id/mine_win_code_list_status"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    app:errorView="@layout/incl_mul_status_error">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/mine_win_code_list"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-                </com.classic.common.MultipleStatusView>
-
-                <!--
                 android:background="@drawable/mine_me_open_top_bg"
-                -->
-                <!-- 背景颜色块 -->
-                <View
-                    android:id="@+id/main_win_title_bg"
+                android:fitsSystemWindows="true">
+
+                <TextView
+                    android:id="@+id/main_win_code_title_name"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="56dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignBottom="@+id/main_win_code_title_layout"
-                    android:background="#F87F3D"
-                    android:alpha="0"/>
-                <FrameLayout
-                    android:id="@+id/main_win_code_title_layout"
+                    android:layout_height="56dp"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="19sp" />
+
+                <ImageView
+                    android:id="@+id/main_win_code_title_back"
+                    android:layout_width="56dp"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingBottom="20dp"
+                    android:src="@drawable/mine_win_write_back" />
+
+                <TextView
+                    android:id="@+id/main_win_code_title_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="56dp"
+                    android:layout_gravity="right"
+                    android:gravity="center"
+                    android:paddingRight="17dp"
+                    android:text="往期>"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+            </FrameLayout>
+
+            <com.classic.common.MultipleStatusView
+                android:id="@+id/mine_win_code_list_status"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                app:errorView="@layout/incl_mul_status_error">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/mine_win_code_list"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fitsSystemWindows="true">
+                    android:layout_height="match_parent" />
+            </com.classic.common.MultipleStatusView>
 
-                    <TextView
-                        android:id="@+id/main_win_code_title_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:gravity="center"
-                        android:textColor="@color/white"
-                        android:textSize="19sp" />
-
-                    <ImageView
-                        android:id="@+id/main_win_code_title_back"
-                        android:layout_width="56dp"
-                        android:layout_height="match_parent"
-                        android:paddingLeft="15dp"
-                        android:paddingTop="20dp"
-                        android:paddingRight="20dp"
-                        android:paddingBottom="20dp"
-                        android:src="@drawable/mine_win_write_back" />
-
-                    <TextView
-                        android:id="@+id/main_win_code_title_right"
-                        android:layout_width="wrap_content"
-                        android:layout_height="56dp"
-                        android:layout_gravity="right"
-                        android:gravity="center"
-                        android:paddingRight="17dp"
-                        android:text="往期记录"
-                        android:textColor="#FFF3D0"
-                        android:textSize="15sp" />
-                </FrameLayout>
-            </RelativeLayout>
             <LinearLayout
                 android:id="@+id/ll_login"
                 android:layout_width="match_parent"

@@ -173,6 +173,13 @@ public class Dot {
     public final static String Desktop_Notify_Click_To = "desktop_notify_click_to";
     //通知点击，是否误触点击
     public final static String Desktop_Notify_Click_Is_Accident = "desktop_notify_click_is_accident";
+    //--通知栏通知模块 -->
+    //通知栏模块通知展示的事件
+    public final static String Notify_Bar_Show = "notify_bar_show";
+    //通知栏点击事件
+    public final static String Notify_Bar_Click = "notify_bar_click";
+    //通知栏点击跳转去处上报
+    public final static String Notify_Bar_Click_To = "notify_bar_click_to";
 
     //-- 首页按钮 ->
     //红包规则
@@ -198,10 +205,40 @@ public class Dot {
     public final static String PAY_FAIL = "pay_fail";
     //领取福利
     public final static String RECEIVE_BENEFITS = "receive_benefits";
-    //领取福利APP
-    public final static String RECEIVE_BENEFITS_APP = "receive_benefits_app";
-    //领取福利WEB
-    public final static String RECEIVE_BENEFITS_WEB = "receive_benefits_web";
+
+
+    //领取福利APP,来源分享
+    public final static String RECEIVE_BENEFITS_SHARE = "receive_benefits_app_share";
+
+    //领取福利APP,来源购买
+    public final static String RECEIVE_BENEFITS_APP_BUY = "receive_benefits_app_Buy";
+
+    //视频加载超时
+    public final static String VIDEO_TIMED_OUT = "video_timed_out";
+
+    //视频加载失败
+    public final static String VIDEO_FAILED = "video_failed";
+
+    //延迟商品跳转
+    public final static String DELAY_JUMP = "delay_jump";
+
+    //购买点击按钮,开启了拉活并且剩余有跳转次数
+    public final static String PULL_LIVE_CLICK = "pull_live_click";
+
+
+    //购买点击按钮,没有开启拉活或者页面拉活次数用完
+    public final static String BUY_CLICK = "buy_click";
+
+
+    //购买点击按钮,总数
+    public final static String BUY_CLICK_SUN = "buy_click_sun";
+
+    //领取福利WEB,来源分享
+    public final static String RECEIVE_BENEFITS_WEB_SHARE = "receive_benefits_web_share";
+
+    //领取福利WEB,来源购买
+    public final static String RECEIVE_BENEFITS_WEB_BUY = "receive_benefits_web_buy";
+
     //解锁跳转
     public final static String UNLOCK_JUMP = "unlock_jump";
     //解锁跳转客服端
@@ -210,8 +247,7 @@ public class Dot {
     public final static String UNLOCK_JUMP_WEB = "unlock_jump_web";
     //解锁跳转失败
     public final static String UNLOCK_JUMP_ERROR = "unlock_jump_error";
-
-   //积分墙
+    //积分墙
     //页面进入
     public final static String WELFARE_PAGE_IN = "welfare_page_in";
 
@@ -242,8 +278,6 @@ public class Dot {
     public final static String WELFARE_APP_REWARD_N = "welfare_app_reward_n";
 
 
-
-
     //开始积分计时任务
     public final static String WELFARE_START_REWARD = "welfare_start_reward";
 
@@ -262,24 +296,16 @@ public class Dot {
     public final static String WELFARE_QUIT_POINT_STASE = "welfare_quit_point_stase";
 
 
-
     //任务完成
     public final static String WELFARE_TASK_SUCCESS = "welfare_task_success";
-
-
-
 
 
     //当前暴击次数/总次数
     public final static String CRITICAL_NUMBER_AND_SUM_NUMBER = "critical_number_and_sum_number";
 
 
-
     //当前抽奖次数/剩余次数(开启暴击模式)
     public final static String LOTTERY_NUMBER_AND_SUM_NUMBER = "lottery_number_and_sum_number";
-
-
-
 
 
     //app显示
@@ -307,13 +333,11 @@ public class Dot {
     public final static String LOTTERY_APP_REWARD_N = "lottery_app_reward_n";
 
 
-
     //app应用名称
     public final static String LOTTERY_APP_NAME = "lottery_app_name";
 
     //app开始暴击
     public final static String LOTTERY_APP_CRITICAL = "lottery_app_critical";
-
 
 
     //第一次请求服务器激活状态
@@ -331,16 +355,25 @@ public class Dot {
 //    public final static String BANNER_SHOW = "banner_show";
 
 
-//    public final static String FRONT_YYW_SHOW = "front_yyw_show";
+    //    public final static String FRONT_YYW_SHOW = "front_yyw_show";
     public final static String FRONT_YYW_CLICK = "front_yyw_click";
 
-//    public final static String MINE_YYW_SHOW = "mine_yyw_show";
+    //    public final static String MINE_YYW_SHOW = "mine_yyw_show";
     public final static String MINE_YYW_CLICK = "mine_yyw_click";
 
-//    public final static String WITHDRAWAL_YYW_SHOW = "withdrawal_yyw_show";
+    //    public final static String WITHDRAWAL_YYW_SHOW = "withdrawal_yyw_show";
     public final static String WITHDRAWAL_YYW_CLICK = "withdrawal_yyw_click";
+
+
     public final static String RETENTION_CLICK = "retention_click";
 
     public final static String RETENTION_DO_FINISH = "retention_do_finish";
+
+    public final static String YYW_INTERSTITIAL_FULL = "yyw_interstitial_full";
+
+    public final static String YYW_INTERSTITIAL_FULL_LOAD = "yyw_interstitial_full_load";
+    public final static String YYW_INTERSTITIAL_FULL_SHOW = "yyw_interstitial_full_show";
+    public final static String YYW_INTERSTITIAL_FULL_SHOW_FAIL = "yyw_interstitial_full_show_fail";
+    public final static String YYW_INTERSTITIAL_FULL_ERR = "yyw_interstitial_full_err";
 
 }

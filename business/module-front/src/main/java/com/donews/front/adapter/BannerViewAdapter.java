@@ -8,6 +8,8 @@ import com.bumptech.glide.Glide;
 import com.donews.front.R;
 import com.donews.front.listener.FrontBannerClickListener;
 import com.donews.middle.bean.front.FrontConfigBean;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.zhpan.bannerview.BaseBannerAdapter;
 import com.zhpan.bannerview.BaseViewHolder;
 
@@ -27,6 +29,8 @@ public class BannerViewAdapter extends BaseBannerAdapter<FrontConfigBean.YywItem
         Glide.with(mContext).load(data.getImg()).into((ImageView) holder.findViewById(R.id.front_banner_item_img));
         holder.setOnClickListener(R.id.front_banner_item_img, this);
         holder.findViewById(R.id.front_banner_item_img).setTag(position);
+
+//        AnalysisUtils.onEventEx(mContext, Dot.BANNER_SHOW, position + "");
     }
 
     @Override

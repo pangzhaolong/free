@@ -12,88 +12,58 @@
         android:id="@+id/mine_win_code_top_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/mine_ddyb_win_top_bg"
+        android:background="@drawable/mine_me_open_top_bg"
         android:orientation="vertical"
-        android:paddingTop="97dp"
         android:paddingBottom="30dp">
         <!-- 类似搜索块区域(通知) -->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/mine_win_open_code_bg"
-            android:orientation="vertical">
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/mine_mrkj_time" />
 
-            <LinearLayout
+        <LinearLayout
+            android:id="@+id/mine_win_code_scan_scroll_ll"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/ad_shape_bg"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <!-- 通知、滚动区域 -->
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/mine_win_code_notify_ic" />
+
+            <com.donews.middle.views.BarrageView
+                android:id="@+id/mine_win_code_scan_scroll_v"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:layout_weight="1" />
 
-                <View
-                    android:layout_width="70dp"
-                    android:layout_height="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/mine_line_x_bg" />
-
-                <ImageView
-                    android:layout_width="99dp"
-                    android:layout_height="23dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/mine_wind_mrkj_icon" />
-
-                <View
-                    android:layout_width="70dp"
-                    android:layout_height="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/mine_line_x_bg" />
-            </LinearLayout>
-            <!-- 通知部分 -->
-            <LinearLayout
-                android:id="@+id/mine_win_code_scan_scroll_ll"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginLeft="13dp"
-                android:layout_marginTop="14dp"
-                android:layout_marginRight="13dp"
-                android:background="@drawable/mine_ddyb_open_top_open_notify"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-                <!-- 通知、滚动区域 -->
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="28dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:src="@drawable/mine_win_code_notify_ic"
-                    android:visibility="gone" />
-
-                <com.donews.middle.views.BarrageView
-                    android:id="@+id/mine_win_code_scan_scroll_v"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:id="@+id/mine_win_code_scan_all"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
-                    android:drawableEnd="@drawable/mine_win_code_notify_more"
-                    android:drawablePadding="5dp"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:text="|  往期"
-                    android:textColor="@color/white" />
-            </LinearLayout>
+            <TextView
+                android:id="@+id/mine_win_code_scan_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:drawableEnd="@drawable/mine_win_code_notify_more"
+                android:drawablePadding="5dp"
+                android:paddingLeft="15dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:text="查看全部"
+                android:textColor="#D17500" />
         </LinearLayout>
     </LinearLayout>
+
     <!-- 中奖信息区域 -->
     <LinearLayout
         android:id="@+id/mine_win_code_win_connect_layout"
@@ -101,7 +71,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingTop="10dp"
-        app:layout_constraintTop_toBottomOf="@+id/mine_win_code_top_layout">
+        app:layout_constraintTop_toBottomOf="@+id/mine_win_code_task_layout">
 
         <!-- 我参与的奖品区域 -->
         <LinearLayout
@@ -149,22 +119,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="次)"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/mine_win_my_cjjl"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableRight="@drawable/mine_wind_my_add_more"
-                    android:drawablePadding="5dp"
-                    android:gravity="right|center_vertical"
-                    android:paddingLeft="15dp"
-                    android:visibility="gone"
-                    android:paddingRight="15dp"
-                    android:text="抽奖记录" />
             </LinearLayout>
 
             <!--
@@ -191,6 +148,7 @@
                     android:gravity="center_horizontal"
                     android:orientation="horizontal"
                     android:paddingBottom="8dp"
+                    android:visibility="gone"
                     tools:visibility="visible">
 
                     <TextView
@@ -209,7 +167,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingBottom="10dp"

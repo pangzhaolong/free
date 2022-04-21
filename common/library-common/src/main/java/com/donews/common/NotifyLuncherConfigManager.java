@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 
 import com.donews.base.utils.GsonUtils;
 import com.donews.common.bean.AppGlobalConfigBean;
-import com.donews.common.interceptor.AppGlobalInterceptor;
 import com.donews.common.utils.CompareObjectUtils;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;

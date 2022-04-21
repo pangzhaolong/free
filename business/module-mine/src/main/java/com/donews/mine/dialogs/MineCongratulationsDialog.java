@@ -8,8 +8,6 @@
 
 package com.donews.mine.dialogs;
 
-import static com.donews.middle.utils.CommonUtils.LOTTERY_FINGER;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,11 +25,11 @@ import androidx.annotation.NonNull;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.SPUtils;
-import com.dn.sdk.listener.impl.SimpleInterstitialListener;
+import com.dn.sdk.listener.interstitial.SimpleInterstitialFullListener;
 import com.donews.base.BuildConfig;
-import com.donews.common.ad.business.loader.AdManager;
 import com.donews.common.router.RouterFragmentPath;
-import com.donews.middle.abswitch.OtherSwitch;
+import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.adutils.InterstitialFullAd;
 import com.donews.mine.R;
 import com.donews.mine.databinding.MineCongratulationsDialogLayoutBinding;
 import com.donews.mine.dialogs.bean.RecommendBean;
@@ -84,25 +82,27 @@ public class MineCongratulationsDialog extends BaseDialog<MineCongratulationsDia
                 ARouter.getInstance()
                         .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                         .withString("goods_id", mRecommendBean.getGoodsId())
-                        .withBoolean("start_lottery", OtherSwitch.Ins().isOpenAutoLottery())
+                        .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
                         .navigation();
             }
         });
 
         mDataBinding.closure.setOnClickListener(v -> {
-            AdManager.INSTANCE.loadInterstitialAd((Activity) mContext, new SimpleInterstitialListener() {
+            /*InterstitialAd.INSTANCE.showAd((Activity) mContext, new SimpleInterstitialListener() {
                 @Override
                 public void onAdShow() {
                     super.onAdShow();
                 }
-            });
+            });*/
+            InterstitialFullAd.INSTANCE.showAd((Activity) mContext, new SimpleInterstitialFullListener());
+
             if (mOnFinishListener != null) {
                 mOnFinishListener.onFinish();
             }
             dismiss();
         });
         mDataBinding.jsonHand.setImageAssetsFolder("images");
-        mDataBinding.jsonHand.setAnimation(LOTTERY_FINGER);
+        mDataBinding.jsonHand.setAnimation("lottery_finger.json");
         mDataBinding.jsonHand.loop(true);
         mDataBinding.jsonHand.playAnimation();
         startAnimation();
@@ -208,9 +208,9 @@ public class MineCongratulationsDialog extends BaseDialog<MineCongratulationsDia
                         //缓存等待下一次使用
                         SPUtils.getInstance().put(mRecommendJsonKey, GsonUtils.toJson(recommendBean));
                     } else {
-                        mRecommendBean= recommendBean;
+                        mRecommendBean = recommendBean;
                         bindGoodsInfo();
-                        requestGoodsInfo("",true);
+                        requestGoodsInfo("", true);
                     }
                 }
             }
@@ -218,14 +218,14 @@ public class MineCongratulationsDialog extends BaseDialog<MineCongratulationsDia
         if (isCacheRequest) {
             //缓存请求
             baseRequest.execute(callBack);
-        }else{
-            String json = SPUtils.getInstance().getString(mRecommendJsonKey,"");
+        } else {
+            String json = SPUtils.getInstance().getString(mRecommendJsonKey, "");
             if (json != null && json.length() > 0) {
                 try {
                     mRecommendBean = GsonUtils.fromJson(json, RecommendBean.class);
                     bindGoodsInfo();
                     //重新请求一次缓存
-                    requestGoodsInfo("",true);
+                    requestGoodsInfo("", true);
                 } catch (Exception e) {
                     mRecommendBean = null;
                     baseRequest.execute(callBack);

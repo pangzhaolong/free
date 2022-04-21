@@ -1,198 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data></data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@color/transparent"
+        android:clipChildren="false"
+        android:gravity="center"
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/front_lottery_more_4_rp_close_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginEnd="20dp"
-            android:src="@drawable/front_first_guid_lottery_close"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_margin="10dp"
+            android:src="@drawable/front_first_guid_lottery_close" />
 
         <LinearLayout
-            android:id="@+id/front_lottery_more_4_rp_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/front_lottery_more_4_rp_title"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@+id/front_lottery_more_4_rp_close_iv">
+            android:layout_marginTop="20dp"
+            android:background="@drawable/front_lottery_more_4_rp_bg"
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="bottom"
-                android:text="再参与"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/front_lottery_more_4_rp_counts_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp"
-                android:text="5"
-                android:textColor="#FFEFBB"
-                android:textSize="26sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="bottom"
-                android:text="次抽奖，领取下个红包"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/front_lottery_more_4_rp_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:layout_constraintTop_toBottomOf="@+id/front_lottery_more_4_rp_title">
-
-            <ImageView
-                android:id="@+id/front_lottery_more_4_rp_content_bg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/front_lottery_more_4_rp_bg_ex"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="MissingConstraints" />
-
-            <ImageView
-                android:id="@+id/front_lottery_more_4_rp_main_siv"
-                android:layout_width="244dp"
-                android:layout_height="244dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="36dp"
+                android:layout_marginTop="20dp"
+                android:gravity="center|bottom"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom"
+                    android:text="再参与"
+                    android:textColor="#764D38"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/front_lottery_more_4_rp_counts_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom"
+                    android:text="5"
+                    android:textColor="#F33838"
+                    android:textSize="36sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom"
+                    android:text="次抽奖，领取下个红包"
+                    android:textColor="#764D38"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/front_lottery_more_4_rp_main_siv"
+                android:layout_width="210dp"
+                android:layout_height="210dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
                 android:background="@color/white"
                 android:scaleType="fitXY"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearance="@style/front_rounded_style" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/front_lottery_tomorrow"
-                android:layout_marginEnd="-10dp"
-                android:layout_marginTop="-10dp"
-                app:layout_constraintTop_toTopOf="@+id/front_lottery_more_4_rp_main_siv"
-                app:layout_constraintEnd_toEndOf="@+id/front_lottery_more_4_rp_main_siv"/>
 
             <TextView
                 android:id="@+id/front_lottery_more_4_rp_desc_tv"
-                android:layout_width="244dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="28dp"
                 android:layout_marginTop="14dp"
                 android:layout_marginEnd="28dp"
                 android:ellipsize="end"
                 android:gravity="start"
-                android:maxLines="1"
+                android:maxLines="2"
                 android:text="心心相印抽纸24包3层纸巾婴儿卫生纸。。。"
                 android:textColor="#2C2C2C"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="@+id/front_lottery_more_4_rp_main_siv"
-                app:layout_constraintStart_toStartOf="@+id/front_lottery_more_4_rp_main_siv"
-                app:layout_constraintTop_toBottomOf="@+id/front_lottery_more_4_rp_main_siv" />
+                android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/front_lottery_more_4_rp_coupon_price_tv1"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="2dp"
-                android:text="￥"
-                android:textColor="#EA443C"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="@+id/front_lottery_more_4_rp_coupon_price_tv"
-                app:layout_constraintStart_toStartOf="@+id/front_lottery_more_4_rp_desc_tv"
-                tools:ignore="MissingConstraints" />
+                android:layout_marginStart="28dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="28dp">
 
-            <TextView
-                android:id="@+id/front_lottery_more_4_rp_coupon_price_tv"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/front_lottery_more_4_rp_coupon_price_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="￥24"
+                    android:textColor="#F43738"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/front_lottery_more_4_rp_origin_price_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_toEndOf="@+id/front_lottery_more_4_rp_coupon_price_tv"
+                    android:text="￥1699"
+                    android:textColor="#A9AEB1"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/front_lottery_more_4_rp_info_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="4dp"
+                    android:text="累计1.8万人参与抽奖"
+                    android:textColor="#A9AEB1"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="24"
-                android:textColor="#EA443C"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/front_lottery_more_4_rp_coupon_price_tv1"
-                app:layout_constraintTop_toBottomOf="@+id/front_lottery_more_4_rp_desc_tv"
-                tools:ignore="MissingConstraints" />
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="28dp"
+                android:clipChildren="false">
 
-            <TextView
-                android:id="@+id/front_lottery_more_4_rp_info_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="4dp"
-                android:text="累计1.8万人参与抽奖"
-                android:textColor="#999999"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="@+id/front_lottery_more_4_rp_coupon_price_tv"
-                app:layout_constraintEnd_toEndOf="@+id/front_lottery_more_4_rp_desc_tv" />
+                <TextView
+                    android:id="@+id/front_lottery_more_4_rp_change1_tv"
+                    android:layout_width="93dp"
+                    android:layout_height="47dp"
+                    android:layout_marginStart="18dp"
+                    android:background="@drawable/front_lottery_more_4_rp_change1_bg"
+                    android:gravity="center"
+                    android:text="换一个"
+                    android:textColor="#F43B3A"
+                    android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/front_lottery_more_4_rp_change1_tv"
-                android:layout_width="94dp"
-                android:layout_height="43dp"
-                android:layout_marginTop="14dp"
-                android:background="@drawable/front_lottery_more_4_rp_change1_bg"
-                android:gravity="center"
-                android:text="换一个"
-                android:textColor="#F43B3A"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="@+id/front_lottery_more_4_rp_desc_tv"
-                app:layout_constraintTop_toBottomOf="@+id/front_lottery_more_4_rp_coupon_price_tv" />
+                <TextView
+                    android:id="@+id/front_lottery_more_4_rp_lottery_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="28dp"
+                    android:background="@drawable/front_lottery_more_4_rp_lottery_bg"
+                    android:gravity="center"
+                    android:text="抽奖领红包"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+        </LinearLayout>
 
-            <TextView
-                android:id="@+id/front_lottery_more_4_rp_lottery_tv"
-                android:layout_width="142dp"
-                android:layout_height="43dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="14dp"
-                android:background="@drawable/front_lottery_more_4_rp_lottery_bg"
-                android:gravity="center"
-                android:text="抽奖领红包"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="@+id/front_lottery_more_4_rp_desc_tv"
-                app:layout_constraintTop_toBottomOf="@+id/front_lottery_more_4_rp_coupon_price_tv" />
-
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/front_lottery_more_4_rp_hand"
-                android:layout_width="50dp"
-                android:layout_height="60dp"
-                android:layout_marginEnd="-10dp"
-                android:layout_marginBottom="-25dp"
-                app:layout_constraintBottom_toBottomOf="@+id/front_lottery_more_4_rp_lottery_tv"
-                app:layout_constraintEnd_toEndOf="@+id/front_lottery_more_4_rp_lottery_tv" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:visibility="invisible" />
+    </LinearLayout>
 </layout>
 
 

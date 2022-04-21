@@ -3,28 +3,28 @@
     <item android:state_enabled="false">
         <shape android:shape="rectangle">
             <corners android:bottomLeftRadius="122dp" android:bottomRightRadius="122dp" android:topLeftRadius="122dp" android:topRightRadius="122dp" />
-            <gradient  android:endColor="#F5661E" android:startColor="#FF923A" />
+            <gradient android:angle="135" android:endColor="#AAF33838" android:startColor="#AAF84F47" />
             <!--<stroke android:color="#FE4B83" android:width="0.5dp"></stroke>-->
         </shape>
     </item>
     <item android:state_enabled="true">
         <shape android:shape="rectangle">
             <corners android:bottomLeftRadius="122dp" android:bottomRightRadius="122dp" android:topLeftRadius="122dp" android:topRightRadius="122dp" />
-            <gradient  android:endColor="#F5661E" android:startColor="#FF923A" />
+            <gradient android:angle="135" android:endColor="#F33838" android:startColor="#F84F47" />
             <!--<stroke android:color="#FE4B83" android:width="0.5dp"></stroke>-->
         </shape>
     </item>
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
             <corners android:bottomLeftRadius="122dp" android:bottomRightRadius="122dp" android:topLeftRadius="122dp" android:topRightRadius="122dp" />
-            <gradient android:endColor="#F5661E" android:startColor="#FF923A"/>
+            <gradient android:angle="135" android:endColor="#AAF33838" android:startColor="#AAF84F47" />
             <!--<stroke android:color="#FE4B83" android:width="0.5dp"></stroke>-->
         </shape>
     </item>
     <item android:state_pressed="false">
         <shape android:shape="rectangle">
             <corners android:bottomLeftRadius="122dp" android:bottomRightRadius="122dp" android:topLeftRadius="122dp" android:topRightRadius="122dp" />
-            <gradient android:endColor="#F5661E" android:startColor="#FF923A"/>
+            <gradient android:angle="135" android:endColor="#F33838" android:startColor="#F84F47" />
             <!--<stroke android:color="#FE4B83" android:width="0.5dp"></stroke>-->
         </shape>
     </item>

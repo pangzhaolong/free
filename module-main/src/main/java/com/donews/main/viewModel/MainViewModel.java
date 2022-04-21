@@ -13,7 +13,6 @@ import com.donews.main.entitys.resps.RewardHistoryBean;
 import com.donews.main.model.MainModel;
 import com.donews.middle.bean.LandingRpTimesBean;
 import com.donews.middle.bean.front.DoubleRedPacketBean;
-import com.donews.middle.bean.front.WinningRotationBean;
 import com.donews.utilslibrary.utils.SPUtils;
 
 import java.util.List;

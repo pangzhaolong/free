@@ -20,7 +20,6 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ConvertUtils;
 import com.dn.drouter.ARouteHelper;
 import com.donews.base.base.BaseApplication;
-import com.donews.base.utils.ToastUtil;
 import com.donews.base.utils.glide.GlideUtils;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.common.router.RouterActivityPath;
@@ -68,10 +67,10 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
         if (from == 1) {
             AnalysisUtils.onEventEx(BaseApplication.getInstance(),
                     Dot.But_Goto_Lottery, "首页->开奖页面>热门抽奖");
-        } else if (from == 2) {
+        } else if(from == 2){
             AnalysisUtils.onEventEx(BaseApplication.getInstance(),
                     Dot.But_Goto_Lottery, "往期记录>开奖详情页>热门抽奖");
-        } else if (from == 3) {
+        } else if(from == 3){
             AnalysisUtils.onEventEx(BaseApplication.getInstance(),
                     Dot.But_Goto_Lottery, "参与记录>开奖详情页>热门抽奖");
         }
@@ -274,10 +273,10 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
                         //如果出错。则进行倒计时处理。所以这里不处理(已产品确认)
                     }
                 }
-                if (AppInfo.checkIsWXLogin()) {
+                if(AppInfo.checkIsWXLogin()) {
                     //无论如何都加载详情数据(倒计时阶段。需要加载一次详情数据)
                     loadData(openWinPeriod.getValue(), true);
-                } else {
+                }else{
                     //关闭刷新状态
                     viewDataBinding.mainWinCodeRefresh.finishRefresh();
                 }
@@ -334,14 +333,7 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
      * @param mm 分钟
      * @param ss 秒
      */
-    public void updateCountDownUI(
-            TextView hh,
-            TextView hh1,
-            TextView mm,
-            TextView mm1,
-            TextView ss,
-            TextView ss1
-    ) {
+    public void updateCountDownUI(TextView hh, TextView mm, TextView ss) {
         Integer oldBaseTime = openWinCountdown.getValue();
         int timeHH = 0;
         int timeMM = 0;
@@ -355,27 +347,20 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
         timeHH = oldBaseTime / (60 * 60);
         timeMM = (oldBaseTime - (timeHH * 60 * 60)) / (60);
         timeSS = (oldBaseTime - (timeHH * 60 * 60) - (timeMM * 60));
-
         if (timeHH < 10) {
-            hh.setText("0");
-            hh1.setText("" + timeHH);
+            hh.setText("0" + timeHH);
         } else {
-            hh.setText("" + timeHH / 10);
-            hh.setText("" + timeHH % 10);
+            hh.setText("" + timeHH);
         }
         if (timeMM < 10) {
-            mm.setText("0");
-            mm1.setText("" + timeMM);
+            mm.setText("0" + timeMM);
         } else {
-            mm.setText("" + timeMM / 10);
-            mm1.setText("" + timeMM % 10);
+            mm.setText("" + timeMM);
         }
         if (timeSS < 10) {
-            ss.setText("0");
-            ss1.setText("" + timeSS);
+            ss.setText("0" + timeSS);
         } else {
-            ss.setText("" + timeSS / 10);
-            ss1.setText("" + timeSS % 10);
+            ss.setText("" + timeSS);
         }
     }
 
@@ -491,13 +476,12 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
     }
 
     /**
-     * 添加中奖商品数据到视图(我的中奖)
+     * 添加中奖商品数据到视图
      *
      * @param view 视图对象
      */
     @SuppressLint("SetTextI18n")
     public void addSelectGoods(View view) {
-        LinearLayout titleLL = view.findViewById(R.id.mine_win_code_win_title_ll);
         ImageView statusIcon = view.findViewById(R.id.mine_win_code_win_desc_icon);
         TextView statusName = view.findViewById(R.id.mine_win_code_win_desc_name);
         ViewGroup vGroup = view.findViewById(R.id.mine_win_code_win_desc_good_ll);
@@ -510,7 +494,6 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
                 statusIcon.setVisibility(View.GONE);
                 return;
             }
-            titleLL.setVisibility(View.VISIBLE);
             statusIcon.setVisibility(View.VISIBLE);
             statusIcon.setImageResource(R.drawable.mine_win_code_not_sele_icon);
             //已参与(参与了本期,但是未中奖)
@@ -524,7 +507,6 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
         statusName.setTextColor(Color.parseColor("#E9423E"));
         statusName.setText("恭喜你,获得大奖");
         statusIcon.setVisibility(View.VISIBLE);
-        titleLL.setVisibility(View.GONE);
         statusIcon.setImageResource(R.drawable.mine_win_code_sele_icon);
         for (int i = 0; i < detailLivData.getValue().myWin.size(); i++) {
             HistoryPeopleLotteryDetailResp.WinerDTO item = detailLivData.getValue().myWin.get(i);
@@ -540,7 +522,6 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             TextView picre = childView.findViewById(R.id.mine_win_item_good_pic);
             TextView code = childView.findViewById(R.id.mine_win_item_snap_number);
             TextView goTo = childView.findViewById(R.id.mine_win_item_goto);
-            TextView titleTv = childView.findViewById(R.id.wind_title_tv);
             //开始绑定数据
             GlideUtils.loadImageView(view.getContext(), UrlUtils.formatHeadUrlPrefix(item.avatar), uIcon);
             uName.setText(item.userName);
@@ -549,29 +530,23 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             )));
             seal.setVisibility(View.VISIBLE);
             if (WinTypes.Alike.type.equals(item.winType)) {
-                seal.setText("");
-                titleTv.setText("恭喜你, 获得相似奖");
-                seal.setBackgroundResource(R.drawable.mine_wind_mdzj);
+                seal.setText(WinTypes.Alike.name);
             } else if (WinTypes.Equal.type.equals(item.winType)) {
-                seal.setText("");
-                titleTv.setText("恭喜你, 获得免单奖");
-                seal.setBackgroundResource(R.drawable.mine_wind_xszj);
+                seal.setText(WinTypes.Equal.name);
             } else {
-                seal.setText("");
-                titleTv.setText("恭喜你,中奖了");
-                seal.setBackgroundResource(0);
+                seal.setText(WinTypes.None.name);
             }
             name.setText(item.goods.title);
-            picre.setText("" + item.goods.price);
+            picre.setText("¥" + item.goods.price);
             GlideUtils.loadImageView(view.getContext(), UrlUtils.formatUrlPrefix(item.goods.image), icon);
             code.setText(Html.fromHtml(
                     TextWinUtils.drawOldText(detailLivData.getValue().code, item.code)));
-            goTo.setText("立即领奖");
+            goTo.setText("去领奖");
             childView.setOnClickListener((v) -> {
                 AnalysisUtils.onEventEx(mContext, Dot.Page_ContactService);
                 Bundle bundle = new Bundle();
                 bundle.putString("url",
-                        "https://recharge-web.xg.tagtic.cn/ddyb/index.html#/customer");
+                        "https://recharge-web.xg.tagtic.cn/jdd/index.html#/customer");
                 bundle.putString("title", "客服");
                 ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
             });
@@ -592,7 +567,6 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
     public void addAddToGoods(View view, boolean isInitAdd) {
         ViewGroup vGroup = view.findViewById(R.id.mine_win_code_win_add_good_ll);
         ViewGroup moreLoadView = view.findViewById(R.id.mine_win_code_win_add_good_more);
-        TextView moreMyAdd = view.findViewById(R.id.mine_win_my_cjjl);
         TextView nameTvNum = view.findViewById(R.id.mine_win_code_add_num);
         List<HistoryPeopleLotteryDetailResp.WinerDTO> currentAddRecord = new ArrayList<>();
 
@@ -633,17 +607,6 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             //已参与(参与了本期)
             nameTvNum.setText("" + detailLivData.getValue().record.size());
         }
-        //更多参与记录
-        moreMyAdd.setOnClickListener(v -> {
-            if (detailLivData.getValue().record.isEmpty()) {
-                ToastUtil.showShort(v.getContext(), "你还未参与抽奖");
-            } else {
-                ARouter.getInstance()
-                        .build(RouterActivityPath.Mine.PAGER_MINE_MY_ADD_RECORD_LIST_ACTIVITY)
-                        .withInt("proid", openWinPeriod.getValue())
-                        .navigation();
-            }
-        });
         if (detailLivData.getValue().record == null ||
                 detailLivData.getValue().record.isEmpty()) {
             return;
@@ -661,11 +624,9 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             TextView more = childView.findViewById(R.id.mine_win_item_snap_number_more);
             //开始绑定数据
             if (WinTypes.Alike.type.equals(item.winType)) {
-                seal.setText("");
-                seal.setBackgroundResource(R.drawable.mine_wind_xszj);
+                seal.setText(WinTypes.Alike.name);
             } else if (WinTypes.Equal.type.equals(item.winType)) {
-                seal.setText("");
-                seal.setBackgroundResource(R.drawable.mine_wind_mdzj);
+                seal.setText(WinTypes.Equal.name);
             } else {
                 seal.setVisibility(View.GONE);
                 seal.setText(WinTypes.None.name);
@@ -690,10 +651,10 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
                 if (from == 1) {
                     AnalysisUtils.onEventEx(mContext,
                             Dot.But_Goto_Lottery, "首页>开奖页面>我的参与");
-                } else if (from == 2) {
+                } else if (from == 2){
                     AnalysisUtils.onEventEx(mContext,
                             Dot.But_Goto_Lottery, "往期记录>抽奖详情页>我的参与");
-                } else if (from == 3) {
+                }else if (from == 3){
                     AnalysisUtils.onEventEx(mContext,
                             Dot.But_Goto_Lottery, "参与记录>抽奖详情页>我的参与");
                 }
@@ -766,14 +727,11 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             TextView goTo = childView.findViewById(R.id.main_win_code_sele_good_goto);
             //开始绑定数据
             if (WinTypes.Alike.type.equals(item.winType)) {
-                seal.setText("");
-                seal.setBackgroundResource(R.drawable.mine_wind_xszj);
+                seal.setText(WinTypes.Alike.name);
             } else if (WinTypes.Equal.type.equals(item.winType)) {
-                seal.setText("");
-                seal.setBackgroundResource(R.drawable.mine_wind_mdzj);
+                seal.setText(WinTypes.Equal.name);
             } else {
-                seal.setText("");
-                seal.setBackgroundResource(0);
+                seal.setText(WinTypes.None.name);
             }
             GlideUtils.loadImageView(view.getContext(), UrlUtils.formatHeadUrlPrefix(item.avatar), headImg);
             userName.setText(item.userName);
@@ -782,15 +740,15 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             GlideUtils.loadImageView(view.getContext(), UrlUtils.formatUrlPrefix(item.goods.image), goodIcon);
             goodName.setText(item.goods.title);
             goodPice.setText("" + item.goods.price);
-            goTo.setText("点击抽奖");
+            goTo.setText("试试手气");
             childView.setOnClickListener((v) -> {
                 if (from == 1) {
                     AnalysisUtils.onEventEx(mContext,
                             Dot.But_Goto_Lottery, "首页>开奖页面>中奖名单");
-                } else if (from == 2) {
+                } else if (from == 2){
                     AnalysisUtils.onEventEx(mContext,
                             Dot.But_Goto_Lottery, "往期记录>抽奖详情页>中奖名单");
-                } else if (from == 3) {
+                }else if (from == 3){
                     AnalysisUtils.onEventEx(mContext,
                             Dot.But_Goto_Lottery, "参与记录>抽奖详情页>中奖名单");
                 }

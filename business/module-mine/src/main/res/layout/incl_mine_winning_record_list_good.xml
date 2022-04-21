@@ -38,30 +38,16 @@
         app:layout_constraintTop_toTopOf="@+id/mine_win_item_good_icon" />
 
     <TextView
-        android:id="@+id/mine_win_item_good_pic_flg"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:text="￥"
-        android:textColor="@color/mine_red_default"
-        android:textSize="12sp"
-        android:layout_marginTop="6.5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/mine_win_item_good_icon"
-        app:layout_constraintLeft_toLeftOf="@+id/mine_win_item_good_name"
-        app:layout_constraintTop_toBottomOf="@+id/mine_win_item_good_name" />
-    <TextView
         android:id="@+id/mine_win_item_good_pic"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:singleLine="true"
-        android:text="1"
-        android:textStyle="bold"
-        android:textColor="#EA443C"
-        android:textSize="20sp"
+        android:text="￥1"
+        android:textColor="@color/mine_red_default"
+        android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="@+id/mine_win_item_good_icon"
-        app:layout_constraintLeft_toRightOf="@+id/mine_win_item_good_pic_flg"
+        app:layout_constraintLeft_toLeftOf="@+id/mine_win_item_good_name"
         app:layout_constraintTop_toBottomOf="@+id/mine_win_item_good_name" />
 
     <LinearLayout
@@ -80,10 +66,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
-            android:text="抢购码"
-            android:textSize="13sp"
-            android:paddingRight="8dp"
-            android:textColor="#9C4D23"/>
+            android:text="抽奖码："
+            android:textSize="13sp" />
 
         <TextView
             android:id="@+id/mine_win_item_snap_number"
@@ -92,7 +76,6 @@
             android:layout_gravity="top"
             android:layout_weight="1"
             android:maxLines="2"
-            android:textColor="#2C2D2C"
             android:paddingRight="7dp"
             android:text="0123456 "
             android:ellipsize="end"
@@ -116,13 +99,14 @@
         android:id="@+id/mine_win_item_goto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/mine_shape_winning_goto_read"
+        android:layout_marginRight="7dp"
+        android:background="@drawable/mine_win_code_but_bg"
         android:gravity="center"
         android:paddingLeft="17dp"
-        android:paddingTop="7dp"
+        android:paddingTop="5dp"
         android:paddingRight="17dp"
-        android:paddingBottom="8dp"
-        android:text="点击抽奖"
+        android:paddingBottom="10dp"
+        android:text="立即抢购"
         android:textColor="@color/white"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -134,7 +118,10 @@
         android:id="@+id/mine_win_item_seal"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:background="@drawable/mine_win_code_sele_item_seal0_bg"
         android:gravity="center"
+        android:rotation="-25"
+        android:text="相似\n中奖"
         android:textColor="#E9423E"
         android:textSize="17sp"
         android:textStyle="bold"

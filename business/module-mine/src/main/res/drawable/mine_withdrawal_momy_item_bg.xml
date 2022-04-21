@@ -68,7 +68,7 @@
             <solid android:color="#FFFBF4" />
             <corners android:radius="5dp" />
             <stroke
-                android:color="#F5671F"
+                android:color="#E5BD74"
                 android:width="1dp"/>
         </shape>
     </item>

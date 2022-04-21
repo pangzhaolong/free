@@ -10,9 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
-import com.dn.sdk.bean.integral.IntegralStateListener;
-import com.dn.sdk.bean.integral.ProxyIntegral;
-import com.dn.sdk.utils.IntegralComponent;
+import com.dn.integral.jdd.IntegralComponent;
+import com.dn.integral.jdd.integral.IntegralStateListener;
+import com.dn.integral.jdd.integral.ProxyIntegral;
 import com.donews.main.R;
 import com.donews.main.listener.RetentionTaskListener;
 import com.donews.utilslibrary.analysis.AnalysisUtils;

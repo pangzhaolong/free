@@ -4,9 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:background="@drawable/ad_shape_write_bg"
-    android:gravity="center_vertical"
-    android:minHeight="110dp"
+    android:background="@drawable/mine_reward_history_item_bg"
     android:orientation="vertical"
     tools:ignore="MissingDefaultResource">
 
@@ -15,17 +13,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:gravity="center_vertical"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
         android:text="20210928期开奖码"
-        android:textColor="#2C2C2C"
-        android:paddingLeft="20dp"
-        android:textSize="16sp" />
+        android:textColor="@color/white"
+        android:textSize="15sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="@dimen/dp_10"
         android:orientation="horizontal"
         android:weightSum="7">
 
@@ -33,20 +30,19 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
             android:layout_weight="1">
 
             <TextView
                 android:id="@+id/mine_reward_num_1_tv"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_gravity="center"
-                android:background="@drawable/mine_win_code_num_bg"
+                android:background="@drawable/mine_reward_history_item_num_bg"
                 android:gravity="center"
                 android:paddingEnd="4dp"
                 android:paddingBottom="2dp"
                 android:text="1"
-                android:textColor="@color/white"
+                android:textColor="#2C2C2C"
                 android:textSize="21sp"
                 tools:ignore="RtlSymmetry" />
         </FrameLayout>
@@ -59,15 +55,15 @@
 
             <TextView
                 android:id="@+id/mine_reward_num_2_tv"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_gravity="center"
-                android:background="@drawable/mine_win_code_num_bg"
+                android:background="@drawable/mine_reward_history_item_num_bg"
                 android:gravity="center"
                 android:paddingEnd="4dp"
                 android:paddingBottom="2dp"
                 android:text="1"
-                android:textColor="@color/white"
+                android:textColor="#2C2C2C"
                 android:textSize="21sp"
                 tools:ignore="RtlSymmetry" />
         </FrameLayout>
@@ -80,15 +76,15 @@
 
             <TextView
                 android:id="@+id/mine_reward_num_3_tv"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_gravity="center"
-                android:background="@drawable/mine_win_code_num_bg"
+                android:background="@drawable/mine_reward_history_item_num_bg"
                 android:gravity="center"
                 android:paddingEnd="4dp"
                 android:paddingBottom="2dp"
                 android:text="1"
-                android:textColor="@color/white"
+                android:textColor="#2C2C2C"
                 android:textSize="21sp"
                 tools:ignore="RtlSymmetry" />
         </FrameLayout>
@@ -101,15 +97,15 @@
 
             <TextView
                 android:id="@+id/mine_reward_num_4_tv"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_gravity="center"
-                android:background="@drawable/mine_win_code_num_bg"
+                android:background="@drawable/mine_reward_history_item_num_bg"
                 android:gravity="center"
                 android:paddingEnd="4dp"
                 android:paddingBottom="2dp"
                 android:text="1"
-                android:textColor="@color/white"
+                android:textColor="#2C2C2C"
                 android:textSize="21sp"
                 tools:ignore="RtlSymmetry" />
         </FrameLayout>
@@ -122,15 +118,15 @@
 
             <TextView
                 android:id="@+id/mine_reward_num_5_tv"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_gravity="center"
-                android:background="@drawable/mine_win_code_num_bg"
+                android:background="@drawable/mine_reward_history_item_num_bg"
                 android:gravity="center"
                 android:paddingEnd="4dp"
                 android:paddingBottom="2dp"
                 android:text="1"
-                android:textColor="@color/white"
+                android:textColor="#2C2C2C"
                 android:textSize="21sp"
                 tools:ignore="RtlSymmetry" />
         </FrameLayout>
@@ -143,15 +139,15 @@
 
             <TextView
                 android:id="@+id/mine_reward_num_6_tv"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_gravity="center"
-                android:background="@drawable/mine_win_code_num_bg"
+                android:background="@drawable/mine_reward_history_item_num_bg"
                 android:gravity="center"
                 android:paddingEnd="4dp"
                 android:paddingBottom="2dp"
                 android:text="1"
-                android:textColor="@color/white"
+                android:textColor="#2C2C2C"
                 android:textSize="21sp"
                 tools:ignore="RtlSymmetry" />
         </FrameLayout>
@@ -164,15 +160,15 @@
 
             <TextView
                 android:id="@+id/mine_reward_num_7_tv"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_gravity="center"
-                android:background="@drawable/mine_win_code_num_bg"
+                android:background="@drawable/mine_reward_history_item_num_bg"
                 android:gravity="center"
                 android:paddingEnd="4dp"
                 android:paddingBottom="2dp"
                 android:text="1"
-                android:textColor="@color/white"
+                android:textColor="#2C2C2C"
                 android:textSize="21sp"
                 tools:ignore="RtlSymmetry" />
         </FrameLayout>

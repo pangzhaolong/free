@@ -64,21 +64,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mine_par_reco_list_title">
 
-        <ImageView
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:src="@drawable/mine_add_record_icon" />
-
-        <TextView
-            android:id="@+id/mine_par_reco_list_count_ckj"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:includeFontPadding="false"
-            android:text="参考价"
-            android:textColor="@color/color_nine"
-            android:textSize="12sp"
-            android:paddingRight="5dp"
-            android:layout_marginLeft="5dp"/>
         <TextView
             android:id="@+id/mine_par_reco_list_count_num"
             android:layout_width="wrap_content"
@@ -87,7 +72,6 @@
             android:text="￥1"
             android:textColor="@color/text_red"
             android:textSize="17sp"
-            android:visibility="gone"
             android:textStyle="bold" />
 
         <TextView
@@ -124,11 +108,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/mine_par_reco_list_bot_info">
-
         <TextView
             android:id="@+id/mine_par_record_list_count_tv"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="46dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
@@ -136,8 +119,9 @@
             android:background="@drawable/mine_win_frm_cj_but"
             android:ellipsize="end"
             android:gravity="center"
+            android:paddingBottom="8dp"
             android:singleLine="true"
-            android:text="免费抽奖"
+            android:text="0元抽奖"
             android:textColor="@color/white"
             android:textSize="15sp" />
     </LinearLayout>

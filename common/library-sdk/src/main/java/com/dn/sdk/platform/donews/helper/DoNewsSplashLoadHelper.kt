@@ -4,15 +4,15 @@ import android.app.Activity
 import com.dn.sdk.AdCustomError
 import com.dn.sdk.DelayExecutor
 import com.dn.sdk.bean.AdRequest
-import com.dn.sdk.bean.AdStatus
 import com.dn.sdk.bean.PreloadAdState
 import com.dn.sdk.platform.donews.preloadad.DoNewsPreloadSplashAd
-import com.dn.sdk.listener.IAdSplashListener
+import com.dn.sdk.listener.splash.IAdSplashListener
 import com.dn.sdk.bean.preload.PreloadSplashAd
+import com.dn.sdk.platform.BaseHelper
 import com.donews.ads.mediation.v2.api.DoNewsAdManagerHolder
 import com.donews.ads.mediation.v2.api.DoNewsAdNative
-import com.donews.ads.mediation.v2.framework.bean.DnUnionBean
 import com.donews.ads.mediation.v2.framework.bean.DoNewsAD
+import com.donews.utilslibrary.utils.DensityUtils
 
 /**
  * 多牛sdk v2加载开屏广告
@@ -25,7 +25,9 @@ object DoNewsSplashLoadHelper : BaseHelper() {
 
     /** 加载和显示广告 */
     fun loadAndShowAd(activity: Activity, adRequest: AdRequest, listener: IAdSplashListener?) {
-        listener?.onAdStartLoad()
+        runOnUiThread(activity) {
+            listener?.onAdStartLoad()
+        }
         if (adRequest.mAdId.isBlank()) {
             runOnUiThread(activity) {
                 listener?.onAdError(
@@ -81,11 +83,7 @@ object DoNewsSplashLoadHelper : BaseHelper() {
 
             override fun onAdStatus(code: Int, any: Any?) {
                 runOnUiThread(activity) {
-                    if (code == 10 && any is DnUnionBean) {
-                        listener?.onAdStatus(code, AdStatus(any))
-                    } else {
-                        listener?.onAdStatus(code, any)
-                    }
+                    listener?.onAdStatus(code, any)
                 }
             }
 
@@ -125,6 +123,9 @@ object DoNewsSplashLoadHelper : BaseHelper() {
             .setPositionId(adRequest.mAdId)
             //传入的用来展示广告的容器，此布局建议用FrameLayout或者 Relativelayout
             .setView(adRequest.mAdContainer)
+            //开屏此值传递px单位的值
+            .setExpressViewWidth(DensityUtils.dp2px(adRequest.mWidthDp).toFloat())
+            .setExpressViewHeight(DensityUtils.dp2px(adRequest.mHeightDp).toFloat())
             //设置超时时间5000代表5秒，时间建议大于等于5秒以上，如果GroMore广告，请按照gromore后台合理配置
             .setTimeOut(adRequest.mAdRequestTimeOut)
             .build()
@@ -133,9 +134,10 @@ object DoNewsSplashLoadHelper : BaseHelper() {
 
     /** 预加载广告 */
     fun preloadAd(activity: Activity, adRequest: AdRequest, listener: IAdSplashListener?): PreloadSplashAd {
-        listener?.onAdStartLoad()
+        runOnUiThread(activity) {
+            listener?.onAdStartLoad()
+        }
         val doNewsAdNative = DoNewsAdManagerHolder.get().createDoNewsAdNative()
-
         //封装的预加载对象
         val doNewsPreloadSplashAd = DoNewsPreloadSplashAd(doNewsAdNative)
         doNewsPreloadSplashAd.setLoadState(PreloadAdState.Loading)
@@ -213,17 +215,12 @@ object DoNewsSplashLoadHelper : BaseHelper() {
 
             override fun onAdStatus(code: Int, any: Any?) {
                 runOnUiThread(activity) {
-                    if (code == 10 && any is DnUnionBean) {
-                        listener?.onAdStatus(code, AdStatus(any))
-                    } else {
-                        listener?.onAdStatus(code, any)
-                    }
+                    listener?.onAdStatus(code, any)
                 }
             }
 
             override fun onAdShow() {
                 runOnUiThread(activity) {
-                    doNewsPreloadSplashAd.setLoadState(PreloadAdState.Shown)
                     listener?.onAdShow()
                 }
             }
@@ -263,6 +260,8 @@ object DoNewsSplashLoadHelper : BaseHelper() {
             .setView(adRequest.mAdContainer)
             //设置超时时间5000代表5秒，时间建议大于等于5秒以上，如果GroMore广告，请按照gromore后台合理配置
             .setTimeOut(adRequest.mAdRequestTimeOut)
+            .setExpressViewWidth(DensityUtils.dp2px(adRequest.mWidthDp).toFloat())
+            .setExpressViewHeight(DensityUtils.dp2px(adRequest.mHeightDp).toFloat())
             .build()
         DelayExecutor.delayExec(100) {
             doNewsAdNative.loadSplashAd(activity, doNewsAd, doNewsSplashListener)

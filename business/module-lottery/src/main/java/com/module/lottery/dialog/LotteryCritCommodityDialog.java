@@ -1,7 +1,5 @@
 package com.module.lottery.dialog;
 
-import static com.donews.middle.utils.CommonUtils.LOTTERY_FINGER;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Paint;
@@ -9,34 +7,25 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.donews.base.utils.ToastUtil;
-import com.donews.common.ad.business.monitor.LotteryAdCount;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
-import com.donews.utilslibrary.analysis.AnalysisUtils;
-import com.donews.utilslibrary.dot.Dot;
-import com.module.lottery.bean.GenerateCodeBean;
 import com.module.lottery.bean.RecommendBean;
 import com.module.lottery.model.LotteryModel;
-import com.module.lottery.ui.BaseParams;
 import com.module.lottery.utils.ClickDoubleUtil;
 import com.module.lottery.utils.ImageUtils;
 import com.module.lottery.utils.RandomProbability;
 import com.module_lottery.R;
 import com.module_lottery.databinding.LotteryCritCommodityLayoutBinding;
 
-import org.json.JSONObject;
-
 import java.lang.ref.WeakReference;
-import java.util.Map;
 
 import io.reactivex.disposables.Disposable;
 
@@ -79,7 +68,7 @@ public class LotteryCritCommodityDialog extends BaseDialog<LotteryCritCommodityL
     private void initView() {
 
         mDataBinding.jsonHand.setImageAssetsFolder("images");
-        mDataBinding.jsonHand.setAnimation(LOTTERY_FINGER);
+        mDataBinding.jsonHand.setAnimation("lottery_finger.json");
         mDataBinding.jsonHand.loop(true);
         mDataBinding.jsonHand.playAnimation();
         mDataBinding.closure.setOnClickListener(new View.OnClickListener() {

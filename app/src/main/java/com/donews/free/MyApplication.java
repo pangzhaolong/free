@@ -1,10 +1,12 @@
 package com.donews.free;
 
+import android.app.Application;
 import android.app.Notification;
 import android.content.Context;
 import android.os.Build;
 import android.os.Process;
 import android.util.Log;
+import android.webkit.WebView;
 
 import androidx.multidex.MultiDex;
 
@@ -15,6 +17,8 @@ import com.donews.base.utils.CrashHandlerUtil;
 import com.donews.common.NotifyLuncherConfigManager;
 import com.donews.common.config.ModuleLifecycleConfig;
 import com.donews.keepalive.global.KeepAliveAPI;
+import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.adutils.DnSdkInit;
 import com.donews.notify.launcher.NotificationCreate;
 import com.donews.notify.launcher.configs.Notify2ConfigManager;
 import com.donews.utilslibrary.analysis.AnalysisParam;
@@ -24,7 +28,6 @@ import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.Utils;
 import com.donews.web.base.WebConfig;
 import com.keepalive.daemon.core.utils.NotificationUtil;
-import com.module_lottery.BuildConfig;
 import com.tencent.bugly.crashreport.CrashReport;
 
 import java.lang.reflect.Field;
@@ -47,6 +50,8 @@ public class MyApplication extends BaseApplication {
 
     private static final String TAG = "Application-Main";
 
+    private Application mApplication;
+
 
     @Override
     public void onCreate() {
@@ -54,6 +59,7 @@ public class MyApplication extends BaseApplication {
         final boolean isMainProcess = Utils.isMainProcess(this);
 
         if (isMainProcess) {
+            mApplication = this;
             if (LogUtil.allow) {           // 这两行必须写在init之前，否则这些配置在init过程中将无效
                 ARouter.openLog();     // 打印日志
                 ARouter.openDebug();   // 开启调试模式(如果在InstantRun模式下运行，必须开启调试模式！线上版本需要关闭,否则有安全风险)
@@ -62,6 +68,22 @@ public class MyApplication extends BaseApplication {
 
             // 初始化需要初始化的组件
             ModuleLifecycleConfig.getInstance().initModuleAhead(this);
+
+            ABSwitch.Ins().addCallBack(new ABSwitch.CallBack() {
+                @Override
+                public void onSuccess() {
+                    if (ABSwitch.Ins().isInitDnSdkWhenApplicationLanuch()) {
+                        LogUtil.e("开启了应用启动初始化广告sdk");
+                        DnSdkInit.INSTANCE.init(mApplication);
+                    } else {
+                        LogUtil.e("关闭了应用启动初始化广告sdk");
+                    }
+                }
+
+                @Override
+                public void onFail() {
+                }
+            });
 
             //错误日志收集
             CrashHandlerUtil.getInstance().init(this);
@@ -85,6 +107,10 @@ public class MyApplication extends BaseApplication {
 
             //桌面通知数据配置初始化
             Notify2ConfigManager.Ins().init();
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                WebView.setDataDirectorySuffix(Utils.getCurProcessName(this));
+            }
         }
 
         //其余进程初始化keepalive模块

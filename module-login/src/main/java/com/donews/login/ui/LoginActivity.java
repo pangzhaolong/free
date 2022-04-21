@@ -14,15 +14,15 @@ import com.blankj.utilcode.util.VibrateUtils;
 import com.dn.drouter.ARouteHelper;
 import com.dn.events.events.LoginLodingStartStatus;
 import com.donews.base.BuildConfig;
-import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.base.utils.ToastUtil;
+import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.services.ILoginService;
 import com.donews.common.services.config.ServicesConfig;
 import com.donews.login.R;
 import com.donews.login.databinding.LoginActivityBinding;
 import com.donews.login.viewmodel.LoginViewModel;
-import com.donews.middle.abswitch.OtherSwitch;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.share.ISWXSuccessCallBack;
 import com.donews.share.WXHolderHelp;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
@@ -93,10 +93,10 @@ public class LoginActivity extends MvvmBaseLiveDataActivity<LoginActivityBinding
                 mDataBinding.rlWachatLoginFloat.setVisibility(View.VISIBLE);
             }
         });
-        mDataBinding.loginCkCheck.setChecked(OtherSwitch.Ins().isOpenAutoAgreeProtocol());
+        mDataBinding.loginCkCheck.setChecked(ABSwitch.Ins().isOpenAutoAgreeProtocol());
         mDataBinding.tvUserXy.setOnClickListener(v -> { //用户协议
             Bundle bundle = new Bundle();
-            bundle.putString("url", BuildConfig.USER_PROTOCOL);
+            bundle.putString("url", BuildConfig.USER_PROCOTOL);
             bundle.putString("title", "用户协议");
             ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
         });

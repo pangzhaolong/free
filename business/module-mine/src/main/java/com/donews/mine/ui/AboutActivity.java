@@ -5,6 +5,10 @@ import static com.donews.common.router.RouterActivityPath.Mine.PAGER_MINE_ABOUT_
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -20,6 +24,8 @@ import com.donews.mine.databinding.MineActivityAboutBinding;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.JsonUtils;
+import com.donews.utilslibrary.utils.KeySharePreferences;
+import com.donews.utilslibrary.utils.SPUtils;
 import com.gyf.immersionbar.ImmersionBar;
 
 /**
@@ -53,11 +59,7 @@ public class AboutActivity extends MvvmBaseLiveDataActivity<MineActivityAboutBin
         mDataBinding.mainAboutVersion.setText(AppUtils.getAppVersionName());
         mDataBinding.tvLxKf.setOnClickListener(v -> {
             AnalysisUtils.onEventEx(this, Dot.Page_ContactService);
-            Bundle bundle = new Bundle();
-            bundle.putString("url",
-                    "https://recharge-web.xg.tagtic.cn/ddyb/index.html#/customer");
-            bundle.putString("title", "客服");
-            ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
+            lxkf();
         });
 
         mDataBinding.mineAboutIcon.setOnClickListener(v -> {
@@ -77,6 +79,32 @@ public class AboutActivity extends MvvmBaseLiveDataActivity<MineActivityAboutBin
         mDataBinding.tvCheckUpdate.setOnClickListener(v -> {
             UpdateManager.getInstance().checkUpdate(AboutActivity.this, true);
         });
+    }
+
+    private void lxkf() {
+        String qqNumber = SPUtils.getInformain(KeySharePreferences.KEY_SERVER_QQ_NUMBER, "");
+
+        if (checkApkExist(this, "com.tencent.mobileqq") && !qqNumber.equalsIgnoreCase("")) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("mqqwpa://im/chat?chat_type=wpa&uin=" + qqNumber + "&version=1")));
+        } else {
+            Bundle bundle = new Bundle();
+            bundle.putString("url",
+                    "https://recharge-web.xg.tagtic.cn/jdd/index.html#/customer");
+            bundle.putString("title", "客服");
+            ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
+        }
+    }
+
+    private boolean checkApkExist(Context context, String packageName) {
+        if (packageName == null || "".equals(packageName))
+            return false;
+        try {
+            ApplicationInfo info = context.getPackageManager().getApplicationInfo(packageName,
+                    PackageManager.GET_UNINSTALLED_PACKAGES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
     }
 
     @Override

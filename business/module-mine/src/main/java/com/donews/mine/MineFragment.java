@@ -1,6 +1,7 @@
 package com.donews.mine;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -21,15 +22,20 @@ import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.LotteryStatusEvent;
 import com.dn.events.events.UserTelBindEvent;
 import com.dn.events.events.WalletRefreshEvent;
+import com.dn.sdk.AdCustomError;
+import com.dn.sdk.listener.interstitial.SimpleInterstitialFullListener;
+import com.dn.sdk.listener.interstitial.SimpleInterstitialListener;
 import com.donews.base.utils.GsonUtils;
 import com.donews.base.utils.ToastUtil;
 import com.donews.base.utils.glide.GlideUtils;
-import com.donews.common.ad.business.monitor.PageMonitor;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.UserInfoBean;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
+import com.donews.middle.adutils.InterstitialAd;
+import com.donews.middle.adutils.InterstitialFullAd;
+import com.donews.middle.adutils.adcontrol.AdControlManager;
 import com.donews.middle.views.TaskView;
 import com.donews.mine.adapters.MineFragmentAdapter;
 import com.donews.mine.bean.MineWithdraWallBean;
@@ -46,6 +52,11 @@ import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.JsonUtils;
+import com.donews.yfsdk.check.InterstitialAdCheck;
+import com.donews.yfsdk.moniter.PageMonitor;
+import com.donews.yfsdk.monitor.InterstitialFullAdCheck;
+import com.donews.yfsdk.monitor.PageMoniterCheck;
+import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -73,10 +84,63 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
     private boolean isRefresh = false;
 
     private TaskView mTaskView;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new PageMonitor().attach(this);
+        new PageMonitor().attach(this, new PageMonitor.PageListener() {
+            @NonNull
+            @Override
+            public AdCustomError checkShowAd() {
+                if (AdControlManager.INSTANCE.getAdControlBean().getUseInstlFullWhenSwitch()) {
+                    return InterstitialFullAdCheck.INSTANCE.isEnable();
+                } else {
+                    return InterstitialAdCheck.INSTANCE.isEnable();
+                }
+            }
+
+            @Override
+            public int getIdleTime() {
+                return AdControlManager.INSTANCE.getAdControlBean().getNoOperationDuration();
+            }
+
+            @Override
+            public void showAd() {
+                Activity activity = requireActivity();
+                if (activity == null || activity.isFinishing()) {
+                    return;
+                }
+                if (!AdControlManager.INSTANCE.getAdControlBean().getUseInstlFullWhenSwitch()) {
+                    InterstitialAd.INSTANCE.showAd(activity, new SimpleInterstitialListener() {
+                        @Override
+                        public void onAdError(int code, String errorMsg) {
+                            super.onAdError(code, errorMsg);
+                            Logger.d("晒单页插屏加载广告错误---- code = $code ,msg =  $errorMsg ");
+                        }
+
+                        @Override
+                        public void onAdClosed() {
+                            super.onAdClosed();
+                            PageMoniterCheck.INSTANCE.showAdSuccess("mine_fragment");
+                        }
+                    });
+                } else {
+                    InterstitialFullAd.INSTANCE.showAd(activity, new SimpleInterstitialFullListener() {
+                        @Override
+                        public void onAdError(int errorCode, String errprMsg) {
+                            super.onAdError(errorCode, errprMsg);
+                            Logger.d("晒单页插全屏加载广告错误---- code = $errorCode ,msg =  $errprMsg ");
+                        }
+
+                        @Override
+                        public void onAdClose() {
+                            super.onAdClose();
+                            PageMoniterCheck.INSTANCE.showAdSuccess("mine_fragment");
+                        }
+                    });
+                }
+            }
+        });
     }
 
     @Override
@@ -169,7 +233,7 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
             AnalysisUtils.onEventEx(getActivity(), Dot.Page_ContactService);
             Bundle bundle = new Bundle();
             bundle.putString("url",
-                    "https://recharge-web.xg.tagtic.cn/ddyb/index.html#/customer");
+                    "https://recharge-web.xg.tagtic.cn/jdd/index.html#/customer");
             bundle.putString("title", "客服");
             ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
         });
@@ -188,7 +252,7 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
                     .build(RouterActivityPath.Mine.PAGER_ACTIVITY_SETTING)
                     .navigation();
         });
-        getView().findViewById(R.id.mine_login_zq_but).setOnClickListener((v) -> {
+        getView().findViewById(R.id.mine_me_money_num_ll).setOnClickListener((v) -> {
             //提现
             if (!checkIsLogin()) {
                 getView().findViewById(R.id.iv_user_logo).performClick();
@@ -271,6 +335,7 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
         mDataBinding.mineFrmRefesh.autoRefresh();
         scrollFloatBar();
 //        mDataBinding.mineCcsView.refreshData();
+
         mTaskView = getView().findViewById(R.id.mine_me_k_operating_ex);
         mTaskView.refreshYyw(TaskView.Place_Mine);
     }
@@ -284,7 +349,7 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
             mineWithdraWallBean = GsonUtils.fromLocalJson(localJson, MineWithdraWallBean.class);
             updateYYWData();
         }
-        EasyHttp.get(BuildConfig.BASE_CONFIG_URL + "ddyb-mineWithdrawal" + com.donews.common.BuildConfig.BASE_RULE_URL
+        EasyHttp.get(BuildConfig.BASE_CONFIG_URL + "plus-mineWithdrawal" + com.donews.common.BuildConfig.BASE_RULE_URL
                 + JsonUtils.getCommonJson(false))
                 .cacheMode(CacheMode.NO_CACHE)
                 .isShowToast(false)
@@ -327,18 +392,15 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
         UserInfoBean uf = LoginHelp.getInstance().getUserInfoBean();
         ImageView headIcon = getView().findViewById(R.id.iv_user_logo);
         TextView userName = getView().findViewById(R.id.tv_userinfo_name);
-        TextView txTv = getView().findViewById(R.id.mine_login_zq_but);
         if (uf == null ||
                 !AppInfo.checkIsWXLogin()) { //未登录
             headIcon.setImageResource(R.drawable.mine_not_login_user_head);
             userName.setText("立即登录");
-            txTv.setText("登录赚钱");
         } else { //已登录
             GlideUtils.loadImageViewLoading(getActivity(), uf.getHeadImg(),
                     headIcon, R.drawable.mine_not_login_user_head,
                     R.drawable.mine_not_login_user_head);
             userName.setText(uf.getUserName());
-            txTv.setText("提现");
         }
         vpHei = 0; //让滚动位置重新计算一遍。防止视图变化引起的位置变化计算不及时导致界面滑动错误
     }
@@ -367,16 +429,16 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
     public void checkTelBind() {
         UserInfoBean userInfo = LoginHelp.getInstance().getUserInfoBean();
         TextView bindTv = getView().findViewById(R.id.rl_top_bar_bind);
+        bindTv.setVisibility(View.GONE);
         if (userInfo == null) {
-            bindTv.setVisibility(View.GONE);
+//            bindTv.setVisibility(View.GONE);
             return; //未登录
         } else {
             if (AppInfo.checkIsWXLogin()) {
-                bindTv.setVisibility(View.GONE);
 //                bindTv.setVisibility(View.VISIBLE);
             } else {
                 //还未登录(没有实际的登录)
-                bindTv.setVisibility(View.GONE);
+//                bindTv.setVisibility(View.GONE);
             }
         }
         String mobile = userInfo.getMobile();
@@ -397,6 +459,9 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
         adapter.refeshStart();
         mViewModel.loadRecommendGoods(25);
 //        setYYW();
+        if (mTaskView != null) {
+            mTaskView.refreshYyw(TaskView.Place_Mine);
+        }
         if (checkIsLogin()) {
             mViewModel.getLoadWithdrawData();
         } else {

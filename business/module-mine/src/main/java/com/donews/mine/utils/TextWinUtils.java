@@ -65,7 +65,7 @@ public class TextWinUtils {
         } else if (item.lotteryStatus == 2) {
             tv.setText("等待开奖");
         } else {
-            tv.setText("免费抽奖");
+            tv.setText("0元抽奖");
         }
     }
 }

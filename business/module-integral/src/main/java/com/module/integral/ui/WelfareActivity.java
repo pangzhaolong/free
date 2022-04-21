@@ -1,8 +1,12 @@
 package com.module.integral.ui;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,18 +14,21 @@ import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
-import com.dn.sdk.bean.integral.IntegralStateListener;
-import com.dn.sdk.bean.integral.ProxyIntegral;
-import com.dn.sdk.utils.IntegralComponent;
+import com.dn.integral.jdd.IntegralComponent;
+import com.dn.integral.jdd.integral.IntegralStateListener;
+import com.dn.integral.jdd.integral.ProxyIntegral;
 import com.donews.base.base.BaseApplication;
+import com.donews.base.utils.ToastUtil;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
-import com.donews.middle.abswitch.OtherSwitch;
+import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.dialog.ActivityRuleDialog;
 import com.donews.middle.dialog.IntegralRuleDialog;
 import com.donews.middle.service.CritLotteryService;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
@@ -35,6 +42,7 @@ import com.module.integral.dialog.exit.ExitProgressInterceptDialog;
 import com.module.integral.dialog.exit.ExitRadPackDialog;
 import com.module.integral.viewModel.IntegralViewModel;
 import com.module.lottery.ui.BaseParams;
+import com.module.lottery.ui.LotteryActivity;
 import com.orhanobut.logger.Logger;
 
 import java.lang.ref.WeakReference;
@@ -54,7 +62,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
     //自动跳转的时间
     private int jumpTime = 0;
     //配置的体验时长
-    private long taskPlayTime = OtherSwitch.Ins().getScoreTaskPlayTime() * 1000L;
+    private long taskPlayTime = ABSwitch.Ins().getScoreTaskPlayTime() * 1000L;
     private ProxyIntegral mIntegralBean;
     IntegralDownloadStateDean mIntegralDownloadStateDean;
     private Timer mTimer;
@@ -204,7 +212,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
 
     //安装的情况下
     private void refreshSecondStayPageView(ProxyIntegral integralBean) {
-        mDataBinding.downloadBt.setText("打开APP玩" + OtherSwitch.Ins().getScoreTaskPlayTime() + "分钟");
+        mDataBinding.downloadBt.setText("打开APP玩" + ABSwitch.Ins().getScoreTaskPlayTime() + "秒");
         mDataBinding.downloadBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -411,12 +419,11 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
                 mDataBinding.downloadBt.post(new Runnable() {
                     @Override
                     public void run() {
-                        mDataBinding.downloadBt.setText("打开APP玩" + OtherSwitch.Ins().getScoreTaskPlayTime() + "分钟");
+                        mDataBinding.downloadBt.setText("打开APP玩" + ABSwitch.Ins().getScoreTaskPlayTime() + "秒");
                     }
                 });
             }
         }, true);
-
     }
 
     @Override
@@ -471,7 +478,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
         }
         AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.WELFARE_START_REWARD);
         //初始化暴击体验时长
-        mStartTime = OtherSwitch.Ins().getScoreTaskPlayTime();
+        mStartTime = ABSwitch.Ins().getScoreTaskPlayTime();
         if (mTimer != null) {
             mTimer.cancel();
             ifTimerRun = false;
@@ -486,7 +493,7 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
                 if (!mReception) {
                     if (mStartTime > 0) {
                         mStartTime = mStartTime - 1;
-                        if (mStartTime == (OtherSwitch.Ins().getScoreTaskPlayTime() / 2)) {
+                        if (mStartTime == (ABSwitch.Ins().getScoreTaskPlayTime() / 2)) {
                             //请求服务器处理结果
                             Logger.d(TAG + "请求服务器获取结果");
                             if (integralBean != null) {

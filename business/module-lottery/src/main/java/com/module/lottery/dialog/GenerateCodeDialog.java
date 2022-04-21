@@ -11,8 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.donews.base.model.BaseLiveDataModel;
-import com.donews.common.ad.business.monitor.LotteryAdCount;
-import com.donews.middle.abswitch.OtherSwitch;
+import com.donews.yfsdk.monitor.LotteryAdCheck;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
@@ -38,13 +38,11 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
     private LotteryHandler mLotteryHandler = new LotteryHandler(this);
     private BaseLiveDataModel baseLiveDataModel;
     private String mGoodsId;
-    private String mOptionalCode;
 
-    public GenerateCodeDialog(Context context, String goodsId, String optionalCode) {
+    public GenerateCodeDialog(Context context, String goodsId) {
         super(context, R.style.dialogTransparent);//内容样式在这里引入
         baseLiveDataModel = new BaseLiveDataModel();
         mGoodsId = goodsId;
-        mOptionalCode = optionalCode;
         this.context = context;
     }
 
@@ -61,7 +59,7 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
 
         //生成抽奖码分为两种情况 本地生成  和服务器生成
         boolean logType = AppInfo.checkIsWXLogin();
-        if (OtherSwitch.Ins().getLotteryLine() == 1 && !logType) {
+        if (ABSwitch.Ins().getLotteryLine() == 1 && !logType) {
             mLotteryHandler.sendMessageDelayed(mes, 2000);
         } else {
             mLotteryHandler.sendMessageDelayed(mes, 800);
@@ -87,7 +85,7 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
     public void generateLotteryCode() {
         //生成抽奖码分为两种情况 本地生成  和服务器生成
         boolean logType = AppInfo.checkIsWXLogin();
-        if (OtherSwitch.Ins().getLotteryLine() == 1 && !logType) {
+        if (ABSwitch.Ins().getLotteryLine() == 1 && !logType) {
             //本地生成
             if (mOnFinishListener != null) {
                 mOnFinishListener.onExclusiveBulletFrame();
@@ -102,9 +100,6 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
         //生成一个抽奖码
         if (baseLiveDataModel != null && mGoodsId != null) {
             Map<String, String> params = BaseParams.getMap();
-            if (mOptionalCode != null) {
-                params.put("cus_code", mOptionalCode);
-            }
             params.put("goods_id", mGoodsId);
             getNetData(params, LotteryModel.LOTTERY_GENERATE_CODE);
         }
@@ -124,14 +119,15 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
                         if (mOnFinishListener != null) {
                             mOnFinishListener.onFinish();
                         }
-                        Toast.makeText(getContext(), "抽奖码获取失败，"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "抽奖码获取失败", Toast.LENGTH_SHORT).show();
                         AnalysisUtils.onEventEx(getContext(), Dot.PAY_FAIL);
                     }
+
                     @Override
                     public void onSuccess(GenerateCodeBean generateCode) {
                         if (generateCode != null) {
                             //抽奖统计
-                            LotteryAdCount.INSTANCE.lotterySuccess();
+                            LotteryAdCheck.INSTANCE.lotterySuccess();
                             if (mOnFinishListener != null) {
                                 mOnFinishListener.onJump(generateCode);
                             }

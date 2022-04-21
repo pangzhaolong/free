@@ -1,5 +1,6 @@
 package com.dn.sdk.platform.donews.preloadad
 
+import android.view.ViewGroup
 import com.dn.sdk.bean.preload.PreloadSplashAd
 import com.dn.sdk.loader.SdkType
 import com.donews.ads.mediation.v2.api.DoNewsAdNative
@@ -14,6 +15,10 @@ import com.donews.ads.mediation.v2.api.DoNewsAdNative
 class DoNewsPreloadSplashAd(private val doNewsAdNative: DoNewsAdNative) : PreloadSplashAd() {
     override fun getSdkType(): SdkType {
         return SdkType.DO_NEWS
+    }
+
+    override fun realShowAd(container: ViewGroup) {
+        doNewsAdNative.showSplash()
     }
 
 

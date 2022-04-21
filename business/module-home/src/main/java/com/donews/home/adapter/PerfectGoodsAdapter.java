@@ -65,23 +65,12 @@ public class PerfectGoodsAdapter extends RecyclerView.Adapter<PerfectGoodsAdapte
         holder.itemView.setOnClickListener(this::onClick);
 
         Glide.with(mContext).load(UrlUtils.formatUrlPrefix(gi.getMainPic())).into(holder.picIv);
-        holder.desTv.setText(gi.getTitle());
+        holder.desTv.setText(getTitleString(gi));
 
-        holder.priceTv.setText(String.format("%.0f", gi.getActualPrice()));
-        holder.giftTv.setText(String.format("%.0f元券", gi.getCouponPrice()));
+        holder.priceTv.setText(String.format("￥%.1f", gi.getActualPrice()));
+        holder.giftTv.setText(String.format("￥%.0f元券", gi.getCouponPrice()));
         holder.originalPriceTv.setText(gi.getOriginalPrice() + "");
-//        holder.originalPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
-        switch (gi.getSrc()) {
-            case 1:
-                holder.logoIv.setImageResource(R.drawable.home_logo_tb);
-                break;
-            case 2:
-                holder.logoIv.setImageResource(R.drawable.home_logo_pdd);
-                break;
-            case 3:
-                holder.logoIv.setImageResource(R.drawable.home_logo_jd);
-                break;
-        }
+        holder.originalPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
     }
 
     private SpannableString getTitleString(HomeGoodsBean.GoodsInfo goodsInfo) {
@@ -131,7 +120,6 @@ public class PerfectGoodsAdapter extends RecyclerView.Adapter<PerfectGoodsAdapte
         private final TextView priceTv;
         private final TextView giftTv;
         private final TextView originalPriceTv;
-        private final ImageView logoIv;
 
         public CrazyListViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -141,7 +129,6 @@ public class PerfectGoodsAdapter extends RecyclerView.Adapter<PerfectGoodsAdapte
             priceTv = itemView.findViewById(R.id.home_crazy_goods_item_price);
             giftTv = itemView.findViewById(R.id.home_crzay_goods_item_gift_atv);
             originalPriceTv = itemView.findViewById(R.id.home_crazy_item_price);
-            logoIv = itemView.findViewById(R.id.home_crazy_logo_iv);
         }
     }
 }

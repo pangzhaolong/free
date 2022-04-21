@@ -73,7 +73,7 @@ public class ConditionProcessUtil {
             try {
                 int pos = strToIntNumber(tjInvokArr[i]);
                 if (pos >= pools.size() || pos < 0) {
-                    NotifyLog.log("invokCondition 锚定值条件配置错误。超过锚定池范围(5),直接跳过该条件");
+                    NotifyLog.log("invokCondition 锚定值条件配置错误。超过锚定池范围(5),只跳过该条件");
                     invokConditions.add(null);
                 } else {
                     invokConditions.add(pools.get(pos));
@@ -183,7 +183,7 @@ public class ConditionProcessUtil {
         Method invokMethod = null;
         try {
             String condStr = conditionItem.condition
-                    .replace(" ", "");
+                    .replace(" ","");
             if (condStr.length() < 2) {
                 NotifyLog.log("中台条件条件表达式不符合规范,请检查(-1)");
                 return false; //条件不满足表达式要求

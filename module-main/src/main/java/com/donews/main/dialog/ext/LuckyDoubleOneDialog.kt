@@ -65,6 +65,11 @@ class LuckyDoubleOneDialog(
         dataBinding.mainDoubleCloseIv.setOnClickListener {
             dismiss()
         }
+        //手
+//        dataBinding.maskingHand.imageAssetsFolder = "images"
+//        dataBinding.maskingHand.setAnimation("lottery_finger.json")
+//        dataBinding.maskingHand.loop(true)
+//        dataBinding.maskingHand.playAnimation()
     }
 
     override fun onResume() {

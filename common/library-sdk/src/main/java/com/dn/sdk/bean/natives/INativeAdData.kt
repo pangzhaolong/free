@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import com.dn.sdk.bean.AdRequest
-import com.dn.sdk.listener.IAdNativeListener
+import com.dn.sdk.listener.feed.natives.IAdFeedListener
 import com.dn.sdk.loader.SdkType
 
 /**
@@ -83,6 +83,6 @@ interface INativeAdData {
         viewGroup: ViewGroup,
         frameLayout: FrameLayout,
         clickViews: List<View>?,
-        listener: IAdNativeListener?
+        listener: IAdFeedListener?
     )
 }

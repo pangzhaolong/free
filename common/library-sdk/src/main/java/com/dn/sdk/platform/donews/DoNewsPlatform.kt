@@ -11,7 +11,7 @@ import com.dn.sdk.platform.IPlatform
  * @version v1.0
  * @date 2021/10/25 17:00
  */
-class DoNewsPlatform(private val adIdConfigBean: BaseAdIdConfigBean) : IPlatform {
+class DoNewsPlatform : IPlatform {
 
     private val loader = DoNewsAdLoader()
 
@@ -20,6 +20,6 @@ class DoNewsPlatform(private val adIdConfigBean: BaseAdIdConfigBean) : IPlatform
     }
 
     override fun getAdIdByKey(key: String): String {
-        return adIdConfigBean.getAdIdByKey(key)
+        return ""
     }
 }

@@ -7,38 +7,47 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.ScaleAnimation;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.NetworkChanageEvnet;
-import com.dn.sdk.listener.IAdSplashListener;
-import com.dn.sdk.listener.impl.SimpleInterstitialListener;
-import com.dn.sdk.listener.impl.SimpleRewardVideoListener;
-import com.dn.sdk.listener.impl.SimpleSplashListener;
+import com.dn.sdk.listener.interstitial.SimpleInterstitialFullListener;
+import com.dn.sdk.listener.rewardvideo.SimpleRewardVideoListener;
+import com.dn.sdk.listener.splash.IAdSplashListener;
+import com.dn.sdk.listener.splash.SimpleSplashListener;
 import com.donews.base.base.AppManager;
 import com.donews.base.base.AppStatusConstant;
 import com.donews.base.base.AppStatusManager;
+import com.donews.base.utils.ToastUtil;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
-import com.donews.common.ad.business.bean.JddAdConfigBean;
-import com.donews.common.ad.business.loader.AdManager;
-import com.donews.common.ad.business.manager.JddAdConfigManager;
-import com.donews.common.ad.business.monitor.LotteryAdCount;
+import com.donews.common.BuildConfig;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.contract.LoginHelp;
-import com.donews.main.BuildConfig;
 import com.donews.main.R;
 import com.donews.main.databinding.MainActivitySplashBinding;
 import com.donews.main.dialog.PersonGuideDialog;
 import com.donews.main.utils.SplashUtils;
-import com.donews.middle.abswitch.OtherSwitch;
+import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.adutils.DnSdkInit;
+import com.donews.middle.adutils.InterstitialFullAd;
+import com.donews.middle.adutils.RewardVideoAd;
+import com.donews.middle.adutils.SplashAd;
+import com.donews.middle.adutils.adcontrol.AdControlBean;
+import com.donews.middle.adutils.adcontrol.AdControlManager;
+import com.donews.middle.front.FrontConfigManager;
 import com.donews.utilslibrary.analysis.AnalysisHelp;
 import com.donews.utilslibrary.base.SmSdkConfig;
 import com.donews.utilslibrary.base.UtilsConfig;
@@ -47,6 +56,11 @@ import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.NetworkUtils;
 import com.donews.utilslibrary.utils.SPUtils;
+import com.donews.yfsdk.YfAdSdk;
+import com.donews.yfsdk.bean.AdConfigBean;
+import com.donews.yfsdk.loader.AdManager;
+import com.donews.yfsdk.manager.AdConfigManager;
+import com.donews.yfsdk.monitor.LotteryAdCheck;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
@@ -105,6 +119,10 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
 
     private ValueAnimator mLoadAdAnimator;
 
+    private ScaleAnimation mScaleAnimation;
+
+    private int mNetworkIsAvailable = 0;
+
     @Override
     protected int getLayoutId() {
         return R.layout.main_activity_splash;
@@ -115,6 +133,27 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         AppStatusManager.getInstance().setAppStatus(AppStatusConstant.STATUS_FORCE_KILLED);
         mIsBackgroundToFore = getIntent().getBooleanExtra(toForeGroundKey, false);
         EventBus.getDefault().register(this);
+
+        init();
+
+        mDataBinding.splashNetworkErrBtn.setOnClickListener(v -> init());
+        mDataBinding.splashNetworkErrCheck.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        mDataBinding.splashNetworkErrCheck.setOnClickListener(v -> {
+            if (mNetworkIsAvailable == 2) {
+                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                intent.setData(Uri.parse("package:" + getPackageName()));
+                startActivity(intent);
+            } else if (mNetworkIsAvailable == 1) {
+                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+            }
+        });
+    }
+
+    private void init() {
+        if (checkNetWork() != 0) {
+            return;
+        }
+        showPersonGuideDialog();
         if (mIsBackgroundToFore) {
             if (NetworkUtils.isAvailableByPing()) {
                 loadHotStartAd();
@@ -127,16 +166,50 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
             //检测隐私协议
             checkDeal();
         }
+        if (mScaleAnimation == null) {
+            mScaleAnimation = new ScaleAnimation(1.15f, 0.9f, 1.15f, 0.9f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            mScaleAnimation.setInterpolator(new LinearInterpolator());
+            mScaleAnimation.setRepeatMode(Animation.REVERSE);
+            mScaleAnimation.setRepeatCount(Animation.INFINITE);
+            mScaleAnimation.setDuration(1000);
+        }
+
+        ABSwitch.Ins().addCallBack(new ABSwitch.CallBack() {
+            @Override
+            public void onSuccess() {
+                if (ABSwitch.Ins().isShowSplashScaleBtn()) {
+                    mDataBinding.splashScaleTv.setVisibility(View.VISIBLE);
+                    if (mScaleAnimation != null) {
+                        mDataBinding.splashScaleTv.startAnimation(mScaleAnimation);
+                    }
+                } else {
+                    mDataBinding.splashScaleTv.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFail() {
+                if (ABSwitch.Ins().isShowSplashScaleBtn()) {
+                    mDataBinding.splashScaleTv.setVisibility(View.VISIBLE);
+                    if (mScaleAnimation != null) {
+                        mDataBinding.splashScaleTv.startAnimation(mScaleAnimation);
+                    }
+                } else {
+                    mDataBinding.splashScaleTv.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
     @Override
     protected void onResume() {
         super.onResume();
         Log.e("SplashActivity", "onResume");
-        showPersonGuideDialog();
-        Uri referrer = this.getReferrer();
+        if (mNetworkIsAvailable != 0) {
+            init();
+        } else {
+            showPersonGuideDialog();
+        }
     }
 
     @Subscribe //网络状态变化监听
@@ -167,6 +240,9 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
      * 检查用户是否同意协议
      */
     private void checkDeal() {
+        if (mNetworkIsAvailable != 0) {
+            return;
+        }
         if (SPUtils.getInformain(KeySharePreferences.DEAL, false)) {
             initSdk();
             return;
@@ -185,13 +261,15 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
     }
 
     private boolean mIsInitSdk = false;
+
     private void initSdk() {
-        if (mIsInitSdk) {
+        if (mIsInitSdk || mNetworkIsAvailable != 0) {
             return;
         }
         mIsInitSdk = true;
-        // 初始化广告sdk
-        AdManager.INSTANCE.initSDK(this.getApplication(), DeviceUtils.getChannelName(), BuildConfig.DEBUG);
+
+        DnSdkInit.INSTANCE.init(this.getApplication());
+
         SplashUtils.INSTANCE.savePersonExit(true);
         SPUtils.setInformain(KeySharePreferences.DEAL, true);
         SPUtils.setInformain(KeySharePreferences.AGREEMENT, true);
@@ -201,14 +279,16 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
     }
 
     private void showPersonGuideDialog() {
+        if (personGuideDialog != null && personGuideDialog.isAdded() && personGuideDialog.isVisible()) {
+            return;
+        }
+
         //如果协议已经同意，不需要弹起弹框
         if (SPUtils.getInformain(KeySharePreferences.DEAL, false)) {
             initSdk();
             return;
         }
-        if (personGuideDialog != null && personGuideDialog.isAdded() && personGuideDialog.isVisible()) {
-            Logger.d("personGuideDialog isAdded");
-        } else {
+        if (personGuideDialog == null ) {
             Logger.d("personGuideDialog no isAdded");
             personGuideDialog = new PersonGuideDialog();
             personGuideDialog.setSureListener(this::initSdk).setCancelListener(() -> {
@@ -224,22 +304,14 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
      */
     private void loadHotStartAd() {
         startProgressAnim();
-        JddAdConfigManager.INSTANCE.addListener(() -> {
-            JddAdConfigBean configBean = JddAdConfigManager.INSTANCE.getJddAdConfigBean();
-            if (configBean.getHotStartAdEnable()) {
-                if (configBean.getHotStartSplashStyle() == 1) {
-                    setHalfScreen();
-                } else {
-                    setFullScreen();
-                }
-                boolean hotDoubleSplash = configBean.getHotStartDoubleSplashOpen()
-                        && LoginHelp.getInstance().checkUserRegisterTime(configBean.getHotStartDoubleSplash());
-                loadSplash(configBean.getHotStartSplashStyle() == 1, hotDoubleSplash);
-            } else {
-                goToMain();
-            }
-            return null;
-        });
+        if (!AdConfigManager.INSTANCE.getMNormalAdBean().getEnable()) {
+            goToMain();
+            return;
+        }
+
+        setFullScreen();
+
+        loadSplash(false, true, false);
     }
 
     /**
@@ -247,29 +319,50 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
      */
     private void loadClodStartAd() {
         startProgressAnim();
-        JddAdConfigManager.INSTANCE.addListener(() -> {
-            JddAdConfigBean configBean = JddAdConfigManager.INSTANCE.getJddAdConfigBean();
-            //如果为唤醒模式、非冷启动。则不显示进度条,热启动
-            if (configBean.getColdStartAdEnable()) {
-                if (configBean.getColdStartSplashStyle() == 1) {
-                    setHalfScreen();
-                } else {
-                    setFullScreen();
-                }
-                boolean coldDoubleSplash = configBean.getColdStartDoubleSplashOpen()
-                        && LoginHelp.getInstance().checkUserRegisterTime(configBean.getColdStartDoubleSplash());
-                loadSplash(configBean.getColdStartSplashStyle() == 1, coldDoubleSplash);
-            } else {
-                goToMain();
-            }
-            return null;
-        });
+        if (!AdConfigManager.INSTANCE.getMNormalAdBean().getEnable()) {
+            goToMain();
+            return;
+        }
+
+        setHalfScreen();
+
+        loadSplash(true, true, false);
     }
 
     /**
      * 加载广告
      */
-    private void loadSplash(boolean halfScreen, boolean doubleSplash) {
+    private void loadSplash(boolean halfScreen, boolean hotStart, boolean doubleSplash) {
+        IAdSplashListener listener = new SimpleSplashListener() {
+            @Override
+            public void onAdShow() {
+                super.onAdShow();
+                stopProgressAnim();
+            }
+
+            @Override
+            public void onAdError(int code, @Nullable String errorMsg) {
+                super.onAdError(code, errorMsg);
+                Logger.d("code = " + code + "  msg = " + errorMsg);
+                goToMain();
+//                loadCsjSplash(halfScreen, hotStart, doubleSplash);
+            }
+
+            @Override
+            public void onAdDismiss() {
+                super.onAdDismiss();
+                if (doubleSplash) {
+                    loadSplash(halfScreen, hotStart, false);
+                } else {
+                    goToMain();
+                }
+            }
+        };
+
+        SplashAd.INSTANCE.loadSplashAd(this, hotStart, mDataBinding.adHalfScreenContainer, listener, halfScreen);
+    }
+
+    private void loadCsjSplash(boolean halfScreen, boolean hotStart, boolean doubleSplash) {
         IAdSplashListener listener = new SimpleSplashListener() {
             @Override
             public void onAdShow() {
@@ -287,18 +380,15 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
             @Override
             public void onAdDismiss() {
                 super.onAdDismiss();
-                if (doubleSplash) {
-                    loadSplash(halfScreen, false);
-                } else {
+/*                if (doubleSplash) {
+                    loadSplash(halfScreen, hotStart, false);
+                } else {*/
                     goToMain();
-                }
+//                }
             }
         };
-        if (halfScreen) {
-            AdManager.INSTANCE.loadHalfScreenSplashAd(this, mDataBinding.adHalfScreenContainer, listener);
-        } else {
-            AdManager.INSTANCE.loadFullScreenSplashAd(this, mDataBinding.adFullScreenContainer, listener);
-        }
+
+        SplashAd.INSTANCE.loadCsjSplashAd(this, hotStart, mDataBinding.adHalfScreenContainer, listener, halfScreen);
     }
 
     //半屏显示广告
@@ -325,24 +415,42 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         mPreClickTime = curClickTime;
 
         startProgressAnim();
-        JddAdConfigManager.INSTANCE.addListener(() -> {
-            JddAdConfigBean configBean = JddAdConfigManager.INSTANCE.getJddAdConfigBean();
-            if (configBean.getDisagreePrivacyPolicyAdEnable()) {
-                if (configBean.getDisagreePrivacyPolicyAdType() == 1) {
-                    loadDisagreePrivacyPolicyInters();
-                } else {
-                    loadDisagreePrivacyPolicyRewardVideo();
-                }
+//        AdControlManager.INSTANCE.addListener(() -> {
+        AdControlBean configBean = AdControlManager.INSTANCE.getAdControlBean();
+        if (configBean.getDisagreePrivacyPolicyAdEnable()) {
+            if (configBean.getDisagreePrivacyPolicyAdType() == 1) {
+                loadDisagreePrivacyPolicyInters();
             } else {
-                finish();
+                loadDisagreePrivacyPolicyRewardVideo();
             }
-            return null;
-        });
+        } else {
+            finish();
+        }
+//            return null;
+//        });
     }
 
     private void loadDisagreePrivacyPolicyInters() {
-        AdManager.INSTANCE.loadInterstitialAd(this, new SimpleInterstitialListener() {
+        InterstitialFullAd.INSTANCE.showAd(this, new SimpleInterstitialFullListener() {
+            @Override
+            public void onAdError(int errorCode, @NonNull String errprMsg) {
+                super.onAdError(errorCode, errprMsg);
+                finish();
+            }
 
+            @Override
+            public void onAdShow() {
+                super.onAdShow();
+                stopProgressAnim();
+            }
+
+            @Override
+            public void onAdClose() {
+                super.onAdClose();
+                finish();
+            }
+        });
+        /*InterstitialAd.INSTANCE.showAd(this, new SimpleInterstitialListener() {
             @Override
             public void onAdError(int code, @Nullable String errorMsg) {
                 super.onAdError(code, errorMsg);
@@ -360,11 +468,11 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
                 super.onAdClosed();
                 finish();
             }
-        });
+        });*/
     }
 
     private void loadDisagreePrivacyPolicyRewardVideo() {
-        AdManager.INSTANCE.loadInvalidRewardVideoAd(this, new SimpleRewardVideoListener() {
+        RewardVideoAd.INSTANCE.loadRewardVideoAd(this, new SimpleRewardVideoListener() {
 
             @Override
             public void onAdError(int code, @Nullable String errorMsg) {
@@ -383,14 +491,46 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
                 super.onRewardVerify(result);
                 finish();
             }
-        });
+        }, false);
+    }
+
+    private int checkNetWork() {
+        if (!NetworkUtils.isConnected()) {
+            mNetworkIsAvailable = 1;
+        } else {
+            if (!NetworkUtils.isAvailableByPing()) {
+                mNetworkIsAvailable = 2;
+            } else {
+                mNetworkIsAvailable = 0;
+                mDataBinding.splashNetworkError.setVisibility(View.GONE);
+            }
+        }
+
+        if (mNetworkIsAvailable != 0) {
+            ToastUtil.showShort(this, "网络不可达，请检查网络环境！");
+            mDataBinding.splashNetworkError.setVisibility(View.VISIBLE);
+            stopProgressAnim();
+        } else {
+            mDataBinding.splashNetworkError.setVisibility(View.GONE);
+        }
+        return mNetworkIsAvailable;
     }
 
     private void goToMain() {
         stopProgressAnim();
+        if (mScaleAnimation != null) {
+            mScaleAnimation.cancel();
+            mScaleAnimation = null;
+        }
+        mDataBinding.splashScaleTv.clearAnimation();
+
+        if (checkNetWork() != 0) {
+            return;
+        }
+
         if (!mIsBackgroundToFore) {
             if (AppStatusManager.getInstance().getAppStatus() != AppStatusConstant.STATUS_NORMAL) {
-                LotteryAdCount.INSTANCE.init();
+                LotteryAdCheck.INSTANCE.init();
                 GuideActivity.start(this);
             }
         } else {
@@ -410,11 +550,16 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
     private void checkAndRequestPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             List<String> lackedPermission = new ArrayList<String>();
+            if ((checkSelfPermission(Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED)) {
+                lackedPermission.add(Manifest.permission.INTERNET);
+            }
+
             if ((checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED)) {
                 lackedPermission.add(Manifest.permission.READ_PHONE_STATE);
             }
 
-            if ((checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
+            if ((checkSelfPermission(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
                 lackedPermission.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             }
 
@@ -441,16 +586,6 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         if (requestCode == REQUEST_PERMISSIONS_CODE) {
             hadPermissions();
         }
-//        if (requestCode == 1024 && hasAllPermissionsGranted(grantResults)) {
-//            loadSplashConfig();
-//        } else {
-//            // 如果用户没有授权，那么应该说明意图，引导用户去设置里面授权。
-//            //  Toast.makeText(this, "应用缺少必要的权限！请点击\"权限\"，打开所需要的权限。", Toast.LENGTH_LONG).show();
-//            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-//            intent.setData(Uri.parse("package:" + getPackageName()));
-//            startActivity(intent);
-//            finish();
-//        }
     }
 
     private boolean mHadPermissions = false;
@@ -459,8 +594,14 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         if (mHadPermissions) {
             return;
         }
+
+        // 打个补丁,by dw
+        AdConfigManager.INSTANCE.init();
+        ABSwitch.Ins().init();
+        FrontConfigManager.Ins().init();
         mHadPermissions = true;
-        if ((SPUtils.getInformain(KeySharePreferences.IS_FIRST_IN_APP, 0) <= 0 && OtherSwitch.Ins().isSkipSplashAd4NewUser())
+        if ((SPUtils.getInformain(KeySharePreferences.IS_FIRST_IN_APP,
+                0) <= 0 && ABSwitch.Ins().isSkipSplashAd4NewUser())
                 || !NetworkUtils.isAvailableByPing()) {
             LogUtil.e("hadPermissions()： gomain");
             goToMain();

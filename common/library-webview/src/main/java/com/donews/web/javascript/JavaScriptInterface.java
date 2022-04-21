@@ -1,7 +1,6 @@
 package com.donews.web.javascript;
 
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -12,7 +11,6 @@ import android.webkit.JavascriptInterface;
 
 import androidx.fragment.app.FragmentActivity;
 
-import com.blankj.utilcode.util.PermissionUtils;
 import com.dn.drouter.ARouteHelper;
 import com.donews.common.contract.AdType;
 import com.donews.common.router.RouterActivityPath;
@@ -104,6 +102,8 @@ public class JavaScriptInterface extends CommonInterface {
                         "onRequestAdVideo", new Object[]{mContext, AdType.WEB_VIDEO, 0, 0, ""});
             }
         });
+
+
     }
 
 
@@ -116,9 +116,6 @@ public class JavaScriptInterface extends CommonInterface {
     }
 
     private boolean isAvilible(Activity context, String packageName) {
-        if (!PermissionUtils.isGranted(Manifest.permission.READ_PHONE_STATE)) {
-            return false;
-        }
         final PackageManager packageManager;//获取packagemanager
         packageManager = context.getPackageManager();
         List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);//获取所有已安装程序的包信息

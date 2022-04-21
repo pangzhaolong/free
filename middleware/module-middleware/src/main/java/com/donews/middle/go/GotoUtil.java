@@ -10,20 +10,22 @@ import android.os.Bundle;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.drouter.ARouteHelper;
-import com.dn.sdk.bean.integral.ProxyIntegral;
-import com.dn.sdk.utils.IntegralComponent;
+import com.dn.integral.jdd.IntegralComponent;
+import com.dn.integral.jdd.integral.ProxyIntegral;
 import com.donews.base.BuildConfig;
 import com.donews.common.contract.BaseCustomViewModel;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
-import com.donews.middle.abswitch.OtherSwitch;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.api.MiddleApi;
 import com.donews.middle.bean.TaskActionBean;
 import com.donews.middle.bean.home.PrivilegeLinkBean;
+import com.donews.middle.dialog.GotoDialog;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
+import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.SPUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -131,10 +133,26 @@ public class GotoUtil {
         }
 
         if (action.startsWith("http")) {
+            int app2parter_count = SPUtils.getInformain(KeySharePreferences.KEY_APP2PARTER_COUNT, 0);
+            app2parter_count++;
+            SPUtils.setInformain(KeySharePreferences.KEY_APP2PARTER_COUNT, app2parter_count);
+            if (app2parter_count > ABSwitch.Ins().getShowAppToParterCount()) {
+                doActionEx(context, action, title);
+                return;
+            }
+
+            new GotoDialog(context, () -> doActionEx(context, action, title)).show();
+        } else {
+            doActionEx(context, action, title);
+        }
+    }
+
+    public static void doActionEx(Context context, String action, String title) {
+        if (action.startsWith("http")) {
             Bundle bundle = new Bundle();
             bundle.putString("url", action);
             bundle.putString("title", title);
-            if (OtherSwitch.Ins().isShowInterstitialAdWhenOpenYyw()) {
+            if (ABSwitch.Ins().isShowInterstitialAdWhenOpenYyw()) {
                 bundle.putBoolean("showAd", true);
             }
             ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
@@ -172,7 +190,7 @@ public class GotoUtil {
     }
 
     private static void getIntegralTask(Context context) {
-        if (SPUtils.getInformain(CURRENT_SCORE_TASK_COUNT, 0) >= OtherSwitch.Ins().getOpenScoreTaskMax()) {
+        if (SPUtils.getInformain(CURRENT_SCORE_TASK_COUNT, 0) >= ABSwitch.Ins().getOpenScoreTaskMax()) {
             ARouter.getInstance()
                     .build(RouterFragmentPath.Integral.PAGER_INTEGRAL_NOT_TASK)
                     .navigation();
@@ -206,7 +224,7 @@ public class GotoUtil {
     }
 
     private static void checkIntegralTask(Context context) {
-        if (!OtherSwitch.Ins().isOpenScoreTask()) {
+        if (!ABSwitch.Ins().isOpenScoreTask()) {
 //            ARouter.getInstance()
 //                    .build(RouterFragmentPath.Integral.PAGER_INTEGRAL_NOT_TASK)
 //                    .navigation();

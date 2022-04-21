@@ -33,7 +33,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="um.61db9e36e0f9bb492bc4834b" />
+                <data android:scheme="um.616d1dd2ac9567566e9b97e3" />
             </intent-filter>
         </activity>
         <!-- 沉寝式适配-->

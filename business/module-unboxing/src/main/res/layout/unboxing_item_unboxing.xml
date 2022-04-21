@@ -17,7 +17,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/unboxing_bg_item"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,17 +24,18 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="14.3dp"
             android:layout_marginEnd="14.3dp"
-            android:layout_marginBottom="12dp">
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/unboxing_bg_item">
 
-            <com.google.android.material.imageview.ShapeableImageView
+            <ImageView
                 android:id="@+id/iv_photo"
                 android:layout_width="46.7dp"
                 android:layout_height="46.7dp"
+                android:layout_marginStart="13.3dp"
                 android:layout_marginTop="17dp"
                 app:imageCircleUrl="@{unboxingBean.avatar}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearanceOverlay="@style/rounded_style"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <TextView
@@ -45,7 +45,7 @@
                 android:layout_marginStart="10dp"
                 android:text="@{unboxingBean.userName}"
                 android:textColor="#2c2c2c"
-                android:textSize="14.67sp"
+                android:textSize="14.7sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@id/tv_lottery_cycles"
                 app:layout_constraintStart_toEndOf="@id/iv_photo"
@@ -66,7 +66,6 @@
                 android:paddingEnd="4dp"
                 android:paddingBottom="2dp"
                 android:text="@={unboxingBean.city}"
-                android:textColor="#A9AEB1"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="@id/tv_nickname"
                 app:layout_constraintStart_toEndOf="@id/tv_nickname"
@@ -79,17 +78,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:text="@{@string/unboxing_period(unboxingBean.period)}"
-                android:textColor="#666666"
-                android:textSize="12sp"
+                android:textColor="#2c2c2c"
+                android:textSize="13.3sp"
                 app:layout_constraintBottom_toBottomOf="@id/iv_photo"
                 app:layout_constraintStart_toStartOf="@id/tv_nickname"
                 app:layout_constraintTop_toBottomOf="@id/tv_nickname"
-                tools:text="20211020期中奖" />
+                tools:text="第20211020期" />
 
             <TextView
                 android:id="@+id/tv_winning_number"
-                android:layout_width="84.35dp"
-                android:layout_height="29.6dp"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
                 android:layout_marginStart="21dp"
                 android:background="@drawable/unboxing_win_bg"
                 android:gravity="center"
@@ -99,7 +98,6 @@
                 android:textColor="#E9423E"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@id/iv_photo"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="2623497" />
@@ -112,7 +110,6 @@
                 android:text="@{String.valueOf(zan?unboxingBean.zan+1:unboxingBean.zan)}"
                 android:textColor="#A9AEB1"
                 android:textSize="12sp"
-                android:visibility="gone"
                 app:layout_constraintBaseline_toBaselineOf="@id/tv_lottery_cycles"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_winning_number"
@@ -124,7 +121,6 @@
                 android:layout_height="15dp"
                 android:layout_marginEnd="6.8dp"
                 android:src="@drawable/unboxing_ic_zan"
-                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@id/tv_like_number"
                 app:layout_constraintEnd_toStartOf="@id/tv_like_number"
                 app:layout_constraintTop_toTopOf="@id/tv_like_number"
@@ -159,11 +155,13 @@
                 android:id="@+id/tv_content"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="13.3dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="13.3dp"
                 android:lineSpacingExtra="2dp"
                 android:text="@={unboxingBean.message}"
                 android:textColor="#2c2c2c"
-                android:textSize="14.67sp"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_photo"
@@ -186,7 +184,9 @@
                 android:id="@+id/cl_goods_info"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="13.3dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="13.3dp"
                 android:layout_marginBottom="15dp"
                 android:background="@drawable/unboxing_bg_goods"
                 android:paddingBottom="6.8dp"
@@ -214,25 +214,26 @@
                     android:layout_marginStart="8.3dp"
                     android:layout_marginEnd="10.7dp"
                     android:ellipsize="end"
-                    android:maxLines="1"
+                    android:maxLines="2"
                     android:text="@{unboxingBean.title}"
-                    android:textColor="#2C2C2C"
-                    android:textSize="13.3sp"
+                    android:textColor="#2c2c2c"
+                    android:textSize="14.7sp"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/iv_goods_pic"
                     app:layout_constraintTop_toTopOf="@id/iv_goods_pic"
-                    tools:text="六味地黄丸六味地黄丸六味地黄丸六味地黄丸" />
+                    tools:text="六味地黄丸六味地黄丸六味地黄丸六味地黄丸六味地黄丸六味地黄丸六味地黄丸" />
 
                 <TextView
                     android:id="@+id/tv_goods_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8.6dp"
+                    android:layout_marginTop="5.2dp"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:text="@{@string/unboxing_goods_price(unboxingBean.price)}"
-                    android:textColor="#EA443C"
-                    android:textSize="12sp"
+                    android:textColor="#E9423E"
+                    android:textSize="13.3sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="@id/tv_goods_title"
                     app:layout_constraintTop_toBottomOf="@id/tv_goods_title"
@@ -240,9 +241,10 @@
 
                 <Button
                     android:id="@+id/btn_lottery"
-                    android:layout_width="76.67dp"
-                    android:layout_height="31.33dp"
+                    android:layout_width="88.7dp"
+                    android:layout_height="41.3dp"
                     android:layout_marginTop="8.5dp"
+                    android:layout_marginEnd="6.8dp"
                     android:background="@drawable/unboxing_bg_lottery"
                     android:gravity="center"
                     android:paddingBottom="3dp"
@@ -255,18 +257,11 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <View
-            android:id="@+id/yyw_task_view_separator"
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:background="#f4f4f4" />
-
         <com.donews.middle.views.TaskView
             android:id="@+id/yyw_task_view"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_marginStart="13.3dp"
-            android:layout_marginTop="10dp"
             android:layout_marginEnd="13.3dp"
             android:layout_marginBottom="10dp"
             android:visibility="visible" />

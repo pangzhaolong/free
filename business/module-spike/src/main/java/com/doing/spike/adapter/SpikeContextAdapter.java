@@ -21,7 +21,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.doing.spike.R;
@@ -65,7 +64,7 @@ public class SpikeContextAdapter extends RecyclerView.Adapter<SpikeContextAdapte
         RequestOptions options = RequestOptions.bitmapTransform(roundedCorners);
         String imageUrl = mCombinationSpikeBean.getSpikeBean().getGoodsList().get(position).getMainPic();
         imageUrl = UrlUtils.formatUrlPrefix(imageUrl);
-        Glide.with(mContext).load(imageUrl).apply(options).transforms(new CenterCrop(),new RoundedCorners(10)).into(holder.mSpikeContextItemBinding.picture);
+        Glide.with(mContext).load(imageUrl).apply(options).into(holder.mSpikeContextItemBinding.picture);
         holder.mSpikeContextItemBinding.originalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         if (mCombinationSpikeBean.getRoundsListDTO() != null && mCombinationSpikeBean.getRoundsListDTO().getStatus() == 2) {
             holder.mSpikeContextItemBinding.grabbedBg.setBackgroundDrawable(mContext.getDrawable(R.drawable.spike_green_shape));

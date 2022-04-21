@@ -1,6 +1,7 @@
 package com.donews.mine;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -19,13 +19,18 @@ import com.blankj.utilcode.util.BarUtils;
 import com.dn.drouter.ARouteHelper;
 import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.LotteryStatusEvent;
+import com.dn.sdk.AdCustomError;
+import com.dn.sdk.listener.interstitial.SimpleInterstitialFullListener;
+import com.dn.sdk.listener.interstitial.SimpleInterstitialListener;
 import com.donews.base.utils.ToastUtil;
-import com.donews.common.ad.business.monitor.PageMonitor;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
-import com.donews.common.router.providers.IARouterLoginProvider;
+import com.donews.middle.adutils.InterstitialAd;
+import com.donews.middle.adutils.InterstitialFullAd;
+import com.donews.middle.adutils.adcontrol.AdControlManager;
 import com.donews.middle.views.BarrageView;
+import com.donews.middle.views.TaskView;
 import com.donews.mine.adapters.MineWinningCodeAdapter;
 import com.donews.mine.bean.resps.RecommendGoodsResp;
 import com.donews.mine.databinding.MineFragmentWinningCodeBinding;
@@ -33,7 +38,11 @@ import com.donews.mine.viewModel.MineOpenWinningViewModel;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
-import com.scwang.smart.refresh.layout.constant.RefreshState;
+import com.donews.yfsdk.check.InterstitialAdCheck;
+import com.donews.yfsdk.moniter.PageMonitor;
+import com.donews.yfsdk.monitor.InterstitialFullAdCheck;
+import com.donews.yfsdk.monitor.PageMoniterCheck;
+import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -75,11 +84,8 @@ public class MineOpenWinningFragment extends
     private ViewGroup adapterNotOpenMyAddRecordHead = null;
     MineWinningCodeAdapter adapter;
     private TextView timeHH;
-    private TextView timeHH1;
     private TextView timeMM;
-    private TextView timeMM1;
     private TextView timeSS;
-    private TextView timeSS1;
     private BarrageView barrageView;
     private BarrageView barrageView2;
     private boolean isLoadStart = false;
@@ -87,10 +93,64 @@ public class MineOpenWinningFragment extends
     private int scrollTop0Count = 0; //是否初始加载数据
     private boolean isInitCommData = false; //是否初始加载了数据
 
+    private TaskView mTaskView = null;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new PageMonitor().attach(this);
+        new PageMonitor().attach(this, new PageMonitor.PageListener() {
+            @NonNull
+            @Override
+            public AdCustomError checkShowAd() {
+                if (AdControlManager.INSTANCE.getAdControlBean().getUseInstlFullWhenSwitch()) {
+                    return InterstitialFullAdCheck.INSTANCE.isEnable();
+                } else {
+                    return InterstitialAdCheck.INSTANCE.isEnable();
+                }
+            }
+
+            @Override
+            public int getIdleTime() {
+                return AdControlManager.INSTANCE.getAdControlBean().getNoOperationDuration();
+            }
+
+            @Override
+            public void showAd() {
+                Activity activity = requireActivity();
+                if (activity == null || activity.isFinishing()) {
+                    return;
+                }
+                if (!AdControlManager.INSTANCE.getAdControlBean().getUseInstlFullWhenSwitch()) {
+                    InterstitialAd.INSTANCE.showAd(activity, new SimpleInterstitialListener() {
+                        @Override
+                        public void onAdError(int code, String errorMsg) {
+                            super.onAdError(code, errorMsg);
+                            Logger.d("晒单页插屏加载广告错误---- code = $code ,msg =  $errorMsg ");
+                        }
+
+                        @Override
+                        public void onAdClosed() {
+                            super.onAdClosed();
+                            PageMoniterCheck.INSTANCE.showAdSuccess("mine_open_fragment");
+                        }
+                    });
+                } else {
+                    InterstitialFullAd.INSTANCE.showAd(activity, new SimpleInterstitialFullListener() {
+                        @Override
+                        public void onAdError(int errorCode, String errprMsg) {
+                            super.onAdError(errorCode, errprMsg);
+                            Logger.d("晒单页插全屏加载广告错误---- code = $errorCode ,msg =  $errprMsg ");
+                        }
+
+                        @Override
+                        public void onAdClose() {
+                            super.onAdClose();
+                            PageMoniterCheck.INSTANCE.showAdSuccess("mine_open_fragment");
+                        }
+                    });
+                }
+            }
+        });
     }
 
     @Override
@@ -263,7 +323,7 @@ public class MineOpenWinningFragment extends
         adapterOpenWinHead.findViewById(R.id.mine_win_code_sele_rules).setOnClickListener((v) -> {
             Bundle bundle = new Bundle();
             bundle.putString("url",
-                    "https://recharge-web.xg.tagtic.cn/ddyb/index.html#/rule");
+                    "https://recharge-web.xg.tagtic.cn/jdd/index.html#/rule");
             bundle.putString("title", "中奖规则");
             ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
             AnalysisUtils.onEventEx(getActivity(), Dot.Page_DetailRule);
@@ -279,12 +339,13 @@ public class MineOpenWinningFragment extends
             //去往晒单页
             adapterOpenWinHead.findViewById(R.id.mine_win_code_scan_all).performClick();
         });
+        mTaskView = adapterOpenWinHead.findViewById(R.id.mine_win_code_task_layout);
+        if (mTaskView != null) {
+            mTaskView.refreshYyw(TaskView.Place_Win_Code);
+        }
         timeHH = adapterNotOpenWinHead.findViewById(R.id.mine_frm_win_h);
-        timeHH1 = adapterNotOpenWinHead.findViewById(R.id.mine_frm_win_h1);
         timeMM = adapterNotOpenWinHead.findViewById(R.id.mine_frm_win_m);
-        timeMM1 = adapterNotOpenWinHead.findViewById(R.id.mine_frm_win_m1);
         timeSS = adapterNotOpenWinHead.findViewById(R.id.mine_frm_win_s);
-        timeSS1 = adapterNotOpenWinHead.findViewById(R.id.mine_frm_win_s1);
         adapter = new MineWinningCodeAdapter();
         adapter.from = from;
         //设置没有更多数据
@@ -427,30 +488,6 @@ public class MineOpenWinningFragment extends
         }
         adapter.getLoadMoreModule().setAutoLoadMore(false);
         mDataBinding.mainWinCodeRefresh.autoRefresh();
-        //处理状态栏背景
-        mDataBinding.mineWinCodeList.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            final float flgPx = 200; //滑动距离
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                if (recyclerView.computeVerticalScrollOffset() < flgPx) {
-                    if (mDataBinding.mainWinTitleBg.getAlpha() != 0) {
-                        mDataBinding.mainWinTitleBg.setAlpha(0);
-                    }
-                } else {
-                    float offs = (recyclerView.computeVerticalScrollOffset() - flgPx) / flgPx;
-                    if (offs > 1) {
-                        if (mDataBinding.mainWinTitleBg.getAlpha() != 1) {
-                            mDataBinding.mainWinTitleBg.setAlpha(1);
-                        }
-                    } else {
-                        if (mDataBinding.mainWinTitleBg.getAlpha() != offs) {
-                            mDataBinding.mainWinTitleBg.setAlpha(offs);
-                        }
-                    }
-                }
-            }
-        });
     }
 
     //添加列表的已开奖头
@@ -537,7 +574,6 @@ public class MineOpenWinningFragment extends
             adapterNotOpenWinHead.setVisibility(View.VISIBLE);
             addListNotOpenWinHead();
 
-            TextView djsTitle = adapterNotOpenWinHead.findViewById(R.id.mine_frm_win_djs_title);
             TextView lgoinOkTv = adapterNotOpenWinHead.findViewById(R.id.mine_tv_djgb);
             TextView lgoinBut = adapterNotOpenWinHead.findViewById(R.id.mine_tv_login);
             LinearLayout myAddll = adapterNotOpenWinHead.findViewById(R.id.mine_win_code_win_connect_layout);
@@ -552,7 +588,6 @@ public class MineOpenWinningFragment extends
                         mViewModel.detailLivData.getValue().record.size() > 0) {
                     myAddll.setVisibility(View.VISIBLE); //有参与记录
                     lgoinOkTv.setText("大奖即将公布");
-//                    djsTitle.setText("开奖倒计时");
                     if (adapterNotOpenWinHead.getTag() == null ||
                             adapterNotOpenWinHead.getTag() != mViewModel.detailLivData.getValue()) {
                         adapterNotOpenWinHead.setTag(mViewModel.detailLivData.getValue());
@@ -572,7 +607,7 @@ public class MineOpenWinningFragment extends
                             .loginWX(this.toString(), "开奖页>登录按钮");
                 });
             }
-            mViewModel.updateCountDownUI(timeHH, timeHH1, timeMM, timeMM1, timeSS, timeSS1);
+            mViewModel.updateCountDownUI(timeHH, timeMM, timeSS);
             if (!isInitCommData) {
                 isInitCommData = true;
                 mViewModel.loadRecommendData(adapter.pageSize); //加载推荐数据
@@ -629,6 +664,14 @@ public class MineOpenWinningFragment extends
                 isInitCommData = true;
                 mViewModel.loadRecommendData(adapter.pageSize); //加载推荐数据
             }
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (mTaskView != null) {
+            mTaskView.release();
         }
     }
 }

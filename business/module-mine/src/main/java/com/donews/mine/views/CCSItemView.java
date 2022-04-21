@@ -30,7 +30,7 @@ public class CCSItemView extends FrameLayout {
     public void setCityAndSpeed(CSBean csBean) {
         mCityTv.setText(csBean.city);
         SpannableString spannableString = new SpannableString(csBean.speed);
-        ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(Color.parseColor("#E9423E"));
+        ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(Color.parseColor("#E9433E"));
         spannableString.setSpan(foregroundColorSpan, spannableString.length()-1, spannableString.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         mSpeedTv.setText(spannableString);
 //        invalidate();

@@ -3,6 +3,7 @@ package com.donews.front.dialog;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
@@ -20,11 +21,11 @@ import com.donews.common.router.RouterFragmentPath;
 import com.donews.front.BuildConfig;
 import com.donews.front.R;
 import com.donews.front.databinding.FrontLotteryMore4RpDialogBinding;
+import com.donews.front.utils.AnimationUtils;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoods;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoodsResp;
-import com.donews.middle.abswitch.OtherSwitch;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.dialog.BaseDialog;
-import com.donews.middle.utils.LottieUtil;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
@@ -85,7 +86,7 @@ public class LotteryMore4RpDialog extends BaseDialog<FrontLotteryMore4RpDialogBi
                 ARouter.getInstance()
                         .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                         .withString("goods_id", mGoods.getGoodsId())
-                        .withBoolean("start_lottery", OtherSwitch.Ins().isOpenAutoLottery())
+                        .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
                         .navigation();
             } catch (Exception ignored) {
             }
@@ -95,17 +96,9 @@ public class LotteryMore4RpDialog extends BaseDialog<FrontLotteryMore4RpDialogBi
             }
         });
 
-//        mDataBinding.frontLotteryMore4RpLotteryTv.setAnimation(AnimationUtils.setScaleAnimation(1000));
+        mDataBinding.frontLotteryMore4RpLotteryTv.setAnimation(AnimationUtils.setScaleAnimation(1000));
 
         mDataBinding.frontLotteryMore4RpCountsTv.setText(String.valueOf(mNeedLotteryCounts));
-
-        LottieUtil.initLottieView(mDataBinding.frontLotteryMore4RpHand);
-    }
-
-    @Override
-    public void dismiss() {
-        super.dismiss();
-        LottieUtil.cancelLottieView(mDataBinding.frontLotteryMore4RpHand);
     }
 
     public void showEx() {
@@ -161,10 +154,9 @@ public class LotteryMore4RpDialog extends BaseDialog<FrontLotteryMore4RpDialogBi
         }
 
         mDataBinding.frontLotteryMore4RpDescTv.setText(mGoods.getTitle());
-        mDataBinding.frontLotteryMore4RpCouponPriceTv.setText(String.format("%d", OtherSwitch.Ins().getLotteryPriceShow()));
-//        mDataBinding.frontLotteryMore4RpCouponPriceTv.setText(String.format("%.0f", mGoods.getDisplayPrice()));
-//        mDataBinding.frontLotteryMore4RpOriginPriceTv.setText(String.format("￥%.0f", mGoods.getOriginalPrice()));
-//        mDataBinding.frontLotteryMore4RpOriginPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
+        mDataBinding.frontLotteryMore4RpCouponPriceTv.setText(String.format("￥%.0f", mGoods.getDisplayPrice()));
+        mDataBinding.frontLotteryMore4RpOriginPriceTv.setText(String.format("￥%.0f", mGoods.getOriginalPrice()));
+        mDataBinding.frontLotteryMore4RpOriginPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
         if (mGoods.getTotalPeople() > 10000) {
             mDataBinding.frontLotteryMore4RpInfoTv.setText(String.format("累计%.02f万人参与抢购", mGoods.getTotalPeople() / 10000f));
         } else {

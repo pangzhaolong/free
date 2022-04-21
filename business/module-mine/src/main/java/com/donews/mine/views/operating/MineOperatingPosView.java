@@ -16,10 +16,10 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.blankj.utilcode.util.ConvertUtils;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.model.GlideUrl;
 import com.donews.mine.R;
 import com.donews.mine.utils.GlideUtils;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -183,6 +183,8 @@ public class MineOperatingPosView extends ViewPager {
                 hyViews.put(position, itemView);
                 initViewParams(position);
                 container.addView(itemView, position);
+
+//                AnalysisUtils.onEventEx(container.getContext(), Dot.MINE_YYW_SHOW, "" + position);
             }
             return itemView;
         }

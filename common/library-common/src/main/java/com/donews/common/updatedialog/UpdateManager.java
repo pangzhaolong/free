@@ -125,7 +125,7 @@ public class UpdateManager {
                 updateListener.update(false, false);
             }
             if (commonUpdateShowDialog) {
-                ToastUtil.show(UtilsConfig.getApplication(), "当前已是最新版本！");
+                ToastUtil.show(UtilsConfig.getApplication(), "已是最新版本,无需更新!");
             }
             return;
         }

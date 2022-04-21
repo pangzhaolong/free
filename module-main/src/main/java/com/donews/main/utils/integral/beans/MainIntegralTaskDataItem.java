@@ -3,10 +3,9 @@ package com.donews.main.utils.integral.beans;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 
-import com.dn.sdk.bean.integral.IntegralStateListener;
-import com.dn.sdk.bean.integral.ProxyIntegral;
+import com.dn.integral.jdd.integral.IntegralStateListener;
+import com.dn.integral.jdd.integral.ProxyIntegral;
 import com.donews.base.base.BaseApplication;
-import com.donews.base.utils.ToastUtil;
 import com.donews.common.contract.BaseCustomViewModel;
 import com.donews.main.utils.integral.MainIntegralTaskManager;
 import com.donews.middle.utils.CommonUtils;

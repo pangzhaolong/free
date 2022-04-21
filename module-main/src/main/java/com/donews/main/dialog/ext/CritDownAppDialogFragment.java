@@ -1,9 +1,12 @@
 package com.donews.main.dialog.ext;
 
 import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,28 +16,35 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.bumptech.glide.Glide;
-import com.dn.sdk.bean.integral.IntegralStateListener;
-import com.dn.sdk.bean.integral.ProxyIntegral;
-import com.dn.sdk.utils.IntegralComponent;
+import com.dn.integral.jdd.IntegralComponent;
+import com.dn.integral.jdd.integral.IntegralStateListener;
+import com.dn.integral.jdd.integral.ProxyIntegral;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.main.R;
 import com.donews.main.utils.integral.MainIntegralTaskManager;
 import com.donews.main.utils.integral.beans.MainIntegralTaskDataItem;
-import com.donews.middle.abswitch.OtherSwitch;
+import com.donews.middle.abswitch.ABSwitch;
+import com.donews.network.subsciber.DownloadSubscriber;
+import com.orhanobut.logger.Logger;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -142,7 +152,7 @@ public class CritDownAppDialogFragment extends DialogFragment {
         contentListll = getView().findViewById(R.id.main_crit_down_item_layout);
         close = getView().findViewById(R.id.main_crit_down_close);
         tiltleDesc = getView().findViewById(R.id.main_crit_td);
-        int time = OtherSwitch.Ins().getScoreTaskPlayTime();
+        int time = ABSwitch.Ins().getScoreTaskPlayTime();
         tiltleDesc.setText("体验下方任一APP" + time + "s即可解锁");
         close.setOnClickListener(v -> {
             if (closeListener != null) {

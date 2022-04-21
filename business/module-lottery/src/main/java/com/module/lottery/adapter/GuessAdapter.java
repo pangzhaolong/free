@@ -8,13 +8,16 @@ package com.module.lottery.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
+import android.text.style.ImageSpan;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +27,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
@@ -33,8 +37,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
-import com.donews.middle.abswitch.OtherSwitch;
-import com.donews.middle.utils.CriticalModelTool;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.UrlUtils;
 import com.module.lottery.bean.CommodityBean;
@@ -42,9 +44,9 @@ import com.module.lottery.bean.LotteryCodeBean;
 import com.module.lottery.bean.MaylikeBean;
 import com.module.lottery.bean.WinLotteryBean;
 import com.module.lottery.ui.LotteryActivity;
-import com.module.lottery.utils.FoundationUtils;
 import com.module.lottery.utils.ImageUtils;
 import com.module.lottery.utils.ScrollLinearLayoutManager;
+import com.module.lottery.utils.TopLinearSmoothScroller;
 import com.module.lottery.utils.VerticalImageSpan;
 import com.module_lottery.BuildConfig;
 import com.module_lottery.R;
@@ -100,18 +102,18 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             if (holder instanceof ListHolder && mCommodityBean != null) {
                 ListHolder listHolder = ((ListHolder) (holder));
                 //价格
-                listHolder.mGuesslikeHeadBinding.price.setText(OtherSwitch.Ins().getLotteryPriceShow() + "");
-                listHolder.mGuesslikeHeadBinding.postage.setText(OtherSwitch.Ins().getLotteryPriceShow() + "元包邮领奖");
+                listHolder.mGuesslikeHeadBinding.price.setText(mCommodityBean.getDisplayPrice() + "");
                 //参考价格
                 listHolder.mGuesslikeHeadBinding.referPrice.setText("参考价: " + mCommodityBean.getOriginalPrice() + "");
-                listHolder.mGuesslikeHeadBinding.referPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG); //中划线
+                listHolder.mGuesslikeHeadBinding.referPrice.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG); //中划线
                 int w = mContext.getResources().getDimensionPixelOffset(R.dimen.lottery_constant_144);
                 int h = mContext.getResources().getDimensionPixelOffset(R.dimen.lottery_constant_52);
 
-                setTextImage(w, h, listHolder.mGuesslikeHeadBinding.title, mCommodityBean.getTitle(), R.mipmap.free_panic_buying);
+                setTextImage(w,h, listHolder.mGuesslikeHeadBinding.title, mCommodityBean.getTitle(),R.mipmap.free_panic_buying);
 
                 listHolder.mGuesslikeHeadBinding.cycle.setText("第" + mCommodityBean.getPeriod() + "期");
                 initViewPager(listHolder);
+
 
 
                 listHolder.mGuesslikeHeadBinding.lotteryContainer.setOnClickListener(new View.OnClickListener() {
@@ -123,7 +125,7 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     }
                 });
                 //设置中奖参与人数的滚动列表
-                if (mScrollListAdapter == null) {
+                if(mScrollListAdapter==null){
                     mScrollListAdapter = new ScrollListAdapter(mContext);
                 }
                 listHolder.mGuesslikeHeadBinding.scrollList.setLayoutManager(new ScrollLinearLayoutManager(mContext));
@@ -178,7 +180,7 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 int w = mContext.getResources().getDimensionPixelOffset(R.dimen.merchant_icon_w);
                 int h = mContext.getResources().getDimensionPixelOffset(R.dimen.merchant_icon_h);
 
-                setTextImage(w, h, guessViewHolder.mGuesslikeItemLayoutBinding.itemTitle, mCommodityBean.getGuessLikeData().get(position - 1).getTitle() + "", R.mipmap.taobao_icon);
+                setTextImage(w,h,guessViewHolder.mGuesslikeItemLayoutBinding.itemTitle, mCommodityBean.getGuessLikeData().get(position - 1).getTitle() + "",R.mipmap.taobao_icon);
                 guessViewHolder.mGuesslikeItemLayoutBinding.itemPrice.setText("¥ " + mCommodityBean.getGuessLikeData().get(position - 1).getOriginalPrice() + "");
                 guessViewHolder.mGuesslikeItemLayoutBinding.itemPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
                 guessViewHolder.mGuesslikeItemLayoutBinding.itemLayout.setOnClickListener(new View.OnClickListener() {
@@ -202,7 +204,7 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
 
-    private void setTextImage(int w, int h, TextView textView, String value, int id) {
+    private void setTextImage(int w,int h,TextView textView, String value,int id) {
         if ((textView != null) && (mContext != null)) {
             SpannableString spannableString = new SpannableString("  " + value);
             Drawable drawable = mContext.getResources().getDrawable(id);
@@ -243,8 +245,8 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     //初始化详情页面顶部的ViewPager
     private void initViewPager(ListHolder listHolder) {
-        if ((mCommodityBean != null) && (mCommodityBean.getPics() != null)) {
-            if (mCommodityBean.getPics().size() == 0) {
+        if ((mCommodityBean != null) && (mCommodityBean.getPics() != null) ) {
+            if(mCommodityBean.getPics().size()==0){
                 mCommodityBean.getPics().add(mCommodityBean.getMainPic());
             }
             flag = 0;
@@ -261,7 +263,7 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 listHolder.mGuesslikeHeadBinding.headPager.setAdapter(viewPagerAdapter);
                 listHolder.mGuesslikeHeadBinding.pointLayout.removeAllViews();
                 //动态创建小点点
-                if (list.size() > 1) {
+                if( list.size() >1){
                     for (int i = 0; i < mCommodityBean.getPics().size(); i++) {
                         LinearLayout view = (LinearLayout) LayoutInflater.from(mContext).inflate(R.layout.point_layout, null);
                         listHolder.mGuesslikeHeadBinding.pointLayout.addView(view);
@@ -291,6 +293,7 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                             } catch (Exception e) {
                                 Logger.d(e + "");
                             }
+
                         }
 
                         @Override
@@ -307,52 +310,33 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     //初始化抽奖码
     public void initListLottery(GuesslikeHeadLayoutBinding guessLikeHead, LotteryCodeBean lotteryCodeBean) {
-        try {
-            //获取自选码的为位置
-            if (guessLikeHead != null) {
-                int refer = 0;
-                for (int i = 0; i < guessLikeHead.lotteryContainer.getChildCount(); i++) {
-                    LinearLayout linearLayout = (LinearLayout) guessLikeHead.lotteryContainer.getChildAt(i);
-                    for (int j = 0; j < linearLayout.getChildCount(); j++) {
-                        if (refer >= lotteryCodeBean.getCodes().size()) {
-                            TextView textView = (TextView) linearLayout.getChildAt(j);
-                            textView.setTextColor(mContext.getResources().getColor(R.color.pending));
-                            TextPaint paint = textView.getPaint();
-                            if (OtherSwitch.Ins().isOpenOptionalCode() && !CriticalModelTool.ifCriticalStrike()) {
-                                if (FoundationUtils.getOptionalCodeType(refer)) {
-                                    textView.setText("自选码");
-                                    textView.setTag(true);
-                                    textView.setTextColor(Color.WHITE);
-                                    textView.setBackgroundDrawable(mContext.getResources().getDrawable(R.mipmap.optional_code_bg));
-                                } else {
-                                    textView.setTag(false);
-                                    textView.setText("待领取");
-                                    textView.setBackgroundDrawable(mContext.getResources().getDrawable(R.mipmap.no_lottery_code_bg));
-                                }
-                            } else {
-                                textView.setTag(false);
-                                textView.setText("待领取");
-                                textView.setBackgroundDrawable(mContext.getResources().getDrawable(R.mipmap.no_lottery_code_bg));
-                            }
-                            paint.setFakeBoldText(false);
-                        } else {
-                            TextView textView = (TextView) linearLayout.getChildAt(j);
-                            textView.setText(lotteryCodeBean.getCodes().get(refer));
-                            textView.setTextColor(mContext.getResources().getColor(R.color.lottery_code));
+        if (guessLikeHead != null) {
+            int refer = 0;
+            for (int i = 0; i < guessLikeHead.lotteryContainer.getChildCount(); i++) {
+                LinearLayout linearLayout = (LinearLayout) guessLikeHead.lotteryContainer.getChildAt(i);
+                for (int j = 0; j < linearLayout.getChildCount(); j++) {
+                    if (refer >= lotteryCodeBean.getCodes().size()) {
+                        TextView textView = (TextView) linearLayout.getChildAt(j);
+                        textView.setText("待领取");
+                        textView.setTextColor(mContext.getResources().getColor(R.color.pending));
+                        TextPaint paint = textView.getPaint();
+                        textView.setBackgroundDrawable(mContext.getResources().getDrawable(R.mipmap.no_lottery_code_bg));
+                        paint.setFakeBoldText(false);
+                        continue;
+                    } else {
+                        TextView textView = (TextView) linearLayout.getChildAt(j);
+                        textView.setText(lotteryCodeBean.getCodes().get(refer));
+                        textView.setTextColor(mContext.getResources().getColor(R.color.lottery_code));
 
-                            textView.setBackgroundDrawable(mContext.getResources().getDrawable(R.mipmap.select_code_bg));
-                            TextPaint paint = textView.getPaint();
-                            paint.setFakeBoldText(true);
-                        }
-                        refer++;
+                        textView.setBackgroundDrawable(mContext.getResources().getDrawable(R.mipmap.select_code_bg));
+                        TextPaint paint = textView.getPaint();
+                        paint.setFakeBoldText(true);
                     }
+                    refer++;
                 }
             }
-        } catch (Exception e) {
         }
     }
-
-
 
     //设置item的,类型
     @Override

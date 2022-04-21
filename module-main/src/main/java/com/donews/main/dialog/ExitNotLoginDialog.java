@@ -1,7 +1,5 @@
 package com.donews.main.dialog;
 
-import static com.donews.middle.utils.CommonUtils.LOTTERY_FINGER;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -28,7 +26,7 @@ import com.donews.main.R;
 import com.donews.main.databinding.MainInterceptDialogLayoutBinding;
 import com.donews.main.utils.ClickDoubleUtil;
 import com.donews.main.utils.ExitInterceptUtils;
-import com.donews.middle.abswitch.OtherSwitch;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
@@ -151,14 +149,14 @@ public class ExitNotLoginDialog extends BaseDialog<MainInterceptDialogLayoutBind
         } else if (mType == TYPE_2) {
             //未登录时
             boolean protocol = getSharedPreferences().getBoolean("protocol", false) ||
-                    OtherSwitch.Ins().isOpenAutoAgreeProtocol();
+                    ABSwitch.Ins().isOpenAutoAgreeProtocol();
             mDataBinding.checkBox.setChecked(protocol);
 //            mDataBinding.title.setText(getContext().getResources().getString(R.string.return_intercept_title));
 //            mDataBinding.hintTitle.setText(getContext().getResources().getString(R.string.return_intercept_hint_no));
 //            mDataBinding.hint.setVisibility(View.VISIBLE);
             mDataBinding.withdrawHint.setText(getContext().getResources().getString(R.string.return_intercept_withdraw_no));
             mDataBinding.jumpButton.setText(getContext().getResources().getString(R.string.return_intercept_button_no));
-//            mDataBinding.protocolLayout.setVisibility(View.VISIBLE);
+            mDataBinding.protocolLayout.setVisibility(View.VISIBLE);
             mDataBinding.userProtocol.setOnClickListener(this);
             mDataBinding.privacyProtocol.setOnClickListener(this);
         }
@@ -198,7 +196,7 @@ public class ExitNotLoginDialog extends BaseDialog<MainInterceptDialogLayoutBind
 
         //手
         mDataBinding.maskingHand.setImageAssetsFolder("images");
-        mDataBinding.maskingHand.setAnimation(LOTTERY_FINGER);
+        mDataBinding.maskingHand.setAnimation("lottery_finger.json");
         mDataBinding.maskingHand.loop(true);
         mDataBinding.maskingHand.playAnimation();
 
@@ -242,7 +240,7 @@ public class ExitNotLoginDialog extends BaseDialog<MainInterceptDialogLayoutBind
         //用户协议
         if (v.getId() == R.id.user_protocol) {
             Bundle bundle = new Bundle();
-            bundle.putString("url", BuildConfig.USER_PROTOCOL);
+            bundle.putString("url", BuildConfig.USER_PROCOTOL);
             bundle.putString("title", "用户协议");
             ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
         }

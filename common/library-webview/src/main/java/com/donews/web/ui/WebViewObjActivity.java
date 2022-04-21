@@ -10,16 +10,19 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.drouter.ARouteHelper;
-import com.donews.common.ad.business.loader.AdManager;
+import com.dn.sdk.listener.interstitial.IAdInterstitialFullScreenListener;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.share.ShareWeixinApp;
+import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.JsonUtils;
 import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.web.R;
@@ -31,6 +34,7 @@ import com.donews.web.manager.ISFinishCallBack;
 import com.donews.web.manager.WebModel;
 import com.donews.web.manager.WebViewManager;
 import com.donews.web.viewmodel.WebViewModel;
+import com.donews.yfsdk.loader.AdManager;
 import com.gyf.immersionbar.ImmersionBar;
 
 @Route(path = RouterActivityPath.Web.PAGER_WEB_ACTIVITY)
@@ -119,7 +123,74 @@ public class WebViewObjActivity extends MvvmBaseLiveDataActivity<WebViewObjActiv
         if (showAd) {
             new Handler().postDelayed(() -> {
                 if (!mIsPaused) {
-                    AdManager.INSTANCE.loadInterstitialAd(WebViewObjActivity.this, null);
+                    AdManager.INSTANCE.loadAndShowInterstitialFullAd(WebViewObjActivity.this, new IAdInterstitialFullScreenListener() {
+                        @Override
+                        public void onAdStatus(int code, @Nullable Object any) {
+
+                        }
+
+                        @Override
+                        public void onAdLoad() {
+                            AnalysisUtils.onEventEx(WebViewObjActivity.this, Dot.YYW_INTERSTITIAL_FULL_LOAD);
+                        }
+
+                        @Override
+                        public void onAdCached() {
+
+                        }
+
+                        @Override
+                        public void onAdError(int errorCode, @NonNull String errprMsg) {
+                            AnalysisUtils.onEventEx(WebViewObjActivity.this, Dot.YYW_INTERSTITIAL_FULL_ERR, String.valueOf(errorCode));
+                        }
+
+                        @Override
+                        public void onAdShow() {
+                            AnalysisUtils.onEventEx(WebViewObjActivity.this, Dot.YYW_INTERSTITIAL_FULL_SHOW);
+                        }
+
+                        @Override
+                        public void onAdClicked() {
+
+                        }
+
+                        @Override
+                        public void onAdComplete() {
+
+                        }
+
+                        @Override
+                        public void onAdClose() {
+
+                        }
+
+                        @Override
+                        public void onSkippedVideo() {
+
+                        }
+
+                        @Override
+                        public void onRewardVerify(boolean reward) {
+
+                        }
+
+                        @Override
+                        public void onAdShowFail(int errCode, @NonNull String errMsg) {
+                            AnalysisUtils.onEventEx(WebViewObjActivity.this, Dot.YYW_INTERSTITIAL_FULL_SHOW_FAIL, String.valueOf(errCode));
+                        }
+
+                        @Override
+                        public void onAdVideoError(int errCode, @NonNull String errMsg) {
+
+                        }
+
+                        @Override
+                        public void onAdStartLoad() {
+                            AnalysisUtils.onEventEx(WebViewObjActivity.this, Dot.YYW_INTERSTITIAL_FULL_LOAD);
+                        }
+                    });
+                    AnalysisUtils.onEventEx(WebViewObjActivity.this, Dot.YYW_INTERSTITIAL_FULL);
+//                    AdManager.INSTANCE.loadInterstitialAd(WebViewObjActivity.this, null);
                 }
             }, 500);
         }

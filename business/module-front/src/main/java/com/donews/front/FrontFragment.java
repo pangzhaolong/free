@@ -2,6 +2,7 @@ package com.donews.front;
 
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -28,6 +29,9 @@ import com.dn.events.events.FrontScrollEvent;
 import com.dn.events.events.LoginLodingStartStatus;
 import com.dn.events.events.RedPackageStatus;
 import com.dn.events.events.WalletRefreshEvent;
+import com.dn.sdk.AdCustomError;
+import com.dn.sdk.listener.interstitial.SimpleInterstitialFullListener;
+import com.dn.sdk.listener.interstitial.SimpleInterstitialListener;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
@@ -35,7 +39,9 @@ import com.donews.front.adapter.FragmentAdapter;
 import com.donews.front.databinding.FrontFragmentBinding;
 import com.donews.front.dialog.LotteryMore4RpDialog;
 import com.donews.front.viewModel.FrontViewModel;
-import com.donews.middle.abswitch.OtherSwitch;
+import com.donews.middle.adutils.InterstitialAd;
+import com.donews.middle.adutils.InterstitialFullAd;
+import com.donews.middle.adutils.adcontrol.AdControlManager;
 import com.donews.middle.bean.WalletBean;
 import com.donews.middle.bean.front.LotteryCategoryBean;
 import com.donews.middle.bean.home.ServerTimeBean;
@@ -52,8 +58,13 @@ import com.donews.utilslibrary.utils.DensityUtils;
 import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.SPUtils;
+import com.donews.yfsdk.check.InterstitialAdCheck;
+import com.donews.yfsdk.moniter.PageMonitor;
+import com.donews.yfsdk.monitor.InterstitialFullAdCheck;
+import com.donews.yfsdk.monitor.PageMoniterCheck;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -87,17 +98,78 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     private FrontHandler mFrontHandler = null;
 
     private ActivityRuleDialog mRuleDialog = null;
-    //    private FirstGuidLotteryDialog mFirstGuidLotteryDialog = null;
     private LotteryMore4RpDialog mLotteryMore4RpDialog = null;
 
     private int mCurSelectPosition = 0;
-    private boolean mFindFirstReadyRp = false;
     private long mPreClickRpTime = 0;
     private boolean mHasRefreshed = false;
 
     private WalletBean mWalletBean;
 
     private Context mContext;
+
+//    private boolean mIsFirstCheckAd = true;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        /*new PageMonitor().attach(this, new PageMonitor.PageListener() {
+            @NonNull
+            @Override
+            public AdCustomError checkShowAd() {
+                if (mIsFirstCheckAd) {
+                    mIsFirstCheckAd = false;
+                    return AdCustomError.LimitAdError;
+                }
+
+                if (AdControlManager.INSTANCE.getAdControlBean().getUseInstlFullWhenSwitch()) {
+                    return InterstitialFullAdCheck.INSTANCE.isEnable();
+                } else {
+                    return InterstitialAdCheck.INSTANCE.isEnable();
+                }
+            }
+
+            @Override
+            public int getIdleTime() {
+                return AdControlManager.INSTANCE.getAdControlBean().getNoOperationDuration();
+            }
+
+            @Override
+            public void showAd() {
+                Activity activity = requireActivity();
+                if (activity == null || activity.isFinishing()) {
+                    return;
+                }
+                if (!AdControlManager.INSTANCE.getAdControlBean().getUseInstlFullWhenSwitch()) {
+                    InterstitialAd.INSTANCE.showAd(activity, new SimpleInterstitialListener() {
+                        @Override
+                        public void onAdError(int code, String errorMsg) {
+                            super.onAdError(code, errorMsg);
+                        }
+
+                        @Override
+                        public void onAdClosed() {
+                            super.onAdClosed();
+                            PageMoniterCheck.INSTANCE.showAdSuccess("front_fragment");
+                        }
+                    });
+                } else {
+                    InterstitialFullAd.INSTANCE.showAd(activity, new SimpleInterstitialFullListener() {
+                        @Override
+                        public void onAdError(int errorCode, String errprMsg) {
+                            super.onAdError(errorCode, errprMsg);
+                        }
+
+                        @Override
+                        public void onAdClose() {
+                            super.onAdClose();
+                            PageMoniterCheck.INSTANCE.showAdSuccess("front_fragment");
+                        }
+                    });
+                }
+            }
+        });*/
+    }
 
     @Override
     public int getLayoutId() {
@@ -191,8 +263,14 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         }
         initSrl();
 
-        mDataBinding.frontLotteryRuleBtnLl.setOnClickListener(v -> gotoLotteryRule());
-        mDataBinding.frontLotteryGotoLl.setOnClickListener(v -> gotoLotteryRule());
+        mDataBinding.frontLotteryRuleBtnLl.setOnClickListener(v -> ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY)
+                .withString("title", "中奖攻略")
+                .withString("url", BuildConfig.WEB_BASE_URL)
+                .navigation());
+        mDataBinding.frontLotteryGotoLl.setOnClickListener(v -> ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY)
+                .withString("title", "中奖攻略")
+                .withString("url", BuildConfig.WEB_BASE_URL)
+                .navigation());
         mDataBinding.frontLotteryRuleRl.setVisibility(View.GONE);
 
         startTimer();
@@ -205,17 +283,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         });
 
         refreshLayout();
-    }
-
-    private void gotoLotteryRule() {
-        String url = BuildConfig.WEB_BASE_URL;
-        if (OtherSwitch.Ins().getLotteryPriceShow() == 1) {
-            url = "https://recharge-web.xg.tagtic.cn/ddyb/index.html#/introduction";
-        }
-        ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY)
-                .withString("title", "中奖攻略")
-                .withString("url", url)
-                .navigation();
     }
 
     // 更新首页ui布局
@@ -669,7 +736,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         if (rpBean.getOpened()) {
             mOpenedRpCounts++;
             iv.setAlpha(0.7f);
-            iv.setBackgroundResource(R.drawable.front_rp_open);
+            iv.setBackgroundResource(R.drawable.front_rp_oen);
             tv.setText("已开");
             params.gravity = Gravity.CENTER;
             params.bottomMargin = DensityUtils.dp2px(16);
@@ -733,8 +800,7 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
 
         nCloseRpCounts = 0;
         mOpenedRpCounts = 0;
-        mFindFirstReadyRp = false;
-        int topColor = Color.parseColor("#AC623C");
+        int topColor = Color.parseColor("#764D38");
         int bottomColor = Color.parseColor("#FFF3D3");
         changeRpStatus(rpBean, topColor, bottomColor
                 , mDataBinding.frontRpOpenFl1, mDataBinding.frontRpTv1, mDataBinding.tomorrow01, mDataBinding.frontRpIv1, mDataBinding.frontRpProgressDoneIv1, 1);
@@ -781,9 +847,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             }
             EventBus.getDefault().post(new RedPackageStatus(0, rpBean.getHadLotteryTotal()));
         }
-
-        mDataBinding.frontRpLl.requestLayout();
-        mDataBinding.frontRpLl.postInvalidate();
 
         SPUtils.setInformain(KeySharePreferences.CLOSE_RED_PACKAGE_COUNTS, nCloseRpCounts);
         SPUtils.setInformain(KeySharePreferences.OPENED_RED_PACKAGE_COUNTS, mOpenedRpCounts);

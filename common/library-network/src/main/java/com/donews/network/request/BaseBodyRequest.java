@@ -60,7 +60,11 @@ public abstract class BaseBodyRequest<R extends BaseBodyRequest> extends BaseReq
         /**
          * Map RequestBody方式上传
          */
-        BODY
+        BODY,
+        /**
+         * 针对上传图片单独做个处理
+         */
+        IMAGE
     }
 
     private UploadType currentUploadType = UploadType.PART;
@@ -185,8 +189,10 @@ public abstract class BaseBodyRequest<R extends BaseBodyRequest> extends BaseReq
         } else {
             if (currentUploadType == UploadType.PART) {//part方式上传
                 return uploadFilesWithParts();
-            } else {//body方式上传
+            } else if (currentUploadType == UploadType.BODY){//body方式上传
                 return uploadFilesWithBodys();
+            } else {
+                return uploadFilesWithImages();
             }
         }
     }
@@ -225,6 +231,19 @@ public abstract class BaseBodyRequest<R extends BaseBodyRequest> extends BaseReq
             }
         }
         return apiManager.uploadFiles(url, mBodyMap);
+    }
+
+    //只支持单个文件上传
+    protected Observable<ResponseBody> uploadFilesWithImages() {
+        RequestBody requestBody = null;
+        for (Map.Entry<String, List<HttpParams.FileWrapper>> entry : params.fileParamsMap.entrySet()) {
+            List<HttpParams.FileWrapper> fileValues = entry.getValue();
+            for (HttpParams.FileWrapper fileWrapper : fileValues) {
+                requestBody = getRequestBody(fileWrapper);
+                break;
+            }
+        }
+        return apiManager.postBody(url, requestBody);
     }
 
     //文件方式

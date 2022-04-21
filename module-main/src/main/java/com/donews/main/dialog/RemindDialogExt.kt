@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import com.donews.base.base.BaseApplication
 import com.donews.base.fragmentdialog.AbstractFragmentDialog
 import com.donews.main.R
 import com.donews.main.databinding.MainExitDialogRemindExtBinding
@@ -28,7 +27,7 @@ class RemindDialogExt : AbstractFragmentDialog<MainExitDialogRemindExtBinding>()
     EasyPermissions.PermissionCallbacks {
 
     companion object {
-        private const val CALENDAR_TITLE = "多多有宝开奖提醒"
+        private const val CALENDAR_TITLE = "奖多多开奖提醒"
         private const val REQUEST_PER_CODE = 10001
         private const val PARAMS_CONFIG = "config"
 
@@ -110,15 +109,8 @@ class RemindDialogExt : AbstractFragmentDialog<MainExitDialogRemindExtBinding>()
     }
 
     private fun checkPermission(): Boolean {
-        var con: Context? = context
-        if (con == null) {
-            con = BaseApplication.getInstance()
-        }
-        if(con == null){
-            return false
-        }
         return EasyPermissions.hasPermissions(
-            con,
+            context,
             Manifest.permission.READ_CALENDAR,
             Manifest.permission.WRITE_CALENDAR
         )

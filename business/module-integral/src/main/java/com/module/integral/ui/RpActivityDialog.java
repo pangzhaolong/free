@@ -16,16 +16,17 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.events.DoubleRpEvent;
 import com.dn.events.events.LoginLodingStartStatus;
-import com.dn.sdk.listener.IAdRewardVideoListener;
+import com.dn.sdk.listener.rewardvideo.IAdRewardVideoListener;
+import com.dn.sdk.listener.rewardvideo.SimpleRewardVideoListener;
 import com.donews.base.utils.ToastUtil;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
-import com.donews.common.ad.cache.AdVideoCacheUtils;
+import com.donews.middle.adutils.RewardVideoAd;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoods;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoodsResp;
-import com.donews.middle.abswitch.OtherSwitch;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.bean.WalletBean;
 import com.donews.middle.bean.rp.PreRpBean;
 import com.donews.network.EasyHttp;
@@ -100,7 +101,7 @@ public class RpActivityDialog extends MvvmBaseLiveDataActivity<MainRpDialogLayou
                         ARouter.getInstance()
                                 .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                                 .withString("goods_id", mGoods.getGoodsId())
-                                .withBoolean("start_lottery", OtherSwitch.Ins().isOpenAutoLottery())
+                                .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
                                 .withBoolean("privilege", true)
                                 .navigation();
                     }
@@ -207,7 +208,7 @@ public class RpActivityDialog extends MvvmBaseLiveDataActivity<MainRpDialogLayou
                             ARouter.getInstance()
                                     .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                                     .withString("goods_id", mGoods.getGoodsId())
-                                    .withBoolean("start_lottery", OtherSwitch.Ins().isOpenAutoLottery())
+                                    .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
                                     .withBoolean("privilege", true)
                                     .navigation();
                         }
@@ -240,7 +241,7 @@ public class RpActivityDialog extends MvvmBaseLiveDataActivity<MainRpDialogLayou
 
     private void doubleRp() {
         showLoading("视频加载中...");
-        IAdRewardVideoListener listener = new IAdRewardVideoListener() {
+        IAdRewardVideoListener listener = new SimpleRewardVideoListener() {
             @Override
             public void onAdStartLoad() {
             }
@@ -291,7 +292,7 @@ public class RpActivityDialog extends MvvmBaseLiveDataActivity<MainRpDialogLayou
             }
         };
 
-        AdVideoCacheUtils.INSTANCE.showRewardVideo(listener);
+        RewardVideoAd.INSTANCE.showPreloadRewardVideo(this, listener, false);
     }
 
     private void requestPreRp() {

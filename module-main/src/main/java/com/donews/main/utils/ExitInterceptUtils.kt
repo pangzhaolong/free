@@ -5,21 +5,21 @@ import android.content.Intent
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.alibaba.android.arouter.launcher.ARouter
-import com.dn.sdk.listener.impl.SimpleInterstitialListener
-import com.dn.sdk.listener.impl.SimpleRewardVideoListener
+import com.dn.sdk.listener.interstitial.SimpleInterstitialFullListener
+import com.dn.sdk.listener.rewardvideo.SimpleRewardVideoListener
 import com.donews.base.base.AppManager
 import com.donews.base.base.AppStatusConstant
 import com.donews.base.base.AppStatusManager
-import com.donews.common.ad.business.manager.JddAdConfigManager
-import com.donews.common.ad.business.loader.AdManager
-import com.donews.common.ad.business.monitor.LotteryAdCount
 import com.donews.common.router.RouterActivityPath
 import com.donews.common.router.RouterFragmentPath
 import com.donews.main.BuildConfig
 import com.donews.main.dialog.*
 import com.donews.main.entitys.resps.ExitInterceptConfig
 import com.donews.main.ui.RpActivity
-import com.donews.middle.abswitch.OtherSwitch
+import com.donews.middle.abswitch.ABSwitch
+import com.donews.middle.adutils.InterstitialFullAd
+import com.donews.middle.adutils.RewardVideoAd
+import com.donews.middle.adutils.adcontrol.AdControlManager
 import com.donews.middle.bean.HighValueGoodsBean
 import com.donews.middle.cache.GoodsCache
 import com.donews.middle.request.RequestUtil
@@ -34,6 +34,7 @@ import com.donews.utilslibrary.utils.AppInfo
 import com.donews.utilslibrary.utils.KeySharePreferences
 import com.donews.utilslibrary.utils.SPUtils
 import com.donews.utilslibrary.utils.withConfigParams
+import com.donews.yfsdk.monitor.LotteryAdCheck
 import com.orhanobut.logger.Logger
 
 /**
@@ -77,7 +78,7 @@ object ExitInterceptUtils {
 
     //已登录未抽奖的弹窗
     private var continueLotteryDialog: ContinueLotteryDialog? = null
-    var remindDialog: RemindDialogExt? = null
+    var remindDialog: RemindDialog? = null
 
     /**
      * 重置完成退出拦截的状态。否则退出拦截不生效
@@ -118,14 +119,6 @@ object ExitInterceptUtils {
                 mFirstClickBackTime = System.currentTimeMillis()
             }
         } else {
-            //测试只打开某个弹窗
-//            showRedPacketAllOpenDialog(activity)
-//            showWinNotAllOpenDialog(activity)
-//            showNotLoginDialog(activity)
-//            showContinueLotteryDialog(activity)
-//            showWinNotAllOpenDialog(activity)
-//            return
-
             if (isFinishBack) {
                 if (duration < CLICK_INTERVAL) {
                     exitApp(activity)
@@ -179,7 +172,7 @@ object ExitInterceptUtils {
      * @return Boolean false 抽过奖,true 未抽过奖
      */
     private fun checkNotLottery(): Boolean {
-        return !LotteryAdCount.todayLotteryExt()
+        return !LotteryAdCheck.todayLotteryExt()
     }
 
     /**
@@ -187,7 +180,7 @@ object ExitInterceptUtils {
      * @return 抽奖次数
      */
     private fun getNotLotteryCount(): Int {
-        return LotteryAdCount.getTodayLotteryCountExt()
+        return LotteryAdCheck.getTodayLotteryCountExt()
     }
 
     /**
@@ -265,7 +258,7 @@ object ExitInterceptUtils {
                 ARouter.getInstance()
                     .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                     .withString("goods_id", item!!.goodsId)
-                    .withBoolean("start_lottery", OtherSwitch.Ins().isOpenAutoLottery)
+                    .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery)
                     .navigation()
                 disMissDialog()
             }
@@ -541,11 +534,34 @@ object ExitInterceptUtils {
      * 显示提示弹出框(是否开启提醒、明日开奖的提示框)
      * @param activity AppCompatActivity
      */
-    public fun initRemindDialogEx() {
+    private fun showRemindDialog(activity: AppCompatActivity) {
         if (remindDialog != null && remindDialog!!.dialog != null && remindDialog!!.dialog!!.isShowing) {
             return
         }
-        remindDialog = RemindDialogExt()
+        remindDialog = RemindDialog.newInstance(exitInterceptConfig.remindConfig)
+            .apply {
+                setOnDismissListener {
+                    remindDialog = null
+                }
+                setOnSureListener {
+                    disMissDialog()
+                }
+
+                setOnCancelListener {
+                    disMissDialog()
+                }
+
+                setOnCloseListener {
+                    disMissDialog()
+                    closeExitDialog(activity)
+                }
+
+                setOnLaterListener {
+                    disMissDialog()
+                    exitApp(activity)
+                }
+            }
+        remindDialog?.show(activity.supportFragmentManager, RemindDialog::class.simpleName)
     }
 
     /**
@@ -558,12 +574,30 @@ object ExitInterceptUtils {
 
 
     private fun notLotteryExitApp(activity: AppCompatActivity) {
-        JddAdConfigManager.addListener {
-            val jddAdConfigBean = JddAdConfigManager.jddAdConfigBean
+        AdControlManager.addListener {
+            val jddAdConfigBean = AdControlManager.adControlBean
             if (jddAdConfigBean.notLotteryExitAppDialogAdEnable) {
                 if (jddAdConfigBean.notLotteryExitAppDialogAdType == 1) {
-                    AdManager.loadInterstitialAd(activity, object : SimpleInterstitialListener() {
+                    InterstitialFullAd.showAd(activity, object : SimpleInterstitialFullListener() {
+                        override fun onAdError(errorCode: Int, errprMsg: String) {
+                            super.onAdError(errorCode, errprMsg)
+                            if (jddAdConfigBean.notLotteryExitAppDialogAdMutex) {
+                                realExitApp(activity)
+                            } else {
+                                exitApp(activity)
+                            }
+                        }
 
+                        override fun onAdClose() {
+                            super.onAdClose()
+                            if (jddAdConfigBean.notLotteryExitAppDialogAdMutex) {
+                                realExitApp(activity)
+                            } else {
+                                exitApp(activity)
+                            }
+                        }
+                    })
+                    /*InterstitialAd.showAd(activity, object : SimpleInterstitialListener() {
                         override fun onAdError(code: Int, errorMsg: String?) {
                             super.onAdError(code, errorMsg)
                             if (jddAdConfigBean.notLotteryExitAppDialogAdMutex) {
@@ -581,10 +615,9 @@ object ExitInterceptUtils {
                                 exitApp(activity)
                             }
                         }
-                    })
+                    })*/
                 } else {
-                    AdManager.loadRewardVideoAd(activity, object : SimpleRewardVideoListener() {
-
+                    RewardVideoAd.loadRewardVideoAd(activity, object : SimpleRewardVideoListener() {
                         override fun onAdError(code: Int, errorMsg: String?) {
                             super.onAdError(code, errorMsg)
                             if (jddAdConfigBean.notLotteryExitAppDialogAdMutex) {
@@ -616,14 +649,25 @@ object ExitInterceptUtils {
      */
     @JvmStatic
     fun exitApp(activity: AppCompatActivity) {
-        LotteryAdCount.exitAppWithNotLottery()
-        JddAdConfigManager.addListener {
-            val jddAdConfigBean = JddAdConfigManager.jddAdConfigBean
-            val times = LotteryAdCount.getExitAppWithNotLotteryTimes()
+        LotteryAdCheck.exitAppWithNotLottery()
+        AdControlManager.addListener {
+            val jddAdConfigBean = AdControlManager.adControlBean
+            val times = LotteryAdCheck.getExitAppWithNotLotteryTimes()
             if (times >= jddAdConfigBean.notLotteryExitAppTimes) {
-                LotteryAdCount.resetExitAppWithNotLotteryTimes()
+                LotteryAdCheck.resetExitAppWithNotLotteryTimes()
                 if (jddAdConfigBean.notLotteryExitAppAdType == 1) {
-                    AdManager.loadInterstitialAd(activity, object : SimpleInterstitialListener() {
+                    InterstitialFullAd.showAd(activity, object : SimpleInterstitialFullListener() {
+                        override fun onAdError(errorCode: Int, errprMsg: String) {
+                            super.onAdError(errorCode, errprMsg)
+                            realExitApp(activity)
+                        }
+
+                        override fun onAdClose() {
+                            super.onAdClose()
+                            realExitApp(activity)
+                        }
+                    })
+                    /*InterstitialAd.showAd(activity, object : SimpleInterstitialListener() {
 
                         override fun onAdError(code: Int, errorMsg: String?) {
                             super.onAdError(code, errorMsg)
@@ -635,9 +679,9 @@ object ExitInterceptUtils {
                             super.onAdClosed()
                             realExitApp(activity)
                         }
-                    })
+                    })*/
                 } else {
-                    AdManager.loadRewardVideoAd(activity, object : SimpleRewardVideoListener() {
+                    RewardVideoAd.loadRewardVideoAd(activity, object : SimpleRewardVideoListener() {
                         override fun onAdError(code: Int, errorMsg: String?) {
                             super.onAdError(code, errorMsg)
                             realExitApp(activity)
@@ -681,17 +725,10 @@ object ExitInterceptUtils {
      */
     @JvmStatic
     fun closeExitDialog(act: Activity) {
-        if (RpActivity.isShowInnerAd) {
+        if(RpActivity.isShowInnerAd){
             RpActivity.isShowInnerAd = false
         }
-        AdManager.loadInterstitialAd(act, object : SimpleInterstitialListener() {
-            override fun onAdError(code: Int, errorMsg: String?) {
-                super.onAdError(code, errorMsg)
-            }
-
-            override fun onAdClosed() {
-                super.onAdClosed()
-            }
-        })
+//        InterstitialAd.showAd(act, null)
+        InterstitialFullAd.showAd(act, null)
     }
 }

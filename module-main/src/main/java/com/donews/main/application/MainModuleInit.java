@@ -8,13 +8,12 @@ import android.os.Looper;
 
 import com.donews.base.base.BaseApplication;
 import com.donews.common.IModuleInit;
-import com.donews.common.ad.business.bean.JddAdConfigBean;
-import com.donews.common.ad.business.manager.JddAdConfigManager;
+import com.donews.middle.utils.HotStartCacheUtils;
+import com.donews.yfsdk.manager.AdConfigManager;
 import com.donews.common.adapter.ScreenAutoAdapter;
 import com.donews.main.BuildConfig;
 import com.donews.main.ui.SplashActivity;
 import com.donews.main.utils.ExitInterceptUtils;
-import com.donews.main.utils.HotStartCacheUtils;
 import com.donews.middle.front.FrontConfigManager;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.converter.GsonDiskConverter;
@@ -51,10 +50,6 @@ public class MainModuleInit implements IModuleInit {
 
         @Override
         public void onActivityStarted(@NotNull Activity activity) {
-            if (!JddAdConfigManager.INSTANCE.getJddAdConfigBean().getHotStartAdEnable()) {
-                return;
-            }
-
             if (appCount <= 0) {
                 toForeGround(activity);
                 HotStartCacheUtils.INSTANCE.checkNotifyActivity(activity);
@@ -75,10 +70,6 @@ public class MainModuleInit implements IModuleInit {
 
         @Override
         public void onActivityStopped(@NotNull Activity activity) {
-            if (!JddAdConfigManager.INSTANCE.getJddAdConfigBean().getHotStartAdEnable()) {
-                return;
-            }
-
             appCount--;
             if (appCount == 0) {
                 stopTime = System.currentTimeMillis();
@@ -102,8 +93,7 @@ public class MainModuleInit implements IModuleInit {
      * 进入前台
      */
     private void toForeGround(Activity activity) {
-        JddAdConfigBean bean = JddAdConfigManager.INSTANCE.getJddAdConfigBean();
-        int backGroundInt = bean.getHotStartSplashInterval();
+        int backGroundInt = AdConfigManager.INSTANCE.getMNormalAdBean().getSplash().getPreload();
         if (activity instanceof SplashActivity || backGroundInt == 0) {
             return;
         }
@@ -114,6 +104,7 @@ public class MainModuleInit implements IModuleInit {
         LogUtil.e(activity.getClass().getName());
         if (seconds > backGroundInt) {
             HotStartCacheUtils.INSTANCE.showAd();
+//            SplashActivity.toForeGround(activity);
         } else {
             HotStartCacheUtils.INSTANCE.dismiss();
         }
@@ -121,17 +112,15 @@ public class MainModuleInit implements IModuleInit {
 
 
     private void delayLoadAd(Activity activity) {
-        JddAdConfigBean bean = JddAdConfigManager.INSTANCE.getJddAdConfigBean();
-        int backGroundInt = bean.getHotStartSplashInterval();
+        int backGroundInt = AdConfigManager.INSTANCE.getMNormalAdBean().getSplash().getPreload();
         if (activity instanceof SplashActivity || backGroundInt == 0) {
             return;
         }
         HotStartCacheUtils.INSTANCE.addHotStartAdDialog();
-
-        // 屏蔽预加载-by aaron.din
-        /*mHandler.removeCallbacksAndMessages(null);
         //在满足后台时间的需求后再加载广告
-        mHandler.postDelayed(new Runnable() {
+        // 屏蔽预加载-by aaron.din
+//        mHandler.removeCallbacksAndMessages(null);
+        /*mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 HotStartCacheUtils.INSTANCE.loadAd();

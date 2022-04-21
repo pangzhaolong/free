@@ -36,10 +36,10 @@ android {
 
     signingConfigs {
         release {
-            keyAlias 'qbn'
-            keyPassword 'qbn123456'
-            storeFile rootProject.file('keystore/cdyfqbn.jks')
-            storePassword 'qbn123456'
+            keyAlias 'cdyfjdd'
+            keyPassword 'cdyfjdd1008'
+            storeFile rootProject.file('keystore/cdyfjdd.jks')
+            storePassword 'cdyfjdd1008'
 //            v2SigningEnabled true
 //            v1SigningEnabled true
         }
@@ -135,7 +135,10 @@ dependencies {
         implementation project(path: ':business:module-reward')
         implementation project(path: ':business:module-lottery')
         implementation project(path: ':business:module-integral')
+        //意见反馈(本地model)
         implementation project(path: ':business:module-feedback')
+        //新增意见反馈(远程仓库)
+//        implementation 'io.github.15198184721:dn-module-feedback:1.4.2'
         implementation project(path: ':middleware:module-middleware')
 
         //Swei新增桌面通知模块

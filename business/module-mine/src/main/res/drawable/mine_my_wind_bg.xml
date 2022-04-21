@@ -5,9 +5,6 @@
     android:useLevel="false"
     tools:ignore="ResourceName">
     <!-- 实心 -->
-    <stroke android:color="#FFC29A" android:width="2dp"/>
-    <gradient android:startColor="#FFE9D3"
-        android:endColor="#FFFBF4"
-        android:angle="270"/>
+    <solid android:color="#FFFAE4" />
     <corners android:radius="8dp" />
 </shape>

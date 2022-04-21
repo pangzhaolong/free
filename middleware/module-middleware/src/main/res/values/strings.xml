@@ -4,17 +4,13 @@
 
     <!-- TODO: Remove or change this placeholder text -->
 
-    <!--
     <string name="middle_gift_text"><![CDATA[<font color="#D17500">%s抽中</font> <font color="red">%s</font>]]></string>
-    -->
-    <string name="middle_gift_text"><![CDATA[<font color="#FFFFFF">%s抽中</font> <font color="#FFFFFF">%s</font>]]></string>
     <string name="middle_lottery_barrage_item_text">抽中%s</string>
-
 
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="front_gift_text"><![CDATA[<font color="#D17500">%s抽中</font> <font color="red">%s</font>]]></string>
-    <string name="front_rule_3text"><![CDATA[1、按照提现页面提示规则，用户可将多多有宝账户里的奖励（现金或红包），提现至登录时绑定的微信账户。<br />
+    <string name="front_rule_3text"><![CDATA[1、按照提现页面提示规则，用户可将奖多多账户里的奖励（现金或红包），提现至登录时绑定的微信账户。<br />
 2、用户发起提现申请后，奖励（现金或红包）将于<font color="red">48</font>小时内打款，请耐心等待。<br />
 3、若因用户绑定账户未实名或账户异常等用户自身原因导致的红包到账失败，由用户自行承担。]]></string>
 

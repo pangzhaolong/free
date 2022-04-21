@@ -9,6 +9,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/transparent_style_middleware"
             tools:ignore="Instantiatable" />
+
         <service android:name=".service.CritLotteryService" />
     </application>
 

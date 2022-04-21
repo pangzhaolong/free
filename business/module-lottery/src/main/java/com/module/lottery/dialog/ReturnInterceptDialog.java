@@ -8,8 +8,6 @@
 
 package com.module.lottery.dialog;
 
-import static com.donews.middle.utils.CommonUtils.LOTTERY_FINGER;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -20,6 +18,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 
@@ -29,7 +28,7 @@ import com.dn.drouter.ARouteHelper;
 import com.dn.events.events.LoginUserStatus;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.main.BuildConfig;
-import com.donews.middle.abswitch.OtherSwitch;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
@@ -44,20 +43,19 @@ import java.lang.ref.WeakReference;
 
 //抽奖页返回拦截dialog
 public class ReturnInterceptDialog extends BaseDialog<InterceptDialogLayoutBinding> implements DialogInterface.OnDismissListener, View.OnClickListener {
-    //未登录
     public static int TYPE_1 = 1;
-    //登录未抽奖
     public static int TYPE_2 = 2;
     private Context mContext;
     private int limitNumber = 1;
+    private int mType = -1;// 1 表示登录 2 表示未登录
     private LotteryHandler mLotteryHandler;
     private long fastVibrateTime = 0;
 
-    public ReturnInterceptDialog(Context context, int dialogType) {
+    public ReturnInterceptDialog(Context context, int type) {
         super(context, R.style.dialogTransparent);//内容样式在这里引入
         this.mContext = context;
         mLotteryHandler = new LotteryHandler(this);
-        this.limitNumber = dialogType;
+        this.mType = type;
     }
 
     @Override
@@ -110,31 +108,55 @@ public class ReturnInterceptDialog extends BaseDialog<InterceptDialogLayoutBindi
         }
 
     }
-
     private boolean isSendCloseEvent = true;
-
     // 1 表示未登录 2 表示登录未抽奖
     private void initView() {
-        if (limitNumber == TYPE_1) {
+        if (mType == TYPE_1) {
+            //登录时
+            LinearLayout.LayoutParams rootLayout = (LinearLayout.LayoutParams) mDataBinding.returnRootLayout.getLayoutParams();
+            rootLayout.height = getContext().getResources().getDimensionPixelOffset(R.dimen.lottery_constant_328);
+            mDataBinding.returnRootLayout.setLayoutParams(rootLayout);
+            mDataBinding.title.setText(getContext().getResources().getString(R.string.return_intercept_title));
+            mDataBinding.hintTitle.setText(getContext().getResources().getString(R.string.return_intercept_hint));
+            mDataBinding.hint.setVisibility(View.GONE);
+            mDataBinding.withdrawHint.setText(getContext().getResources().getString(R.string.return_intercept_withdraw));
+            mDataBinding.jumpButton.setText(getContext().getResources().getString(R.string.return_intercept_button));
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mDataBinding.withdrawHintLayout.getLayoutParams();
+            layoutParams.bottomMargin = getContext().getResources().getDimensionPixelOffset(R.dimen.lottery_constant_15);
+            mDataBinding.withdrawHintLayout.setLayoutParams(layoutParams);
+            mDataBinding.protocolLayout.setVisibility(View.GONE);
+        } else if (mType == TYPE_2) {
+            //未登录时
             boolean protocol = getSharedPreferences().getBoolean("protocol", false) ||
-                    OtherSwitch.Ins().isOpenAutoAgreeProtocol();
+                    ABSwitch.Ins().isOpenAutoAgreeProtocol();
             mDataBinding.checkBox.setChecked(protocol);
+            mDataBinding.title.setText(getContext().getResources().getString(R.string.return_intercept_title));
             mDataBinding.hintTitle.setText(getContext().getResources().getString(R.string.return_intercept_hint_no));
+            mDataBinding.hint.setVisibility(View.VISIBLE);
+            mDataBinding.withdrawHint.setText(getContext().getResources().getString(R.string.return_intercept_withdraw_no));
             mDataBinding.jumpButton.setText(getContext().getResources().getString(R.string.return_intercept_button_no));
             mDataBinding.protocolLayout.setVisibility(View.VISIBLE);
             mDataBinding.userProtocol.setOnClickListener(this);
             mDataBinding.privacyProtocol.setOnClickListener(this);
+
             mDataBinding.protocolLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mDataBinding.checkBox.setChecked(!mDataBinding.checkBox.isChecked());
                 }
             });
-            mDataBinding.jumpButton.setOnClickListener(new View.OnClickListener() {
-                @SuppressLint("MissingPermission")
-                @Override
-                public void onClick(View v) {
 
+        }
+        mDataBinding.jumpButton.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("MissingPermission")
+            @Override
+            public void onClick(View v) {
+                //登录时
+                if (mType == TYPE_1) {
+                    immediatelySnappedUp();
+                }
+                //未登录时
+                if (mType == TYPE_2) {
                     //判断是否同意了隐私协议
                     if (mDataBinding.checkBox.isChecked()) {
                         //存储状态
@@ -156,28 +178,12 @@ public class ReturnInterceptDialog extends BaseDialog<InterceptDialogLayoutBindi
                         mDataBinding.protocolLayout.startAnimation(anim);
                     }
                 }
-            });
-        } else {
-            mDataBinding.topIcon.setVisibility(View.GONE);
-            mDataBinding.protocolLayout.setVisibility(View.GONE);
-            mDataBinding.hint.setText("参与抽奖，立即获得");
-            mDataBinding.hintTitle.setText("最高");
-            mDataBinding.jumpButton.setText("立即抢购");
-            mDataBinding.jumpButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mOnFinishListener != null) {
-                        mOnFinishListener.onDismissAd();
-                        mOnFinishListener.onDismiss();
-                    }
-                }
-            });
-        }
-
+            }
+        });
 
         //手
         mDataBinding.maskingHand.setImageAssetsFolder("images");
-        mDataBinding.maskingHand.setAnimation(LOTTERY_FINGER);
+        mDataBinding.maskingHand.setAnimation("lottery_finger.json");
         mDataBinding.maskingHand.loop(true);
         mDataBinding.maskingHand.playAnimation();
 
@@ -185,7 +191,7 @@ public class ReturnInterceptDialog extends BaseDialog<InterceptDialogLayoutBindi
 
     @Override
     public float setSize() {
-        return 1.0f;
+        return 0.9f;
     }
 
 
@@ -203,14 +209,14 @@ public class ReturnInterceptDialog extends BaseDialog<InterceptDialogLayoutBindi
 
     @Override
     public void onDismiss(DialogInterface dialog) {
-        if (isSendCloseEvent) {
-//            if(TYPE_2 == mType) {
-//                //未登录关闭
-//                AnalysisUtils.onEventEx(mContext, Dot.Lottery_Not_Login_Dialog_Close);
-//            }else{
-//                //已登录关闭
-//                AnalysisUtils.onEventEx(mContext, Dot.Lottery_Login_Dialog_Close);
-//            }
+        if(isSendCloseEvent) {
+            if(TYPE_2 == mType) {
+                //未登录关闭
+                AnalysisUtils.onEventEx(mContext, Dot.Lottery_Not_Login_Dialog_Close);
+            }else{
+                //已登录关闭
+                AnalysisUtils.onEventEx(mContext, Dot.Lottery_Login_Dialog_Close);
+            }
         }
         if (mLotteryHandler != null) {
             mLotteryHandler.removeMessages(0);
@@ -226,8 +232,7 @@ public class ReturnInterceptDialog extends BaseDialog<InterceptDialogLayoutBindi
         //用户协议
         if (v.getId() == R.id.user_protocol) {
             Bundle bundle = new Bundle();
-            bundle.putString("url",
-                    "http://ad-static-xg.tagtic.cn/wangzhuan/file/e0175957f8bb037da313fa23caae5944.html");
+            bundle.putString("url", BuildConfig.USER_PROCOTOL);
             bundle.putString("title", "用户协议");
             ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
         }

@@ -15,7 +15,7 @@ import com.donews.home.adapter.NorGoodsAdapter;
 import com.donews.home.databinding.HomeFragmentNorBinding;
 import com.donews.home.listener.GoodsClickListener;
 import com.donews.home.viewModel.NorViewModel;
-import com.donews.middle.abswitch.OtherSwitch;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.bean.home.HomeCategoryBean;
 import com.donews.middle.bean.home.HomeGoodsBean;
 import com.donews.middle.cache.GoodsCache;
@@ -119,7 +119,7 @@ public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding
     public void onClick(String goodsId, String materialId, String searchId, int src) {
         Context context = this.getContext();
 
-        if (!OtherSwitch.Ins().isOpenJumpDlg()) {
+        if (!ABSwitch.Ins().isOpenJumpDlg()) {
             GotoUtil.requestPrivilegeLinkBean(context, goodsId, materialId, searchId, src);
             return;
         }
@@ -135,5 +135,7 @@ public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding
                 GotoUtil.requestPrivilegeLinkBean(context, goodsId, materialId, searchId, src);
             }
         }).show();
+
+//        GotoUtil.requestPrivilegeLinkBean(this.getContext(), goodsId, materialId, searchId, src);
     }
 }

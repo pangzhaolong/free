@@ -48,8 +48,8 @@
                     android:background="@color/mine_f6f9fb"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="7dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="5dp"
                     app:layout_collapseMode="pin"
                     tools:ignore="MissingClass">
 

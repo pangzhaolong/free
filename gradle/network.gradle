@@ -10,6 +10,8 @@ ext {
     // app标识identification
     APP_IDENTIFICATION = "free"
 
+    HTTP_DEBUG = ext.DEBUG
+
     //包名
     APPLICATION_ID = "com.cdyfnts.lottery.free"
 
@@ -33,7 +35,14 @@ ext {
     //积分下载查询接口
     API_INTEGRAL_URL = API_BASE_URL + "wall/"
 
-    WEB_BASE_URL = "https://recharge-web.xg.tagtic.cn/ddyb/index.html#/"
+
+    WEB_BASE_URL = "https://recharge-web.xg.tagtic.cn/jdd/index.html#/"
+
+    // 正式环境base Url
+    API2_URL = "https://www.qusobook.com/"
+    // 测试环境的base2 url
+    API_TEST2_URL = "http://120.31.70.243:8181/"
+
 
     // 登录的地址
     LOGIN_TEST_URL = "https://monetization.dev.tagtic.cn/"
@@ -62,6 +71,9 @@ ext {
     AWARD_ON_LINE_URL = "https://award.xg.tagtic.cn/"
     HTTP_AWARD = ext.DEBUG ? ext.AWARD_OFF_LINE_URL : ext.AWARD_ON_LINE_URL
 
+    PRIVATE_POLICY_URL = "https://ad-static-xg.tagtic.cn/wangzhuan/file/feba1e066659e17d4d2d6a6d85d15baa.html"
+    USER_PROCOTOL = "https://ad-static-xg.tagtic.cn/wangzhuan/file/9e5f7a06cbf80a2186e3e34a70f0c360.html"
+
 
     //幸运金币
     LUCK_GOLD_OFF_LINE_URL = "https://luck-score.dev.tagtic.cn/luck/"
@@ -80,10 +92,6 @@ ext {
     ECPM_BASE_URL = ext.DEBUG?ECPM_DEBUG_URL:ECPM_RELEASE_URL
 
 
-    USER_PROTOCOL = "https://ad-static-xg.tagtic.cn/wangzhuan/file/e0175957f8bb037da313fa23caae5944.html"
-    PRIVATE_POLICY_URL = "https://ad-static-xg.tagtic.cn/wangzhuan/file/aa52b9b454bbac52b1dab272c1a6fbc0.html"
-
-
     //App独有公共配置
     APP_COMMON_CONFIG = BASE_CONFIG_URL + APP_IDENTIFICATION + "-commonConfig" + BASE_RULE
 
@@ -99,8 +107,14 @@ ext {
     //用户分层的广告配置策略
     AD_ID_LEVEL_CONFIG = BASE_CONFIG_URL + APP_IDENTIFICATION + "-adLayering" + BASE_RULE
 
+    // 激励视频分层广告策略
+    AD_REWARD_CONFIG_URL = BASE_CONFIG_URL + APP_IDENTIFICATION + "-rewardAdConfig" + BASE_RULE
+    // 广告开关/通道配置等
+    AD_NORMAL_CONFIG_URL = BASE_CONFIG_URL + APP_IDENTIFICATION + "-normalAdConfig" + BASE_RULE
+
     //groMore平台 app id
-    APP_ID_GROMORE = "5267422"
+    APP_ID_GROMORE = "5228725"             // GroMore 正式app id
+//    APP_ID_GROMORE = "5243267"          // GroMore 测试app id
 
     //大数据统计-趣白拿
     ANALYSIS_DATA = "appqubaina"
@@ -120,8 +134,6 @@ ext {
 
     //桌面通知
     APP_NOTIFY_LUNCHER = BASE_CONFIG_URL + APP_IDENTIFICATION+"-notify"+BASE_RULE
-    //桌面通知配置数据
-    APP_NOTIFY_CONFIG_DATAS = BASE_CONFIG_URL + APP_IDENTIFICATION+"-notify-datas"+BASE_RULE
 
 }
 

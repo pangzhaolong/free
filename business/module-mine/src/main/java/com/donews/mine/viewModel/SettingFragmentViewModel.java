@@ -13,7 +13,6 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.drouter.ARouteHelper;
-import com.donews.base.BuildConfig;
 import com.donews.base.utils.ToastUtil;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.common.base.popwindow.ConfirmPopupWindow;
@@ -21,8 +20,8 @@ import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.UserInfoBean;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.middle.abswitch.ABSwitch;
-import com.donews.middle.abswitch.OtherSwitch;
 import com.donews.mine.Api.MineHttpApi;
+import com.donews.mine.BuildConfig;
 import com.donews.mine.databinding.MineSettingFragmentBinding;
 import com.donews.mine.model.SettingModel;
 import com.donews.share.ShareManager;
@@ -67,9 +66,9 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
             put(1, (Runnable) () -> { //用户协议
                 Bundle bundle = new Bundle();
                 if (ABSwitch.Ins().isOpenAB() && DeviceUtils.getChannelName().equalsIgnoreCase("huawei")) {
-                    bundle.putString("url", "http://ad-static-xg.tagtic.cn/wangzhuan/file/e0175957f8bb037da313fa23caae5944.html");
+                    bundle.putString("url", "http://ad-static-xg.tagtic.cn/wangzhuan/file/4fb165459cd438f9a3987841d7707d8a.html");
                 } else {
-                    bundle.putString("url", BuildConfig.USER_PROTOCOL);
+                    bundle.putString("url", BuildConfig.USER_PROCOTOL);
                 }
                 bundle.putString("title", "用户协议");
                 ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
@@ -77,7 +76,7 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
             put(2, (Runnable) () -> { //隐私政策
                 Bundle bundle = new Bundle();
                 if (ABSwitch.Ins().isOpenAB() && DeviceUtils.getChannelName().equalsIgnoreCase("huawei")) {
-                    bundle.putString("url", "http://ad-static-xg.tagtic.cn/wangzhuan/file/bd5cf63a41d4155d6d126087612f2e2e.html");
+                    bundle.putString("url", "http://ad-static-xg.tagtic.cn/wangzhuan/file/739eaf3002ea80d1a2232c9cd5a8b9f4.html");
                 } else {
                     bundle.putString("url", BuildConfig.PRIVATE_POLICY_URL);
                 }
@@ -90,11 +89,11 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
 //                        "https://www.wjx.top/vm/YhnxHHh.aspx");
 //                bundle.putString("title", "意见反馈");
 //                ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
-                if(AppInfo.checkIsWXLogin()){
+                if (AppInfo.checkIsWXLogin()) {
                     ARouter.getInstance().build(PAGER_ACTIVITY_FEEDBACK)
                             .navigation(baseActivity);
                     AnalysisUtils.onEventEx(baseActivity, Dot.Page_Feedback);
-                }else{
+                } else {
                     ARouter.getInstance()
                             .build(RouterActivityPath.User.PAGER_LOGIN)
                             .navigation();

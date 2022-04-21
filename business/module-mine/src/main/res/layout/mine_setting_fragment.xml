@@ -19,12 +19,12 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:id="@+id/set_list_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/white"
             android:orientation="vertical">
             <!-- title项目 -->
@@ -67,7 +67,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="欢迎来到多多有宝"
+                        android:text="欢迎来到奖多多"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:singleLine="true"
@@ -139,11 +139,10 @@
                 android:id="@+id/set_zxzh"
                 layout="@layout/mine_setting_fragment_item"/>
             <View
-                style="@style/HorizontalLine"/>
+                style="@style/HorizontalLine"/><!--
             <include
                 android:id="@+id/set_message_switch"
-                layout="@layout/mine_setting_push_item"
-                android:visibility="gone"/>
+                layout="@layout/mine_setting_push_item"/>-->
             <TextView
                 android:id="@+id/tv_exit_login"
                 android:layout_width="match_parent"
@@ -154,8 +153,7 @@
                 android:textColor="@color/white"
                 android:background="@drawable/mine_me_open_not_win_but"
                 android:text="退出登录"
-                android:layout_marginTop="60dp"
-                android:layout_marginBottom="30dp"/>
+                android:layout_marginTop="60dp"/>
         </LinearLayout>
     </ScrollView>
 </layout>

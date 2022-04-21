@@ -23,7 +23,7 @@ public class ModuleLifecycleReflexs {
     /**
      * 广告组件库
      */
-    private static final String SDKInit = "com.donews.common.ad.business.application.AdSdkModuleInit";
+    private static final String SDKInit = "com.donews.yfsdk.application.AdSdkModuleInit";
 
     /**
      * 中间件

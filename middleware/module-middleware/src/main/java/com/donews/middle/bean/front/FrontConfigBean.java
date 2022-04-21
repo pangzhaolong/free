@@ -1,6 +1,7 @@
 package com.donews.middle.bean.front;
 
 import com.donews.common.contract.BaseCustomViewModel;
+import com.donews.middle.views.TaskView;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -28,6 +29,8 @@ public class FrontConfigBean extends BaseCustomViewModel {
     private Boolean mine = false;
     @SerializedName("withDrawal")
     private Boolean withDrawal = false;
+    @SerializedName("winCode")
+    private Boolean winCode = false;
     @SerializedName("bannerItems")
     private SingleItem bannerItems;
     @SerializedName("taskItems")
@@ -42,6 +45,8 @@ public class FrontConfigBean extends BaseCustomViewModel {
     private TaskItem showTask;
     @SerializedName("showMsgTask")
     private TaskItem showMsgTask;
+    @SerializedName("winCodeTask")
+    private TaskItem winCodeTask;
     @SerializedName("mineTask")
     private TaskItem mineTask;
 
@@ -75,6 +80,10 @@ public class FrontConfigBean extends BaseCustomViewModel {
         return withDrawal;
     }
 
+    public Boolean getWinCode() {
+        return winCode;
+    }
+
     public int getRefreshInterval() {
         return refreshInterval;
     }
@@ -105,6 +114,10 @@ public class FrontConfigBean extends BaseCustomViewModel {
 
     public TaskItem getShowMsgTask() {
         return showMsgTask;
+    }
+
+    public TaskItem getWinCodeTask() {
+        return winCodeTask;
     }
 
     public TaskItem getMineTask() {

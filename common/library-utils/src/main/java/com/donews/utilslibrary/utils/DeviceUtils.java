@@ -244,9 +244,6 @@ public class DeviceUtils {
     }
 
     private static String getTouTiaoChannelName() {
-        if (!PermissionUtils.isGranted(Manifest.permission.READ_PHONE_STATE)) {
-            return null;
-        }
         try {
             return HumeSDK.getChannel(UtilsConfig.getApplication());
         } catch (Exception e) {
@@ -344,6 +341,7 @@ public class DeviceUtils {
         if (!PermissionUtils.isGranted(Manifest.permission.READ_PHONE_STATE)) {
             return "serial";
         }
+
         String serial = null;
 
         String m_szDevIDShort = "35" +

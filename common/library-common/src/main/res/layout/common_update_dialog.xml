@@ -107,27 +107,6 @@
             app:layout_constraintTop_toTopOf="@id/iv_window_bottom"
             tools:text="1.该更新很重要\n2.该更新很作那个有\nasa\nsadas\nsdsa \bbvbz\bbbasda \n dadsa" />
 
-        <!--        <androidx.legacy.widget.Space-->
-        <!--            android:id="@+id/space_close"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginStart="10dp"-->
-        <!--            android:layout_marginBottom="30dp"-->
-        <!--            app:layout_constraintBottom_toTopOf="@id/iv_icon_rocket"-->
-        <!--            app:layout_constraintStart_toEndOf="@id/iv_icon_rocket" />-->
-
-        <!--        <ImageButton-->
-        <!--            android:id="@+id/imgBtn_close"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:background="@null"-->
-        <!--            android:padding="0dp"-->
-        <!--            android:visibility="@{updataBean.force_upgrade==1?View.GONE:View.VISIBLE}"-->
-        <!--            android:src="@drawable/common_update_close"-->
-        <!--            android:stateListAnimator="@null"-->
-        <!--            app:layout_constraintStart_toEndOf="@id/space_close"-->
-        <!--            app:layout_constraintTop_toTopOf="@id/space_close" />-->
-
         <androidx.legacy.widget.Space
             android:id="@+id/space_bottom"
             android:layout_width="0dp"

@@ -16,8 +16,8 @@
             android:id="@+id/feed_top_layout"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:orientation="horizontal"
             android:background="@color/white"
+            android:orientation="horizontal"
             tools:ignore="MissingConstraints">
 
             <TextView
@@ -86,10 +86,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="105dp"
                     android:layout_marginTop="10dp"
+                    android:background="@drawable/feedback_def_bg"
                     android:orientation="vertical"
-                    android:weightSum="1"
                     android:padding="0.67dp"
-                    android:background="@drawable/feedback_def_bg">
+                    android:weightSum="1">
 
                     <TableRow
                         android:layout_weight="0.5"
@@ -119,8 +119,8 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.5"
-                            android:gravity="center_vertical"
                             android:background="@drawable/feedback_right_top_line_bg"
+                            android:gravity="center_vertical"
                             android:paddingLeft="18dp">
 
                             <CheckBox
@@ -151,9 +151,9 @@
                                 android:id="@+id/rad_2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="30dp"
+                                android:button="@drawable/feedback_check_bg"
                                 android:paddingLeft="8dp"
                                 android:text="活动咨询"
-                                android:button="@drawable/feedback_check_bg"
                                 android:textSize="15sp" />
                         </LinearLayout>
 
@@ -172,7 +172,7 @@
                                 android:button="@drawable/feedback_check_bg"
                                 android:checkedButton="@id/rad_0"
                                 android:paddingLeft="8dp"
-                                android:text="其他"
+                                android:text="退款相关"
                                 android:textSize="15sp" />
                         </LinearLayout>
                     </TableRow>
@@ -252,6 +252,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/feed_back_third_desc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
@@ -293,10 +294,19 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="4.请上传图片（非必填）"
+                        android:text="* 4.请上传图片"
                         android:textColor="#2C2C2C"
                         android:textSize="16sp"
                         android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:gravity="center_vertical"
+                        android:text="为更好解决您的问题，请上传1-3张照片"
+                        android:textColor="#6E6E6E"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
@@ -335,9 +345,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="12dp"
+                    android:layout_marginBottom="20dp"
                     android:gravity="center"
                     android:padding="5dp"
-                    android:layout_marginBottom="20dp"
                     android:text="联系客服"
                     android:textColor="#969AA7"
                     android:textSize="16sp" />

@@ -21,26 +21,22 @@ abstract class PreloadAd {
             PreloadAdState.Init -> {
                 AdLoggerUtils.d("预加载${getAdType().msg}状态错误,当前预加载广告对象处于${PreloadAdState.Init.msg}")
             }
-
             PreloadAdState.Error -> {
                 AdLoggerUtils.d("预加载${getAdType().msg}状态错误,当前预加载广告对象处于${PreloadAdState.Error.msg}")
             }
-
             PreloadAdState.Destroy -> {
                 AdLoggerUtils.d("预加载${getAdType().msg}状态错误,当前预加载广告对象处于${PreloadAdState.Destroy.msg}")
             }
-
             PreloadAdState.Loading -> {
                 mNeedShow = true
                 AdLoggerUtils.d("预加载${getAdType().msg}加载中,当前预加载广告对象处于${PreloadAdState.Loading.msg}，设置了mNeedShow is true")
             }
-
             PreloadAdState.Success -> {
                 AdLoggerUtils.d("预加载${getAdType().msg}加载成功,正常播放广告")
                 mNeedShow = false
                 realShowAd()
+                mLoadState = PreloadAdState.Shown
             }
-
             PreloadAdState.Shown -> {
                 AdLoggerUtils.d("预加载${getAdType().msg}已经被展示过了")
             }

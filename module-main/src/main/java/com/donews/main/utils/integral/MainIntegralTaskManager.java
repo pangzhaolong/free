@@ -2,8 +2,8 @@ package com.donews.main.utils.integral;
 
 import androidx.lifecycle.Lifecycle;
 
-import com.dn.sdk.bean.integral.IntegralStateListener;
-import com.dn.sdk.bean.integral.ProxyIntegral;
+import com.dn.integral.jdd.integral.IntegralStateListener;
+import com.dn.integral.jdd.integral.ProxyIntegral;
 import com.donews.main.utils.integral.beans.MainIntegralTaskDataItem;
 
 import java.util.Collections;

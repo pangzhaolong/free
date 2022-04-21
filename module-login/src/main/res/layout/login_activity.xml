@@ -31,7 +31,7 @@
             android:layout_below="@+id/cicle_login_logo"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
-            android:text="欢迎来到多多有宝"
+            android:text="欢迎来到奖多多"
             android:textColor="#4A4A4A"
             android:textSize="25sp" />
 

@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ResourceName">
     <string name="main_name">module-main</string>
     <string name="main_str_people_guide_explain">
-        欢迎使用%1$s！\n\n
+        欢迎来到%1$s！\n\n
         我们非常重视您的个人隐私,请您在使 用本App前仔细阅读《用户协议》和《隐私政策》,
         点击“同意”按钮代表你已理解并同意前述两个文件所写内容，及以下约定。\n\n
         1.我们会申请系统设备权限收集设备信息,用于信息推送和安全风险控制。

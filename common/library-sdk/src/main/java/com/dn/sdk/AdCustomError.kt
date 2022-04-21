@@ -9,7 +9,10 @@ package com.dn.sdk
  */
 enum class AdCustomError(val code: Int, val errorMsg: String) {
 
+    OK(-10000, "通过检查，继续请求广告"),
+
     ContextError(-10007, "Activity或者Context 为null"),
+
 
     LimitAdError(-10008, "暂无新视频，请稍后再试"),
 
@@ -26,6 +29,8 @@ enum class AdCustomError(val code: Int, val errorMsg: String) {
 
     ParamsAdCountError(-10014, "请求参数错误,请求count 不能超过5"),
 
+    LoadTimeOutError(-10015, "请求广告超时"),
+
     InterstitialUnknownError(-10020, "插屏未知错误"),
 
     InterstitialOpenError(-10021, "用户安装时间小于设置的插屏开启时间"),
@@ -34,10 +39,16 @@ enum class AdCustomError(val code: Int, val errorMsg: String) {
 
     InterstitialHadShowError(-10023, "当前已经展示了一个插屏广告"),
 
+    InterstitialPreloadError(-10024, "预加载插屏失败"),
+
     PreloadTimesError(-10030, "预加载时间过长"),
 
     /** 本地缓存及无效广告都加载失败的情况 */
     PreloadAdEmptyError(-10031, "暂无新视频，请稍后再试"),
 
-    PreloadAdStatusError(-10032, "预加载广告状态错误")
+    PreloadAdStatusError(-10032, "预加载广告状态错误"),
+
+    CloseAdAll(-10040, "中台总开关关闭"),
+    CloseAdOne(-10041, "中台该广告位开关关闭"),
+    CloseAdId(-10042, "该广告位Id错误,检查id是否是空"),
 }

@@ -18,18 +18,18 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="@drawable/spike_head_bg" />
+            android:background="@drawable/spike_head_bg"></ImageView>
 
         <TextView
             android:id="@+id/spike_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="70dp"
             android:gravity="center"
             android:text="整点限时抢"
             android:textColor="#FFFFFF"
             android:textSize="20dp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"></TextView>
 
 
         <LinearLayout
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/spike_title"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="7dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="20dp"
             android:orientation="horizontal">
 
@@ -45,7 +45,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
-                android:textSize="13dp"
                 android:gravity="center"
                 android:text="多层人工严选"
                 android:textColor="#FFFFFF" />
@@ -59,7 +58,6 @@
                 android:textColor="#FFFFFF" />
 
             <TextView
-                android:textSize="13dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
@@ -76,7 +74,6 @@
                 android:textColor="#FFFFFF" />
 
             <TextView
-                android:textSize="13dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
@@ -89,8 +86,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="180dp"
-            android:paddingStart="13dp"
-            android:paddingEnd="13dp"
             android:background="@drawable/spike_shape_corner"
             android:orientation="vertical">
             <androidx.recyclerview.widget.RecyclerView
@@ -98,14 +93,14 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                />
+                ></androidx.recyclerview.widget.RecyclerView>
 
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/spike_content_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                />
+                ></androidx.recyclerview.widget.RecyclerView>
 
         </LinearLayout>
 

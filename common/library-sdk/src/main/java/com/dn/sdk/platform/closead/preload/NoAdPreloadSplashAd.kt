@@ -1,5 +1,6 @@
 package com.dn.sdk.platform.closead.preload
 
+import android.view.ViewGroup
 import com.dn.sdk.loader.SdkType
 import com.dn.sdk.bean.preload.PreloadSplashAd
 
@@ -13,6 +14,9 @@ import com.dn.sdk.bean.preload.PreloadSplashAd
 class NoAdPreloadSplashAd : PreloadSplashAd() {
     override fun getSdkType(): SdkType {
         return SdkType.CLOSE_AD
+    }
+
+    override fun realShowAd(container: ViewGroup) {
     }
 
     override fun realShowAd() {

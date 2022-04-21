@@ -9,6 +9,12 @@ package com.dn.sdk.count
  * @date 2021/10/25 15:22
  */
 interface ITrack {
+
+    /**
+     * 广告开始加载
+     */
+    fun onAdStartLoad()
+
     /**
      * 统计广告点击
      */

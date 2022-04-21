@@ -21,8 +21,8 @@ import com.bumptech.glide.request.transition.Transition;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.dn.drouter.ARouteHelper;
-import com.dn.sdk.bean.integral.ProxyIntegral;
-import com.dn.sdk.utils.IntegralComponent;
+import com.dn.integral.jdd.IntegralComponent;
+import com.dn.integral.jdd.integral.ProxyIntegral;
 import com.donews.base.utils.ToastUtil;
 import com.donews.base.utils.glide.GlideUtils;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
@@ -150,7 +150,7 @@ public class WelfareNotTaskActivity extends MvvmBaseLiveDataActivity<IntegralWel
 
     //获取任务
     private void getTaskList() {
-        EasyHttp.get(BuildConfig.BASE_CONFIG_URL + "ddyb-appsWall" + com.donews.common.BuildConfig.BASE_RULE_URL
+        EasyHttp.get(BuildConfig.BASE_CONFIG_URL + "plus-appsWall" + com.donews.common.BuildConfig.BASE_RULE_URL
                 + JsonUtils.getCommonJson(false))
                 .cacheMode(CacheMode.NO_CACHE)
                 .isShowToast(false)

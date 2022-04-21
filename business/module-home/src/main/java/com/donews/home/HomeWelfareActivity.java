@@ -22,7 +22,7 @@ import com.donews.home.databinding.HomeWelfareActivityBinding;
 import com.donews.home.listener.GoodsClickListener;
 import com.donews.home.listener.SearchListener;
 import com.donews.home.viewModel.WelfareViewModel;
-import com.donews.middle.abswitch.OtherSwitch;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.bean.home.HomeGoodsBean;
 import com.donews.middle.dialog.JumpThirdAppDialog;
 import com.donews.middle.go.GotoUtil;
@@ -219,7 +219,7 @@ public class HomeWelfareActivity extends MvvmBaseLiveDataActivity<HomeWelfareAct
     public void onClick(String goodsId, String materialId, String searchId, int src) {
         Context context = this;
 
-        if (!OtherSwitch.Ins().isOpenJumpDlg()) {
+        if (!ABSwitch.Ins().isOpenJumpDlg()) {
             GotoUtil.requestPrivilegeLinkBean(context, goodsId, materialId, searchId, src);
             return;
         }
@@ -235,6 +235,7 @@ public class HomeWelfareActivity extends MvvmBaseLiveDataActivity<HomeWelfareAct
                 GotoUtil.requestPrivilegeLinkBean(context, goodsId, materialId, searchId, src);
             }
         }).show();
+
 //        GotoUtil.requestPrivilegeLinkBean(this, goodsId, materialId, searchId, src);
     }
 }

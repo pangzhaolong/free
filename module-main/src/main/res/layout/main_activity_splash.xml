@@ -11,21 +11,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
+        <ImageView
             android:id="@+id/iv_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="37dp"
             android:contentDescription="@null"
+            android:src="@drawable/main_splash_logo"
             android:visibility="invisible"
-            android:text="多多有宝"
-            android:textSize="18sp"
-            android:textColor="#FF333333"
-            android:fontFamily="PingFangSC"
-            android:lineSpacingExtra="26dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
         <ImageView
             android:id="@+id/iv_content"
             android:layout_width="wrap_content"
@@ -34,14 +31,30 @@
             android:scaleType="matrix"
             android:src="@drawable/main_splash_content"
             android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/splash_scale_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/main_splash_button"
+            android:gravity="center"
+            android:text="免费领取"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/pb_progress"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.legacy.widget.Space
             android:id="@+id/space_bottom"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="37dp"
             app:layout_constraintBottom_toTopOf="@id/iv_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -100,6 +113,86 @@
             app:layout_constraintBottom_toTopOf="@id/iv_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/splash_network_error"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#D8D8D8"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/splash_network_err_pic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="200dp"
+                android:src="@drawable/main_network_fail"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/splash_network_err_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="网络错误"
+                android:textColor="#6D6D6D"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/splash_network_err_pic" />
+
+            <TextView
+                android:id="@+id/splash_network_err_tip1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="当前网络不可用，请检查网络"
+                android:textColor="#A9AEB1"
+                android:textSize="14.67sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/splash_network_err_tip" />
+
+            <TextView
+                android:id="@+id/splash_network_err_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:background="@drawable/main_network_fail_btn"
+                android:gravity="center"
+                android:text="点击重试"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/splash_network_err_tip1" />
+
+            <TextView
+                android:id="@+id/splash_network_err_tip2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:gravity="center"
+                android:text="请确认：系统设置-应用管理“奖多多”-联网控制 中网络已开启"
+                android:textColor="#A9AEB1"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toTopOf="@+id/splash_network_err_check"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/splash_network_err_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="40dp"
+                android:text="检查网络"
+                android:textColor="#6D6D6D"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

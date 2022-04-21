@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0.8"
+        android:background="@drawable/middle_goto_bg"
+        android:padding="40dp">
+
+        <ImageView
+            android:id="@+id/middle_logo_iv"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/middle_logo"
+            app:layout_constraintEnd_toStartOf="@+id/middle_goto_lav" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/middle_goto_lav"
+            android:layout_width="64dp"
+            android:layout_height="32dp"
+            app:layout_constraintBottom_toBottomOf="@+id/middle_logo_iv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/middle_logo_iv" />
+
+        <ImageView
+            android:id="@+id/middle_parter_iv"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/middle_parter"
+            app:layout_constraintStart_toEndOf="@+id/middle_goto_lav" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/middle_parter_iv">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="正在为您跳转"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="合作商"
+                android:textColor="#FFEDAE"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="活动页"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

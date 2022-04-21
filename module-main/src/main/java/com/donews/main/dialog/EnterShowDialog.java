@@ -1,7 +1,5 @@
 package com.donews.main.dialog;
 
-import static com.donews.middle.utils.CommonUtils.LOTTERY_FINGER;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -20,11 +18,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.dn.drouter.ARouteHelper;
+import com.dn.events.events.EnterShowDialogEvent;
 import com.dn.events.events.LoginLodingStartStatus;
 import com.dn.events.events.LoginUserStatus;
 import com.donews.common.router.RouterActivityPath;
@@ -34,7 +31,7 @@ import com.donews.main.R;
 import com.donews.main.databinding.MainEnterDialogLotteryBindingImpl;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoods;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoodsResp;
-import com.donews.middle.abswitch.OtherSwitch;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
@@ -59,7 +56,7 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
 
     private ExitDialogRecommendGoods mGoods;
 
-    private boolean mSelectedTips = false;
+    private boolean mIsNoTipsShow = false;
 
     private boolean mChangeOne = false;
     private boolean isSendCloseEvent = true;
@@ -93,7 +90,13 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
 
     @SuppressLint({"RestrictedApi", "SetTextI18n", "DefaultLocale"})
     void initView() {
-        mDataBinding.ivClose.setOnClickListener(v -> dismiss());
+        mDataBinding.ivClose.setOnClickListener(v -> {
+            EventBus.getDefault().post(new EnterShowDialogEvent(1));
+            Activity activity = getOwnerActivity();
+            if (activity != null && !activity.isFinishing()) {
+                dismiss();
+            }
+        });
         mDataBinding.btnNext.setOnClickListener(v -> {
             isSendCloseEvent = false;
             if (AppInfo.checkIsWXLogin()) {
@@ -114,10 +117,10 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
                 ARouter.getInstance()
                         .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                         .withString("goods_id", mGoods.getGoodsId())
-                        .withBoolean("start_lottery", OtherSwitch.Ins().isOpenAutoLottery())
+                        .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
                         .navigation();
 
-                dismiss();
+                dismissEx();
             } else {
                 AnalysisUtils.onEventEx(mContext, Dot.But_Hme_Recommend_Not_Login_Snap);
 
@@ -128,16 +131,17 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
 
         mDataBinding.tvProbability1.setText(randLucky());
 
-        if (SPUtils.getInformain(KeySharePreferences.SHOW_DIALOG_WHEN_LAUNCH, true)) {
-            mDataBinding.mainEnterClickLl.setVisibility(View.VISIBLE);
-            mDataBinding.mainEnterClick.setBackgroundResource(R.drawable.main_enter_radio_bg_unselect);
-        } else {
+        if (!SPUtils.getInformain(KeySharePreferences.SHOW_DIALOG_WHEN_LAUNCH, true)) {
             mDataBinding.mainEnterClickLl.setVisibility(View.INVISIBLE);
+            mIsNoTipsShow = false;
+        } else {
+            mDataBinding.mainEnterClickLl.setVisibility(View.VISIBLE);
+            mIsNoTipsShow = true;
         }
 
         mDataBinding.mainEnterNoTipsToday.setOnClickListener(v -> {
-            mSelectedTips = !mSelectedTips;
-            if (mSelectedTips) {
+            mIsNoTipsShow = !mIsNoTipsShow;
+            if (mIsNoTipsShow) {
                 mDataBinding.mainEnterClick.setBackgroundResource(R.drawable.main_enter_radio_bg_select);
                 SPUtils.setInformain(KeySharePreferences.SHOW_DIALOG_WHEN_LAUNCH, false);
             } else {
@@ -146,7 +150,7 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
             }
         });
 
-        initLottie(mDataBinding.mainEnterDialogLottie, LOTTERY_FINGER);
+        initLottie(mDataBinding.mainEnterDialogLottie, "lottery_finger.json");
         setOnDismissListener(dialog -> {
             if (isSendCloseEvent) {
                 if (AppInfo.checkIsWXLogin()) {
@@ -165,14 +169,14 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
             mDataBinding.mainEnterNoTipsToday.setVisibility(View.GONE);
             mDataBinding.mainEnterAgreeProtocol.setVisibility(View.VISIBLE);
             boolean protocol = getSharedPreferences().getBoolean("Free", false) ||
-                    OtherSwitch.Ins().isOpenAutoAgreeProtocol();
+                    ABSwitch.Ins().isOpenAutoAgreeProtocol();
             mDataBinding.mainEnterCheckBox.setChecked(protocol);
             mDataBinding.btnLottery.setText("登录抢购");
         }
 
         mDataBinding.mainEnterUserProtocol.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
-            bundle.putString("url", BuildConfig.USER_PROTOCOL);
+            bundle.putString("url", BuildConfig.USER_PROCOTOL);
             bundle.putString("title", "用户协议");
             ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
         });
@@ -242,7 +246,7 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
                     @Override
                     public void onError(ApiException e) {
                         if (isFirstIn) {
-                            dismiss();
+                            dismissEx();
                         }
                     }
 
@@ -256,22 +260,19 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
     @SuppressLint({"SetTextI18n", "DefaultLocale"})
     private void showInfo(ExitDialogRecommendGoodsResp bean, boolean isFirstIn) {
         if (bean == null || bean.getList().size() <= 0) {
-            dismiss();
+            dismissEx();
             return;
         }
         mGoods = bean.getList().get(0);
         if (mContext != null && mContext instanceof Activity && !((Activity) mContext).isDestroyed()) {
-            RoundedCorners roundedCorners = new RoundedCorners(25);
-            RequestOptions requestOptions = RequestOptions.bitmapTransform(roundedCorners);
             Glide.with(mContext)
                     .load(UrlUtils.formatUrlPrefix(mGoods.getMainPic()))
                     .diskCacheStrategy(DiskCacheStrategy.DATA)
-                    .apply(requestOptions)
                     .addListener(new RequestListener<Drawable>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                             if (isFirstIn) {
-                                dismiss();
+                                dismissEx();
                             }
                             return false;
                         }
@@ -286,8 +287,7 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
         }
 //        Glide.with(mContext).load(UrlUtils.formatUrlPrefix(mGoods.getMainPic())).into(mDataBinding.ivGoodsPic);
         mDataBinding.tvGoodsTitle.setText(mGoods.getTitle());
-        mDataBinding.tvActualPrice.setText(String.format("￥%d", OtherSwitch.Ins().getLotteryPriceShow()));
-//        mDataBinding.tvActualPrice.setText(String.format("￥%.0f", mGoods.getDisplayPrice()));
+        mDataBinding.tvActualPrice.setText(String.format("￥%.0f", mGoods.getDisplayPrice()));
         mDataBinding.tvOriginalPrice.setText("￥" + mGoods.getOriginalPrice());
         mDataBinding.tvOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
         if (mGoods.getTotalPeople() > 10000) {
@@ -318,11 +318,11 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImp
                 ARouter.getInstance()
                         .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                         .withString("goods_id", mGoods.getGoodsId())
-                        .withBoolean("start_lottery", OtherSwitch.Ins().isOpenAutoLottery())
+                        .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
                         .navigation();
             } catch (Exception ignored) {
             }
-            dismiss();
+            dismissEx();
         }
     }
 

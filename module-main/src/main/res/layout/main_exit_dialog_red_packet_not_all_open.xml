@@ -21,7 +21,6 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/central_content"
             android:layout_gravity="right"
-            android:layout_marginRight="30dp"
             android:layout_marginBottom="23dp"
             android:onClick="@{eventListener::clickIvClose}"
             android:src="@drawable/common_close"
@@ -31,7 +30,7 @@
             tools:ignore="MissingConstraints" />
 
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/central_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,47 +44,39 @@
                 android:id="@+id/iv_window_top_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:src="@drawable/main_exit_dialog_not_all_t" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_window_top_layout_zwc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/iv_window_top_text"
+                android:layout_marginTop="16dp"
                 tools:ignore="MissingConstraints">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_window_top_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_goneMarginTop="20dp">
+                    app:layout_constraintStart_toStartOf="parent">
 
                     <ImageView
                         android:id="@+id/iv_window_top"
-                        android:layout_width="315dp"
-                        android:layout_height="330dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:background="@drawable/main_rp_bg"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent" />
+                        android:layout_width="322dp"
+                        android:layout_height="260dp"
+                        android:background="@drawable/main_exit_dialog_not_all_bg"
+                        app:layout_constraintBottom_toBottomOf="parent" />
 
                     <LinearLayout
                         android:id="@+id/ll_top_flg"
                         android:layout_width="131dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="11dp"
+                        android:background="@drawable/main_exit_dialog_not_all_flg"
                         android:gravity="center"
                         android:orientation="horizontal"
                         android:padding="4dp"
-                        android:visibility="invisible"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
@@ -108,7 +99,7 @@
                         android:id="@+id/ll_ts_msg"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="50dp"
+                        android:layout_marginTop="14dp"
                         android:orientation="horizontal"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
@@ -156,9 +147,9 @@
 
                     <LinearLayout
                         android:id="@+id/ll_but"
-                        android:layout_width="214dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="70dp"
+                        android:layout_marginTop="16dp"
                         android:background="@drawable/main_bg_guide_but"
                         android:gravity="center"
                         android:onClick="@{eventListener::clickOpenPacket}"
@@ -173,7 +164,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="41dp"
                             android:layout_marginRight="41dp"
-                            android:paddingBottom="8dp"
+                            android:paddingTop="11dp"
+                            android:paddingBottom="12dp"
                             android:text="继续抽奖"
                             android:textColor="#D82D2A"
                             android:textSize="19sp"
@@ -206,22 +198,6 @@
                         tools:visibility="visible" />
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignRight="@+id/cl_window_top_layout_zwc"
-                android:layout_gravity="end"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="45dp"
-                android:layout_marginRight="10dp"/>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/cl_window_top_layout_zwc"
-                android:layout_gravity="top"
-                android:layout_marginTop="119dp" />
-        </RelativeLayout>
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

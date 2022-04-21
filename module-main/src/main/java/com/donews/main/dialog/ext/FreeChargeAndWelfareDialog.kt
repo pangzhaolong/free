@@ -61,6 +61,10 @@ class FreeChargeAndWelfareDialog(
             dismiss()
         }
         //手
+//        dataBinding.maskingHand.imageAssetsFolder = "images"
+//        dataBinding.maskingHand.setAnimation("lottery_finger.json")
+//        dataBinding.maskingHand.loop(true)
+//        dataBinding.maskingHand.playAnimation()
 
         val result = "全场商品<font color='#FFE8AC'>免费</font>领取"
         dataBinding.mainFreeDescDesc.text = Html.fromHtml(result)

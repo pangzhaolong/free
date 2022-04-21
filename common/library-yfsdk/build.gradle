@@ -1,0 +1,20 @@
+apply from: rootProject.file('gradle/library.build.gradle')
+
+android {
+
+    //统一资源前缀,规范资源引用
+    resourcePrefix "yfsdk_"
+}
+
+dependencies {
+    api rootProject.ext.androidx["androidx-appcompat"]
+    api rootProject.ext.androidx["androidx.annotation"]
+    api project(':common:library-sdk')
+    api project(':common:library-utils')
+    api project(':common:library-network')
+    api project(':common:library-common')
+    api rootProject.ext.dependencies["gson"]
+    api rootProject.ext.dependencies["kotlin-coroutines"]
+    api rootProject.ext.dependencies["kotlin-coroutines-android"]
+
+}

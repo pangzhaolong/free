@@ -2,6 +2,7 @@ package com.donews.home.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
 import android.view.LayoutInflater;
@@ -52,7 +53,7 @@ public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsV
         return holder;
     }
 
-    @SuppressLint({"SetTextI18n", "DefaultLocale"})
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull NorGoodsAdapter.GoodsViewHolder holder, int position) {
         HomeGoodsBean.GoodsInfo gi = mGoodsList.get(position);
@@ -63,24 +64,12 @@ public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsV
         holder.itemView.setTag(gi);
         holder.itemView.setOnClickListener(this::onClick);
         Glide.with(mContext).load(UrlUtils.formatUrlPrefix(gi.getMainPic())).into(holder.picIv);
-        holder.desTv.setText(gi.getTitle());
+        holder.desTv.setText(getTitleString(gi));
 
         holder.priceTv.setText("￥" + gi.getOriginalPrice());
-//        holder.priceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
-        holder.giftTv.setText(String.format("%.0f元券", gi.getCouponPrice()));
-        holder.actualPriveTv.setText(String.format("%.1f", gi.getActualPrice()));
-
-        switch (gi.getSrc()) {
-            case 1:
-                holder.logoIv.setImageResource(R.drawable.home_logo_tb);
-                break;
-            case 2:
-                holder.logoIv.setImageResource(R.drawable.home_logo_pdd);
-                break;
-            case 3:
-                holder.logoIv.setImageResource(R.drawable.home_logo_jd);
-                break;
-        }
+        holder.priceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
+        holder.giftTv.setText(String.format("￥%.0f元券", gi.getCouponPrice()));
+        holder.actualPriveTv.setText("￥" + gi.getActualPrice());
     }
 
     private SpannableString getTitleString(HomeGoodsBean.GoodsInfo goodsInfo) {
@@ -132,7 +121,6 @@ public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsV
         private final TextView priceTv;
         private final TextView actualPriveTv;
         private final TextView giftTv;
-        private final ImageView logoIv;
 
         public GoodsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -142,7 +130,6 @@ public class NorGoodsAdapter extends RecyclerView.Adapter<NorGoodsAdapter.GoodsV
             priceTv = itemView.findViewById(R.id.home_top_goods_item_price_atv);
             actualPriveTv = itemView.findViewById(R.id.home_top_goods_item_price);
             giftTv = itemView.findViewById(R.id.home_top_goods_item_gift_atv);
-            logoIv = itemView.findViewById(R.id.home_top_goods_item_logo_iv);
         }
     }
 }

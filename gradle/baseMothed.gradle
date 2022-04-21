@@ -22,8 +22,8 @@ static def addRepositories(RepositoryHandler handler) {
 //添加标准库
 private static def addStandardRepos(RepositoryHandler handler) {
     handler.google()
-    handler.jcenter()
     handler.mavenCentral()
+    handler.jcenter()
 }
 
 //添加使用国内阿里镜像库
@@ -42,6 +42,8 @@ private static def addOtherRepos(RepositoryHandler handler) {
     handler.maven { url 'https://jitpack.io' }
     handler.maven { url 'https://repo1.maven.org/maven2/' }
     handler.maven { url 'https://artifact.bytedance.com/repository/Volcengine/' }
+    //本地计算机仓库地址
+//    handler.maven { url("D:\\\\maven\\repo") }
 }
 
 ext.addRepositories = this.&addRepositories

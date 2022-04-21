@@ -144,7 +144,7 @@ public class YywView extends androidx.appcompat.widget.AppCompatImageView {
                 return;
             }
             if (msg.what == MESSAGE_ID || msg.what == MESSAGE_SWITCH_ID) {
-                yywView.mYYWIndex++;
+               yywView.mYYWIndex++;
                 yywView.refreshYywItem();
             }
         }

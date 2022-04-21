@@ -2,6 +2,7 @@ package com.donews.home.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
 import android.view.LayoutInflater;
@@ -62,23 +63,12 @@ public class SearchSugTbAdapter extends RecyclerView.Adapter<SearchSugTbAdapter.
         holder.itemView.setOnClickListener(this::onClick);
 
         Glide.with(mContext).load(gi.getMainPic()).into(holder.picIv);
-        holder.desTv.setText(gi.getTitle());
+        holder.desTv.setText(getTitleString(gi));
 
-        holder.priceTv.setText(String.format("%.0f", gi.getActualPrice()));
-        holder.giftTv.setText(String.format("%.0f元券", gi.getCouponPrice()));
-        holder.originalPriceTv.setText(String.format("￥%.0f", gi.getOriginalPrice()));
-//        holder.originalPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
-        switch (gi.getSrc()) {
-            case 1:
-                holder.logoIv.setImageResource(R.drawable.home_logo_tb);
-                break;
-            case 2:
-                holder.logoIv.setImageResource(R.drawable.home_logo_pdd);
-                break;
-            case 3:
-                holder.logoIv.setImageResource(R.drawable.home_logo_jd);
-                break;
-        }
+        holder.priceTv.setText(String.format("￥%.1f", gi.getActualPrice()));
+        holder.giftTv.setText(String.format("￥%.0f元券", gi.getCouponPrice()));
+        holder.originalPriceTv.setText(String.format("%.1f", gi.getOriginalPrice()));
+        holder.originalPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
     }
 
     private SpannableString getTitleString(HomeGoodsBean.GoodsInfo goodsInfo) {
@@ -137,7 +127,7 @@ public class SearchSugTbAdapter extends RecyclerView.Adapter<SearchSugTbAdapter.
         private final TextView priceTv;
         private final TextView giftTv;
         private final TextView originalPriceTv;
-        private final ImageView logoIv;
+
 
         public ResultViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -147,7 +137,6 @@ public class SearchSugTbAdapter extends RecyclerView.Adapter<SearchSugTbAdapter.
             priceTv = itemView.findViewById(R.id.home_crazy_goods_item_price);
             giftTv = itemView.findViewById(R.id.home_crzay_goods_item_gift_atv);
             originalPriceTv = itemView.findViewById(R.id.home_crazy_item_price);
-            logoIv = itemView.findViewById(R.id.home_crazy_logo_iv);
         }
     }
 }

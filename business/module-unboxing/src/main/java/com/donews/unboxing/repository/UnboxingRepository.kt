@@ -4,9 +4,7 @@ import com.donews.base.model.BaseLiveDataModel
 import com.donews.network.EasyHttp
 import com.donews.network.cache.model.CacheMode
 import com.donews.network.callback.SimpleCallBack
-import com.donews.network.https.HttpsUtils
 import com.donews.unboxing.bean.UnBoxingResp
-import com.donews.utilslibrary.utils.withConfigParams
 
 /**
  * 晒单页数据仓库
@@ -24,7 +22,7 @@ class UnboxingRepository : BaseLiveDataModel() {
      */
     fun getUnboxingData(pageId: Int, pageSize: Int, callBack: SimpleCallBack<UnBoxingResp>) {
         val unboxingUrlCreator = UnboxingUrlCreator()
-        val disposable = EasyHttp.get(unboxingUrlCreator.getUnboxingDataUrl().withConfigParams())
+        val disposable = EasyHttp.get(unboxingUrlCreator.getUnboxingDataUrl())
             .cacheMode(CacheMode.CACHEANDREMOTEDISTINCT)
             .cacheKey("unboxingData_${pageId}_${pageSize}")
             .params("page_id", pageId.toString())

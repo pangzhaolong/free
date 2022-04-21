@@ -9,7 +9,6 @@
 package com.module.lottery.dialog;
 
 import static com.donews.common.config.CritParameterConfig.CRIT_STATE;
-import static com.donews.middle.utils.CommonUtils.LOTTERY_FINGER;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
@@ -28,12 +27,12 @@ import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.bumptech.glide.Glide;
-import com.dn.sdk.bean.integral.IntegralStateListener;
-import com.dn.sdk.bean.integral.ProxyIntegral;
-import com.dn.sdk.utils.IntegralComponent;
+import com.dn.integral.jdd.IntegralComponent;
+import com.dn.integral.jdd.integral.IntegralStateListener;
+import com.dn.integral.jdd.integral.ProxyIntegral;
 import com.donews.base.base.BaseApplication;
-import com.donews.common.ad.business.monitor.LotteryAdCount;
-import com.donews.middle.abswitch.OtherSwitch;
+import com.donews.yfsdk.monitor.LotteryAdCheck;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.utils.CriticalModelTool;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
@@ -41,7 +40,6 @@ import com.donews.utilslibrary.utils.DateManager;
 import com.donews.utilslibrary.utils.SPUtils;
 import com.module.lottery.bean.GenerateCodeBean;
 import com.module.lottery.utils.ClickDoubleUtil;
-import com.module.lottery.utils.FoundationUtils;
 import com.module_lottery.R;
 import com.module_lottery.databinding.ExhibitCodeDialogLayoutBinding;
 import com.orhanobut.logger.Logger;
@@ -183,7 +181,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
                         mDataBinding.integralBt.post(new Runnable() {
                             @Override
                             public void run() {
-                                mDataBinding.integralBt.setText("体验" + OtherSwitch.Ins().getScoreTaskPlayTime() + "秒");
+                                mDataBinding.integralBt.setText("体验" + ABSwitch.Ins().getScoreTaskPlayTime() + "秒");
                             }
                         });
                     }
@@ -254,7 +252,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
             mDataBinding.jsonAnimationLayout.setVisibility(View.VISIBLE);
             mDataBinding.hintLayout.setVisibility(View.GONE);
 
-            mDataBinding.startLottie.setOnClickListener(new View.OnClickListener() {
+            mDataBinding.jsonAnimation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     isSendCloseEvent = false;
@@ -265,16 +263,15 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
                     }
                 }
             });
-            if (mGenerateCodeBean != null) {
-                if (FoundationUtils.getOptionalCodeType(6 - mGenerateCodeBean.getRemain())) {
-                    mDataBinding.buttonText.setText("再来一注自选码");
-                }else{
-                    mDataBinding.buttonText.setText("增加中奖率");
-                }
-            }
+            // 增加中奖率
+            mDataBinding.jsonAnimation.setImageAssetsFolder("images");
+            mDataBinding.jsonAnimation.setAnimation("probability_button.json");
+            mDataBinding.jsonAnimation.loop(true);
+            mDataBinding.jsonAnimation.playAnimation();
+
             //手
             mDataBinding.jsonAnimationHand.setImageAssetsFolder("images");
-            mDataBinding.jsonAnimationHand.setAnimation(LOTTERY_FINGER);
+            mDataBinding.jsonAnimationHand.setAnimation("lottery_finger.json");
             mDataBinding.jsonAnimationHand.loop(true);
             mDataBinding.jsonAnimationHand.playAnimation();
 
@@ -285,13 +282,13 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
             mDataBinding.giftBoxOff.playAnimation();
         }
         //开启了暴击模式
-        if (OtherSwitch.Ins().getOpenCritModel()) {
+        if (ABSwitch.Ins().getOpenCritModel()) {
             Logger.d(TAG + "开启了暴击模式");
             //每天参与次数
             if (DateManager.getInstance().isAllowCritical()) {
                 Logger.d(TAG + "可以继续参与");
                 //判断是否打开新手模式
-                if (OtherSwitch.Ins().isOpenCritModelByNewUser()) {
+                if (ABSwitch.Ins().isOpenCritModelByNewUser()) {
                     Logger.d(TAG + "新手模式");
                     //判断是否处于新手阶段
                     if (CriticalModelTool.isNewUser()) {
@@ -321,9 +318,9 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
 
 
     private void oldUserModel() {
-        int number = LotteryAdCount.INSTANCE.getCriticalModelLotteryNumber();
+        int number = LotteryAdCheck.INSTANCE.getCriticalModelLotteryNumber();
         //判断积分墙是否开启
-        if (OtherSwitch.Ins().isOpenScoreModelCrit() && number == 0) {
+        if (ABSwitch.Ins().isOpenScoreModelCrit() && number == 0) {
             //积分下载模式打开的 ，获取是否有积分任务
             //新用户并且抽奖次数未达到开启暴击条件
             CriticalModelTool.getScenesSwitch(new CriticalModelTool.IScenesSwitchListener() {
@@ -354,11 +351,11 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
         //总共需要抽多少个抽奖码开始暴击模式
         int sumNumber;
         //已经参与的次数
-        int participateNumber = LotteryAdCount.INSTANCE.getCriticalModelLotteryNumber();
+        int participateNumber = LotteryAdCheck.INSTANCE.getCriticalModelLotteryNumber();
         if (CriticalModelTool.isNewUser()) {
-            sumNumber = OtherSwitch.Ins().getOpenCritModelByNewUserCount();
+            sumNumber = ABSwitch.Ins().getOpenCritModelByNewUserCount();
         } else {
-            sumNumber = OtherSwitch.Ins().getOpenCritModelByOldUserCount();
+            sumNumber = ABSwitch.Ins().getOpenCritModelByOldUserCount();
         }
         if ((sumNumber - participateNumber) == 0) {
             mDataBinding.critDraw.setVisibility(View.GONE);

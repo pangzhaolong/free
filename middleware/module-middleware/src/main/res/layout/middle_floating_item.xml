@@ -2,8 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:cpbv="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="60dp"
+    android:layout_height="60dp"
     android:layout_gravity="center"
     android:gravity="center">
 
@@ -21,23 +21,24 @@
 
     <LinearLayout
         android:id="@+id/common_rp_ll"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_gravity="center"
         android:orientation="vertical"
         android:visibility="gone">
 
         <FrameLayout
             android:id="@+id/common_floating_fl"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="42dp"
+            android:layout_marginTop="2dp"
+            android:layout_height="42dp"
             android:layout_gravity="center"
             android:background="@drawable/common_floating_bg">
 
             <com.donews.common.views.CircleProgressBarView
                 android:id="@+id/common_floating_progress"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:layout_margin="2dp"
                 app:circleBgColor="@color/transparent"
@@ -47,22 +48,23 @@
                 cpbv:progressStrokeWidth="2dp" />
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="28dp"
                 android:layout_gravity="center"
                 android:src="@drawable/front_floating_rp" />
         </FrameLayout>
 
         <TextView
             android:id="@+id/common_floating_tv"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="2dp"
             android:background="@drawable/common_floating_text_bg"
             android:ellipsize="end"
+            android:layout_gravity="center_horizontal"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
             android:gravity="center"
-            android:paddingStart="4dp"
-            android:paddingEnd="4dp"
             android:text="明日再来"
             android:textColor="@color/white"
             android:textSize="8sp" />

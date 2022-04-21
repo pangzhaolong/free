@@ -2,29 +2,25 @@ package com.dn.feedback;
 
 import static com.donews.common.router.RouterActivityPath.Feedback.PAGER_ACTIVITY_FEEDBACK;
 
-import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.RegexUtils;
-import com.blankj.utilcode.util.ResourceUtils;
 import com.blankj.utilcode.util.UriUtils;
 import com.dn.drouter.ARouteHelper;
 import com.dn.feedback.databinding.ActivityFeedbackBinding;
@@ -36,19 +32,19 @@ import com.donews.base.utils.glide.GlideUtils;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.common.adapter.ScreenAutoAdapter;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
-import com.donews.common.contract.BaseCustomViewModel;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.network.EasyHttp;
-import com.donews.network.body.ProgressResponseCallBack;
 import com.donews.network.cache.model.CacheMode;
-import com.donews.network.callback.CallBack;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
+import com.donews.network.model.HttpParams;
+import com.donews.network.request.BaseBodyRequest;
+import com.donews.network.request.PostRequest;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
-import com.donews.utilslibrary.utils.DeviceUtils;
-import com.donews.utilslibrary.utils.HttpConfigUtilsKt;
+import com.donews.utilslibrary.utils.KeySharePreferences;
+import com.donews.utilslibrary.utils.SPUtils;
 import com.gyf.immersionbar.ImmersionBar;
 
 import java.io.File;
@@ -101,7 +97,7 @@ public class FeedbackActivity extends MvvmBaseLiveDataActivity<ActivityFeedbackB
             View v = getTouchTarget(getRootView(), (int) ev.getX(), (int) ev.getY());
             if (v == null || isShouldHideKeyboard(v, ev)) {
                 KeyboardUtils.hideSoftInput(this);
-                if(getCurrentFocus() instanceof EditText){
+                if (getCurrentFocus() instanceof EditText) {
                     getCurrentFocus().clearFocus();
                 }
             }
@@ -126,17 +122,18 @@ public class FeedbackActivity extends MvvmBaseLiveDataActivity<ActivityFeedbackB
                             cBox.setChecked(false);
                         }
                     }
+                    if (buttonView.getId() == R.id.rad_3) {
+                        mDataBinding.feedBackThirdDesc.setText("涉及退款请注明产品名称，并附上付款页面截图（截图页面需包含订单号和商家订单号）");
+                    } else {
+                        mDataBinding.feedBackThirdDesc.setText("请准确描述您要咨询或反馈的问题，我们会尽快处理。");
+                    }
                 }
             });
         }
         //联系客服
         mDataBinding.feedCallKf.setOnClickListener(v -> {
             AnalysisUtils.onEventEx(this, Dot.Page_ContactService);
-            Bundle bundle = new Bundle();
-            bundle.putString("url",
-                    "https://recharge-web.xg.tagtic.cn/ddyb/index.html#/customer");
-            bundle.putString("title", "客服");
-            ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
+            lxkf();
         });
         //设置关闭
         mDataBinding.feedSubmit.setOnClickListener(v -> {
@@ -147,19 +144,19 @@ public class FeedbackActivity extends MvvmBaseLiveDataActivity<ActivityFeedbackB
             finish();
         });
         mDataBinding.feedTel.setOnFocusChangeListener((v, hasFocus) -> {
-            if(!hasFocus){
-                if(!RegexUtils.isMobileSimple(mDataBinding.feedTel.getText().toString())){
+            if (!hasFocus) {
+                if (!RegexUtils.isMobileSimple(mDataBinding.feedTel.getText().toString())) {
                     v.setBackgroundResource(R.drawable.feedback_def_err_bg);
-                }else{
+                } else {
                     v.setBackgroundResource(R.drawable.feedback_def_bg);
                 }
             }
         });
         mDataBinding.feedDesc.setOnFocusChangeListener((v, hasFocus) -> {
-            if(!hasFocus){
-                if(mDataBinding.feedDesc.getText().toString().trim().length() < 10){
+            if (!hasFocus) {
+                if (mDataBinding.feedDesc.getText().toString().trim().length() < 10) {
                     v.setBackgroundResource(R.drawable.feedback_def_err_bg);
-                }else{
+                } else {
                     v.setBackgroundResource(R.drawable.feedback_def_bg);
                 }
             }
@@ -279,11 +276,7 @@ public class FeedbackActivity extends MvvmBaseLiveDataActivity<ActivityFeedbackB
     //获取路径
     public String getPath(String contentPath) {
         if (contentPath.startsWith("content")) {
-            try {
-                return UriUtils.uri2File(Uri.parse(contentPath)).getPath();
-            }catch (Exception e){
-                return null;
-            }
+            return UriUtils.uri2File(Uri.parse(contentPath)).getPath();
         } else {
             return contentPath;
         }
@@ -336,6 +329,11 @@ public class FeedbackActivity extends MvvmBaseLiveDataActivity<ActivityFeedbackB
             ToastUtil.showShort(this, "反馈内容至少不能低于10个字");
             return;
         }
+        if (selectImgs.length <= 0 || (selectImgs[0] == null && selectImgs[1] == null && selectImgs[2] == null)) {
+            ToastUtil.showShort(this, "为更好解决您的问题，请上传1-3张照片");
+            return;
+        }
+
         req.content = mDataBinding.feedDesc.getText().toString().replace(" ", "").trim();
         //上传图片
         flgCount = -1;
@@ -356,6 +354,7 @@ public class FeedbackActivity extends MvvmBaseLiveDataActivity<ActivityFeedbackB
                 }
             }
         }
+        //只支持单个文件上传
         if (isUploadFile) {
             showLoading("上传图片中");
             for (int i = 0; i < files.length; i++) {
@@ -363,31 +362,32 @@ public class FeedbackActivity extends MvvmBaseLiveDataActivity<ActivityFeedbackB
                     continue;//不需要上传的
                 }
                 final int cuttPos = i;
-                List<File> uploadFile = new ArrayList<>();
-                uploadFile.add(files[i]);
-                EasyHttp.post(BuildConfig.LOGIN_URL + "upload")
+                PostRequest baseBodyRequest = EasyHttp.post(BuildConfig.LOGIN_URL + "upload")
                         .cacheMode(CacheMode.NO_CACHE)
-                        .addFileParams("file", uploadFile, (bytesWritten, contentLength, done) -> {
-                        })
-                        .execute(new SimpleCallBack<FeedbackUploadImgResp>() {
-                            @Override
-                            public void onError(ApiException e) {
-                                flgCount--;
-                                if (flgCount == 0) {
-                                    hideLoading();
-                                }
-                                ToastUtil.showShort(FeedbackActivity.this, "图片上传失败,请稍后重试");
-                            }
+                        .uploadType(BaseBodyRequest.UploadType.IMAGE);
+                List<HttpParams.FileWrapper> fileWrapperList = new ArrayList<>();
+                HttpParams.FileWrapper fileWrapper = new HttpParams.FileWrapper(files[i], files[i].getAbsolutePath(), okhttp3.MediaType.parse("image/jpg; charset=utf-8"), null);
+                fileWrapperList.add(fileWrapper);
+                baseBodyRequest.addFileWrapperParams("files", fileWrapperList);
+                baseBodyRequest.execute(new SimpleCallBack<FeedbackUploadImgResp>() {
+                    @Override
+                    public void onError(ApiException e) {
+                        flgCount--;
+                        if (flgCount == 0) {
+                            hideLoading();
+                        }
+                        ToastUtil.showShort(FeedbackActivity.this, "图片上传失败,请稍后重试");
+                    }
 
-                            @Override
-                            public void onSuccess(FeedbackUploadImgResp resp) {
-                                httpImgs[cuttPos] = resp.url;
-                                flgCount--;
-                                if (flgCount == 0) {
-                                    submitFeedbackData(req, httpImgs);
-                                }
-                            }
-                        });
+                    @Override
+                    public void onSuccess(FeedbackUploadImgResp resp) {
+                        httpImgs[cuttPos] = resp.url;
+                        flgCount--;
+                        if (flgCount == 0) {
+                            submitFeedbackData(req, httpImgs);
+                        }
+                    }
+                });
             }
         } else {
             //没有图片
@@ -489,4 +489,31 @@ public class FeedbackActivity extends MvvmBaseLiveDataActivity<ActivityFeedbackB
         }
         return false;
     }
+
+    private void lxkf() {
+        String qqNumber = SPUtils.getInformain(KeySharePreferences.KEY_SERVER_QQ_NUMBER, "");
+
+        if (checkApkExist(this, "com.tencent.mobileqq") && !qqNumber.equalsIgnoreCase("")) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("mqqwpa://im/chat?chat_type=wpa&uin=" + qqNumber + "&version=1")));
+        } else {
+            Bundle bundle = new Bundle();
+            bundle.putString("url",
+                    "https://recharge-web.xg.tagtic.cn/jdd/index.html#/customer");
+            bundle.putString("title", "客服");
+            ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
+        }
+    }
+
+    private boolean checkApkExist(Context context, String packageName) {
+        if (packageName == null || "".equals(packageName))
+            return false;
+        try {
+            ApplicationInfo info = context.getPackageManager().getApplicationInfo(packageName,
+                    PackageManager.GET_UNINSTALLED_PACKAGES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
+
 }

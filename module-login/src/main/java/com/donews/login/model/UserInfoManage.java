@@ -514,6 +514,7 @@ public class UserInfoManage {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.put(HttpHeaders.HEAD_PACKAGENMAE, DeviceUtils.getPackage());
         httpHeaders.put(HttpHeaders.HEAD_AUTHORIZATION, AppInfo.getToken(userInfoBean.getToken()));
+//        httpHeaders.put(HttpHeaders.HEAD_AUTHORIZATION, AppInfo.checkIsWXLogin() ? AppInfo.getToken(userInfoBean.getToken()) : "");
         EasyHttp.getInstance().addCommonHeaders(httpHeaders);
     }
 

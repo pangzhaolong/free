@@ -19,6 +19,7 @@ dependencies {
     //组件依赖基础库
     api project(':common:library-common')
     implementation project(':common:library-sdk')
+    implementation project(':common:library-yfsdk')
     implementation project(':common:lib_eventbus')
     implementation project(':middleware:module-middleware')
 

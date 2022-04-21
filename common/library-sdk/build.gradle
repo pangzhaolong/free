@@ -3,6 +3,7 @@ apply from: rootProject.file('gradle/library.build.gradle')
 android {
     defaultConfig {
         buildConfigField("boolean", "OPEN_AD_LOGGER", "${rootProject.OPEN_AD_LOGGER}")
+        buildConfigField("String", "APP_ID_GROMORE", "\"${rootProject.APP_ID_GROMORE}\"")
         ndk {
             abiFilters "armeabi-v7a", "arm64-v8a"
         }
@@ -18,15 +19,17 @@ repositories {
 }
 
 dependencies {
+
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+
     //广告相关sdk 需要使用的依赖
     implementation rootProject.ext.androidx["androidx-appcompat"]
+
     api 'androidx.legacy:legacy-support-v4:1.0.0'
     //快手sdk特殊需要
     api 'androidx.legacy:legacy-support-core-ui:1.0.0'
 
     implementation project(':common:library-network')
-
-    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 
     implementation project(path: ':common:library-utils')
 

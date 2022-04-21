@@ -1,11 +1,14 @@
 package com.donews.mine.viewModel;
 
+import static androidx.annotation.Dimension.SP;
+
 import static com.donews.utilslibrary.utils.KeySharePreferences.CURRENT_SCORE_TASK_COUNT;
 
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,12 +19,12 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.SPUtils;
-import com.dn.sdk.bean.integral.ProxyIntegral;
-import com.dn.sdk.utils.IntegralComponent;
+import com.dn.integral.jdd.IntegralComponent;
+import com.dn.integral.jdd.integral.ProxyIntegral;
 import com.donews.base.utils.GsonUtils;
 import com.donews.base.utils.ToastUtil;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
-import com.donews.middle.abswitch.OtherSwitch;
+import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.bean.HighValueGoodsBean;
 import com.donews.middle.bean.front.WinningRotationBean;
 import com.donews.middle.cache.GoodsCache;
@@ -34,6 +37,7 @@ import com.donews.mine.model.MineModel;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Stack;
 
 public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> {
     private FragmentActivity baseActivity;
@@ -258,9 +262,9 @@ public class WithdrawalCenterViewModel extends BaseLiveDataViewModel<MineModel> 
             }
         }
         //检查开关和配置
-        boolean taskIsShow = !OtherSwitch.Ins().isOpenScoreTask();
+        boolean taskIsShow = !ABSwitch.Ins().isOpenScoreTask();
         if (taskIsShow) {
-            int maxCount = OtherSwitch.Ins().getOpenScoreTaskMax();
+            int maxCount = ABSwitch.Ins().getOpenScoreTaskMax();
             int curT = com.donews.utilslibrary.utils.SPUtils.getInformain(CURRENT_SCORE_TASK_COUNT, 0);
             //如果任务开关打开。并且未达到最大限制的情况下。显示任务
             taskIsShow = taskIsShow && curT <= maxCount;

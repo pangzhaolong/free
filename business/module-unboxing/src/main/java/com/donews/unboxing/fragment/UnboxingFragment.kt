@@ -7,11 +7,15 @@ import androidx.recyclerview.widget.DiffUtil
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.blankj.utilcode.util.BarUtils
+import com.dn.sdk.AdCustomError
+import com.dn.sdk.listener.interstitial.SimpleInterstitialFullListener
+import com.dn.sdk.listener.interstitial.SimpleInterstitialListener
 import com.donews.base.utils.ToastUtil
-import com.donews.common.ad.business.monitor.PageMonitor
 import com.donews.common.base.MvvmLazyLiveDataFragment
-import com.donews.common.decoration.GridItemDecoration
 import com.donews.common.router.RouterFragmentPath
+import com.donews.middle.adutils.InterstitialAd
+import com.donews.middle.adutils.InterstitialFullAd
+import com.donews.middle.adutils.adcontrol.AdControlManager
 import com.donews.middle.views.TaskView
 import com.donews.unboxing.R
 import com.donews.unboxing.adapter.UnboxingRVAdapter
@@ -21,6 +25,10 @@ import com.donews.unboxing.smartrefreshlayout.SmartRefreshState
 import com.donews.unboxing.viewmodel.UnboxingViewModel
 import com.donews.utilslibrary.analysis.AnalysisUtils
 import com.donews.utilslibrary.dot.Dot
+import com.donews.yfsdk.check.InterstitialAdCheck
+import com.donews.yfsdk.moniter.PageMonitor
+import com.donews.yfsdk.monitor.InterstitialFullAdCheck
+import com.donews.yfsdk.monitor.PageMoniterCheck
 import com.orhanobut.logger.Logger
 
 /**
@@ -38,7 +46,49 @@ class UnboxingFragment :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        PageMonitor().attach(this)
+        PageMonitor().attach(this, object : PageMonitor.PageListener {
+            override fun getIdleTime(): Int {
+                return AdControlManager.adControlBean.noOperationDuration
+            }
+
+            override fun showAd() {
+                activity?.let {
+                    if (!AdControlManager.adControlBean.useInstlFullWhenSwitch) {
+                        InterstitialAd.showAd(it, object : SimpleInterstitialListener() {
+                            override fun onAdError(code: Int, errorMsg: String?) {
+                                super.onAdError(code, errorMsg)
+                                Logger.d("晒单页插屏加载广告错误---- code = $code ,msg =  $errorMsg ");
+                            }
+
+                            override fun onAdClosed() {
+                                super.onAdClosed()
+                                PageMoniterCheck.showAdSuccess("unbox_fragment")
+                            }
+                        })
+                    } else {
+                        InterstitialFullAd.showAd(it, object : SimpleInterstitialFullListener() {
+                            override fun onAdError(errorCode: Int, errprMsg: String) {
+                                super.onAdError(errorCode, errprMsg)
+                                Logger.d("晒单页插全屏加载广告错误---- code = $errorCode ,msg =  $errprMsg ");
+                            }
+
+                            override fun onAdClose() {
+                                super.onAdClose()
+                                PageMoniterCheck.showAdSuccess("unbox_fragment")
+                            }
+                        })
+                    }
+                }
+            }
+
+            override fun checkShowAd(): AdCustomError {
+                return if (AdControlManager.adControlBean.useInstlFullWhenSwitch) {
+                    InterstitialFullAdCheck.isEnable()
+                } else {
+                    InterstitialAdCheck.isEnable()
+                }
+            }
+        })
     }
 
     override fun getLayoutId(): Int {
@@ -70,7 +120,6 @@ class UnboxingFragment :
             }
 
         })
-        mDataBinding.rvUnboxing.addItemDecoration(GridItemDecoration(1, 32))
         mDataBinding.rvUnboxing.adapter = unboxingRVAdapter
         mViewModel.run {
             listData.observe(this@UnboxingFragment.viewLifecycleOwner, {

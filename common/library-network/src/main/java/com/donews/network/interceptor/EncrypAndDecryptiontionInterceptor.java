@@ -84,7 +84,8 @@ public class EncrypAndDecryptiontionInterceptor implements Interceptor {
             }
             if(isEncyrp) {
                 String encHead = DoNewsEncryptUtils.generateEncryptHeader(dynamicPassword, vector);
-                Log.v("http_encryp", "传输加密已生效:" + HttpHeaders.HEAD_KEY_ENCRYP_AND_DECRYP + "->" + encHead);
+                Log.v("http_encryp", "传输加密已生效:" + HttpHeaders.HEAD_KEY_ENCRYP_AND_DECRYP + "->" + encHead
+                + "->" + chain.request().url().toString());
                 builder.addHeader(HttpHeaders.HEAD_KEY_ENCRYP_AND_DECRYP,
                         encHead);
                 String reqJson = parseParams(chain.request());

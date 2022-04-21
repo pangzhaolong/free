@@ -72,6 +72,7 @@
             android:visibility="gone"/>
 
         <TextView
+            android:id="@+id/mine_me_list_count_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -80,46 +81,7 @@
             android:text="1"
             android:textColor="@color/text_red"
             android:textSize="21sp"
-            android:visibility="gone"
             android:textStyle="bold" />
-        <!-- 新增参考价 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="23dp"
-            android:layout_marginTop="3dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:layout_marginBottom="1.5dp">
-
-            <ImageView
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_gravity="center"
-                android:padding="2dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/middle_item_money" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:gravity="center_vertical"
-                android:maxLines="1"
-                android:text="参考价"
-                android:layout_marginLeft="5dp"
-                android:paddingRight="5dp"
-                android:textColor="#A9AEB1"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/mine_me_list_count_num"
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:gravity="center_vertical"
-                android:maxLines="1"
-                android:text="￥1699"
-                android:textColor="#A9AEB1"
-                android:textSize="13sp" />
-        </LinearLayout>
     </LinearLayout>
 
     <TextView
@@ -132,7 +94,6 @@
         android:singleLine="true"
         android:text="累计5人参与抽奖"
         android:paddingBottom="8dp"
-        android:visibility="gone"
         android:textColor="@color/text_hint_color"
         android:textSize="13sp"
         app:layout_constraintLeft_toLeftOf="@+id/mine_me_list_title"
@@ -147,7 +108,7 @@
         <TextView
             android:id="@+id/mine_me_list_count_tv"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="46dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="7dp"
             android:layout_marginRight="10dp"
@@ -155,8 +116,9 @@
             android:background="@drawable/mine_win_frm_cj_but"
             android:ellipsize="end"
             android:gravity="center"
+            android:paddingBottom="8dp"
             android:singleLine="true"
-            android:text="免费抽奖"
+            android:text="0元抽奖"
             android:textColor="@color/white"
             android:textSize="15sp" />
     </LinearLayout>

@@ -17,14 +17,18 @@ import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
 import com.donews.notify.launcher.configs.baens.CurrentServiceTime;
 import com.donews.notify.launcher.configs.baens.Notify2DataConfigBean;
+import com.donews.notify.launcher.configs.baens.NotifyBarDataConfig;
+import com.donews.notify.launcher.notifybar.NotifyBarManager;
 import com.donews.notify.launcher.utils.AppNotifyForegroundUtils;
 import com.donews.utilslibrary.utils.JsonUtils;
 import com.donews.utilslibrary.utils.LogUtil;
 
 public class Notify2ConfigManager {
+    //更新配置桌面通知模块的配置数据
     private static final int UPDATE_CONFIG_MSG = 21002;
     private static boolean isInit = false;
     private static String cacheKey = "notify_data_cache";
+    //桌面通知相关配置数据对象
     private Notify2DataConfigBean mFrontConfigBean;
 
     private static final class Holder {
@@ -39,7 +43,7 @@ public class Notify2ConfigManager {
     }
 
     /**
-     * 获取配置数据
+     * 获取桌面通知配置数据
      *
      * @return
      */
@@ -61,7 +65,7 @@ public class Notify2ConfigManager {
     }
 
     /**
-     * 更新数据
+     * 设置或者更新桌面通知模块数据
      *
      * @param bean
      */
@@ -101,10 +105,12 @@ public class Notify2ConfigManager {
             return;
         }
         isInit = true;
-        //更新通知配置数据
+        //更新桌面通知配置数据
         update();
         //注册后台通知监听
         AppNotifyForegroundUtils.startForegroundCheck();
+        //初始化通知栏配置数据
+        NotifyBarManager.init();
     }
 
     //获取服务器时间
@@ -141,9 +147,8 @@ public class Notify2ConfigManager {
 
     private static void update() {
         getServiceTime();
-
         LogUtil.i("Notify2ConfigManager update");
-        EasyHttp.get(BuildConfig.APP_NOTIFY_CONFIG_DATAS +
+        EasyHttp.get(BuildConfig.BASE_CONFIG_URL + "plus-notify-datas" + BuildConfig.BASE_RULE_URL +
                 JsonUtils.getCommonJson(false))
                 .cacheMode(CacheMode.NO_CACHE)
                 .isShowToast(BuildConfig.DEBUG)

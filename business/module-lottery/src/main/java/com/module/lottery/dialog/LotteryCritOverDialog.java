@@ -14,7 +14,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.blankj.utilcode.util.EncryptUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.donews.base.model.BaseLiveDataModel;
-import com.donews.common.ad.business.monitor.LotteryAdCount;
+import com.donews.yfsdk.monitor.LotteryAdCheck;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
@@ -73,7 +73,7 @@ public class LotteryCritOverDialog extends BaseDialog<LotteryCritOverDialogLayou
         mCritOverHandler.sendMessageDelayed(message, 1000);
         //延迟一秒出现关闭按钮
         setOnDismissListener(this);
-        mCritOverHandler.sendMessageDelayed(new Message(),90);
+        initLottie(mDataBinding.overView, "over_animation.json");
     }
 
     private void initLottie(LottieAnimationView view, String json) {
@@ -103,7 +103,7 @@ public class LotteryCritOverDialog extends BaseDialog<LotteryCritOverDialogLayou
             view.clearAnimation();
             view.setAnimation(json);
             view.loop(false);
-//            view.playAnimation();
+            view.playAnimation();
         }
     }
 
@@ -143,7 +143,7 @@ public class LotteryCritOverDialog extends BaseDialog<LotteryCritOverDialogLayou
                     public void onSuccess(CritCodeBean generateCode) {
                         if (generateCode != null) {
                             //抽奖统计
-                            LotteryAdCount.INSTANCE.lotterySuccess();
+                            LotteryAdCheck.INSTANCE.lotterySuccess();
                             if (mOnFinishListener != null) {
                                 mOnFinishListener.onCritJump(generateCode);
                                 mOnFinishListener.onFinish();
@@ -194,8 +194,6 @@ public class LotteryCritOverDialog extends BaseDialog<LotteryCritOverDialogLayou
             switch (msg.what) {
                 case 1:
                     if (reference.get() != null) {
-
-                        reference.get().initLottie(reference.get().mDataBinding.overView, "over_animation.json");
                     }
                     break;
 

@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="70dp"
                 android:layout_marginBottom="17dp"
-                android:background="@drawable/white_linear_shape"
+                android:background="@drawable/white_shape"
                 android:gravity="center"
                 android:orientation="vertical"
                 tools:ignore="ResourceName">
@@ -83,7 +83,7 @@
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/lottery_button"
+                android:id="@+id/lottery_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="22dp"
@@ -91,36 +91,20 @@
                     android:layout_marginEnd="22dp"
                     android:layout_marginBottom="10dp">
 
-                    <LinearLayout
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/red_linear_shape"
-                        android:gravity="center_horizontal"
-                        android:orientation="horizontal"
+                        android:layout_gravity="right"
+                        android:background="@drawable/item_lottery_shape"
+                        android:gravity="center"
                         android:paddingStart="20dp"
                         android:paddingTop="8dp"
                         android:paddingEnd="20dp"
                         android:paddingBottom="8dp"
-                        tools:ignore="MissingConstraints">
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="22dp"
-                            android:layout_gravity="center_vertical"
-                            android:src="@mipmap/white_play_video_icon" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="right"
-                            android:layout_marginStart="8dp"
-                            android:gravity="center"
-                            android:text="增加中奖率"
-                            android:textColor="#FFFFFF"
-                            android:textSize="20dp"
-                            tools:ignore="MissingConstraints" />
-                    </LinearLayout>
-
+                        android:text="增加中奖率"
+                        android:textColor="#FFFFFF"
+                        android:textSize="20dp"
+                        tools:ignore="MissingConstraints" />
                     <!--小手-->
                     <com.airbnb.lottie.LottieAnimationView
                         android:id="@+id/jsonHand"
@@ -128,6 +112,7 @@
                         android:layout_height="58dp"
                         android:layout_alignParentBottom="true"
                         android:layout_marginStart="75dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginBottom="35dp"
                         app:layout_constraintRight_toRightOf="parent"
                         app:lottie_loop="true"
