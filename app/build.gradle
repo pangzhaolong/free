@@ -38,7 +38,7 @@ android {
         release {
             keyAlias 'cdyfjdd'
             keyPassword 'cdyfjdd1008'
-            storeFile rootProject.file('keystore/cdyfjdd.jks')
+            storeFile rootProject.file('keystore/cdyfqbn.jks')
             storePassword 'cdyfjdd1008'
 //            v2SigningEnabled true
 //            v1SigningEnabled true
