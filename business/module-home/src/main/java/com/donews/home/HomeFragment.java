@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,10 +15,12 @@ import androidx.annotation.Nullable;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.BarUtils;
+import com.blankj.utilcode.util.ConvertUtils;
 import com.bumptech.glide.Glide;
 import com.dn.sdk.AdCustomError;
 import com.dn.sdk.listener.interstitial.SimpleInterstitialFullListener;
 import com.dn.sdk.listener.interstitial.SimpleInterstitialListener;
+import com.donews.base.utils.glide.GlideUtils;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
@@ -43,7 +46,11 @@ import com.donews.yfsdk.monitor.PageMoniterCheck;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.orhanobut.logger.Logger;
+import com.zhpan.bannerview.BaseBannerAdapter;
+import com.zhpan.bannerview.BaseViewHolder;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -68,6 +75,16 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
 
     private boolean mIsResumed = false;
 
+    //banner图标
+    private List<String> bannerStr = new ArrayList() {
+        {
+            add("https://img.alicdn.com/imgextra/i2/2053469401/O1CN01iLaErN2JJhz69QDna_!!2053469401.jpg");
+            add("https://img.alicdn.com/imgextra/i1/2053469401/O1CN01oKK8D32JJi3C0Twb4_!!2053469401.jpg");
+            add("https://img.alicdn.com/imgextra/i1/2053469401/O1CN01tO2vcm2JJi0KdNVOD_!!2053469401.jpg");
+            add("https://img.alicdn.com/imgextra/i4/2053469401/O1CN01tA6DEy2JJi559xG1M_!!2053469401.jpg");
+            add("https://img.alicdn.com/imgextra/i4/2053469401/O1CN01sZei422JJi3BIqYCi_!!2053469401.jpg");
+        }
+    };
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -229,6 +246,27 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
         loadRankListData();
 
         loadTopIcons();
+        mDataBinding.homeHeadBanner
+                .setLifecycleRegistry(getActivity().getLifecycle())
+                .setIndicatorVisibility(View.GONE)
+                .setRoundCorner(ConvertUtils.dp2px(10))
+                .setAdapter(new BaseBannerAdapter<String>() {
+                    @Override
+                    protected void bindData(BaseViewHolder<String> holder, String data, int position, int pageSize) {
+                        ImageView icon = holder.itemView.findViewById(R.id.home_head_banner_iv);
+                        GlideUtils.loadImageView(getActivity(), data, icon);
+                    }
+
+                    @Override
+                    public int getLayoutId(int viewType) {
+                        return R.layout.home_head_banner_item;
+                    }
+
+                })
+                .setCanLoop(true)
+                .setAutoPlay(true)
+                .create();
+        mDataBinding.homeHeadBanner.refreshData(bannerStr);
     }
 
     private void initSrl() {

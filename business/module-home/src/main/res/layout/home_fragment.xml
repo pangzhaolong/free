@@ -118,7 +118,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
-
+                            <!-- Banner -->
+                            <com.zhpan.bannerview.BannerViewPager
+                                android:id="@+id/home_head_banner"
+                                android:layout_width="match_parent"
+                                android:layout_height="137dp"
+                                android:layout_marginLeft="@dimen/margin_15"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginRight="@dimen/margin_15"
+                                app:bvp_can_loop="true"
+                                app:bvp_indicator_radius="@dimen/dp_10" />
                             <LinearLayout
                                 android:id="@+id/home_top_icon_ll"
                                 android:layout_width="match_parent"
