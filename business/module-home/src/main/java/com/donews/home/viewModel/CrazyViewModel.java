@@ -25,8 +25,8 @@ public class CrazyViewModel extends BaseLiveDataViewModel<CrazyModel> {
         return mModel.getRealTimeData(pageId, src);
     }
 
-    public MutableLiveData<FactorySaleBean> getFactorySale(String page_id,String page_size) {
-        return mModel.getFactorySale(page_id,page_size);
+    public MutableLiveData<FactorySaleBean> getFactorySale(String page_id,String page_size,String url) {
+        return mModel.getFactorySale(page_id,page_size,url);
     }
 
 

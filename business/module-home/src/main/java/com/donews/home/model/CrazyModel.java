@@ -48,9 +48,9 @@ public class CrazyModel extends BaseLiveDataModel {
     }
 
 
-    public MutableLiveData<FactorySaleBean> getFactorySale(String page_id,String page_size) {
+    public MutableLiveData<FactorySaleBean> getFactorySale(String page_id,String page_size,String url) {
         MutableLiveData<FactorySaleBean> mutableLiveData = new MutableLiveData<>();
-        addDisposable(EasyHttp.get(HomeApi.sale_Url + "?page_id="+page_id+"&page_size="+page_size)
+        addDisposable(EasyHttp.get(url+ "?page_id="+page_id+"&page_size="+page_size)
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<FactorySaleBean>() {
 

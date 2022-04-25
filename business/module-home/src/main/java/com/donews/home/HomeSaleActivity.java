@@ -9,11 +9,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.home.adapter.CrazyListAdapter;
 import com.donews.home.adapter.SaleListAdapter;
+import com.donews.home.api.HomeApi;
 import com.donews.home.databinding.HomeCrazyListActivityBinding;
 import com.donews.home.listener.GoodsClickListener;
 import com.donews.home.viewModel.CrazyViewModel;
@@ -31,10 +34,21 @@ public class HomeSaleActivity extends MvvmBaseLiveDataActivity<HomeCrazyListActi
     private SaleListAdapter saleListAdapter;
     private int mPageId = 1;
 
+    @Autowired(name = "title")
+    String title_name = "";
+
+    @Autowired(name = "type")
+    String types = "";
+    String url = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ARouter.getInstance().inject(this);
+        url = HomeApi.sale_Url;
+        if (types.equals("1")) {
+            url = HomeApi.explosive_Url;
+        }
         super.onCreate(savedInstanceState);
-
         ImmersionBar.with(this)
                 .statusBarColor(R.color.white)
                 .navigationBarColor(R.color.black)
@@ -66,12 +80,13 @@ public class HomeSaleActivity extends MvvmBaseLiveDataActivity<HomeCrazyListActi
 
         mDataBinding.homeCrazySrl.setOnRefreshListener(refreshLayout -> loadRefreshList());
         mDataBinding.homeCrazySrl.setOnLoadMoreListener(refreshLayout -> loadMoreList());
-        mDataBinding.nameTitle.setText("工厂特卖");
+        mDataBinding.nameTitle.setText(title_name);
         mDataBinding.homeCrazyBack.setOnClickListener(v -> finish());
     }
 
     private void loadRefreshList() {
-        mViewModel.getFactorySale("1","20").observe(this, realTimeBean -> {
+
+        mViewModel.getFactorySale("1", "20", url).observe(this, realTimeBean -> {
             if (realTimeBean == null || realTimeBean.getList() == null || realTimeBean.getList().size() <= 0) {
                 mDataBinding.homeCrazyLoadingStatusTv.setText("数据加载失败，点击重试.");
                 mDataBinding.homeCrazySrl.finishRefresh();
@@ -83,7 +98,7 @@ public class HomeSaleActivity extends MvvmBaseLiveDataActivity<HomeCrazyListActi
 
     private void loadMoreList() {
         mPageId++;
-        mViewModel.getFactorySale(mPageId+"", "20").observe(this, homeGoodsBean -> {
+        mViewModel.getFactorySale(mPageId + "", "20", url).observe(this, homeGoodsBean -> {
             if (homeGoodsBean == null || homeGoodsBean.getList() == null || homeGoodsBean.getList().size() <= 0) {
                 mPageId--;
                 mDataBinding.homeCrazyLoadingStatusTv.setText("数据加载失败，点击重试.");

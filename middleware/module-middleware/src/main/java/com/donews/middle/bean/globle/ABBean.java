@@ -330,7 +330,7 @@ public class ABBean extends BaseCustomViewModel {
     }
 
     public boolean isOpenAB() {
-        return openAB;
+        return true;
     }
 
     public boolean getOpenAB() {

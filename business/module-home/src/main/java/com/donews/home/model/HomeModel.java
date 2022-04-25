@@ -90,9 +90,9 @@ public class HomeModel extends BaseLiveDataModel {
     }
 
 
-    public MutableLiveData<FactorySaleBean> getFactorySale() {
+    public MutableLiveData<FactorySaleBean> getHomeFactorySale() {
         MutableLiveData<FactorySaleBean> mutableLiveData = new MutableLiveData<>();
-        addDisposable(EasyHttp.get(HomeApi.sale_Url + "?&page_size=4")
+        addDisposable(EasyHttp.get(HomeApi.sale_Url + "?&page_size=20")
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<FactorySaleBean>() {
 

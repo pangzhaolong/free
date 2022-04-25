@@ -30,17 +30,17 @@ public class FactorySaleBean extends BaseCustomViewModel {
         @SerializedName("dtitle")
         private String dtitle;
         @SerializedName("original_price")
-        private Integer originalPrice;
+        private float originalPrice;
         @SerializedName("actual_price")
-        private Integer actualPrice;
+        private float actualPrice;
         @SerializedName("shop_type")
-        private Integer shopType;
+        private float shopType;
         @SerializedName("month_sales")
-        private Integer monthSales;
+        private float monthSales;
         @SerializedName("two_hours_sales")
-        private Integer twoHoursSales;
+        private float twoHoursSales;
         @SerializedName("daily_sales")
-        private Integer dailySales;
+        private float dailySales;
         @SerializedName("desc")
         private String desc;
         @SerializedName("coupon_link")
@@ -50,7 +50,7 @@ public class FactorySaleBean extends BaseCustomViewModel {
         @SerializedName("coupon_start_time")
         private String couponStartTime;
         @SerializedName("coupon_price")
-        private Integer couponPrice;
+        private float couponPrice;
         @SerializedName("create_time")
         private String createTime;
         @SerializedName("main_pic")
@@ -68,49 +68,31 @@ public class FactorySaleBean extends BaseCustomViewModel {
         @SerializedName("discounts")
         private Double discounts;
         @SerializedName("coupon_total_num")
-        private Integer couponTotalNum;
+        private float couponTotalNum;
         @SerializedName("activity_start_time")
         private String activityStartTime;
         @SerializedName("activity_end_time")
         private String activityEndTime;
         @SerializedName("shop_level")
-        private Integer shopLevel;
+        private float shopLevel;
         @SerializedName("brand_id")
         private String brandId;
         @SerializedName("brand_name")
         private String brandName;
         @SerializedName("hot_push")
-        private Integer hotPush;
+        private float hotPush;
         @SerializedName("team_name")
         private String teamName;
         @SerializedName("quan_m_link")
-        private Integer quanMLink;
+        private float quanMLink;
         @SerializedName("hz_quan_over")
-        private Integer hzQuanOver;
+        private float hzQuanOver;
         @SerializedName("yunfeixian")
-        private Integer yunfeixian;
+        private float yunfeixian;
         @SerializedName("tchaoshi")
-        private Integer tchaoshi;
+        private float tchaoshi;
         @SerializedName("gold_sellers")
-        private Integer goldSellers;
-        @SerializedName("freeship_remote_district")
-        private Integer freeshipRemoteDistrict;
-        @SerializedName("live_price")
-        private Integer livePrice;
-        @SerializedName("sales_live")
-        private Integer salesLive;
-        @SerializedName("user_name")
-        private String userName;
-        @SerializedName("live_id")
-        private String liveId;
-        @SerializedName("activity_type")
-        private Integer activityType;
-        @SerializedName("brand")
-        private Integer brand;
-        @SerializedName("shop_name")
-        private String shopName;
-        @SerializedName("special_text")
-        private List<?> specialText;
+        private float goldSellers;
 
         public String getId() {
             return id;
@@ -152,51 +134,51 @@ public class FactorySaleBean extends BaseCustomViewModel {
             this.dtitle = dtitle;
         }
 
-        public Integer getOriginalPrice() {
+        public float getOriginalPrice() {
             return originalPrice;
         }
 
-        public void setOriginalPrice(Integer originalPrice) {
+        public void setOriginalPrice(float originalPrice) {
             this.originalPrice = originalPrice;
         }
 
-        public Integer getActualPrice() {
+        public float getActualPrice() {
             return actualPrice;
         }
 
-        public void setActualPrice(Integer actualPrice) {
+        public void setActualPrice(float actualPrice) {
             this.actualPrice = actualPrice;
         }
 
-        public Integer getShopType() {
+        public float getShopType() {
             return shopType;
         }
 
-        public void setShopType(Integer shopType) {
+        public void setShopType(float shopType) {
             this.shopType = shopType;
         }
 
-        public Integer getMonthSales() {
+        public float getMonthSales() {
             return monthSales;
         }
 
-        public void setMonthSales(Integer monthSales) {
+        public void setMonthSales(float monthSales) {
             this.monthSales = monthSales;
         }
 
-        public Integer getTwoHoursSales() {
+        public float getTwoHoursSales() {
             return twoHoursSales;
         }
 
-        public void setTwoHoursSales(Integer twoHoursSales) {
+        public void setTwoHoursSales(float twoHoursSales) {
             this.twoHoursSales = twoHoursSales;
         }
 
-        public Integer getDailySales() {
+        public float getDailySales() {
             return dailySales;
         }
 
-        public void setDailySales(Integer dailySales) {
+        public void setDailySales(float dailySales) {
             this.dailySales = dailySales;
         }
 
@@ -232,11 +214,11 @@ public class FactorySaleBean extends BaseCustomViewModel {
             this.couponStartTime = couponStartTime;
         }
 
-        public Integer getCouponPrice() {
+        public float getCouponPrice() {
             return couponPrice;
         }
 
-        public void setCouponPrice(Integer couponPrice) {
+        public void setCouponPrice(float couponPrice) {
             this.couponPrice = couponPrice;
         }
 
@@ -304,11 +286,11 @@ public class FactorySaleBean extends BaseCustomViewModel {
             this.discounts = discounts;
         }
 
-        public Integer getCouponTotalNum() {
+        public float getCouponTotalNum() {
             return couponTotalNum;
         }
 
-        public void setCouponTotalNum(Integer couponTotalNum) {
+        public void setCouponTotalNum(float couponTotalNum) {
             this.couponTotalNum = couponTotalNum;
         }
 
@@ -328,11 +310,11 @@ public class FactorySaleBean extends BaseCustomViewModel {
             this.activityEndTime = activityEndTime;
         }
 
-        public Integer getShopLevel() {
+        public float getShopLevel() {
             return shopLevel;
         }
 
-        public void setShopLevel(Integer shopLevel) {
+        public void setShopLevel(float shopLevel) {
             this.shopLevel = shopLevel;
         }
 
@@ -352,11 +334,11 @@ public class FactorySaleBean extends BaseCustomViewModel {
             this.brandName = brandName;
         }
 
-        public Integer getHotPush() {
+        public float getHotPush() {
             return hotPush;
         }
 
-        public void setHotPush(Integer hotPush) {
+        public void setHotPush(float hotPush) {
             this.hotPush = hotPush;
         }
 
@@ -368,67 +350,67 @@ public class FactorySaleBean extends BaseCustomViewModel {
             this.teamName = teamName;
         }
 
-        public Integer getQuanMLink() {
+        public float getQuanMLink() {
             return quanMLink;
         }
 
-        public void setQuanMLink(Integer quanMLink) {
+        public void setQuanMLink(float quanMLink) {
             this.quanMLink = quanMLink;
         }
 
-        public Integer getHzQuanOver() {
+        public float getHzQuanOver() {
             return hzQuanOver;
         }
 
-        public void setHzQuanOver(Integer hzQuanOver) {
+        public void setHzQuanOver(float hzQuanOver) {
             this.hzQuanOver = hzQuanOver;
         }
 
-        public Integer getYunfeixian() {
+        public float getYunfeixian() {
             return yunfeixian;
         }
 
-        public void setYunfeixian(Integer yunfeixian) {
+        public void setYunfeixian(float yunfeixian) {
             this.yunfeixian = yunfeixian;
         }
 
-        public Integer getTchaoshi() {
+        public float getTchaoshi() {
             return tchaoshi;
         }
 
-        public void setTchaoshi(Integer tchaoshi) {
+        public void setTchaoshi(float tchaoshi) {
             this.tchaoshi = tchaoshi;
         }
 
-        public Integer getGoldSellers() {
+        public float getGoldSellers() {
             return goldSellers;
         }
 
-        public void setGoldSellers(Integer goldSellers) {
+        public void setGoldSellers(float goldSellers) {
             this.goldSellers = goldSellers;
         }
 
-        public Integer getFreeshipRemoteDistrict() {
+        public float getFreeshipRemoteDistrict() {
             return freeshipRemoteDistrict;
         }
 
-        public void setFreeshipRemoteDistrict(Integer freeshipRemoteDistrict) {
+        public void setFreeshipRemoteDistrict(float freeshipRemoteDistrict) {
             this.freeshipRemoteDistrict = freeshipRemoteDistrict;
         }
 
-        public Integer getLivePrice() {
+        public float getLivePrice() {
             return livePrice;
         }
 
-        public void setLivePrice(Integer livePrice) {
+        public void setLivePrice(float livePrice) {
             this.livePrice = livePrice;
         }
 
-        public Integer getSalesLive() {
+        public float getSalesLive() {
             return salesLive;
         }
 
-        public void setSalesLive(Integer salesLive) {
+        public void setSalesLive(float salesLive) {
             this.salesLive = salesLive;
         }
 
@@ -448,19 +430,19 @@ public class FactorySaleBean extends BaseCustomViewModel {
             this.liveId = liveId;
         }
 
-        public Integer getActivityType() {
+        public float getActivityType() {
             return activityType;
         }
 
-        public void setActivityType(Integer activityType) {
+        public void setActivityType(float activityType) {
             this.activityType = activityType;
         }
 
-        public Integer getBrand() {
+        public float getBrand() {
             return brand;
         }
 
-        public void setBrand(Integer brand) {
+        public void setBrand(float brand) {
             this.brand = brand;
         }
 
@@ -479,5 +461,25 @@ public class FactorySaleBean extends BaseCustomViewModel {
         public void setSpecialText(List<?> specialText) {
             this.specialText = specialText;
         }
+
+        @SerializedName("freeship_remote_district")
+        private float freeshipRemoteDistrict;
+        @SerializedName("live_price")
+        private float livePrice;
+        @SerializedName("sales_live")
+        private float salesLive;
+        @SerializedName("user_name")
+        private String userName;
+        @SerializedName("live_id")
+        private String liveId;
+        @SerializedName("activity_type")
+        private float activityType;
+        @SerializedName("brand")
+        private float brand;
+        @SerializedName("shop_name")
+        private String shopName;
+        @SerializedName("special_text")
+        private List<?> specialText;
+
     }
 }

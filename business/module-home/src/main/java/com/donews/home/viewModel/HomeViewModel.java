@@ -40,8 +40,8 @@ public class HomeViewModel extends BaseLiveDataViewModel<HomeModel> {
     }
 
 
-    public MutableLiveData<FactorySaleBean> getFactorySale() {
-        return mModel.getFactorySale();
+    public MutableLiveData<FactorySaleBean> getHomeFactorySale() {
+        return mModel.getHomeFactorySale();
     }
 
 

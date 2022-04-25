@@ -52,6 +52,7 @@ import com.zhpan.bannerview.BaseViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -230,20 +231,12 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
 
         mDataBinding.homeBannerLl.setOnClickListener(v ->
                 ARouter.getInstance().build(RouterActivityPath.Home.CRAZY_LIST_DETAIL).navigation());
-        mDataBinding.homeSaleLayout.setOnClickListener(v->
-                        ARouter.getInstance().build(RouterActivityPath.Home.FACTORY_SALE).navigation()
-                );
-
-        mDataBinding.homeTitleTb.setOnClickListener(v -> ARouter.getInstance().build(RouterActivityPath.Home.Welfare_Activity)
-                .withString("from", "tb")
-                .navigation());
-        mDataBinding.homeTitlePdd.setOnClickListener(v -> ARouter.getInstance().build(RouterActivityPath.Home.Welfare_Activity)
-                .withString("from", "pdd")
-                .navigation());
-        mDataBinding.homeTitleJd.setOnClickListener(v -> ARouter.getInstance().build(RouterActivityPath.Home.Welfare_Activity)
-                .withString("from", "jd")
-                .navigation());
-        mDataBinding.homeTitleElm.setOnClickListener(v -> GotoUtil.gotoElem(mContext, "https://s.click.ele.me/PvxZeeu"));
+        mDataBinding.homeSaleLayout.setOnClickListener(v ->
+                ARouter.getInstance().build(RouterActivityPath.Home.FACTORY_SALE).withString("title", "工厂特卖").withString("type","0").navigation()
+        );
+        mDataBinding.newProductsToday.setOnClickListener(v ->
+                ARouter.getInstance().build(RouterActivityPath.Home.FACTORY_SALE).withString("title", "今日上新").withString("type","1").navigation()
+        );
         initSrl();
 
         loadCategory();
@@ -251,7 +244,6 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
 //        loadSecKilData();
         loadRankListData();
         factorySale();
-        loadTopIcons();
         mDataBinding.homeHeadBanner
                 .setLifecycleRegistry(getActivity().getLifecycle())
                 .setIndicatorVisibility(View.GONE)
@@ -281,19 +273,10 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
 //            loadSecKilData();
             loadRankListData();
             loadUserList();
-            loadTopIcons();
             mDataBinding.homeSrl.finishRefresh();
         });
     }
 
-    private void loadTopIcons() {
-        mViewModel.getTopIcons().observe(this.getViewLifecycleOwner(), topIconsBean -> {
-            if (topIconsBean == null || topIconsBean.getItems() == null || topIconsBean.getItems().size() <= 0) {
-                return;
-            }
-            showTopIcons(topIconsBean);
-        });
-    }
 
     private int mPageId = 1;
 
@@ -324,7 +307,7 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
 
     //获取限时抢购
     private void factorySale() {
-        mViewModel.getFactorySale().observe(getViewLifecycleOwner(), factorySaleBean -> {
+        mViewModel.getHomeFactorySale().observe(getViewLifecycleOwner(), factorySaleBean -> {
             if (factorySaleBean == null) {
             } else {
                 showFactorySale(factorySaleBean);
@@ -354,15 +337,24 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
 
 
     private void showFactorySale(FactorySaleBean factorySaleBean) {
-        if (factorySaleBean.getList().size() >= 4) {
-            Glide.with(this).load(UrlUtils.formatUrlPrefix(factorySaleBean.getList().get(0).getMainPic())).into(mDataBinding.homeSaleLift01);
-            Glide.with(this).load(UrlUtils.formatUrlPrefix(factorySaleBean.getList().get(1).getMainPic())).into(mDataBinding.homeSaleLift02);
-            Glide.with(this).load(UrlUtils.formatUrlPrefix(factorySaleBean.getList().get(2).getMainPic())).into(mDataBinding.homeSaleLift03);
-            Glide.with(this).load(UrlUtils.formatUrlPrefix(factorySaleBean.getList().get(3).getMainPic())).into(mDataBinding.homeSaleLift04);
-            mDataBinding.homeSalePrice01.setText(factorySaleBean.getList().get(0).getActualPrice()+"");
-            mDataBinding.homeSalePrice02.setText(factorySaleBean.getList().get(1).getActualPrice()+"");
-            mDataBinding.homeSalePrice03.setText(factorySaleBean.getList().get(2).getActualPrice()+"");
-            mDataBinding.homeSalePrice04.setText(factorySaleBean.getList().get(3).getActualPrice()+"");
+        Random rand=new Random();
+        if (factorySaleBean.getList()!=null&&factorySaleBean.getList().size() >= 4) {
+            int id_01=rand.nextInt(factorySaleBean.getList().size());
+            FactorySaleBean.ListDTO listDTO_01=factorySaleBean.getList().get(id_01);
+            Glide.with(this).load(UrlUtils.formatUrlPrefix(listDTO_01.getMainPic())).into(mDataBinding.homeSaleLift01);
+            int id_02=rand.nextInt(factorySaleBean.getList().size());
+            FactorySaleBean.ListDTO listDTO_02=factorySaleBean.getList().get(id_02);
+            Glide.with(this).load(UrlUtils.formatUrlPrefix(listDTO_02.getMainPic())).into(mDataBinding.homeSaleLift02);
+            int id_03=rand.nextInt(factorySaleBean.getList().size());
+            FactorySaleBean.ListDTO listDTO_03=factorySaleBean.getList().get(id_03);
+            Glide.with(this).load(UrlUtils.formatUrlPrefix(listDTO_03.getMainPic())).into(mDataBinding.homeSaleLift03);
+            int id_04=rand.nextInt(factorySaleBean.getList().size());
+            FactorySaleBean.ListDTO listDTO_04=factorySaleBean.getList().get(id_04);
+            Glide.with(this).load(UrlUtils.formatUrlPrefix(listDTO_04.getMainPic())).into(mDataBinding.homeSaleLift04);
+            mDataBinding.homeSalePrice01.setText(listDTO_01.getActualPrice() + "");
+            mDataBinding.homeSalePrice02.setText(listDTO_02.getActualPrice() + "");
+            mDataBinding.homeSalePrice03.setText(listDTO_03.getActualPrice() + "");
+            mDataBinding.homeSalePrice04.setText(listDTO_04.getActualPrice() + "");
         }
     }
 
@@ -453,37 +445,6 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
         });
     }
 
-    private void showTopIcons(TopIconsBean topIconsBean) {
-        if (!topIconsBean.getFlag()) {
-            mDataBinding.homeTopIconLl.setVisibility(View.GONE);
-            return;
-        }
-        if (topIconsBean.getItems().size() < 4) {
-            return;
-        }
-
-        TopIconsBean.Icon icon = topIconsBean.getItems().get(0);
-        Glide.with(this).load(UrlUtils.formatUrlPrefix(icon.getIcon())).into(mDataBinding.homeTopIconIv1);
-        mDataBinding.homeTopIconTv1.setText(icon.getName());
-        mDataBinding.homeTitleTb.setTag(icon);
-        icon = topIconsBean.getItems().get(1);
-        Glide.with(this).load(UrlUtils.formatUrlPrefix(icon.getIcon())).into(mDataBinding.homeTopIconIv2);
-        mDataBinding.homeTopIconTv2.setText(icon.getName());
-        mDataBinding.homeTitlePdd.setTag(icon);
-        icon = topIconsBean.getItems().get(2);
-        Glide.with(this).load(UrlUtils.formatUrlPrefix(icon.getIcon())).into(mDataBinding.homeTopIconIv3);
-        mDataBinding.homeTopIconTv3.setText(icon.getName());
-        mDataBinding.homeTitleJd.setTag(icon);
-        icon = topIconsBean.getItems().get(3);
-        Glide.with(this).load(UrlUtils.formatUrlPrefix(icon.getIcon())).into(mDataBinding.homeTopIconIv4);
-        mDataBinding.homeTopIconTv4.setText(icon.getName());
-        mDataBinding.homeTitleElm.setTag(icon);
-
-        mDataBinding.homeTitleTb.setOnClickListener(v -> gotoOther(v.getTag()));
-        mDataBinding.homeTitlePdd.setOnClickListener(v -> gotoOther(v.getTag()));
-        mDataBinding.homeTitleJd.setOnClickListener(v -> gotoOther(v.getTag()));
-        mDataBinding.homeTitleElm.setOnClickListener(v -> gotoOther(v.getTag()));
-    }
 
     private void gotoOther(Object tag) {
         TopIconsBean.Icon icon = (TopIconsBean.Icon) tag;
