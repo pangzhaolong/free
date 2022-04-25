@@ -30,6 +30,7 @@ import com.donews.home.viewModel.HomeViewModel;
 import com.donews.middle.adutils.InterstitialAd;
 import com.donews.middle.adutils.InterstitialFullAd;
 import com.donews.middle.adutils.adcontrol.AdControlManager;
+import com.donews.middle.bean.home.FactorySaleBean;
 import com.donews.middle.bean.home.HomeCategoryBean;
 import com.donews.middle.bean.home.RealTimeBean;
 import com.donews.middle.bean.home.SecKilBean;
@@ -85,6 +86,7 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
             add("https://img.alicdn.com/imgextra/i4/2053469401/O1CN01sZei422JJi3BIqYCi_!!2053469401.jpg");
         }
     };
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -228,6 +230,10 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
 
         mDataBinding.homeBannerLl.setOnClickListener(v ->
                 ARouter.getInstance().build(RouterActivityPath.Home.CRAZY_LIST_DETAIL).navigation());
+        mDataBinding.homeSaleLayout.setOnClickListener(v->
+                        ARouter.getInstance().build(RouterActivityPath.Home.FACTORY_SALE).navigation()
+                );
+
         mDataBinding.homeTitleTb.setOnClickListener(v -> ARouter.getInstance().build(RouterActivityPath.Home.Welfare_Activity)
                 .withString("from", "tb")
                 .navigation());
@@ -244,7 +250,7 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
         loadUserList();
 //        loadSecKilData();
         loadRankListData();
-
+        factorySale();
         loadTopIcons();
         mDataBinding.homeHeadBanner
                 .setLifecycleRegistry(getActivity().getLifecycle())
@@ -315,6 +321,19 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
         });
     }*/
 
+
+    //获取限时抢购
+    private void factorySale() {
+        mViewModel.getFactorySale().observe(getViewLifecycleOwner(), factorySaleBean -> {
+            if (factorySaleBean == null) {
+            } else {
+                showFactorySale(factorySaleBean);
+                GoodsCache.saveGoodsBean(factorySaleBean, "home_sale");
+            }
+        });
+    }
+
+
     private void loadCategory() {
         mHomeBean = GoodsCache.readGoodsBean(HomeCategoryBean.class, "home_category");
         if (mHomeBean != null && mHomeBean.getList() != null && mFragmentAdapter != null) {
@@ -332,6 +351,21 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
             GoodsCache.saveGoodsBean(mHomeBean, "home_category");
         });
     }
+
+
+    private void showFactorySale(FactorySaleBean factorySaleBean) {
+        if (factorySaleBean.getList().size() >= 4) {
+            Glide.with(this).load(UrlUtils.formatUrlPrefix(factorySaleBean.getList().get(0).getMainPic())).into(mDataBinding.homeSaleLift01);
+            Glide.with(this).load(UrlUtils.formatUrlPrefix(factorySaleBean.getList().get(1).getMainPic())).into(mDataBinding.homeSaleLift02);
+            Glide.with(this).load(UrlUtils.formatUrlPrefix(factorySaleBean.getList().get(2).getMainPic())).into(mDataBinding.homeSaleLift03);
+            Glide.with(this).load(UrlUtils.formatUrlPrefix(factorySaleBean.getList().get(3).getMainPic())).into(mDataBinding.homeSaleLift04);
+            mDataBinding.homeSalePrice01.setText(factorySaleBean.getList().get(0).getActualPrice()+"");
+            mDataBinding.homeSalePrice02.setText(factorySaleBean.getList().get(1).getActualPrice()+"");
+            mDataBinding.homeSalePrice03.setText(factorySaleBean.getList().get(2).getActualPrice()+"");
+            mDataBinding.homeSalePrice04.setText(factorySaleBean.getList().get(3).getActualPrice()+"");
+        }
+    }
+
 
     @SuppressLint("SetTextI18n")
     private void showSecKilBean(SecKilBean secKilBean) {

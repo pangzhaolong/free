@@ -36,6 +36,8 @@ public class HomeApi {
 
     public final static String crazyListUrl = BuildConfig.BASE_URL + "v1/ranking-list";
 
+    public final static String sale_Url = BuildConfig.BASE_URL + "v1/live-goods-list";
+
 
     public final static String perfectGoodsListUrl = BuildConfig.BASE_URL + "v2/recommend-goods-list?page_size=%d&page_id=%d&src=%s";
 

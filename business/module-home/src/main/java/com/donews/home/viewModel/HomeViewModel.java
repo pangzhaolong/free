@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.home.model.HomeModel;
+import com.donews.middle.bean.home.FactorySaleBean;
 import com.donews.middle.bean.home.HomeCategoryBean;
 import com.donews.middle.bean.home.RealTimeBean;
 import com.donews.middle.bean.home.SecKilBean;
@@ -37,6 +38,12 @@ public class HomeViewModel extends BaseLiveDataViewModel<HomeModel> {
     public MutableLiveData<SecKilBean> getSecKilData() {
         return mModel.getSecKilData();
     }
+
+
+    public MutableLiveData<FactorySaleBean> getFactorySale() {
+        return mModel.getFactorySale();
+    }
+
 
     public MutableLiveData<UserBean> getUserList() {
         return mModel.getUserList();

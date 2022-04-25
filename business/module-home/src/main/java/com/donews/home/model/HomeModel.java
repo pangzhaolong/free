@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.model.BaseLiveDataModel;
 import com.donews.home.api.HomeApi;
+import com.donews.middle.bean.home.FactorySaleBean;
 import com.donews.middle.bean.home.HomeCategoryBean;
 import com.donews.middle.bean.home.RealTimeBean;
 import com.donews.middle.bean.home.SecKilBean;
@@ -87,6 +88,29 @@ public class HomeModel extends BaseLiveDataModel {
 
         return mutableLiveData;
     }
+
+
+    public MutableLiveData<FactorySaleBean> getFactorySale() {
+        MutableLiveData<FactorySaleBean> mutableLiveData = new MutableLiveData<>();
+        addDisposable(EasyHttp.get(HomeApi.sale_Url + "?&page_size=4")
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new SimpleCallBack<FactorySaleBean>() {
+
+                    @Override
+                    public void onError(ApiException e) {
+                        mutableLiveData.postValue(null);
+                    }
+
+                    @Override
+                    public void onSuccess(FactorySaleBean secKilBean) {
+                        mutableLiveData.postValue(secKilBean);
+                    }
+                }));
+
+        return mutableLiveData;
+    }
+
+
 
     public MutableLiveData<UserBean> getUserList() {
         MutableLiveData<UserBean> mutableLiveData = new MutableLiveData<>();

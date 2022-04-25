@@ -22,6 +22,11 @@
             android:name=".HomePerfectActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".HomeSaleActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".HomeWelfareActivity"
             android:exported="true"

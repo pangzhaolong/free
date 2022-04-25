@@ -199,6 +199,8 @@ public class RouterActivityPath {
         public static final String Home = "/home";
         public static final String CRAZY_LIST_DETAIL = Home + "/CrazyList";
         public static final String Welfare_Activity = Home + "/WelfareActivity";
+        public static final String FACTORY_SALE = Home + "/FactorySale";
+
     }
 
     public static class Rp {
