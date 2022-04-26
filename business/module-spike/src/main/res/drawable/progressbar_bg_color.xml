@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:ignore="ResourceName">
+
+
+
+    <!-- 设置背景色（黑色） -->
+    <item android:id="@android:id/background">
+        <shape>
+            <corners android:radius="90dp"></corners>
+            <solid android:color="#FFFFFF"></solid>
+        </shape>
+    </item>
+
+    <item android:id="@android:id/progress">
+        <clip>
+            <shape>
+                <corners android:radius="85dip" />
+                <gradient
+                    android:centerColor="#F5562A"
+                    android:centerY="0.75"
+                    android:endColor="#F5562A"
+                    android:startColor="#F5562A" />
+            </shape>
+        </clip>
+    </item>
+</layer-list>

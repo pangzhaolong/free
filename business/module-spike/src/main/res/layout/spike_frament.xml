@@ -17,90 +17,53 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="@drawable/spike_head_bg"></ImageView>
+            android:layout_height="300dp"
+            android:background="@drawable/grab_it_now_bg" />
 
         <TextView
             android:id="@+id/spike_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="51dp"
             android:gravity="center"
-            android:text="整点限时抢"
+            android:text="实时疯抢榜"
             android:textColor="#FFFFFF"
-            android:textSize="20dp"
-            android:textStyle="bold"></TextView>
+            android:textSize="42dp"
+            android:textStyle="bold" />
 
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/hint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/spike_title"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="20dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:gravity="center"
-                android:text="多层人工严选"
-                android:textColor="#FFFFFF" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="/"
-                android:textColor="#FFFFFF" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:gravity="center"
-                android:text="独家超值特惠"
-                android:textColor="#FFFFFF" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="/"
-                android:textColor="#FFFFFF" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:gravity="center"
-                android:text="每日实时上新"
-                android:textColor="#FFFFFF" />
-        </LinearLayout>
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:layout_below="@+id/spike_title"
+            android:text="热门商品抢先购"
+            android:textColor="#8AFFFFFF"
+            android:textSize="14dp"
+            android:textStyle="bold" />
 
         <LinearLayout
+            android:layout_below="@+id/hint"
+            android:layout_marginStart="13dp"
+            android:layout_marginEnd="13dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="180dp"
-            android:background="@drawable/spike_shape_corner"
+            android:layout_marginTop="20dp"
             android:orientation="vertical">
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/spike_time_scroll"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                ></androidx.recyclerview.widget.RecyclerView>
+                />
 
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/spike_content_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                ></androidx.recyclerview.widget.RecyclerView>
+                />
 
         </LinearLayout>
 

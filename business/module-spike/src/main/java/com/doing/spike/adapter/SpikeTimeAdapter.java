@@ -105,15 +105,15 @@ public class SpikeTimeAdapter extends RecyclerView.Adapter<SpikeTimeAdapter.Spik
 
 
     private void setSelectType(SpikeViewHolder holder) {
-        holder.mtimeShow.setTextColor(mContext.getResources().getColor(R.color.selected_color));
-        holder.mSpikeType.setTextColor(Color.WHITE);
+        holder.mtimeShow.setTextColor(mContext.getResources().getColor(R.color.bg_white));
+        holder.mSpikeType.setTextColor(mContext.getResources().getColor(R.color.selected_color));
         holder.mSpikeType.setBackground(mContext.getResources().getDrawable(R.drawable.spike_button_shape_corner));
     }
 
     private void unSetSelectType(SpikeViewHolder holder) {
-        holder.mtimeShow.setTextColor(mContext.getResources().getColor(R.color.un_time_color));
+        holder.mtimeShow.setTextColor(mContext.getResources().getColor(R.color.bg_white));
         holder.mSpikeType.setTextColor(mContext.getResources().getColor(R.color.un_time_title_color));
-        holder.mSpikeType.setBackgroundColor(mContext.getResources().getColor(R.color.bg_color));
+        holder.mSpikeType.setBackground(null);
     }
 
     public SpikeBean getSpikeBeans() {
