@@ -653,7 +653,7 @@ public class MainActivity
             homeItem.initialization("首页", R.drawable.main_home_checked, defaultColor, checkColor,
                     "main_bottom_tab_home.json");
             MainBottomTanItem lotteryItem = new MainBottomTanItem(this);
-            lotteryItem.initialization("马上抢", R.drawable.main_lottery, defaultColor, checkColor,
+            lotteryItem.initialization("特惠购", R.drawable.main_lottery, defaultColor, checkColor,
                     "main_bottom_tab_kaijiang.json");
 
             MainBottomTanItem mineItem = new MainBottomTanItem(this);
