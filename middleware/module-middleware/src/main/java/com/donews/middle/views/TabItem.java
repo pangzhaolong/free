@@ -34,7 +34,7 @@ public class TabItem extends FrameLayout {
 
     public void selected() {
         mTitleTv.setTextSize(18);
-        mTitleTv.setTextColor(Color.parseColor("#F64A43"));
+        mTitleTv.setTextColor(Color.parseColor("#717AFF"));
         mTitleTv.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         mBgView.setVisibility(VISIBLE);
         Paint paint = mTitleTv.getPaint();
@@ -46,7 +46,7 @@ public class TabItem extends FrameLayout {
 
     public void unSelected() {
         mTitleTv.setTextSize(16);
-        mTitleTv.setTextColor(Color.parseColor("#6D6D6D"));
+        mTitleTv.setTextColor(Color.parseColor("#2D323A"));
         mTitleTv.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
         mBgView.setVisibility(GONE);
     }

@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--StartActivity Style 冷启动效果-->
     <style name="main_AppTheme.Start" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@drawable/welcome_layer_drawable</item>
+        <item name="android:windowBackground">@drawable/welcome_layer_bg</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>

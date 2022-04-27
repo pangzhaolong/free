@@ -20,10 +20,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
             android:orientation="vertical">
 
             <RelativeLayout
+                android:layout_marginTop="12dp"
                 android:id="@+id/home_search_layout"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
@@ -55,7 +55,6 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="10dp"
                         android:layout_toEndOf="@+id/home_search_icon"
-                        android:background="@drawable/home_jdd_search_bg"
                         android:gravity="center_vertical"
                         android:hint="搜商品 领优惠券"
                         android:textSize="14sp"
@@ -76,6 +75,7 @@
                 </RelativeLayout>
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/home_jdd_help"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

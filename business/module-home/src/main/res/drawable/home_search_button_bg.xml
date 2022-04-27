@@ -8,8 +8,8 @@
         android:layout_height="28dp">
         <shape android:shape="rectangle">
             <gradient
-                android:endColor="#FFE9433E"
-                android:startColor="#FFFF6C65"
+                android:endColor="#6F7AFF"
+                android:startColor="#56BBFF"
                 android:type="linear" />
             <corners android:radius="18dp" />
         </shape>
