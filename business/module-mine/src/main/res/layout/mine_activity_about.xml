@@ -54,14 +54,14 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_marginTop="60dp"
-                android:src="@drawable/app_logo" />
+                android:src="@drawable/ic_launcher_round" />
 
             <TextView
                 android:id="@+id/mine_about_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="奖多多"
+                android:text="趣白拿"
                 android:textColor="@color/black"
                 android:textSize="23sp" />
 
@@ -80,7 +80,7 @@
                 android:lineHeight="20dp"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:text="奖多多是一款互动创意购物平台，以休闲时间，抢好物 为目标理想，打造一个公平公正，正品保证的休闲平台"
+                android:text="趣白拿是一款互动创意购物平台，以休闲时间，抢好物 为目标理想，打造一个公平公正，正品保证的休闲平台"
                 android:textSize="13sp" />
 
             <TextView

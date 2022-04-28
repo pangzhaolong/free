@@ -6,8 +6,8 @@
             android:shape="rectangle"
             tools:ignore="MissingDefaultResource">
             <corners android:radius="100dp" />
-            <gradient android:startColor="#F84F47"
-                android:endColor="#F33838"/>
+            <gradient android:startColor="#AC71FF"
+                android:endColor="#7671FF"/>
         </shape>
     </item>
 </layer-list>
