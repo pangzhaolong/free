@@ -55,7 +55,7 @@
             android:layout_marginLeft="53dp"
             android:layout_marginTop="50dp"
             android:layout_marginRight="53dp"
-            android:background="@drawable/wachat_login_bg"
+            android:background="@drawable/mine_me_open_not_win_but"
             android:enabled="false">
 
             <LinearLayout
@@ -127,32 +127,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rl_mobile_login"
+            android:layout_alignLeft="@+id/rl_wachat_login"
             android:layout_marginTop="25dp"
             android:gravity="center"
-            android:layout_alignLeft="@+id/rl_wachat_login"
             android:orientation="horizontal">
 
             <CheckBox
                 android:id="@+id/login_ck_check"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:checked="false"
+                android:background="@drawable/wachat_login_check_bg"
                 android:button="@null"
-                android:background="@drawable/wachat_login_check_bg"/>
+                android:checked="false" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
                 android:text="已阅读并同意"
-                android:textSize="12sp"
-                android:layout_marginLeft="4dp"/>
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/tv_user_xy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="《用户协议》"
-                android:textColor="#F33838"
+                android:textColor="@color/common_button_color"
                 android:textSize="12sp" />
 
             <TextView
@@ -160,7 +160,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="《隐私政策协议》"
-                android:textColor="#F33838"
+                android:textColor="@color/common_button_color"
                 android:textSize="12sp" />
         </LinearLayout>
 

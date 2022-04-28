@@ -65,7 +65,7 @@
                         android:layout_height="match_parent"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:background="@drawable/home_search_button_bg"
+                        android:background="@drawable/common_search_button_bg"
                         android:gravity="center"
                         android:paddingStart="20dp"
                         android:paddingEnd="20dp"
