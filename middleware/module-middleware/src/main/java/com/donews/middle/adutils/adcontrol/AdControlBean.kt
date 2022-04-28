@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 /**
- * 奖多多广告场景配置策略
+ * 趣白拿广告场景配置策略
  *
  * @author XuShuai
  * @version v1.0

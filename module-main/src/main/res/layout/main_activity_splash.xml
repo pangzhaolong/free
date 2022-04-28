@@ -175,7 +175,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:gravity="center"
-                android:text="请确认：系统设置-应用管理“奖多多”-联网控制 中网络已开启"
+                android:text="请确认：系统设置-应用管理“趣白拿”-联网控制 中网络已开启"
                 android:textColor="#A9AEB1"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toTopOf="@+id/splash_network_err_check"

@@ -46,7 +46,7 @@ public class FixTagUtils {
     /**
      * 本地标签 ${wx_name} 出错的默认填充内容
      */
-    private static final String defaultFillWxName = "奖多多";
+    private static final String defaultFillWxName = "趣白拿";
 
     /**
      * 本地标签的处理逻辑

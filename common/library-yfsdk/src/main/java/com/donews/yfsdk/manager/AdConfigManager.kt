@@ -16,7 +16,7 @@ import com.donews.yfsdk.bean.*
 import com.tencent.mmkv.MMKV
 
 /**
- * 奖多多 广告 管理类
+ * 趣白拿 广告 管理类
  *
  * @author XuShuai
  * @version v1.0

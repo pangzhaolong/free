@@ -74,7 +74,7 @@ public class CritLotteryService extends Service {
 
     private void startLotteryForeground() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel("100365", "测试奖多多", NotificationManager.IMPORTANCE_LOW);
+            NotificationChannel channel = new NotificationChannel("100365", "测试趣白拿", NotificationManager.IMPORTANCE_LOW);
             NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             manager.createNotificationChannel(channel);
             Notification notification = new Notification.Builder(CritLotteryService.this, "100365").build();
