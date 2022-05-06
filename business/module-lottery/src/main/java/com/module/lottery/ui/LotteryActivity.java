@@ -201,6 +201,11 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             ifOpenAutoLotteryAndCount();
         }
         mStart_lottery = false;
+        ARouter.getInstance()
+                .build(RouterActivityPath.Turntable.TURNTABLE_ACTIVITY)
+                .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
+                .withBoolean("privilege", true)
+                .navigation();
     }
 
 

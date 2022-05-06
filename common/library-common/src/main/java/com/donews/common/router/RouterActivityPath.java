@@ -172,6 +172,16 @@ public class RouterActivityPath {
         public static final String PAGER_WEB_ACTIVITY = USER + "/webActivity";
     }
 
+
+    public static class Turntable {
+        private static final String TURNTABLE = "/turntable";
+
+        /**
+         * webview页面
+         */
+        public static final String TURNTABLE_ACTIVITY = TURNTABLE + "/turntableActivity";
+    }
+
     public static class ClassPath {
         public static final String WEB_VIEW_OBJ_ACTIVITY_JAVASCRIPT = "com.donews.web.javascript.JavaScriptInterface";
         public static final String MINE_ACTIVITY_JAVASCRIPT = "com.donews.main.ui.MainActivity";

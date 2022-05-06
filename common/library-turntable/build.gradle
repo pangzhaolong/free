@@ -1,0 +1,19 @@
+apply from: rootProject.file('gradle/module.build.gradle')
+
+android {
+    defaultConfig {
+        if (isBuildModule.toBoolean()) {
+            applicationId "com.donews.turntable"
+        }
+    }
+    //统一资源前缀，规范资源引用
+    resourcePrefix "turntable_"
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(path: ':common:library-common')
+    implementation project(path: ':common:library-share')
+    implementation project(path: ':common:library-yfsdk')
+    kapt rootProject.ext.dependencies["arouter-compiler"]
+}
