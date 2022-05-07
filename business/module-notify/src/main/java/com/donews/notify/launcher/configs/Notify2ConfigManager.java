@@ -148,7 +148,7 @@ public class Notify2ConfigManager {
     private static void update() {
         getServiceTime();
         LogUtil.i("Notify2ConfigManager update");
-        EasyHttp.get(BuildConfig.BASE_CONFIG_URL + "plus-notify-datas" + BuildConfig.BASE_RULE_URL +
+        EasyHttp.get(BuildConfig.BASE_CONFIG_URL  + com.donews.common.BuildConfig.APP_IDENTIFICATION+"-"+"notify-datas" + BuildConfig.BASE_RULE_URL +
                 JsonUtils.getCommonJson(false))
                 .cacheMode(CacheMode.NO_CACHE)
                 .isShowToast(BuildConfig.DEBUG)

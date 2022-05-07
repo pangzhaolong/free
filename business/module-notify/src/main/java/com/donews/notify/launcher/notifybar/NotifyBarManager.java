@@ -250,7 +250,7 @@ public class NotifyBarManager {
     //更新通知栏通知配置数据
     private static void updateNotifyBarConfig() {
         NotifyLog.logBar("开始加载或者更新配置数据~~~");
-        EasyHttp.get(BuildConfig.BASE_CONFIG_URL + "plus-notify—bar-datas" + BuildConfig.BASE_RULE_URL +
+        EasyHttp.get(BuildConfig.BASE_CONFIG_URL  + com.donews.common.BuildConfig.APP_IDENTIFICATION+"-"+ "notify—bar-datas" + BuildConfig.BASE_RULE_URL +
                 JsonUtils.getCommonJson(false))
                 .cacheMode(CacheMode.NO_CACHE)
                 .isShowToast(BuildConfig.DEBUG)
