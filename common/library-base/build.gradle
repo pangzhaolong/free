@@ -52,4 +52,6 @@ dependencies {
     api rootProject.ext.dependencies["easypermissions-ktx"]
 
     api project(path: ':common:library-utils')
+
+    api rootProject.ext.dependencies["ticker"]
 }

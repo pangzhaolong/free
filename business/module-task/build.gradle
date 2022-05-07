@@ -1,0 +1,17 @@
+apply from: rootProject.file('gradle/module.build.gradle')
+
+android {
+    defaultConfig {
+        if (rootProject.ext.isBuildModule) {
+            applicationId "com.donews.task"
+        }
+    }
+    //统一资源前缀，规范资源引用
+    resourcePrefix "task_"
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    kapt rootProject.ext.dependencies["arouter-compiler"]
+    implementation project(':middleware:module-middleware')
+}

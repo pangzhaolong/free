@@ -116,5 +116,8 @@ ext {
             "viewpagerindicator"           : "com.github.zhpanvip:viewpagerindicator:1.2.1",
 
             "lottie"                       : "com.airbnb.android:lottie:3.4.0",
+
+            //数字滚动插件
+            "ticker"                       : 'com.robinhood.ticker:ticker:2.0.4',
     ]
 }
