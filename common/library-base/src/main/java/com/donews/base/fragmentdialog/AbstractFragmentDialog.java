@@ -19,8 +19,12 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.donews.base.R;
+
+import java.lang.reflect.Field;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -289,4 +293,23 @@ public abstract class AbstractFragmentDialog<T extends ViewDataBinding> extends 
             mCompositeDisposable.clear();
         }
     }
+
+    public void showAllowingStateLoss(FragmentManager manager, String tag) {
+        try {
+            Field dismissed = DialogFragment.class.getDeclaredField("mDismissed");
+            dismissed.setAccessible(true);
+            dismissed.set(this, false);
+
+            Field shown = DialogFragment.class.getDeclaredField("mShownByMe");
+            shown.setAccessible(true);
+            shown.set(this, true);
+
+            FragmentTransaction ft = manager.beginTransaction();
+            ft.add(this, tag);
+            ft.commitAllowingStateLoss();
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

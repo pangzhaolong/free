@@ -29,10 +29,10 @@
             android:paddingTop="3.33dp"
             android:paddingBottom="3.33dp"
             android:paddingEnd="10.33dp"
-            app:constraint_referenced_ids="redIcon,redTxText"/>
+            app:constraint_referenced_ids="goldCoinIcon,goldCoinTxText"/>
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/redIcon"
+            android:id="@+id/goldCoinIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="13dp"
@@ -42,7 +42,7 @@
             app:srcCompat="@drawable/task_icon_gold" />
 
         <com.robinhood.ticker.TickerView
-            android:id="@+id/redTxText"
+            android:id="@+id/goldCoinTxText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="3.67dp"
@@ -52,9 +52,9 @@
             android:textColor="#FFFFFF"
             android:textSize="12.67sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/redIcon"
-            app:layout_constraintStart_toEndOf="@+id/redIcon"
-            app:layout_constraintTop_toTopOf="@+id/redIcon"
+            app:layout_constraintBottom_toBottomOf="@+id/goldCoinIcon"
+            app:layout_constraintStart_toEndOf="@+id/goldCoinIcon"
+            app:layout_constraintTop_toTopOf="@+id/goldCoinIcon"
             app:ticker_animationDuration="250"
             app:ticker_defaultCharacterList="number"
             tools:text="金币:\t0.00" />
@@ -69,10 +69,10 @@
             android:paddingEnd="4dp"
             android:paddingTop="3.33dp"
             android:paddingBottom="3.33dp"
-            app:constraint_referenced_ids="yuanBaoIcon,yuanBaoTxText,yuanBaoTxBtn"/>
+            app:constraint_referenced_ids="activityIcon,activityTxText,activityTxBtn"/>
 
         <TextView
-            android:id="@+id/yuanBaoTxBtn"
+            android:id="@+id/activityTxBtn"
             android:layout_width="wrap_content"
             android:layout_height="24dp"
             android:text="兑换"
@@ -83,11 +83,11 @@
             android:textStyle="bold"
             android:layout_marginEnd="13.33dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/redIcon"
-            app:layout_constraintBottom_toBottomOf="@+id/redIcon"/>
+            app:layout_constraintTop_toTopOf="@+id/goldCoinIcon"
+            app:layout_constraintBottom_toBottomOf="@+id/goldCoinIcon"/>
 
         <com.robinhood.ticker.TickerView
-            android:id="@+id/yuanBaoTxText"
+            android:id="@+id/activityTxText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -97,22 +97,22 @@
             android:textSize="12.67sp"
             android:textStyle="bold"
             android:layout_marginEnd="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/redIcon"
-            app:layout_constraintEnd_toStartOf="@+id/yuanBaoTxBtn"
-            app:layout_constraintTop_toTopOf="@+id/redIcon"
+            app:layout_constraintBottom_toBottomOf="@+id/goldCoinIcon"
+            app:layout_constraintEnd_toStartOf="@+id/activityTxBtn"
+            app:layout_constraintTop_toTopOf="@+id/goldCoinIcon"
             app:ticker_animationDuration="250"
             app:ticker_defaultCharacterList="number"
             tools:text="活跃度:\t100" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/yuanBaoIcon"
+            android:id="@+id/activityIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="23dp"
             android:layout_marginEnd="3.33dp"
-            app:layout_constraintBottom_toBottomOf="@+id/redIcon"
-            app:layout_constraintEnd_toStartOf="@+id/yuanBaoTxText"
-            app:layout_constraintTop_toTopOf="@+id/redIcon"
+            app:layout_constraintBottom_toBottomOf="@+id/goldCoinIcon"
+            app:layout_constraintEnd_toStartOf="@+id/activityTxText"
+            app:layout_constraintTop_toTopOf="@+id/goldCoinIcon"
             app:srcCompat="@drawable/task_icon_activity" />
         <!--endregion -->
 
@@ -123,18 +123,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="29dp"
             android:layout_marginStart="16dp"
-            app:srcCompat="@drawable/task_icon_bubble"
+            app:srcCompat="@drawable/task_icon_sign"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/redIcon"/>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@+id/iconSignBubble"
-            app:layout_constraintEnd_toEndOf="@+id/iconSignBubble"
-            app:layout_constraintTop_toTopOf="@+id/iconSignBubble"
-            app:layout_constraintBottom_toBottomOf="@+id/iconSignBubble"
-            app:srcCompat="@drawable/task_icon_sign"/>
+            app:layout_constraintTop_toBottomOf="@+id/goldCoinIcon"/>
 
         <TextView
             android:text="签到"
@@ -149,35 +140,17 @@
         <!--endregion -->
 
         <!--region 视频气泡相关-->
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iconVideoBubble"
+        <com.donews.task.view.ColdDownTimerView
+            android:id="@+id/coldDownTimer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15.33dp"
             android:layout_marginStart="16dp"
-            app:srcCompat="@drawable/task_icon_bubble"
+            android:src="@drawable/task_icon_video"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/redIcon"/>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@+id/iconVideoBubble"
-            app:layout_constraintEnd_toEndOf="@+id/iconVideoBubble"
-            app:layout_constraintTop_toTopOf="@+id/iconVideoBubble"
-            app:layout_constraintBottom_toBottomOf="@+id/iconVideoBubble"
-            app:srcCompat="@drawable/task_icon_video"/>
-
-        <com.donews.task.view.ColdDownTimerView
-            android:id="@+id/coldDownTimer"
-            app:layout_constraintStart_toStartOf="@+id/iconVideoBubble"
-            app:layout_constraintEnd_toEndOf="@+id/iconVideoBubble"
-            app:layout_constraintTop_toTopOf="@+id/iconVideoBubble"
-            app:layout_constraintBottom_toBottomOf="@+id/iconVideoBubble"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:waitHint="冷却中..." />
+            app:layout_constraintTop_toBottomOf="@+id/goldCoinIcon"
+            app:waitHint="冷却中..."/>
 
         <TextView
             android:id="@+id/countDownTimeTv"
@@ -200,9 +173,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="7.45dp"
-            app:layout_constraintStart_toStartOf="@+id/iconVideoBubble"
-            app:layout_constraintEnd_toEndOf="@+id/iconVideoBubble"
-            app:layout_constraintTop_toBottomOf="@+id/iconVideoBubble"/>
+            app:layout_constraintStart_toStartOf="@+id/coldDownTimer"
+            app:layout_constraintEnd_toEndOf="@+id/coldDownTimer"
+            app:layout_constraintTop_toBottomOf="@+id/coldDownTimer"/>
         <!--endregion -->
 
         <!--region 转盘气泡相关-->
@@ -212,18 +185,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32.33dp"
             android:layout_marginEnd="16dp"
-            app:srcCompat="@drawable/task_icon_bubble"
+            app:srcCompat="@drawable/task_icon_luck_pan"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/redIcon"/>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@+id/iconLuckPanBubble"
-            app:layout_constraintEnd_toEndOf="@+id/iconLuckPanBubble"
-            app:layout_constraintTop_toTopOf="@+id/iconLuckPanBubble"
-            app:layout_constraintBottom_toBottomOf="@+id/iconLuckPanBubble"
-            app:srcCompat="@drawable/task_icon_luck_pan"/>
+            app:layout_constraintTop_toBottomOf="@+id/goldCoinIcon"/>
 
         <TextView
             android:text="转盘"
@@ -244,18 +208,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="45.79dp"
             android:layout_marginStart="16dp"
-            app:srcCompat="@drawable/task_icon_bubble"
+            app:srcCompat="@drawable/task_icon_collect"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iconSignBubble"/>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@+id/iconCollectBubble"
-            app:layout_constraintEnd_toEndOf="@+id/iconCollectBubble"
-            app:layout_constraintTop_toTopOf="@+id/iconCollectBubble"
-            app:layout_constraintBottom_toBottomOf="@+id/iconCollectBubble"
-            app:srcCompat="@drawable/task_icon_collect"/>
 
         <TextView
             android:text="集卡"
@@ -276,18 +231,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="45.79dp"
             android:layout_marginEnd="16dp"
-            app:srcCompat="@drawable/task_icon_bubble"
+            app:srcCompat="@drawable/task_icon_share"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iconSignBubble"/>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@+id/iconShareBubble"
-            app:layout_constraintEnd_toEndOf="@+id/iconShareBubble"
-            app:layout_constraintTop_toTopOf="@+id/iconShareBubble"
-            app:layout_constraintBottom_toBottomOf="@+id/iconShareBubble"
-            app:srcCompat="@drawable/task_icon_share"/>
 
         <TextView
             android:text="分享"
@@ -308,18 +254,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="40.33dp"
             android:layout_marginStart="16dp"
-            app:srcCompat="@drawable/task_icon_bubble"
+            app:srcCompat="@drawable/task_icon_luck_draw"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iconCollectBubble"/>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@+id/iconLuckDrawBubble"
-            app:layout_constraintEnd_toEndOf="@+id/iconLuckDrawBubble"
-            app:layout_constraintTop_toTopOf="@+id/iconLuckDrawBubble"
-            app:layout_constraintBottom_toBottomOf="@+id/iconLuckDrawBubble"
-            app:srcCompat="@drawable/task_icon_luck_draw"/>
 
         <TextView
             android:text="抽奖"
@@ -346,19 +283,22 @@
             android:layout_marginTop="102.67dp"
             android:layout_marginEnd="13.33dp"
             app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="@{taskModel.isShowIconCanGet ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintTop_toBottomOf="@+id/iconShareBubble"/>
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/iconBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/task_icon_box"
             android:layout_marginTop="2.83dp"
+            app:lottie_loop="true"
             app:layout_constraintEnd_toEndOf="@+id/iconCanGet"
             app:layout_constraintStart_toStartOf="@+id/iconCanGet"
             app:layout_constraintTop_toBottomOf="@+id/iconCanGet"/>
 
         <TextView
+            android:id="@+id/boxTimeTv"
             android:textColor="@color/white"
             android:textSize="12sp"
             android:text="00:00"
@@ -366,6 +306,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="3dp"
+            android:visibility="@{taskModel.isShowBoxTimeView ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="@+id/iconBox"
             app:layout_constraintStart_toStartOf="@+id/iconBox"
             app:layout_constraintEnd_toEndOf="@id/iconBox"/>
@@ -383,6 +324,7 @@
             app:layout_constraintTop_toBottomOf="@+id/iconLuckDrawBubble"/>
 
         <TextView
+            android:id="@+id/ruleClick"
             android:text="活动规则"
             android:textColor="#A66B3E"
             android:textSize="12sp"
@@ -391,6 +333,153 @@
             app:layout_constraintTop_toBottomOf="@+id/iconBtn"
             app:layout_constraintStart_toStartOf="@+id/iconBtn"
             app:layout_constraintEnd_toEndOf="@+id/iconBtn"/>
+        <!--endregion -->
+
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/taskGif"
+            android:scaleType="fitXY"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/iconBtn"
+            android:layout_width="229.96dp"
+            android:layout_height="194.33dp"/>
+
+        <!--region 底部相关-->
+        <androidx.core.widget.NestedScrollView
+            android:overScrollMode="never"
+            android:scrollbars="none"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="300dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <View
+                    android:id="@+id/bgOne"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"/>
+
+                <!--region 幸运大转盘-->
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/taskBgLuckPan"
+                    app:srcCompat="@drawable/task_bg_luck_pan"
+                    android:layout_width="match_parent"
+                    android:scaleType="fitXY"
+                    android:layout_marginStart="13dp"
+                    android:layout_marginEnd="13dp"
+                    android:layout_height="89.33dp"
+                    app:layout_constraintTop_toBottomOf="@+id/bgOne"/>
+
+                <TextView
+                    android:id="@+id/luckPanTv"
+                    android:text="幸运大转盘"
+                    android:textSize="16sp"
+                    android:textColor="#2D323A"
+                    android:textStyle="bold"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@+id/taskBgLuckPan"
+                    app:layout_constraintStart_toStartOf="@+id/taskBgLuckPan" />
+
+                <TextView
+                    android:text="转一转中大奖"
+                    android:textSize="12sp"
+                    android:textColor="#A3A9B7"
+                    android:textStyle="normal"
+                    android:layout_marginTop="4.27dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/luckPanTv"
+                    app:layout_constraintStart_toStartOf="@+id/luckPanTv" />
+
+                <TextView
+                    android:text="立即参与"
+                    android:textSize="12sp"
+                    android:textColor="#7671FF"
+                    android:layout_width="64.67dp"
+                    android:layout_height="23.67dp"
+                    android:gravity="center"
+                    android:layout_marginStart="13.33dp"
+                    android:background="@drawable/task_icon_corner_line"
+                    app:layout_constraintTop_toTopOf="@+id/luckPanTv"
+                    app:layout_constraintStart_toEndOf="@+id/luckPanTv"/>
+                <!--endregion -->
+
+                <!--region 集卡领大奖-->
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/taskBgCollect"
+                    app:srcCompat="@drawable/task_bg_collect"
+                    android:layout_width="match_parent"
+                    android:scaleType="fitXY"
+                    android:layout_marginStart="13dp"
+                    android:layout_marginEnd="13dp"
+                    android:layout_height="89.33dp"
+                    android:layout_marginTop="10.33dp"
+                    app:layout_constraintTop_toBottomOf="@+id/taskBgLuckPan"/>
+
+                <TextView
+                    android:id="@+id/collectTv"
+                    android:text="集卡领大奖"
+                    android:textSize="16sp"
+                    android:textColor="#2D323A"
+                    android:textStyle="bold"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@+id/taskBgCollect"
+                    app:layout_constraintStart_toStartOf="@+id/taskBgCollect" />
+
+                <TextView
+                    android:text="集卡获得更多奖励"
+                    android:textSize="12sp"
+                    android:textColor="#A3A9B7"
+                    android:textStyle="normal"
+                    android:layout_marginTop="4.27dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/collectTv"
+                    app:layout_constraintStart_toStartOf="@+id/collectTv" />
+
+                <TextView
+                    android:text="立即参与"
+                    android:textSize="12sp"
+                    android:textColor="#7671FF"
+                    android:layout_width="64.67dp"
+                    android:layout_height="23.67dp"
+                    android:gravity="center"
+                    android:layout_marginStart="13.33dp"
+                    android:background="@drawable/task_icon_corner_line"
+                    app:layout_constraintTop_toTopOf="@+id/collectTv"
+                    app:layout_constraintStart_toEndOf="@+id/collectTv"/>
+                <!--endregion -->
+
+                <!--region 运营位-->
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/taskBgRunning"
+                    app:srcCompat="@drawable/task_bg_collect"
+                    android:layout_width="match_parent"
+                    android:scaleType="fitXY"
+                    android:layout_marginStart="13dp"
+                    android:layout_marginEnd="13dp"
+                    android:layout_height="89.33dp"
+                    android:layout_marginTop="10.33dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="10dp"
+                    app:layout_constraintTop_toBottomOf="@+id/taskBgCollect"/>
+                <!--endregion -->
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
         <!--endregion -->
 
     </androidx.constraintlayout.widget.ConstraintLayout>

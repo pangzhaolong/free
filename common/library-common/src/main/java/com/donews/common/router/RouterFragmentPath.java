@@ -215,4 +215,15 @@ public class RouterFragmentPath {
     public static class MethodPath {
         public static final String AD_LOAD_MANAGER_REFRESH_AD_CONFIG = "com.dn.sdk.AdLoadManager.refreshAdConfig";
     }
+
+    /** 任务组件 */
+    public static class Task
+    {
+        private static final String TASK = "/task";
+
+        /** 任务 */
+        public static final String PAGER_TASK = TASK + "/task";
+
+    }
+
 }

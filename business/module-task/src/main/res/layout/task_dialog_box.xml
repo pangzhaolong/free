@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="eventListener"
+            type="com.donews.task.dialog.BoxDialog.EventListener" />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:background="@color/black"
+        tools:ignore="all">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <View
+                android:id="@+id/basicBgView"
+                android:layout_width="match_parent"
+                android:layout_marginEnd="28.41dp"
+                android:layout_marginStart="29.21dp"
+                android:layout_height="450dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/cancelBtn"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="10.59dp"
+                android:onClick="@{eventListener::cancelBtn}"
+                app:layout_constraintEnd_toEndOf="@+id/basicBgView"
+                app:srcCompat="@drawable/task_icon_cancel"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/bottomView"
+                android:layout_width="match_parent"
+                android:layout_height="317.37dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.503"
+                app:srcCompat="@drawable/task_icon_reward_box"
+                tools:layout_editor_absoluteX="28dp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                app:layout_constraintTop_toBottomOf="@+id/cancelBtn"
+                app:srcCompat="@drawable/task_icon_reward_box_title"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"/>
+
+            <TextView
+                android:id="@+id/tvLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:text="恭喜获得"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="@+id/bottomView"
+                app:layout_constraintEnd_toStartOf="@+id/tvEnd"
+                android:layout_marginBottom="20dp"
+                app:layout_constraintBottom_toBottomOf="@+id/bottomView"/>
+
+            <TextView
+                android:id="@+id/tvEnd"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:text="1点活跃度"
+                android:textSize="20sp"
+                android:textColor="#FFF3B4"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/tvLeft"
+                app:layout_constraintEnd_toEndOf="@+id/bottomView"
+                android:layout_marginBottom="20dp"
+                app:layout_constraintBottom_toBottomOf="@+id/bottomView"/>
+
+            <TextView
+                android:id="@+id/receiveClick"
+                android:text="收下"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:background="@drawable/task_icon_exchange_btn"
+                android:layout_width="240dp"
+                android:layout_height="46.67dp"
+                android:layout_marginBottom="20dp"
+                android:onClick="@{eventListener::receiveBtn}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </RelativeLayout>
+
+</layout>

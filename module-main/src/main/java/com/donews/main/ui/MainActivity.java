@@ -640,12 +640,16 @@ public class MainActivity
             MainBottomTanItem mineItem = new MainBottomTanItem(this);
             mineItem.initialization("我的", R.drawable.main_mine, defaultColor, checkColor, "main_bottom_tab_me.json");
 
+            MainBottomTanItem taskItem = new MainBottomTanItem(this);
+            taskItem.initialization("活动", R.drawable.main_mine, defaultColor, checkColor, "main_bottom_tab_me.json");
+
             mNavigationController = mDataBinding.bottomView.custom()
                     .addItem(homeItem)
                     .addItem(showTimeItem)
                     .addItem(lotteryItem)
                     .addItem(buyItem)
                     .addItem(mineItem)
+                    .addItem(taskItem)
                     .enableAnimateLayoutChanges()
                     .build();
         } else {
@@ -875,6 +879,7 @@ public class MainActivity
                     0, true, false, true, 1));
             fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Home.PAGER_HOME).navigation());
             fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.User.PAGER_USER).navigation());
+            fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Task.PAGER_TASK).navigation());
         }
 
         adapter = new MainPageAdapter(getSupportFragmentManager(),
