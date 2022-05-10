@@ -7,12 +7,13 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.android.arouter.launcher.ARouter
 import com.donews.base.utils.ToastUtil
 import com.donews.common.base.MvvmLazyLiveDataFragment
+import com.donews.common.router.RouterActivityPath
 import com.donews.common.router.RouterFragmentPath
 import com.donews.module_shareui.ShareUIBottomPopup
 import com.donews.task.databinding.TaskFragmentBinding
@@ -196,7 +197,9 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                 mDataBinding?.iconLuckPanBubble,mDataBinding?.iconLuckPanTv->{
                     //处理转盘逻辑
                     if (!isExplosionBubble){
-                        //
+                        ARouter.getInstance()
+                            .build(RouterActivityPath.Turntable.TURNTABLE_ACTIVITY)
+                            .navigation()
                     } else {
                         makeBubbleExplosion(mDataBinding?.iconLuckPanBubble as View)
                         makeBubbleExplosion(mDataBinding?.iconLuckPanTv as View)
@@ -320,7 +323,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
     //endregion
 
     //region 气泡相关
-    private var isExplosionBubble = true
+    private var isExplosionBubble = false
     private fun initBubble(){
         if (!isExplosionBubble){
             mDataBinding?.iconSignBubble?.alpha = 0.45f
