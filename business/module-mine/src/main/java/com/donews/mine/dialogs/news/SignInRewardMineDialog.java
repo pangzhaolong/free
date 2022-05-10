@@ -19,7 +19,7 @@ import com.donews.mine.viewModel.MineViewModel;
 import com.donews.yfsdk.loader.AdManager;
 
 /**
- * 个人中心任务 签到奖励弹窗
+ * 个人中心任务 签到奖励弹窗(签到奖励、激励、任务奖励)
  */
 public class SignInRewardMineDialog extends BaseBindingFragmentDialog<Mine2SigninRewardDialogBinding> {
 
@@ -84,7 +84,7 @@ public class SignInRewardMineDialog extends BaseBindingFragmentDialog<Mine2Signi
 
     @Override
     public void dismiss() {
-        if(dataBinding.signGoText.getHandler() != null){
+        if (dataBinding.signGoText.getHandler() != null) {
             dataBinding.signGoText.getHandler().removeCallbacks(updateTextRun);
         }
         super.dismiss();
@@ -92,7 +92,7 @@ public class SignInRewardMineDialog extends BaseBindingFragmentDialog<Mine2Signi
 
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
-        if(dataBinding.signGoText.getHandler() != null){
+        if (dataBinding.signGoText.getHandler() != null) {
             dataBinding.signGoText.getHandler().removeCallbacks(updateTextRun);
         }
         super.onDismiss(dialog);
@@ -124,10 +124,7 @@ public class SignInRewardMineDialog extends BaseBindingFragmentDialog<Mine2Signi
             isMeRequeSign = true;
             //开启激励视频
             AdManager.INSTANCE.loadRewardVideoAd(getActivity(), new SimpleRewardVideoListener() {
-                @Override
-                public void onAdShow() {
-                    super.onAdShow();
-                }
+                boolean isVerifyReward = false;
 
                 @Override
                 public void onAdError(int code, @Nullable String errorMsg) {
@@ -141,6 +138,7 @@ public class SignInRewardMineDialog extends BaseBindingFragmentDialog<Mine2Signi
 
                 @Override
                 public void onRewardVerify(boolean result) {
+                    isVerifyReward = true;
                     if (result) {
                         //可以发放奖励
                         if (getActivity() instanceof MvvmBaseLiveDataActivity) {
@@ -148,8 +146,20 @@ public class SignInRewardMineDialog extends BaseBindingFragmentDialog<Mine2Signi
                         }
                         SignReq req = new SignReq();
                         req.double_ = true;
-                        mineViewModel.requestSign(req,true);
+                        mineViewModel.requestSign(req, true);
                     }
+                }
+
+                @Override
+                public void onAdClose() {
+                    //可以发放奖励
+                    if (getActivity() instanceof MvvmBaseLiveDataActivity) {
+                        ((MvvmBaseLiveDataActivity<?, ?>) getActivity()).hideLoading();
+                    }
+                    if (isVerifyReward) {
+                        ToastUtil.showShort(getActivity(), "需要参与活动才能翻倍领取哦~");
+                    }
+                    super.onAdClose();
                 }
             });
         } else {

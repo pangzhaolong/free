@@ -6,19 +6,28 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.dn.sdk.listener.rewardvideo.SimpleRewardVideoListener;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
+import com.donews.common.router.RouterFragmentPath;
+import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.bean.HighValueGoodsBean;
 import com.donews.middle.bean.mine2.emuns.Mine2TaskType;
 import com.donews.middle.bean.mine2.reqs.DailyTasksReceiveReq;
+import com.donews.middle.bean.mine2.reqs.DailyTasksReportReq;
 import com.donews.middle.bean.mine2.resp.DailyTaskResp;
 import com.donews.middle.bean.mine2.resp.DailyTasksReceiveResp;
+import com.donews.middle.bean.mine2.resp.DailyTasksReportResp;
+import com.donews.middle.cache.GoodsCache;
+import com.donews.middle.request.RequestUtil;
 import com.donews.mine.R;
 import com.donews.mine.databinding.Mine2FragmentTaskItemBinding;
 import com.donews.mine.dialogs.news.SignInMineDialog;
 import com.donews.mine.dialogs.news.SignInRewardMineDialog;
 import com.donews.mine.viewModel.MineViewModel;
 import com.donews.mine.views.refresh.adapters.BaseBindingAdapter;
+import com.donews.yfsdk.loader.AdManager;
 
 /**
  * @author lcl
@@ -66,8 +75,31 @@ public class Mine2FragmentTaskAdapter extends
         }
     };
 
+    //上报任务的结果数据变化监听
+    final Observer<DailyTasksReportResp> mineDailyTaskReportObserver = new Observer<DailyTasksReportResp>() {
+        @Override
+        public void onChanged(DailyTasksReportResp item) {
+            checkShowDialog(false);
+            //一次性的。消费一次之后结束监听(注:此方法不适用高并发情况)
+            mViewModel.mineDailyTaskReportResult.removeObserver(mineDailyTaskReportObserver);
+            if (item == null) {
+                ToastUtil.showShort(fragmentActivity, "获取奖励失败.请稍后再试");
+                return;
+            }
+            //任务奖励模式
+            SignInRewardMineDialog.getInstance(2)
+                    .show(fragmentActivity.getSupportFragmentManager(), "aaaa4");
+            mViewModel.mine2RefeshDataLive.postValue(true);
+        }
+    };
+
     //点击
     private void click(DailyTaskResp.DailyTaskItemResp item) {
+        if (item.status == 1) {
+            // 领取任务奖励模式
+            requestTasksReceive(item);
+            return;
+        }
         switch (Mine2TaskType.query(item.type)) {
             case none: //领取时可用，领取全部
                 break;
@@ -77,16 +109,27 @@ public class Mine2FragmentTaskAdapter extends
                     ARouter.getInstance()
                             .build(RouterActivityPath.Turntable.TURNTABLE_ACTIVITY)
                             .navigation();
-                } else if (item.status == 1) {
-                    // 领取任务奖励模式
-                    requestTasksReceive(item);
                 }
                 break;
             case collect: // 集卡
+                ToastUtil.showShort(fragmentActivity, "去往集卡任务");
                 break;
             case lottery: // 抽奖
+                if (item.status == 0) {
+                    HighValueGoodsBean goodsBean = GoodsCache.readGoodsBean(HighValueGoodsBean.class, "exit");
+                    if (goodsBean.getList() != null && goodsBean.getList().size() > 0) {
+                        ARouter.getInstance()
+                                .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
+                                .withString("goods_id", goodsBean.getList().get(0).getGoodsId())
+                                .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
+                                .navigation();
+                    }
+                    //更新缓存商品
+                    RequestUtil.requestHighValueGoodsInfo();
+                }
                 break;
             case share: // 分享
+                ToastUtil.showShort(fragmentActivity, "和活动分享保持一致");
                 break;
             case sign: // 签到
                 if (item.status == 0) {
@@ -98,18 +141,55 @@ public class Mine2FragmentTaskAdapter extends
                     }
                     SignInMineDialog.getInstance(mViewModel.mineSignLists.getValue())
                             .show(fragmentActivity.getSupportFragmentManager(), "SignInMineDialog");
-                } else if (item.status == 1) {
-                    // 领取任务奖励模式
-                    requestTasksReceive(item);
                 }
                 break;
+            case taskvideo: // 任务视频(每日任务中的视频，个人中心 -> 每日任务)
+                invokVideo(item);
+                break;
             case video: // 视频(活动列表视频)
-                break;
-            case taskvideo: // 任务视频(每日任务)
-                break;
             case giftbox: // 宝箱
+                ToastUtil.showShort(fragmentActivity, "暂不支持此类任务");
                 break;
         }
+    }
+
+    //-------- 以下是相关点击的部分处理 ----------
+
+    //执行每日任务视频
+    private void invokVideo(DailyTaskResp.DailyTaskItemResp item) {
+        checkShowDialog(true);
+        mViewModel.mineDailyTaskReportResult.observe(fragmentActivity, mineDailyTaskReportObserver);
+        AdManager.INSTANCE.loadRewardVideoAd(fragmentActivity, new SimpleRewardVideoListener() {
+            //是否发放了奖励
+            boolean isVerifyReward = false;
+
+            @Override
+            public void onAdError(int code, @Nullable String errorMsg) {
+                ToastUtil.showShort(fragmentActivity, "任务领取异常,稍后重试!");
+                //一次性的。消费一次之后结束监听(注:此方法不适用高并发情况)
+                mViewModel.mineDailyTaskReportResult.removeObserver(mineDailyTaskReportObserver);
+                super.onAdError(code, errorMsg);
+            }
+
+            @Override
+            public void onRewardVerify(boolean result) {
+                if (result) {
+                    DailyTasksReportReq req = new DailyTasksReportReq();
+                    req.id = item.id;
+                    req.type = item.type;
+                    mViewModel.requestTaskReport(req, false);
+                }
+            }
+
+            @Override
+            public void onAdClose() {
+                //一次性的。消费一次之后结束监听(注:此方法不适用高并发情况)
+                mViewModel.mineDailyTaskReportResult.removeObserver(mineDailyTaskReportObserver);
+                if (isVerifyReward) {
+                    ToastUtil.showShort(fragmentActivity, "需要参与活动才能翻倍领取哦~");
+                }
+            }
+        });
     }
 
     // 领取奖励任务
@@ -129,7 +209,6 @@ public class Mine2FragmentTaskAdapter extends
                 ((MvvmBaseLiveDataActivity) fragmentActivity).showLoading("处理中");
             } else {
                 ((MvvmBaseLiveDataActivity) fragmentActivity).hideLoading();
-
             }
         }
     }

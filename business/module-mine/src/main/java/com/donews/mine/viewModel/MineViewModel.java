@@ -18,9 +18,11 @@ import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.common.contract.LoginHelp;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.middle.bean.mine2.reqs.DailyTasksReceiveReq;
+import com.donews.middle.bean.mine2.reqs.DailyTasksReportReq;
 import com.donews.middle.bean.mine2.reqs.SignReq;
 import com.donews.middle.bean.mine2.resp.DailyTaskResp;
 import com.donews.middle.bean.mine2.resp.DailyTasksReceiveResp;
+import com.donews.middle.bean.mine2.resp.DailyTasksReportResp;
 import com.donews.middle.bean.mine2.resp.SignListResp;
 import com.donews.middle.bean.mine2.resp.SignResp;
 import com.donews.middle.bean.mine2.resp.UserAssetsResp;
@@ -79,8 +81,10 @@ public class MineViewModel extends BaseLiveDataViewModel<MineModel> {
     public MutableLiveData<SignResp> mineSignResult = new MutableLiveData<>();
     // 签到双倍领取结果数据(最新的签到数据)
     public MutableLiveData<SignResp> mineSignDounleResult = new MutableLiveData<>();
-    // 完成完成任务的接口结果数据通知对象
+    // 完成任务的接口结果数据通知对象
     public MutableLiveData<DailyTasksReceiveResp> mineDailyTaskReceiveResult = new MutableLiveData<>();
+    // 上报任务的接口结果数据通知对象
+    public MutableLiveData<DailyTasksReportResp> mineDailyTaskReportResult = new MutableLiveData<>();
 
     //--------------- 新版个人中心相关属性(end) ------------------
 
@@ -92,6 +96,41 @@ public class MineViewModel extends BaseLiveDataViewModel<MineModel> {
     public void setDataBinDing(MineFragmentBinding dataBinding, FragmentActivity baseActivity) {
         this.dataBinding = dataBinding;
         this.baseActivity = baseActivity;
+    }
+
+    /**
+     * 上报任务进度,将完成的任务上报给服务器进行处理
+     *
+     * @param req              请求参数
+     * @param isUpdateLoclCoin 是否更新本地金币数据(T:更新，F:不更新)
+     */
+    public void requestTaskReport(DailyTasksReportReq req, boolean isUpdateLoclCoin) {
+        String url = (BuildConfig.BASE_QBN_API + "activity/v1/report");
+        EasyHttp.post(url)
+                .upObject(req)
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new SimpleCallBack<DailyTasksReportResp>() {
+                    @Override
+                    public void onError(ApiException e) {
+                        mineDailyTaskReportResult.postValue(null);
+                    }
+
+                    @Override
+                    public void onSuccess(DailyTasksReportResp resp) {
+                        if (resp == null) {
+                            mineDailyTaskReportResult.postValue(null);
+                            return;
+                        }
+                        mineDailyTaskReportResult.postValue(resp);
+                        if (isUpdateLoclCoin) {
+                            if (mine2JBCount.getValue() != null) {
+                                mine2JBCount.postValue(mine2JBCount.getValue() + resp.coin);
+                            } else {
+                                mine2JBCount.postValue(resp.coin);
+                            }
+                        }
+                    }
+                });
     }
 
     /**
