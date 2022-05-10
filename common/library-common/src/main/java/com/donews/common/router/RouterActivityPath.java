@@ -177,7 +177,7 @@ public class RouterActivityPath {
         private static final String TURNTABLE = "/turntable";
 
         /**
-         * webview页面
+         * Turntable页面
          */
         public static final String TURNTABLE_ACTIVITY = TURNTABLE + "/turntableActivity";
     }

@@ -31,6 +31,7 @@ import com.dn.integral.jdd.IntegralComponent;
 import com.dn.integral.jdd.integral.IntegralStateListener;
 import com.dn.integral.jdd.integral.ProxyIntegral;
 import com.donews.base.base.BaseApplication;
+import com.donews.middle.dialog.BaseDialog;
 import com.donews.yfsdk.monitor.LotteryAdCheck;
 import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.utils.CriticalModelTool;

@@ -9,7 +9,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
-import com.module.lottery.bean.CritCodeBean;
+import com.donews.middle.dialog.BaseDialog;
 import com.module.lottery.bean.GenerateCodeBean;
 import com.module_lottery.R;
 import com.module_lottery.databinding.LotteryCritDialogLayoutBinding;

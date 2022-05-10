@@ -25,6 +25,7 @@ import com.donews.main.bean.NowTimeBean;
 import com.donews.main.databinding.FreePanicDialogLayoutBinding;
 import com.donews.main.utils.ExitInterceptUtils;
 import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.dialog.BaseDialog;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;

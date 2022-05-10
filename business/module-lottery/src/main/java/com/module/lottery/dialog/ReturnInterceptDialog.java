@@ -29,6 +29,7 @@ import com.dn.events.events.LoginUserStatus;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.main.BuildConfig;
 import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.dialog.BaseDialog;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;

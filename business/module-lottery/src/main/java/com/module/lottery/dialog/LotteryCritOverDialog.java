@@ -14,6 +14,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.blankj.utilcode.util.EncryptUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.donews.base.model.BaseLiveDataModel;
+import com.donews.middle.dialog.BaseDialog;
 import com.donews.yfsdk.monitor.LotteryAdCheck;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;

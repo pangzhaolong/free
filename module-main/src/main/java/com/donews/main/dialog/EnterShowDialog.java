@@ -32,6 +32,7 @@ import com.donews.main.databinding.MainEnterDialogLotteryBindingImpl;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoods;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoodsResp;
 import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.dialog.BaseDialog;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;

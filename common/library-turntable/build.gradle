@@ -16,4 +16,5 @@ dependencies {
     implementation project(path: ':common:library-share')
     implementation project(path: ':common:library-yfsdk')
     kapt rootProject.ext.dependencies["arouter-compiler"]
+    implementation project(':middleware:module-middleware')
 }

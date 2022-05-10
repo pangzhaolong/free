@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.donews.base.utils.ToastUtil;
+import com.donews.middle.dialog.BaseDialog;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.module.lottery.ui.LotteryActivity;

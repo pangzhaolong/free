@@ -18,6 +18,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import com.donews.middle.dialog.BaseDialog;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.module.lottery.bean.LotteryCodeBean;
