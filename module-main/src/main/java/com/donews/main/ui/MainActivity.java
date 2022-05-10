@@ -194,7 +194,7 @@ public class MainActivity
             }
         });
         if (!ABSwitch.Ins().isOpenAB()) {
-            lotteryItem.getViewTreeObserver().addOnGlobalLayoutListener(layoutListener);
+//            lotteryItem.getViewTreeObserver().addOnGlobalLayoutListener(layoutListener);
         }
 
         new Handler().postDelayed(AdConfigManager.INSTANCE::updateRewardId, 1000);
@@ -624,32 +624,15 @@ public class MainActivity
             MainBottomTanItem homeItem = new MainBottomTanItem(this);
             homeItem.initialization("首页", R.drawable.main_home_checked, defaultColor, checkColor,
                     "main_bottom_tab_home.json");
-
-            MainBottomTanItem showTimeItem = new MainBottomTanItem(this);
-            showTimeItem.initialization("晒单", R.drawable.main_showtime, defaultColor, checkColor,
-                    "main_bottom_tab_shaidan.json");
-
-            lotteryItem = new MainBottomTanItem(this);
-            lotteryItem.initialization("开奖", R.drawable.main_lottery, defaultColor, checkColor,
-                    "main_bottom_tab_kaijiang.json");
-
-            MainBottomTanItem buyItem = new MainBottomTanItem(this);
-            buyItem.initialization("省钱购", R.drawable.main_buy, defaultColor, checkColor,
-                    "main_bottom_tab_shengqiangou.json");
-
-            MainBottomTanItem mineItem = new MainBottomTanItem(this);
-            mineItem.initialization("我的", R.drawable.main_mine, defaultColor, checkColor, "main_bottom_tab_me.json");
-
             MainBottomTanItem taskItem = new MainBottomTanItem(this);
             taskItem.initialization("活动", R.drawable.main_mine, defaultColor, checkColor, "main_bottom_tab_me.json");
-
+            MainBottomTanItem mineItem = new MainBottomTanItem(this);
+            mineItem.initialization("我的", R.drawable.main_mine, defaultColor, checkColor, "main_bottom_tab_me.json");
             mNavigationController = mDataBinding.bottomView.custom()
                     .addItem(homeItem)
-                    .addItem(showTimeItem)
-                    .addItem(lotteryItem)
-                    .addItem(buyItem)
-                    .addItem(mineItem)
                     .addItem(taskItem)
+                    .addItem(mineItem)
+//                    .addItem(lotteryItem)
                     .enableAnimateLayoutChanges()
                     .build();
         } else {
@@ -846,18 +829,6 @@ public class MainActivity
                     mViewModel.updateLocalOpenWindPeriod();
                 }
                 break;
-            case 3:
-                AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
-                AnalysisUtils.onEventEx(this, Dot.Page_SaveMoneyBuy);
-                AnalysisUtils.onEventEx(this, Dot.Btn_SaveMoneyBuy);
-                SPUtils.setInformain(KeySharePreferences.INTO_FRONT_COUNTS, 0);
-                SPUtils.setInformain(KeySharePreferences.HAS_DO_INTO_FRONT, true);
-                break;
-            case 4:
-                AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
-                AnalysisUtils.onEventEx(this, Dot.Page_UserCenter);
-                AnalysisUtils.onEventEx(this, Dot.Btn_UserCenter);
-                break;
             default:
         }
     }
@@ -871,16 +842,16 @@ public class MainActivity
             fragments.add(
                     (Fragment) ARouter.getInstance().build(RouterFragmentPath.User.PAGER_USER_SETTING).navigation());
         } else {
+            //首页页面
             fragments.add((Fragment) ARouter.getInstance()
                     .build(RouterFragmentPath.Front.PAGER_FRONT)
                     .navigation());
-            fragments.add(RouterFragmentPath.Unboxing.getUnboxingFragment());
-            fragments.add(RouterFragmentPath.User.getMineOpenWinFragment(
-                    0, true, false, true, 1));
-            fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Home.PAGER_HOME).navigation());
-//            fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.User.PAGER_USER).navigation());
-            fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.User.PAGER_USER_NEW).navigation());
+             //活动页面
             fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Task.PAGER_TASK).navigation());
+            //个人中心页面
+            fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.User.PAGER_USER).navigation());
+
+
         }
 
         adapter = new MainPageAdapter(getSupportFragmentManager(),
@@ -1226,6 +1197,7 @@ public class MainActivity
             InterstitialFullAd.INSTANCE.showAd(MainActivity.this, null);
         }
     }
+
     private boolean isFromNotify() {
         if (!TextUtils.isEmpty(from) && from.equalsIgnoreCase("notify")) {
             mViewModel.getLandingRpTimesBean().observe(this, landingRpTimesBean -> {
