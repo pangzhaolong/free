@@ -46,7 +46,7 @@ class ColdDownTimerView @JvmOverloads constructor(
     /**
      * 冷却中提示
      */
-    private var waitHint: String?
+    private var waitHint: String? = "冷却中..."
 
     /**
      * 已过时间百分比
@@ -67,14 +67,15 @@ class ColdDownTimerView @JvmOverloads constructor(
      * 动画持续时间
      */
     private var animDuration = 0
-    var isCountDownOver = true
-        private set
+    private var isCountDownOver = true
     private var countDownTimeListener: CountDownTimeListener? = null
     private var mHandler = Handler()
 
     override fun getScaleType(): ScaleType {
         return SCALE_TYPE
     }
+
+    fun getIsCountDownOver() = isCountDownOver
 
     /**
      * 设置当前冷却时间

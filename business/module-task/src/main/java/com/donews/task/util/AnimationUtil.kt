@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.animation.ValueAnimator
 import android.view.View
+import com.airbnb.lottie.LottieAnimationView
 
 /**
  *  make in st
@@ -62,6 +63,19 @@ object AnimationUtil {
                 repeatCount = ValueAnimator.INFINITE
                 start()
             }
+    }
+
+    fun startTaskFingerAnimation(view: LottieAnimationView?){
+       view?.let {
+           it.imageAssetsFolder = "images"
+           it.setAnimation("task_finger.json")
+           it.loop(true)
+           it.playAnimation()
+        }
+    }
+
+    fun cancelFingerAnimation(view: LottieAnimationView?){
+        view?.cancelAnimation()
     }
 
 }

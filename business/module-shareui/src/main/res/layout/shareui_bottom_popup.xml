@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rootView"
+        android:orientation="vertical"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:ignore="all">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <View
+                android:id="@+id/container_view"
+                android:layout_width="0dp"
+                android:layout_height="147dp"
+                android:background="@drawable/shareui_popup_bg"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_wechat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="68dp"
+                android:layout_marginTop="18dp"
+                android:drawableTop="@drawable/shareui_wechat"
+                android:drawablePadding="10dp"
+                android:gravity="center"
+                android:text="微信"
+                android:textColor="#121214"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/container_view"
+                app:layout_constraintStart_toStartOf="@+id/container_view"
+                app:layout_constraintTop_toTopOf="@+id/container_view" />
+
+            <TextView
+                android:id="@+id/tv_moment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:layout_marginEnd="68dp"
+                android:drawableTop="@drawable/shareui_moments_icon"
+                android:drawablePadding="10dp"
+                android:gravity="center"
+                android:text="朋友圈"
+                android:textColor="#121214"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/container_view"
+                app:layout_constraintEnd_toEndOf="@+id/container_view"
+                app:layout_constraintTop_toTopOf="@+id/container_view" />
+
+            <View
+                android:layout_width="134dp"
+                android:layout_height="5dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/shareui_line_bg"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/container_view"
+                app:layout_constraintEnd_toEndOf="@+id/container_view"
+                app:layout_constraintStart_toStartOf="@+id/container_view" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </RelativeLayout>
+</layout>

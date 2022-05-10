@@ -119,5 +119,9 @@ ext {
 
             //数字滚动插件
             "ticker"                       : 'com.robinhood.ticker:ticker:2.0.4',
+            //分享相关
+            "xpopup"                       : 'com.github.li-xiaojun:XPopup:2.7.6',
+            //gif
+            "android-gif-drawable"         : 'pl.droidsonroids.gif:android-gif-drawable:1.2.2'
     ]
 }

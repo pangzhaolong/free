@@ -3,17 +3,17 @@ apply from: rootProject.file('gradle/module.build.gradle')
 android {
     defaultConfig {
         if (rootProject.ext.isBuildModule) {
-            applicationId "com.donews.task"
+            applicationId "com.donews.shareui"
         }
     }
     //统一资源前缀，规范资源引用
-    resourcePrefix "task_"
+    resourcePrefix "shareui_"
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(path: ':common:library-share')
     kapt rootProject.ext.dependencies["arouter-compiler"]
-    implementation project(':middleware:module-middleware')
-    implementation project(path: ':business:module-shareui')
-    implementation rootProject.ext.dependencies["android-gif-drawable"]
+    implementation project(':common:library-common')
+    api rootProject.ext.dependencies["xpopup"]
 }
