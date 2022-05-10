@@ -68,7 +68,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:text="* 1.您的问题类型"
-                        android:textColor="#2C2C2C"
+                        android:textColor="#2D323A"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -112,7 +112,8 @@
                                 android:button="@drawable/feedback_check_bg"
                                 android:paddingLeft="8dp"
                                 android:text="软件bug"
-                                android:textSize="15sp" />
+                                android:textColor="#2D323A"
+                                android:textSize="13sp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -130,7 +131,8 @@
                                 android:button="@drawable/feedback_check_bg"
                                 android:paddingLeft="8dp"
                                 android:text="意见反馈"
-                                android:textSize="15sp" />
+                                android:textColor="#2D323A"
+                                android:textSize="13sp" />
                         </LinearLayout>
                     </TableRow>
 
@@ -154,7 +156,8 @@
                                 android:button="@drawable/feedback_check_bg"
                                 android:paddingLeft="8dp"
                                 android:text="活动咨询"
-                                android:textSize="15sp" />
+                                android:textColor="#2D323A"
+                                android:textSize="13sp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -173,7 +176,8 @@
                                 android:checkedButton="@id/rad_0"
                                 android:paddingLeft="8dp"
                                 android:text="退款相关"
-                                android:textSize="15sp" />
+                                android:textColor="#2D323A"
+                                android:textSize="13sp" />
                         </LinearLayout>
                     </TableRow>
                 </TableLayout>
@@ -189,7 +193,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="* 2.请输入你的手机号"
-                        android:textColor="#2C2C2C"
+                        android:textColor="#2D323A"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -199,7 +203,7 @@
                         android:layout_marginTop="3dp"
                         android:gravity="center_vertical"
                         android:text="如有必要我们会和您联系"
-                        android:textColor="#6E6E6E"
+                        android:textColor="#838E9E"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -247,7 +251,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="* 3.咨询/反馈内容"
-                        android:textColor="#2C2C2C"
+                        android:textColor="#2D323A"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -258,7 +262,7 @@
                         android:layout_marginTop="3dp"
                         android:gravity="center_vertical"
                         android:text="请准确描述您要咨询或反馈的问题，我们会尽快处理。"
-                        android:textColor="#6E6E6E"
+                        android:textColor="#838E9E"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -295,7 +299,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="* 4.请上传图片"
-                        android:textColor="#2C2C2C"
+                        android:textColor="#2D323A"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -305,7 +309,7 @@
                         android:layout_marginTop="3dp"
                         android:gravity="center_vertical"
                         android:text="为更好解决您的问题，请上传1-3张照片"
-                        android:textColor="#6E6E6E"
+                        android:textColor="#838E9E"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -332,7 +336,7 @@
                     android:layout_height="47dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="20dp"
-                    android:background="@drawable/feedback_sub_bg"
+                    android:background="@drawable/mine_me_open_not_win_but"
                     android:gravity="center"
                     android:text="提交"
                     android:textColor="@color/white"

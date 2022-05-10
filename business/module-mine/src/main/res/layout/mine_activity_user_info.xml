@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/main_about_titlle_ll"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="用户信息"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/main_about_back"
+                android:layout_width="56dp"
+                android:layout_height="match_parent"
+                android:paddingLeft="10dp"
+                android:paddingTop="20dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="20dp"
+                android:src="@drawable/common_back_black" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/userinfo_rows"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/main_about_titlle_ll"
+            tools:ignore="MissingConstraints">
+
+            <View
+                style="@style/HorizontalLine"
+                android:layout_height="10dp" />
+            <!-- 以下是菜单项目 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="66dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/margin_15"
+                android:paddingRight="@dimen/margin_15"
+                android:tag="item_layout"
+                tools:ignore="MissingDefaultResource,ResourceName">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="头像"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:gravity="right|center_vertical"
+                    android:textSize="14sp" />
+
+                <com.donews.common.views.CircleImageView
+                    android:id="@+id/userinfo_head"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
+            </LinearLayout>
+
+            <View style="@style/HorizontalLine" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="66dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/margin_15"
+                android:paddingRight="@dimen/margin_15"
+                android:tag="item_layout"
+                tools:ignore="MissingDefaultResource,ResourceName">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="用户ID"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/userinfo_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:gravity="right|center_vertical"
+                    android:text=""
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <View style="@style/HorizontalLine" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="66dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/margin_15"
+                android:paddingRight="@dimen/margin_15"
+                android:tag="item_layout"
+                tools:ignore="MissingDefaultResource,ResourceName">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="昵称"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/userinfo_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:gravity="right|center_vertical"
+                    android:text=""
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <View style="@style/HorizontalLine" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="66dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/margin_15"
+                android:paddingRight="@dimen/margin_15"
+                android:tag="item_layout"
+                tools:ignore="MissingDefaultResource,ResourceName">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="微信"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:gravity="right|center_vertical"
+                    android:text="已绑定"
+                    android:textSize="14sp" />
+
+                <com.donews.common.views.CircleImageView
+                    android:layout_width="17dp"
+                    android:layout_height="17dp"
+                    android:src="@drawable/mine_userinfo_wx_bind" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/userinfo_rows">
+
+            <TextView
+                android:id="@+id/userinfo_exit"
+                android:layout_width="240dp"
+                android:layout_height="46dp"
+                android:layout_gravity="bottom|center"
+                android:background="@drawable/bg_shape_user_info_exit_login"
+                android:gravity="center"
+                android:text="退出登录"
+                android:textColor="#7671FF"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/userinfo_zx"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="5dp"
+                android:text="注销账户"
+                android:textColor="#838E9E"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

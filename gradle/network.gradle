@@ -85,11 +85,14 @@ ext {
     GAME_ON_LINE_URL = "https://recharge.xg.tagtic.cn/" + ext.APP_IDENTIFICATION + "/index.html"
     HTTP_GAME_URL = ext.DEBUG ? ext.GAME_OFF_LINE_URL : ext.GAME_ON_LINE_URL
 
+    // 趣白拿相关基础地址
+    BASE_QBN_RULE = ext.DEBUG ? "dev" : "prod"
+    BASE_QBN_API = "https://qbna." + BASE_QBN_RULE + ".tagtic.cn/"
 
     ECPM_DEBUG_URL = "http://ecpm-customer.dev.tagtic.cn/"
     ECPM_RELEASE_URL = "http://ecpm-customer.xg.tagtic.cn/"
 
-    ECPM_BASE_URL = ext.DEBUG?ECPM_DEBUG_URL:ECPM_RELEASE_URL
+    ECPM_BASE_URL = ext.DEBUG ? ECPM_DEBUG_URL : ECPM_RELEASE_URL
 
 
     //App独有公共配置
@@ -133,7 +136,7 @@ ext {
     Applog_SDK_APPID = "318600"
 
     //桌面通知
-    APP_NOTIFY_LUNCHER = BASE_CONFIG_URL + APP_IDENTIFICATION+"-notify"+BASE_RULE
+    APP_NOTIFY_LUNCHER = BASE_CONFIG_URL + APP_IDENTIFICATION + "-notify" + BASE_RULE
 
 }
 

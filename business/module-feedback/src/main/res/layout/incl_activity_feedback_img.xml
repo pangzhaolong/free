@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:text="上传照片"
                 android:layout_marginTop="8dp"
-                android:textColor="#6E6E6E"/>
+                android:textColor="#838E9E"/>
         </LinearLayout>
 
     </LinearLayout>

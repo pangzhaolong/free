@@ -8,7 +8,7 @@
         android:orientation="vertical">
         <com.donews.common.views.BaseTitleBar
             android:id="@+id/title_bar"
-            android:background="@color/text_red"
+            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <fragment

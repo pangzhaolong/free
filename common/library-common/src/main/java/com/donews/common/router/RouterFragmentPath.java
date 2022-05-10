@@ -150,6 +150,10 @@ public class RouterFragmentPath {
          * 个人中心
          */
         public static final String PAGER_USER = USER + "/UserInfo";
+        /**
+         * 新版个人中心
+         */
+        public static final String PAGER_USER_NEW = USER + "/Mine2Fragment";
 
         /**
          * 用户设置

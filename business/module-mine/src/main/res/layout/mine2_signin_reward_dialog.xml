@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingConstraints">
+
+    <data>
+
+
+        <import type="android.view.View" />
+
+        <import type="com.donews.mine.viewModel.MineViewModel" />
+
+        <import type="com.donews.mine.dialogs.news.SignInRewardMineDialog" />
+
+        <!-- 当前对应的Fragment自身对象 -->
+        <variable
+            name="thiz"
+            type="SignInRewardMineDialog" />
+
+        <variable
+            name="vModel"
+            type="MineViewModel" />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:paddingBottom="100dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mine2_sign_content"
+            android:layout_width="268dp"
+            android:layout_height="282dp"
+            android:layout_marginTop="131dp"
+            android:background="@drawable/middle_bg_default_theme">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="2dp"
+                android:background="@drawable/middle_ad_shape_min_bg">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginLeft="13dp"
+                    android:layout_marginRight="13dp"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toTopOf="@+id/sign_go"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="IncludeLayoutParam">
+
+                    <ImageView
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_centerHorizontal="true"
+                        android:paddingBottom="@{thiz.modeType == 1? @dimen/dp_16 : vModel.mineSignResult.coin &lt; 1000 ? @dimen/dp_5 : @dimen/dp_16}"
+                        android:src="@{thiz.modeType == 1 ?@drawable/sign_reward_mine_dialog_ydjb_2:vModel.mineSignResult.coin &lt; 1000 ? @drawable/sign_reward_mine_dialog_djb:@drawable/sign_reward_mine_dialog_ydjb}" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="83dp"
+                            android:layout_height="28dp"
+                            android:src="@drawable/sign_reward_mine_dialog_gxhd" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="28dp"
+                            android:layout_marginLeft="3dp"
+                            android:gravity="center"
+                            android:text='@{thiz.modeType == 0 ? vModel.mineSignResult.coin+"金币" : thiz.modeType == 1 ? vModel.mineSignDounleResult.coin+"金币":vModel.mineDailyTaskReceiveResult.coin+""}'
+                            android:textColor="#F5562A"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/sign_go"
+                    android:layout_width="204dp"
+                    android:layout_height="46dp"
+                    android:layout_marginBottom="35dp"
+                    android:background="@drawable/middle_bg_default_vertical_circel_theme"
+                    android:gravity="center"
+                    android:onClick="@{thiz.doubleReceiveClick}"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/sign_dialog_ljqd_icon"
+                        android:visibility="@{thiz.modeType == 0?View.VISIBLE:View.GONE}" />
+
+                    <TextView
+                        android:id="@+id/sign_go_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="9dp"
+                        android:text='@{thiz.modeType == 0?"翻倍领取":thiz.modeType == 1?"开心收下(5s)":"开心收下"}'
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/sign_top_iv"
+            android:layout_width="238dp"
+            android:layout_height="194dp"
+            android:layout_centerHorizontal="true"
+            app:imgageResId="@{thiz.getTitleIconResId()}" />
+
+        <TextView
+            android:id="@+id/gign_beside"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mine2_sign_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:onClick="@{()->thiz.dismiss()}"
+            android:padding="10dp"
+            android:text="稍后再说"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+    </RelativeLayout>
+</layout>

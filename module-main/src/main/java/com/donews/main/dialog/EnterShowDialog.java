@@ -28,7 +28,7 @@ import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.main.BuildConfig;
 import com.donews.main.R;
-import com.donews.main.databinding.MainEnterDialogLotteryBindingImpl;
+import com.donews.main.databinding.MainEnterDialogLotteryBinding;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoods;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoodsResp;
 import com.donews.middle.abswitch.ABSwitch;
@@ -51,7 +51,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Random;
 
-public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBindingImpl> {
+public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBinding> {
 
     private Context mContext;
 

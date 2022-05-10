@@ -94,8 +94,8 @@ public class LoginProvider implements IProvider {
     public void getLoginWx(String wxCode) {
         if (wxCode == null || "".equals(wxCode)) {
             //没有微信相关登录信息。那么直接设备登录。走原始逻辑
-//            getLogin();
-            preRegister();
+            getLogin();
+//            preRegister();
         } else {
             //走微信登录
             UserInfoManage.onLoadNetUserInfo(UserInfoManage.getNetDataStr(wxCode), null, "微信登录页");

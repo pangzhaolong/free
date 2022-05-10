@@ -46,6 +46,5 @@ public class ToastUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 }

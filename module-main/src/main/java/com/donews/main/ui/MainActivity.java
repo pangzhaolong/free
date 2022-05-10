@@ -878,7 +878,8 @@ public class MainActivity
             fragments.add(RouterFragmentPath.User.getMineOpenWinFragment(
                     0, true, false, true, 1));
             fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Home.PAGER_HOME).navigation());
-            fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.User.PAGER_USER).navigation());
+//            fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.User.PAGER_USER).navigation());
+            fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.User.PAGER_USER_NEW).navigation());
             fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Task.PAGER_TASK).navigation());
         }
 

@@ -17,7 +17,7 @@
             android:name=".ui.MineRewardHistoryActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.AboutActivity"
+            android:name=".ui.UserInfoActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.MineWinningCodeActivity"

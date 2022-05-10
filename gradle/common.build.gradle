@@ -3,6 +3,7 @@ android {
         buildConfigField("String", "APP_IDENTIFICATION", "\"${rootProject.APP_IDENTIFICATION}\"")
         buildConfigField("String", "LOGIN_URL", "\"${rootProject.LOGIN_URL}\"")
         buildConfigField("String", "BASE_URL", "\"${rootProject.API_SHOP_URL}\"")
+        buildConfigField("String", "BASE_QBN_API", "\"${rootProject.BASE_QBN_API}\"")
         buildConfigField("String", "API_LOTTERY_URL", "\"${rootProject.API_LOTTERY_URL}\"")
         buildConfigField("String", "API_WALLET_URL", "\"${rootProject.API_WALLET_URL}\"")
         buildConfigField("String", "API_USER_URL", "\"${rootProject.API_USER_URL}\"")

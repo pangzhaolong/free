@@ -20,12 +20,12 @@ import com.dn.sdk.listener.rewardvideo.SimpleRewardVideoListener;
 import com.donews.base.fragmentdialog.AbstractFragmentDialog;
 import com.donews.base.fragmentdialog.LoadingHintDialog;
 import com.donews.base.utils.ToastUtil;
+import com.donews.main.databinding.MainRpDialogLayoutExBinding;
 import com.donews.middle.adutils.RewardVideoAd;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.main.BuildConfig;
 import com.donews.main.R;
-import com.donews.main.databinding.MainRpDialogLayoutExBindingImpl;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoods;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoodsResp;
 import com.donews.middle.abswitch.ABSwitch;
@@ -47,7 +47,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-public class MainRpDialog extends AbstractFragmentDialog<MainRpDialogLayoutExBindingImpl> {
+public class MainRpDialog extends AbstractFragmentDialog<MainRpDialogLayoutExBinding> {
 
     //此页面退出的。是否显示插屏广告
     public static boolean isShowInnerAd = false;

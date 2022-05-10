@@ -16,4 +16,7 @@
     <color name="mine_fff5f4">#FFF5F4</color>
     <color name="mine_d9d8d8">#D9D8D8</color>
     <color name="mine_e9423e">#E9423E</color>
+
+    <color name="mine_FF7671FF">#FF7671FF</color>
+    <color name="mine_FFFFFFFF">#FFFFFFFF</color>
 </resources>
