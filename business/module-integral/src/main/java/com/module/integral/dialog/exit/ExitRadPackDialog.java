@@ -16,10 +16,10 @@ import androidx.annotation.NonNull;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.donews.base.utils.ToastUtil;
+import com.donews.middle.dialog.BaseDialog;
 import com.example.module_integral.R;
 import com.example.module_integral.databinding.BenefitUpgradeLayoutBinding;
 import com.example.module_integral.databinding.DialogExitRadPackLayoutBinding;
-import com.module.lottery.dialog.BaseDialog;
 
 import java.lang.ref.WeakReference;
 

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ResourceName">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="200dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/closure"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_above="@+id/central_content"
+            android:layout_gravity="right"
+            android:layout_marginEnd="23dp"
+            android:layout_marginBottom="23dp"
+            android:src="@drawable/middleware_closure_icon"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:ignore="MissingConstraints" />
+
+
+        <LinearLayout
+            android:id="@+id/central_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="26dp"
+            android:background="@drawable/turntable_white_shape_bg"
+            android:orientation="vertical"
+            android:paddingTop="50dp"
+            android:paddingStart="28dp"
+            android:paddingEnd="28dp"
+            android:paddingBottom="35dp"
+            app:layout_constraintTop_toBottomOf="@+id/closure"
+            tools:ignore="MissingConstraints">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1. 大转盘可以随机获得大奖，奖品会不定期更新。"
+                android:textColor="#2D323A"
+                android:textSize="13dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="2. 通过观看视频获得抽奖次数，每日最多可参与20次。"
+                android:textColor="#2D323A"
+                android:textSize="13dp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="26dp"
+            android:layout_marginEnd="30dp"
+            android:background="@mipmap/rule_top_streamer"
+            android:gravity="center"
+            android:text="玩法介绍"
+            android:textColor="#FFFFFF"
+            app:layout_constraintTop_toBottomOf="@+id/closure" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

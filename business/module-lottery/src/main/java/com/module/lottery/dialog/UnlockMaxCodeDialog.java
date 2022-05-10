@@ -18,6 +18,7 @@ import com.donews.base.utils.ToastUtil;
 import com.donews.common.config.CritParameterConfig;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.common.views.CountdownView;
+import com.donews.middle.dialog.BaseDialog;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;

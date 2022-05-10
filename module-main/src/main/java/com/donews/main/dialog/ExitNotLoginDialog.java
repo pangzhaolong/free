@@ -27,6 +27,7 @@ import com.donews.main.databinding.MainInterceptDialogLayoutBinding;
 import com.donews.main.utils.ClickDoubleUtil;
 import com.donews.main.utils.ExitInterceptUtils;
 import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.dialog.BaseDialog;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;

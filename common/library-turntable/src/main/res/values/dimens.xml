@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+
+    <dimen name="turntable_text_size13">13dp</dimen>
+    <dimen name="turntable_text_size20">20dp</dimen>
+
+    <dimen name="turntable_padding10">10dp</dimen>
+    <dimen name="turntable_padding20">20dp</dimen>
+    <dimen name="turntable_padding25">25dp</dimen>
+    <dimen name="turntable_padding30">30dp</dimen>
+    <dimen name="turntable_padding40">40dp</dimen>
+    <dimen name="turntable_padding50">50dp</dimen>
+    <dimen name="turntable_padding60">60dp</dimen>
+
+
+    <dimen name="turntable_margin10">10dp</dimen>
+    <dimen name="turntable_margin20">20dp</dimen>
+    <dimen name="turntable_margin25">25dp</dimen>
+    <dimen name="turntable_margin30">30dp</dimen>
+    <dimen name="turntable_margin40">40dp</dimen>
+    <dimen name="turntable_margin50">50dp</dimen>
+    <dimen name="turntable_margin60">60dp</dimen>
+
+</resources>

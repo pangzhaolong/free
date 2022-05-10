@@ -10,9 +10,9 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import com.donews.middle.dialog.BaseDialog;
 import com.example.module_integral.R;
 import com.example.module_integral.databinding.BenefitUpgradeLayoutBinding;
-import com.module.lottery.dialog.BaseDialog;
 
 import java.lang.ref.WeakReference;
 

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="TurntableView" >
+        <attr name="text_size" format="reference" /><!--文字大小-->
+        <attr name="padding_content_top" format="reference" /><!--三角形具体顶部的距离-->
+
+        <attr name="margin_tod" format="reference" /><!--文字距离顶部的高度-->
+        <attr name="text_color"  format="reference|color" /><!--文字颜色-->
+    </declare-styleable>
+</resources>

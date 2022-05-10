@@ -4,7 +4,7 @@
     <application>
         <activity
             android:launchMode="singleTask"
-            android:name=".view.TrunMainActivity"
+            android:name=".ui.TurntableActivity"
             android:screenOrientation="portrait"
             android:exported="true"/>
 

@@ -24,6 +24,7 @@ import androidx.annotation.NonNull;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.donews.common.router.RouterFragmentPath;
+import com.donews.middle.dialog.BaseDialog;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.exception.ApiException;
@@ -31,7 +32,6 @@ import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.module.lottery.bean.RecommendBean;
 import com.module.lottery.model.LotteryModel;
-import com.module.lottery.utils.ClickDoubleUtil;
 import com.module.lottery.utils.ImageUtils;
 import com.module.lottery.utils.RandomProbability;
 import com.module_lottery.R;

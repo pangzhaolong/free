@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.donews.base.model.BaseLiveDataModel;
+import com.donews.middle.dialog.BaseDialog;
 import com.donews.yfsdk.monitor.LotteryAdCheck;
 import com.donews.middle.abswitch.ABSwitch;
 import com.donews.network.EasyHttp;
