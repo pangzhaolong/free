@@ -2,10 +2,15 @@ package com.donews.mine.dialogs.news;
 
 
 import android.os.Build;
+import android.os.Bundle;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.GsonUtils;
 import com.donews.base.base.BaseApplication;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
+import com.donews.common.router.RouterFragmentPath;
 import com.donews.middle.bean.mine2.reqs.SignReq;
 import com.donews.middle.bean.mine2.resp.SignListResp;
 import com.donews.middle.dialog.BaseBindingFragmentDialog;
@@ -20,6 +25,7 @@ import java.util.List;
 /**
  * 个人中心任务的签到弹窗
  */
+@Route(path = RouterFragmentPath.User.PAGER_USER_SIGN_DIALOG)
 public class SignInMineDialog extends BaseBindingFragmentDialog<Mine2SigninDialogBinding> {
 
     /**
@@ -49,14 +55,12 @@ public class SignInMineDialog extends BaseBindingFragmentDialog<Mine2SigninDialo
      * @param itemDatas 签到的数据集合(一共七天)
      * @return
      */
-    public static SignInMineDialog getInstance(List<SignListResp.SignListItemResp> itemDatas) {
+    public static SignInMineDialog getInstance(SignListResp itemDatas) {
         SignInMineDialog dialog = new SignInMineDialog();
-        if (itemDatas.size() != 7) {
-            if (BuildConfig.DEBUG) {
-                ToastUtil.showShort(BaseApplication.getInstance(), "签到天数不正确。只允许7天签到数据!!!!");
-            }
+        if (dialog.getArguments() == null) {
+            dialog.setArguments(new Bundle());
         }
-        dialog.itemDatas = itemDatas;
+        dialog.getArguments().putString("itemDatas", GsonUtils.toJson(itemDatas));
         return dialog;
     }
 
@@ -69,8 +73,34 @@ public class SignInMineDialog extends BaseBindingFragmentDialog<Mine2SigninDialo
      */
     @Override
     protected void initView() {
+        ARouter.getInstance().inject(this);
+        if (getArguments() != null) {
+            String json = getArguments().getString("itemDatas");
+            try {
+                itemDatas = GsonUtils.fromJson(json, SignListResp.class)
+                        .items;
+            } catch (Exception e) {
+            }
+        }
         //获取ViewModel对象
         mineViewModel = createViewModel(getActivity(), MineViewModel.class);
+        if (itemDatas == null || itemDatas.size() <= 0) {
+            mineViewModel.mineSignLists.observe(this, (item) -> {
+                if (item != null) {
+                    this.itemDatas = item.items;
+                    initData();
+                } else {
+                    ToastUtil.showShort(getActivity(), "签到数据获取异常");
+                }
+            });
+            mineViewModel.getsignList();
+            return;
+        }
+        initData();
+    }
+
+    //初始化数据
+    private void initData() {
         if (itemDatas.size() == 7) {
             initDatabinding();
         } else {
@@ -83,7 +113,7 @@ public class SignInMineDialog extends BaseBindingFragmentDialog<Mine2SigninDialo
     @Override
     public void onResume() {
         super.onResume();
-        initDatabinding();
+        initData();
     }
 
     /**
@@ -129,7 +159,7 @@ public class SignInMineDialog extends BaseBindingFragmentDialog<Mine2SigninDialo
             if (getActivity() instanceof MvvmBaseLiveDataActivity) {
                 ((MvvmBaseLiveDataActivity<?, ?>) getActivity()).showLoading("签到中...");
             }
-            mineViewModel.requestSign(new SignReq(),true);
+            mineViewModel.requestSign(new SignReq(), true);
         });
         dataBinding.setItemNotNextClick((item) -> {
             if (System.currentTimeMillis() - notNextClickToastNewTime > notNextClickToastStepTime) {

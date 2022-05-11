@@ -1,8 +1,10 @@
 package com.donews.common.router;
 
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.donews.base.fragmentdialog.AbstractFragmentDialog;
 
 /**
  * 应用模块: 组件化路由
@@ -84,8 +86,23 @@ public class RouterFragmentPath {
          * 秒杀
          */
         public static final String PAGER_SPIKE = SPIKE + "/Spike";
-
     }
+
+
+
+    /**
+     * 首页抽奖页面组件
+     */
+    public static class HomeLottery {
+        private static final String LOTTERY = "/lottery_page";
+
+        /**
+         * 秒杀
+         */
+        public static final String PAGER_LOTTERY = LOTTERY + "/lottery";
+    }
+
+
 
     /**
      * 晒单页组件
@@ -101,27 +118,34 @@ public class RouterFragmentPath {
     }
 
 
-    /** 抽奖组件 */
-    public static class Lottery
-    {
+    /**
+     * 抽奖组件
+     */
+    public static class Lottery {
         private static final String LOTTERY = "/lottery";
 
-        /** 抽奖 */
+        /**
+         * 抽奖
+         */
         public static final String PAGER_LOTTERY = LOTTERY + "/lottery";
 
     }
 
 
-
-    /** 积分墙 */
-    public static class Integral
-    {
+    /**
+     * 积分墙
+     */
+    public static class Integral {
         private static final String INTEGRAL = "/integral";
 
-        /** 积分墙 */
+        /**
+         * 积分墙
+         */
         public static final String PAGER_INTEGRAL = INTEGRAL + "/integral";
 
-        /** 没有积分任务。但是存在次留任务 */
+        /**
+         * 没有积分任务。但是存在次留任务
+         */
         public static final String PAGER_INTEGRAL_NOT_TASK = INTEGRAL + "/WelfareNotTaskActivity";
 
     }
@@ -166,20 +190,30 @@ public class RouterFragmentPath {
         public static final String PAGER_USER_OPEN_WINNING = USER + "/MineOpenWinningFragment";
 
         /**
+         * 签到的Dialog弹窗
+         */
+        public static final String PAGER_USER_SIGN_DIALOG = USER + "/SignInMineDialog";
+
+        /**
+         * 任务奖励、激励奖励弹窗、领取弹窗 Dialog提示框
+         */
+        public static final String PAGER_USER_SIGN_REWARD_DIALOG = USER + "/SignInRewardMineDialog";
+
+        /**
          * 获取开奖的Fragment
          *
          * @param period     期数。如果为 0 :表示自动计算期数
          * @param isMainLoad 是否为首页加载，T:是，F:否
          * @param isShowBack 是否显示返回按钮，T:显示按钮，F:不显示
          * @param isShowMore 是否显示往期的按钮，T:显示按钮，F:不显示
-         * @param from 来源，
-         *             1：首页
-         *             2：往期开奖
-         *             3：个人参与记录
+         * @param from       来源，
+         *                   1：首页
+         *                   2：往期开奖
+         *                   3：个人参与记录
          * @return 开奖的Fragment
          */
         public static Fragment getMineOpenWinFragment(
-                int period, boolean isMainLoad,boolean isShowBack, boolean isShowMore,int from) {
+                int period, boolean isMainLoad, boolean isShowBack, boolean isShowMore, int from) {
             return (Fragment) ARouter.getInstance()
                     .build(RouterFragmentPath.User.PAGER_USER_OPEN_WINNING)
                     .withInt("period", period)
@@ -187,6 +221,31 @@ public class RouterFragmentPath {
                     .withBoolean("isShowBack", isShowBack)
                     .withBoolean("isShowMore", isShowMore)
                     .withInt("from", from)
+                    .navigation();
+        }
+
+        /**
+         * 获取签到弹窗
+         *
+         * @return
+         */
+        public static AbstractFragmentDialog<?> getSingDialog() {
+            return (AbstractFragmentDialog<?>) ARouter.getInstance()
+                    .build(User.PAGER_USER_SIGN_DIALOG)
+                    .navigation();
+        }
+
+        /**
+         * 个人中心任务,任务奖励、激励奖励弹窗、领取弹窗 提示框
+         *
+         * @param uiType UI模式：
+         *               0:激励模式，1:领取模式(带自带倒计时关闭)，2：任务奖励模式
+         * @return
+         */
+        public static AbstractFragmentDialog<?> getSingRewardDialog(int uiType) {
+            return (AbstractFragmentDialog<?>) ARouter.getInstance()
+                    .build(User.PAGER_USER_SIGN_REWARD_DIALOG)
+                    .withInt("uiType", uiType)
                     .navigation();
         }
     }
@@ -220,12 +279,15 @@ public class RouterFragmentPath {
         public static final String AD_LOAD_MANAGER_REFRESH_AD_CONFIG = "com.dn.sdk.AdLoadManager.refreshAdConfig";
     }
 
-    /** 任务组件 */
-    public static class Task
-    {
+    /**
+     * 任务组件
+     */
+    public static class Task {
         private static final String TASK = "/task";
 
-        /** 任务 */
+        /**
+         * 任务
+         */
         public static final String PAGER_TASK = TASK + "/task";
 
     }

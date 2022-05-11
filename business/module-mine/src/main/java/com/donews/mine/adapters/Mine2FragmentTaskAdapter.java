@@ -135,12 +135,14 @@ public class Mine2FragmentTaskAdapter extends
                 if (item.status == 0) {
                     //签到弹窗
                     if (mViewModel.mineSignLists.getValue() == null ||
-                            mViewModel.mineSignLists.getValue().size() != 7) {
+                            mViewModel.mineSignLists.getValue().items.size() != 7) {
                         ToastUtil.showShort(fragmentActivity, "签到数据天数不正确!");
                         return;
                     }
-                    SignInMineDialog.getInstance(mViewModel.mineSignLists.getValue())
+                    RouterFragmentPath.User.getSingDialog()
                             .show(fragmentActivity.getSupportFragmentManager(), "SignInMineDialog");
+//                    SignInMineDialog.getInstance(mViewModel.mineSignLists.getValue())
+//                            .show(fragmentActivity.getSupportFragmentManager(), "SignInMineDialog");
                 }
                 break;
             case taskvideo: // 任务视频(每日任务中的视频，个人中心 -> 每日任务)

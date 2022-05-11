@@ -624,15 +624,19 @@ public class MainActivity
             MainBottomTanItem homeItem = new MainBottomTanItem(this);
             homeItem.initialization("首页", R.drawable.main_home_checked, defaultColor, checkColor,
                     "main_bottom_tab_home.json");
+
+            MainBottomTanItem lotteryItem = new MainBottomTanItem(this);
+            lotteryItem.initialization("抽奖", R.drawable.main_mine, defaultColor, checkColor, "main_bottom_tab_me.json");
+
             MainBottomTanItem taskItem = new MainBottomTanItem(this);
             taskItem.initialization("活动", R.drawable.main_mine, defaultColor, checkColor, "main_bottom_tab_me.json");
             MainBottomTanItem mineItem = new MainBottomTanItem(this);
             mineItem.initialization("我的", R.drawable.main_mine, defaultColor, checkColor, "main_bottom_tab_me.json");
             mNavigationController = mDataBinding.bottomView.custom()
                     .addItem(homeItem)
+                    .addItem(lotteryItem)
                     .addItem(taskItem)
                     .addItem(mineItem)
-//                    .addItem(lotteryItem)
                     .enableAnimateLayoutChanges()
                     .build();
         } else {
@@ -809,27 +813,35 @@ public class MainActivity
      */
     private void toggleStatusBar(int position) {
         switch (position) {
-            case 0:
-                AnalysisUtils.onEventEx(this, Dot.Page_Home);
-                AnalysisUtils.onEventEx(this, Dot.Btn_Home);
-                if (mViewModel.openWindFastNewPeriod.getValue() == null) {
-                    //重新更新一次
-                    mViewModel.checkMaskData(this);
-                }
-                break;
-            case 1:
-                AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
-                AnalysisUtils.onEventEx(this, Dot.Page_ShowTime);
-                AnalysisUtils.onEventEx(this, Dot.Btn_ShowTime);
-                break;
-            case 2:
-                AnalysisUtils.onEventEx(this, Dot.Page_Lottery);
-                AnalysisUtils.onEventEx(this, Dot.Btn_Lottery);
-                if (mViewModel.getFastOpenWindPeriod() != null) {
-                    mViewModel.updateLocalOpenWindPeriod();
-                }
-                break;
-            default:
+//            case 0:
+//                AnalysisUtils.onEventEx(this, Dot.Page_Home);
+//                AnalysisUtils.onEventEx(this, Dot.Btn_Home);
+//                if (mViewModel.openWindFastNewPeriod.getValue() == null) {
+//                    //重新更新一次
+//                    mViewModel.checkMaskData(this);
+//                }
+//                break;
+//            case 1:
+//                AnalysisHelp.onEvent(this, AnalysisParam.TO_BENEFIT_BOTTOM_NAV);
+//                AnalysisUtils.onEventEx(this, Dot.Page_ShowTime);
+//                AnalysisUtils.onEventEx(this, Dot.Btn_ShowTime);
+//                break;
+//            case 2:
+//                AnalysisUtils.onEventEx(this, Dot.Page_Lottery);
+//                AnalysisUtils.onEventEx(this, Dot.Btn_Lottery);
+//                if (mViewModel.getFastOpenWindPeriod() != null) {
+//                    mViewModel.updateLocalOpenWindPeriod();
+//                }
+//                break;
+//
+//            case 3:
+//                AnalysisUtils.onEventEx(this, Dot.Page_Lottery);
+//                AnalysisUtils.onEventEx(this, Dot.Btn_Lottery);
+//                if (mViewModel.getFastOpenWindPeriod() != null) {
+//                    mViewModel.updateLocalOpenWindPeriod();
+//                }
+//                break;
+//            default:
         }
     }
 
@@ -846,6 +858,8 @@ public class MainActivity
             fragments.add((Fragment) ARouter.getInstance()
                     .build(RouterFragmentPath.Front.PAGER_FRONT)
                     .navigation());
+            //抽奖页面
+            fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.HomeLottery.PAGER_LOTTERY).navigation());
              //活动页面
             fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Task.PAGER_TASK).navigation());
             //个人中心页面

@@ -76,7 +76,7 @@ public class MineViewModel extends BaseLiveDataViewModel<MineModel> {
     // 每日任务集合
     public MutableLiveData<List<DailyTaskResp.DailyTaskItemResp>> mineDailyTasks = new MutableLiveData<>();
     // 签到列表数据
-    public MutableLiveData<List<SignListResp.SignListItemResp>> mineSignLists = new MutableLiveData<>();
+    public MutableLiveData<SignListResp> mineSignLists = new MutableLiveData<>();
     // 签到结果数据(最新的签到数据)
     public MutableLiveData<SignResp> mineSignResult = new MutableLiveData<>();
     // 签到双倍领取结果数据(最新的签到数据)
@@ -225,9 +225,9 @@ public class MineViewModel extends BaseLiveDataViewModel<MineModel> {
                     @Override
                     public void onSuccess(SignListResp resp) {
                         if (resp.items != null) {
-                            mineSignLists.postValue(resp.items);
+                            mineSignLists.postValue(resp);
                         } else {
-                            mineSignLists.postValue(new ArrayList<>());
+                            mineSignLists.postValue(null);
                         }
                     }
                 });
