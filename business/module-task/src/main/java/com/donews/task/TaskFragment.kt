@@ -307,6 +307,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                         mDataBinding?.coldDownTimer?.alpha = 1f
                         mDataBinding?.countDownTimeTv?.alpha = 1f
                         mDataBinding?.seeAdTv?.alpha = 0.45f
+                        mDataBinding?.seeAdTv?.text = "可领取(${taskBubbleVideoBean?.done ?: 0}/3)"
                         mDataBinding?.coldDownTimer?.apply {
                             setCountTime(taskBubbleVideoBean?.cd ?: 0)
                             startCountdown()
@@ -531,16 +532,66 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                     }
                 }
                 mDataBinding?.iconBtn -> {
-//                    taskBubbleBean.list
-//                    if (!isExplosionBubble) {
-//                        Toast.makeText(mContext, "当前没有可点击气泡", Toast.LENGTH_SHORT).show()
-//                    } else {
-//                        makeBubbleExplosion(mDataBinding?.iconSignBubble as View)
-//                        makeBubbleExplosion(mDataBinding?.iconSignTv as View)
-//                    }
+                    clickAllBubble()
                 }
             }
         }
+    }
+
+    private fun clickAllBubble(){
+        var isHaveCanReceiveBubble = false
+        for (index in taskBubbleBean.list.indices) {
+            if (taskBubbleBean.list[index].status == BUBBLE_NO_RECEIVE) {
+                isHaveCanReceiveBubble = true
+                break
+            }
+        }
+        if (isHaveCanReceiveBubble){
+            for (index in taskBubbleBean.list.indices) {
+                if (taskBubbleBean.list[index].status == BUBBLE_NO_RECEIVE) {
+                    when(taskBubbleBean.list[index].type){
+                        SIGN->{
+                            makeBubbleExplosion(mDataBinding?.iconSignBubble as View)
+                            makeBubbleExplosion(mDataBinding?.iconSignTv as View)
+                            //签到没有金币效果
+                            loadUserAssets()
+                        }
+                        COLLECT->{
+                            makeBubbleExplosion(mDataBinding?.iconCollectBubble as View)
+                            makeBubbleExplosion(mDataBinding?.iconCollectTv as View)
+                            startCoinGif()
+                            loadUserAssets()
+                        }
+                        LOTTERY->{
+                            makeBubbleExplosion(mDataBinding?.iconLuckDrawBubble as View)
+                            makeBubbleExplosion(mDataBinding?.iconLuckDrawTv as View)
+                            startCoinGif()
+                            loadUserAssets()
+                        }
+                        TURNTABLE->{
+                            makeBubbleExplosion(mDataBinding?.iconLuckPanBubble as View)
+                            makeBubbleExplosion(mDataBinding?.iconLuckPanTv as View)
+                            startCoinGif()
+                            loadUserAssets()
+                        }
+                        SHARE->{
+                            makeBubbleExplosion(mDataBinding?.iconShareBubble as View)
+                            makeBubbleExplosion(mDataBinding?.shareTv as View)
+                            startCoinGif()
+                            loadUserAssets()
+                        }
+                        VIDEO->{
+                            startCoinGif()
+                            loadUserAssets()
+                            loadTaskBubbles()
+                        }
+                        GIFT_BOX->{
+
+                        }
+                    }
+                }
+            }
+        } else Toast.makeText(mContext, "当前没有可点击气泡", Toast.LENGTH_SHORT).show()
     }
     //endregion
 
