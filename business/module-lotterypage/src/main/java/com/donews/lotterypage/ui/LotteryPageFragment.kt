@@ -10,7 +10,6 @@ import com.donews.common.router.RouterFragmentPath
 import com.donews.lotterypage.R
 import com.donews.lotterypage.base.BaseFragment
 import com.donews.lotterypage.databinding.LotteryPageLayoutBinding
-import com.donews.lotterypage.databinding.TestLayoutBinding
 import com.donews.lotterypage.viewmodel.LotteryPageViewModel
 
 @Route(path = RouterFragmentPath.HomeLottery.PAGER_LOTTERY)

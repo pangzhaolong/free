@@ -14,8 +14,6 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    api project(':common:library-common')
-    api project(':common:library-yfsdk')
     implementation project(':middleware:module-middleware')
     implementation 'androidx.recyclerview:recyclerview:1.2.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
