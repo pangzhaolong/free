@@ -9,14 +9,17 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.donews.base.utils.ToastUtil
 import com.donews.common.base.MvvmLazyLiveDataFragment
 import com.donews.common.router.RouterActivityPath
 import com.donews.common.router.RouterFragmentPath
+import com.donews.middle.mainShare.vm.MainShareViewModel
 import com.donews.module_shareui.ShareUIBottomPopup
 import com.donews.network.utils.NetworkUtil
+import com.donews.task.bean.TaskConfigInfo
 import com.donews.task.databinding.TaskFragmentBinding
 import com.donews.task.extend.setOnClickListener
 import com.donews.task.util.*
@@ -48,7 +51,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
 
     override fun onFragmentFirstVisible() {
         super.onFragmentFirstVisible()
-        //懒加载
+        loadUserAssets()
     }
 
     private fun setBinding() {
@@ -59,24 +62,39 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
         mContext = this.context
         setBinding()
         initClick()
-        networkCheck()
-    }
-
-    private fun networkCheck() {
-        if (NetworkUtil.isNetworkAvailable(requireContext())) {
-            mDataBinding?.noNetworkView?.visibility = View.GONE
-            normalStart()
-        } else {
-            mDataBinding?.noNetworkView?.visibility = View.VISIBLE
-        }
+        normalStart()
     }
 
     private fun normalStart(){
+        initTaskControl()
+        initShareViewModel()
+        initLiveData()
         initColdTimerView()
         initGif()
         initBox()
         initBubble()
     }
+
+    //region 接口调用相关
+    private fun initLiveData(){
+        initUserAssets()
+    }
+
+    private fun initUserAssets(){
+        mShareVideModel.userAssets.observe(viewLifecycleOwner,{
+            it?.let {
+                mViewModel?.goldCoinNum?.set(it.coin.toString())
+                mViewModel?.activityNum?.set(it.active.toString())
+            }
+            //
+        })
+    }
+
+    //获取用户幸运值和活跃度
+    private fun loadUserAssets(){
+        mShareVideModel.requestUserAssets()
+    }
+    //endregion
 
     //region 每日看广告气泡相关
     //今日看广告最大数, 中台配
@@ -355,6 +373,26 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
         ExplosionField(mContext, ExplodeParticleFactory()).apply {
             explode(bubbleView)
         }
+    }
+    //endregion
+
+    //region 获取中台配置数据
+    private var taskControlConfig: TaskConfigInfo? = null
+
+    private fun initTaskControl(){
+        taskControlConfig = TaskControlUtil.getTaskControlConfig()
+        todaySeeAdMaxNum = taskControlConfig?.ad?.todaySeeAdMaxNum?:3
+        mMaxCountTime = taskControlConfig?.ad?.mMaxCountTime?:10
+        boxMaxTime = taskControlConfig?.box?.boxMaxTime?:120
+        boxMaxOpenNum = taskControlConfig?.box?.boxMaxTime?:5
+    }
+    //endregion
+
+    //region 共享viewModel
+    private lateinit var mShareVideModel: MainShareViewModel
+
+    private fun initShareViewModel(){
+        mShareVideModel = ViewModelProvider(requireActivity()).get(MainShareViewModel::class.java)
     }
     //endregion
 

@@ -849,7 +849,7 @@ public class MainActivity
              //活动页面
             fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Task.PAGER_TASK).navigation());
             //个人中心页面
-            fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.User.PAGER_USER).navigation());
+            fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.User.PAGER_USER_NEW).navigation());
 
 
         }

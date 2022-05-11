@@ -17,12 +17,12 @@ class TaskViewModel: BaseLiveDataViewModel<TaskRepository>() {
     /**
      * 账户金币数据
      */
-    val goldCoinNum: ObservableField<String> = ObservableField<String>("0.00")
+    val goldCoinNum: ObservableField<String> = ObservableField<String>("0")
 
     /**
      * 账户活跃度数据
      */
-    val activityNum: ObservableField<String> = ObservableField<String>("0.00")
+    val activityNum: ObservableField<String> = ObservableField<String>("0")
 
     /**
      * 是否显示宝箱可领取Icon

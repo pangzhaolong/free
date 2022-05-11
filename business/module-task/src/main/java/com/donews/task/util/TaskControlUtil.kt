@@ -45,6 +45,6 @@ object TaskControlUtil {
             })
     }
 
-    private fun getTaskControlConfig() = taskControlConfig
+    fun getTaskControlConfig() = taskControlConfig
 
 }

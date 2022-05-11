@@ -5,6 +5,8 @@ import com.donews.common.contract.BaseCustomViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
+import kotlinx.parcelize.Parcelize;
+
 /**
  * @author lcl
  * Date on 2022/5/7
