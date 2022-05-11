@@ -86,8 +86,23 @@ public class RouterFragmentPath {
          * 秒杀
          */
         public static final String PAGER_SPIKE = SPIKE + "/Spike";
-
     }
+
+
+
+    /**
+     * 首页抽奖页面组件
+     */
+    public static class HomeLottery {
+        private static final String LOTTERY = "/lottery_page";
+
+        /**
+         * 秒杀
+         */
+        public static final String PAGER_LOTTERY = LOTTERY + "/lottery";
+    }
+
+
 
     /**
      * 晒单页组件

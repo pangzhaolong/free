@@ -135,6 +135,7 @@ dependencies {
         implementation project(path: ':business:module-unboxing')
         implementation project(path: ':business:module-reward')
         implementation project(path: ':business:module-lottery')
+        implementation project(path: ':business:module-lotterypage')
         implementation project(path: ':business:module-integral')
         //意见反馈(本地model)
         implementation project(path: ':business:module-feedback')
