@@ -119,6 +119,9 @@ public class ABSwitch {
 
 
     public boolean isOpenAB() {
+        if(BuildConfig.DEBUG){
+            return false;
+        }
         return mAbBean.isOpenAB();
     }
 

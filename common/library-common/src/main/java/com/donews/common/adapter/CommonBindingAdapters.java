@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.BindingAdapter;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
@@ -51,6 +53,22 @@ public class CommonBindingAdapters {
         }
     }
 
+    @BindingAdapter("imageLiveUrl")
+    public static void loadLiveImage(ImageView imageView, Object url) {
+        if (url != null) {
+            Object imgUrl;
+            if (url instanceof LiveData) {
+                imgUrl = ((LiveData<?>) url).getValue();
+            } else {
+                imgUrl = url;
+            }
+            Glide.with(imageView.getContext())
+                    .load(imgUrl)
+                    .apply(RequestOptions.bitmapTransform(new RoundedCorners(40)))
+                    .into(imageView);
+        }
+    }
+
     @BindingAdapter("imageBgUrl")
     public static void loadBgImage(ViewGroup viewGroup, String url) {
         if (!TextUtils.isEmpty(url)) {
@@ -66,6 +84,11 @@ public class CommonBindingAdapters {
                         }
                     });
         }
+    }
+
+    @BindingAdapter("imgageResId")
+    public static void imgageResId(ImageView imageView, int resId) {
+        imageView.setImageResource(resId);
     }
 
     @BindingAdapter("imageWrapUrl")

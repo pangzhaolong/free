@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/res/android/skin"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.donews.mine.viewModel.MineViewModel" />
+
+        <variable
+            name="thiz"
+            type="com.donews.mine.Mine2Fragment" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:ignore="MissingConstraints">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:orientation="vertical"
+                app:elevation="0dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_scrollFlags="scroll">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="247dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/mine_me2_top_bg" />
+
+                    <RelativeLayout
+                        android:id="@+id/mine2_user_cl"
+                        android:layout_width="match_parent"
+                        android:layout_height="247dp"
+                        android:paddingLeft="13dp"
+                        android:paddingRight="13dp">
+
+                        <com.donews.common.views.CircleImageView
+                            android:id="@+id/mine2_head"
+                            imageLiveUrl="@{viewModel.mine2UserHead}"
+                            android:layout_width="53dp"
+                            android:layout_height="53dp"
+                            android:layout_marginTop="65dp"
+                            android:background="@drawable/shape_circle_write_bg" />
+
+                        <TextView
+                            android:id="@+id/mine2_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignTop="@+id/mine2_head"
+                            android:layout_alignBottom="@+id/mine2_head"
+                            android:layout_marginLeft="10dp"
+                            android:layout_toLeftOf="@+id/mine2_setting"
+                            android:layout_toRightOf="@+id/mine2_head"
+                            android:ellipsize="end"
+                            android:gravity="center_vertical"
+                            android:paddingRight="5dp"
+                            android:singleLine="true"
+                            android:text="@={viewModel.mine2UserName}"
+                            android:textColor="#2D323A"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/mine2_setting"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_alignTop="@+id/mine2_head"
+                            android:layout_alignParentRight="true"
+                            android:onClick="@{()->thiz.gotoSetting()}"
+                            android:padding="5dp"
+                            android:src="@drawable/center_setting" />
+
+                        <!-- 运营位区域 -->
+                        <LinearLayout
+                            android:id="@+id/mine2_yyw_ll"
+                            android:layout_width="match_parent"
+                            android:layout_height="92dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="20dp"
+                            android:background="@drawable/ad_shape_min_bg">
+
+                            <com.donews.middle.views.TaskView
+                                android:id="@+id/mine2_yyw"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+                        </LinearLayout>
+                    </RelativeLayout>
+                    <!-- 积分金币显示 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="83dp"
+                        android:layout_marginLeft="13dp"
+                        android:layout_marginTop="-10dp"
+                        android:layout_marginRight="13dp"
+                        android:background="@drawable/ad_shape_min_bg"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        app:layout_constraintTop_toBottomOf="@+id/mine2_user_cl">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <ImageView
+                                android:id="@+id/mine2_jb_icon"
+                                android:layout_width="33dp"
+                                android:layout_height="33dp"
+                                android:layout_marginLeft="16dp"
+                                android:src="@drawable/mine2_jb_icon"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/mine2_jb_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="12dp"
+                                android:text="金币"
+                                android:textColor="#838E9E"
+                                android:textSize="13.5sp"
+                                app:layout_constraintBottom_toTopOf="@+id/mine2_jb_count"
+                                app:layout_constraintLeft_toRightOf="@+id/mine2_jb_icon"
+                                app:layout_constraintTop_toTopOf="@+id/mine2_jb_icon" />
+
+                            <TextView
+                                android:id="@+id/mine2_jb_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginTop="3dp"
+                                android:text='@={""+viewModel.mine2JBCount}'
+                                android:textColor="#2D323A"
+                                android:textSize="20sp"
+                                app:layout_constraintBottom_toBottomOf="@+id/mine2_jb_icon"
+                                app:layout_constraintLeft_toLeftOf="@+id/mine2_jb_name"
+                                app:layout_constraintTop_toBottomOf="@+id/mine2_jb_name" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <View
+                            android:layout_width="0.33dp"
+                            android:layout_height="43dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="#D4D4D4" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <ImageView
+                                android:id="@+id/mine2_jf_icon"
+                                android:layout_width="33dp"
+                                android:layout_height="33dp"
+                                android:layout_marginLeft="32dp"
+                                android:src="@drawable/mine2_jf_icon"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/mine2_jf_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="12dp"
+                                android:text="积分"
+                                android:textColor="#838E9E"
+                                android:textSize="13.5sp"
+                                app:layout_constraintBottom_toTopOf="@+id/mine2_jf_count"
+                                app:layout_constraintLeft_toRightOf="@+id/mine2_jf_icon"
+                                app:layout_constraintTop_toTopOf="@+id/mine2_jf_icon" />
+
+                            <TextView
+                                android:id="@+id/mine2_jf_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginTop="3dp"
+                                android:text='@={""+viewModel.mine2JFCount}'
+                                android:textColor="#2D323A"
+                                android:textSize="20sp"
+                                app:layout_constraintBottom_toBottomOf="@+id/mine2_jf_icon"
+                                app:layout_constraintLeft_toLeftOf="@+id/mine2_jf_name"
+                                app:layout_constraintTop_toBottomOf="@+id/mine2_jf_name" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="26dp"
+                    android:paddingLeft="13dp"
+                    android:paddingRight="13dp"
+                    android:paddingBottom="5dp"
+                    android:text="日常任务"
+                    android:textColor="#2D323A"
+                    android:textSize="16sp" />
+            </com.google.android.material.appbar.AppBarLayout>
+            <!-- 任务列表 -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mine2_task_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

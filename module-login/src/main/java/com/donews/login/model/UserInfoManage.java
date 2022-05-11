@@ -459,11 +459,32 @@ public class UserInfoManage {
                         mutableLiveData.postValue(userInfoBean);
                         refreshUserTag(userInfoBean);
                         EventBus.getDefault().post(new LoginUserStatus(1));
-                        MiddleModuleInit.requestCriticalWallet(null,"false");
+                        MiddleModuleInit.requestCriticalWallet(null, "false");
+                        // 同步预注册信息(兼容以前的业务逻辑)
+                        // 这是再业务接口需要token。但是预注册只有id没有token的一种兼容处理
+                        syncPreRegisterParams(userInfoBean);
                     }
                 });
 
         return mutableLiveData;
+    }
+
+    /**
+     * 同步预注册参数。防止影响以前的业务逻辑
+     *
+     * @param userInfo
+     */
+    private static void syncPreRegisterParams(UserInfoBean userInfo) {
+        PreRegisterBean bean = new PreRegisterBean();
+        bean.code = 1;
+        bean.registerTime = userInfo.getCreatedAt();
+        bean.userId = userInfo.getId();
+        bean.msg = "同步设备登录用户得来";
+
+        AppInfo.setUserId(bean.getUserId());
+        AppInfo.setUserRegisterTime(bean.getRegisterTime());
+        LoginHelp.getInstance().getUserInfoBean().setCreatedAt(bean.getRegisterTime());
+        AnalysisHelp.registerUserId();
     }
 
     /**

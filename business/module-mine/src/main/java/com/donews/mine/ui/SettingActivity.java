@@ -24,22 +24,21 @@ public class SettingActivity extends MvvmBaseLiveDataActivity<MineActivitySettin
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ImmersionBar.with(this)
-                .statusBarColor(R.color.text_red)
+                .statusBarColor(R.color.white)
                 .navigationBarColor(R.color.black)
                 .fitsSystemWindows(true)
                 .autoDarkModeEnable(true)
                 .init();
-        mDataBinding.titleBar
-                .setBackImageView(R.drawable.mine_win_write_back);
+//        mDataBinding.titleBar
+//                .setBackImageView(R.drawable.mine_win_write_back);
         initView();
     }
 
     public void initView() {
         mViewModel.mContext = this;
         mDataBinding.titleBar.setTitle("设置");
-        mDataBinding.titleBar.setTitleTextColor("#FFFFFF");
         mDataBinding.titleBar.findViewById(R.id.title_bar_root)
-                .setBackgroundResource(R.color.text_red);
+                .setBackgroundResource(R.color.white);
     }
 
     @Override

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingConstraints">
+
+    <data>
+
+        <import type="com.donews.middle.bean.mine2.resp.SignListResp.SignListItemResp" />
+
+        <import type="com.donews.mine.dialogs.news.SignInMineDialog.OnSignItemClickListener" />
+
+        <import type="com.donews.mine.dialogs.news.SignInMineDialog" />
+
+        <!-- 当前对应的Fragment自身对象 -->
+        <variable
+            name="thiz"
+            type="SignInMineDialog" />
+        <!-- Item点击 -->
+        <variable
+            name="itemClick"
+            type="OnSignItemClickListener" />
+        <!-- 不可签到状态点击 -->
+        <variable
+            name="itemNotNextClick"
+            type="OnSignItemClickListener" />
+
+        <variable
+            name="datas"
+            type="java.util.List&lt;SignListItemResp>" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="100dp"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="320dp"
+            android:layout_height="372dp"
+            android:layout_marginTop="132dp"
+            android:background="@drawable/middle_bg_default_theme">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="2dp"
+                android:background="@drawable/middle_ad_shape_min_bg">
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginLeft="13dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginRight="13dp"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toTopOf="@+id/sign_go"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="IncludeLayoutParam">
+
+                    <TableRow
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:weightSum="4">
+
+                        <include
+                            style="@style/signDialogInclItemStyle"
+                            layout="@layout/mine2_incl_signin_item"
+                            android:layout_marginLeft="0dp"
+                            app:itemClick="@{itemClick}"
+                            app:itemData="@{datas.get(0)}"
+                            app:itemNotNextClick="@{itemNotNextClick}" />
+
+                        <include
+                            style="@style/signDialogInclItemStyle"
+                            layout="@layout/mine2_incl_signin_item"
+                            app:itemClick="@{itemClick}"
+                            app:itemData="@{datas.get(1)}"
+                            app:itemNotNextClick="@{itemNotNextClick}" />
+
+                        <include
+                            style="@style/signDialogInclItemStyle"
+                            layout="@layout/mine2_incl_signin_item"
+                            app:itemClick="@{itemClick}"
+                            app:itemData="@{datas.get(2)}"
+                            app:itemNotNextClick="@{itemNotNextClick}" />
+
+                        <include
+                            style="@style/signDialogInclItemStyle"
+                            layout="@layout/mine2_incl_signin_item"
+                            app:itemClick="@{itemClick}"
+                            app:itemData="@{datas.get(3)}"
+                            app:itemNotNextClick="@{itemNotNextClick}" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_weight="1"
+                        android:weightSum="4">
+
+                        <include
+                            style="@style/signDialogInclItemStyle"
+                            layout="@layout/mine2_incl_signin_item"
+                            android:layout_marginLeft="0dp"
+                            app:itemClick="@{itemClick}"
+                            app:itemData="@{datas.get(4)}"
+                            app:itemNotNextClick="@{itemNotNextClick}" />
+
+                        <include
+                            style="@style/signDialogInclItemStyle"
+                            layout="@layout/mine2_incl_signin_item"
+                            app:itemClick="@{itemClick}"
+                            app:itemData="@{datas.get(5)}"
+                            app:itemNotNextClick="@{itemNotNextClick}" />
+
+                        <include
+                            style="@style/signDialogInclItemStyle"
+                            layout="@layout/mine2_incl_signin_item"
+                            android:layout_weight="2"
+                            app:itemClick="@{itemClick}"
+                            app:itemData="@{datas.get(6)}"
+                            app:itemNotNextClick="@{itemNotNextClick}" />
+                    </TableRow>
+                </TableLayout>
+
+                <LinearLayout
+                    android:id="@+id/sign_go"
+                    android:layout_width="256dp"
+                    android:layout_height="46dp"
+                    android:layout_marginBottom="38dp"
+                    android:background="@drawable/middle_bg_default_vertical_circel_theme"
+                    android:gravity="center"
+                    android:onClick="@{()->itemClick.click(datas.get(thiz.getCurrentAllowSignDay()))}"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/sign_dialog_ljqd_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="9dp"
+                        android:text="立即签到"
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/sign_top_iv"
+            android:layout_width="315dp"
+            android:layout_height="182dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="-51dp"
+            android:src="@drawable/sign_dialog_top_icon" />
+    </RelativeLayout>
+</layout>

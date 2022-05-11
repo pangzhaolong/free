@@ -238,12 +238,23 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
             ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
         });
         getView().findViewById(R.id.tv_userinfo_name).setOnClickListener((v) -> {
-            getView().findViewById(R.id.iv_user_logo).performClick();
+            if (!AppInfo.checkIsWXLogin()) {
+                ARouter.getInstance()
+                        .build(RouterActivityPath.User.PAGER_LOGIN)
+                        .navigation();
+            }
         });
         getView().findViewById(R.id.iv_user_logo).setOnClickListener((v) -> {
-            //登录
+            if (!AppInfo.checkIsWXLogin()) {
+                //登录
+                ARouter.getInstance()
+                        .build(RouterActivityPath.User.PAGER_LOGIN)
+                        .navigation();
+                return;
+            }
+            //用户信息
             ARouter.getInstance()
-                    .build(RouterActivityPath.User.PAGER_LOGIN)
+                    .build(RouterActivityPath.Mine.PAGER_MINE_USER_INFO_ACTIVITY)
                     .navigation();
         });
         getView().findViewById(R.id.rl_top_bar_seting).setOnClickListener((v) -> {

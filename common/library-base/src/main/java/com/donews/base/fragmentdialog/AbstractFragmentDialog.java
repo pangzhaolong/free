@@ -79,7 +79,7 @@ public abstract class AbstractFragmentDialog<T extends ViewDataBinding> extends 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
 
         // 弹出框外面是否可取消
         getDialog().setCanceledOnTouchOutside(dismissOnTouchOutside);
@@ -98,6 +98,7 @@ public abstract class AbstractFragmentDialog<T extends ViewDataBinding> extends 
         });
         if (isUseDataBinding()) {
             dataBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
+            dataBinding.setLifecycleOwner(this);
             rootView = dataBinding.getRoot();
         } else {
             rootView = inflater.inflate(getLayoutId(), container);
@@ -216,7 +217,7 @@ public abstract class AbstractFragmentDialog<T extends ViewDataBinding> extends 
     }
 
     public void setOnLaterListener(LaterListener onCancelListener) {
-        mOnLaterListener  = onCancelListener;
+        mOnLaterListener = onCancelListener;
     }
 
     public LaterListener getOnLaterListener() {

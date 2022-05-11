@@ -105,8 +105,6 @@ public class MineSettingFragment extends
         if (ABSwitch.Ins().isOpenAB()) {
             mDataBinding.mineSettingTitle.setVisibility(View.VISIBLE);
             mDataBinding.tvExitLogin.setVisibility(View.GONE);
-            mDataBinding.setZxzh.setVisibility(View.GONE);
-            mDataBinding.setFxapp.setVisibility(View.GONE);
         }
     }
 

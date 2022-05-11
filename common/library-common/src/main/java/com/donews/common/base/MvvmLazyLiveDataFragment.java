@@ -102,7 +102,7 @@ public abstract class MvvmLazyLiveDataFragment<V extends ViewDataBinding, VM ext
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
+                             @Nullable Bundle savedInstanceState) {
 
         if (null == rootView) {
             mDataBinding =
@@ -157,7 +157,19 @@ public abstract class MvvmLazyLiveDataFragment<V extends ViewDataBinding, VM ext
     }
 
     protected <T extends ViewModel> T getFragmentScopeViewModel(@NonNull Class<T> modelClass) {
+        if (isActivityViewModel()) {
+            return new ViewModelProvider(getActivity()).get(modelClass);
+        }
         return new ViewModelProvider(this).get(modelClass);
+    }
+
+    /**
+     * 是否返回Activity生命周期的ViewModel，让ViewModel和所依赖的Activity生命周期等同长度。为了做Fragment之间的数据共享
+     *
+     * @return T:是，F:只是自身生命周期等同
+     */
+    protected boolean isActivityViewModel() {
+        return false;
     }
 
     protected FragmentActivity getBaseActivity() {

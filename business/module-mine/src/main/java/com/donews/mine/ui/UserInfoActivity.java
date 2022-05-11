@@ -1,6 +1,6 @@
 package com.donews.mine.ui;
 
-import static com.donews.common.router.RouterActivityPath.Mine.PAGER_MINE_ABOUT_ACTIVITY;
+import static com.donews.common.router.RouterActivityPath.Mine.PAGER_MINE_USER_INFO_ACTIVITY;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -12,29 +12,35 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.blankj.utilcode.util.AppUtils;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.drouter.ARouteHelper;
+import com.dn.events.events.LoginUserStatus;
+import com.donews.base.utils.ToastUtil;
+import com.donews.base.utils.glide.GlideUtils;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.common.adapter.ScreenAutoAdapter;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
+import com.donews.common.contract.LoginHelp;
+import com.donews.common.contract.UserInfoBean;
+import com.donews.common.contract.WeChatBean;
 import com.donews.common.router.RouterActivityPath;
-import com.donews.common.updatedialog.UpdateManager;
 import com.donews.mine.R;
-import com.donews.mine.databinding.MineActivityAboutBinding;
-import com.donews.utilslibrary.analysis.AnalysisUtils;
-import com.donews.utilslibrary.dot.Dot;
-import com.donews.utilslibrary.utils.JsonUtils;
+import com.donews.mine.databinding.MineActivityUserInfoBinding;
+import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.SPUtils;
 import com.gyf.immersionbar.ImmersionBar;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 /**
  * <p>
- * 关于我们得页面
+ * 用户信息页面
  * <p>
  */
-@Route(path = PAGER_MINE_ABOUT_ACTIVITY)
-public class AboutActivity extends MvvmBaseLiveDataActivity<MineActivityAboutBinding, BaseLiveDataViewModel> {
+@Route(path = PAGER_MINE_USER_INFO_ACTIVITY)
+public class UserInfoActivity extends MvvmBaseLiveDataActivity<MineActivityUserInfoBinding, BaseLiveDataViewModel> {
 
     private int mBDCounts = 0;
 
@@ -48,37 +54,36 @@ public class AboutActivity extends MvvmBaseLiveDataActivity<MineActivityAboutBin
                 .autoDarkModeEnable(true)
                 .init();
 
-        return R.layout.mine_activity_about;
+        return R.layout.mine_activity_user_info;
     }
 
     @Override
     public void initView() {
-        mDataBinding.mainAboutBack.setOnClickListener((v) -> {
+        EventBus.getDefault().register(this);
+        WeChatBean wxBean = LoginHelp.getInstance().getUserInfoBean().getWechatExtra();
+        GlideUtils.loadImageView(this, wxBean.getHeadimgurl(), mDataBinding.userinfoHead);
+        mDataBinding.userinfoId.setText(LoginHelp.getInstance().getUserInfoBean().getId());
+        mDataBinding.userinfoName.setText(wxBean.getNickName());
+        mDataBinding.userinfoExit.setOnClickListener((v) -> {
+            AppInfo.exitWXLogin();
             finish();
         });
-        mDataBinding.mainAboutVersion.setText(AppUtils.getAppVersionName());
-        mDataBinding.tvLxKf.setOnClickListener(v -> {
-            AnalysisUtils.onEventEx(this, Dot.Page_ContactService);
-            lxkf();
-        });
-
-        mDataBinding.mineAboutIcon.setOnClickListener(v -> {
-            mBDCounts++;
-            if (mBDCounts == 10) {
-                mDataBinding.mineAboutBd.setText(JsonUtils.getCommonJson4BD());
+        mDataBinding.userinfoZx.setOnClickListener((v) -> {
+            UserInfoBean uf = LoginHelp.getInstance().getUserInfoBean();
+            if (uf == null ||
+                    !AppInfo.checkIsWXLogin()) { //未登录
+                ToastUtil.show(this, "你还未登陆,请先登录!");
+                return;
             }
+            ARouter.getInstance()
+                    .build(RouterActivityPath.Mine.PAGER_MINEUSER_CANCELLATION_ACTIVITY)
+                    .navigation();
         });
+    }
 
-        mDataBinding.mineAboutTitle.setOnClickListener(v -> {
-            ClipboardManager clipboardManager = (ClipboardManager) AboutActivity.this.getApplication().getSystemService(
-                    Context.CLIPBOARD_SERVICE);
-            ClipData clipData = ClipData.newPlainText(null, mDataBinding.mineAboutBd.getText());
-            clipboardManager.setPrimaryClip(clipData);
-        });
-
-        mDataBinding.tvCheckUpdate.setOnClickListener(v -> {
-            UpdateManager.getInstance().checkUpdate(AboutActivity.this, true);
-        });
+    @Subscribe
+    public void loginStatus(LoginUserStatus event) {
+        finish();
     }
 
     private void lxkf() {
@@ -89,7 +94,7 @@ public class AboutActivity extends MvvmBaseLiveDataActivity<MineActivityAboutBin
         } else {
             Bundle bundle = new Bundle();
             bundle.putString("url",
-                    "https://recharge-web.xg.tagtic.cn/jdd/index.html#/customer");
+                    "https://recharge-web.xg.tagtic.cn/free/index.html#/customer");
             bundle.putString("title", "客服");
             ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
         }
@@ -125,6 +130,7 @@ public class AboutActivity extends MvvmBaseLiveDataActivity<MineActivityAboutBin
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         mBDCounts = 0;
     }
 }

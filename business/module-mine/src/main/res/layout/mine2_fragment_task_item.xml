@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/res/android/skin"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.donews.middle.bean.mine2.emuns.Mine2TaskType" />
+
+        <variable
+            name="itemData"
+            type="com.donews.middle.bean.mine2.resp.DailyTaskResp.DailyTaskItemResp" />
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:paddingLeft="13dp"
+        android:paddingTop="10dp"
+        android:paddingRight="12dp"
+        android:paddingBottom="10dp"
+        tools:ignore="MissingConstraints">
+
+        <ImageView
+            android:id="@+id/mine2_task_icon"
+            android:layout_width="37dp"
+            android:layout_height="37dp"
+            app:imageUrl="@{itemData.icon}" />
+
+        <TextView
+            android:id="@+id/mine2_task_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="13dp"
+            android:layout_marginRight="8dp"
+            android:ellipsize="end"
+            android:lines="1"
+            android:text='@{itemData.total > 1 ? itemData.title+"("+itemData.done+"/"+itemData.total+")" : itemData.title}'
+            android:textColor="#2D323A"
+            android:textSize="15sp"
+            app:layout_constraintLeft_toRightOf="@+id/mine2_task_icon"
+            app:layout_constraintRight_toLeftOf="@+id/mine2_task_finish"
+            app:layout_constraintTop_toTopOf="@+id/mine2_task_icon" />
+
+        <TextView
+            android:id="@+id/mine2_task_desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="8dp"
+            android:ellipsize="end"
+            android:lines="1"
+            android:text='@{itemData.desc}'
+            android:textColor="#838E9E"
+            android:textSize="13sp"
+            app:layout_constraintLeft_toLeftOf="@+id/mine2_task_title"
+            app:layout_constraintRight_toLeftOf="@+id/mine2_task_finish"
+            app:layout_constraintTop_toBottomOf="@+id/mine2_task_title" />
+
+        <TextView
+            android:id="@+id/mine2_task_finish"
+            android:layout_width="84dp"
+            android:layout_height="33dp"
+            android:background='@{itemData.status == 0 ? @drawable/bg_shape_mine2_not_finish : itemData.status == 1 ? @drawable/mine_me_open_not_win_but:@drawable/bg_shape_mine2_finish}'
+            android:enabled="@{itemData.status != 2}"
+            android:gravity="center"
+            android:onClick="@{clickListener}"
+            android:text='@{itemData.status == 0 ? "去完成" : itemData.status == 1 ? "领取奖励":"已完成"}'
+            android:textColor='@{itemData.status == 0 ? @color/mine_FF7671FF : @color/mine_FFFFFFFF}'
+            android:textSize="13.3sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

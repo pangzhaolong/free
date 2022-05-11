@@ -6,6 +6,9 @@ import com.dn.sdk.AdCustomError
 import com.dn.sdk.bean.PreloadAdState
 import com.dn.sdk.bean.preload.PreloadInterstitialAd
 import com.dn.sdk.listener.interstitial.IAdInterstitialListener
+import com.donews.base.base.BaseApplication
+import com.donews.base.utils.ToastUtil
+import com.donews.yfsdk.BuildConfig
 import com.donews.yfsdk.loader.AdManager
 import com.donews.yfsdk.loader.IPreloadInterstitialAd
 

@@ -151,9 +151,9 @@ public class RouterActivityPath {
         public static final String PAGER_MINE_WINNING_CODE_ACTIVITY = MINE + "/MineWinningCodeActivity";
 
         /**
-         * 关于我们
+         * 用户信息页面
          */
-        public static final String PAGER_MINE_ABOUT_ACTIVITY = MINE + "/AboutActivity";
+        public static final String PAGER_MINE_USER_INFO_ACTIVITY = MINE + "/UserInfoActivity";
 
 
         /**

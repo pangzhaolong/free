@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingConstraints">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.donews.mine.dialogs.news.SignInMineDialog.OnSignItemClickListener" />
+
+        <!-- Item点击 -->
+        <variable
+            name="itemClick"
+            type="OnSignItemClickListener" />
+        <!-- 不可签到状态点击 -->
+        <variable
+            name="itemNotNextClick"
+            type="OnSignItemClickListener" />
+
+        <variable
+            name="itemData"
+            type="com.donews.middle.bean.mine2.resp.SignListResp.SignListItemResp" />
+    </data>
+
+    <com.donews.middle.views.GrayConstraintlayout
+        android:id="@+id/sign_item_ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@{itemData.day &lt; 7 ?@drawable/sign_dialog_item_bg_icon :@drawable/sign_dialog_item_bg_b_icon}"
+        android:enabled="@{itemData.status != 2}"
+        android:minWidth="62dp"
+        android:minHeight="96dp"
+        android:onClick="@{()->itemClick.click(itemData)}">
+
+        <TextView
+            android:id="@+id/sign_title"
+            android:layout_width="wrap_content"
+            android:layout_height="18dp"
+            android:gravity="center"
+            android:text='@{"第"+itemData.day+"天"}'
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <TextView
+            android:id="@+id/sign_count"
+            android:layout_width="wrap_content"
+            android:layout_height="18dp"
+            android:gravity="center"
+            android:text="@{itemData.desc}"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="@{()->itemNotNextClick.click(itemData)}"
+            android:scaleType="fitXY"
+            android:src="@{itemData.day &lt; 7 ?@drawable/sign_dialog_item_mask_a_icon :@drawable/sign_dialog_item_mask_b_icon}"
+            android:visibility="@{itemData.status == 0 ? View.VISIBLE:View.GONE}" />
+
+    </com.donews.middle.views.GrayConstraintlayout>
+</layout>
