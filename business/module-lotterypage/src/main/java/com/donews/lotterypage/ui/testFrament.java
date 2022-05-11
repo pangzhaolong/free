@@ -11,13 +11,15 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.common.router.RouterFragmentPath;
+import com.donews.front.model.FrontModel;
 import com.donews.lotterypage.base.BaseFragment;
 import com.module_lottery.R;
 import com.module_lottery.databinding.TestLayoutBinding;
 
 
-@Route(path = RouterFragmentPath.HomeLottery.PAGER_LOTTERY)
+
 public class testFrament extends Fragment {
     TestLayoutBinding mdata;
     @Nullable
