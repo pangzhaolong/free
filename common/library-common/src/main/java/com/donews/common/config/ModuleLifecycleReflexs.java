@@ -30,5 +30,10 @@ public class ModuleLifecycleReflexs {
      */
     private static final String MiddleInit = "com.donews.middle.application.MiddleModuleInit";
 
-    public static String[] initModuleNames = {MainInit, SDKInit, BaseInit, MiddleInit};
+    /**
+     * 活动组件
+     */
+    private static final String TaskInit = "com.donews.task.app.TaskModuleInit";
+
+    public static String[] initModuleNames = {MainInit, SDKInit, BaseInit, MiddleInit,TaskInit};
 }

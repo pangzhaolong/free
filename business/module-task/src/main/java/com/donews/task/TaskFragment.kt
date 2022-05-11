@@ -16,6 +16,7 @@ import com.donews.common.base.MvvmLazyLiveDataFragment
 import com.donews.common.router.RouterActivityPath
 import com.donews.common.router.RouterFragmentPath
 import com.donews.module_shareui.ShareUIBottomPopup
+import com.donews.network.utils.NetworkUtil
 import com.donews.task.databinding.TaskFragmentBinding
 import com.donews.task.extend.setOnClickListener
 import com.donews.task.util.*
@@ -62,6 +63,15 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
     }
 
     private fun networkCheck() {
+        if (NetworkUtil.isNetworkAvailable(requireContext())) {
+            mDataBinding?.noNetworkView?.visibility = View.GONE
+            normalStart()
+        } else {
+            mDataBinding?.noNetworkView?.visibility = View.VISIBLE
+        }
+    }
+
+    private fun normalStart(){
         initColdTimerView()
         initGif()
         initBox()
