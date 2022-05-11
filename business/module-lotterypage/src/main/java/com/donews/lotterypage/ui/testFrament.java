@@ -14,10 +14,9 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.front.model.FrontModel;
+import com.donews.lotterypage.R;
 import com.donews.lotterypage.base.BaseFragment;
-import com.module_lottery.R;
-import com.module_lottery.databinding.TestLayoutBinding;
-
+import com.donews.lotterypage.databinding.TestLayoutBinding;
 
 
 public class testFrament extends Fragment {
