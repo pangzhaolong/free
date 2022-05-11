@@ -113,62 +113,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*new PageMonitor().attach(this, new PageMonitor.PageListener() {
-            @NonNull
-            @Override
-            public AdCustomError checkShowAd() {
-                if (mIsFirstCheckAd) {
-                    mIsFirstCheckAd = false;
-                    return AdCustomError.LimitAdError;
-                }
-
-                if (AdControlManager.INSTANCE.getAdControlBean().getUseInstlFullWhenSwitch()) {
-                    return InterstitialFullAdCheck.INSTANCE.isEnable();
-                } else {
-                    return InterstitialAdCheck.INSTANCE.isEnable();
-                }
-            }
-
-            @Override
-            public int getIdleTime() {
-                return AdControlManager.INSTANCE.getAdControlBean().getNoOperationDuration();
-            }
-
-            @Override
-            public void showAd() {
-                Activity activity = requireActivity();
-                if (activity == null || activity.isFinishing()) {
-                    return;
-                }
-                if (!AdControlManager.INSTANCE.getAdControlBean().getUseInstlFullWhenSwitch()) {
-                    InterstitialAd.INSTANCE.showAd(activity, new SimpleInterstitialListener() {
-                        @Override
-                        public void onAdError(int code, String errorMsg) {
-                            super.onAdError(code, errorMsg);
-                        }
-
-                        @Override
-                        public void onAdClosed() {
-                            super.onAdClosed();
-                            PageMoniterCheck.INSTANCE.showAdSuccess("front_fragment");
-                        }
-                    });
-                } else {
-                    InterstitialFullAd.INSTANCE.showAd(activity, new SimpleInterstitialFullListener() {
-                        @Override
-                        public void onAdError(int errorCode, String errprMsg) {
-                            super.onAdError(errorCode, errprMsg);
-                        }
-
-                        @Override
-                        public void onAdClose() {
-                            super.onAdClose();
-                            PageMoniterCheck.INSTANCE.showAdSuccess("front_fragment");
-                        }
-                    });
-                }
-            }
-        });*/
     }
 
     @Override

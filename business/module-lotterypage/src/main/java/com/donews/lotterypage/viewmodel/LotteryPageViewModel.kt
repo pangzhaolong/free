@@ -1,13 +1,23 @@
 package com.donews.lotterypage.viewmodel
 
+import androidx.lifecycle.MutableLiveData
+import com.doing.spike.bean.SpikeBean
 import com.donews.base.viewmodel.BaseLiveDataViewModel
-import com.donews.front.model.FrontModel
+import com.donews.lotterypage.base.LotteryPageBean
+import com.donews.lotterypage.model.LotteryPageModel
 
-class LotteryPageViewModel : BaseLiveDataViewModel<FrontModel>() {
+class LotteryPageViewModel : BaseLiveDataViewModel<LotteryPageModel>() {
 
-    override fun createModel(): FrontModel? {
-        return null
+    var liveData = MutableLiveData<LotteryPageBean>();
+
+
+    override fun createModel(): LotteryPageModel? {
+        return LotteryPageModel()
     }
 
+
+    fun requestInternetData() {
+        mModel.getNetData(liveData)
+    }
 
 }
