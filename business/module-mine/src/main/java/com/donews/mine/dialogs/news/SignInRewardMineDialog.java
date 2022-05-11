@@ -2,14 +2,19 @@ package com.donews.mine.dialogs.news;
 
 
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
+import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.sdk.listener.rewardvideo.SimpleRewardVideoListener;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
+import com.donews.common.router.RouterFragmentPath;
 import com.donews.middle.bean.mine2.reqs.SignReq;
 import com.donews.middle.dialog.BaseBindingFragmentDialog;
 import com.donews.mine.BuildConfig;
@@ -21,6 +26,7 @@ import com.donews.yfsdk.loader.AdManager;
 /**
  * 个人中心任务 签到奖励弹窗(签到奖励、激励、任务奖励)
  */
+@Route(path = RouterFragmentPath.User.PAGER_USER_SIGN_REWARD_DIALOG)
 public class SignInRewardMineDialog extends BaseBindingFragmentDialog<Mine2SigninRewardDialogBinding> {
 
     /**
@@ -31,7 +37,10 @@ public class SignInRewardMineDialog extends BaseBindingFragmentDialog<Mine2Signi
      */
     public static SignInRewardMineDialog getInstance(int type) {
         SignInRewardMineDialog dialog = new SignInRewardMineDialog();
-        dialog.modeType = type;
+        if (dialog.getArguments() == null) {
+            dialog.setArguments(new Bundle());
+        }
+        dialog.getArguments().putInt("uiType", type);
         return dialog;
     }
 
@@ -55,7 +64,8 @@ public class SignInRewardMineDialog extends BaseBindingFragmentDialog<Mine2Signi
     };
 
     // 模式 0:激励模式，1:领取模式(带自带倒计时关闭),2:任务奖励领取模式
-    public int modeType = 0;
+    @Autowired(name = "uiType")
+    public int modeType = -1;
 
     public SignInRewardMineDialog() {
         super(R.layout.mine2_signin_reward_dialog);
@@ -67,6 +77,11 @@ public class SignInRewardMineDialog extends BaseBindingFragmentDialog<Mine2Signi
     @Override
     protected void initView() {
         //获取ViewModel对象
+        ARouter.getInstance().inject(this);
+        if (modeType == -1) {
+            //防止注入失效
+            modeType = getArguments().getInt("uiType", 0);
+        }
         mineViewModel = createViewModel(getActivity(), MineViewModel.class);
         initDatabinding();
         if (modeType == 1) {

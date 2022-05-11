@@ -1,9 +1,14 @@
 package com.donews.middle.bean.mine2.resp;
 
+import android.os.Parcelable;
+
 import com.donews.common.contract.BaseCustomViewModel;
 
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
+
+import kotlinx.parcelize.Parcelize;
 
 /**
  * @author lcl
@@ -20,7 +25,8 @@ public class SignListResp extends BaseCustomViewModel {
     /**
      * 每天的签到数据
      */
-    public static class SignListItemResp extends BaseCustomViewModel{
+    @Parcelize
+    public static class SignListItemResp extends BaseCustomViewModel {
         /**
          * 天数
          */
