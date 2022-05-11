@@ -107,6 +107,7 @@ public abstract class MvvmLazyLiveDataFragment<V extends ViewDataBinding, VM ext
         if (null == rootView) {
             mDataBinding =
                     DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
+
             mDataBinding.setLifecycleOwner(this);
             rootView = mDataBinding.getRoot();
 

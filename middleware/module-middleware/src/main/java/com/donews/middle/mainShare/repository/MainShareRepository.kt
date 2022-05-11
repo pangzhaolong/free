@@ -3,6 +3,7 @@ package com.donews.middle.mainShare.repository
 import com.donews.base.model.BaseLiveDataModel
 import com.donews.middle.BuildConfig
 import com.donews.middle.bean.mine2.resp.UserAssetsResp
+import com.donews.middle.mainShare.bean.TaskBubbleInfo
 import com.donews.network.EasyHttp
 import com.donews.network.cache.model.CacheMode
 import com.donews.network.callback.SimpleCallBack
@@ -32,6 +33,28 @@ class MainShareRepository: BaseLiveDataModel() {
                     }
 
                     override fun onSuccess(t: UserAssetsResp?) {
+                        trySend(t)
+                    }
+                })
+            awaitClose {
+                disposable.dispose()
+            }
+        }
+    }
+
+    /**
+     * 获取任务气泡列表
+     */
+    fun getTaskBubbles(): Flow<TaskBubbleInfo?> {
+        return callbackFlow {
+            val disposable = EasyHttp.get(BuildConfig.BASE_QBN_API + "activity/v1/activity-tasks")
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(object : SimpleCallBack<TaskBubbleInfo>() {
+                    override fun onError(e: ApiException?) {
+                        trySend(null)
+                    }
+
+                    override fun onSuccess(t: TaskBubbleInfo?) {
                         trySend(t)
                     }
                 })

@@ -357,6 +357,43 @@
             app:lottie_loop="true" />
         <!--endregion -->
 
+        <!--region gif-->
+        <Space
+            android:id="@+id/leftSpace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:layout_marginEnd="50dp"
+            app:layout_constraintBottom_toTopOf="@+id/iconBtn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/leftCoinGif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            app:layout_constraintTop_toTopOf="@+id/leftSpace"
+            app:layout_constraintEnd_toEndOf="@+id/leftSpace"/>
+
+        <Space
+            android:id="@+id/rightSpace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:layout_marginStart="50dp"
+            app:layout_constraintBottom_toTopOf="@+id/iconBtn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/rightCoinGif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            app:layout_constraintTop_toTopOf="@+id/rightSpace"
+            app:layout_constraintStart_toStartOf="@+id/rightSpace" />
+
         <pl.droidsonroids.gif.GifImageView
             android:id="@+id/taskGif"
             android:layout_width="200.96dp"
@@ -365,6 +402,7 @@
             app:layout_constraintBottom_toTopOf="@+id/iconBtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+        <!--endregion -->
 
         <!--region 底部相关-->
         <androidx.core.widget.NestedScrollView

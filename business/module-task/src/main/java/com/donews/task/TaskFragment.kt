@@ -16,9 +16,10 @@ import com.donews.base.utils.ToastUtil
 import com.donews.common.base.MvvmLazyLiveDataFragment
 import com.donews.common.router.RouterActivityPath
 import com.donews.common.router.RouterFragmentPath
+import com.donews.middle.mainShare.bean.BubbleBean
+import com.donews.middle.mainShare.bean.TaskBubbleInfo
 import com.donews.middle.mainShare.vm.MainShareViewModel
 import com.donews.module_shareui.ShareUIBottomPopup
-import com.donews.network.utils.NetworkUtil
 import com.donews.task.bean.TaskConfigInfo
 import com.donews.task.databinding.TaskFragmentBinding
 import com.donews.task.extend.setOnClickListener
@@ -65,62 +66,290 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
         normalStart()
     }
 
-    private fun normalStart(){
+    private fun normalStart() {
         initTaskControl()
         initShareViewModel()
         initLiveData()
-        initColdTimerView()
-        initGif()
-        initBox()
+        initMainGif()
         initBubble()
+        initColdTimerView()
     }
 
     //region 接口调用相关
-    private fun initLiveData(){
+    private fun initLiveData() {
         initUserAssets()
+        initTaskBubbles()
+        initBubbleReceive()
     }
 
-    private fun initUserAssets(){
-        mShareVideModel.userAssets.observe(viewLifecycleOwner,{
+    private fun initUserAssets() {
+        mShareVideModel.userAssets.observe(viewLifecycleOwner, {
             it?.let {
                 mViewModel?.goldCoinNum?.set(it.coin.toString())
                 mViewModel?.activityNum?.set(it.active.toString())
             }
-            //
+            loadTaskBubbles()
         })
     }
 
     //获取用户幸运值和活跃度
-    private fun loadUserAssets(){
+    private fun loadUserAssets() {
         mShareVideModel.requestUserAssets()
+    }
+
+    private lateinit var taskBubbleBean: TaskBubbleInfo
+    private var bubbleIsLeftOrRight = true//默认气泡在左边
+
+    private fun initTaskBubbles() {
+        mShareVideModel.taskBubbles.observe(viewLifecycleOwner, {
+            it?.let {
+                taskBubbleBean = it
+                handleTaskBubbles()
+            }
+        })
+    }
+
+    //获取任务气泡列表
+    private fun loadTaskBubbles() {
+        mShareVideModel.requestTaskBubbles()
+    }
+
+    //当前正在处理哪个气泡
+    private var mCurWhichBubbleType = ""
+
+    private fun initBubbleReceive() {
+        mViewModel.bubbleReceive.observe(viewLifecycleOwner, {
+            it?.let {
+                when(mCurWhichBubbleType){
+                    SIGN->{
+                        makeBubbleExplosion(mDataBinding?.iconSignBubble as View)
+                        makeBubbleExplosion(mDataBinding?.iconSignTv as View)
+                        //签到没有金币效果
+                        loadUserAssets()
+                    }
+                    COLLECT->{
+                        makeBubbleExplosion(mDataBinding?.iconCollectBubble as View)
+                        makeBubbleExplosion(mDataBinding?.iconCollectTv as View)
+                        startCoinGif()
+                        loadUserAssets()
+                    }
+                    LOTTERY->{
+                        makeBubbleExplosion(mDataBinding?.iconLuckDrawBubble as View)
+                        makeBubbleExplosion(mDataBinding?.iconLuckDrawTv as View)
+                        startCoinGif()
+                        loadUserAssets()
+                    }
+                    TURNTABLE->{
+                        makeBubbleExplosion(mDataBinding?.iconLuckPanBubble as View)
+                        makeBubbleExplosion(mDataBinding?.iconLuckPanTv as View)
+                        startCoinGif()
+                        loadUserAssets()
+                    }
+                    SHARE->{
+                        makeBubbleExplosion(mDataBinding?.iconShareBubble as View)
+                        makeBubbleExplosion(mDataBinding?.shareTv as View)
+                        startCoinGif()
+                        loadUserAssets()
+                    }
+                    VIDEO->{
+                        startCoinGif()
+                        loadUserAssets()
+                        loadTaskBubbles()
+                    }
+                    GIFT_BOX->{
+
+                    }
+                }
+            }
+        })
+    }
+
+    private fun loadBubbleReceive(mId: Int, mType: String) {
+        mViewModel?.requestBubbleReceive(mId, mType)
+    }
+    //endregion
+
+    //region 接口请求结果处理
+    companion object {
+        //任务状态 0 未完成 1 完成可领取 2 已领取
+        private const val BUBBLE_NO_FINISH = 0
+        private const val BUBBLE_NO_RECEIVE = 1
+        private const val BUBBLE_HAVE_FINISH = 2
+
+        //转盘、签到、抽奖、分享、集卡、视频、宝箱
+        private const val TURNTABLE = "turntable"
+        private const val SIGN = "sign"
+        private const val LOTTERY = "lottery"
+        private const val SHARE = "share"
+        private const val COLLECT = "collect"
+        private const val VIDEO = "video"
+        private const val GIFT_BOX = "giftbox"
+    }
+
+    private fun handleTaskBubbles() {
+        var canReceiveBubbleNum = 0//可领取气泡数
+        for (index in taskBubbleBean.list.indices) {
+            bubbleIsShow(index)
+            if (taskBubbleBean.list[index].status == BUBBLE_NO_RECEIVE) {
+                canReceiveBubbleNum++
+            }
+        }
+        if (canReceiveBubbleNum > 0) startFingerAnimation() else cancelFingerAnimation()
+    }
+
+    private var taskBubbleSignBean: BubbleBean? = null
+    private var taskBubbleLuckPanBean: BubbleBean? = null
+    private var taskBubbleCollectBean: BubbleBean? = null
+    private var taskBubbleShareBean: BubbleBean? = null
+    private var taskBubbleLuckDrawBean: BubbleBean? = null
+    private var taskBubbleVideoBean: BubbleBean? = null
+    private var taskBubbleBoxBean: BubbleBean? = null
+
+    @SuppressLint("SetTextI18n")
+    private fun bubbleIsShow(index: Int) {
+        when (taskBubbleBean.list[index].type) {
+            TURNTABLE -> {
+                taskBubbleLuckPanBean = taskBubbleBean.list[index]
+                bubbleIsLeftOrRight = false
+                when (taskBubbleLuckPanBean?.status) {
+                    BUBBLE_NO_FINISH -> {
+                        mDataBinding?.iconLuckPanBubble?.alpha = 0.45f
+                        mDataBinding?.iconLuckPanTv?.alpha = 0.45f
+                    }
+                    BUBBLE_NO_RECEIVE -> {
+                        mDataBinding?.iconLuckPanBubble?.alpha = 1f
+                        mDataBinding?.iconLuckPanTv?.alpha = 1f
+                    }
+                    BUBBLE_HAVE_FINISH -> {
+                        mDataBinding?.iconLuckPanBubble?.alpha = 0f
+                        mDataBinding?.iconLuckPanTv?.alpha = 0f
+                    }
+                }
+            }
+            SIGN -> {
+                taskBubbleSignBean = taskBubbleBean.list[index]
+                bubbleIsLeftOrRight = true
+                when (taskBubbleSignBean?.status) {
+                    BUBBLE_NO_FINISH -> {
+                        mDataBinding?.iconSignBubble?.alpha = 0.45f
+                        mDataBinding?.iconSignTv?.alpha = 0.45f
+                    }
+                    BUBBLE_NO_RECEIVE -> {
+                        mDataBinding?.iconSignBubble?.alpha = 1f
+                        mDataBinding?.iconSignTv?.alpha = 1f
+                    }
+                    BUBBLE_HAVE_FINISH -> {
+                        mDataBinding?.iconSignBubble?.alpha = 0f
+                        mDataBinding?.iconSignTv?.alpha = 0f
+                    }
+                }
+            }
+            LOTTERY -> {
+                taskBubbleLuckDrawBean = taskBubbleBean.list[index]
+                bubbleIsLeftOrRight = true
+                when (taskBubbleLuckDrawBean?.status) {
+                    BUBBLE_NO_FINISH -> {
+                        mDataBinding?.iconLuckDrawBubble?.alpha = 0.45f
+                        mDataBinding?.iconLuckDrawTv?.alpha = 0.45f
+                    }
+                    BUBBLE_NO_RECEIVE -> {
+                        mDataBinding?.iconLuckDrawBubble?.alpha = 1f
+                        mDataBinding?.iconLuckDrawTv?.alpha = 1f
+                    }
+                    BUBBLE_HAVE_FINISH -> {
+                        mDataBinding?.iconLuckDrawBubble?.alpha = 0f
+                        mDataBinding?.iconLuckDrawTv?.alpha = 0f
+                    }
+                }
+            }
+            SHARE -> {
+                taskBubbleShareBean = taskBubbleBean.list[index]
+                bubbleIsLeftOrRight = false
+                when (taskBubbleShareBean?.status) {
+                    BUBBLE_NO_FINISH -> {
+                        mDataBinding?.iconShareBubble?.alpha = 0.45f
+                        mDataBinding?.shareTv?.alpha = 0.45f
+                    }
+                    BUBBLE_NO_RECEIVE -> {
+                        mDataBinding?.iconShareBubble?.alpha = 1f
+                        mDataBinding?.shareTv?.alpha = 1f
+                    }
+                    BUBBLE_HAVE_FINISH -> {
+                        mDataBinding?.iconShareBubble?.alpha = 0f
+                        mDataBinding?.shareTv?.alpha = 0f
+                    }
+                }
+            }
+            COLLECT -> {
+                taskBubbleCollectBean = taskBubbleBean.list[index]
+                bubbleIsLeftOrRight = true
+                when (taskBubbleCollectBean?.status) {
+                    BUBBLE_NO_FINISH -> {
+                        mDataBinding?.iconCollectBubble?.alpha = 0.45f
+                        mDataBinding?.iconCollectTv?.alpha = 0.45f
+                    }
+                    BUBBLE_NO_RECEIVE -> {
+                        mDataBinding?.iconCollectBubble?.alpha = 1f
+                        mDataBinding?.iconCollectTv?.alpha = 1f
+                    }
+                    BUBBLE_HAVE_FINISH -> {
+                        mDataBinding?.iconCollectBubble?.alpha = 0f
+                        mDataBinding?.iconCollectTv?.alpha = 0f
+                    }
+                }
+            }
+            VIDEO -> {
+                taskBubbleVideoBean = taskBubbleBean.list[index]
+                bubbleIsLeftOrRight = true
+                when (taskBubbleVideoBean?.status) {
+                    BUBBLE_NO_FINISH -> {
+                        //冷却中
+                        mDataBinding?.coldDownTimer?.alpha = 1f
+                        mDataBinding?.countDownTimeTv?.alpha = 1f
+                        mDataBinding?.seeAdTv?.alpha = 0.45f
+                        mDataBinding?.coldDownTimer?.apply {
+                            setCountTime(taskBubbleVideoBean?.cd ?: 0)
+                            startCountdown()
+                        }
+                    }
+                    BUBBLE_NO_RECEIVE -> {
+                        mDataBinding?.coldDownTimer?.alpha = 1f
+                        mDataBinding?.countDownTimeTv?.alpha = 1f
+                        mDataBinding?.seeAdTv?.text = "可领取(${taskBubbleVideoBean?.done ?: 0}/3)"
+                        mDataBinding?.seeAdTv?.alpha = 1f
+                        mDataBinding?.coldDownTimer?.apply {
+                            setCountTime(mMaxCountTime)
+                        }
+                    }
+                    BUBBLE_HAVE_FINISH -> {
+                        mDataBinding?.coldDownTimer?.alpha = 0.45f
+                        mDataBinding?.countDownTimeTv?.alpha = 0.45f
+                        mDataBinding?.seeAdTv?.alpha = 0.45f
+                        mDataBinding?.seeAdTv?.text = "明日再来"
+                    }
+                }
+            }
+            GIFT_BOX -> {
+                taskBubbleBoxBean = taskBubbleBean.list[index]
+                boxMaxOpenNum = taskBubbleBoxBean?.total ?: 5
+                initBox()
+            }
+        }
     }
     //endregion
 
     //region 每日看广告气泡相关
     //今日看广告最大数, 中台配
     private var todaySeeAdMaxNum = 3
-    private var mTodaySeeAdNum = 0
     //冷却倒计时最大值10s中台配
-    private var mMaxCountTime = 10
+    private var mMaxCountTime = 120
 
     @SuppressLint("SetTextI18n")
     private fun initColdTimerView() {
-        mTodaySeeAdNum = SPUtils.getInformain("todaySeeAdNum", 0)
-        mDataBinding?.seeAdTv?.text = "可领取($mTodaySeeAdNum/3)"
-        if (mTodaySeeAdNum == todaySeeAdMaxNum){
-            mDataBinding?.coldDownTimer?.alpha = 0.45f
-            mDataBinding?.seeAdTv?.text = "明日再来"
-        } else {
-            mDataBinding?.coldDownTimer?.alpha = 1f
-            mDataBinding?.seeAdTv?.text = "可领取($mTodaySeeAdNum/3)"
-        }
         mDataBinding?.coldDownTimer?.apply {
             setCountTime(mMaxCountTime)
             setOnCountDownTimeListener(object : ColdDownTimerView.CountDownTimeListener {
                 override fun getCurCountDownTime(time: Int) {
-                    mTodaySeeAdNum = SPUtils.getInformain("todaySeeAdNum", 0)
-                    mDataBinding?.coldDownTimer?.alpha = 1f
-                    mDataBinding?.seeAdTv?.text = "可领取(" + (mTodaySeeAdNum + 1) + "/3)"
                     if (time > 0) {
                         mDataBinding?.countDownTimeTv?.text =
                             TimeUtils.stringForTimeNoHour(time * 1000.toLong())
@@ -132,7 +361,6 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
 
                 override fun countDownFinish() {
                     mDataBinding?.countDownTimeTv?.visibility = View.GONE
-                    SPUtils.setInformain("todaySeeAdNum", mTodaySeeAdNum + 1)
                 }
 
             })
@@ -147,11 +375,11 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
             mDataBinding?.activityTxBtn,
             mDataBinding?.iconCanGet, mDataBinding?.iconBox,
             mDataBinding?.coldDownTimer,
-            mDataBinding?.iconSignBubble,mDataBinding?.iconSignTv,//签到气泡
-            mDataBinding?.iconLuckPanBubble,mDataBinding?.iconLuckPanTv,//转盘气泡
-            mDataBinding?.iconCollectBubble,mDataBinding?.iconCollectTv,//集卡气泡
-            mDataBinding?.iconShareBubble,mDataBinding?.shareTv,//分享气泡
-            mDataBinding?.iconLuckDrawBubble,mDataBinding?.iconLuckDrawTv,//抽奖气泡
+            mDataBinding?.iconSignBubble, mDataBinding?.iconSignTv,//签到气泡
+            mDataBinding?.iconLuckPanBubble, mDataBinding?.iconLuckPanTv,//转盘气泡
+            mDataBinding?.iconCollectBubble, mDataBinding?.iconCollectTv,//集卡气泡
+            mDataBinding?.iconShareBubble, mDataBinding?.shareTv,//分享气泡
+            mDataBinding?.iconLuckDrawBubble, mDataBinding?.iconLuckDrawTv,//抽奖气泡
             mDataBinding?.iconBtn
         ) {
             when (this) {
@@ -170,14 +398,17 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                 mDataBinding?.iconCanGet, mDataBinding?.iconBox -> {
                     if (isCanOpenBox) {
                         //ad
-                        Toast.makeText(mContext,"一波广告走起",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(mContext, "一波广告走起", Toast.LENGTH_SHORT).show()
                         val mTodayOpenBoxNum = SPUtils.getInformain("todayOpenBoxNum", 0)
                         SPUtils.setInformain("todayOpenBoxNum", mTodayOpenBoxNum + 1)
                         SPUtils.setInformain("todayOpenBoxOpenTime", System.currentTimeMillis())
                         mViewModel?.isShowBoxTimeView?.set(true)
                         mViewModel?.isShowIconCanGet?.set(false)
                         if (DayBoxUtil.instance.isShowDayTwentyOpenBox(boxMaxOpenNum)) {
-                            SPUtils.setInformain("boxEndTime", System.currentTimeMillis() + boxCurTime * 1000)
+                            SPUtils.setInformain(
+                                "boxEndTime",
+                                System.currentTimeMillis() + boxCurTime * 1000
+                            )
                             boxCurTime = boxMaxTime
                             mHandler.postDelayed(boxTimer, 1000L)
                         } else {
@@ -189,83 +420,124 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                         ToastUtil.show(mContext, "倒计时结束才可领取")
                     }
                 }
-                mDataBinding?.coldDownTimer->{
-                    if (DayAdUtil.instance.isShowDayThreeSeeAd(todaySeeAdMaxNum)) {
-                        if (mDataBinding?.coldDownTimer?.getIsCountDownOver()!!){
+                mDataBinding?.coldDownTimer -> {
+                    when(taskBubbleVideoBean?.status){
+                        BUBBLE_HAVE_FINISH->{
+                            mDataBinding?.coldDownTimer?.alpha = 0.45f
+                            mDataBinding?.seeAdTv?.text = "明日再来"
+                        }
+                        BUBBLE_NO_RECEIVE->{
                             //ad
-                            Toast.makeText(mContext,"一波广告走起",Toast.LENGTH_SHORT).show()
-                            SPUtils.setInformain("todaySeeAdTime", System.currentTimeMillis())
-                            mTodaySeeAdNum = SPUtils.getInformain("todaySeeAdNum", 0)
-                            when{
-                                mTodaySeeAdNum < todaySeeAdMaxNum - 1->{
-                                    mDataBinding?.coldDownTimer?.startCountdown()
-                                }
-                                mTodaySeeAdNum == todaySeeAdMaxNum - 1 ->{
-                                    mDataBinding?.coldDownTimer?.alpha = 0.45f
-                                    mDataBinding?.seeAdTv?.text = "明日再来"
-                                    SPUtils.setInformain("todaySeeAdNum", mTodaySeeAdNum + 1)
-                                }
-                                else->{
-                                    mDataBinding?.coldDownTimer?.alpha = 0.45f
-                                    mDataBinding?.seeAdTv?.text = "明日再来"
-                                }
-                            }
+                            Toast.makeText(mContext, "一波广告走起", Toast.LENGTH_SHORT).show()
+                            mCurWhichBubbleType = VIDEO
+                            loadBubbleReceive(
+                                taskBubbleVideoBean?.id ?: 5,
+                                taskBubbleVideoBean?.type ?: VIDEO
+                            )
+                        }
+                        BUBBLE_NO_FINISH->{
+                            Toast.makeText(mContext, "冷却中", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
-                mDataBinding?.iconSignBubble,mDataBinding?.iconSignTv->{
-                    if (!isExplosionBubble){
-                        //处理签到逻辑
-                        isExplosionBubble = true
-                    } else {
-                        makeBubbleExplosion(mDataBinding?.iconSignBubble as View)
-                        makeBubbleExplosion(mDataBinding?.iconSignTv as View)
+                mDataBinding?.iconSignBubble, mDataBinding?.iconSignTv -> {
+                    //处理签到逻辑
+                    when (taskBubbleSignBean?.status) {
+                        BUBBLE_NO_FINISH -> {
+                            if (activity != null && activity?.supportFragmentManager != null) {
+                                RouterFragmentPath.User.getSingDialog()
+                                    .show(activity?.supportFragmentManager!!, "SignInMineDialog")
+                            }
+                        }
+                        BUBBLE_NO_RECEIVE -> {
+                            mCurWhichBubbleType = SIGN
+                            loadBubbleReceive(
+                                taskBubbleSignBean?.id ?: 1,
+                                taskBubbleSignBean?.type ?: SIGN
+                            )
+                        }
                     }
                 }
-                mDataBinding?.iconLuckPanBubble,mDataBinding?.iconLuckPanTv->{
+                mDataBinding?.iconLuckPanBubble, mDataBinding?.iconLuckPanTv -> {
                     //处理转盘逻辑
-                    if (!isExplosionBubble){
-                        ARouter.getInstance()
-                            .build(RouterActivityPath.Turntable.TURNTABLE_ACTIVITY)
-                            .navigation()
-                    } else {
-                        makeBubbleExplosion(mDataBinding?.iconLuckPanBubble as View)
-                        makeBubbleExplosion(mDataBinding?.iconLuckPanTv as View)
+                    when (taskBubbleLuckPanBean?.status) {
+                        BUBBLE_NO_FINISH -> {
+                            ARouter.getInstance()
+                                .build(RouterActivityPath.Turntable.TURNTABLE_ACTIVITY)
+                                .navigation()
+                        }
+                        BUBBLE_NO_RECEIVE -> {
+                            mCurWhichBubbleType = COLLECT
+                            loadBubbleReceive(
+                                taskBubbleLuckPanBean?.id ?: 0,
+                                taskBubbleLuckPanBean?.type ?: TURNTABLE
+                            )
+                        }
                     }
                 }
-                mDataBinding?.iconCollectBubble,mDataBinding?.iconCollectTv->{
+                mDataBinding?.iconCollectBubble, mDataBinding?.iconCollectTv -> {
                     //处理集卡逻辑
-                    makeBubbleExplosion(mDataBinding?.iconCollectBubble as View)
-                    makeBubbleExplosion(mDataBinding?.iconCollectTv as View)
+                    when (taskBubbleCollectBean?.status) {
+                        BUBBLE_NO_FINISH -> {
+                            //跳集卡
+                        }
+                        BUBBLE_NO_RECEIVE -> {
+                            mCurWhichBubbleType = COLLECT
+                            loadBubbleReceive(
+                                taskBubbleCollectBean?.id ?: 4,
+                                taskBubbleCollectBean?.type ?: COLLECT
+                            )
+                        }
+                    }
                 }
-                mDataBinding?.iconShareBubble,mDataBinding?.shareTv->{
+                mDataBinding?.iconShareBubble, mDataBinding?.shareTv -> {
                     //处理分享逻辑
-                    makeBubbleExplosion(mDataBinding?.iconShareBubble as View)
-                    makeBubbleExplosion(mDataBinding?.shareTv as View)
-                }
-                mDataBinding?.iconShareBubble,mDataBinding?.shareTv->{
-                    //处理每日看广告逻辑
-                    if (context != null){
-                        XPopup.Builder(activity)
-                            .isDestroyOnDismiss(true) //对于只使用一次的弹窗，推荐设置这个
-                            .popupAnimation(PopupAnimation.TranslateFromBottom)
-                            .navigationBarColor(Color.BLACK)
-                            .asCustom(ShareUIBottomPopup(requireContext()))
-                            .show()
+                    when (taskBubbleShareBean?.status) {
+                        BUBBLE_NO_FINISH -> {
+                            if (context != null) {
+                                XPopup.Builder(activity)
+                                    .isDestroyOnDismiss(true) //对于只使用一次的弹窗，推荐设置这个
+                                    .popupAnimation(PopupAnimation.TranslateFromBottom)
+                                    .navigationBarColor(Color.BLACK)
+                                    .asCustom(ShareUIBottomPopup(requireContext()))
+                                    .show()
+                            }
+                        }
+                        BUBBLE_NO_RECEIVE -> {
+                            mCurWhichBubbleType = COLLECT
+                            loadBubbleReceive(
+                                taskBubbleShareBean?.id ?: 3,
+                                taskBubbleShareBean?.type ?: SHARE
+                            )
+                        }
                     }
                 }
-                mDataBinding?.iconLuckDrawBubble,mDataBinding?.iconLuckDrawTv->{
+                mDataBinding?.iconLuckDrawBubble, mDataBinding?.iconLuckDrawTv -> {
                     //处理抽奖逻辑
-                    makeBubbleExplosion(mDataBinding?.iconLuckDrawBubble as View)
-                    makeBubbleExplosion(mDataBinding?.iconLuckDrawTv as View)
-                }
-                mDataBinding?.iconBtn->{
-                    if (!isExplosionBubble){
-                        Toast.makeText(mContext,"当前没有可点击气泡",Toast.LENGTH_SHORT).show()
-                    } else {
-                        makeBubbleExplosion(mDataBinding?.iconSignBubble as View)
-                        makeBubbleExplosion(mDataBinding?.iconSignTv as View)
+                    when (taskBubbleLuckDrawBean?.status) {
+                        BUBBLE_NO_FINISH -> {
+                            //跳抽奖
+                            ARouter.getInstance()
+                                .build(RouterFragmentPath.HomeLottery.PAGER_LOTTERY)
+                                .navigation()
+                        }
+                        BUBBLE_NO_RECEIVE -> {
+                            mCurWhichBubbleType = SIGN
+                            loadBubbleReceive(
+                                taskBubbleLuckDrawBean?.id ?: 2,
+                                taskBubbleLuckDrawBean?.type ?: LOTTERY
+                            )
+                        }
                     }
+                }
+                mDataBinding?.iconBtn -> {
+//                    taskBubbleBean.list
+//                    if (!isExplosionBubble) {
+//                        Toast.makeText(mContext, "当前没有可点击气泡", Toast.LENGTH_SHORT).show()
+//                    } else {
+//                        makeBubbleExplosion(mDataBinding?.iconSignBubble as View)
+//                        makeBubbleExplosion(mDataBinding?.iconSignTv as View)
+//                    }
                 }
             }
         }
@@ -285,7 +557,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
 
     private val boxTimer = object : Runnable {
         override fun run() {
-            if (boxCurTime > 0){
+            if (boxCurTime > 0) {
                 boxCurTime--
                 mDataBinding?.boxTimeTv?.text = TimeUtils.stringForTimeNoHour(boxCurTime * 1000L)
                 //当前宝箱时间倒计时结束
@@ -303,34 +575,27 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
     }
 
     private fun initBox() {
-        val boxEndTime = SPUtils.getLongInformain("boxEndTime", 0L)
-        if (boxEndTime == 0L){
-            isCanOpenBox = true
-            startBoxAnimation()
-            mViewModel?.isShowBoxTimeView?.set(false)
-            mViewModel?.isShowIconCanGet?.set(true)
+        if (taskBubbleBoxBean?.cd ?: 0 > 0){
+            //倒计时未结束
+            isCanOpenBox = false
+            cancelBoxAnimation()
+            mViewModel?.isShowBoxTimeView?.set(true)
+            mViewModel?.isShowIconCanGet?.set(false)
+            boxCurTime = taskBubbleBoxBean?.cd!!
+            mHandler.postDelayed(boxTimer, 1000L)
         } else {
-            if (boxEndTime > System.currentTimeMillis()) {
-                //倒计时未结束
-                isCanOpenBox = false
-                cancelBoxAnimation()
-                mViewModel?.isShowBoxTimeView?.set(true)
-                mViewModel?.isShowIconCanGet?.set(false)
-                boxCurTime = ((boxEndTime - System.currentTimeMillis()) / 1000).toInt()
-                mHandler.postDelayed(boxTimer, 1000L)
-            } else {
-                DayBoxUtil.instance.isShowDayTwentyOpenBox(boxMaxOpenNum).let {
-                    if (it) {
-                        isCanOpenBox = true
-                        startBoxAnimation()
-                        mViewModel?.isShowBoxTimeView?.set(false)
-                        mViewModel?.isShowIconCanGet?.set(true)
-                    } else {
-                        cancelBoxAnimation()
-                        mViewModel?.isShowBoxTimeView?.set(true)
-                        mViewModel?.isShowIconCanGet?.set(false)
-                        mDataBinding?.boxTimeTv?.text = "明日再来"
-                    }
+            when(taskBubbleBoxBean?.status){
+                BUBBLE_NO_RECEIVE -> {
+                    isCanOpenBox = true
+                    startBoxAnimation()
+                    mViewModel?.isShowBoxTimeView?.set(false)
+                    mViewModel?.isShowIconCanGet?.set(true)
+                }
+                BUBBLE_HAVE_FINISH->{
+                    cancelBoxAnimation()
+                    mViewModel?.isShowBoxTimeView?.set(true)
+                    mViewModel?.isShowIconCanGet?.set(false)
+                    mDataBinding?.boxTimeTv?.text = "明日再来"
                 }
             }
         }
@@ -339,8 +604,10 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
 
     //region gif相关
     private var gifDrawable: GifDrawable? = null
+    private var gifLeftDrawable: GifDrawable? = null
+    private var gifRightDrawable: GifDrawable? = null
 
-    private fun initGif() {
+    private fun initMainGif() {
         try {
             gifDrawable = GifDrawable(mContext!!.assets, "task_gif.gif")
             mDataBinding?.taskGif?.setImageDrawable(gifDrawable)
@@ -348,50 +615,72 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
             e.printStackTrace()
         }
     }
-    //endregion
 
-    //region 气泡相关
-    private var isExplosionBubble = false
-    private fun initBubble(){
-        if (!isExplosionBubble){
-            mDataBinding?.iconSignBubble?.alpha = 0.45f
-            mDataBinding?.iconLuckPanBubble?.alpha = 0.45f
-            mDataBinding?.iconCollectBubble?.alpha = 0.45f
-            mDataBinding?.iconShareBubble?.alpha = 0.45f
-            mDataBinding?.iconLuckDrawBubble?.alpha = 0.45f
-        } else {
-            mDataBinding?.iconSignBubble?.alpha = 1f
-            mDataBinding?.iconLuckPanBubble?.alpha = 1f
-            mDataBinding?.iconCollectBubble?.alpha = 1f
-            mDataBinding?.iconShareBubble?.alpha = 1f
-            mDataBinding?.iconLuckDrawBubble?.alpha = 1f
-            startFingerAnimation()
+    private fun startCoinGif(){
+        if (bubbleIsLeftOrRight){
+            leftGifStart()
+        } else rightGifStart()
+    }
+
+    private fun leftGifStart(){
+        try {
+            gifLeftDrawable = GifDrawable(mContext!!.assets, "task_coin_gif.gif")
+            mDataBinding?.leftCoinGif?.setImageDrawable(gifDrawable)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
-    private fun makeBubbleExplosion(bubbleView: View){
+    private fun rightGifStart(){
+        try {
+            gifRightDrawable = GifDrawable(mContext!!.assets, "task_coin_gif.gif")
+            mDataBinding?.rightCoinGif?.setImageDrawable(gifDrawable)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+    //endregion
+
+    //region 气泡相关
+    private fun initBubble() {
+        mDataBinding?.iconSignBubble?.alpha = 0f
+        mDataBinding?.iconSignTv?.alpha = 0f
+        mDataBinding?.iconLuckPanBubble?.alpha = 0f
+        mDataBinding?.iconLuckPanTv?.alpha = 0f
+        mDataBinding?.iconCollectBubble?.alpha = 0f
+        mDataBinding?.iconCollectTv?.alpha = 0f
+        mDataBinding?.iconShareBubble?.alpha = 0f
+        mDataBinding?.shareTv?.alpha = 0f
+        mDataBinding?.iconLuckDrawBubble?.alpha = 0f
+        mDataBinding?.iconLuckDrawTv?.alpha = 0f
+        mDataBinding?.coldDownTimer?.alpha = 0f
+        mDataBinding?.countDownTimeTv?.alpha = 0f
+        mDataBinding?.seeAdTv?.alpha = 0f
+    }
+
+    private fun makeBubbleExplosion(bubbleView: View) {
         ExplosionField(mContext, ExplodeParticleFactory()).apply {
             explode(bubbleView)
         }
     }
     //endregion
 
-    //region 获取中台配置数据
+    //region 获取中台配置数据(部分收据后台气泡任务列表接口给)
     private var taskControlConfig: TaskConfigInfo? = null
 
-    private fun initTaskControl(){
+    private fun initTaskControl() {
         taskControlConfig = TaskControlUtil.getTaskControlConfig()
-        todaySeeAdMaxNum = taskControlConfig?.ad?.todaySeeAdMaxNum?:3
-        mMaxCountTime = taskControlConfig?.ad?.mMaxCountTime?:10
-        boxMaxTime = taskControlConfig?.box?.boxMaxTime?:120
-        boxMaxOpenNum = taskControlConfig?.box?.boxMaxTime?:5
+        todaySeeAdMaxNum = taskControlConfig?.ad?.todaySeeAdMaxNum ?: 3
+        mMaxCountTime = taskControlConfig?.ad?.mMaxCountTime ?: 10
+        boxMaxTime = taskControlConfig?.box?.boxMaxTime ?: 120
+        boxMaxOpenNum = taskControlConfig?.box?.boxMaxOpenNum ?: 5
     }
     //endregion
 
     //region 共享viewModel
     private lateinit var mShareVideModel: MainShareViewModel
 
-    private fun initShareViewModel(){
+    private fun initShareViewModel() {
         mShareVideModel = ViewModelProvider(requireActivity()).get(MainShareViewModel::class.java)
     }
     //endregion
@@ -416,11 +705,11 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
         }
     }
 
-    private fun startFingerAnimation(){
+    private fun startFingerAnimation() {
         AnimationUtil.startTaskFingerAnimation(mDataBinding?.fingerAnimation)
     }
 
-    private fun cancelFingerAnimation(){
+    private fun cancelFingerAnimation() {
         AnimationUtil.cancelFingerAnimation(mDataBinding?.fingerAnimation)
     }
     //endregion
@@ -440,6 +729,14 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
         if (gifDrawable != null && !gifDrawable!!.isRecycled) {
             gifDrawable?.recycle()
             gifDrawable = null
+        }
+        if (gifLeftDrawable != null && !gifLeftDrawable!!.isRecycled) {
+            gifLeftDrawable?.recycle()
+            gifLeftDrawable = null
+        }
+        if (gifRightDrawable != null && !gifRightDrawable!!.isRecycled) {
+            gifRightDrawable?.recycle()
+            gifRightDrawable = null
         }
     }
 
