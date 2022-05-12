@@ -201,11 +201,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             ifOpenAutoLotteryAndCount();
         }
         mStart_lottery = false;
-        ARouter.getInstance()
-                .build(RouterActivityPath.Turntable.TURNTABLE_ACTIVITY)
-                .withBoolean("start_lottery", ABSwitch.Ins().isOpenAutoLottery())
-                .withBoolean("privilege", true)
-                .navigation();
     }
 
 
@@ -579,9 +574,9 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             mSharedPreferences.edit().putBoolean(FIRST_SHOW, false).apply();
             mDataBinding.maskingLayout.setVisibility(View.VISIBLE);
             //圆 新手引导遮罩层
-            initLottie(mDataBinding.maskingButton, "lottery_round.json");
+            initLottie(mDataBinding.maskingButton, LOTTERY_FINGER);
             //小手 新手引导遮罩层
-            initLottie(mDataBinding.maskingHand, "lottery_finger.json");
+            initLottie(mDataBinding.maskingHand, LOTTERY_FINGER);
         } else {
             mDataBinding.maskingLayout.setVisibility(View.GONE);
             mSharedPreferences.edit().putBoolean(FIRST_SHOW, false).apply();
@@ -592,7 +587,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         if (play) {
             //设置动画
             //小手
-            initLottie(mDataBinding.jsonAnimation, "lottery_finger.json");
+            initLottie(mDataBinding.jsonAnimation, LOTTERY_FINGER);
             mDataBinding.jsonAnimation.setVisibility(View.VISIBLE);
             //圆
             if (CriticalModelTool.ifCriticalStrike()) {

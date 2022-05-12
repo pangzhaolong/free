@@ -45,9 +45,9 @@ class LotteryPageFragment :
         mContentAdapter?.setOnItemClickListener(object : ContentAdapter.OnItemClickListener {
             override fun onItemClick(goodsListDTO: LotteryPageBean.ListDTO?) {
                 if (goodsListDTO != null) {
-                    ARouter.getInstance().build(RouterActivityPath.GoodsDetail.GOODS_DETAIL)
-                        .withString("params_id", goodsListDTO.goodsId)
-                        .withString("params_goods_id", goodsListDTO.goodsId)
+                    ARouter.getInstance()
+                        .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
+                        .withString("goods_id", goodsListDTO.goodsId)
                         .navigation()
                 }
             }
