@@ -128,32 +128,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@mipmap/detail_bg"
+            android:layout_marginStart="13dp"
+            android:layout_marginEnd="13dp"
+            android:background="#F5F6FA"
             android:gravity="center"
             android:orientation="horizontal"
-            android:paddingStart="15dp"
+            android:paddingStart="26dp"
             android:paddingTop="9dp"
+            android:paddingEnd="29dp"
             android:paddingBottom="9dp">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="6dp"
-                    android:layout_height="8dp"
-                    android:src="@mipmap/triangle_circuit" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="1dp"
-                    android:layout_marginEnd="1dp"
-                    android:text=""
-                    android:textSize="11dp" />
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -355,7 +338,7 @@
 
                     <ImageView
                         android:layout_width="19dp"
-                        android:layout_height="2dp"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:src="@mipmap/right_arrow" />
 
@@ -365,7 +348,7 @@
                         android:layout_marginStart="13dp"
                         android:layout_marginEnd="13dp"
                         android:text="我的抽奖码"
-                        android:textColor="#E9423E"
+                        android:textColor="#2D323A"
                         android:textSize="16dp"
                         android:textStyle="bold" />
 
@@ -535,7 +518,7 @@
                 android:layout_height="7dp"
                 android:layout_marginEnd="13dp"
                 android:scaleType="fitXY"
-                android:src="@mipmap/little_bit_lift_icon" />
+                android:src="@mipmap/right_arrow" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -549,7 +532,7 @@
                 android:layout_height="7dp"
                 android:layout_marginStart="13dp"
                 android:scaleType="fitXY"
-                android:src="@mipmap/little_bit_right_icon" />
+                android:src="@mipmap/lift_arrow" />
         </LinearLayout>
 
     </LinearLayout>
