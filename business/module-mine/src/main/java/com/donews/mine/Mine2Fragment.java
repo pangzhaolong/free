@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,6 +38,7 @@ import com.donews.middle.adutils.InterstitialAd;
 import com.donews.middle.adutils.InterstitialFullAd;
 import com.donews.middle.adutils.adcontrol.AdControlManager;
 import com.donews.middle.bean.mine2.resp.SignResp;
+import com.donews.middle.mainShare.vm.MainShareViewModel;
 import com.donews.middle.views.TaskView;
 import com.donews.mine.adapters.Mine2FragmentTaskAdapter;
 import com.donews.mine.adapters.MineFragmentAdapter;
@@ -80,6 +82,8 @@ public class Mine2Fragment extends MvvmLazyLiveDataFragment<MineFragmentNewBindi
 
     private Mine2FragmentTaskAdapter taskAdapter = null;
     private long fastUpdateTime = 0;
+
+    private MainShareViewModel mShareVideModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -154,6 +158,7 @@ public class Mine2Fragment extends MvvmLazyLiveDataFragment<MineFragmentNewBindi
     protected void onFragmentFirstVisible() {
         super.onFragmentFirstVisible();
 
+        mShareVideModel = new ViewModelProvider(requireActivity()).get(MainShareViewModel.class);
         SignResp it = new SignResp();
         it.coin = 1500;
         mViewModel.mineSignResult.postValue(it);
@@ -208,6 +213,7 @@ public class Mine2Fragment extends MvvmLazyLiveDataFragment<MineFragmentNewBindi
         mViewModel.mine2RefeshDataLive.observe(this, (result) -> {
             if (result) {
                 loadData(); //刷新数据
+                syncActivitiesModel(); //同步刷新
             }
         });
         mViewModel.mineDailyTasks.observe(this, (result) -> {
@@ -218,6 +224,12 @@ public class Mine2Fragment extends MvvmLazyLiveDataFragment<MineFragmentNewBindi
             }
         });
         loadData();
+
+        // 订阅外部模块金币等数据变化
+        mShareVideModel.userAssets.observe(this, (item) -> {
+            //活动模块同步
+            loadData();
+        });
     }
 
     private void loadData() {
@@ -225,6 +237,11 @@ public class Mine2Fragment extends MvvmLazyLiveDataFragment<MineFragmentNewBindi
         mViewModel.getDailyTasks();
         mViewModel.getsignList();
         mViewModel.getUserAssets();
+    }
+
+    private void syncActivitiesModel() {
+        //同步更新活动模块数据
+        mShareVideModel.requestTaskBubbles();
     }
 
     //更新UI数据

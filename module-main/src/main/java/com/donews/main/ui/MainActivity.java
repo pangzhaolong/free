@@ -856,11 +856,14 @@ public class MainActivity
         } else {
             //首页页面
             fragments.add((Fragment) ARouter.getInstance()
-                    .build(RouterFragmentPath.Front.PAGER_FRONT)
+                    .build(RouterFragmentPath.Home.PAGER_EXCHANGE_FRAGMENT)
                     .navigation());
+//            fragments.add((Fragment) ARouter.getInstance()
+//                    .build(RouterFragmentPath.Front.PAGER_FRONT)
+//                    .navigation());
             //抽奖页面
             fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.HomeLottery.PAGER_LOTTERY).navigation());
-             //活动页面
+            //活动页面
             fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Task.PAGER_TASK).navigation());
             //个人中心页面
             fragments.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.User.PAGER_USER_NEW).navigation());

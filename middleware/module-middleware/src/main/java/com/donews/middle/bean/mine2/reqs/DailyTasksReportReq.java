@@ -8,9 +8,9 @@ package com.donews.middle.bean.mine2.reqs;
  */
 public class DailyTasksReportReq extends DailyTasksReceiveReq {
     /**
-     * 当前的时间戳
+     * 当前的时间戳(单位秒)
      */
-    public String timestamp = System.currentTimeMillis() + "";
+    public String timestamp = System.currentTimeMillis() / 1000 + "";
 
 }
 
