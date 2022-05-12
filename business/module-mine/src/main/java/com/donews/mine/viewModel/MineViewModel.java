@@ -121,6 +121,7 @@ public class MineViewModel extends BaseLiveDataViewModel<MineModel> {
                             mineDailyTaskReportResult.postValue(null);
                             return;
                         }
+                        mine2RefeshDataLive.postValue(true);
                         mineDailyTaskReportResult.postValue(resp);
                         if (isUpdateLoclCoin) {
                             if (mine2JBCount.getValue() != null) {
@@ -156,6 +157,7 @@ public class MineViewModel extends BaseLiveDataViewModel<MineModel> {
                             mineDailyTaskReceiveResult.postValue(null);
                             return;
                         }
+                        mine2RefeshDataLive.postValue(true);
                         mineDailyTaskReceiveResult.postValue(resp);
                         if (isUpdateLoclCoin) {
                             if (mine2JBCount.getValue() != null) {
@@ -192,6 +194,7 @@ public class MineViewModel extends BaseLiveDataViewModel<MineModel> {
                                 mineSignResult.postValue(null);
                             }
                         } else {
+                            mine2RefeshDataLive.postValue(true);
                             if (req.double_) {
                                 mineSignDounleResult.postValue(resp);
                             } else {

@@ -41,6 +41,11 @@ public class RouterFragmentPath {
          */
         public static final String PAGER_HOME = HOME + "/Home";
 
+        /**
+         * 兑换页
+         */
+        public static final String PAGER_EXCHANGE_FRAGMENT = HOME + "/ExchangeFragment";
+
     }
 
     /**

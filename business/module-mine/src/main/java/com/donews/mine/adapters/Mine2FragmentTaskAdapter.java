@@ -23,10 +23,9 @@ import com.donews.middle.cache.GoodsCache;
 import com.donews.middle.request.RequestUtil;
 import com.donews.mine.R;
 import com.donews.mine.databinding.Mine2FragmentTaskItemBinding;
-import com.donews.mine.dialogs.news.SignInMineDialog;
 import com.donews.mine.dialogs.news.SignInRewardMineDialog;
 import com.donews.mine.viewModel.MineViewModel;
-import com.donews.mine.views.refresh.adapters.BaseBindingAdapter;
+import com.donews.middle.base.BaseBindingAdapter;
 import com.donews.yfsdk.loader.AdManager;
 
 /**
@@ -71,7 +70,6 @@ public class Mine2FragmentTaskAdapter extends
             //任务奖励模式
             SignInRewardMineDialog.getInstance(2)
                     .show(fragmentActivity.getSupportFragmentManager(), "aaaa3");
-            mViewModel.mine2RefeshDataLive.postValue(true);
         }
     };
 
@@ -89,7 +87,6 @@ public class Mine2FragmentTaskAdapter extends
             //任务奖励模式
             SignInRewardMineDialog.getInstance(2)
                     .show(fragmentActivity.getSupportFragmentManager(), "aaaa4");
-            mViewModel.mine2RefeshDataLive.postValue(true);
         }
     };
 

@@ -1,6 +1,4 @@
-package com.donews.mine.views.refresh.adapters;
-
-import static java.lang.Math.ceil;
+package com.donews.middle.base;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +10,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.module.LoadMoreModule;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
-import com.donews.mine.databinding.Mine2FragmentTaskItemBinding;
 
 import java.util.List;
 

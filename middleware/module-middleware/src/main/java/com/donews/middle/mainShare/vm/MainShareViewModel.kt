@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
  *  on 2022/5/11 11:30
  *  主页面ViewModel,用于main和Fragment之间共享数据
  */
-class MainShareViewModel: BaseLiveDataViewModel<MainShareRepository>() {
+class MainShareViewModel : BaseLiveDataViewModel<MainShareRepository>() {
 
     override fun createModel(): MainShareRepository {
         return MainShareRepository()
@@ -23,10 +23,12 @@ class MainShareViewModel: BaseLiveDataViewModel<MainShareRepository>() {
 
     //获取用户幸运值和活跃度
     private val mUserAssets: MutableLiveData<UserAssetsResp> = MutableLiveData()
+    @JvmField
     val userAssets: LiveData<UserAssetsResp> = mUserAssets
 
     //任务气泡列表
     private val mTaskBubbles: MutableLiveData<TaskBubbleInfo> = MutableLiveData()
+
     val taskBubbles: LiveData<TaskBubbleInfo> = mTaskBubbles
 
     //获取用户幸运值和活跃度
@@ -43,7 +45,7 @@ class MainShareViewModel: BaseLiveDataViewModel<MainShareRepository>() {
     }
 
     //获取任务气泡列表
-    fun requestTaskBubbles(){
+    fun requestTaskBubbles() {
         viewModelScope.launch {
             mModel.getTaskBubbles().collect {
                 it?.let {
