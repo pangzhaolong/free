@@ -19,8 +19,8 @@ ext {
     OPEN_AD_LOGGER = "true"
 
     // 正式环境base Url
-    API_BASE_URL_REALSE = "https://lottery.xg.tagtic.cn/"
-    API_BASE_URL_DEBUG = "https://lottery.dev.tagtic.cn/"
+    API_BASE_URL_REALSE = "https://qbna.dev.tagtic.cn/"
+    API_BASE_URL_DEBUG = "https://qbna.dev.tagtic.cn/"
     API_BASE_URL = ext.DEBUG ? API_BASE_URL_DEBUG : API_BASE_URL_REALSE
 
     //商品相关接口

@@ -271,8 +271,8 @@
                 <!--小手-->
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/jsonAnimation"
-                    android:layout_width="65dp"
-                    android:layout_height="66dp"
+                    android:layout_width="85dp"
+                    android:layout_height="86dp"
                     android:layout_alignParentBottom="true"
                     android:layout_marginStart="75dp"
                     android:layout_marginBottom="35dp"
