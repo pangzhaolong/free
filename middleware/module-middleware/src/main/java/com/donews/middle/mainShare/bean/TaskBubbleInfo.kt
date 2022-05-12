@@ -8,6 +8,8 @@ import com.google.gson.annotations.SerializedName
  *  on 2022/5/11 15:17
  */
 data class TaskBubbleInfo(
+    @SerializedName("ex")
+    var ex: Ex? = null,
     @SerializedName("list")
     var list: List<BubbleBean> = arrayListOf()
 ): BaseCustomViewModel()
@@ -31,4 +33,11 @@ data class BubbleBean(
     var total: Int = 0,//总数
     @SerializedName("type")
     var type: String
+):BaseCustomViewModel()
+
+data class Ex(
+    @SerializedName("active")
+    var active: Int = 15,//活跃度15兑换
+    @SerializedName("coin")
+    var coin: Int = 1500//1500金币
 ):BaseCustomViewModel()

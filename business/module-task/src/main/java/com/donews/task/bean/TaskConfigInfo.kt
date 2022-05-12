@@ -11,7 +11,9 @@ data class TaskConfigInfo(
     @SerializedName("ad")
     var ad: Ad,
     @SerializedName("box")
-    var box: Box
+    var box: Box,
+    @SerializedName("exchange")
+    var exchange: Exchange
 ): BaseCustomViewModel()
 
 data class Ad(
@@ -26,4 +28,9 @@ data class Box(
     var boxMaxOpenNum: Int = 5,//宝箱最大开启数
     @SerializedName("boxMaxTime")
     var boxMaxTime: Int = 120//宝箱每次倒计时时间总长
+): BaseCustomViewModel()
+
+data class Exchange(
+    @SerializedName("exchangeActiveNum")
+    var exchangeActiveNum: Int = 15,//活跃度兑换金币默认15活跃度
 ): BaseCustomViewModel()

@@ -86,6 +86,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
         initTaskBubbles()
         initBubbleReceive()
         initAdReport()
+        initExchange()
     }
 
     private fun initUserAssets() {
@@ -173,6 +174,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
         mViewModel?.requestBubbleReceive(mId, mType)
     }
 
+    //看广告上报
     private fun initAdReport() {
         mViewModel.adReport.observe(viewLifecycleOwner, {
             it?.let {
@@ -183,6 +185,20 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
 
     private fun loadAdReport(mId: Int, mType: String) {
         mViewModel?.requestAdReportReceive(mId, mType)
+    }
+
+    //兑换活跃度
+    private fun initExchange() {
+        mViewModel.adReport.observe(viewLifecycleOwner, {
+            it?.let {
+                loadUserAssets()
+                ToastUtil.show(mContext,"兑换成功!")
+            }
+        })
+    }
+
+    private fun loadExchange(exchangeActiveNum:Int){
+        mViewModel?.requestExchange(exchangeActiveNum)
     }
     //endregion
 
@@ -224,6 +240,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
 
     @SuppressLint("SetTextI18n")
     private fun bubbleIsShow(index: Int) {
+        exchangeActiveNum = taskBubbleBean.ex?.active ?: 15
         when (taskBubbleBean.list[index].type) {
             TURNTABLE -> {
                 taskBubbleLuckPanBean = taskBubbleBean.list[index]
@@ -417,7 +434,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                 mDataBinding?.activityTxBtn -> {
                     if (activity != null) {
                         DialogUtil.showExchangeDialog(requireActivity()) {
-
+                            loadExchange(exchangeActiveNum)
                         }
                     }
                 }
@@ -730,7 +747,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
     private fun leftGifStart() {
         try {
             gifLeftDrawable = GifDrawable(mContext!!.assets, "task_coin_gif.gif")
-            mDataBinding?.leftCoinGif?.setImageDrawable(gifDrawable)
+            mDataBinding?.leftCoinGif?.setImageDrawable(gifLeftDrawable)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -739,7 +756,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
     private fun rightGifStart() {
         try {
             gifRightDrawable = GifDrawable(mContext!!.assets, "task_coin_gif.gif")
-            mDataBinding?.rightCoinGif?.setImageDrawable(gifDrawable)
+            mDataBinding?.rightCoinGif?.setImageDrawable(gifRightDrawable)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -773,12 +790,16 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
     //region 获取中台配置数据(部分收据后台气泡任务列表接口给)
     private var taskControlConfig: TaskConfigInfo? = null
 
+    //活跃度兑换金币数, 中台配
+    private var exchangeActiveNum = 15
+
     private fun initTaskControl() {
         taskControlConfig = TaskControlUtil.getTaskControlConfig()
         todaySeeAdMaxNum = taskControlConfig?.ad?.todaySeeAdMaxNum ?: 3
         mMaxCountTime = taskControlConfig?.ad?.mMaxCountTime ?: 180
         boxMaxTime = taskControlConfig?.box?.boxMaxTime ?: 120
         boxMaxOpenNum = taskControlConfig?.box?.boxMaxOpenNum ?: 5
+        exchangeActiveNum = taskControlConfig?.exchange?.exchangeActiveNum ?: 15
     }
     //endregion
 

@@ -72,4 +72,17 @@ class TaskViewModel: BaseLiveDataViewModel<TaskRepository>() {
         }
     }
 
+    //活跃度兑换金币
+    fun requestExchange(exchangeActiveNum:Int) {
+        viewModelScope.launch {
+            mModel.exchange(exchangeActiveNum).collect {
+                it?.let {
+                    adReport.postValue(it)
+                } ?: kotlin.run {
+                    adReport.postValue(null)
+                }
+            }
+        }
+    }
+
 }

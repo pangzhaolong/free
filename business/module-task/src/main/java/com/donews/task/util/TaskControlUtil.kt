@@ -23,7 +23,7 @@ object TaskControlUtil {
         getTaskControlConfig()
     }
 
-    const val taskJson = "{\"ad\":{\"mMaxCountTime\":10,\"todaySeeAdMaxNum\":3},\"box\":{\"boxMaxOpenNum\":5,\"boxMaxTime\":120}}"
+    private const val taskJson = "{\"ad\":{\"mMaxCountTime\":180,\"todaySeeAdMaxNum\":3},\"box\":{\"boxMaxOpenNum\":5,\"boxMaxTime\":120},\"exchange\":{\"exchangeActiveNum\":15}}"
     /**
      * 连对奖励配置
      */

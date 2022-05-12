@@ -17,62 +17,68 @@
         tools:background="@color/black"
         tools:ignore="all">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <View
-                android:id="@+id/basicBgView"
-                android:layout_width="match_parent"
-                android:layout_marginEnd="34.67dp"
-                android:layout_marginStart="34.67dp"
-                android:layout_height="300dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="wrap_content"
-                android:layout_marginEnd="10.59dp"
-                android:onClick="@{eventListener::cancelBtn}"
-                app:layout_constraintEnd_toEndOf="@+id/basicBgView"
-                app:srcCompat="@drawable/task_icon_cancel"
-                android:layout_height="wrap_content"/>
-
-            <View
-                android:id="@+id/bottomView"
-                android:background="@drawable/task_bg_white"
-                android:layout_width="match_parent"
-                android:layout_height="220dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginEnd="34.67dp"
-                android:layout_marginStart="34.67dp"/>
-
-            <androidx.appcompat.widget.AppCompatImageView
-                app:srcCompat="@drawable/task_icon_rule_title"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="190dp"
-                app:layout_constraintBottom_toBottomOf="@+id/bottomView"
-                app:layout_constraintStart_toStartOf="@+id/bottomView"
-                app:layout_constraintEnd_toEndOf="@+id/bottomView"/>
+                android:layout_marginTop="150dp">
 
-            <TextView
-                android:textSize="13.33sp"
-                android:textColor="#2D323A"
-                android:layout_marginStart="57.67dp"
-                android:layout_marginEnd="57.67dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/bottomView"
-                app:layout_constraintBottom_toBottomOf="@+id/bottomView"
-                android:text="1. 活跃度是在APP内活跃程度的指标，活跃度越高好运值越高，可获得稀有奖品越多；\n2. 每天0点将会重置活跃任务；\n3. 活跃度每15点可兑换1000金币；\n4. 2天内没有收取活跃度行为，将会清空所有活跃值。"
-                android:layout_width="match_parent"
-                android:lineSpacingMultiplier="1.3"
-                android:layout_height="wrap_content"/>
+                <View
+                    android:id="@+id/basicBgView"
+                    android:layout_width="match_parent"
+                    android:layout_marginEnd="34.67dp"
+                    android:layout_marginStart="34.67dp"
+                    android:layout_height="300dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_marginEnd="10.59dp"
+                    android:onClick="@{eventListener::cancelBtn}"
+                    app:layout_constraintEnd_toEndOf="@+id/basicBgView"
+                    app:srcCompat="@drawable/task_icon_cancel"
+                    android:layout_height="wrap_content"/>
+
+                <View
+                    android:id="@+id/bottomView"
+                    android:background="@drawable/task_bg_white"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginEnd="34.67dp"
+                    android:layout_marginStart="34.67dp"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    app:srcCompat="@drawable/task_icon_rule_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="190dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/bottomView"
+                    app:layout_constraintStart_toStartOf="@+id/bottomView"
+                    app:layout_constraintEnd_toEndOf="@+id/bottomView"/>
+
+                <TextView
+                    android:textSize="13.33sp"
+                    android:textColor="#2D323A"
+                    android:layout_marginStart="57.67dp"
+                    android:layout_marginEnd="57.67dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/bottomView"
+                    app:layout_constraintBottom_toBottomOf="@+id/bottomView"
+                    android:text="1. 活跃度是在APP内活跃程度的指标，活跃度越高好运值越高，可获得稀有奖品越多；\n2. 每天0点将会重置活跃任务；\n3. 活跃度每15点可兑换1000金币；\n4. 2天内没有收取活跃度行为，将会清空所有活跃值。"
+                    android:layout_width="match_parent"
+                    android:lineSpacingMultiplier="1.3"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </RelativeLayout>
 
     </RelativeLayout>
 
