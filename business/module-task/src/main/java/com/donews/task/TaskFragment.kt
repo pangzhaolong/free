@@ -165,6 +165,52 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                     GIFT_BOX -> {
 
                     }
+                    NONE->{
+                        for (index in taskBubbleBean.list.indices) {
+                            if (taskBubbleBean.list[index].status == BUBBLE_NO_RECEIVE) {
+                                when (taskBubbleBean.list[index].type) {
+                                    SIGN -> {
+                                        makeBubbleExplosion(mDataBinding?.iconSignBubble as View)
+                                        makeBubbleExplosion(mDataBinding?.iconSignTv as View)
+                                        //签到没有金币效果
+                                        loadUserAssets()
+                                    }
+                                    COLLECT -> {
+                                        makeBubbleExplosion(mDataBinding?.iconCollectBubble as View)
+                                        makeBubbleExplosion(mDataBinding?.iconCollectTv as View)
+                                        startCoinGif()
+                                        loadUserAssets()
+                                    }
+                                    LOTTERY -> {
+                                        makeBubbleExplosion(mDataBinding?.iconLuckDrawBubble as View)
+                                        makeBubbleExplosion(mDataBinding?.iconLuckDrawTv as View)
+                                        startCoinGif()
+                                        loadUserAssets()
+                                    }
+                                    TURNTABLE -> {
+                                        makeBubbleExplosion(mDataBinding?.iconLuckPanBubble as View)
+                                        makeBubbleExplosion(mDataBinding?.iconLuckPanTv as View)
+                                        startCoinGif()
+                                        loadUserAssets()
+                                    }
+                                    SHARE -> {
+                                        makeBubbleExplosion(mDataBinding?.iconShareBubble as View)
+                                        makeBubbleExplosion(mDataBinding?.shareTv as View)
+                                        startCoinGif()
+                                        loadUserAssets()
+                                    }
+                                    VIDEO -> {
+                                        startCoinGif()
+                                        loadUserAssets()
+                                        loadTaskBubbles()
+                                    }
+                                    GIFT_BOX -> {
+
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         })
@@ -209,7 +255,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
         private const val BUBBLE_NO_RECEIVE = 1
         private const val BUBBLE_HAVE_FINISH = 2
 
-        //转盘、签到、抽奖、分享、集卡、视频、宝箱
+        //转盘、签到、抽奖、分享、集卡、视频、宝箱、一键处理
         private const val TURNTABLE = "turntable"
         private const val SIGN = "sign"
         private const val LOTTERY = "lottery"
@@ -217,6 +263,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
         private const val COLLECT = "collect"
         private const val VIDEO = "video"
         private const val GIFT_BOX = "giftbox"
+        private const val NONE = "none"
     }
 
     private fun handleTaskBubbles() {
@@ -609,6 +656,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
         }
     }
 
+    //一键领取所有气泡
     private fun clickAllBubble() {
         var isHaveCanReceiveBubble = false
         for (index in taskBubbleBean.list.indices) {
@@ -618,50 +666,8 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
             }
         }
         if (isHaveCanReceiveBubble) {
-            for (index in taskBubbleBean.list.indices) {
-                if (taskBubbleBean.list[index].status == BUBBLE_NO_RECEIVE) {
-                    when (taskBubbleBean.list[index].type) {
-                        SIGN -> {
-                            makeBubbleExplosion(mDataBinding?.iconSignBubble as View)
-                            makeBubbleExplosion(mDataBinding?.iconSignTv as View)
-                            //签到没有金币效果
-                            loadUserAssets()
-                        }
-                        COLLECT -> {
-                            makeBubbleExplosion(mDataBinding?.iconCollectBubble as View)
-                            makeBubbleExplosion(mDataBinding?.iconCollectTv as View)
-                            startCoinGif()
-                            loadUserAssets()
-                        }
-                        LOTTERY -> {
-                            makeBubbleExplosion(mDataBinding?.iconLuckDrawBubble as View)
-                            makeBubbleExplosion(mDataBinding?.iconLuckDrawTv as View)
-                            startCoinGif()
-                            loadUserAssets()
-                        }
-                        TURNTABLE -> {
-                            makeBubbleExplosion(mDataBinding?.iconLuckPanBubble as View)
-                            makeBubbleExplosion(mDataBinding?.iconLuckPanTv as View)
-                            startCoinGif()
-                            loadUserAssets()
-                        }
-                        SHARE -> {
-                            makeBubbleExplosion(mDataBinding?.iconShareBubble as View)
-                            makeBubbleExplosion(mDataBinding?.shareTv as View)
-                            startCoinGif()
-                            loadUserAssets()
-                        }
-                        VIDEO -> {
-                            startCoinGif()
-                            loadUserAssets()
-                            loadTaskBubbles()
-                        }
-                        GIFT_BOX -> {
-
-                        }
-                    }
-                }
-            }
+            mCurWhichBubbleType = NONE
+            loadBubbleReceive(100, NONE)
         } else Toast.makeText(mContext, "当前没有可点击气泡", Toast.LENGTH_SHORT).show()
     }
     //endregion

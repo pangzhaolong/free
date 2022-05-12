@@ -5,6 +5,7 @@ import com.donews.middle.BuildConfig
 import com.donews.middle.mainShare.upJson.PostBean
 import com.donews.middle.mainShare.upJson.PostExchangeBean
 import com.donews.middle.mainShare.upJson.PostReportBean
+import com.donews.middle.mainShare.upJson.PostStringBean
 import com.donews.network.EasyHttp
 import com.donews.network.cache.model.CacheMode
 import com.donews.network.callback.SimpleCallBack
@@ -23,12 +24,15 @@ class TaskRepository : BaseLiveDataModel() {
 
     /**
      * 气泡点击领取
+     * notice: mId是100表示一键领取所有气泡,只需传mType为none
      */
     fun bubbleReceive(mId:Int,mType:String): Flow<BubbleReceiveInfo?> {
         return callbackFlow {
             val disposable = EasyHttp.post(BuildConfig.BASE_QBN_API + "activity/v1/activity-tasks-receive")
                 .cacheMode(CacheMode.NO_CACHE)
-                .upJson(Gson().toJson(PostBean(mId,mType)))
+                .upJson(if (mId == 100){
+                    Gson().toJson(PostStringBean(mType))
+                } else Gson().toJson(PostBean(mId,mType)))
                 .execute(object : SimpleCallBack<BubbleReceiveInfo>() {
                     override fun onError(e: ApiException?) {
                         trySend(null)
