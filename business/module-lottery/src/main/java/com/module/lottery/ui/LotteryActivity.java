@@ -57,6 +57,7 @@ import com.module.lottery.bean.CommodityBean;
 import com.module.lottery.bean.CritCodeBean;
 import com.module.lottery.bean.GenerateCodeBean;
 import com.module.lottery.bean.LotteryCodeBean;
+import com.module.lottery.bean.MaylikeBean;
 import com.module.lottery.dialog.CongratulationsDialog;
 import com.module.lottery.dialog.ExclusiveLotteryCodeDialog;
 import com.module.lottery.dialog.ExhibitCodeStartsDialog;
@@ -129,8 +130,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     @Autowired(name = "action")
     public String mAction;
     private CommodityBean mCommodityBean;
-    private int mPageNumber = 1;
-    private boolean refresh = true;
     //抽奖码的对象用来拦截返回
     private LotteryCodeBean mLotteryCodeBean;
     private boolean dialogShow = false;
@@ -156,33 +155,18 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         mSharedPreferences = this.getSharedPreferences(LOTTERY_ACTIVITY, 0);
         ARouter.getInstance().inject(this);
         EventBus.getDefault().register(this);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
-        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int position) {
-                if (position == 0) {
-                    return 2;
-                } else {
-                    return 1;
-                }
-            }
-        });
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 1);
         mPlayAdUtilsTool = new PlayAdUtilsTool(LotteryActivity.this);
         guessAdapter = new GuessAdapter(LotteryActivity.this);
         guessAdapter.getLayout(R.layout.guesslike_item_layout);
         mDataBinding.lotteryGridview.setLayoutManager(gridLayoutManager);
         mDataBinding.lotteryGridview.setAdapter(guessAdapter);
-        mDataBinding.lotteryGridview.addItemDecoration(new GridSpaceItemDecoration(2));
+        mDataBinding.lotteryGridview.addItemDecoration(new GridSpaceItemDecoration(1));
+        mDataBinding.lotteryGridview.setOverScrollMode(View.OVER_SCROLL_ALWAYS);
         mDataBinding.returnIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 returnIntercept();
-            }
-        });
-        mDataBinding.maskingLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDataBinding.maskingLayout.setVisibility(View.GONE);
             }
         });
         initViewData();
@@ -190,12 +174,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         setObserveList();
         //加载抽奖商品详情信息
         lotteryInfo();
-        //设置下拉，和上拉的监听
-        setSmartRefresh();
-        //初始化分享
-        refreshShareCharacter();
-        //初始化购买
-        refreshBuyCharacter();
         //自动开始抽奖
         if (mStart_lottery && ABSwitch.Ins().isOpenAutoLottery() || privilege) {
             ifOpenAutoLotteryAndCount();
@@ -203,102 +181,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         mStart_lottery = false;
     }
 
-
-    /**
-     * 刷新分享文案
-     */
-    public void refreshShareCharacter() {
-        final List<String> urlList = ABSwitch.Ins().getApplicationShareJumpUrl();
-        if (ABSwitch.Ins().isApplicationShareJumpSwitch() && urlList != null && urlList.size() > 0) {
-            mDataBinding.fxIcon.setImageResource(R.mipmap.lottery_box_icon);
-            mDataBinding.fx.setText("领福利");
-
-            mDataBinding.share.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    jumpUrl(urlList, -1, "1");
-                    AnalysisUtils.onEventEx(LotteryActivity.this, Dot.RECEIVE_BENEFITS);
-                }
-            });
-
-        } else {
-            mDataBinding.fxIcon.setImageResource(R.mipmap.share_icon);
-            mDataBinding.fx.setText("分享");
-            mDataBinding.share.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //分享
-                    RouterActivityPath.Mine
-                            .goShareWxChatDialogDefaultH5(LotteryActivity.this);
-                }
-            });
-        }
-    }
-
-
-    int mBuyClickNumber = 0;
-
-    /**
-     * 刷新购买功能
-     */
-    public void refreshBuyCharacter() {
-        final List<String> urlList = ABSwitch.Ins().getApplicationBuyJumpUrl();
-        if (ABSwitch.Ins().isApplicationBuyJumpSwitch() && urlList != null && urlList.size() > 0) {
-            mDataBinding.panicBuying.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (ClickDoubleUtil.isFastClick()) {
-                        //购买点击总数统计
-                        AnalysisUtils.onEventEx(LotteryActivity.this, Dot.BUY_CLICK_SUN);
-                        if (mBuyClickNumber < ABSwitch.Ins().getApplicationBuyJumpNumber()) {
-                            //开启了拉活并且剩余有跳转次数
-                            AnalysisUtils.onEventEx(LotteryActivity.this, Dot.PULL_LIVE_CLICK);
-                            mBuyClickNumber = mBuyClickNumber + 1;
-                            if (mCommodityBean == null) {
-                                //随机跳转
-                                //走中台配置
-                                jumpUrl(urlList, -1, "2");
-                                return;
-                            }
-
-                            int channelId = mCommodityBean.getSrc();
-                            if (channelId > 0) {
-                                channelId = channelId - 1;
-                            }
-
-                            //channelId:0:淘宝;1:京东;2:拼多多
-                            jumpUrl(urlList, channelId, "2");
-                            jump();
-                        } else {
-                            //跳转商品埋点
-                            AnalysisUtils.onEventEx(LotteryActivity.this, Dot.BUY_CLICK);
-                            //走商品购买跳转
-                            panicBuyingButtonBusiness(true);
-                        }
-                    }
-                }
-            });
-        } else {
-            panicBuyingButton();
-        }
-    }
-
-
-    private void jump() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(ABSwitch.Ins().getApplicationBuyDelayedJump());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                AnalysisUtils.onEventEx(LotteryActivity.this, Dot.DELAY_JUMP);
-                //走商品购买跳转
-                panicBuyingButtonBusiness(false);
-            }
-        }).start();
-    }
 
     int mLastTimeRandomId = -1;
 
@@ -387,29 +269,8 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 AnalysisUtils.onEventEx(LotteryActivity.this, Dot.BUY_CLICK_SUN);
                 //跳转商品埋点
                 AnalysisUtils.onEventEx(LotteryActivity.this, Dot.BUY_CLICK);
-                panicBuyingButtonBusiness(true);
             }
         });
-    }
-
-
-    private void panicBuyingButtonBusiness(Boolean ifHint) {
-        AnalysisUtils.onEventEx(LotteryActivity.this, Dot.Btn_Buy);
-        if (mCommodityBean != null && mCommodityBean.getItemLink() != null) {
-            if (mCommodityBean.getItemLink().equals("")) {
-                if (ifHint) {
-                    ToastUtil.showShort(getApplicationContext(), "该商品暂不支持购买");
-                }
-            } else {
-                detailProvider.goToTaoBao(LotteryActivity.this, mCommodityBean.getItemLink());
-            }
-        } else {
-            if (ifHint) {
-                ToastUtil.showShort(getApplicationContext(), "该商品暂不支持购买");
-            }
-
-        }
-
     }
 
     private void showLotteryCritCodeDialog(GenerateCodeBean generateCodeBean) {
@@ -569,18 +430,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         } else {
             setLottieAnimation(true);
         }
-        boolean first_show = mSharedPreferences.getBoolean(FIRST_SHOW, true);
-        if (first_show && !privilege && !CriticalModelTool.ifCriticalStrike()) {
-            mSharedPreferences.edit().putBoolean(FIRST_SHOW, false).apply();
-            mDataBinding.maskingLayout.setVisibility(View.VISIBLE);
-            //圆 新手引导遮罩层
-            initLottie(mDataBinding.maskingButton, LOTTERY_FINGER);
-            //小手 新手引导遮罩层
-            initLottie(mDataBinding.maskingHand, LOTTERY_FINGER);
-        } else {
-            mDataBinding.maskingLayout.setVisibility(View.GONE);
-            mSharedPreferences.edit().putBoolean(FIRST_SHOW, false).apply();
-        }
+        mSharedPreferences.edit().putBoolean(FIRST_SHOW, false).apply();
     }
 
     private void setLottieAnimation(boolean play) {
@@ -737,17 +587,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         });
         exclusiveLotteryCodeDialog.show();
     }
-
-
-//    boolean logType = AppInfo.checkIsWXLogin();
-//                    if (ABSwitch.Ins().getLotteryLine() == 0 && logType) {
-//
-//    } else {
-//        //显示专属抽奖码弹框
-//        showExclusiveCodeDialog();
-//
-//    }
-//
 
 
     private void showLogToWeChatDialog() {
@@ -1090,20 +929,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     }
 
 
-    private void setSmartRefresh() {
-        //下拉刷新
-        mDataBinding.mailSmRefresh.setOnRefreshListener(refreshLayout -> {
-            mPageNumber = 1;
-            refresh = true;
-            lotteryInfo();
-        });
-        //上拉加载
-        mDataBinding.mailSmRefresh.setOnLoadMoreListener(refreshLayout -> {
-            mPageNumber++;
-            refresh = false;
-            youMayAlsoLike(mPageNumber, false);
-        });
-    }
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -1120,86 +945,23 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     }
 
 
-    private void refreshCoupon(CommodityBean commodityBean) {
-        if (commodityBean.getItemLink() != null) {
-            if (commodityBean.getItemLink().equals("")) {
-                mDataBinding.buyCopywritingIcon.setVisibility(View.VISIBLE);
-                mDataBinding.buyCopywriting.setText("购买");
-                mDataBinding.couponLayout.setVisibility(View.GONE);
-            } else if (commodityBean.getCoupon_price() > 0) {
-                mDataBinding.buyCopywriting.setText("领券购");
-                mDataBinding.couponLayout.setVisibility(View.VISIBLE);
-                mDataBinding.discountedPrice.setText(commodityBean.getCoupon_price() + "");
-                mDataBinding.buyCopywritingIcon.setVisibility(View.GONE);
-
-            } else {
-                mDataBinding.buyCopywritingIcon.setVisibility(View.VISIBLE);
-                mDataBinding.buyCopywriting.setText("购买");
-                mDataBinding.couponLayout.setVisibility(View.GONE);
-            }
-        } else {
-            mDataBinding.buyCopywritingIcon.setVisibility(View.VISIBLE);
-            mDataBinding.buyCopywriting.setText("购买");
-            mDataBinding.couponLayout.setVisibility(View.GONE);
-        }
-    }
-
     public void setObserveList() {
         //观察商品数据顶部
         mViewModel.getMutableLiveData().observe(this, CommodityBean -> {
-            mDataBinding.mailSmRefresh.finishRefresh();
-            mDataBinding.mailSmRefresh.setEnableLoadMore(true);
             // 获取数据
             if (CommodityBean == null) {
                 return;
             }
-            //刷新优惠券按钮展示
-            refreshCoupon(CommodityBean);
             //刷新登录弹框
             refreshLogToWeChatDialog(CommodityBean.getMainPic());
             guessAdapter.setCommodityBean(CommodityBean);
             guessAdapter.notifyDataSetChanged();
             mCommodityBean = CommodityBean;
-            //查询 猜你喜欢的数据
-            //猜你喜欢
-            youMayAlsoLike(mPageNumber, true);
-            requestParticipateNumber();
             //抽奖码
             requestLotteryCode(CommodityBean.getPeriod());
             //请求该商品参与的人数用来viewPager 滚动
             winLotteryInfo();
 
-        });
-        //观察可能喜欢的数据
-        mViewModel.getmGuessLike().observe(this, LotteryBean -> {
-            mDataBinding.mailSmRefresh.finishLoadMore(true);
-            // 获取数据
-            if (LotteryBean == null) {
-                return;
-            }
-            //获取数据刷新列表
-            if (LotteryBean.getList() != null) {
-                if (refresh) {
-                    guessAdapter.setGuessLikeData(LotteryBean.getList());
-                } else {
-                    guessAdapter.addGuessLikeData(LotteryBean.getList());
-                }
-                guessAdapter.notifyDataSetChanged();
-            }
-        });
-
-
-        mViewModel.getmParticipateBean().observe(this, MaylikeBean -> {
-            // 获取数据
-            if (MaylikeBean == null) {
-                return;
-            }
-            //获取数据刷新列表
-            if (MaylikeBean.getList() != null) {
-                CommodityBean commodityBean = guessAdapter.getCommodityBean();
-                commodityBean.setParticipateBean(MaylikeBean);
-                guessAdapter.notifyDataSetChanged();
-            }
         });
         //抽奖码
         mViewModel.getmLotteryCodeBean().observe(this, MaylikeBean -> {
@@ -1348,22 +1110,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     }
 
 
-    //加载猜你喜欢的数据
-    public void youMayAlsoLike(int pageNumber, boolean refresh) {
-        Map<String, String> params = BaseParams.getBaseParams();
-        params.put("page_id", pageNumber + "");
-        params.put("goods_id", mGoodsId);
-        mViewModel.getGuessLikeData(LotteryModel.LOTTERY_GUESS_LIKE, params);
-    }
-
-
-    //请求抽奖累计人数
-    public void requestParticipateNumber() {
-        Map<String, String> params = BaseParams.getMap();
-        params.put("goods_id", mGoodsId);
-        mViewModel.getParticipateNumberData(LotteryModel.LOTTERY_PARTICIPATE_NUM, params);
-    }
-
     //请求抽奖码
     public void requestLotteryCode(int numberPeriods) {
         Map<String, String> params = BaseParams.getMap();
@@ -1389,8 +1135,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
 
     private void clearState() {
-        mPageNumber = 1;
-        refresh = true;
         mLotteryCodeBean = null;
     }
 

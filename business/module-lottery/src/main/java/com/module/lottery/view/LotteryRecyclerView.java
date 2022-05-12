@@ -10,12 +10,9 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.module.lottery.adapter.ScrollListAdapter;
 import com.module.lottery.utils.ScrollLinearLayoutManager;
-import com.orhanobut.logger.Logger;
 
 import java.lang.ref.WeakReference;
 

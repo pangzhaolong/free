@@ -4,6 +4,7 @@ import com.donews.common.contract.BaseCustomViewModel;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,43 +12,37 @@ import java.util.List;
  */
 public class CommodityBean extends BaseCustomViewModel {
 
+    private List<WinLotteryBean.ListDTO> mParticipateList = new ArrayList<>();
 
-    @SerializedName("id")
-    private String id;
-    @SerializedName("goods_id")
-    private String goodsId;
+
+
+    private LotteryCodeBean lotteryCodeBean;
     @SerializedName("title")
     private String title;
     @SerializedName("main_pic")
     private String mainPic;
-    @SerializedName("original_price")
-    private Double originalPrice;
     @SerializedName("display_price")
     private Integer displayPrice;
+    @SerializedName("goods_id")
+    private String goodsId;
     @SerializedName("period")
     private Integer period;
-
-
-    @SerializedName("src")
-    private Integer src;
-
-    @SerializedName("coupon_price")
-    private Integer coupon_price;
-
-    @SerializedName("item_link")
-    private String itemLink;
-    private ParticipateBean participateBean;
-    private LotteryCodeBean lotteryCodeBean;
-
-    private List<MaylikeBean.ListDTO> guessLikeData;
+    @SerializedName("pics")
     private List<String> pics;
+    CommodityBean commodityBean;
 
-    public List<String> getPics() {
-        return pics;
+    public CommodityBean getCommodityBean() {
+        return commodityBean;
+    }
+    public List<WinLotteryBean.ListDTO> getParticipateList() {
+        return mParticipateList;
+    }
+    public List<WinLotteryBean.ListDTO> getmParticipateList() {
+        return mParticipateList;
     }
 
-    public void setPics(List<String> pics) {
-        this.pics = pics;
+    public void setmParticipateList(List<WinLotteryBean.ListDTO> mParticipateList) {
+        this.mParticipateList = mParticipateList;
     }
 
     public LotteryCodeBean getLotteryCodeBean() {
@@ -57,55 +52,12 @@ public class CommodityBean extends BaseCustomViewModel {
     public void setLotteryCodeBean(LotteryCodeBean lotteryCodeBean) {
         this.lotteryCodeBean = lotteryCodeBean;
     }
-
-    public Integer getSrc() {
-        return src;
+    public void setParticipateList(List<WinLotteryBean.ListDTO> mParticipateList) {
+        this.mParticipateList = mParticipateList;
     }
-
-    public void setSrc(Integer src) {
-        this.src = src;
+    public void setCommodityBean(CommodityBean commodityBean) {
+        this.commodityBean = commodityBean;
     }
-
-    public List<MaylikeBean.ListDTO> getGuessLikeData() {
-        return guessLikeData;
-    }
-
-    public void setGuessLikeData(List<MaylikeBean.ListDTO> guessLikeData) {
-        this.guessLikeData = guessLikeData;
-    }
-
-    public ParticipateBean getParticipateBean() {
-        return participateBean;
-    }
-
-    public void setParticipateBean(ParticipateBean participateBean) {
-        this.participateBean = participateBean;
-    }
-
-    public Integer getCoupon_price() {
-        return coupon_price;
-    }
-
-    public void setCoupon_price(Integer coupon_price) {
-        this.coupon_price = coupon_price;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getGoodsId() {
-        return goodsId;
-    }
-
-    public void setGoodsId(String goodsId) {
-        this.goodsId = goodsId;
-    }
-
     public String getTitle() {
         return title;
     }
@@ -122,20 +74,20 @@ public class CommodityBean extends BaseCustomViewModel {
         this.mainPic = mainPic;
     }
 
-    public Double getOriginalPrice() {
-        return originalPrice;
-    }
-
-    public void setOriginalPrice(Double originalPrice) {
-        this.originalPrice = originalPrice;
-    }
-
     public Integer getDisplayPrice() {
         return displayPrice;
     }
 
     public void setDisplayPrice(Integer displayPrice) {
         this.displayPrice = displayPrice;
+    }
+
+    public String getGoodsId() {
+        return goodsId;
+    }
+
+    public void setGoodsId(String goodsId) {
+        this.goodsId = goodsId;
     }
 
     public Integer getPeriod() {
@@ -146,13 +98,11 @@ public class CommodityBean extends BaseCustomViewModel {
         this.period = period;
     }
 
-    public String getItemLink() {
-        return itemLink;
+    public List<String> getPics() {
+        return pics;
     }
 
-    public void setItemLink(String itemLink) {
-        this.itemLink = itemLink;
+    public void setPics(List<String> pics) {
+        this.pics = pics;
     }
-
-
 }

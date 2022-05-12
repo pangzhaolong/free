@@ -10,81 +10,82 @@
     <LinearLayout
         android:id="@+id/item_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginEnd="13dp"
         android:background="@drawable/item_shape"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <com.module.lottery.view.ItemImageView
-            android:id="@+id/item_image_src"
-            android:layout_width="match_parent"
-            android:layout_height="168dp"
-            android:scaleType="fitXY" />
 
-        <TextView
-            android:id="@+id/item_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="11dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="11dp"
-            android:ellipsize="end"
-            android:lines="2"
-            android:text="阿里客服卡薩丁積分卡時代峰峻大數據發生的風景阿斯蒂芬發"
-            android:textColor="#2C2C2C"
-            android:textSize="16dp" />
+        <ImageView
+            android:id="@+id/avatar_img"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@mipmap/ic_launcher" />
+
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal">
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="14dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
 
-            <ImageView
-                android:layout_width="17dp"
-                android:layout_height="17dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="11dp"
-                android:src="@mipmap/money_icon" />
+            >
 
             <TextView
+                android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="7dp"
-                android:layout_marginTop="2dp"
-                android:text="参考价"
-                android:textColor="#A9AEB1"
-                android:textSize="15dp" />
+                android:text="幸福一社"
+                android:textColor="#2D323A"
+                android:textSize="14dp"
+                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/item_price"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="2dp"
-                android:text="15306"
-                android:textColor="#A9AEB1"
-                android:textSize="15dp" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="本次参与"
+                    android:textColor="#2D323A"
+                    android:textSize="13dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/number_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3"
+                    android:textColor="#F5562A"
+                    android:textSize="13dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="次"
+                    android:textColor="#2D323A"
+                    android:textSize="13dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
 
         </LinearLayout>
 
         <TextView
-            android:id="@+id/lottery"
-            android:layout_width="match_parent"
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="7dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/item_lottery_shape"
-            android:gravity="center"
-            android:paddingStart="20dp"
-            android:paddingTop="8dp"
-            android:paddingEnd="20dp"
-            android:paddingBottom="8dp"
-            android:text="0元抽奖"
-            android:textColor="#FFFFFF"
-            android:textSize="16dp" />
-
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="13dp"
+            android:text="刚刚"
+            android:textColor="#838E9E"
+            android:textSize="12dp"
+            android:textStyle="bold" />
     </LinearLayout>
 </layout>

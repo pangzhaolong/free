@@ -13,11 +13,15 @@ public class WinLotteryBean implements Serializable {
     private List<ListDTO> list;
 
     public static class ListDTO implements Serializable {
+
         @SerializedName("avatar")
         private String avatar;
-        @SerializedName("message")
-        private String message;
-
+        @SerializedName("name")
+        private String name;
+        @SerializedName("times")
+        private Integer times;
+        @SerializedName("human_time")
+        private String humanTime;
         public String getAvatar() {
             return avatar;
         }
@@ -26,13 +30,31 @@ public class WinLotteryBean implements Serializable {
             this.avatar = avatar;
         }
 
-        public String getMessage() {
-            return message;
+        public String getName() {
+            return name;
         }
 
-        public void setMessage(String message) {
-            this.message = message;
+        public void setName(String name) {
+            this.name = name;
         }
+
+        public Integer getTimes() {
+            return times;
+        }
+
+        public void setTimes(Integer times) {
+            this.times = times;
+        }
+
+        public String getHumanTime() {
+            return humanTime;
+        }
+
+        public void setHumanTime(String humanTime) {
+            this.humanTime = humanTime;
+        }
+
+
     }
 
     public List<ListDTO> getList() {
@@ -42,6 +64,4 @@ public class WinLotteryBean implements Serializable {
     public void setList(List<ListDTO> list) {
         this.list = list;
     }
-
-
 }

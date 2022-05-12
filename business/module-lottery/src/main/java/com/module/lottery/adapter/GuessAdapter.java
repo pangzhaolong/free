@@ -68,7 +68,6 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private LotteryActivity mContext;
     private int mLayoutId;
     private int flag = 0;
-    ScrollListAdapter mScrollListAdapter;
 
     public GuessAdapter(LotteryActivity context) {
         this.mContext = context;
@@ -104,16 +103,15 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 //价格
                 listHolder.mGuesslikeHeadBinding.price.setText(mCommodityBean.getDisplayPrice() + "");
                 //参考价格
-                listHolder.mGuesslikeHeadBinding.referPrice.setText("参考价: " + mCommodityBean.getOriginalPrice() + "");
-                listHolder.mGuesslikeHeadBinding.referPrice.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG); //中划线
+                listHolder.mGuesslikeHeadBinding.referPrice.setText("参考价: " + "999");
+                listHolder.mGuesslikeHeadBinding.referPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG); //中划线
                 int w = mContext.getResources().getDimensionPixelOffset(R.dimen.lottery_constant_144);
                 int h = mContext.getResources().getDimensionPixelOffset(R.dimen.lottery_constant_52);
 
-                setTextImage(w,h, listHolder.mGuesslikeHeadBinding.title, mCommodityBean.getTitle(),R.mipmap.free_panic_buying);
+                setTextImage(w, h, listHolder.mGuesslikeHeadBinding.title, mCommodityBean.getTitle(), R.mipmap.free_panic_buying);
 
                 listHolder.mGuesslikeHeadBinding.cycle.setText("第" + mCommodityBean.getPeriod() + "期");
                 initViewPager(listHolder);
-
 
 
                 listHolder.mGuesslikeHeadBinding.lotteryContainer.setOnClickListener(new View.OnClickListener() {
@@ -124,39 +122,20 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                         }
                     }
                 });
-                //设置中奖参与人数的滚动列表
-                if(mScrollListAdapter==null){
-                    mScrollListAdapter = new ScrollListAdapter(mContext);
-                }
-                listHolder.mGuesslikeHeadBinding.scrollList.setLayoutManager(new ScrollLinearLayoutManager(mContext));
-                listHolder.mGuesslikeHeadBinding.scrollList.setAdapter(mScrollListAdapter);
-                listHolder.mGuesslikeHeadBinding.scrollList.setAutomaticScroll(true);
-                listHolder.mGuesslikeHeadBinding.scrollList.start();
-                //初始化参与者信息
-                if (mCommodityBean.getParticipateBean() != null) {
-                    if (mCommodityBean.getParticipateBean().getList().size() > 4) {
-                        ImageUtils.setImage(mContext, listHolder.mGuesslikeHeadBinding.participateAvatarOne, mCommodityBean.getParticipateBean().getList().get(0).getAvatar(), 360);
-                        ImageUtils.setImage(mContext, listHolder.mGuesslikeHeadBinding.participateAvatarTwo, mCommodityBean.getParticipateBean().getList().get(1).getAvatar(), 360);
-                        ImageUtils.setImage(mContext, listHolder.mGuesslikeHeadBinding.participateAvatarThree, mCommodityBean.getParticipateBean().getList().get(2).getAvatar(), 360);
-                        ImageUtils.setImage(mContext, listHolder.mGuesslikeHeadBinding.participateAvatarFor, mCommodityBean.getParticipateBean().getList().get(3).getAvatar(), 360);
-                    } else {
-                        Log.d(TAG, "头像数量不满足");
-                    }
-                    listHolder.mGuesslikeHeadBinding.number.setText(mCommodityBean.getParticipateBean().getTotal());
-                }
                 boolean logType = AppInfo.checkIsWXLogin();
                 if (!logType) {
                     listHolder.mGuesslikeHeadBinding.lotteryCodeTitle.setVisibility(View.GONE);
                     listHolder.mGuesslikeHeadBinding.lotteryContainer.setVisibility(View.GONE);
                     listHolder.mGuesslikeHeadBinding.barLayout.setVisibility(View.GONE);
                 } else {
-                    if (mCommodityBean.getLotteryCodeBean() != null) {
-                        listHolder.mGuesslikeHeadBinding.lotteryCodeTitle.setVisibility(View.VISIBLE);
-                        listHolder.mGuesslikeHeadBinding.lotteryContainer.setVisibility(View.VISIBLE);
-                        listHolder.mGuesslikeHeadBinding.barLayout.setVisibility(View.VISIBLE);
-                        //初始化获取的抽奖码列表
-                        initListLottery(listHolder.mGuesslikeHeadBinding, mCommodityBean.getLotteryCodeBean());
-                    }
+                    //=======================================抽奖码=========================
+//                    if (mCommodityBean.getLotteryCodeBean() != null) {
+//                        listHolder.mGuesslikeHeadBinding.lotteryCodeTitle.setVisibility(View.VISIBLE);
+//                        listHolder.mGuesslikeHeadBinding.lotteryContainer.setVisibility(View.VISIBLE);
+//                        listHolder.mGuesslikeHeadBinding.barLayout.setVisibility(View.VISIBLE);
+//                        //初始化获取的抽奖码列表
+//                        initListLottery(listHolder.mGuesslikeHeadBinding, mCommodityBean.getLotteryCodeBean());
+//                    }
                 }
                 listHolder.mGuesslikeHeadBinding.raiders.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -170,41 +149,31 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         } else {
             if (holder instanceof GuessViewHolder) {
-                GuessViewHolder guessViewHolder = ((GuessViewHolder) (holder));
-                String imageUrl = mCommodityBean.getGuessLikeData().get(position - 1).getMainPic();
-                imageUrl = UrlUtils.formatUrlPrefix(imageUrl);
-                RoundedCorners roundedCorners = new RoundedCorners(5);
-
-                RequestOptions options = RequestOptions.bitmapTransform(roundedCorners);
-                Glide.with(mContext).load(imageUrl).apply(options).into(guessViewHolder.mGuesslikeItemLayoutBinding.itemImageSrc);
-                int w = mContext.getResources().getDimensionPixelOffset(R.dimen.merchant_icon_w);
-                int h = mContext.getResources().getDimensionPixelOffset(R.dimen.merchant_icon_h);
-
-                setTextImage(w,h,guessViewHolder.mGuesslikeItemLayoutBinding.itemTitle, mCommodityBean.getGuessLikeData().get(position - 1).getTitle() + "",R.mipmap.taobao_icon);
-                guessViewHolder.mGuesslikeItemLayoutBinding.itemPrice.setText("¥ " + mCommodityBean.getGuessLikeData().get(position - 1).getOriginalPrice() + "");
-                guessViewHolder.mGuesslikeItemLayoutBinding.itemPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-                guessViewHolder.mGuesslikeItemLayoutBinding.itemLayout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ARouter.getInstance()
-                                .build(RouterFragmentPath.Lottery.PAGER_LOTTERY).withString("goods_id", mCommodityBean.getGuessLikeData().get(position - 1).getGoodsId()).withString("action", "newAction")
-                                .navigation();
+                try {
+                    GuessViewHolder guessViewHolder = ((GuessViewHolder) (holder));
+                    int idLocal = position - 1;
+                    if (idLocal < 0) {
+                        idLocal = 0;
                     }
-                });
+                    //下面的数据列表
+                    setImage(mContext, guessViewHolder.mGuesslikeItemLayoutBinding.avatarImg, mCommodityBean.getmParticipateList().get(idLocal).getAvatar(), 360);
+                    guessViewHolder.mGuesslikeItemLayoutBinding.name.setText(mCommodityBean.getmParticipateList().get(idLocal).getName());
+                    guessViewHolder.mGuesslikeItemLayoutBinding.numberTxt.setText(mCommodityBean.getmParticipateList().get(idLocal).getTimes() + "");
+                    guessViewHolder.mGuesslikeItemLayoutBinding.time.setText(mCommodityBean.getmParticipateList().get(idLocal).getHumanTime());
+                } catch (Exception e) {
+                }
             }
         }
     }
 
 
     public void setScrollListData(WinLotteryBean winLotteryBean) {
-        if (mScrollListAdapter != null && winLotteryBean != null) {
-            mScrollListAdapter.setList(winLotteryBean.getList());
-            mScrollListAdapter.notifyDataSetChanged();
-        }
+        mCommodityBean.setParticipateList(winLotteryBean.getList());
+        notifyDataSetChanged();
     }
 
 
-    private void setTextImage(int w,int h,TextView textView, String value,int id) {
+    private void setTextImage(int w, int h, TextView textView, String value, int id) {
         if ((textView != null) && (mContext != null)) {
             SpannableString spannableString = new SpannableString("  " + value);
             Drawable drawable = mContext.getResources().getDrawable(id);
@@ -245,8 +214,8 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     //初始化详情页面顶部的ViewPager
     private void initViewPager(ListHolder listHolder) {
-        if ((mCommodityBean != null) && (mCommodityBean.getPics() != null) ) {
-            if(mCommodityBean.getPics().size()==0){
+        if ((mCommodityBean != null) && (mCommodityBean.getPics() != null)) {
+            if (mCommodityBean.getPics().size() == 0) {
                 mCommodityBean.getPics().add(mCommodityBean.getMainPic());
             }
             flag = 0;
@@ -263,7 +232,7 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 listHolder.mGuesslikeHeadBinding.headPager.setAdapter(viewPagerAdapter);
                 listHolder.mGuesslikeHeadBinding.pointLayout.removeAllViews();
                 //动态创建小点点
-                if( list.size() >1){
+                if (list.size() > 1) {
                     for (int i = 0; i < mCommodityBean.getPics().size(); i++) {
                         LinearLayout view = (LinearLayout) LayoutInflater.from(mContext).inflate(R.layout.point_layout, null);
                         listHolder.mGuesslikeHeadBinding.pointLayout.addView(view);
@@ -361,35 +330,17 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         notifyItemInserted(0);
     }
 
-    //刷新设置底部商品数据来源
-    public void setGuessLikeData(List<MaylikeBean.ListDTO> guessLikeData) {
-        if (mCommodityBean.getGuessLikeData() != null) {
-            mCommodityBean.getGuessLikeData().clear();
-        }
-        this.mCommodityBean.setGuessLikeData(guessLikeData);
-    }
-
-    //上拉加载设置底部商品数据来源
-    public void addGuessLikeData(List<MaylikeBean.ListDTO> guessLikeData) {
-        if (mCommodityBean != null && guessLikeData != null) {
-            if (mCommodityBean.getGuessLikeData() == null) {
-                this.mCommodityBean.setGuessLikeData(guessLikeData);
-            } else {
-                mCommodityBean.getGuessLikeData().addAll(guessLikeData);
-            }
-        }
-    }
 
     //设置列表的个数，商品详情页面整体是个listView
     @Override
     public int getItemCount() {
-        if (mCommodityBean != null && mCommodityBean.getGuessLikeData() != null) {
+        if (mCommodityBean != null) {
             if (mHeaderView == null) {
-                return mCommodityBean.getGuessLikeData().size();
+                return mCommodityBean.getParticipateList().size();
             } else if (mHeaderView != null) {
-                return mCommodityBean.getGuessLikeData().size() + 1;
+                return mCommodityBean.getParticipateList().size() + 1;
             }
-        } else if (mCommodityBean != null && mCommodityBean.getGuessLikeData() == null) {
+        } else if (mCommodityBean != null) {
             return 1;
         }
         return 0;

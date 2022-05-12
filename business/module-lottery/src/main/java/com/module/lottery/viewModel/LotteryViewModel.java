@@ -17,33 +17,22 @@ import java.util.Map;
 
 public class LotteryViewModel extends BaseLiveDataViewModel<LotteryModel> {
     //首页数据
-   private MutableLiveData<CommodityBean> mutableLiveData = new MutableLiveData<CommodityBean>();
-    //猜你喜欢的数据
-    private  MutableLiveData<MaylikeBean> mGuessLike = new MutableLiveData<MaylikeBean>();
+    private MutableLiveData<CommodityBean> mutableLiveData_ = new MutableLiveData<CommodityBean>();
 
-    //参与人数
-    private MutableLiveData<ParticipateBean> mParticipateBean = new MutableLiveData<ParticipateBean>();
 
     //抽奖码
-    private  MutableLiveData<LotteryCodeBean> mLotteryCodeBean = new MutableLiveData<LotteryCodeBean>();
+    private MutableLiveData<LotteryCodeBean> mLotteryCodeBean = new MutableLiveData<LotteryCodeBean>();
 
 
     //获取中奖人员列表
-    private  MutableLiveData<WinLotteryBean> mWinLotteryBean = new MutableLiveData<WinLotteryBean>();
+    private MutableLiveData<WinLotteryBean> mWinLotteryBean = new MutableLiveData<WinLotteryBean>();
 
 
     //获取商品信息
     public void getNetLotteryData(String url, Map<String, String> params) {
-        mModel.getNetCommodityData(mutableLiveData, url, params);
+        mModel.getNetCommodityData(mutableLiveData_, url, params);
     }
-    //向view层提供网络数据
-    public void getGuessLikeData(String url, Map<String, String> params) {
-        mModel.getNetData(mGuessLike, url, params);
-    }
-    //向view层提供网络数据
-    public void getParticipateNumberData(String url, Map<String, String> params) {
-        mModel.getNetParticipateData(mParticipateBean, url, params);
-    }
+
     //向view层提供网络数据
     public void getLotteryCodeData(String url, Map<String, String> params) {
         mModel.getNetLotteryCodeData(mLotteryCodeBean, url, params);
@@ -65,28 +54,14 @@ public class LotteryViewModel extends BaseLiveDataViewModel<LotteryModel> {
     }
 
     public MutableLiveData<CommodityBean> getMutableLiveData() {
-        return mutableLiveData;
+        return mutableLiveData_;
     }
 
     public void setMutableLiveData(MutableLiveData<CommodityBean> mutableLiveData) {
-        this.mutableLiveData = mutableLiveData;
+        this.mutableLiveData_ = mutableLiveData;
     }
 
-    public MutableLiveData<MaylikeBean> getmGuessLike() {
-        return mGuessLike;
-    }
 
-    public void setmGuessLike(MutableLiveData<MaylikeBean> mGuessLike) {
-        this.mGuessLike = mGuessLike;
-    }
-
-    public MutableLiveData<ParticipateBean> getmParticipateBean() {
-        return mParticipateBean;
-    }
-
-    public void setmParticipateBean(MutableLiveData<ParticipateBean> mParticipateBean) {
-        this.mParticipateBean = mParticipateBean;
-    }
 
     public MutableLiveData<LotteryCodeBean> getmLotteryCodeBean() {
         return mLotteryCodeBean;
