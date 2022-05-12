@@ -16,7 +16,7 @@ data class TaskConfigInfo(
 
 data class Ad(
     @SerializedName("mMaxCountTime")
-    var mMaxCountTime: Int = 120,//冷却倒计时最大值120s
+    var mMaxCountTime: Int = 180,//冷却倒计时最大值180s
     @SerializedName("todaySeeAdMaxNum")
     var todaySeeAdMaxNum: Int = 3//今日看广告最大数
 ): BaseCustomViewModel()

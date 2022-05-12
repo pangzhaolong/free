@@ -248,9 +248,12 @@ class ColdDownTimerView @JvmOverloads constructor(
                         isCountDownOver = false
                     } else {
                         if (null != countDownTimeListener) {
+                            //刷新接口cd改变->重新setCountTime->出现下面的异常
+                            //require(curCountDownTime <= countdownTime) { "当前冷却时间大于总冷却时间" }
+                            curCountDownTime = 0//在回调前就置空
                             countDownTimeListener!!.countDownFinish()
                         }
-                        curCountDownTime = animDuration
+                        curCountDownTime = animDuration//这里重置不变
                         isCountDownOver = true
                         mHandler.removeCallbacks(runnable)
                     }

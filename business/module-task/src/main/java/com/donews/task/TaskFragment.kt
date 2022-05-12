@@ -7,15 +7,19 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
+import com.dn.sdk.listener.rewardvideo.IAdRewardVideoListener
+import com.dn.sdk.listener.rewardvideo.SimpleRewardVideoListener
 import com.donews.base.utils.ToastUtil
 import com.donews.common.base.MvvmLazyLiveDataFragment
 import com.donews.common.router.RouterActivityPath
 import com.donews.common.router.RouterFragmentPath
+import com.donews.middle.adutils.RewardVideoAd
 import com.donews.middle.mainShare.bean.BubbleBean
 import com.donews.middle.mainShare.bean.TaskBubbleInfo
 import com.donews.middle.mainShare.vm.MainShareViewModel
@@ -53,6 +57,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
     override fun onFragmentFirstVisible() {
         super.onFragmentFirstVisible()
         loadUserAssets()
+        loadTaskBubbles()
     }
 
     private fun setBinding() {
@@ -89,7 +94,6 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                 mViewModel?.goldCoinNum?.set(it.coin.toString())
                 mViewModel?.activityNum?.set(it.active.toString())
             }
-            loadTaskBubbles()
         })
     }
 
@@ -333,16 +337,12 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                             mDataBinding?.seeAdTv?.alpha = 0.45f
                             mDataBinding?.seeAdTv?.text = "可领取(${taskBubbleVideoBean?.done ?: 0}/3)"
                         }
-
                     }
                     BUBBLE_NO_RECEIVE -> {
                         mDataBinding?.coldDownTimer?.alpha = 1f
                         mDataBinding?.countDownTimeTv?.alpha = 1f
                         mDataBinding?.seeAdTv?.text = "可领取(${taskBubbleVideoBean?.done ?: 0}/3)"
                         mDataBinding?.seeAdTv?.alpha = 1f
-//                        mDataBinding?.coldDownTimer?.apply {
-//                            setCountTime(mMaxCountTime)
-//                        }
                     }
                     BUBBLE_HAVE_FINISH -> {
                         mDataBinding?.coldDownTimer?.alpha = 0.45f
@@ -366,7 +366,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
     private var todaySeeAdMaxNum = 3
 
     //冷却倒计时最大值10s中台配
-    private var mMaxCountTime = 120
+    private var mMaxCountTime = 180
 
     @SuppressLint("SetTextI18n")
     private fun initColdTimerView() {
@@ -385,6 +385,8 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
 
                 override fun countDownFinish() {
                     mDataBinding?.countDownTimeTv?.visibility = View.GONE
+                    //倒计时间结束,刷新一下气泡状态
+                    loadTaskBubbles()
                 }
 
             })
@@ -444,18 +446,41 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                         ToastUtil.show(mContext, "倒计时结束才可领取")
                     }
                 }
-                mDataBinding?.coldDownTimer -> {
+                mDataBinding?.coldDownTimer -> {//看视频广告气泡
+                    Log.i("adSee-->","--status->${taskBubbleVideoBean?.status}")
                     when (taskBubbleVideoBean?.status) {
                         BUBBLE_NO_FINISH -> {
+                            Log.i("adSee-->","--cd->${taskBubbleVideoBean?.cd}")
+                            //冷却结束刷新气泡,cd=0就看广告
                             if (taskBubbleVideoBean?.cd ?: 0 > 0) {
-                                Toast.makeText(mContext,"冷却中",Toast.LENGTH_SHORT).show()
+                                ToastUtil.show(mContext, "冷却中")
                             } else {
-                                //第一次进来cd=0,不用冷却,直接调广告
-                                //ad
                                 loadAdReport(
                                     taskBubbleVideoBean?.id ?: 5,
                                     taskBubbleVideoBean?.type ?: VIDEO
                                 )
+                                //第一次进来cd=0,不用冷却,直接调广告
+                                if (activity != null) {
+                                    RewardVideoAd.loadRewardVideoAd(
+                                        requireActivity(),
+                                        object : SimpleRewardVideoListener() {
+                                            override fun onAdError(code: Int, errorMsg: String?) {
+                                                super.onAdError(code, errorMsg)
+                                                Log.i("adSee-->","-onAdError->code:${code},errorMsg:${errorMsg}")
+                                                ToastUtil.show(mContext,"视频加载失败请稍后再试")
+                                            }
+                                            override fun onAdClose() {
+                                                super.onAdClose()
+                                                Log.i("adSee-->","-onAdClose->")
+                                                loadAdReport(
+                                                    taskBubbleVideoBean?.id ?: 5,
+                                                    taskBubbleVideoBean?.type ?: VIDEO
+                                                )
+                                            }
+                                        },
+                                        false
+                                    )
+                                }
                             }
                         }
                         BUBBLE_NO_RECEIVE -> {
@@ -466,7 +491,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                             )
                         }
                         BUBBLE_HAVE_FINISH -> {
-                            Toast.makeText(mContext, "明日再来", Toast.LENGTH_SHORT).show()
+                            ToastUtil.show(mContext, "明日再来")
                         }
                     }
                 }
@@ -751,7 +776,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
     private fun initTaskControl() {
         taskControlConfig = TaskControlUtil.getTaskControlConfig()
         todaySeeAdMaxNum = taskControlConfig?.ad?.todaySeeAdMaxNum ?: 3
-        mMaxCountTime = taskControlConfig?.ad?.mMaxCountTime ?: 10
+        mMaxCountTime = taskControlConfig?.ad?.mMaxCountTime ?: 180
         boxMaxTime = taskControlConfig?.box?.boxMaxTime ?: 120
         boxMaxOpenNum = taskControlConfig?.box?.boxMaxOpenNum ?: 5
     }
