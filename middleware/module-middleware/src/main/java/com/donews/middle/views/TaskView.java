@@ -39,6 +39,7 @@ public class TaskView extends LinearLayout {
     public final static int Place_Mine = 2;
     public final static int Place_Show_Msg = 3;
     public final static int Place_Win_Code = 4;
+    public final static int Place_Make_Money = 5;
     private int mCurrentModel = Place_Front;
 
     private TaskHandler mTaskHandler;
@@ -129,6 +130,22 @@ public class TaskView extends LinearLayout {
                 mTaskGroup = FrontConfigManager.Ins().getConfigBean().getWinCodeTask().getTaskGroup();
                 mEnableYyw = FrontConfigManager.Ins().getConfigBean().getWinCode();
                 mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getWinCodeTask().getSwitchInterval();
+            } catch (Exception e) {
+                this.setVisibility(GONE);
+                return;
+            }
+        } else if (mCurrentModel == Place_Make_Money) {
+            mDotFrom = "place_make_money";
+            try {
+                if (FrontConfigManager.Ins().getConfigBean().getMakeMoneyItem() != null && FrontConfigManager.Ins().getConfigBean().getMakeMoneyItem().getItems() != null) {
+                    mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getMakeMoneyItem().getItems());
+                    mTaskGroup = FrontConfigManager.Ins().getConfigBean().getMakeMoneyItem().getTaskGroup();
+                    mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getMakeMoneyItem().getSwitchInterval();
+                    mEnableYyw = FrontConfigManager.Ins().getConfigBean().getMakeMoneyYyw();
+                } else {
+                    this.setVisibility(GONE);
+                    return;
+                }
             } catch (Exception e) {
                 this.setVisibility(GONE);
                 return;
