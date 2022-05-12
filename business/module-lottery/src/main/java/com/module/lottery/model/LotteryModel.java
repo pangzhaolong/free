@@ -48,7 +48,7 @@ public class LotteryModel extends BaseLiveDataModel {
 
 
     //获取抽奖中奖人员列表
-    public static String LOTTERY_WIN_LOTTERY = LOTTERY_BASE + "v1/rand-lottery-info";
+    public static String LOTTERY_WIN_LOTTERY = LOTTERY_BASE + "v1/lottery-users";
 
 
     //获取抽奖中奖人员列表

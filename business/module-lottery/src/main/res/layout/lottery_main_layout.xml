@@ -20,27 +20,14 @@
             android:layout_height="match_parent"
             android:clipChildren="false">
 
-            <com.scwang.smart.refresh.layout.SmartRefreshLayout
-                android:id="@+id/mail_sm_refresh"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/lottery_gridview"
+                android:overScrollMode="always"
+                android:scrollbars="none"
+                android:paddingBottom="103dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent" />
 
-                <com.scwang.smart.refresh.header.ClassicsHeader
-                    android:id="@+id/refresh_header"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/lottery_gridview"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <com.scwang.smart.refresh.footer.ClassicsFooter
-                    android:id="@+id/refresh_footer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-            </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
             <ImageView
                 android:id="@+id/return_icon"
@@ -117,24 +104,24 @@
                         android:orientation="vertical">
 
                         <RelativeLayout
-                            android:layout_marginStart="30dp"
                             android:layout_width="58dp"
                             android:layout_height="58dp"
+                            android:layout_marginStart="30dp"
                             android:background="@drawable/black_shape_bg"
                             android:clipChildren="false"
                             android:orientation="vertical">
 
 
                             <LinearLayout
-                                android:visibility="gone"
                                 android:id="@+id/coupon_layout"
-                                android:layout_centerHorizontal="true"
                                 android:layout_width="46dp"
                                 android:layout_height="35dp"
+                                android:layout_centerHorizontal="true"
                                 android:layout_marginTop="-2dp"
                                 android:background="@mipmap/coupon_bg"
                                 android:gravity="center"
-                                android:orientation="horizontal">
+                                android:orientation="horizontal"
+                                android:visibility="gone">
 
                                 <TextView
                                     android:id="@+id/price_sign"
@@ -161,8 +148,8 @@
                                 android:id="@+id/buy_copywriting_icon"
                                 android:layout_width="20dp"
                                 android:layout_height="19dp"
-                                android:layout_centerHorizontal="true"
                                 android:layout_above="@+id/buy_copywriting"
+                                android:layout_centerHorizontal="true"
                                 android:src="@mipmap/buy_icon" />
 
 
@@ -285,101 +272,6 @@
 
 
         </RelativeLayout>
-        <!--  下面是新手引导遮罩层-->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/masking_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#CC000000"
-            android:gravity="center_horizontal"
-            android:visibility="gone">
-
-
-            <RelativeLayout
-                android:id="@+id/button_layout"
-                android:layout_width="143dp"
-                android:layout_height="143dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent">
-
-                <com.airbnb.lottie.LottieAnimationView
-                    android:id="@+id/masking_button"
-                    android:layout_width="143dp"
-                    android:layout_height="143dp"
-                    android:scaleType="fitXY"
-                    app:lottie_autoPlay="true"
-                    app:lottie_loop="true" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/zero_dollar_draw"
-                        android:textColor="#FFFFFF"
-                        android:textSize="17dp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/label_01"
-                        android:gravity="center"
-                        android:text="抽奖"
-                        android:textColor="#FFFFFF"
-                        android:textSize="17dp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-            </RelativeLayout>
-
-
-            <ImageView
-                android:id="@+id/arrowIcon"
-                android:layout_width="10dp"
-                android:layout_height="19dp"
-                android:layout_marginBottom="10dp"
-                android:src="@mipmap/arrow_icon"
-                app:layout_constraintBottom_toTopOf="@+id/button_layout"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
-
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginBottom="7dp"
-                android:scaleType="fitXY"
-                android:src="@mipmap/process_guidance"
-                app:layout_constraintBottom_toTopOf="@+id/arrowIcon"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
-
-
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/masking_hand"
-                android:layout_width="65dp"
-                android:layout_height="66dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="75dp"
-                android:layout_marginBottom="35dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:lottie_loop="true"
-                tools:ignore="MissingConstraints" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </RelativeLayout>
 </layout>
