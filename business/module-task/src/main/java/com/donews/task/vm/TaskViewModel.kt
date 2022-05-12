@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.donews.base.viewmodel.BaseLiveDataViewModel
-import com.donews.middle.bean.mine2.resp.UserAssetsResp
 import com.donews.task.bean.BubbleReceiveInfo
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -45,6 +44,8 @@ class TaskViewModel: BaseLiveDataViewModel<TaskRepository>() {
     private val mBubbleReceive: MutableLiveData<BubbleReceiveInfo> = MutableLiveData()
     val bubbleReceive: LiveData<BubbleReceiveInfo> = mBubbleReceive
 
+    val adReport: MutableLiveData<Any> = MutableLiveData()
+
     //气泡领取处理
     fun requestBubbleReceive(mId:Int,mType:String) {
         viewModelScope.launch {
@@ -53,6 +54,19 @@ class TaskViewModel: BaseLiveDataViewModel<TaskRepository>() {
                     mBubbleReceive.postValue(it)
                 } ?: kotlin.run {
                     mBubbleReceive.postValue(null)
+                }
+            }
+        }
+    }
+
+    //看广告上报
+    fun requestAdReportReceive(mId:Int,mType:String) {
+        viewModelScope.launch {
+            mModel.adReport(mId,mType).collect {
+                it?.let {
+                    adReport.postValue(it)
+                } ?: kotlin.run {
+                    adReport.postValue(null)
                 }
             }
         }
