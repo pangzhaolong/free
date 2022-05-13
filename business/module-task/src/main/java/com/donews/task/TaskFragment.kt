@@ -4,7 +4,6 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -15,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.bumptech.glide.Glide
-import com.dn.sdk.listener.rewardvideo.IAdRewardVideoListener
 import com.dn.sdk.listener.rewardvideo.SimpleRewardVideoListener
 import com.donews.base.utils.ToastUtil
 import com.donews.common.base.MvvmLazyLiveDataFragment
@@ -24,9 +22,11 @@ import com.donews.common.router.RouterFragmentPath
 import com.donews.middle.adutils.RewardVideoAd
 import com.donews.middle.mainShare.bean.BubbleBean
 import com.donews.middle.mainShare.bean.TaskBubbleInfo
+import com.donews.middle.mainShare.bus.ShareClickNotifyEvent
 import com.donews.middle.mainShare.vm.MainShareViewModel
 import com.donews.middle.views.TaskView
 import com.donews.module_shareui.ShareUIBottomPopup
+import com.donews.task.bean.BubbleReceiveInfo
 import com.donews.task.bean.TaskConfigInfo
 import com.donews.task.databinding.TaskFragmentBinding
 import com.donews.task.extend.setOnClickListener
@@ -35,10 +35,11 @@ import com.donews.task.view.ColdDownTimerView
 import com.donews.task.view.explosion.ExplodeParticleFactory
 import com.donews.task.view.explosion.ExplosionField
 import com.donews.task.vm.TaskViewModel
-import com.donews.utilslibrary.utils.SPUtils
-import com.donews.utilslibrary.utils.UrlUtils
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.enums.PopupAnimation
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import pl.droidsonroids.gif.GifDrawable
 
 /**
@@ -71,6 +72,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
     private fun initView() {
         mContext = this.context
         setBinding()
+        initEventBus()
         initClick()
         normalStart()
     }
@@ -131,90 +133,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
     private fun initBubbleReceive() {
         mViewModel.bubbleReceive.observe(viewLifecycleOwner, {
             it?.let {
-                when (mCurWhichBubbleType) {
-                    SIGN -> {
-                        makeBubbleExplosion(mDataBinding?.iconSignBubble as View)
-                        makeBubbleExplosion(mDataBinding?.iconSignTv as View)
-                        //签到没有金币效果
-                        loadUserAssets()
-                        loadTaskBubbles()
-                    }
-                    COLLECT -> {
-                        makeBubbleExplosion(mDataBinding?.iconCollectBubble as View)
-                        makeBubbleExplosion(mDataBinding?.iconCollectTv as View)
-                        startCoinGif()
-                        loadUserAssets()
-                        loadTaskBubbles()
-                    }
-                    LOTTERY -> {
-                        makeBubbleExplosion(mDataBinding?.iconLuckDrawBubble as View)
-                        makeBubbleExplosion(mDataBinding?.iconLuckDrawTv as View)
-                        startCoinGif()
-                        loadUserAssets()
-                        loadTaskBubbles()
-                    }
-                    TURNTABLE -> {
-                        makeBubbleExplosion(mDataBinding?.iconLuckPanBubble as View)
-                        makeBubbleExplosion(mDataBinding?.iconLuckPanTv as View)
-                        startCoinGif()
-                        loadUserAssets()
-                        loadTaskBubbles()
-                    }
-                    SHARE -> {
-                        makeBubbleExplosion(mDataBinding?.iconShareBubble as View)
-                        makeBubbleExplosion(mDataBinding?.shareTv as View)
-                        startCoinGif()
-                        loadUserAssets()
-                        loadTaskBubbles()
-                    }
-                    VIDEO -> {
-                        startCoinGif()
-                        loadUserAssets()
-                        loadTaskBubbles()
-                    }
-                    GIFT_BOX -> {
-                        if (activity != null) {
-                            DialogUtil.showBoxDialog(requireActivity(),it.active > 0){
-                                loadUserAssets()
-                                loadTaskBubbles()
-                            }
-                        }
-                    }
-                    NONE->{
-                        for (index in taskBubbleBean.list.indices) {
-                            if (taskBubbleBean.list[index].status == BUBBLE_NO_RECEIVE) {
-                                when (taskBubbleBean.list[index].type) {
-                                    SIGN -> {
-                                        makeBubbleExplosion(mDataBinding?.iconSignBubble as View)
-                                        makeBubbleExplosion(mDataBinding?.iconSignTv as View)
-                                    }
-                                    COLLECT -> {
-                                        makeBubbleExplosion(mDataBinding?.iconCollectBubble as View)
-                                        makeBubbleExplosion(mDataBinding?.iconCollectTv as View)
-                                    }
-                                    LOTTERY -> {
-                                        makeBubbleExplosion(mDataBinding?.iconLuckDrawBubble as View)
-                                        makeBubbleExplosion(mDataBinding?.iconLuckDrawTv as View)
-                                    }
-                                    TURNTABLE -> {
-                                        makeBubbleExplosion(mDataBinding?.iconLuckPanBubble as View)
-                                        makeBubbleExplosion(mDataBinding?.iconLuckPanTv as View)
-                                    }
-                                    SHARE -> {
-                                        makeBubbleExplosion(mDataBinding?.iconShareBubble as View)
-                                        makeBubbleExplosion(mDataBinding?.shareTv as View)
-                                    }
-                                    VIDEO -> { }
-                                    GIFT_BOX -> { }
-                                }
-                            }
-                        }
-                        bubbleIsLeftOrRight = true
-                        startCoinGif()
-                        loadUserAssets()
-                        loadTaskBubbles()
-                    }
-                }
+                handleBubblesReceive(it)
             }
         })
     }
@@ -241,17 +160,17 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
         mViewModel.exchange.observe(viewLifecycleOwner, {
             it?.let {
                 loadUserAssets()
-                ToastUtil.show(mContext,"兑换成功!")
+                ToastUtil.show(mContext, "兑换成功!")
             }
         })
     }
 
-    private fun loadExchange(exchangeActiveNum:Int){
+    private fun loadExchange(exchangeActiveNum: Int) {
         mViewModel?.requestExchange(exchangeActiveNum)
     }
     //endregion
 
-    //region 接口请求结果处理
+    //region 接口请求结果统一处理
     companion object {
         //任务状态 0 未完成 1 完成可领取 2 已领取
         private const val BUBBLE_NO_FINISH = 0
@@ -269,6 +188,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
         private const val NONE = "none"
     }
 
+    //接口统一处理气泡列表
     private fun handleTaskBubbles() {
         var canReceiveBubbleNum = 0//可领取气泡数
         for (index in taskBubbleBean.list.indices) {
@@ -426,6 +346,96 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
             }
         }
     }
+
+    //接口统一处理气泡领取
+    private fun handleBubblesReceive(it: BubbleReceiveInfo) {
+        when (mCurWhichBubbleType) {
+            SIGN -> {
+                makeBubbleExplosion(mDataBinding?.iconSignBubble as View)
+                makeBubbleExplosion(mDataBinding?.iconSignTv as View)
+                //签到没有金币效果
+                loadUserAssets()
+                loadTaskBubbles()
+            }
+            COLLECT -> {
+                makeBubbleExplosion(mDataBinding?.iconCollectBubble as View)
+                makeBubbleExplosion(mDataBinding?.iconCollectTv as View)
+                startCoinGif()
+                loadUserAssets()
+                loadTaskBubbles()
+            }
+            LOTTERY -> {
+                makeBubbleExplosion(mDataBinding?.iconLuckDrawBubble as View)
+                makeBubbleExplosion(mDataBinding?.iconLuckDrawTv as View)
+                startCoinGif()
+                loadUserAssets()
+                loadTaskBubbles()
+            }
+            TURNTABLE -> {
+                makeBubbleExplosion(mDataBinding?.iconLuckPanBubble as View)
+                makeBubbleExplosion(mDataBinding?.iconLuckPanTv as View)
+                startCoinGif()
+                loadUserAssets()
+                loadTaskBubbles()
+            }
+            SHARE -> {
+                makeBubbleExplosion(mDataBinding?.iconShareBubble as View)
+                makeBubbleExplosion(mDataBinding?.shareTv as View)
+                startCoinGif()
+                loadUserAssets()
+                loadTaskBubbles()
+            }
+            VIDEO -> {
+                startCoinGif()
+                loadUserAssets()
+                loadTaskBubbles()
+            }
+            GIFT_BOX -> {
+                if (activity != null) {
+                    DialogUtil.showBoxDialog(requireActivity(), it.active > 0) {
+                        loadUserAssets()
+                        loadTaskBubbles()
+                    }
+                }
+            }
+            NONE -> {
+                for (index in taskBubbleBean.list.indices) {
+                    if (taskBubbleBean.list[index].status == BUBBLE_NO_RECEIVE) {
+                        when (taskBubbleBean.list[index].type) {
+                            SIGN -> {
+                                makeBubbleExplosion(mDataBinding?.iconSignBubble as View)
+                                makeBubbleExplosion(mDataBinding?.iconSignTv as View)
+                            }
+                            COLLECT -> {
+                                makeBubbleExplosion(mDataBinding?.iconCollectBubble as View)
+                                makeBubbleExplosion(mDataBinding?.iconCollectTv as View)
+                            }
+                            LOTTERY -> {
+                                makeBubbleExplosion(mDataBinding?.iconLuckDrawBubble as View)
+                                makeBubbleExplosion(mDataBinding?.iconLuckDrawTv as View)
+                            }
+                            TURNTABLE -> {
+                                makeBubbleExplosion(mDataBinding?.iconLuckPanBubble as View)
+                                makeBubbleExplosion(mDataBinding?.iconLuckPanTv as View)
+                            }
+                            SHARE -> {
+                                makeBubbleExplosion(mDataBinding?.iconShareBubble as View)
+                                makeBubbleExplosion(mDataBinding?.shareTv as View)
+                            }
+                            VIDEO -> {
+                            }
+                            GIFT_BOX -> {
+                            }
+                        }
+                    }
+                }
+                bubbleIsLeftOrRight = true
+                startCoinGif()
+                loadUserAssets()
+                loadTaskBubbles()
+            }
+        }
+    }
     //endregion
 
     //region 每日看广告气泡相关
@@ -461,24 +471,35 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
     }
     //endregion
 
-    private fun initTaskView(){
+    //region 运营位及底部抽奖、转盘图片中台拉取并展示
+    private fun initTaskView() {
         mDataBinding?.taskBgRunning?.refreshYyw(TaskView.Place_Task)
         Glide.with(this).load(taskControlConfig?.img?.luckPanImg).into(mDataBinding.taskBgLuckPan)
-        Glide.with(this).load(taskControlConfig?.img?.luckCollectImg).into(mDataBinding.taskBgCollect)
+        Glide.with(this).load(taskControlConfig?.img?.luckCollectImg)
+            .into(mDataBinding.taskBgCollect)
     }
+    //endregion
 
     //region 批量点击相关
     private fun initClick() {
         setOnClickListener(
             mDataBinding?.ruleClick,
             mDataBinding?.activityTxBtn,
-            mDataBinding?.iconCanGet, mDataBinding?.iconBox,
+            mDataBinding?.iconCanGet,
+            mDataBinding?.iconBox,
             mDataBinding?.coldDownTimer,
-            mDataBinding?.iconSignBubble, mDataBinding?.iconSignTv,//签到气泡
-            mDataBinding?.iconLuckPanBubble, mDataBinding?.iconLuckPanTv, mDataBinding?.taskBgLuckPan,//转盘气泡
-            mDataBinding?.iconCollectBubble, mDataBinding?.iconCollectTv, mDataBinding?.taskBgCollect,//集卡气泡
-            mDataBinding?.iconShareBubble, mDataBinding?.shareTv,//分享气泡
-            mDataBinding?.iconLuckDrawBubble, mDataBinding?.iconLuckDrawTv,//抽奖气泡
+            mDataBinding?.iconSignBubble,
+            mDataBinding?.iconSignTv,//签到气泡
+            mDataBinding?.iconLuckPanBubble,
+            mDataBinding?.iconLuckPanTv,
+            mDataBinding?.taskBgLuckPan,//转盘气泡
+            mDataBinding?.iconCollectBubble,
+            mDataBinding?.iconCollectTv,
+            mDataBinding?.taskBgCollect,//集卡气泡
+            mDataBinding?.iconShareBubble,
+            mDataBinding?.shareTv,//分享气泡
+            mDataBinding?.iconLuckDrawBubble,
+            mDataBinding?.iconLuckDrawTv,//抽奖气泡
             mDataBinding?.iconBtn
         ) {
             when (this) {
@@ -495,186 +516,232 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                     }
                 }
                 mDataBinding?.iconCanGet, mDataBinding?.iconBox -> {
-                    when (taskBubbleBoxBean?.status) {
-                        BUBBLE_NO_FINISH -> {
-                            ToastUtil.show(mContext, "倒计时结束才可领取")
-                        }
-                        BUBBLE_NO_RECEIVE->{
-                            if (activity != null) {
-                                RewardVideoAd.loadRewardVideoAd(
-                                    requireActivity(),
-                                    object : SimpleRewardVideoListener() {
-                                        override fun onAdError(code: Int, errorMsg: String?) {
-                                            super.onAdError(code, errorMsg)
-                                            Log.i("adSee-->","-onAdError->code:${code},errorMsg:${errorMsg}")
-                                            ToastUtil.show(mContext,"视频加载失败请稍后再试")
-                                        }
-                                        override fun onAdClose() {
-                                            super.onAdClose()
-                                            Log.i("adSee-->","-onAdClose->")
-                                            //宝箱看完广告不用上报,直接领取
-                                            loadBubbleReceive(
-                                                taskBubbleBoxBean?.id ?: 6,
-                                                taskBubbleBoxBean?.type ?: GIFT_BOX
-                                            )
-                                        }
-                                    },
-                                    false
-                                )
-                            }
-                        }
-                        BUBBLE_HAVE_FINISH->{
-                            ToastUtil.show(mContext, "明日再来!")
-                        }
-                    }
+                    //宝箱气泡
+                    clickBox()
                 }
-                mDataBinding?.coldDownTimer -> {//看视频广告气泡
-                    Log.i("adSee-->","--status->${taskBubbleVideoBean?.status}")
-                    when (taskBubbleVideoBean?.status) {
-                        BUBBLE_NO_FINISH -> {
-                            Log.i("adSee-->","--cd->${taskBubbleVideoBean?.cd}")
-                            //冷却结束刷新气泡,cd=0就看广告
-                            if (taskBubbleVideoBean?.cd ?: 0 > 0) {
-                                ToastUtil.show(mContext, "冷却中")
-                            } else {
-                                loadAdReport(
-                                    taskBubbleVideoBean?.id ?: 5,
-                                    taskBubbleVideoBean?.type ?: VIDEO
-                                )
-                                //第一次进来cd=0,不用冷却,直接调广告
-                                if (activity != null) {
-                                    RewardVideoAd.loadRewardVideoAd(
-                                        requireActivity(),
-                                        object : SimpleRewardVideoListener() {
-                                            override fun onAdError(code: Int, errorMsg: String?) {
-                                                super.onAdError(code, errorMsg)
-                                                Log.i("adSee-->","-onAdError->code:${code},errorMsg:${errorMsg}")
-                                                ToastUtil.show(mContext,"视频加载失败请稍后再试")
-                                            }
-                                            override fun onAdClose() {
-                                                super.onAdClose()
-                                                Log.i("adSee-->","-onAdClose->")
-                                                loadAdReport(
-                                                    taskBubbleVideoBean?.id ?: 5,
-                                                    taskBubbleVideoBean?.type ?: VIDEO
-                                                )
-                                            }
-                                        },
-                                        false
-                                    )
-                                }
-                            }
-                        }
-                        BUBBLE_NO_RECEIVE -> {
-                            mCurWhichBubbleType = VIDEO
-                            loadBubbleReceive(
-                                taskBubbleVideoBean?.id ?: 5,
-                                taskBubbleVideoBean?.type ?: VIDEO
-                            )
-                        }
-                        BUBBLE_HAVE_FINISH -> {
-                            ToastUtil.show(mContext, "明日再来")
-                        }
-                    }
+                mDataBinding?.coldDownTimer -> {
+                    //看视频广告气泡
+                    clickAdVideo()
                 }
                 mDataBinding?.iconSignBubble, mDataBinding?.iconSignTv -> {
                     //处理签到逻辑
-                    when (taskBubbleSignBean?.status) {
-                        BUBBLE_NO_FINISH -> {
-                            if (activity != null && activity?.supportFragmentManager != null) {
-                                RouterFragmentPath.User.getSingDialog()
-                                    .show(activity?.supportFragmentManager!!, "SignInMineDialog")
-                            }
-                        }
-                        BUBBLE_NO_RECEIVE -> {
-                            mCurWhichBubbleType = SIGN
-                            loadBubbleReceive(
-                                taskBubbleSignBean?.id ?: 1,
-                                taskBubbleSignBean?.type ?: SIGN
-                            )
-                        }
-                    }
+                    clickSign()
                 }
-                mDataBinding?.iconLuckPanBubble, mDataBinding?.iconLuckPanTv,mDataBinding?.taskBgLuckPan-> {
+                mDataBinding?.iconLuckPanBubble, mDataBinding?.iconLuckPanTv, mDataBinding?.taskBgLuckPan -> {
                     //处理转盘逻辑
-                    when (taskBubbleLuckPanBean?.status) {
-                        BUBBLE_NO_FINISH -> {
-                            ARouter.getInstance()
-                                .build(RouterActivityPath.Turntable.TURNTABLE_ACTIVITY)
-                                .navigation()
-                        }
-                        BUBBLE_NO_RECEIVE -> {
-                            mCurWhichBubbleType = COLLECT
-                            loadBubbleReceive(
-                                taskBubbleLuckPanBean?.id ?: 0,
-                                taskBubbleLuckPanBean?.type ?: TURNTABLE
-                            )
-                        }
-                    }
+                    clickLuckPan()
                 }
                 mDataBinding?.iconCollectBubble, mDataBinding?.iconCollectTv, mDataBinding?.taskBgCollect -> {
                     //处理集卡逻辑
-                    when (taskBubbleCollectBean?.status) {
-                        BUBBLE_NO_FINISH -> {
-                            //跳集卡
-                        }
-                        BUBBLE_NO_RECEIVE -> {
-                            mCurWhichBubbleType = COLLECT
-                            loadBubbleReceive(
-                                taskBubbleCollectBean?.id ?: 4,
-                                taskBubbleCollectBean?.type ?: COLLECT
-                            )
-                        }
-                    }
+                    clickCollect()
                 }
                 mDataBinding?.iconShareBubble, mDataBinding?.shareTv -> {
                     //处理分享逻辑
-                    when (taskBubbleShareBean?.status) {
-                        BUBBLE_NO_FINISH -> {
-                            if (context != null) {
-                                XPopup.Builder(activity)
-                                    .isDestroyOnDismiss(true) //对于只使用一次的弹窗，推荐设置这个
-                                    .popupAnimation(PopupAnimation.TranslateFromBottom)
-                                    .navigationBarColor(Color.BLACK)
-                                    .asCustom(ShareUIBottomPopup(requireContext()))
-                                    .show()
-                            }
-                        }
-                        BUBBLE_NO_RECEIVE -> {
-                            mCurWhichBubbleType = COLLECT
-                            loadBubbleReceive(
-                                taskBubbleShareBean?.id ?: 3,
-                                taskBubbleShareBean?.type ?: SHARE
-                            )
-                        }
-                    }
+                    clickShare()
                 }
                 mDataBinding?.iconLuckDrawBubble, mDataBinding?.iconLuckDrawTv -> {
                     //处理抽奖逻辑
-                    when (taskBubbleLuckDrawBean?.status) {
-                        BUBBLE_NO_FINISH -> {
-                            //跳抽奖
-                            ARouter.getInstance()
-                                .build(RouterFragmentPath.HomeLottery.PAGER_LOTTERY)
-                                .navigation()
-                        }
-                        BUBBLE_NO_RECEIVE -> {
-                            mCurWhichBubbleType = SIGN
-                            loadBubbleReceive(
-                                taskBubbleLuckDrawBean?.id ?: 2,
-                                taskBubbleLuckDrawBean?.type ?: LOTTERY
-                            )
-                        }
-                    }
+                    clickLottery()
                 }
                 mDataBinding?.iconBtn -> {
+                    //一键气泡处理
                     clickAllBubble()
                 }
             }
         }
     }
 
-    //一键领取所有气泡
+    /**
+     * 气泡点击统一处理
+     */
+    //宝箱气泡点击处理
+    private fun clickBox() {
+        when (taskBubbleBoxBean?.status) {
+            BUBBLE_NO_FINISH -> {
+                ToastUtil.show(mContext, "倒计时结束才可领取")
+            }
+            BUBBLE_NO_RECEIVE -> {
+                if (activity != null) {
+                    RewardVideoAd.loadRewardVideoAd(
+                        requireActivity(),
+                        object : SimpleRewardVideoListener() {
+                            override fun onAdError(code: Int, errorMsg: String?) {
+                                super.onAdError(code, errorMsg)
+                                Log.i("adSee-->", "-onAdError->code:${code},errorMsg:${errorMsg}")
+                                ToastUtil.show(mContext, "视频加载失败请稍后再试")
+                            }
+
+                            override fun onAdClose() {
+                                super.onAdClose()
+                                Log.i("adSee-->", "-onAdClose->")
+                                //宝箱看完广告不用上报,直接领取
+                                loadBubbleReceive(
+                                    taskBubbleBoxBean?.id ?: 6,
+                                    taskBubbleBoxBean?.type ?: GIFT_BOX
+                                )
+                            }
+                        },
+                        false
+                    )
+                }
+            }
+            BUBBLE_HAVE_FINISH -> {
+                ToastUtil.show(mContext, "明日再来!")
+            }
+        }
+    }
+
+    //看广告视频气泡点击处理
+    private fun clickAdVideo() {
+        Log.i("adSee-->", "--status->${taskBubbleVideoBean?.status}")
+        when (taskBubbleVideoBean?.status) {
+            BUBBLE_NO_FINISH -> {
+                Log.i("adSee-->", "--cd->${taskBubbleVideoBean?.cd}")
+                //冷却结束刷新气泡,cd=0就看广告
+                if (taskBubbleVideoBean?.cd ?: 0 > 0) {
+                    ToastUtil.show(mContext, "冷却中")
+                } else {
+                    loadAdReport(
+                        taskBubbleVideoBean?.id ?: 5,
+                        taskBubbleVideoBean?.type ?: VIDEO
+                    )
+                    //第一次进来cd=0,不用冷却,直接调广告
+                    if (activity != null) {
+                        RewardVideoAd.loadRewardVideoAd(
+                            requireActivity(),
+                            object : SimpleRewardVideoListener() {
+                                override fun onAdError(code: Int, errorMsg: String?) {
+                                    super.onAdError(code, errorMsg)
+                                    Log.i(
+                                        "adSee-->",
+                                        "-onAdError->code:${code},errorMsg:${errorMsg}"
+                                    )
+                                    ToastUtil.show(mContext, "视频加载失败请稍后再试")
+                                }
+
+                                override fun onAdClose() {
+                                    super.onAdClose()
+                                    Log.i("adSee-->", "-onAdClose->")
+                                    loadAdReport(
+                                        taskBubbleVideoBean?.id ?: 5,
+                                        taskBubbleVideoBean?.type ?: VIDEO
+                                    )
+                                }
+                            },
+                            false
+                        )
+                    }
+                }
+            }
+            BUBBLE_NO_RECEIVE -> {
+                mCurWhichBubbleType = VIDEO
+                loadBubbleReceive(
+                    taskBubbleVideoBean?.id ?: 5,
+                    taskBubbleVideoBean?.type ?: VIDEO
+                )
+            }
+            BUBBLE_HAVE_FINISH -> {
+                ToastUtil.show(mContext, "明日再来")
+            }
+        }
+    }
+
+    //签到气泡点击处理
+    private fun clickSign() {
+        when (taskBubbleSignBean?.status) {
+            BUBBLE_NO_FINISH -> {
+                if (activity != null && activity?.supportFragmentManager != null) {
+                    RouterFragmentPath.User.getSingDialog()
+                        .show(activity?.supportFragmentManager!!, "SignInMineDialog")
+                }
+            }
+            BUBBLE_NO_RECEIVE -> {
+                mCurWhichBubbleType = SIGN
+                loadBubbleReceive(
+                    taskBubbleSignBean?.id ?: 1,
+                    taskBubbleSignBean?.type ?: SIGN
+                )
+            }
+        }
+    }
+
+    //转盘气泡点击处理
+    private fun clickLuckPan() {
+        when (taskBubbleLuckPanBean?.status) {
+            BUBBLE_NO_FINISH -> {
+                ARouter.getInstance()
+                    .build(RouterActivityPath.Turntable.TURNTABLE_ACTIVITY)
+                    .navigation()
+            }
+            BUBBLE_NO_RECEIVE -> {
+                mCurWhichBubbleType = COLLECT
+                loadBubbleReceive(
+                    taskBubbleLuckPanBean?.id ?: 0,
+                    taskBubbleLuckPanBean?.type ?: TURNTABLE
+                )
+            }
+        }
+    }
+
+    //集卡气泡点击处理
+    private fun clickCollect() {
+        when (taskBubbleCollectBean?.status) {
+            BUBBLE_NO_FINISH -> {
+                //跳集卡
+            }
+            BUBBLE_NO_RECEIVE -> {
+                mCurWhichBubbleType = COLLECT
+                loadBubbleReceive(
+                    taskBubbleCollectBean?.id ?: 4,
+                    taskBubbleCollectBean?.type ?: COLLECT
+                )
+            }
+        }
+    }
+
+    //分享气泡点击处理
+    private fun clickShare() {
+        when (taskBubbleShareBean?.status) {
+            BUBBLE_NO_FINISH -> {
+                if (context != null) {
+                    XPopup.Builder(activity)
+                        .isDestroyOnDismiss(true) //对于只使用一次的弹窗，推荐设置这个
+                        .popupAnimation(PopupAnimation.TranslateFromBottom)
+                        .navigationBarColor(Color.BLACK)
+                        .asCustom(ShareUIBottomPopup(requireContext()))
+                        .show()
+                }
+            }
+            BUBBLE_NO_RECEIVE -> {
+                mCurWhichBubbleType = COLLECT
+                loadBubbleReceive(
+                    taskBubbleShareBean?.id ?: 3,
+                    taskBubbleShareBean?.type ?: SHARE
+                )
+            }
+        }
+    }
+
+    //抽奖气泡点击处理
+    private fun clickLottery() {
+        when (taskBubbleLuckDrawBean?.status) {
+            BUBBLE_NO_FINISH -> {
+                //跳抽奖
+                ARouter.getInstance()
+                    .build(RouterFragmentPath.HomeLottery.PAGER_LOTTERY)
+                    .navigation()
+            }
+            BUBBLE_NO_RECEIVE -> {
+                mCurWhichBubbleType = SIGN
+                loadBubbleReceive(
+                    taskBubbleLuckDrawBean?.id ?: 2,
+                    taskBubbleLuckDrawBean?.type ?: LOTTERY
+                )
+            }
+        }
+    }
+
+    //一键领取所有气泡点击处理
     private fun clickAllBubble() {
         var isHaveCanReceiveBubble = false
         for (index in taskBubbleBean.list.indices) {
@@ -745,8 +812,6 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
 
     //region gif相关
     private var gifDrawable: GifDrawable? = null
-    private var gifLeftDrawable: GifDrawable? = null
-    private var gifRightDrawable: GifDrawable? = null
 
     private fun initMainGif() {
         try {
@@ -759,30 +824,12 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
 
     private fun startCoinGif() {
         if (bubbleIsLeftOrRight) {
-            leftGifStart()
-        } else rightGifStart()
-    }
-
-    private fun leftGifStart() {
-        try {
-            gifLeftDrawable = GifDrawable(mContext!!.assets, "task_coin_gif.gif")
-            mDataBinding?.leftCoinGif?.setImageDrawable(gifLeftDrawable)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    private fun rightGifStart() {
-        try {
-            gifRightDrawable = GifDrawable(mContext!!.assets, "task_coin_gif.gif")
-            mDataBinding?.rightCoinGif?.setImageDrawable(gifRightDrawable)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+            AnimationUtil.coinGifStart(this,mDataBinding?.leftCoinGif)
+        } else AnimationUtil.coinGifStart(this,mDataBinding?.rightCoinGif)
     }
     //endregion
 
-    //region 气泡相关
+    //region 气泡初始状态展示
     private fun initBubble() {
         mDataBinding?.iconSignBubble?.alpha = 0f
         mDataBinding?.iconSignTv?.alpha = 0f
@@ -861,6 +908,18 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
 
     val mHandler = Handler(Looper.getMainLooper())
 
+    //region bus消息统一处理
+    private fun initEventBus() {
+        EventBus.getDefault().register(this)
+    }
+
+    //分享通知
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun shareClickNotify(event: ShareClickNotifyEvent?) {
+        mShareVideModel.requestAdReport(3, "share")
+    }
+    //endregion
+
     override fun onDestroy() {
         super.onDestroy()
         if (shakeAnimation != null && shakeAnimation!!.isRunning) {
@@ -874,14 +933,6 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
         if (gifDrawable != null && !gifDrawable!!.isRecycled) {
             gifDrawable?.recycle()
             gifDrawable = null
-        }
-        if (gifLeftDrawable != null && !gifLeftDrawable!!.isRecycled) {
-            gifLeftDrawable?.recycle()
-            gifLeftDrawable = null
-        }
-        if (gifRightDrawable != null && !gifRightDrawable!!.isRecycled) {
-            gifRightDrawable?.recycle()
-            gifRightDrawable = null
         }
     }
 

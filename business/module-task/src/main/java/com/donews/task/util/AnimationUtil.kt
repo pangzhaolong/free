@@ -5,7 +5,17 @@ import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.animation.ValueAnimator
 import android.view.View
+import android.widget.ImageView
+import androidx.fragment.app.Fragment
 import com.airbnb.lottie.LottieAnimationView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.gif.GifDrawable
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
+import com.donews.task.R
 
 /**
  *  make in st
@@ -76,6 +86,41 @@ object AnimationUtil {
 
     fun cancelFingerAnimation(view: LottieAnimationView?){
         view?.cancelAnimation()
+    }
+
+    fun coinGifStart(context: Fragment,imageView: ImageView?) {
+        try {
+            if (imageView != null){
+                Glide.with(context)
+                    .asGif()
+                    .load(R.drawable.task_coin_gif)
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                    .addListener(object :
+                        RequestListener<GifDrawable> {
+                        override fun onLoadFailed(
+                            e: GlideException?,
+                            model: Any?,
+                            target: Target<GifDrawable>?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            return false
+                        }
+                        override fun onResourceReady(
+                            resource: GifDrawable?,
+                            model: Any?,
+                            target: Target<GifDrawable>?,
+                            dataSource: DataSource?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            resource?.setLoopCount(2)
+                            return false
+                        }
+                    })
+                    .into(imageView)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
 }

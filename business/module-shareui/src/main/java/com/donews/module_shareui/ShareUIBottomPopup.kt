@@ -4,9 +4,11 @@ import android.content.Context
 import android.view.View
 import androidx.fragment.app.FragmentActivity
 import com.blankj.utilcode.util.ScreenUtils
+import com.donews.middle.mainShare.bus.ShareClickNotifyEvent
 import com.donews.share.ShareItem
 import com.donews.share.ShareManager
 import com.lxj.xpopup.core.PositionPopupView
+import org.greenrobot.eventbus.EventBus
 
 /**
  *  make in st
@@ -19,6 +21,7 @@ class ShareUIBottomPopup(context:Context): PositionPopupView(context) {
     override fun onCreate() {
         super.onCreate()
         findViewById<View>(R.id.tv_wechat).setOnClickListener { v: View? ->
+            EventBus.getDefault().post(ShareClickNotifyEvent())
             val shareManager = ShareManager()
             val shareItem = ShareItem()
             shareItem.title = "送你88元新人红包，立即领取>>"
@@ -33,6 +36,7 @@ class ShareUIBottomPopup(context:Context): PositionPopupView(context) {
             dismiss()
         }
         findViewById<View>(R.id.tv_moment).setOnClickListener { v: View? ->
+            EventBus.getDefault().post(ShareClickNotifyEvent())
             val shareManager = ShareManager()
             val shareItem = ShareItem()
             shareItem.title = "送你88元新人红包，立即领取>>"

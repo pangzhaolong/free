@@ -368,13 +368,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <pl.droidsonroids.gif.GifImageView
+        <ImageView
             android:id="@+id/leftCoinGif"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="160dp"
             android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="@+id/leftSpace"
-            app:layout_constraintTop_toTopOf="@+id/leftSpace" />
+            app:layout_constraintBottom_toTopOf="@+id/leftSpace"/>
 
         <Space
             android:id="@+id/rightSpace"
@@ -386,13 +386,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <pl.droidsonroids.gif.GifImageView
+        <ImageView
             android:id="@+id/rightCoinGif"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="160dp"
             android:scaleType="fitXY"
             app:layout_constraintStart_toStartOf="@+id/rightSpace"
-            app:layout_constraintTop_toTopOf="@+id/rightSpace" />
+            app:layout_constraintBottom_toTopOf="@+id/rightSpace" />
 
         <pl.droidsonroids.gif.GifImageView
             android:id="@+id/taskGif"
