@@ -15,15 +15,16 @@ import com.orhanobut.logger.Logger
  */
 object TaskControlUtil {
 
+    //https://monetization.dev.tagtic.cn/rule/v1/calculate/free-taskConfig-dev
     private const val TASK_CONFIG = "-taskConfig"
     private const val TASK_CONFIG_URL =
         BuildConfig.BASE_CONFIG_URL + BuildConfig.APP_IDENTIFICATION + TASK_CONFIG + BuildConfig.BASE_RULE_URL
 
     fun init(){
-        getTaskControlConfig()
+        getCenterConfig()
     }
 
-    private const val taskJson = "{\"ad\":{\"mMaxCountTime\":180,\"todaySeeAdMaxNum\":3},\"box\":{\"boxMaxOpenNum\":5,\"boxMaxTime\":120},\"exchange\":{\"exchangeActiveNum\":15}}"
+    private const val taskJson = "{\"ad\":{\"mMaxCountTime\":180,\"todaySeeAdMaxNum\":3},\"box\":{\"boxMaxOpenNum\":5,\"boxMaxTime\":120},\"exchange\":{\"exchangeActiveNum\":15},\"img\":{\"luckCollectImg\":\"https://img0.baidu.com/it/u=3529581707,981182388\\u0026fm=253\\u0026fmt=auto\\u0026app=138\\u0026f=JPEG?w=500\\u0026h=202\",\"luckPanImg\":\"https://img0.baidu.com/it/u=3529581707,981182388\\u0026fm=253\\u0026fmt=auto\\u0026app=138\\u0026f=JPEG?w=500\\u0026h=202\"}}"
     /**
      * 连对奖励配置
      */

@@ -428,9 +428,10 @@
                     android:layout_marginEnd="13dp"
                     android:scaleType="fitXY"
                     app:layout_constraintTop_toBottomOf="@+id/bgOne"
-                    app:srcCompat="@drawable/task_bg_luck_pan" />
+                    tools:srcCompat="@drawable/task_bg_luck_pan" />
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/luckPanTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -444,6 +445,7 @@
                     app:layout_constraintTop_toTopOf="@+id/taskBgLuckPan" />
 
                 <TextView
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4.27dp"
@@ -455,6 +457,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/luckPanTv" />
 
                 <TextView
+                    android:visibility="gone"
                     android:layout_width="64.67dp"
                     android:layout_height="23.67dp"
                     android:layout_marginStart="13.33dp"
@@ -477,9 +480,10 @@
                     android:layout_marginEnd="13dp"
                     android:scaleType="fitXY"
                     app:layout_constraintTop_toBottomOf="@+id/taskBgLuckPan"
-                    app:srcCompat="@drawable/task_bg_collect" />
+                    tools:srcCompat="@drawable/task_bg_collect" />
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/collectTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -493,6 +497,7 @@
                     app:layout_constraintTop_toTopOf="@+id/taskBgCollect" />
 
                 <TextView
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4.27dp"
@@ -504,6 +509,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/collectTv" />
 
                 <TextView
+                    android:visibility="gone"
                     android:layout_width="64.67dp"
                     android:layout_height="23.67dp"
                     android:layout_marginStart="13.33dp"
@@ -517,7 +523,7 @@
                 <!--endregion -->
 
                 <!--region 运营位-->
-                <androidx.appcompat.widget.AppCompatImageView
+                <com.donews.middle.views.TaskView
                     android:id="@+id/taskBgRunning"
                     android:layout_width="match_parent"
                     android:layout_height="89.33dp"

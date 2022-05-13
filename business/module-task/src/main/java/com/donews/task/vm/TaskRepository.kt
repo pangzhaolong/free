@@ -49,29 +49,6 @@ class TaskRepository : BaseLiveDataModel() {
     }
 
     /**
-     * 看广告上报
-     */
-    fun adReport(mId:Int,mType:String): Flow<Any?> {
-        return callbackFlow {
-            val disposable = EasyHttp.post(BuildConfig.BASE_QBN_API + "activity/v1/report")
-                .cacheMode(CacheMode.NO_CACHE)
-                .upJson(Gson().toJson(PostReportBean(mId,mType,(System.currentTimeMillis() / 1000).toString())))
-                .execute(object : SimpleCallBack<Any>() {
-                    override fun onError(e: ApiException?) {
-                        trySend(null)
-                    }
-
-                    override fun onSuccess(t: Any?) {
-                        trySend(t)
-                    }
-                })
-            awaitClose {
-                disposable.dispose()
-            }
-        }
-    }
-
-    /**
      * 活跃度兑换金币
      */
     fun exchange(exchangeActiveNum:Int): Flow<Any?> {

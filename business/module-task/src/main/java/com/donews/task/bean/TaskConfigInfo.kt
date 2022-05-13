@@ -13,7 +13,9 @@ data class TaskConfigInfo(
     @SerializedName("box")
     var box: Box,
     @SerializedName("exchange")
-    var exchange: Exchange
+    var exchange: Exchange,
+    @SerializedName("img")
+    var img: Img
 ): BaseCustomViewModel()
 
 data class Ad(
@@ -33,4 +35,11 @@ data class Box(
 data class Exchange(
     @SerializedName("exchangeActiveNum")
     var exchangeActiveNum: Int = 15,//活跃度兑换金币默认15活跃度
+): BaseCustomViewModel()
+
+data class Img(
+    @SerializedName("luckPanImg")
+    var luckPanImg: String = "",//活动页底部幸运转盘图片配置
+    @SerializedName("luckCollectImg")
+    var luckCollectImg: String = "",//活动页底部集卡图片配置
 ): BaseCustomViewModel()

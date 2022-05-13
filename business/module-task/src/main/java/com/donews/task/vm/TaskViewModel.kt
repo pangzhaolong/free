@@ -44,7 +44,8 @@ class TaskViewModel: BaseLiveDataViewModel<TaskRepository>() {
     private val mBubbleReceive: MutableLiveData<BubbleReceiveInfo> = MutableLiveData()
     val bubbleReceive: LiveData<BubbleReceiveInfo> = mBubbleReceive
 
-    val adReport: MutableLiveData<Any> = MutableLiveData()
+    //活跃度兑换金币
+    val exchange: MutableLiveData<Any> = MutableLiveData()
 
     //气泡领取处理
     fun requestBubbleReceive(mId:Int,mType:String) {
@@ -59,27 +60,14 @@ class TaskViewModel: BaseLiveDataViewModel<TaskRepository>() {
         }
     }
 
-    //看广告上报
-    fun requestAdReportReceive(mId:Int,mType:String) {
-        viewModelScope.launch {
-            mModel.adReport(mId,mType).collect {
-                it?.let {
-                    adReport.postValue(it)
-                } ?: kotlin.run {
-                    adReport.postValue(null)
-                }
-            }
-        }
-    }
-
     //活跃度兑换金币
     fun requestExchange(exchangeActiveNum:Int) {
         viewModelScope.launch {
             mModel.exchange(exchangeActiveNum).collect {
                 it?.let {
-                    adReport.postValue(it)
+                    exchange.postValue(it)
                 } ?: kotlin.run {
-                    adReport.postValue(null)
+                    exchange.postValue(null)
                 }
             }
         }

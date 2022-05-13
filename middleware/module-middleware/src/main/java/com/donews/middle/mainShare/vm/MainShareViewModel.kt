@@ -31,6 +31,8 @@ class MainShareViewModel : BaseLiveDataViewModel<MainShareRepository>() {
 
     val taskBubbles: LiveData<TaskBubbleInfo> = mTaskBubbles
 
+    val adReport: MutableLiveData<Any> = MutableLiveData()
+
     //获取用户幸运值和活跃度
     fun requestUserAssets() {
         viewModelScope.launch {
@@ -52,6 +54,19 @@ class MainShareViewModel : BaseLiveDataViewModel<MainShareRepository>() {
                     mTaskBubbles.postValue(it)
                 } ?: kotlin.run {
                     mTaskBubbles.postValue(null)
+                }
+            }
+        }
+    }
+
+    //看广告上报
+    fun requestAdReport(mId:Int,mType:String) {
+        viewModelScope.launch {
+            mModel.adReport(mId,mType).collect {
+                it?.let {
+                    adReport.postValue(it)
+                } ?: kotlin.run {
+                    adReport.postValue(null)
                 }
             }
         }

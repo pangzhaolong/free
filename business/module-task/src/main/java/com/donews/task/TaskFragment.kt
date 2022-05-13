@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -13,6 +14,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
+import com.bumptech.glide.Glide
 import com.dn.sdk.listener.rewardvideo.IAdRewardVideoListener
 import com.dn.sdk.listener.rewardvideo.SimpleRewardVideoListener
 import com.donews.base.utils.ToastUtil
@@ -23,6 +25,7 @@ import com.donews.middle.adutils.RewardVideoAd
 import com.donews.middle.mainShare.bean.BubbleBean
 import com.donews.middle.mainShare.bean.TaskBubbleInfo
 import com.donews.middle.mainShare.vm.MainShareViewModel
+import com.donews.middle.views.TaskView
 import com.donews.module_shareui.ShareUIBottomPopup
 import com.donews.task.bean.TaskConfigInfo
 import com.donews.task.databinding.TaskFragmentBinding
@@ -33,6 +36,7 @@ import com.donews.task.view.explosion.ExplodeParticleFactory
 import com.donews.task.view.explosion.ExplosionField
 import com.donews.task.vm.TaskViewModel
 import com.donews.utilslibrary.utils.SPUtils
+import com.donews.utilslibrary.utils.UrlUtils
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.enums.PopupAnimation
 import pl.droidsonroids.gif.GifDrawable
@@ -78,6 +82,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
         initMainGif()
         initBubble()
         initColdTimerView()
+        initTaskView()
     }
 
     //region 接口调用相关
@@ -132,30 +137,35 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                         makeBubbleExplosion(mDataBinding?.iconSignTv as View)
                         //签到没有金币效果
                         loadUserAssets()
+                        loadTaskBubbles()
                     }
                     COLLECT -> {
                         makeBubbleExplosion(mDataBinding?.iconCollectBubble as View)
                         makeBubbleExplosion(mDataBinding?.iconCollectTv as View)
                         startCoinGif()
                         loadUserAssets()
+                        loadTaskBubbles()
                     }
                     LOTTERY -> {
                         makeBubbleExplosion(mDataBinding?.iconLuckDrawBubble as View)
                         makeBubbleExplosion(mDataBinding?.iconLuckDrawTv as View)
                         startCoinGif()
                         loadUserAssets()
+                        loadTaskBubbles()
                     }
                     TURNTABLE -> {
                         makeBubbleExplosion(mDataBinding?.iconLuckPanBubble as View)
                         makeBubbleExplosion(mDataBinding?.iconLuckPanTv as View)
                         startCoinGif()
                         loadUserAssets()
+                        loadTaskBubbles()
                     }
                     SHARE -> {
                         makeBubbleExplosion(mDataBinding?.iconShareBubble as View)
                         makeBubbleExplosion(mDataBinding?.shareTv as View)
                         startCoinGif()
                         loadUserAssets()
+                        loadTaskBubbles()
                     }
                     VIDEO -> {
                         startCoinGif()
@@ -163,7 +173,12 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                         loadTaskBubbles()
                     }
                     GIFT_BOX -> {
-
+                        if (activity != null) {
+                            DialogUtil.showBoxDialog(requireActivity(),it.active > 0){
+                                loadUserAssets()
+                                loadTaskBubbles()
+                            }
+                        }
                     }
                     NONE->{
                         for (index in taskBubbleBean.list.indices) {
@@ -172,44 +187,32 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                                     SIGN -> {
                                         makeBubbleExplosion(mDataBinding?.iconSignBubble as View)
                                         makeBubbleExplosion(mDataBinding?.iconSignTv as View)
-                                        //签到没有金币效果
-                                        loadUserAssets()
                                     }
                                     COLLECT -> {
                                         makeBubbleExplosion(mDataBinding?.iconCollectBubble as View)
                                         makeBubbleExplosion(mDataBinding?.iconCollectTv as View)
-                                        startCoinGif()
-                                        loadUserAssets()
                                     }
                                     LOTTERY -> {
                                         makeBubbleExplosion(mDataBinding?.iconLuckDrawBubble as View)
                                         makeBubbleExplosion(mDataBinding?.iconLuckDrawTv as View)
-                                        startCoinGif()
-                                        loadUserAssets()
                                     }
                                     TURNTABLE -> {
                                         makeBubbleExplosion(mDataBinding?.iconLuckPanBubble as View)
                                         makeBubbleExplosion(mDataBinding?.iconLuckPanTv as View)
-                                        startCoinGif()
-                                        loadUserAssets()
                                     }
                                     SHARE -> {
                                         makeBubbleExplosion(mDataBinding?.iconShareBubble as View)
                                         makeBubbleExplosion(mDataBinding?.shareTv as View)
-                                        startCoinGif()
-                                        loadUserAssets()
                                     }
-                                    VIDEO -> {
-                                        startCoinGif()
-                                        loadUserAssets()
-                                        loadTaskBubbles()
-                                    }
-                                    GIFT_BOX -> {
-
-                                    }
+                                    VIDEO -> { }
+                                    GIFT_BOX -> { }
                                 }
                             }
                         }
+                        bubbleIsLeftOrRight = true
+                        startCoinGif()
+                        loadUserAssets()
+                        loadTaskBubbles()
                     }
                 }
             }
@@ -220,9 +223,9 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
         mViewModel?.requestBubbleReceive(mId, mType)
     }
 
-    //看广告上报
+    //看广告上报,集卡,分享,抽奖都要上报,签到和转盘无需上报
     private fun initAdReport() {
-        mViewModel.adReport.observe(viewLifecycleOwner, {
+        mShareVideModel.adReport.observe(viewLifecycleOwner, {
             it?.let {
                 loadTaskBubbles()
             }
@@ -230,12 +233,12 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
     }
 
     private fun loadAdReport(mId: Int, mType: String) {
-        mViewModel?.requestAdReportReceive(mId, mType)
+        mShareVideModel.requestAdReport(mId, mType)
     }
 
     //兑换活跃度
     private fun initExchange() {
-        mViewModel.adReport.observe(viewLifecycleOwner, {
+        mViewModel.exchange.observe(viewLifecycleOwner, {
             it?.let {
                 loadUserAssets()
                 ToastUtil.show(mContext,"兑换成功!")
@@ -381,7 +384,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
             }
             VIDEO -> {
                 taskBubbleVideoBean = taskBubbleBean.list[index]
-                bubbleIsLeftOrRight = false
+                bubbleIsLeftOrRight = true
                 when (taskBubbleVideoBean?.status) {
                     BUBBLE_NO_FINISH -> {
                         if (taskBubbleVideoBean?.cd ?: 0 > 0) {
@@ -458,6 +461,12 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
     }
     //endregion
 
+    private fun initTaskView(){
+        mDataBinding?.taskBgRunning?.refreshYyw(TaskView.Place_Task)
+        Glide.with(this).load(taskControlConfig?.img?.luckPanImg).into(mDataBinding.taskBgLuckPan)
+        Glide.with(this).load(taskControlConfig?.img?.luckCollectImg).into(mDataBinding.taskBgCollect)
+    }
+
     //region 批量点击相关
     private fun initClick() {
         setOnClickListener(
@@ -466,8 +475,8 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
             mDataBinding?.iconCanGet, mDataBinding?.iconBox,
             mDataBinding?.coldDownTimer,
             mDataBinding?.iconSignBubble, mDataBinding?.iconSignTv,//签到气泡
-            mDataBinding?.iconLuckPanBubble, mDataBinding?.iconLuckPanTv,//转盘气泡
-            mDataBinding?.iconCollectBubble, mDataBinding?.iconCollectTv,//集卡气泡
+            mDataBinding?.iconLuckPanBubble, mDataBinding?.iconLuckPanTv, mDataBinding?.taskBgLuckPan,//转盘气泡
+            mDataBinding?.iconCollectBubble, mDataBinding?.iconCollectTv, mDataBinding?.taskBgCollect,//集卡气泡
             mDataBinding?.iconShareBubble, mDataBinding?.shareTv,//分享气泡
             mDataBinding?.iconLuckDrawBubble, mDataBinding?.iconLuckDrawTv,//抽奖气泡
             mDataBinding?.iconBtn
@@ -486,28 +495,37 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                     }
                 }
                 mDataBinding?.iconCanGet, mDataBinding?.iconBox -> {
-                    if (isCanOpenBox) {
-                        //ad
-                        Toast.makeText(mContext, "一波广告走起", Toast.LENGTH_SHORT).show()
-                        val mTodayOpenBoxNum = SPUtils.getInformain("todayOpenBoxNum", 0)
-                        SPUtils.setInformain("todayOpenBoxNum", mTodayOpenBoxNum + 1)
-                        SPUtils.setInformain("todayOpenBoxOpenTime", System.currentTimeMillis())
-                        mViewModel?.isShowBoxTimeView?.set(true)
-                        mViewModel?.isShowIconCanGet?.set(false)
-                        if (DayBoxUtil.instance.isShowDayTwentyOpenBox(boxMaxOpenNum)) {
-                            SPUtils.setInformain(
-                                "boxEndTime",
-                                System.currentTimeMillis() + boxCurTime * 1000
-                            )
-                            boxCurTime = boxMaxTime
-                            mHandler.postDelayed(boxTimer, 1000L)
-                        } else {
-                            cancelBoxAnimation()
-                            mDataBinding?.boxTimeTv?.text = "明日再来"
-                            ToastUtil.show(mContext, "今日宝箱已领完")
+                    when (taskBubbleBoxBean?.status) {
+                        BUBBLE_NO_FINISH -> {
+                            ToastUtil.show(mContext, "倒计时结束才可领取")
                         }
-                    } else {
-                        ToastUtil.show(mContext, "倒计时结束才可领取")
+                        BUBBLE_NO_RECEIVE->{
+                            if (activity != null) {
+                                RewardVideoAd.loadRewardVideoAd(
+                                    requireActivity(),
+                                    object : SimpleRewardVideoListener() {
+                                        override fun onAdError(code: Int, errorMsg: String?) {
+                                            super.onAdError(code, errorMsg)
+                                            Log.i("adSee-->","-onAdError->code:${code},errorMsg:${errorMsg}")
+                                            ToastUtil.show(mContext,"视频加载失败请稍后再试")
+                                        }
+                                        override fun onAdClose() {
+                                            super.onAdClose()
+                                            Log.i("adSee-->","-onAdClose->")
+                                            //宝箱看完广告不用上报,直接领取
+                                            loadBubbleReceive(
+                                                taskBubbleBoxBean?.id ?: 6,
+                                                taskBubbleBoxBean?.type ?: GIFT_BOX
+                                            )
+                                        }
+                                    },
+                                    false
+                                )
+                            }
+                        }
+                        BUBBLE_HAVE_FINISH->{
+                            ToastUtil.show(mContext, "明日再来!")
+                        }
                     }
                 }
                 mDataBinding?.coldDownTimer -> {//看视频广告气泡
@@ -577,7 +595,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                         }
                     }
                 }
-                mDataBinding?.iconLuckPanBubble, mDataBinding?.iconLuckPanTv -> {
+                mDataBinding?.iconLuckPanBubble, mDataBinding?.iconLuckPanTv,mDataBinding?.taskBgLuckPan-> {
                     //处理转盘逻辑
                     when (taskBubbleLuckPanBean?.status) {
                         BUBBLE_NO_FINISH -> {
@@ -594,7 +612,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                         }
                     }
                 }
-                mDataBinding?.iconCollectBubble, mDataBinding?.iconCollectTv -> {
+                mDataBinding?.iconCollectBubble, mDataBinding?.iconCollectTv, mDataBinding?.taskBgCollect -> {
                     //处理集卡逻辑
                     when (taskBubbleCollectBean?.status) {
                         BUBBLE_NO_FINISH -> {
@@ -680,9 +698,6 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
     //宝箱最大开启数, 中台配
     private var boxMaxOpenNum = 5
 
-    //当前宝箱是否可以打开
-    private var isCanOpenBox = false
-
     private val boxTimer = object : Runnable {
         override fun run() {
             if (boxCurTime > 0) {
@@ -690,11 +705,10 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                 mDataBinding?.boxTimeTv?.text = TimeUtils.stringForTimeNoHour(boxCurTime * 1000L)
                 //当前宝箱时间倒计时结束
                 if (boxCurTime == 0) {
-                    isCanOpenBox = true
                     mViewModel?.isShowBoxTimeView?.set(false)
                     startBoxAnimation()
+                    loadTaskBubbles()//宝箱倒计时结束刷新气泡
                 } else {
-                    isCanOpenBox = false
                     mHandler.postDelayed(this, 1000L)
                     cancelBoxAnimation()
                 }
@@ -702,10 +716,10 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
         }
     }
 
+    //刷新气泡后都会重走宝箱逻辑
     private fun initBox() {
         if (taskBubbleBoxBean?.cd ?: 0 > 0) {
             //倒计时未结束
-            isCanOpenBox = false
             cancelBoxAnimation()
             mViewModel?.isShowBoxTimeView?.set(true)
             mViewModel?.isShowIconCanGet?.set(false)
@@ -714,7 +728,6 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
         } else {
             when (taskBubbleBoxBean?.status) {
                 BUBBLE_NO_RECEIVE -> {
-                    isCanOpenBox = true
                     startBoxAnimation()
                     mViewModel?.isShowBoxTimeView?.set(false)
                     mViewModel?.isShowIconCanGet?.set(true)

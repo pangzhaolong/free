@@ -1,5 +1,7 @@
 package com.donews.task.dialog
 
+import android.content.Context
+import android.os.Bundle
 import android.view.View
 import com.donews.base.fragmentdialog.AbstractFragmentDialog
 import com.donews.task.R
@@ -14,8 +16,21 @@ import com.donews.task.databinding.TaskDialogRuleBinding
 class BoxDialog : AbstractFragmentDialog<TaskDialogBoxBinding>(false, false) {
 
     companion object {
-        fun newInstance(): BoxDialog {
-            return BoxDialog()
+        fun newInstance(isActive: Boolean = false): BoxDialog {
+            return BoxDialog().apply {
+                arguments = Bundle().apply {
+                    putBoolean("isActive", isActive)
+                }
+            }
+        }
+    }
+
+    private var mIsActive = false
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        arguments?.let {
+            mIsActive = it.getBoolean("isActive")
         }
     }
 
@@ -23,8 +38,7 @@ class BoxDialog : AbstractFragmentDialog<TaskDialogBoxBinding>(false, false) {
 
     override fun initView() {
         dataBinding.eventListener = EventListener()
-        dataBinding.tvEnd.text = "1点活跃度"
-        dataBinding.tvEnd.text = "1点幸运值"
+        if (mIsActive) dataBinding.tvEnd.text = "1点活跃度" else dataBinding.tvEnd.text = "1点幸运值"
     }
 
     override fun isUseDataBinding() = true

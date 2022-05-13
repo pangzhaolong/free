@@ -31,8 +31,8 @@ public class FrontConfigBean extends BaseCustomViewModel {
     private Boolean withDrawal = false;
     @SerializedName("winCode")
     private Boolean winCode = false;
-    @SerializedName("makeMoneyYyw")
-    private Boolean makeMoneyYyw = false;
+    @SerializedName("taskYyw")
+    private Boolean taskYyw = false;
     @SerializedName("bannerItems")
     private SingleItem bannerItems;
     @SerializedName("taskItems")
@@ -51,17 +51,16 @@ public class FrontConfigBean extends BaseCustomViewModel {
     private TaskItem winCodeTask;
     @SerializedName("mineTask")
     private TaskItem mineTask;
+    @SerializedName("taskItem")
+    private TaskItem taskItem;
 
-    public Boolean getMakeMoneyYyw() {
-        return makeMoneyYyw;
+    public Boolean getTaskYyw() {
+        return taskYyw;
     }
 
-    public TaskItem getMakeMoneyItem() {
-        return makeMoneyItem;
+    public TaskItem getTaskItem() {
+        return taskItem;
     }
-
-    @SerializedName("makeMoneyItem")
-    private TaskItem makeMoneyItem;
 
     public Boolean getBanner() {
         return banner;

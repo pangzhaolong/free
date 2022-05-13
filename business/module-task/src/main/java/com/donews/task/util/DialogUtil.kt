@@ -57,12 +57,13 @@ object DialogUtil {
 
     fun showBoxDialog(
         activity: FragmentActivity,
+        isActive: Boolean = false,
         clickBtnCall: () -> Unit = {}
     ) {
         if (boxDialog != null && boxDialog?.dialog != null && boxDialog?.dialog!!.isShowing) {
             return
         }
-        boxDialog = BoxDialog.newInstance().apply {
+        boxDialog = BoxDialog.newInstance(isActive).apply {
             setOnDismissListener {
                 boxDialog = null
             }
