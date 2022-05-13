@@ -116,8 +116,8 @@ ext {
     AD_NORMAL_CONFIG_URL = BASE_CONFIG_URL + APP_IDENTIFICATION + "-normalAdConfig" + BASE_RULE
 
     //groMore平台 app id
-    APP_ID_GROMORE = "5228725"             // GroMore 正式app id
-//    APP_ID_GROMORE = "5243267"          // GroMore 测试app id
+    APP_ID_GROMORE = "5296889"             // GroMore 正式app id
+//    APP_ID_GROMORE = "5296889"          // GroMore 测试app id
 
     //大数据统计-趣白拿
     ANALYSIS_DATA = "appqubaina"
