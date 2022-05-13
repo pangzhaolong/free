@@ -108,7 +108,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     private static final String CRITICAL_BT_TITLE_2 = "超级幸运：中奖率X6";
     private static final String CRITICAL_BT_TITLE_3 = "观看视频，参与抽奖";
     private static final String CRITICAL_BT_TITLE_4 = "抽奖码越多，中奖概率越大";
-    private static final String CRITICAL_BT_TITLE_5 = "0元";
+    private static final String CRITICAL_BT_TITLE_5 = "点击";
     @Autowired(name = "goods_id")
     public String mGoodsId;
     private SharedPreferences mSharedPreferences;
@@ -261,17 +261,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     }
 
 
-    private void panicBuyingButton() {
-        mDataBinding.panicBuying.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //购买点击总数统计
-                AnalysisUtils.onEventEx(LotteryActivity.this, Dot.BUY_CLICK_SUN);
-                //跳转商品埋点
-                AnalysisUtils.onEventEx(LotteryActivity.this, Dot.BUY_CLICK);
-            }
-        });
-    }
 
     private void showLotteryCritCodeDialog(GenerateCodeBean generateCodeBean) {
         runOnUiThread(new Runnable() {
