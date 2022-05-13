@@ -601,10 +601,6 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                 if (taskBubbleVideoBean?.cd ?: 0 > 0) {
                     ToastUtil.show(mContext, "冷却中")
                 } else {
-                    loadAdReport(
-                        taskBubbleVideoBean?.id ?: 5,
-                        taskBubbleVideoBean?.type ?: VIDEO
-                    )
                     //第一次进来cd=0,不用冷却,直接调广告
                     if (activity != null) {
                         RewardVideoAd.loadRewardVideoAd(
