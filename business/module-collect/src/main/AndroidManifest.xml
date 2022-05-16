@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.donews.collect">
+
+    <application>
+        <activity
+            android:launchMode="singleTask"
+            android:name=".CollectActivity"
+            android:screenOrientation="portrait"
+            android:exported="true"/>
+
+    </application>
+
+</manifest>

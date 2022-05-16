@@ -145,7 +145,11 @@ dependencies {
 
         //Swei新增桌面通知模块
         implementation project(path: ':business:module-notify')
+
+        //活动模块
         implementation project(path: ':business:module-task')
+        //集卡模块
+        implementation project(path: ':business:module-collect')
     }
 }
 

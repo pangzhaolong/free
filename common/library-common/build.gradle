@@ -18,6 +18,7 @@ dependencies {
     api project(':common:library-drouter')
 
     api project(':common:library-sdk')
+    api project(':common:library-recyclerview')
 
     api rootProject.ext.dependencies["lottie"]
 

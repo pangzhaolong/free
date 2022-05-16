@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="eventListener"
+            type="com.donews.collect.dialog.GoodDialog.EventListener" />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:background="@color/black"
+        tools:ignore="all">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="51.33dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/cancelBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10.59dp"
+                    android:onClick="@{eventListener::cancelBtn}"
+                    app:layout_constraintStart_toStartOf="@+id/basicBgView"
+                    app:srcCompat="@drawable/collect_icon_back" />
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50.33dp"
+                    android:background="@drawable/collect_icon_dialog_top"
+                    android:gravity="center"
+                    android:text="选择你的福利卡 集卡包邮到家    "
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cancelBtn"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/basicView"
+                    android:layout_width="match_parent"
+                    android:layout_height="431dp"
+                    android:layout_marginStart="29.33dp"
+                    android:layout_marginTop="19.67dp"
+                    android:layout_marginEnd="29.33dp"
+                    android:background="@drawable/collect_bg_dialog_good"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/title" />
+
+                <TextView
+                    android:id="@+id/btTv"
+                    android:textColor="#A3A9B7"
+                    android:textSize="12.67sp"
+                    android:layout_marginBottom="33.27dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/basicView"
+                    app:layout_constraintEnd_toEndOf="@+id/basicView"
+                    app:layout_constraintStart_toStartOf="@+id/basicView"
+                    android:text="福利商品会不定期更新，已实际选择为准"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/btn"
+                    android:layout_marginBottom="8.67dp"
+                    app:layout_constraintBottom_toTopOf="@+id/btTv"
+                    android:text="就它了"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:onClick="@{eventListener::receiveBtn}"
+                    app:layout_constraintEnd_toEndOf="@+id/basicView"
+                    app:layout_constraintStart_toStartOf="@+id/basicView"
+                    android:background="@drawable/collect_icon_dialog_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <View
+                    android:alpha="0.5"
+                    android:layout_marginStart="29.33dp"
+                    android:layout_marginEnd="29.33dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_marginStart="29.33dp"
+                    android:layout_marginTop="23.33dp"
+                    android:layout_marginEnd="29.33dp"
+                    app:layout_constraintBottom_toTopOf="@+id/btn"
+                    app:layout_constraintTop_toTopOf="@+id/basicView"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginBottom="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</layout>

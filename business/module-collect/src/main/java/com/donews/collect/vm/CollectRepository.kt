@@ -1,0 +1,93 @@
+package com.donews.collect.vm
+
+import com.donews.base.model.BaseLiveDataModel
+import com.donews.collect.bean.DanMuInfo
+import com.donews.collect.bean.GoodInfo
+import com.donews.collect.bean.StatusInfo
+import com.donews.middle.BuildConfig
+import com.donews.middle.mainShare.upJson.PostBean
+import com.donews.middle.mainShare.upJson.PostStringBean
+import com.donews.network.EasyHttp
+import com.donews.network.cache.model.CacheMode
+import com.donews.network.callback.SimpleCallBack
+import com.donews.network.exception.ApiException
+import com.google.gson.Gson
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+
+/**
+ *  make in st
+ *  on 2022/5/16 09:56
+ */
+class CollectRepository: BaseLiveDataModel() {
+
+    /**
+     * 气泡点击领取
+     * notice: mId是100表示一键领取所有气泡,只需传mType为none
+     */
+    fun getDanMu(): Flow<DanMuInfo?> {
+        return callbackFlow {
+            val disposable = EasyHttp.get(BuildConfig.BASE_QBN_API + "activity/v1/card-barrage")
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(object : SimpleCallBack<DanMuInfo>() {
+                    override fun onError(e: ApiException?) {
+                        trySend(null)
+                    }
+
+                    override fun onSuccess(t: DanMuInfo?) {
+                        trySend(t)
+                    }
+                })
+            awaitClose {
+                disposable.dispose()
+            }
+        }
+    }
+
+    /**
+     * 集卡状态获取
+     * notice: 集卡状态 0 未集卡 1 集卡中 2 集卡完成 3 集卡失败
+     */
+    fun getStatus(): Flow<StatusInfo?> {
+        return callbackFlow {
+            val disposable = EasyHttp.get(BuildConfig.BASE_QBN_API + "activity/v1/card-status")
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(object : SimpleCallBack<StatusInfo>() {
+                    override fun onError(e: ApiException?) {
+                        trySend(null)
+                    }
+
+                    override fun onSuccess(t: StatusInfo?) {
+                        trySend(t)
+                    }
+                })
+            awaitClose {
+                disposable.dispose()
+            }
+        }
+    }
+
+    /**
+     * 集卡商品列表
+     */
+    fun getGoods(): Flow<GoodInfo?> {
+        return callbackFlow {
+            val disposable = EasyHttp.get(BuildConfig.BASE_QBN_API + "activity/v1/card-goods")
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(object : SimpleCallBack<GoodInfo>() {
+                    override fun onError(e: ApiException?) {
+                        trySend(null)
+                    }
+
+                    override fun onSuccess(t: GoodInfo?) {
+                        trySend(t)
+                    }
+                })
+            awaitClose {
+                disposable.dispose()
+            }
+        }
+    }
+
+}

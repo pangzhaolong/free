@@ -297,4 +297,17 @@ public class RouterFragmentPath {
 
     }
 
+    /**
+     * 集卡组件
+     */
+    public static class Collect {
+        private static final String COLLECT = "/collect";
+
+        /**
+         * 集卡
+         */
+        public static final String PAGER_COLLECT = COLLECT + "/collect";
+
+    }
+
 }

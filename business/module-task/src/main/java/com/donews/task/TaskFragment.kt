@@ -29,7 +29,7 @@ import com.donews.module_shareui.ShareUIBottomPopup
 import com.donews.task.bean.BubbleReceiveInfo
 import com.donews.task.bean.TaskConfigInfo
 import com.donews.task.databinding.TaskFragmentBinding
-import com.donews.task.extend.setOnClickListener
+import com.donews.middle.mainShare.extend.setOnClickListener
 import com.donews.task.util.*
 import com.donews.task.view.ColdDownTimerView
 import com.donews.task.view.explosion.ExplodeParticleFactory
@@ -684,6 +684,9 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
         when (taskBubbleCollectBean?.status) {
             BUBBLE_NO_FINISH -> {
                 //跳集卡
+                ARouter.getInstance()
+                    .build(RouterFragmentPath.Collect.PAGER_COLLECT)
+                    .navigation()
             }
             BUBBLE_NO_RECEIVE -> {
                 mCurWhichBubbleType = COLLECT
@@ -723,8 +726,8 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
         when (taskBubbleLuckDrawBean?.status) {
             BUBBLE_NO_FINISH -> {
                 //跳抽奖
-                ARouter.getInstance()
-                    .build(RouterFragmentPath.HomeLottery.PAGER_LOTTERY)
+                ARouter.getInstance().build(RouterActivityPath.Main.PAGER_MAIN)
+                    .withInt("position", 1)
                     .navigation()
             }
             BUBBLE_NO_RECEIVE -> {

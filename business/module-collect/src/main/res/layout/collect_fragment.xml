@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="taskModel"
+            type="com.donews.collect.vm.CollectViewModel" />
+
+        <import type="android.view.View" />
+
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:background="#5E57F6"
+        tools:ignore="all">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iconTop"
+                app:srcCompat="@drawable/collect_icon_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iconBack"
+                app:srcCompat="@drawable/collect_icon_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15.33dp"
+                android:layout_marginTop="51.33dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <LinearLayout
+                android:id="@+id/danMuLayout"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_below="@+id/topView"
+                android:orientation="horizontal"
+                android:layout_marginTop="174dp"
+                app:layout_constraintTop_toBottomOf="@+id/iconBack" />
+
+            <Space
+                android:id="@+id/topSpace"
+                app:layout_constraintBottom_toBottomOf="@+id/iconTop"
+                android:layout_marginBottom="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <View
+                android:id="@+id/centerView"
+                android:background="@drawable/collect_bg_white"
+                android:layout_marginStart="18dp"
+                android:layout_marginEnd="18dp"
+                android:layout_width="match_parent"
+                android:layout_height="464.67dp"
+                app:layout_constraintTop_toBottomOf="@+id/topSpace"/>
+
+            <Space
+                android:id="@+id/centerSpace"
+                app:layout_constraintBottom_toTopOf="@+id/topSpace"
+                android:layout_marginBottom="16.29dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iconWhiteTop"
+                android:layout_marginBottom="30dp"
+                app:layout_constraintTop_toTopOf="@+id/centerSpace"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/collect_icon_white_top"
+                android:layout_width="wrap_content"
+                android:layout_height="32.58dp" />
+
+            <TextView
+                android:id="@+id/leftTv"
+                app:layout_constraintEnd_toStartOf="@+id/rightTv"
+                app:layout_constraintBottom_toBottomOf="@+id/iconWhiteTop"
+                app:layout_constraintTop_toTopOf="@+id/iconWhiteTop"
+                app:layout_constraintStart_toStartOf="@+id/iconWhiteTop"
+                android:text="集齐碎片即可兑换\t\t"
+                android:textColor="#AA5031"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/rightTv"
+                android:text="苹果100"
+                android:textStyle="bold"
+                android:textColor="#F5562A"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/leftTv"
+                app:layout_constraintBottom_toBottomOf="@+id/iconWhiteTop"
+                app:layout_constraintTop_toTopOf="@+id/iconWhiteTop"
+                app:layout_constraintEnd_toEndOf="@+id/iconWhiteTop"/>
+
+            <TextView
+                android:id="@+id/changeGoodClick"
+                android:text="换个商品"
+                android:gravity="center_vertical|end"
+                android:textSize="13.33sp"
+                android:paddingEnd="3.67dp"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="@id/centerView"
+                app:layout_constraintTop_toTopOf="@+id/centerView"
+                android:layout_marginTop="34dp"
+                android:background="@drawable/collect_icon_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/tvOne"
+                app:layout_constraintStart_toStartOf="@+id/centerView"
+                app:layout_constraintTop_toTopOf="@+id/changeGoodClick"
+                app:layout_constraintBottom_toBottomOf="@+id/changeGoodClick"
+                app:layout_constraintEnd_toStartOf="@+id/timeOne"
+                android:background="@drawable/collect_icon_time"
+                tools:text="2"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_marginStart="22.33dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/timeOne"
+                android:text="天"
+                app:layout_constraintStart_toEndOf="@+id/tvOne"
+                android:layout_marginStart="3.33dp"
+                app:layout_constraintTop_toTopOf="@+id/changeGoodClick"
+                app:layout_constraintBottom_toBottomOf="@+id/changeGoodClick"
+                android:textStyle="bold"
+                android:textSize="14.67sp"
+                android:textColor="#2D323A"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/tvTwo"
+                android:layout_marginStart="3.33dp"
+                app:layout_constraintStart_toEndOf="@+id/timeOne"
+                app:layout_constraintTop_toTopOf="@+id/changeGoodClick"
+                app:layout_constraintBottom_toBottomOf="@+id/changeGoodClick"
+                android:background="@drawable/collect_icon_time"
+                tools:text="13"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/timeTwo"
+                android:text=":"
+                android:textStyle="bold"
+                android:textSize="14.67sp"
+                android:textColor="#2D323A"
+                android:layout_marginStart="3.33dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/tvTwo"
+                app:layout_constraintTop_toTopOf="@+id/changeGoodClick"
+                app:layout_constraintBottom_toBottomOf="@+id/changeGoodClick"/>
+
+            <TextView
+                android:id="@+id/tvThree"
+                android:background="@drawable/collect_icon_time"
+                tools:text="34"
+                app:layout_constraintStart_toEndOf="@+id/timeTwo"
+                android:layout_marginStart="3.33dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@+id/changeGoodClick"
+                app:layout_constraintBottom_toBottomOf="@+id/changeGoodClick"/>
+
+            <TextView
+                android:id="@+id/timeThree"
+                android:text=":"
+                android:textStyle="bold"
+                android:textSize="14.67sp"
+                android:textColor="#2D323A"
+                android:layout_width="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/tvThree"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@+id/changeGoodClick"
+                app:layout_constraintBottom_toBottomOf="@+id/changeGoodClick"
+                android:layout_marginStart="3.33dp"/>
+
+            <TextView
+                android:id="@+id/tvFour"
+                app:layout_constraintStart_toEndOf="@+id/timeThree"
+                app:layout_constraintTop_toTopOf="@+id/changeGoodClick"
+                app:layout_constraintBottom_toBottomOf="@+id/changeGoodClick"
+                android:background="@drawable/collect_icon_time"
+                tools:text="03"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/timeFour"
+                android:text="后活动结束"
+                android:textStyle="bold"
+                android:textSize="14.67sp"
+                android:textColor="#2D323A"
+                android:layout_width="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/tvFour"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@+id/changeGoodClick"
+                app:layout_constraintBottom_toBottomOf="@+id/changeGoodClick"
+                android:layout_marginStart="6dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                app:layout_constraintTop_toBottomOf="@+id/changeGoodClick"
+                app:layout_constraintStart_toStartOf="@id/centerView"
+                app:layout_constraintEnd_toEndOf="@id/centerView"
+                android:layout_marginTop="17.33dp"
+                android:layout_width="240dp"
+                android:layout_height="240dp"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/centerBtn"
+                app:srcCompat="@drawable/collect_icon_btn"
+                android:layout_width="match_parent"
+                android:scaleType="fitXY"
+                android:layout_marginEnd="35.33dp"
+                android:layout_marginStart="35.33dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13.33dp"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerView"/>
+
+            <TextView
+                android:text="抽碎片"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="8.17dp"
+                app:layout_constraintStart_toStartOf="@+id/centerBtn"
+                app:layout_constraintEnd_toEndOf="@+id/centerBtn"
+                app:layout_constraintTop_toTopOf="@+id/centerBtn"
+                app:layout_constraintBottom_toBottomOf="@+id/centerBtn"
+                android:drawableStart="@drawable/collect_icon_video"/>
+
+            <TextView
+                android:id="@+id/lotteryOne"
+                android:text="每日抽碎片次数: "
+                android:layout_marginTop="10dp"
+                android:textSize="13.33sp"
+                android:textColor="#000000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="@+id/centerView"
+                app:layout_constraintEnd_toStartOf="@+id/lotteryTwo"
+                app:layout_constraintTop_toBottomOf="@+id/centerBtn"/>
+
+            <TextView
+                android:id="@+id/lotteryTwo"
+                android:text="0"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:textSize="13.33sp"
+                android:textColor="#F5562A"
+                android:layout_width="wrap_content"
+                android:layout_marginStart="5dp"
+                app:layout_constraintEnd_toEndOf="@id/centerView"
+                app:layout_constraintStart_toEndOf="@+id/lotteryOne"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/centerBtn"/>
+
+            <TextView
+                android:id="@+id/bottomLeft"
+                android:textColor="@color/white"
+                android:textSize="26.67sp"
+                android:textStyle="bold"
+                android:text="制造"
+                android:layout_marginTop="23dp"
+                app:layout_constraintTop_toBottomOf="@+id/centerView"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/bottomRight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                app:layout_constraintTop_toTopOf="@+id/bottomLeft"
+                app:layout_constraintStart_toEndOf="@+id/bottomLeft"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:id="@+id/bottomRight"
+                android:textColor="#FFE99E"
+                android:textSize="26.67sp"
+                android:textStyle="bold"
+                android:text="万能卡"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/bubbleOne"
+                app:layout_constraintTop_toBottomOf="@+id/centerView"
+                android:layout_marginStart="30.58dp"
+                android:layout_marginTop="15.62dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/collect_icon_bubble_one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                app:srcCompat="@drawable/collect_icon_city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/bubbleOne"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/bubbleTwo"
+                app:layout_constraintTop_toBottomOf="@+id/bubbleOne"
+                android:layout_marginEnd="29.67dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/collect_icon_bubble_two"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/bottomIcon"
+                app:srcCompat="@drawable/collect_icon_add"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/bubbleOne"/>
+
+            <Space
+                app:layout_constraintTop_toTopOf="@+id/bottomIcon"
+                app:layout_constraintStart_toStartOf="@+id/bottomIcon"
+                android:id="@+id/bottomSpace"
+                android:layout_marginTop="134dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/bottomTvOne"
+                android:text="0"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                android:background="@drawable/collect_icon_small"
+                android:layout_width="21.08dp"
+                android:layout_height="27.88dp"
+                app:layout_constraintEnd_toStartOf="@+id/bottomTvTwo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/bottomSpace"/>
+
+            <TextView
+                android:id="@+id/bottomTvTwo"
+                android:text="0"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_marginStart="6.48dp"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toEndOf="@+id/bottomTvOne"
+                android:background="@drawable/collect_icon_small"
+                android:layout_width="21.08dp"
+                android:layout_height="27.88dp"
+                app:layout_constraintEnd_toStartOf="@+id/bottomTvThree"
+                app:layout_constraintTop_toTopOf="@+id/bottomSpace"/>
+
+            <TextView
+                android:id="@+id/bottomTvThree"
+                android:text="0"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_marginStart="6.48dp"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toEndOf="@+id/bottomTvTwo"
+                android:background="@drawable/collect_icon_small"
+                app:layout_constraintEnd_toStartOf="@+id/bottomPoint"
+                android:layout_width="21.08dp"
+                android:layout_height="27.88dp"
+                app:layout_constraintTop_toTopOf="@+id/bottomSpace"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/bottomPoint"
+                app:srcCompat="@drawable/collect_icon_point"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5.85dp"
+                app:layout_constraintBottom_toBottomOf="@+id/bottomTvOne"
+                app:layout_constraintStart_toEndOf="@+id/bottomTvThree"
+                app:layout_constraintEnd_toStartOf="@+id/bottomTvFour"/>
+
+            <TextView
+                android:id="@+id/bottomTvFour"
+                android:text="0"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_marginStart="5.85dp"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toEndOf="@+id/bottomPoint"
+                android:background="@drawable/collect_icon_small"
+                app:layout_constraintEnd_toStartOf="@+id/bottomTvFive"
+                android:layout_width="21.08dp"
+                android:layout_height="27.88dp"
+                app:layout_constraintTop_toTopOf="@+id/bottomSpace"/>
+
+            <TextView
+                android:id="@+id/bottomTvFive"
+                android:text="0"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_marginStart="6.48dp"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toEndOf="@+id/bottomTvFour"
+                android:background="@drawable/collect_icon_small"
+                app:layout_constraintEnd_toStartOf="@+id/bottomTvSix"
+                android:layout_width="21.08dp"
+                android:layout_height="27.88dp"
+                app:layout_constraintTop_toTopOf="@+id/bottomSpace"/>
+
+            <View
+                android:id="@+id/progressView"
+                android:layout_width="210.67dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_height="22.22dp"
+                android:layout_marginTop="13.31dp"
+                android:background="@drawable/collect_bg_progress"
+                app:layout_constraintTop_toBottomOf="@+id/bottomTvOne"/>
+
+            <ProgressBar
+                android:id="@+id/progress"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                app:layout_constraintTop_toTopOf="@+id/progressView"
+                app:layout_constraintStart_toStartOf="@+id/progressView"
+                app:layout_constraintEnd_toEndOf="@+id/progressView"
+                app:layout_constraintBottom_toBottomOf="@+id/progressView"
+                android:layout_width="203.17dp"
+                android:layout_height="14.68dp"/>
+
+            <TextView
+                android:id="@+id/bottomTvSix"
+                android:text="0"
+                android:gravity="center"
+                android:layout_marginStart="6.48dp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:background="@drawable/collect_icon_small"
+                app:layout_constraintStart_toEndOf="@+id/bottomTvFive"
+                android:layout_width="21.08dp"
+                android:layout_height="27.88dp"
+                app:layout_constraintTop_toTopOf="@+id/bottomSpace"/>
+
+            <View
+                android:id="@+id/bottomClick"
+                android:layout_marginTop="30dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/progressView"
+                android:layout_width="150dp"
+                android:layout_height="50dp"/>
+
+            <TextView
+                android:id="@+id/bottomMsgTv"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bottomIcon"
+                android:layout_marginTop="9.94dp"
+                android:textColor="@color/white"
+                android:textSize="12.67sp"
+                android:text="万能卡可兑换任意卡片（充能需要看创意视频）"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <View
+                app:layout_constraintTop_toBottomOf="@+id/bottomMsgTv"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</layout>
