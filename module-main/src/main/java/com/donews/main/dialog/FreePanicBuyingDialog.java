@@ -21,29 +21,18 @@ import com.donews.base.utils.ToastUtil;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.main.BuildConfig;
 import com.donews.main.R;
-import com.donews.main.bean.NowTimeBean;
 import com.donews.main.databinding.FreePanicDialogLayoutBinding;
 import com.donews.main.utils.ExitInterceptUtils;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.middle.dialog.BaseDialog;
-import com.donews.network.EasyHttp;
-import com.donews.network.cache.model.CacheMode;
-import com.donews.network.callback.SimpleCallBack;
-import com.donews.network.exception.ApiException;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
-import com.donews.utilslibrary.utils.DateManager;
-import com.donews.utilslibrary.utils.KeySharePreferences;
-import com.donews.utilslibrary.utils.SPUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.lang.ref.WeakReference;
-import java.util.Calendar;
-
-import io.reactivex.disposables.Disposable;
 
 //抽奖页返回拦截dialog
 public class FreePanicBuyingDialog extends BaseDialog<FreePanicDialogLayoutBinding> implements DialogInterface.OnDismissListener, View.OnClickListener {

@@ -11,7 +11,7 @@ import com.dn.integral.jdd.integral.ProxyIntegral;
 import com.donews.base.base.BaseApplication;
 import com.donews.common.bean.CritMessengerBean;
 import com.donews.common.config.CritParameterConfig;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.middle.application.MiddleModuleInit;
 import com.donews.middle.bean.CriticalNumberBean;
 import com.donews.middle.service.CritLotteryService;
@@ -20,7 +20,6 @@ import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.DateManager;
 import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.SPUtils;
-import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 

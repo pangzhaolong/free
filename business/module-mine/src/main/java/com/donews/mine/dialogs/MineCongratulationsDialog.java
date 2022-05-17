@@ -28,7 +28,7 @@ import com.blankj.utilcode.util.SPUtils;
 import com.dn.sdk.listener.interstitial.SimpleInterstitialFullListener;
 import com.donews.base.BuildConfig;
 import com.donews.common.router.RouterFragmentPath;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.middle.adutils.InterstitialFullAd;
 import com.donews.mine.R;
 import com.donews.mine.databinding.MineCongratulationsDialogLayoutBinding;

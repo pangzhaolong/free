@@ -9,11 +9,10 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import com.donews.middle.bean.globle.TurntableBean;
 import com.donews.middle.dialog.BaseDialog;
 import com.donews.turntable.R;
-import com.donews.turntable.bean.TurntablePrize;
 import com.donews.turntable.databinding.TurntableDoingDialogLayoutBinding;
-import com.donews.turntable.databinding.TurntableRuleDialogLayoutBinding;
 
 import java.lang.ref.WeakReference;
 
@@ -21,11 +20,11 @@ import java.lang.ref.WeakReference;
 public class DoingResultDialog extends BaseDialog<TurntableDoingDialogLayoutBinding> implements DialogInterface.OnDismissListener {
     private WeakDoingResult weakDoingResult = new WeakDoingResult(this);
     private OnStateListener mOnFinishListener;
-    TurntablePrize mPrize;
+    TurntableBean.ItemsDTO mPrize;
 
-    public DoingResultDialog(@NonNull Context context, TurntablePrize prize) {
+    public DoingResultDialog(@NonNull Context context, TurntableBean.ItemsDTO itemsDTO) {
         super(context, R.style.dialogTransparent);
-        mPrize = prize;
+        mPrize = itemsDTO;
     }
 
 
@@ -37,7 +36,7 @@ public class DoingResultDialog extends BaseDialog<TurntableDoingDialogLayoutBind
         message.what = 1;
         weakDoingResult.sendMessageDelayed(message, 1000);
         setOnDismissListener(this);
-        mDataBinding.award.setText(mPrize.getName());
+        mDataBinding.award.setText(mPrize.getTitle());
         mDataBinding.accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

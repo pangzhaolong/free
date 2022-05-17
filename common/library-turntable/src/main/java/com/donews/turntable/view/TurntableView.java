@@ -11,14 +11,24 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+import com.donews.middle.bean.globle.TurntableBean;
 import com.donews.turntable.R;
 import com.donews.turntable.bean.TurntablePrize;
 import com.donews.turntable.dialog.RuleDialog;
@@ -41,7 +51,7 @@ public class TurntableView extends View {
     //三角形的宽度
     private int mTriangleWidth;
     private ITurntableResultListener mTurntableResult;
-    private List<TurntablePrize> mItemBitmap = new ArrayList<>();
+    private List<TurntableBean.ItemsDTO> mItemDataList = new ArrayList<>();
     private Paint mPaintText;
 
     public TurntableView(Context context) {
@@ -87,22 +97,20 @@ public class TurntableView extends View {
     }
 
     //边框的圆圈
-    public void setInitBitmap(List<TurntablePrize> itemBitmap) {
+    public void setInitBitmap(List<TurntableBean.ItemsDTO> itemBitmap) {
         bgBitmap = ((BitmapDrawable) mResources.getDrawable(R.mipmap.turntable_border)).getBitmap();
         if (itemBitmap == null) {
-            //奖item
-            for (int i = 0; i < 8; i++) {
-                TurntablePrize turntable = new TurntablePrize();
-                String name = "item_0" + (i + 1) + "";
-                Bitmap item = ((BitmapDrawable) mContext.getDrawable(getResources().getIdentifier(name, "mipmap", mContext.getPackageName()))).getBitmap();
-                turntable.setBitmap(item);
-                mItemBitmap.add(turntable);
-            }
+//            //奖item
+//            for (int i = 0; i < 8; i++) {
+//                TurntableBean.ItemsDTO turntable = new TurntableBean.ItemsDTO();
+//                String name = "item_0" + (i + 1) + "";
+//                Bitmap item = ((BitmapDrawable) mContext.getDrawable(getResources().getIdentifier(name, "mipmap", mContext.getPackageName()))).getBitmap();
+//                mItemDataList.add(turntable);
+//            }
         } else {
             number = itemBitmap.size();
-            mItemBitmap.addAll(itemBitmap);
+            mItemDataList.addAll(itemBitmap);
         }
-
         postInvalidate();
     }
 
@@ -115,35 +123,78 @@ public class TurntableView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (mItemBitmap != null) {
+        if (mItemDataList != null) {
             if (mTriangleWidth == 0) {
                 initParameter();
             }
             canvas.drawBitmap(bgBitmap, 0, 0, mPaintText);
-            drawTriangleBitmap(canvas);
+            if (loadingFinished()) {
+                drawTriangleBitmap(canvas);
+            }
         }
     }
 
 
+    //所有奖励图片初始化完成
+    private boolean loadingFinished() {
+        for (int i = 0; i < mItemDataList.size(); i++) {
+            if (mItemDataList.get(i).getBitmap() == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private void initParameter() {
         int s_w = (int) (Math.sin(Math.toRadians(unitAngle / 2)) * ((getHeight() - (mTriangleTop * 2)) / 2));
         s_w = s_w + s_w;
+        //每一张卡片的宽度
         mTriangleWidth = s_w;
-        for (int i = 0; i < mItemBitmap.size(); i++) {
-            mItemBitmap.get(i).setBitmap(imageScale(mItemBitmap.get(i).getBitmap(), s_w, (int) (getHeight() / 2 - mTriangleTop)));
+        for (int i = 0; i < mItemDataList.size(); i++) {
+            ImageView imageView = new ImageView(mContext);
+//            imageView.setColorFilter(Color.parseColor("#000000"));
+//            imageView.setImageResource(R.mipmap.item_01);
+//            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//            layoutParams.width = 100;
+//            layoutParams.height = 100;
+//            imageView.setLayoutParams(layoutParams);
+//            imageView.setDrawingCacheEnabled(true);
+//            BitmapDrawable bitmapDrawable= (BitmapDrawable) imageView.getDrawable();
+//            mItemDataList.get(i).setBitmap(imageScale(bitmapDrawable.getBitmap(), s_w, (int) (getHeight() / 2 - mTriangleTop)));
+            setImager(i, imageView);
         }
         bgBitmap = imageScale(bgBitmap, getWidth(), getHeight());
         //设置icon的宽高
     }
 
+    private void setImager(int i, ImageView imageView) {
+        Glide.with(mContext).
+                load(mItemDataList.get(i).getItem_icon()).
+                listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        BitmapDrawable mresource = (BitmapDrawable) resource;
+                        mItemDataList.get(i).setBitmap(imageScale(mresource.getBitmap(), mTriangleWidth, (int) (getHeight() / 2 - mTriangleTop)));
+                        postInvalidate();
+                        return false;
+                    }
+                }).override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).into(imageView);
+
+    }
+
 
     public void startAnimator() {
-        if (objectAnimator != null && objectAnimator.isRunning() && !ClickDoubleUtil.isFastClick() || !mClickable) {
+        if (objectAnimator != null && objectAnimator.isRunning() && !ClickDoubleUtil.isFastClick() || !mClickable && loadingFinished()) {
             return;
         }
         mClickable = false;
         objectAnimator = AnimatorUtils.singleton().getRotateValueAnimator(this, new IturntableAnimator() {
-            TurntablePrize bean;
+            TurntableBean.ItemsDTO bean;
 
             @Override
             public void onAnimationStart(Animator animation) {
@@ -177,9 +228,9 @@ public class TurntableView extends View {
                 //返回的是生成的度数
                 float angle = Float.parseFloat(value);
                 int index = (int) (angle / unitAngle);
-                TurntablePrize effect = mItemBitmap.get((mItemBitmap.size() - 1) - index);
-                Log.d("抽奖结果    ", effect.getName() + "");
-                this.bean = effect;
+                TurntableBean.ItemsDTO itemsDTO = mItemDataList.get((mItemDataList.size() - 1) - index);
+                Log.d("抽奖结果    ", itemsDTO.getTitle() + "");
+                this.bean = itemsDTO;
             }
         });
         objectAnimator.setDuration(3000);
@@ -189,7 +240,7 @@ public class TurntableView extends View {
 
     public interface ITurntableResultListener {
 
-        public void onResult(TurntablePrize prize);
+        public void onResult(TurntableBean.ItemsDTO dto);
 
     }
 
@@ -201,11 +252,24 @@ public class TurntableView extends View {
     private void drawTriangleBitmap(Canvas canvas) {
         canvas.save();
         canvas.rotate(unitAngle / 2, getWidth() / 2, getHeight() / 2);
-        for (int i = 0; i < mItemBitmap.size(); i++) {
+        for (int i = 0; i < mItemDataList.size(); i++) {
             Paint p = new Paint();
             Matrix matrix = new Matrix();
             matrix.postTranslate(getWidth() / 2 - (mTriangleWidth / 2), mTriangleTop);
-            canvas.drawBitmap(mItemBitmap.get(i).getBitmap(), matrix, p);
+//            Bitmap drawMap = mItemDataList.get(i).getBitmap();
+//            if (drawMap == null) {
+//                ImageView imageView = new ImageView(mContext);
+//                imageView.setColorFilter(Color.parseColor("#000000"));
+//                imageView.setImageResource(R.mipmap.item_01);
+//                ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//                layoutParams.width = 100;
+//                layoutParams.height = 100;
+//                imageView.setLayoutParams(layoutParams);
+//                imageView.setDrawingCacheEnabled(true);
+//                BitmapDrawable bitmapDrawable = (BitmapDrawable) imageView.getDrawable();
+//                drawMap = imageScale(bitmapDrawable.getBitmap(), mTriangleWidth, (int) (getHeight() / 2 - mTriangleTop));
+//            }
+            canvas.drawBitmap(mItemDataList.get(i).getBitmap(), matrix, p);
             canvas.rotate(unitAngle, getWidth() / 2, getHeight() / 2);
         }
         canvas.restore();

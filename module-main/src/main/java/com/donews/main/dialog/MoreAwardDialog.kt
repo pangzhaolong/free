@@ -18,8 +18,7 @@ import com.donews.main.BuildConfig
 import com.donews.main.R
 import com.donews.main.databinding.MainMoreAwardDialogLayoutBinding
 import com.donews.main.entitys.resps.ExitDialogRecommendGoodsResp
-import com.donews.middle.abswitch.ABSwitch
-import com.donews.middle.adutils.RewardVideoAd
+import com.donews.middle.centralDeploy.ABSwitch
 import com.donews.middle.adutils.RewardVideoAd.showPreloadRewardVideo
 import com.donews.middle.utils.LottieUtil
 import com.donews.network.EasyHttp

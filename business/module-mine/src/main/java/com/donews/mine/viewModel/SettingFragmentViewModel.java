@@ -15,7 +15,7 @@ import com.dn.drouter.ARouteHelper;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.updatedialog.UpdateManager;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.mine.Api.MineHttpApi;
 import com.donews.mine.BuildConfig;
 import com.donews.mine.databinding.MineSettingFragmentBinding;
