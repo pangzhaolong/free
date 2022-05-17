@@ -23,31 +23,31 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="51.33dp">
+                android:layout_height="match_parent">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/cancelBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="10.59dp"
+                    android:layout_marginStart="15.33dp"
+                    android:layout_marginTop="24dp"
+                    app:layout_constraintTop_toTopOf="parent"
                     android:onClick="@{eventListener::cancelBtn}"
-                    app:layout_constraintStart_toStartOf="@+id/basicBgView"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:srcCompat="@drawable/collect_icon_back" />
 
                 <TextView
                     android:id="@+id/title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50.33dp"
+                    android:layout_marginTop="57dp"
                     android:background="@drawable/collect_icon_dialog_top"
                     android:gravity="center"
                     android:text="选择你的福利卡 集卡包邮到家    "
                     android:textColor="@color/white"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cancelBtn"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/cancelBtn" />
 
                 <View
                     android:id="@+id/basicView"
@@ -88,8 +88,33 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_marginStart="29.33dp"
+                    android:paddingTop="23.33dp"
+                    android:paddingBottom="20dp"
+                    android:layout_marginEnd="29.33dp"
+                    android:overScrollMode="never"
+                    android:scrollbars="none"
+                    app:layout_constraintBottom_toTopOf="@+id/btn"
+                    app:layout_constraintTop_toTopOf="@+id/basicView"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp" />
+
                 <View
-                    android:alpha="0.5"
+                    android:background="@drawable/collect_bg_alpha_five"
+                    android:layout_marginStart="29.33dp"
+                    android:layout_marginEnd="29.33dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/basicView"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"/>
+
+                <View
+                    android:background="@drawable/collect_bg_alpha_five"
                     android:layout_marginStart="29.33dp"
                     android:layout_marginEnd="29.33dp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -97,19 +122,6 @@
                     app:layout_constraintBottom_toTopOf="@+id/btn"
                     android:layout_width="match_parent"
                     android:layout_height="20dp"/>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView"
-                    android:layout_marginStart="29.33dp"
-                    android:layout_marginTop="23.33dp"
-                    android:layout_marginEnd="29.33dp"
-                    app:layout_constraintBottom_toTopOf="@+id/btn"
-                    app:layout_constraintTop_toTopOf="@+id/basicView"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginBottom="20dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

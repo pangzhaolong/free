@@ -460,7 +460,7 @@
 
             <TextView
                 android:id="@+id/bottomTvSix"
-                android:text="0"
+                android:text="%"
                 android:gravity="center"
                 android:layout_marginStart="6.48dp"
                 android:textStyle="bold"

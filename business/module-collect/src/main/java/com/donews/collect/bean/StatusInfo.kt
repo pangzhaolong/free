@@ -9,39 +9,39 @@ import com.google.gson.annotations.SerializedName
  */
 data class StatusInfo(
     @SerializedName("card_id")
-    var cardId: String,
+    var cardId: String = "",
     @SerializedName("card_times")
-    var cardTimes: Int,
+    var cardTimes: Int = 0,
     @SerializedName("fragments")
-    var fragments: List<Fragment>,
+    var fragments: List<Fragment> = arrayListOf(),
     @SerializedName("goods_info")
     var goodsInfo: GoodsInfo,
     @SerializedName("status")
-    var status: Int,
+    var status: Int = 0,
     @SerializedName("time_out")
-    var timeOut: Int,
+    var timeOut: Int = 0,
     @SerializedName("uni_progress")
-    var uniProgress: Int,
+    var uniProgress: Int = 0,
     @SerializedName("uni_times")
-    var uniTimes: Int
+    var uniTimes: Int = 0
 ): BaseLiveDataModel()
 
 data class Fragment(
     @SerializedName("hold_num")
-    var holdNum: Int,
+    var holdNum: Int = 0,
     @SerializedName("img")
-    var img: String,
+    var img: String = "",
     @SerializedName("need_num")
-    var needNum: Int,
+    var needNum: Int = 0,
     @SerializedName("no")
-    var no: Int
+    var no: Int = 0
 ):BaseLiveDataModel()
 
 data class GoodsInfo(
     @SerializedName("goods_id")
-    var goodsId: String,
+    var goodsId: String = "",
     @SerializedName("main_pic")
-    var mainPic: String,
+    var mainPic: String = "",
     @SerializedName("title")
-    var title: String
+    var title: String = ""
 ):BaseLiveDataModel()

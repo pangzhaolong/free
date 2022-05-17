@@ -15,18 +15,24 @@ object DialogUtil {
     fun showGoodDialog(
         activity: FragmentActivity,
         goodJson:String,
+        dis:() -> Unit = {},
         dialogCancel:() -> Unit = {},
-        dialogBtn:() -> Unit = {},
+        dialogBtn:(goodId: String) -> Unit = {},
     ) {
         if (goodDialog != null && goodDialog?.dialog != null && goodDialog?.dialog!!.isShowing) {
             return
         }
         goodDialog = GoodDialog.newInstance(goodJson).apply {
             setOnDismissListener {
+                dis.invoke()
                 goodDialog = null
             }
-            clickDialogBtn = {}
-            clickDialogCancel = {}
+            clickDialogBtn = {
+                dialogBtn.invoke(it)
+            }
+            clickDialogCancel = {
+                dialogCancel.invoke()
+            }
         }
 
         goodDialog?.showAllowingStateLoss(activity.supportFragmentManager, GoodDialog::class.simpleName)

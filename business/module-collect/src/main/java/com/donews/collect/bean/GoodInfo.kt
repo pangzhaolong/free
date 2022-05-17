@@ -18,5 +18,7 @@ data class GoodBean(
     @SerializedName("main_pic")
     var mainPic: String = "",
     @SerializedName("title")
-    var title: String = ""
+    var title: String = "",
+    @SerializedName("isSelect")
+    var isSelect: Boolean = false
 ):BaseLiveDataModel()

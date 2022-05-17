@@ -1,5 +1,6 @@
 package com.donews.base.utils.glide;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
@@ -25,8 +26,7 @@ public class GlideUtils {
             Log.e(TAG, "The context or URL is empty");
             return false;
         }
-
-        return true;
+        return !(context instanceof Activity) || !((Activity) context).isDestroyed();
     }
 
     /**

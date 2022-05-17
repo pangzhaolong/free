@@ -37,11 +37,11 @@ class CollectViewModel: BaseLiveDataViewModel<CollectRepository>() {
         }
     }
 
-    //弹幕
+    //集卡状态
     private val mStatus: MutableLiveData<StatusInfo> = MutableLiveData()
     val status: LiveData<StatusInfo> = mStatus
 
-    //弹幕
+    //集卡状态
     fun requestStatus() {
         viewModelScope.launch {
             mModel.getStatus().collect {
@@ -66,6 +66,23 @@ class CollectViewModel: BaseLiveDataViewModel<CollectRepository>() {
                     mGoodInfo.postValue(it)
                 } ?: kotlin.run {
                     mGoodInfo.postValue(null)
+                }
+            }
+        }
+    }
+
+    //选择新的福利卡
+    private val mNewGoodCard: MutableLiveData<Any> = MutableLiveData()
+    val newGoodCard: LiveData<Any> = mNewGoodCard
+
+    //集卡商品
+    fun requestNewGoodCard(goodId: String) {
+        viewModelScope.launch {
+            mModel.startNewCard(goodId).collect {
+                it?.let {
+                    mNewGoodCard.postValue(it)
+                } ?: kotlin.run {
+                    mNewGoodCard.postValue(null)
                 }
             }
         }

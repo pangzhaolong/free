@@ -1,0 +1,9 @@
+apply from: rootProject.file('gradle/library.build.gradle')
+
+android {
+}
+
+dependencies {
+    api "androidx.recyclerview:recyclerview:1.2.1"
+    api rootProject.ext.dependencies["BaseRecyclerViewAdapterHelper"]
+}

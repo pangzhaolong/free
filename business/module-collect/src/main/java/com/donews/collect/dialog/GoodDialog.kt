@@ -1,10 +1,13 @@
 package com.donews.collect.dialog
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.donews.base.fragmentdialog.AbstractFragmentDialog
+import com.donews.base.utils.ToastUtil
 import com.donews.collect.R
 import com.donews.collect.adapter.GoodAdapter
 import com.donews.collect.bean.GoodBean
@@ -44,25 +47,35 @@ class GoodDialog: AbstractFragmentDialog<CollectDialogGoodsBinding>(false, false
 
     private var collectList: MutableList<GoodBean> = arrayListOf()
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun initView() {
         dataBinding.eventListener = EventListener()
-        if (mGoodJson != ""){
-            try {
-                mGoodInfo = Gson().fromJson(mGoodJson,GoodInfo::class.java)
-                collectList.clear()
-                collectList.addAll(mGoodInfo?.list!!)
-                dataBinding?.recyclerView?.apply {
-                    layoutManager = GridLayoutManager(context,2)
-                    adapter = GoodAdapter(R.layout.collect_dialog_goods,collectList)
+        try {
+            mGoodInfo = Gson().fromJson(mGoodJson,GoodInfo::class.java)
+            collectList.clear()
+            collectList.addAll(mGoodInfo?.list!!)
+            dataBinding?.recyclerView?.apply {
+                layoutManager = GridLayoutManager(context,2)
+                adapter = GoodAdapter(R.layout.collect_item_good,collectList).apply {
+                    clickCall = {
+                        isSelect = true
+                        mPosition = it
+                        for(index in collectList.indices){
+                            collectList[index].isSelect = it == index
+                        }
+                        notifyDataSetChanged()
+                    }
                 }
-            } catch (e:Exception){}
-        }
+            }
+        } catch (e:Exception){}
     }
 
     override fun isUseDataBinding() = true
 
-    var clickDialogBtn: () -> Unit = {}
+    var clickDialogBtn: (goodId: String) -> Unit = {}
     var clickDialogCancel: () -> Unit = {}
+    private var isSelect = false
+    private var mPosition = 0
 
     inner class EventListener {
         fun cancelBtn(view: View) {
@@ -70,8 +83,12 @@ class GoodDialog: AbstractFragmentDialog<CollectDialogGoodsBinding>(false, false
             disMissDialog()
         }
         fun receiveBtn(view: View) {
-            clickDialogBtn.invoke()
-            disMissDialog()
+            if (isSelect){
+                clickDialogBtn.invoke(collectList[mPosition].goodsId)
+                disMissDialog()
+            } else {
+                if (context != null) ToastUtil.show(requireContext(),"请选择你的福利卡!")
+            }
         }
     }
 
