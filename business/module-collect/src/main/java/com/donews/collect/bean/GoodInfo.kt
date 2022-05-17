@@ -11,14 +11,3 @@ data class GoodInfo(
     @SerializedName("list")
     var list: List<GoodBean> = arrayListOf()
 ): BaseLiveDataModel()
-
-data class GoodBean(
-    @SerializedName("goods_id")
-    var goodsId: String = "",
-    @SerializedName("main_pic")
-    var mainPic: String = "",
-    @SerializedName("title")
-    var title: String = "",
-    @SerializedName("isSelect")
-    var isSelect: Boolean = false
-):BaseLiveDataModel()

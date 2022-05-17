@@ -1,31 +1,34 @@
 package com.donews.collect
 
+import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
-import com.donews.collect.bean.DanMuBean
-import com.donews.collect.bean.DanMuInfo
-import com.donews.collect.bean.StatusInfo
+import com.donews.collect.adapter.CollectAdapter
+import com.donews.collect.bean.*
 import com.donews.collect.databinding.CollectFragmentBinding
-import com.donews.collect.dialog.DialogUtil
+import com.donews.collect.util.DialogUtil
+import com.donews.collect.util.AnimationUtil
+import com.donews.collect.util.TimeUtil
 import com.donews.collect.view.DanMuView
 import com.donews.collect.vm.CollectViewModel
 import com.donews.common.base.MvvmBaseLiveDataActivity
 import com.donews.common.router.RouterFragmentPath
-import com.donews.middle.mainShare.bean.Ex
+import com.donews.middle.mainShare.bus.CollectStartNewCardEvent
 import com.donews.middle.mainShare.extend.setOnClickListener
 import com.donews.utilslibrary.utils.DensityUtils
 import com.google.gson.Gson
 import com.gyf.immersionbar.ImmersionBar
+import org.greenrobot.eventbus.EventBus
 import java.lang.Exception
-import java.util.*
+import java.text.DecimalFormat
 
 /**
  *  make in st
@@ -64,6 +67,7 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
     private fun normalStart() {
         initLiveData()
         initRecyclerView()
+        startBubbleAnimation()
         loadDanMu()
         loadStatus()
     }
@@ -73,14 +77,39 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
         initStatus()
         initGoods()
         initNewGoodCard()
+        initStopCard()
     }
 
+    private var collectAdapter: CollectAdapter? = null
+    private var collectFgList: MutableList<CardFragment> = arrayListOf()
     private fun initRecyclerView() {
         mDataBinding?.recyclerView?.apply {
             layoutManager = GridLayoutManager(mContext, 3)
+            collectAdapter = CollectAdapter(R.layout.collect_item_fragment,collectFgList)
+            adapter = collectAdapter
         }
     }
 
+    private var bubbleFloutOneAnimation: ObjectAnimator? = null
+    private var bubbleFloutTwoAnimation: ObjectAnimator? = null
+    private fun startBubbleAnimation(){
+        bubbleFloutOneAnimation = AnimationUtil.bubbleFloat(mDataBinding?.bubbleOne,3000,10f,-1)
+        bubbleFloutOneAnimation?.start()
+        bubbleFloutTwoAnimation = AnimationUtil.bubbleFloat(mDataBinding?.bubbleTwo,2000,10f,-1)
+        bubbleFloutTwoAnimation?.start()
+    }
+    private fun cancelBubbleAnimation(){
+        if (bubbleFloutOneAnimation != null && bubbleFloutOneAnimation!!.isRunning){
+            bubbleFloutOneAnimation?.cancel()
+            bubbleFloutOneAnimation = null
+        }
+        if (bubbleFloutTwoAnimation != null && bubbleFloutTwoAnimation!!.isRunning){
+            bubbleFloutTwoAnimation?.cancel()
+            bubbleFloutTwoAnimation = null
+        }
+    }
+
+    //region 接口相关
     private fun initDanMu() {
         mViewModel?.danMu?.observe(this, {
             it?.let {
@@ -132,6 +161,7 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
         mViewModel?.newGoodCard?.observe(this, {
             it?.let {
                 loadStatus()
+                EventBus.getDefault().post(CollectStartNewCardEvent())
             }
         })
     }
@@ -139,6 +169,19 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
     private fun loadNewGoodCard(goodId: String) {
         mViewModel?.requestNewGoodCard(goodId)
     }
+
+    private fun initStopCard(){
+        mViewModel?.stopCard?.observe(this, {
+            it?.let {
+                loadGoods()
+            }
+        })
+    }
+
+    private fun loadStopCard(cardId:String){
+        mViewModel?.requestStopCard(cardId)
+    }
+    //endregion
 
     //region 弹幕
     private val danMuList: MutableList<DanMuBean> = arrayListOf()
@@ -184,26 +227,14 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
         private const val STATUS_THREE = 3
     }
 
+    //集卡状态处理
     private fun handleStatus() {
         when (mStatusInfo?.status) {
             STATUS_ZERO -> {
                 loadGoods()
             }
             STATUS_ONE -> {
-                mDataBinding?.rightTv?.text = mStatusInfo?.goodsInfo?.title
-                mStatusInfo?.goodsInfo?.title
-                if (mStatusInfo?.timeOut != null){
-                    timeOutMsg(mStatusInfo?.timeOut!!)
-                }
-                mDataBinding?.lotteryTwo?.text = mStatusInfo?.cardTimes.toString()
-                if (mStatusInfo?.uniProgress != null){
-                    val str = mStatusInfo?.uniProgress!!.toString()
-                    mDataBinding?.bottomTvTwo?.text = mStatusInfo?.uniProgress!!.toString()[0].toString()
-                    mDataBinding?.bottomTvThree?.text = 0.toString()
-                    mDataBinding?.bottomTvFour?.text = 0.toString()
-                    mDataBinding?.bottomTvFive?.text = 0.toString()
-                }
-
+                showLayoutMsg()
             }
             STATUS_TWO -> {
             }
@@ -213,34 +244,76 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
     }
     //endregion
 
-    private fun timeOutMsg(timeMs:Int){
+    //布局内容填充
+    @SuppressLint("NotifyDataSetChanged")
+    private fun showLayoutMsg(){
         try {
-            val day = timeMs / 24 * 3600
-            val totalSeconds = timeMs / 1000
-            val seconds = totalSeconds % 60
-            val minutes = totalSeconds / 60 % 60
-            val hours = totalSeconds / 3600
-            val hms = Formatter().format("%02d:%02d:%02d", hours, minutes, seconds).toString()
-            val split = hms.split(":")
-            mDataBinding?.tvOne?.text = day.toString()
-            mDataBinding?.tvTwo?.text = split[0]
-            mDataBinding?.tvThree?.text = split[1]
-            mDataBinding?.tvFour?.text = split[2]
-        } catch (e:Exception){
+            mDataBinding?.rightTv?.text = mStatusInfo?.goodsInfo?.title
+            curTime = mStatusInfo?.timeOut!!
+            mHandler.postDelayed(timer,1000L)
+            mDataBinding?.lotteryTwo?.text = mStatusInfo?.cardTimes.toString()
+            val curProgress = (mStatusInfo?.uniProgress!! / 100).toDouble()
+            val str = DecimalFormat("000.00%").format(curProgress)
+            mDataBinding?.bottomTvOne?.text = str[0].toString()
+            mDataBinding?.bottomTvTwo?.text = str[1].toString()
+            mDataBinding?.bottomTvThree?.text = str[2].toString()
+            mDataBinding?.bottomTvFour?.text = str[4].toString()
+            mDataBinding?.bottomTvFive?.text = str[5].toString()
+            mDataBinding?.bottomTvSix?.text = str[6].toString()
+            when (curProgress){
+                100.0->mDataBinding?.progress?.progress = 100
+                0.0-> mDataBinding?.progress?.progress = 0
+                else-> mDataBinding?.progress?.progress = curProgress.toInt()
+            }
+            collectFgList.clear()
+            collectFgList.addAll(mStatusInfo?.fragments as MutableList)
+            collectAdapter?.notifyDataSetChanged()
 
+        } catch (e:Exception){}
+    }
+
+    //倒计时
+    private var curTime = 100
+    private val timer = object : Runnable {
+        override fun run() {
+            try {
+                if (curTime > 0) {
+                    curTime--
+                    TimeUtil.timeConversion(curTime.toLong(),mDataBinding?.tvOne!!,
+                        mDataBinding?.tvTwo!!,mDataBinding?.tvThree!!,mDataBinding?.tvFour!!)
+                    if (curTime == 0) {
+                        //timeout
+                    } else {
+                        mHandler.postDelayed(this, 1000L)
+                    }
+                }
+            } catch (e:Exception){}
         }
+
     }
 
     private fun initClick() {
-        setOnClickListener(mDataBinding?.iconBack) {
+        setOnClickListener(mDataBinding?.iconBack,mDataBinding?.changeGoodClick) {
             when (this) {
                 mDataBinding?.iconBack -> {
                     finish()
+                }
+                mDataBinding?.changeGoodClick -> {
+                    if (mStatusInfo != null){
+                        DialogUtil.showChangeGoodDialog(this@CollectActivity,Gson().toJson(mStatusInfo)){
+                            loadStopCard(it)
+                        }
+                    }
                 }
             }
         }
     }
 
     val mHandler = Handler(Looper.getMainLooper())
+
+    override fun onDestroy() {
+        super.onDestroy()
+        cancelBubbleAnimation()
+    }
 
 }

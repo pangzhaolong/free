@@ -13,9 +13,9 @@ data class StatusInfo(
     @SerializedName("card_times")
     var cardTimes: Int = 0,
     @SerializedName("fragments")
-    var fragments: List<Fragment> = arrayListOf(),
+    var fragments: List<CardFragment> = arrayListOf(),
     @SerializedName("goods_info")
-    var goodsInfo: GoodsInfo,
+    var goodsInfo: GoodBean,
     @SerializedName("status")
     var status: Int = 0,
     @SerializedName("time_out")
@@ -26,7 +26,7 @@ data class StatusInfo(
     var uniTimes: Int = 0
 ): BaseLiveDataModel()
 
-data class Fragment(
+data class CardFragment(
     @SerializedName("hold_num")
     var holdNum: Int = 0,
     @SerializedName("img")
@@ -35,13 +35,4 @@ data class Fragment(
     var needNum: Int = 0,
     @SerializedName("no")
     var no: Int = 0
-):BaseLiveDataModel()
-
-data class GoodsInfo(
-    @SerializedName("goods_id")
-    var goodsId: String = "",
-    @SerializedName("main_pic")
-    var mainPic: String = "",
-    @SerializedName("title")
-    var title: String = ""
 ):BaseLiveDataModel()

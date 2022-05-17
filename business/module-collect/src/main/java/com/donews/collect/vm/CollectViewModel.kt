@@ -88,4 +88,21 @@ class CollectViewModel: BaseLiveDataViewModel<CollectRepository>() {
         }
     }
 
+    //结束当前集卡
+    private val mStopCard: MutableLiveData<Any> = MutableLiveData()
+    val stopCard: LiveData<Any> = mStopCard
+
+    //结束当前集卡
+    fun requestStopCard(goodId: String) {
+        viewModelScope.launch {
+            mModel.startStopCard(goodId).collect {
+                it?.let {
+                    mStopCard.postValue(it)
+                } ?: kotlin.run {
+                    mStopCard.postValue(null)
+                }
+            }
+        }
+    }
+
 }

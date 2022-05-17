@@ -22,6 +22,7 @@ import com.donews.common.router.RouterFragmentPath
 import com.donews.middle.adutils.RewardVideoAd
 import com.donews.middle.mainShare.bean.BubbleBean
 import com.donews.middle.mainShare.bean.TaskBubbleInfo
+import com.donews.middle.mainShare.bus.CollectStartNewCardEvent
 import com.donews.middle.mainShare.bus.ShareClickNotifyEvent
 import com.donews.middle.mainShare.vm.MainShareViewModel
 import com.donews.middle.views.TaskView
@@ -527,13 +528,25 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                     //处理签到逻辑
                     clickSign()
                 }
-                mDataBinding?.iconLuckPanBubble, mDataBinding?.iconLuckPanTv, mDataBinding?.taskBgLuckPan -> {
-                    //处理转盘逻辑
+                mDataBinding?.iconLuckPanBubble, mDataBinding?.iconLuckPanTv -> {
+                    //处理转盘气泡逻辑
                     clickLuckPan()
                 }
-                mDataBinding?.iconCollectBubble, mDataBinding?.iconCollectTv, mDataBinding?.taskBgCollect -> {
-                    //处理集卡逻辑
+                mDataBinding?.taskBgLuckPan -> {
+                    //处理转盘图片逻辑
+                    ARouter.getInstance()
+                        .build(RouterActivityPath.Turntable.TURNTABLE_ACTIVITY)
+                        .navigation()
+                }
+                mDataBinding?.iconCollectBubble, mDataBinding?.iconCollectTv -> {
+                    //处理集卡气泡逻辑
                     clickCollect()
+                }
+                mDataBinding?.taskBgCollect -> {
+                    //处理集卡图片逻辑
+                    ARouter.getInstance()
+                        .build(RouterFragmentPath.Collect.PAGER_COLLECT)
+                        .navigation()
                 }
                 mDataBinding?.iconShareBubble, mDataBinding?.shareTv -> {
                     //处理分享逻辑
@@ -916,6 +929,12 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun shareClickNotify(event: ShareClickNotifyEvent?) {
         mShareVideModel.requestAdReport(3, "share")
+    }
+
+    //集卡抽卡通知
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun startNewCardNotify(event: CollectStartNewCardEvent?) {
+        mShareVideModel.requestAdReport(4, "collect")
     }
     //endregion
 
