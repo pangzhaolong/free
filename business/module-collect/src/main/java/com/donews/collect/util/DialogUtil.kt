@@ -1,7 +1,9 @@
-package com.donews.collect.dialog
+package com.donews.collect.util
 
 import android.annotation.SuppressLint
 import androidx.fragment.app.FragmentActivity
+import com.donews.collect.dialog.ChangeDialog
+import com.donews.collect.dialog.GoodDialog
 
 /**
  *  make in st
@@ -36,6 +38,29 @@ object DialogUtil {
         }
 
         goodDialog?.showAllowingStateLoss(activity.supportFragmentManager, GoodDialog::class.simpleName)
+
+    }
+
+    private var changeDialog: ChangeDialog? = null
+
+    fun showChangeGoodDialog(
+        activity: FragmentActivity,
+        goodJson:String,
+        dialogBtn:(cardId: String) -> Unit = {},
+    ) {
+        if (changeDialog != null && changeDialog?.dialog != null && changeDialog?.dialog!!.isShowing) {
+            return
+        }
+        changeDialog = ChangeDialog.newInstance(goodJson).apply {
+            setOnDismissListener {
+                changeDialog = null
+            }
+            clickDialogBtn = {
+                dialogBtn.invoke(it)
+            }
+        }
+
+        changeDialog?.showAllowingStateLoss(activity.supportFragmentManager, ChangeDialog::class.simpleName)
 
     }
 

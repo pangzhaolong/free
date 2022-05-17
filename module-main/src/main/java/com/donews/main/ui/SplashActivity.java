@@ -33,32 +33,28 @@ import com.donews.base.base.AppStatusConstant;
 import com.donews.base.base.AppStatusManager;
 import com.donews.base.utils.ToastUtil;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
-import com.donews.common.BuildConfig;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.contract.LoginHelp;
 import com.donews.main.R;
 import com.donews.main.databinding.MainActivitySplashBinding;
 import com.donews.main.dialog.PersonGuideDialog;
 import com.donews.main.utils.SplashUtils;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.middle.adutils.DnSdkInit;
 import com.donews.middle.adutils.InterstitialFullAd;
 import com.donews.middle.adutils.RewardVideoAd;
 import com.donews.middle.adutils.SplashAd;
 import com.donews.middle.adutils.adcontrol.AdControlBean;
 import com.donews.middle.adutils.adcontrol.AdControlManager;
+import com.donews.middle.centralDeploy.TurntableSwitch;
 import com.donews.middle.front.FrontConfigManager;
 import com.donews.utilslibrary.analysis.AnalysisHelp;
 import com.donews.utilslibrary.base.SmSdkConfig;
 import com.donews.utilslibrary.base.UtilsConfig;
-import com.donews.utilslibrary.utils.DeviceUtils;
 import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.NetworkUtils;
 import com.donews.utilslibrary.utils.SPUtils;
-import com.donews.yfsdk.YfAdSdk;
-import com.donews.yfsdk.bean.AdConfigBean;
-import com.donews.yfsdk.loader.AdManager;
 import com.donews.yfsdk.manager.AdConfigManager;
 import com.donews.yfsdk.monitor.LotteryAdCheck;
 import com.orhanobut.logger.Logger;
@@ -597,7 +593,10 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
 
         // 打个补丁,by dw
         AdConfigManager.INSTANCE.init();
+        //拉取中台开关配置
         ABSwitch.Ins().init();
+        //获取大转盘的配置
+        TurntableSwitch.Ins().init();
         FrontConfigManager.Ins().init();
         mHadPermissions = true;
         if ((SPUtils.getInformain(KeySharePreferences.IS_FIRST_IN_APP,

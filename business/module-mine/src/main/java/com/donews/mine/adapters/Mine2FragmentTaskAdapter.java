@@ -11,7 +11,7 @@ import com.donews.base.utils.ToastUtil;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.middle.bean.HighValueGoodsBean;
 import com.donews.middle.bean.mine2.emuns.Mine2TaskType;
 import com.donews.middle.bean.mine2.reqs.DailyTasksReceiveReq;

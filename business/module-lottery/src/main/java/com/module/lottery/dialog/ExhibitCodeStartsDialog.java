@@ -33,7 +33,7 @@ import com.dn.integral.jdd.integral.ProxyIntegral;
 import com.donews.base.base.BaseApplication;
 import com.donews.middle.dialog.BaseDialog;
 import com.donews.yfsdk.monitor.LotteryAdCheck;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.middle.utils.CriticalModelTool;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;

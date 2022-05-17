@@ -1,4 +1,4 @@
-package com.donews.middle.abswitch;
+package com.donews.middle.centralDeploy;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -69,9 +69,8 @@ public class ABSwitch {
 
     public void init() {
         if (mHandler != null) {
+            mHandler.removeMessages(UPDATE_CONFIG_MSG);
             mHandler.sendEmptyMessage(UPDATE_CONFIG_MSG);
-        } else {
-            update();
         }
         //关联更新热门搜索数据
         TopSearchConfig.update();

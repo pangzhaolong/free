@@ -2,7 +2,9 @@ package com.donews.turntable.bean;
 
 import android.graphics.Bitmap;
 
-public class TurntablePrize {
+import com.donews.common.contract.BaseCustomViewModel;
+
+public class TurntablePrize extends BaseCustomViewModel {
     public String getName() {
         return mName;
     }

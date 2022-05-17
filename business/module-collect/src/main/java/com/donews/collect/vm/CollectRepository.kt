@@ -5,6 +5,7 @@ import com.donews.collect.bean.DanMuInfo
 import com.donews.collect.bean.GoodInfo
 import com.donews.collect.bean.StatusInfo
 import com.donews.middle.BuildConfig
+import com.donews.middle.mainShare.upJson.PostCardBean
 import com.donews.middle.mainShare.upJson.PostGoodBean
 import com.donews.network.EasyHttp
 import com.donews.network.cache.model.CacheMode
@@ -97,6 +98,29 @@ class CollectRepository: BaseLiveDataModel() {
             val disposable = EasyHttp.post(BuildConfig.BASE_QBN_API + "activity/v1/start-card")
                 .cacheMode(CacheMode.NO_CACHE)
                 .upJson(Gson().toJson(PostGoodBean(goodId)))
+                .execute(object : SimpleCallBack<StatusInfo>() {
+                    override fun onError(e: ApiException?) {
+                        trySend(null)
+                    }
+
+                    override fun onSuccess(t: StatusInfo?) {
+                        trySend(t)
+                    }
+                })
+            awaitClose {
+                disposable.dispose()
+            }
+        }
+    }
+
+    /**
+     * 结束当前集卡
+     */
+    fun startStopCard(goodId: String): Flow<StatusInfo?> {
+        return callbackFlow {
+            val disposable = EasyHttp.post(BuildConfig.BASE_QBN_API + "activity/v1/stop-card")
+                .cacheMode(CacheMode.NO_CACHE)
+                .upJson(Gson().toJson(PostCardBean(goodId)))
                 .execute(object : SimpleCallBack<StatusInfo>() {
                     override fun onError(e: ApiException?) {
                         trySend(null)

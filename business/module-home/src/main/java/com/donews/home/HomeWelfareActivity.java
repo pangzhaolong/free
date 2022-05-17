@@ -22,7 +22,7 @@ import com.donews.home.databinding.HomeWelfareActivityBinding;
 import com.donews.home.listener.GoodsClickListener;
 import com.donews.home.listener.SearchListener;
 import com.donews.home.viewModel.WelfareViewModel;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.middle.bean.home.HomeGoodsBean;
 import com.donews.middle.dialog.JumpThirdAppDialog;
 import com.donews.middle.go.GotoUtil;

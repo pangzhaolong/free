@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:ignore="all">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="78.54dp"
+            android:layout_height="78.54dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

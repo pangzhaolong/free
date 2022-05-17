@@ -17,7 +17,7 @@ import com.donews.home.adapter.SearchSugTbAdapter;
 import com.donews.home.databinding.HomeFragmentSearchTbBinding;
 import com.donews.home.listener.GoodsClickListener;
 import com.donews.home.viewModel.TbViewModel;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.middle.bean.home.HomeGoodsBean;
 import com.donews.middle.bean.home.SearchHistory;
 import com.donews.middle.bean.home.TmpSearchHistory;

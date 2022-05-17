@@ -24,7 +24,7 @@ import com.donews.front.R;
 import com.donews.front.databinding.FrontFirstGuidLotteryDialogBinding;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoods;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoodsResp;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.middle.bean.rp.PreRpBean;
 import com.donews.middle.dialog.BaseDialog;
 import com.donews.network.EasyHttp;

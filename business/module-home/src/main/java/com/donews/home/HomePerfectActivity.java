@@ -10,16 +10,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.home.adapter.CrazyListAdapter;
 import com.donews.home.databinding.HomeCrazyListActivityBinding;
 import com.donews.home.listener.GoodsClickListener;
 import com.donews.home.viewModel.CrazyViewModel;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.middle.bean.home.HomeGoodsBean;
-import com.donews.middle.bean.home.RealTimeBean;
 import com.donews.middle.dialog.JumpThirdAppDialog;
 import com.donews.middle.go.GotoUtil;
 import com.donews.middle.listener.JumpThirdAppListener;

@@ -16,7 +16,7 @@ import com.donews.base.BuildConfig;
 import com.donews.common.contract.BaseCustomViewModel;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.middle.api.MiddleApi;
 import com.donews.middle.bean.TaskActionBean;
 import com.donews.middle.bean.home.PrivilegeLinkBean;

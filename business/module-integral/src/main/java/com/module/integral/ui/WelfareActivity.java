@@ -1,12 +1,8 @@
 package com.module.integral.ui;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
-import android.os.SystemClock;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,7 +10,6 @@ import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 
-import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.AppUtils;
@@ -24,11 +19,9 @@ import com.dn.integral.jdd.IntegralComponent;
 import com.dn.integral.jdd.integral.IntegralStateListener;
 import com.dn.integral.jdd.integral.ProxyIntegral;
 import com.donews.base.base.BaseApplication;
-import com.donews.base.utils.ToastUtil;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
-import com.donews.middle.abswitch.ABSwitch;
-import com.donews.middle.dialog.ActivityRuleDialog;
+import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.middle.dialog.IntegralRuleDialog;
 import com.donews.middle.service.CritLotteryService;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
@@ -42,7 +35,6 @@ import com.module.integral.dialog.exit.ExitProgressInterceptDialog;
 import com.module.integral.dialog.exit.ExitRadPackDialog;
 import com.module.integral.viewModel.IntegralViewModel;
 import com.module.lottery.ui.BaseParams;
-import com.module.lottery.ui.LotteryActivity;
 import com.orhanobut.logger.Logger;
 
 import java.lang.ref.WeakReference;

@@ -15,7 +15,7 @@ import com.donews.home.adapter.NorGoodsAdapter;
 import com.donews.home.databinding.HomeFragmentNorBinding;
 import com.donews.home.listener.GoodsClickListener;
 import com.donews.home.viewModel.NorViewModel;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.middle.bean.home.HomeCategoryBean;
 import com.donews.middle.bean.home.HomeGoodsBean;
 import com.donews.middle.cache.GoodsCache;

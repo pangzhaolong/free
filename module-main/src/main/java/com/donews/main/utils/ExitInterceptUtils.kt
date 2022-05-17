@@ -16,7 +16,7 @@ import com.donews.main.BuildConfig
 import com.donews.main.dialog.*
 import com.donews.main.entitys.resps.ExitInterceptConfig
 import com.donews.main.ui.RpActivity
-import com.donews.middle.abswitch.ABSwitch
+import com.donews.middle.centralDeploy.ABSwitch
 import com.donews.middle.adutils.InterstitialFullAd
 import com.donews.middle.adutils.RewardVideoAd
 import com.donews.middle.adutils.adcontrol.AdControlManager

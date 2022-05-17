@@ -5,7 +5,7 @@ import com.dn.integral.jdd.integral.ProxyIntegral;
 import com.donews.yfsdk.monitor.LotteryAdCheck;
 import com.donews.common.config.CritParameterConfig;
 import com.donews.common.contract.LoginHelp;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.DateManager;
 import com.donews.utilslibrary.utils.SPUtils;

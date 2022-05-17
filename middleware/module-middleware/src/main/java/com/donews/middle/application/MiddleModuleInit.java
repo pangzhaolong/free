@@ -7,7 +7,7 @@ import com.donews.base.base.BaseApplication;
 import com.donews.base.utils.GsonUtils;
 import com.donews.common.IModuleInit;
 import com.donews.middle.BuildConfig;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.middle.adutils.adcontrol.AdControlManager;
 import com.donews.middle.bean.CriticalNumberBean;
 import com.donews.middle.bean.WithdraWalletResp;

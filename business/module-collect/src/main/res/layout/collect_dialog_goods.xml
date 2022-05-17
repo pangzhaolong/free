@@ -43,7 +43,7 @@
                     android:layout_marginTop="57dp"
                     android:background="@drawable/collect_icon_dialog_top"
                     android:gravity="center"
-                    android:text="选择你的福利卡 集卡包邮到家    "
+                    android:text="选择你的福利卡 集卡包邮到家"
                     android:textColor="@color/white"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -102,26 +102,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_width="match_parent"
                     android:layout_height="0dp" />
-
-                <View
-                    android:background="@drawable/collect_bg_alpha_five"
-                    android:layout_marginStart="29.33dp"
-                    android:layout_marginEnd="29.33dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/basicView"
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"/>
-
-                <View
-                    android:background="@drawable/collect_bg_alpha_five"
-                    android:layout_marginStart="29.33dp"
-                    android:layout_marginEnd="29.33dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toTopOf="@+id/btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

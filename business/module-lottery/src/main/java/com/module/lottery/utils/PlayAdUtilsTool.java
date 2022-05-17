@@ -21,7 +21,7 @@ import com.dn.sdk.listener.rewardvideo.SimpleRewardVideoListener;
 import com.donews.base.base.AppManager;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.middle.adutils.InterstitialFullAd;
 import com.donews.middle.adutils.RewardVideoAd;
 import com.donews.middle.dialog.LoadAdErrorDialog;

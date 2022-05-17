@@ -1,12 +1,9 @@
 package com.donews.main.dialog.ext;
 
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,19 +13,16 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.blankj.utilcode.util.AppUtils;
-import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.bumptech.glide.Glide;
 import com.dn.integral.jdd.IntegralComponent;
@@ -39,12 +33,8 @@ import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.main.R;
 import com.donews.main.utils.integral.MainIntegralTaskManager;
 import com.donews.main.utils.integral.beans.MainIntegralTaskDataItem;
-import com.donews.middle.abswitch.ABSwitch;
-import com.donews.network.subsciber.DownloadSubscriber;
-import com.orhanobut.logger.Logger;
+import com.donews.middle.centralDeploy.ABSwitch;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
