@@ -18,7 +18,7 @@ import com.donews.main.databinding.MainDialogPeopleGuideBinding;
 import com.donews.base.fragmentdialog.AbstractFragmentDialog;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.main.utils.SplashUtils;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.DeviceUtils;

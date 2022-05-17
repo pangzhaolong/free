@@ -1,4 +1,4 @@
-package com.donews.middle.abswitch;
+package com.donews.middle.centralDeploy;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -68,15 +68,14 @@ public class ABSwitch {
 
     public void init() {
         if (mHandler != null) {
+            mHandler.removeMessages(UPDATE_CONFIG_MSG);
             mHandler.sendEmptyMessage(UPDATE_CONFIG_MSG);
-        } else {
-            update();
         }
     }
 
     private void update() {
         LogUtil.e("ABSwitch update");
-        EasyHttp.get(HttpConfigUtilsKt.withConfigParams(BuildConfig.BASE_CONFIG_URL +BuildConfig.APP_IDENTIFICATION+"-"+"abswitch"
+        EasyHttp.get(HttpConfigUtilsKt.withConfigParams(BuildConfig.BASE_CONFIG_URL + BuildConfig.APP_IDENTIFICATION + "-" + "abswitch"
                 + BuildConfig.BASE_RULE_URL, true))
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<ABBean>() {
@@ -119,7 +118,7 @@ public class ABSwitch {
 
 
     public boolean isOpenAB() {
-        if(BuildConfig.DEBUG){
+        if (BuildConfig.DEBUG) {
             return false;
         }
         return mAbBean.isOpenAB();

@@ -17,7 +17,7 @@ import com.donews.base.utils.CrashHandlerUtil;
 import com.donews.common.NotifyLuncherConfigManager;
 import com.donews.common.config.ModuleLifecycleConfig;
 import com.donews.keepalive.global.KeepAliveAPI;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.middle.adutils.DnSdkInit;
 import com.donews.notify.launcher.NotificationCreate;
 import com.donews.notify.launcher.configs.Notify2ConfigManager;

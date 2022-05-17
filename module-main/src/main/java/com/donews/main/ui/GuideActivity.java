@@ -2,8 +2,6 @@ package com.donews.main.ui;
 
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.LinearGradient;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -25,7 +23,7 @@ import com.donews.common.router.RouterActivityPath;
 import com.donews.main.BuildConfig;
 import com.donews.main.R;
 import com.donews.main.databinding.MainActivityGuideBinding;
-import com.donews.middle.abswitch.ABSwitch;
+import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;

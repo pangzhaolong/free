@@ -1,6 +1,5 @@
 package com.donews.home.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
@@ -14,16 +13,11 @@ import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.home.R;
 import com.donews.home.adapter.ExchangeFragmentTabGoodsAdapter;
 import com.donews.home.databinding.HomeFragmentExchangeTabBinding;
-import com.donews.home.listener.GoodsClickListener;
 import com.donews.home.viewModel.NorViewModel;
-import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.bean.home.HomeCategoryBean;
 import com.donews.middle.bean.home.HomeGoodsBean;
 import com.donews.middle.cache.GoodsCache;
 import com.donews.middle.decoration.GridSpaceItemDecoration;
-import com.donews.middle.dialog.JumpThirdAppDialog;
-import com.donews.middle.go.GotoUtil;
-import com.donews.middle.listener.JumpThirdAppListener;
 
 public class ExchangeTabFragment extends MvvmLazyLiveDataFragment<HomeFragmentExchangeTabBinding, NorViewModel>
         implements ExchangeFragmentTabGoodsAdapter.GoodsClickListener {

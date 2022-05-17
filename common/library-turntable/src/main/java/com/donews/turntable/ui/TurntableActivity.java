@@ -10,9 +10,19 @@ import androidx.annotation.Nullable;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.dn.events.events.LotteryBackEvent;
+import com.donews.base.BuildConfig;
+import com.donews.base.utils.ToastUtil;
 import com.donews.common.router.RouterActivityPath;
+import com.donews.middle.bean.globle.TurntableBean;
+import com.donews.middle.centralDeploy.TurntableSwitch;
+import com.donews.network.EasyHttp;
+import com.donews.network.cache.model.CacheMode;
+import com.donews.network.callback.SimpleCallBack;
+import com.donews.network.exception.ApiException;
 import com.donews.turntable.R;
 import com.donews.turntable.base.TurntableBaseActivity;
+import com.donews.turntable.bean.RewardedBean;
 import com.donews.turntable.bean.TurntablePrize;
 import com.donews.turntable.databinding.TurntableActivityLayoutBinding;
 import com.donews.turntable.dialog.DoingResultDialog;
@@ -20,16 +30,24 @@ import com.donews.turntable.dialog.RuleDialog;
 import com.donews.turntable.utils.ClickDoubleUtil;
 import com.donews.turntable.view.TurntableView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.disposables.Disposable;
 
 @Route(path = RouterActivityPath.Turntable.TURNTABLE_ACTIVITY)
 public class TurntableActivity extends TurntableBaseActivity<TurntableActivityLayoutBinding> implements View.OnClickListener {
 
+    private static String TURNTABLE_BASE = BuildConfig.BASE_QBN_API;
+    //获取抽奖中奖人员列表
+    public static String TURNTABLE_COMMODITY = TURNTABLE_BASE + "activity/v1/turntable";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         ARouter.getInstance().inject(this);
         initTurntableView();
     }
@@ -41,36 +59,20 @@ public class TurntableActivity extends TurntableBaseActivity<TurntableActivityLa
 
     @Override
     protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 
 
     private void initTurntableView() {
-        List<String> nameList = new ArrayList<>();
-        nameList.add("电视机");
-        nameList.add("金币X166");
-        nameList.add("金币X6000");
-        nameList.add("智能冰箱");
-        nameList.add("金币X158");
-        nameList.add("苹果13手机");
-        nameList.add("金币X105");
-        nameList.add("金币X288");
-        List<TurntablePrize> itemBitmap = new ArrayList<>();
-        //奖item
-        for (int i = 0; i < nameList.size(); i++) {
-            TurntablePrize turntable = new TurntablePrize();
-            String name = "item_0" + (i + 1) + "";
-            Bitmap item = ((BitmapDrawable) this.getDrawable(getResources().getIdentifier(name, "mipmap", this.getPackageName()))).getBitmap();
-            turntable.setBitmap(item);
-            turntable.setName(nameList.get(i));
-            itemBitmap.add(turntable);
-        }
-        mDataBing.turntableView.setInitBitmap(itemBitmap);
+        List<TurntableBean.ItemsDTO> list = TurntableSwitch.Ins().getTurntableBean().getItems();
+        mDataBing.turntableView.setInitBitmap(list);
         mDataBing.turntableView.setTurntableResultListener(new TurntableView.ITurntableResultListener() {
             @Override
-            public void onResult(TurntablePrize prize) {
+            public void onResult(TurntableBean.ItemsDTO dto) {
                 //抽奖活动返回结果
-                showDoingResultDialog(prize);
+                showDoingResultDialog(dto);
+                EventBus.getDefault().post(dto);
             }
         });
         mDataBing.turntableLotteryButton.setOnClickListener(this);
@@ -79,7 +81,25 @@ public class TurntableActivity extends TurntableBaseActivity<TurntableActivityLa
 
     private void startLottery() {
         if (ClickDoubleUtil.isFastClick()) {
-            mDataBing.turntableView.startAnimator();
+            //先获取配置奖励
+            this.unDisposable();
+            Disposable disposable = EasyHttp.post(TURNTABLE_COMMODITY)
+                    .cacheMode(CacheMode.NO_CACHE)
+                    .execute(new SimpleCallBack<RewardedBean>() {
+                        @Override
+                        public void onError(ApiException e) {
+                            ToastUtil.show(TurntableActivity.this, e.getMessage());
+                        }
+
+                        @Override
+                        public void onSuccess(RewardedBean recommendBean) {
+                            if (recommendBean != null) {
+                                ToastUtil.show(TurntableActivity.this, recommendBean.getId() + "'");
+                                mDataBing.turntableView.startAnimator();
+                            }
+                        }
+                    });
+            this.addDisposable(disposable);
         }
     }
 
@@ -92,8 +112,8 @@ public class TurntableActivity extends TurntableBaseActivity<TurntableActivityLa
     }
 
 
-    private void showDoingResultDialog(TurntablePrize prize) {
-        DoingResultDialog dialog = new DoingResultDialog(TurntableActivity.this, prize);
+    private void showDoingResultDialog(TurntableBean.ItemsDTO itemsDTO) {
+        DoingResultDialog dialog = new DoingResultDialog(TurntableActivity.this, itemsDTO);
         dialog.setStateListener(new DoingResultDialog.OnStateListener() {
             @Override
             public void onOK() {
