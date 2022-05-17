@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="eventListener"
+            type="com.donews.collect.dialog.FailDialog.EventListener" />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:background="@color/black"
+        tools:ignore="all">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/title"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="129.33dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:srcCompat="@drawable/collect_icon_fail_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <View
+                    android:id="@+id/bgView"
+                    android:layout_marginTop="15dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/title"
+                    android:background="@drawable/collect_icon_dialog_top"
+                    android:layout_width="328dp"
+                    android:layout_height="35.33dp"/>
+
+                <TextView
+                    android:id="@+id/tvOne"
+                    app:layout_constraintTop_toTopOf="@+id/bgView"
+                    app:layout_constraintBottom_toBottomOf="@+id/bgView"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/tvTwo"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:text="再来一次，开启"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/tvTwo"
+                    app:layout_constraintTop_toTopOf="@+id/tvOne"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvOne"
+                    android:textColor="#FFF3B3"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:text="“超容易”"
+                    app:layout_constraintStart_toEndOf="@+id/tvOne"
+                    app:layout_constraintEnd_toStartOf="@+id/tvThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/tvThree"
+                    app:layout_constraintTop_toTopOf="@+id/tvOne"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvOne"
+                    app:layout_constraintStart_toEndOf="@+id/tvTwo"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:text="模式"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <View
+                    android:id="@+id/basicView"
+                    android:layout_width="match_parent"
+                    android:layout_height="358dp"
+                    android:layout_marginStart="29.33dp"
+                    android:layout_marginTop="19.67dp"
+                    android:layout_marginEnd="29.33dp"
+                    android:background="@drawable/collect_bg_dialog_good"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/bgView" />
+
+                <TextView
+                    android:id="@+id/btn"
+                    android:layout_marginBottom="27dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/basicView"
+                    android:onClick="@{eventListener::receiveBtn}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:background="@drawable/collect_icon_fail_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/leftTv"
+                    android:text="开始"
+                    app:layout_constraintTop_toTopOf="@+id/btn"
+                    app:layout_constraintBottom_toBottomOf="@id/btn"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintEnd_toStartOf="@+id/rightTv"
+                    app:layout_constraintStart_toStartOf="@+id/basicView"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/rightTv"
+                    app:layout_constraintBottom_toBottomOf="@id/btn"
+                    android:text="(5s)"
+                    app:layout_constraintTop_toTopOf="@+id/btn"
+                    app:layout_constraintStart_toEndOf="@+id/leftTv"
+                    app:layout_constraintEnd_toEndOf="@+id/basicView"
+                    android:textColor="@color/white"
+                    android:textSize="14.67sp"
+                    android:gravity="center"
+                    android:layout_marginStart="4dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <View
+                    android:id="@+id/centerLayout"
+                    android:background="@drawable/collect_bg_white"
+                    android:layout_marginStart="49.33dp"
+                    android:layout_marginTop="23.33dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginEnd="49.33dp"
+                    app:layout_constraintBottom_toTopOf="@+id/btn"
+                    app:layout_constraintTop_toTopOf="@+id/basicView"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/img"
+                    app:layout_constraintTop_toTopOf="@+id/basicView"
+                    app:layout_constraintStart_toStartOf="@+id/basicView"
+                    app:layout_constraintEnd_toEndOf="@+id/basicView"
+                    android:layout_marginTop="59.67dp"
+                    android:scaleType="fitXY"
+                    android:layout_width="205.147dp"
+                    android:layout_height="175.33dp"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</layout>

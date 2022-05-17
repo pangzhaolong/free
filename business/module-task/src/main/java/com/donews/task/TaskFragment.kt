@@ -42,6 +42,9 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.droidsonroids.gif.GifDrawable
+import com.donews.middle.bean.globle.TurntableBean
+import com.donews.middle.bean.globle.TurntableBean.ItemsDTO
+
 
 /**
  *  make in st
@@ -936,6 +939,15 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
     fun startNewCardNotify(event: CollectStartNewCardEvent?) {
         mShareVideModel.requestAdReport(4, "collect")
     }
+
+    //注意:签到是签到那边上报的
+    //转盘操作过后,我这边上报
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onTurntableBeanEvent(event: ItemsDTO?) {
+        mShareVideModel.requestAdReport(0, "turntable")
+    }
+
+    //抽奖操作过后,我这边上报
     //endregion
 
     override fun onDestroy() {
@@ -952,6 +964,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
             gifDrawable?.recycle()
             gifDrawable = null
         }
+        mHandler.removeCallbacks(boxTimer)
     }
 
 }

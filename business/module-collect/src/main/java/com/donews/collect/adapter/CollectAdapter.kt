@@ -33,9 +33,9 @@ class CollectAdapter(resId: Int, dataList: MutableList<CardFragment>) :
                 )
             )
             if (data?.holdNum!! >= data.needNum){
-                collectFgBinding?.root?.alpha = 1f
+                collectFgBinding?.image?.alpha = 1f
             } else {
-                collectFgBinding?.root?.alpha = 0.5f
+                collectFgBinding?.image?.alpha = 0.3f
             }
         } catch (e:Exception){}
     }

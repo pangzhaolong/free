@@ -4,9 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.donews.base.viewmodel.BaseLiveDataViewModel
-import com.donews.collect.bean.DanMuInfo
-import com.donews.collect.bean.GoodInfo
-import com.donews.collect.bean.StatusInfo
+import com.donews.collect.bean.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -100,6 +98,40 @@ class CollectViewModel: BaseLiveDataViewModel<CollectRepository>() {
                     mStopCard.postValue(it)
                 } ?: kotlin.run {
                     mStopCard.postValue(null)
+                }
+            }
+        }
+    }
+
+    //抽碎片
+    private val mDrawCard: MutableLiveData<DrawCardInfo> = MutableLiveData()
+    val drawCard: LiveData<DrawCardInfo> = mDrawCard
+
+    //抽碎片
+    fun requestDrawCard(goodId: String) {
+        viewModelScope.launch {
+            mModel.startDrawCard(goodId).collect {
+                it?.let {
+                    mDrawCard.postValue(it)
+                } ?: kotlin.run {
+                    mDrawCard.postValue(null)
+                }
+            }
+        }
+    }
+
+    //充能
+    private val mCardCharge: MutableLiveData<CardChargeInfo> = MutableLiveData()
+    val cardCharge: LiveData<CardChargeInfo> = mCardCharge
+
+    //充能
+    fun requestCardCharge(goodId: String) {
+        viewModelScope.launch {
+            mModel.startCardCharge(goodId).collect {
+                it?.let {
+                    mCardCharge.postValue(it)
+                } ?: kotlin.run {
+                    mCardCharge.postValue(null)
                 }
             }
         }

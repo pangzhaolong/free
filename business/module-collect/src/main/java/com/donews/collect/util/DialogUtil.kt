@@ -3,6 +3,8 @@ package com.donews.collect.util
 import android.annotation.SuppressLint
 import androidx.fragment.app.FragmentActivity
 import com.donews.collect.dialog.ChangeDialog
+import com.donews.collect.dialog.DrawDialog
+import com.donews.collect.dialog.FailDialog
 import com.donews.collect.dialog.GoodDialog
 
 /**
@@ -61,6 +63,52 @@ object DialogUtil {
         }
 
         changeDialog?.showAllowingStateLoss(activity.supportFragmentManager, ChangeDialog::class.simpleName)
+
+    }
+
+    private var drawDialog: DrawDialog? = null
+
+    fun showDrawDialog(
+        activity: FragmentActivity,
+        goodJson:String,
+        dialogBtn:() -> Unit = {},
+    ) {
+        if (drawDialog != null && drawDialog?.dialog != null && drawDialog?.dialog!!.isShowing) {
+            return
+        }
+        drawDialog = DrawDialog.newInstance(goodJson).apply {
+            setOnDismissListener {
+                drawDialog = null
+            }
+            clickDialogBtn = {
+                dialogBtn.invoke()
+            }
+        }
+
+        drawDialog?.showAllowingStateLoss(activity.supportFragmentManager, DrawDialog::class.simpleName)
+
+    }
+
+    private var failDialog: FailDialog? = null
+
+    fun showFailDialog(
+        activity: FragmentActivity,
+        goodJson:String,
+        dialogBtn:() -> Unit = {},
+    ) {
+        if (failDialog != null && failDialog?.dialog != null && failDialog?.dialog!!.isShowing) {
+            return
+        }
+        failDialog = FailDialog.newInstance(goodJson).apply {
+            setOnDismissListener {
+                failDialog = null
+            }
+            clickDialogBtn = {
+                dialogBtn.invoke()
+            }
+        }
+
+        failDialog?.showAllowingStateLoss(activity.supportFragmentManager, FailDialog::class.simpleName)
 
     }
 

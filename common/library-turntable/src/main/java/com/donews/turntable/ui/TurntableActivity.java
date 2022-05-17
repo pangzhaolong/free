@@ -47,7 +47,6 @@ public class TurntableActivity extends TurntableBaseActivity<TurntableActivityLa
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
         ARouter.getInstance().inject(this);
         initTurntableView();
     }
@@ -59,7 +58,6 @@ public class TurntableActivity extends TurntableBaseActivity<TurntableActivityLa
 
     @Override
     protected void onDestroy() {
-        EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 
