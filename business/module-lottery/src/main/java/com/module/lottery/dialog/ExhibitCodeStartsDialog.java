@@ -264,11 +264,6 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
                     }
                 }
             });
-            // 增加中奖率
-            mDataBinding.jsonAnimation.setImageAssetsFolder("images");
-            mDataBinding.jsonAnimation.setAnimation("probability_button.json");
-            mDataBinding.jsonAnimation.loop(true);
-            mDataBinding.jsonAnimation.playAnimation();
 
             //手
             mDataBinding.jsonAnimationHand.setImageAssetsFolder("images");

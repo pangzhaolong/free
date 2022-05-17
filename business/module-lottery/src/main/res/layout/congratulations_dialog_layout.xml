@@ -23,22 +23,28 @@
             android:orientation="vertical">
 
             <RelativeLayout
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-
-                <LinearLayout
-                    android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp"
+                <ImageView
+                    android:id="@+id/title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="103dp"
-                    android:background="@drawable/red_linear_shape"
+                    android:layout_marginTop="42dp"
+                    android:src="@mipmap/congratulations_icon" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/title"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="32dp"
+                    android:background="@mipmap/streamer_bg_img"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:paddingTop="34dp"
-                    android:paddingBottom="23dp">
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -51,8 +57,8 @@
                         android:id="@+id/random_number"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="97.4%"
                         android:layout_marginBottom="3dp"
+                        android:text="97.4%"
                         android:textColor="#FFFFFF"
                         android:textSize="25dp" />
 
@@ -65,82 +71,42 @@
 
                 </LinearLayout>
 
-                <ImageView
-                    android:layout_width="105dp"
-                    android:layout_height="101dp"
-                    android:layout_centerHorizontal="true"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/fireworks_icon" />
 
                 <ImageView
-                    android:visibility="invisible"
-                    android:id="@+id/iv_lh_1"
-                    android:layout_width="42dp"
-                    android:layout_height="46dp"
-                    android:layout_marginStart="67dp"
-                    android:layout_marginTop="30dp"
-                    android:src="@drawable/main_exit_dialog_winning_yh_r" />
-
-                <ImageView
-                    android:id="@+id/iv_lh_2"
-                    android:layout_width="42dp"
-                    android:layout_height="46dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="120dp"
-                    android:layout_marginEnd="10dp"
-                    android:src="@drawable/main_exit_dialog_winning_yh_r"
-                    android:visibility="invisible" />
-
-
-                <ImageView
-
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="72dp"
-                    android:src="@mipmap/congratulations_icon" />
-
-                <ImageView
-                    android:layout_marginEnd="23dp"
                     android:id="@+id/closure"
                     android:layout_width="26dp"
                     android:layout_height="26dp"
                     android:layout_alignParentRight="true"
+                    android:layout_marginEnd="23dp"
                     android:src="@mipmap/closure_icon"
                     android:visibility="invisible" />
             </RelativeLayout>
 
             <LinearLayout
-                android:layout_marginBottom="40dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/white_shape"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="40dp"
+                android:background="@drawable/product_gradient_shape"
                 android:gravity="center"
                 android:orientation="vertical"
                 tools:ignore="ResourceName">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="这个奖品好像也很适合你"
-                    android:textColor="#764D38"
-                    android:textSize="18dp" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="19dp"
                     android:layout_marginTop="21dp"
-                    android:orientation="horizontal">
+                    android:layout_marginEnd="19dp"
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/commodity"
-                        android:layout_width="89dp"
-                        android:layout_height="89dp"
-                        android:layout_marginStart="24dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_width="match_parent"
+                        android:layout_height="254dp"
                         tools:ignore="MissingConstraints" />
 
                     <RelativeLayout
@@ -158,7 +124,7 @@
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:lines="2"
-                            android:text=""
+                            android:text="日本进口高含量500mg复合鹅肌肽…"
                             android:textColor="#2C2C2C"
                             android:textSize="16dp" />
 
@@ -174,75 +140,71 @@
                             android:textSize="17sp"
                             android:textStyle="bold" />
 
-                        <ImageView
-                            android:id="@+id/price_icon"
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:layout_below="@+id/title_name"
-                            android:layout_marginTop="13dp"
-                            android:layout_toRightOf="@+id/price"
-                            android:src="@mipmap/money_icon" />
-
-                        <TextView
-                            android:id="@+id/original_price"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/title_name"
-                            android:layout_marginStart="4dp"
-                            android:layout_marginTop="9dp"
-                            android:layout_toRightOf="@+id/price_icon"
-                            android:text=""
-                            android:textColor="#A9AEB1"
-                            android:textSize="15sp" />
-                        <TextView
-                            android:id="@+id/hint"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/price"
-                            android:layout_marginTop="9dp"
-                            android:text=""
-                            android:textColor="#A9AEB1"
-                            android:textSize="12dp" />
-
-
                     </RelativeLayout>
 
 
                 </LinearLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_marginTop="15dp"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/jump_button"
-                        android:layout_width="match_parent"
+                        android:id="@+id/another"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="23dp"
                         android:layout_marginTop="21dp"
-                        android:layout_marginEnd="23dp"
+                        android:layout_marginEnd="13dp"
                         android:layout_marginBottom="7dp"
-                        android:background="@drawable/item_lottery_shape"
+                        android:background="@drawable/border_blue_shape"
                         android:gravity="center"
-                        android:paddingTop="12dp"
-                        android:paddingBottom="12dp"
-                        android:text="参与抽奖"
-                        android:textColor="#FFFFFF"
+                        android:paddingTop="10dp"
+                        android:paddingStart="22dp"
+                        android:paddingEnd="22dp"
+                        android:paddingBottom="10dp"
+                        android:text="换一个"
+                        android:textColor="#8681FF"
                         android:textSize="16dp"
                         tools:ignore="MissingConstraints" />
 
-                    <!--小手-->
-                    <com.airbnb.lottie.LottieAnimationView
-                        android:id="@+id/json_hand"
-                        android:layout_width="57dp"
-                        android:layout_marginEnd="23dp"
-                        android:layout_height="58dp"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:lottie_loop="true"
-                        tools:ignore="MissingConstraints" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp">
+
+                        <TextView
+                            android:id="@+id/jump_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="23dp"
+                            android:layout_marginTop="21dp"
+                            android:layout_marginEnd="23dp"
+                            android:layout_marginBottom="7dp"
+                            android:background="@drawable/item_lottery_shape"
+                            android:gravity="center"
+                            android:paddingTop="12dp"
+                            android:paddingBottom="12dp"
+                            android:text="立即抽奖"
+                            android:textColor="#FFFFFF"
+                            android:textSize="16dp"
+                            tools:ignore="MissingConstraints" />
+
+                        <!--小手-->
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/json_hand"
+                            android:layout_width="57dp"
+                            android:layout_height="58dp"
+                            android:layout_marginEnd="23dp"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:lottie_loop="true"
+                            tools:ignore="MissingConstraints" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
 
 
             </LinearLayout>

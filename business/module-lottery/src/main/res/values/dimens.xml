@@ -13,6 +13,8 @@
     <dimen name="lottery_constant_52">18dp</dimen>
 
     <dimen name="lottery_constant_16">16dp</dimen>
+
+    <dimen name="lottery_constant_23">23dp</dimen>
     <dimen name="lottery_constant_100">100dp</dimen>
     <dimen name="lottery_constant_328">328dp</dimen>
 

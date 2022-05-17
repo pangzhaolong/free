@@ -1,8 +1,6 @@
 package com.module.lottery.ui;
 
 import static com.donews.common.config.CritParameterConfig.CRIT_STATE;
-import static com.module.lottery.dialog.ReturnInterceptDialog.TYPE_1;
-import static com.module.lottery.dialog.ReturnInterceptDialog.TYPE_2;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -59,17 +57,15 @@ import com.module.lottery.bean.GenerateCodeBean;
 import com.module.lottery.bean.LotteryCodeBean;
 import com.module.lottery.bean.MaylikeBean;
 import com.module.lottery.dialog.CongratulationsDialog;
-import com.module.lottery.dialog.ExclusiveLotteryCodeDialog;
 import com.module.lottery.dialog.ExhibitCodeStartsDialog;
 import com.module.lottery.dialog.GenerateCodeDialog;
 import com.module.lottery.dialog.LessMaxDialog;
-import com.module.lottery.dialog.LogToWeChatDialog;
 import com.module.lottery.dialog.LotteryCodeStartsDialog;
 import com.module.lottery.dialog.LotteryCritCodeDialog;
 import com.module.lottery.dialog.LotteryCritCommodityDialog;
 import com.module.lottery.dialog.LotteryCritOverDialog;
+import com.module.lottery.dialog.NotDrawnDialog;
 import com.module.lottery.dialog.ReceiveLotteryDialog;
-import com.module.lottery.dialog.ReturnInterceptDialog;
 import com.module.lottery.dialog.UnlockMaxCodeDialog;
 import com.module.lottery.model.LotteryModel;
 import com.module.lottery.utils.ClickDoubleUtil;
@@ -135,7 +131,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     private boolean dialogShow = false;
     @Autowired(name = RouterActivityPath.GoodsDetail.GOODS_DETAIL_PROVIDER)
     public IDetailProvider detailProvider;
-    private LogToWeChatDialog mLogToWeChatDialog;
     PlayAdUtilsTool mPlayAdUtilsTool;
 
 
@@ -179,6 +174,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             ifOpenAutoLotteryAndCount();
         }
         mStart_lottery = false;
+
     }
 
 
@@ -259,7 +255,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         }
         return 0;
     }
-
 
 
     private void showLotteryCritCodeDialog(GenerateCodeBean generateCodeBean) {
@@ -370,21 +365,8 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() >= 6) {
             return;
         }
-        boolean logType = AppInfo.checkIsWXLogin();
-        //走中台配置流程
-        //0没有登录需要先登录
-        if (ABSwitch.Ins().getLotteryLine() == 0 || logType) {
-            if (logType) {
-                startLottery();
-            } else {
-                showLogToWeChatDialog();
-            }
-        } else {
-            if (ABSwitch.Ins().getLotteryLine() == 1) {
-                //可以直接开始抽奖
-                startLottery();
-            }
-        }
+        //可以直接开始抽奖
+        startLottery();
     }
 
     RotateAnimation mRotateAnimation;
@@ -537,82 +519,9 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     }
 
     private void addCriticalLotteryNumber() {
-        boolean logType = AppInfo.checkIsWXLogin();
         if (SPUtils.getInformain(CRIT_STATE,
-                0) == 0 && logType && !mCritTime && ABSwitch.Ins().getOpenCritModel() && DateManager.getInstance().isAllowCritical()) {
+                0) == 0 && !mCritTime && ABSwitch.Ins().getOpenCritModel() && DateManager.getInstance().isAllowCritical()) {
             LotteryAdCheck.INSTANCE.putCriticalModelLotteryNumber();
-        }
-    }
-
-    //显示专属抽奖码弹框
-    private void showExclusiveCodeDialog() {
-        ExclusiveLotteryCodeDialog exclusiveLotteryCodeDialog = new ExclusiveLotteryCodeDialog(LotteryActivity.this,
-                mGoodsId);
-        exclusiveLotteryCodeDialog.setFinishListener(new ExclusiveLotteryCodeDialog.OnFinishListener() {
-            @Override
-            public void onLoginSuccessful(GenerateCodeBean generateCode, boolean efficient) {
-                if (efficient && generateCode != null) {
-                    showExhibitCodeDialog(generateCode);
-                }
-            }
-
-
-            @Override
-            public void onLoginUploadSuccessful() {
-                //加载抽奖商品详情信息
-                //刷新
-                lotteryInfo();
-            }
-
-            @Override
-            public void closure() {
-                try {
-                    if (exclusiveLotteryCodeDialog != null && exclusiveLotteryCodeDialog.isShowing()) {
-                        exclusiveLotteryCodeDialog.dismiss();
-                    }
-                } catch (Exception e) {
-                }
-            }
-        });
-        exclusiveLotteryCodeDialog.show();
-    }
-
-
-    private void showLogToWeChatDialog() {
-        if (mLogToWeChatDialog == null) {
-            mLogToWeChatDialog = new LogToWeChatDialog(LotteryActivity.this);
-            mLogToWeChatDialog.setFinishListener(new LogToWeChatDialog.OnFinishListener() {
-                @Override
-                public void onDismiss() {
-                    if (mLogToWeChatDialog != null && mLogToWeChatDialog.isShowing() && !LotteryActivity.this.isFinishing()) {
-                        mLogToWeChatDialog.dismiss();
-                    }
-                    mLogToWeChatDialog = null;
-                }
-
-                @Override
-                public void onToWeChat() {
-                    RouterActivityPath.LoginProvider.getLoginProvider()
-                            .loginWX(null, "抽奖页>抽奖按钮>未登录弹窗");
-                }
-
-                @Override
-                public void onWeChatReturn() {
-                    //登录成功 刷新页面
-                    clearState();
-                    //加载抽奖商品详情信息
-                    lotteryInfo();
-                    //读取中台控制自动开始抽奖
-                    if (ABSwitch.Ins().isOpenAutoLotteryAfterLoginWx()) {
-                        luckyDrawEntrance();
-                    }
-
-                }
-            });
-            mLogToWeChatDialog.show();
-            if (guessAdapter != null && guessAdapter.getCommodityBean() != null) {
-                mLogToWeChatDialog.refreshCoverIcon(guessAdapter.getCommodityBean().getMainPic());
-            }
         }
     }
 
@@ -671,14 +580,13 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                     }
                 }
 
-                @Override
-                public void onExclusiveBulletFrame() {
-                    if (generateCodeDialog != null && !LotteryActivity.this.isFinishing()) {
-                        generateCodeDialog.dismiss();
-
-                    }
-                    showExclusiveCodeDialog();
-                }
+//                @Override
+//                public void onExclusiveBulletFrame() {
+//                    if (generateCodeDialog != null && !LotteryActivity.this.isFinishing()) {
+//                        generateCodeDialog.dismiss();
+//
+//                    }
+//                }
 
             });
             generateCodeDialog.create();
@@ -768,6 +676,24 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         lessMaxDialog.show(LotteryActivity.this);
     }
 
+
+    private void showNotDrawnDialog() {
+        NotDrawnDialog notDrawnDialog = new NotDrawnDialog(LotteryActivity.this, mLotteryCodeBean);
+        notDrawnDialog.setFinishListener(new NotDrawnDialog.OnFinishListener() {
+            @Override
+            public void onFinish() {
+
+            }
+
+            @Override
+            public void onFinishAd() {
+                luckyDrawEntrance();
+            }
+        });
+        notDrawnDialog.show(LotteryActivity.this);
+    }
+
+
     //提示还差多少个抽奖码Dialog
     private void showReceiveLotteryDialog(boolean ifQuit) {
         if (mLotteryCodeBean != null) {
@@ -798,7 +724,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
     //满足6个时弹起恭喜你 dialog
     private void showCongratulationsDialog() {
-        CongratulationsDialog mNoDrawDialog = new CongratulationsDialog(LotteryActivity.this);
+        CongratulationsDialog mNoDrawDialog = new CongratulationsDialog(LotteryActivity.this, mGoodsId);
         mNoDrawDialog.setFinishListener(new CongratulationsDialog.OnFinishListener() {
             @Override
             public void onFinish() {
@@ -918,7 +844,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     }
 
 
-
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -942,7 +867,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 return;
             }
             //刷新登录弹框
-            refreshLogToWeChatDialog(CommodityBean.getMainPic());
             guessAdapter.setCommodityBean(CommodityBean);
             guessAdapter.notifyDataSetChanged();
             mCommodityBean = CommodityBean;
@@ -1047,14 +971,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         }
     }
 
-    /**
-     * 获取商品信息后刷新登录弹框的图片
-     */
-    private void refreshLogToWeChatDialog(String url) {
-        if (mLogToWeChatDialog != null && mLogToWeChatDialog.isShowing()) {
-            mLogToWeChatDialog.refreshCoverIcon(url);
-        }
-    }
 
     //设置底部按钮颜色
     @SuppressLint("RestrictedApi")
@@ -1128,67 +1044,35 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     }
 
 
-    private void showReturnDialog(int type) {
-        dialogShow = true;
-        ReturnInterceptDialog mReturnInterceptDialog = new ReturnInterceptDialog(LotteryActivity.this, type);
-        mReturnInterceptDialog.setFinishListener(new ReturnInterceptDialog.OnFinishListener() {
-            @Override
-            public void onDismiss() {
-                mReturnInterceptDialog.dismiss();
-            }
-
-            @Override
-            public void onDismissAd() {
-                //根据中台控制 读取返回拦截的配置
-                if (ABSwitch.Ins().isOpenAutoLotteryAfterLoginWxAtExitDialog()) {
-                    luckyDrawEntrance();
-                }
-            }
-        });
-        mReturnInterceptDialog.create();
-        mReturnInterceptDialog.show(LotteryActivity.this);
-        return;
-    }
-
-
     private void returnIntercept() {
-        boolean logType = AppInfo.checkIsWXLogin();
-        if (!logType && !dialogShow) {
-            //未登录
-            //判断抽奖码的数量显示对应的dialog
-            showReturnDialog(TYPE_2);
-            dialogShow = true;
+        if (CriticalModelTool.ifCriticalStrike()) {
+            finishReturn();
+            finish();
             return;
-        } else {
-            if (CriticalModelTool.ifCriticalStrike()) {
-                finishReturn();
-                finish();
-                return;
-            }
-            if (mLotteryCodeBean == null || dialogShow) {
-                finishReturn();
-                finish();
-                return;
-            }
-            //当抽奖码小于6个 登录有抽奖
-            if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() < 6 && mLotteryCodeBean.getCodes().size() > 0) {
-                dialogShow = true;
-                //显示立刻领取的dialog
-                showLessMaxDialog();
-                return;
-            }
-            if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() == 0) {
-                //登录未抽奖
-                showReturnDialog(TYPE_1);
-                return;
-            }
+        }
+        if (mLotteryCodeBean == null || dialogShow) {
+            finishReturn();
+            finish();
+            return;
+        }
+        //当抽奖码小于6个 登录有抽奖
+        if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() < 6 && mLotteryCodeBean.getCodes().size() > 0) {
+            dialogShow = true;
+            //显示立刻领取的dialog
+            showLessMaxDialog();
+            return;
+        }
+        if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() == 0) {
+            //登录未抽奖
+            showNotDrawnDialog();
+            return;
+        }
 
-            //当抽奖码大于等于
-            if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() >= 6) {
-                finishReturn();
-                finish();
-                return;
-            }
+        //当抽奖码大于等于
+        if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() >= 6) {
+            finishReturn();
+            finish();
+            return;
         }
     }
 

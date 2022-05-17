@@ -24,6 +24,8 @@ public class LotteryViewModel extends BaseLiveDataViewModel<LotteryModel> {
     private MutableLiveData<LotteryCodeBean> mLotteryCodeBean = new MutableLiveData<LotteryCodeBean>();
 
 
+
+
     //获取中奖人员列表
     private MutableLiveData<WinLotteryBean> mWinLotteryBean = new MutableLiveData<WinLotteryBean>();
 
