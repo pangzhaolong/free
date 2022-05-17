@@ -20,13 +20,9 @@ public class SearchHistoryItem extends LinearLayout implements View.OnClickListe
     public SearchHistoryItem(@NonNull Context context, String text, SearchListener listener) {
         super(context);
         LayoutInflater.from(context).inflate(R.layout.home_search_history_item, this, true);
-
         mTextView = findViewById(R.id.home_search_history_tv);
-
         mTextView.setText(text);
-
         mListener = listener;
-
         this.setOnClickListener(this);
         this.setTag(text);
     }

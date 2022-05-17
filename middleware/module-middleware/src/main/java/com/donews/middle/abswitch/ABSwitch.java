@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import com.donews.common.BuildConfig;
 import com.donews.middle.bean.globle.ABBean;
 import com.donews.middle.cache.GoodsCache;
+import com.donews.middle.searchs.TopSearchConfig;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
@@ -72,11 +73,13 @@ public class ABSwitch {
         } else {
             update();
         }
+        //关联更新热门搜索数据
+        TopSearchConfig.update();
     }
 
     private void update() {
         LogUtil.e("ABSwitch update");
-        EasyHttp.get(HttpConfigUtilsKt.withConfigParams(BuildConfig.BASE_CONFIG_URL +BuildConfig.APP_IDENTIFICATION+"-"+"abswitch"
+        EasyHttp.get(HttpConfigUtilsKt.withConfigParams(BuildConfig.BASE_CONFIG_URL + BuildConfig.APP_IDENTIFICATION + "-" + "abswitch"
                 + BuildConfig.BASE_RULE_URL, true))
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new SimpleCallBack<ABBean>() {
@@ -119,7 +122,7 @@ public class ABSwitch {
 
 
     public boolean isOpenAB() {
-        if(BuildConfig.DEBUG){
+        if (BuildConfig.DEBUG) {
             return false;
         }
         return mAbBean.isOpenAB();

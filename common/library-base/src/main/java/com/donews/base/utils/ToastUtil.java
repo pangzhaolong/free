@@ -47,4 +47,19 @@ public class ToastUtil {
             e.printStackTrace();
         }
     }
+
+    public static void showLong(Context context, String msg) {
+        try {
+            if (null != context && !TextUtils.isEmpty(msg)) {
+                if (null != mToast) {
+                    mToast.cancel();
+                }
+                mToast = Toast.makeText(context, "", Toast.LENGTH_LONG);
+                mToast.setText(msg);
+                mToast.show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

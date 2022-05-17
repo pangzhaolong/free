@@ -1,16 +1,20 @@
 package com.donews.home;
 
+import android.content.Intent;
 import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.donews.base.utils.ToastUtil;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.home.adapter.ExchangeFragmentAdapter;
 import com.donews.home.databinding.ExchanageFragmentBinding;
 import com.donews.home.viewModel.ExchangeViewModel;
+import com.donews.middle.bean.home.HomeCategory2Bean;
 import com.donews.middle.bean.home.HomeCategoryBean;
 import com.donews.middle.cache.GoodsCache;
 import com.donews.middle.front.FrontConfigManager;
+import com.donews.middle.viewmodel.BaseMiddleViewModel;
 import com.donews.middle.views.ExchanageTabItem;
 import com.donews.middle.views.TaskView;
 import com.google.android.material.tabs.TabLayout;
@@ -25,9 +29,10 @@ import com.google.android.material.tabs.TabLayoutMediator;
 @Route(path = RouterFragmentPath.Home.PAGER_EXCHANGE_FRAGMENT)
 public class ExchangeFragment extends MvvmLazyLiveDataFragment<ExchanageFragmentBinding, ExchangeViewModel> {
 
-    private HomeCategoryBean mHomeBean;
+    private HomeCategory2Bean mHomeBean;
     // Tab的Fragment
     private ExchangeFragmentAdapter mFragmentAdapter;
+    private boolean isInitLoad = true;
 
     @Override
     public int getLayoutId() {
@@ -63,10 +68,10 @@ public class ExchangeFragment extends MvvmLazyLiveDataFragment<ExchanageFragment
             }
             ExchanageTabItem tabItem = (ExchanageTabItem) tab1.getCustomView();
             assert tabItem != null;
-            if (mHomeBean == null || mHomeBean.getList() == null) {
+            if (mHomeBean == null || mHomeBean.list == null) {
                 return;
             }
-            tabItem.setTitle(mHomeBean.getList().get(position).getCname());
+            tabItem.setTitle(mHomeBean.list.get(position).name);
             /*}*/
         });
         tab.attach();
@@ -94,25 +99,40 @@ public class ExchangeFragment extends MvvmLazyLiveDataFragment<ExchanageFragment
             }
         });
 
+        mDataBinding.homeSrl.setEnableLoadMore(false);
+        mDataBinding.homeSrl.setOnRefreshListener((refreshLayout) -> {
+            //初始化数据
+            isInitLoad = false;
+            loadCategory();
+        });
+
+        isInitLoad = true;
+        //更新配置信息(对话相关的配置)
+        mViewModel.getCoinCritConfig();
         //初始化数据
         loadCategory();
     }
 
     //获取搜索左侧的显示文字
-    public String getSearchLeftText(){
+    public String getSearchLeftText() {
         return "?";
     }
 
     //搜索框左侧的点击
-    public void getSearchLeftClick(){
+    public void getSearchLeftClick() {
+        ToastUtil.showShort(getActivity(), "搜索左侧点击了");
     }
 
     //搜索框的点击操作
-    public void getSearchInputEditClick(){
+    public void getSearchInputEditClick() {
+        Intent intent = new Intent(getContext(), HomeSearch2Activity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
     }
 
     //搜索框右侧按钮点击
-    public void getSearchRightClick(){
+    public void getSearchRightClick() {
+        ToastUtil.showShort(getActivity(), "搜索右侧点击了");
     }
 
     //初始化DataBinding
@@ -122,18 +142,19 @@ public class ExchangeFragment extends MvvmLazyLiveDataFragment<ExchanageFragment
 
     //加载Tab页面
     private void loadCategory() {
-        mHomeBean = GoodsCache.readGoodsBean(HomeCategoryBean.class, "exchanage_category");
-        if (mHomeBean != null && mHomeBean.getList() != null && mFragmentAdapter != null) {
-            mFragmentAdapter.refreshData(mHomeBean.getList());
+        mHomeBean = GoodsCache.readGoodsBean(HomeCategory2Bean.class, "exchanage_category");
+        if (mHomeBean != null && mHomeBean.list != null && mFragmentAdapter != null) {
+            mFragmentAdapter.refreshData(mHomeBean.list);
         }
         mViewModel.getHomeCategoryBean().observe(this, homeBean -> {
+            mDataBinding.homeSrl.finishRefresh();
             if (homeBean == null) {
                 return;
             }
             mHomeBean = homeBean;
             // 处理正常的逻辑。
             if (mFragmentAdapter != null) {
-                mFragmentAdapter.refreshData(mHomeBean.getList());
+                mFragmentAdapter.refreshData(mHomeBean.list);
             }
             GoodsCache.saveGoodsBean(mHomeBean, "exchanage_category");
         });

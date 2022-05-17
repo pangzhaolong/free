@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -102,6 +103,7 @@ public class NotifyScreenDelegate {
                     mLastShowTime = System.currentTimeMillis();
                     Log.w(NotifyInitProvider.TAG, action + " show , delayTime=" + delayTime);
                     NotifyLog.log("检查通知通过。发起延迟通知");
+                    checkDelayedTask(context);
                     mHandler.postDelayed(getShowNotifyRunnable(context), delayTime);
                 } else {
                     if (BuildConfig.DEBUG) {
@@ -126,6 +128,7 @@ public class NotifyScreenDelegate {
                         tryLoadNewImg(context);
                         long delayTime = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyDelayShowTime;
                         Log.w(NotifyInitProvider.TAG, action + " show , delayTime=" + delayTime);
+                        checkDelayedTask(context);
                         mHandler.postDelayed(getShowNotifyRunnable(context), delayTime);
                     } else {
                         Log.w(NotifyInitProvider.TAG, action + " can't show");
@@ -134,6 +137,20 @@ public class NotifyScreenDelegate {
                 Log.i(NotifyInitProvider.TAG, action + ",currunt num = " + mCurruntCount);
                 mCurruntCount++;
                 break;
+        }
+    }
+
+    // 检查延时任务
+    private void checkDelayedTask(Context context) {
+        Runnable showTask = getShowNotifyRunnable(context);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (mHandler.hasCallbacks(showTask)) {
+                mHandler.removeCallbacks(showTask);
+                NotifyLog.log("检查通知通过。<清除原始显示任务>");
+            }
+        } else {
+            mHandler.removeCallbacks(showTask);
+            NotifyLog.log("检查通知通过。<清除原始显示任务>");
         }
     }
 
@@ -157,6 +174,7 @@ public class NotifyScreenDelegate {
             Log.w(NotifyInitProvider.TAG, " show , delayTime=" + delayTime);
             isLoaded = true;
             NotifyLog.logNotToast("(后台)已发送延迟显示");
+            checkDelayedTask(context);
             mHandler.postDelayed(getShowNotifyRunnable(context), delayTime);
             //加载图片
             tryLoadNewImg2(context);
@@ -264,7 +282,7 @@ public class NotifyScreenDelegate {
      */
     private boolean canShowNotify() {
         List<String> time3 = NotifyLuncherConfigManager.getInstance().getAppGlobalConfigBean().notifyTimeInterval;
-        if(time3 != null && !time3.isEmpty()){
+        if (time3 != null && !time3.isEmpty()) {
             //如果存在数据新版的时间控制。那么启用新版时间控制。不在继续使用老版本的
             return NotifyTimeRangeCheckUtil.canTimeInterval(time3);
         }

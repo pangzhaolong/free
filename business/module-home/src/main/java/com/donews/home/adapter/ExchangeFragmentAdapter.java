@@ -8,6 +8,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.donews.home.fragment.ExchangeTabFragment;
 import com.donews.home.fragment.NorFragment;
+import com.donews.middle.bean.home.HomeCategory2Bean;
 import com.donews.middle.bean.home.HomeCategoryBean;
 
 import java.util.ArrayList;
@@ -17,11 +18,11 @@ import java.util.Map;
 
 public class ExchangeFragmentAdapter extends FragmentStateAdapter {
 
-    private List<HomeCategoryBean.CategoryItem> list = new ArrayList<>();
+    private List<HomeCategory2Bean.Category2Item> list = new ArrayList<>();
     private Map<String, Fragment> mFragmentMap = new HashMap<>();
 
     @SuppressLint("NotifyDataSetChanged")
-    public void refreshData(List<HomeCategoryBean.CategoryItem> list) {
+    public void refreshData(List<HomeCategory2Bean.Category2Item> list) {
         this.list.clear();
         this.list.addAll(list);
         notifyDataSetChanged();
@@ -43,17 +44,17 @@ public class ExchangeFragmentAdapter extends FragmentStateAdapter {
         super(fragment);
     }
 
-    private Fragment mkFragment(HomeCategoryBean.CategoryItem categoryItem) {
+    private Fragment mkFragment(HomeCategory2Bean.Category2Item categoryItem) {
         /*if (categoryItem == null) {
             if (mFragmentMap.get(null) == null) {
                 mFragmentMap.put(null, new TopFragment());
             }
             return mFragmentMap.get(null);
         } else {*/
-        if (mFragmentMap.get(categoryItem.getCid()) == null) {
-            mFragmentMap.put(categoryItem.getCid(), new ExchangeTabFragment(categoryItem));
+        if (mFragmentMap.get(categoryItem.category_id) == null) {
+            mFragmentMap.put(categoryItem.category_id, new ExchangeTabFragment(categoryItem));
         }
-        return mFragmentMap.get(categoryItem.getCid());
+        return mFragmentMap.get(categoryItem.category_id);
         /*}*/
     }
 

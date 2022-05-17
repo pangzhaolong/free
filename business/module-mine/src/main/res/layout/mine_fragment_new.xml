@@ -90,15 +90,16 @@
                         <LinearLayout
                             android:id="@+id/mine2_yyw_ll"
                             android:layout_width="match_parent"
-                            android:layout_height="92dp"
+                            android:layout_height="wrap_content"
                             android:layout_alignParentBottom="true"
                             android:layout_marginBottom="20dp"
                             android:background="@drawable/ad_shape_min_bg">
 
-                            <com.donews.middle.views.TaskView
+                            <com.donews.middle.views.ExchanageTaskView
                                 android:id="@+id/mine2_yyw"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/middle_rp_group_bg" />
                         </LinearLayout>
                     </RelativeLayout>
                     <!-- 积分金币显示 -->

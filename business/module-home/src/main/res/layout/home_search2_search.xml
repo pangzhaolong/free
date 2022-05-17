@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            tools:ignore="MissingConstraints">
+
+            <ImageView
+                android:id="@+id/home_search_back"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="8dp"
+                android:src="@drawable/home_back" />
+
+            <RelativeLayout
+                android:id="@+id/home_search_edit_ll"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_alignRight="@+id/home_search_do"
+                android:layout_toRightOf="@+id/home_search_back"
+                android:background="@drawable/home_search_two_bg"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/home_search_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#01FFFFFF"
+                    android:gravity="center_vertical"
+                    android:hint="搜索商品名称"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:paddingLeft="10dp"
+                    android:textSize="14sp" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/home_search_do"
+                android:layout_width="59dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="59dp"
+                    android:layout_height="33dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="2.5dp"
+                    android:layout_marginEnd="2.5dp"
+                    android:layout_marginBottom="2.5dp"
+                    android:background="@drawable/middle_bg_default_theme"
+                    android:gravity="center"
+                    android:text="搜索"
+                    android:textColor="@color/white" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/home_search_history_tl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@color/white">
+
+            <TextView
+                android:id="@+id/home_search_history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_vertical"
+                android:text="热门搜索"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/home_search_history_clean_tv"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"
+                android:gravity="center"
+                android:padding="12dp"
+                android:src="@drawable/home_search_delete"
+                android:visibility="gone" />
+
+            <com.nex3z.flowlayout.FlowLayout
+                android:id="@+id/home_search_flow_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/home_search_history"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:paddingBottom="10dp"
+                app:flChildSpacing="auto"
+                app:flChildSpacingForLastRow="align"
+                app:flRowSpacing="11dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <!-- 搜索列表 -->
+            <com.scwang.smart.refresh.layout.SmartRefreshLayout
+                android:id="@+id/home_search_refresh"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/home_search_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+            <!-- 空白的提示视图 -->
+            <LinearLayout
+                android:id="@+id/home_search_not_data_ll"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="70dp"
+                    android:src="@drawable/home_search_not_data" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center"
+                    android:text="您搜索的商品不存在\n试试搜索下热门商品吧"
+                    android:textColor="#A3A9B7"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
+</layout>

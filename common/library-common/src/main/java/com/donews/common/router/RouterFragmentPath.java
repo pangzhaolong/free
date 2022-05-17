@@ -46,6 +46,11 @@ public class RouterFragmentPath {
          */
         public static final String PAGER_EXCHANGE_FRAGMENT = HOME + "/ExchangeFragment";
 
+        /**
+         * 兑换金币不足的弹窗
+         */
+        public static final String PAGER_EXCHANGE_GOOD_JB_FRAGMENT_DIALOG = HOME + "/ExchangeGoodJbFragmentDialog";
+
     }
 
     /**

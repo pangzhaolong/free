@@ -5,13 +5,13 @@
 
     <data>
 
-        <import type="com.donews.home.adapter.ExchangeFragmentTabGoodsAdapter" />
+        <import type="com.donews.home.adapter.HomeSearch2Adapter" />
 
         <import type="com.donews.middle.bean.home.SearchRespBean.SearchRespItemBean" />
 
         <variable
             name="thiz"
-            type="ExchangeFragmentTabGoodsAdapter" />
+            type="HomeSearch2Adapter" />
 
         <variable
             name="goodInfo"
@@ -103,7 +103,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/middle_bg_default_theme"
-            android:onClick="@{()->thiz.onExchanageClick(goodInfo)}"
+            android:onClick="@{()->thiz.onClick(goodInfo)}"
             android:paddingTop="8dp"
             android:paddingBottom="8dp">
 
