@@ -186,9 +186,9 @@ public class UnlockMaxCodeDialog extends BaseDialog<UnlockMaxCodeDialogLayoutBin
             public void onSuccess(RecommendBean recommendBean) {
                 if (mDataBinding != null && recommendBean != null) {
                     //开始跳转商品
-                    ARouter.getInstance()
-                            .build(RouterFragmentPath.Lottery.PAGER_LOTTERY).withString("goods_id", recommendBean.getGoodsId()).withString("action", "newAction")
-                            .navigation();
+//                    ARouter.getInstance()
+//                            .build(RouterFragmentPath.Lottery.PAGER_LOTTERY).withString("goods_id", recommendBean.getGoodsId()).withString("action", "newAction")
+//                            .navigation();
                     dismiss();
                 }
             }

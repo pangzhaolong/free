@@ -12,8 +12,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="23dp">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/closure"
@@ -27,40 +26,50 @@
 
 
         <LinearLayout
+
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="356dp"
             android:layout_marginTop="63dp"
-            android:background="@drawable/red_bg_shape"
+            android:background="@drawable/white_shape"
             android:gravity="center"
             android:orientation="vertical"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints,ResourceName">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="61dp"
+                android:layout_marginTop="40dp"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
                 tools:ignore="ResourceName">
 
 
-                <TextView
+                <RelativeLayout
+                    android:id="@+id/code"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginEnd="25dp"
-                    android:gravity="center"
-                    android:text='@{codeBean!=null?codeBean.code+"":""}'
-                    android:textColor="#FFF3C9"
-                    android:textSize="47dp"
-                    android:textStyle="bold" />
+                    android:background="@mipmap/lottery_header_bg">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="15dp"
+                        android:gravity="center"
+                        android:text='@{codeBean!=null?codeBean.code+"":""}'
+                        android:textColor="#FFF3C9"
+                        android:textSize="47dp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/code"
+                    android:layout_marginTop="-20dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -88,7 +97,7 @@
                                 android:paddingEnd="6dp"
                                 android:paddingBottom="4dp"
                                 android:text="超过11%的用户"
-                                android:textColor="#E9423E"
+                                android:textColor="#936B65"
                                 android:textSize="11dp"
                                 app:layout_behavior="com.module.lottery.behavior.progressBehavior" />
 
@@ -141,33 +150,50 @@
 
 
                 </RelativeLayout>
-            </LinearLayout>
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:background="@mipmap/return_button_bg"
                 android:orientation="vertical">
-
 
                 <RelativeLayout
                     android:id="@+id/json_animation_layout"
                     android:layout_width="342dp"
                     android:layout_height="78dp"
                     android:layout_marginStart="34dp"
-                    android:layout_marginTop="52dp"
+                    android:layout_marginTop="22dp"
                     android:layout_marginEnd="34dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                    <com.airbnb.lottie.LottieAnimationView
+
+                    <LinearLayout
                         android:id="@+id/jsonAnimation"
-                        android:layout_width="wrap_content"
-                        android:layout_height="47dp"
-                        android:scaleType="fitXY"
-                        app:lottie_autoPlay="true"
-                        app:lottie_loop="true" />
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@mipmap/lottery_button_bg"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+
+                            android:src="@mipmap/play_icon" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="增加中奖率"
+                            android:textColor="#FFFFFF"
+                            android:textSize="17sp"
+                            android:textStyle="bold"
+                            />
+
+                    </LinearLayout>
 
 
                     <com.airbnb.lottie.LottieAnimationView
@@ -175,7 +201,6 @@
                         android:layout_width="63dp"
                         android:layout_height="64dp"
                         android:layout_alignParentRight="true"
-                        android:layout_marginTop="10dp"
                         android:layout_marginEnd="8dp"
                         app:lottie_autoPlay="true"
                         app:lottie_loop="true" />
@@ -186,7 +211,7 @@
                     android:id="@+id/hint_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="52dp"
+                    android:layout_marginTop="22dp"
                     android:gravity="bottom"
                     android:orientation="vertical">
 
@@ -195,7 +220,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="恭喜"
-                        android:textColor="#FFFFFF" />
+                        android:textColor="#838E9E" />
 
                     <TextView
                         android:id="@+id/countdown_hint"
@@ -204,7 +229,7 @@
                         android:layout_marginTop="3dp"
                         android:gravity="center"
                         android:text=""
-                        android:textColor="#FFFFFF" />
+                        android:textColor="#838E9E" />
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
@@ -217,11 +242,9 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="right"
             android:layout_marginTop="58dp"
-            android:layout_marginBottom="5dp"
-            android:background="@mipmap/exhibit_top_bg"
             android:gravity="center"
             android:text="恭喜获得抽奖码"
-            android:textColor="#764D38"
+            android:textColor="#2D323A"
             android:textSize="19dp"
             android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -231,42 +254,6 @@
 
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="110dp"
-            android:orientation="vertical"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="MissingConstraints">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/draw_bg_text_shape"
-                android:paddingStart="10dp"
-                android:paddingTop="5dp"
-                android:paddingEnd="10dp"
-                android:paddingBottom="5dp"
-                android:text="明日10:00开奖"
-                android:textColor="#764D38"
-                android:textSize="13dp" />
-
-            <ImageView
-                android:layout_width="13dp"
-                android:layout_height="6dp"
-                android:layout_marginStart="25dp"
-                android:src="@mipmap/exhibit_triangle"
-
-                />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:visibility="gone"
             android:id="@+id/crit_draw"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -274,6 +261,7 @@
             android:background="@mipmap/unlock_button_bg"
             android:gravity="center"
             android:orientation="vertical"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/container"
@@ -350,13 +338,13 @@
         </LinearLayout>
 
         <RelativeLayout
-            android:visibility="gone"
             android:id="@+id/crit_download"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@mipmap/unlock_button_bg"
             android:orientation="horizontal"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/crit_draw"
@@ -373,13 +361,13 @@
                 android:src="@drawable/red_linear_shape" />
 
             <LinearLayout
-                android:layout_toRightOf="@+id/integral_icon"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/integral_icon"
+                android:clipChildren="false"
                 android:orientation="vertical"
                 android:paddingTop="10dp"
                 android:paddingEnd="10dp"
-                android:clipChildren="false"
                 tools:ignore="MissingConstraints">
 
                 <TextView
@@ -391,11 +379,11 @@
                     android:textSize="13dp" />
 
                 <RelativeLayout
-                    android:layout_marginBottom="10dp"
-                    android:clipChildren="false"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:clipChildren="false"
                     android:gravity="bottom"
                     android:orientation="horizontal">
 

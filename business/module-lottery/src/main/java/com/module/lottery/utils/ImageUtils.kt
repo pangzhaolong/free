@@ -14,7 +14,7 @@ class ImageUtils {
     companion object {
         @JvmStatic
         public fun setImage(context: Context, view: ImageView, src: String, roundingRadius: Int) {
-            if (context != null && context is Activity) {
+            if (context != null && context is Activity && src != null) {
                 if (context.isDestroyed) {
                     return
                 }

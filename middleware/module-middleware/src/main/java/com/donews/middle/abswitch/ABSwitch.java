@@ -157,10 +157,6 @@ public class ABSwitch {
         return mAbBean.isOpenGuidGif();
     }
 
-    public int getLotteryLine() {
-        return mAbBean.getLotteryLine();
-    }
-
     public int getEnableOpenCritModelCount() {
         return mAbBean.getEnableOpenCritModelCount();
     }

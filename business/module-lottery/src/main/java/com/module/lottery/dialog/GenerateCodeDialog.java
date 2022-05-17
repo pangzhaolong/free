@@ -57,14 +57,7 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
         super.onCreate(savedInstanceState);
         Message mes = new Message();
         mes.what = 1;
-
-        //生成抽奖码分为两种情况 本地生成  和服务器生成
-        boolean logType = AppInfo.checkIsWXLogin();
-        if (ABSwitch.Ins().getLotteryLine() == 1 && !logType) {
-            mLotteryHandler.sendMessageDelayed(mes, 2000);
-        } else {
-            mLotteryHandler.sendMessageDelayed(mes, 800);
-        }
+        mLotteryHandler.sendMessageDelayed(mes, 800);
         initView();
         setOnDismissListener(new OnDismissListener() {
             @Override
@@ -84,16 +77,7 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
 
     //生成抽奖码
     public void generateLotteryCode() {
-        //生成抽奖码分为两种情况 本地生成  和服务器生成
-        boolean logType = AppInfo.checkIsWXLogin();
-        if (ABSwitch.Ins().getLotteryLine() == 1 && !logType) {
-            //本地生成
-            if (mOnFinishListener != null) {
-                mOnFinishListener.onExclusiveBulletFrame();
-            }
-        } else {
-            singleCode();
-        }
+        singleCode();
     }
 
     private void singleCode() {
@@ -178,9 +162,6 @@ public class GenerateCodeDialog extends BaseDialog<GenerateDialogLayoutBinding> 
         void onFinish();
 
         void onJump(GenerateCodeBean generateCodeBean);
-
-
-        void onExclusiveBulletFrame();
     }
 
     private static class LotteryHandler extends Handler {

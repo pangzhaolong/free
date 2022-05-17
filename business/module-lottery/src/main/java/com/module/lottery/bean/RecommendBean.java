@@ -4,80 +4,61 @@ import com.donews.common.contract.BaseCustomViewModel;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.List;
 
 //抽奖次数达到上限后,推荐一个抽奖商品
 public class RecommendBean extends BaseCustomViewModel {
-
-
-    @SerializedName("title")
-    private String title;
-
-    public String getTitle() {
-        return title;
+    public List<ListDTO> getList() {
+        return list;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setList(List<ListDTO> list) {
+        this.list = list;
     }
 
-    public String getMainPic() {
-        return mainPic;
-    }
+    @SerializedName("list")
+        private List<ListDTO> list;
 
-    public void setMainPic(String mainPic) {
-        this.mainPic = mainPic;
-    }
+        public static class ListDTO implements Serializable {
+            public String getTitle() {
+                return title;
+            }
 
-    public Integer getOriginalPrice() {
-        return originalPrice;
-    }
+            public void setTitle(String title) {
+                this.title = title;
+            }
 
-    public void setOriginalPrice(Integer originalPrice) {
-        this.originalPrice = originalPrice;
-    }
+            public String getMainPic() {
+                return mainPic;
+            }
 
-    public String getId() {
-        return id;
-    }
+            public void setMainPic(String mainPic) {
+                this.mainPic = mainPic;
+            }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+            public String getGoodsId() {
+                return goodsId;
+            }
 
-    public String getGoodsId() {
-        return goodsId;
-    }
+            public void setGoodsId(String goodsId) {
+                this.goodsId = goodsId;
+            }
 
-    public void setGoodsId(String goodsId) {
-        this.goodsId = goodsId;
-    }
+            public Integer getDisplayPrice() {
+                return displayPrice;
+            }
 
-    public Integer getDisplayPrice() {
-        return displayPrice;
-    }
+            public void setDisplayPrice(Integer displayPrice) {
+                this.displayPrice = displayPrice;
+            }
 
-    public void setDisplayPrice(Integer displayPrice) {
-        this.displayPrice = displayPrice;
-    }
-
-    public Integer getTotalPeople() {
-        return totalPeople;
-    }
-
-    public void setTotalPeople(Integer totalPeople) {
-        this.totalPeople = totalPeople;
-    }
-
-    @SerializedName("main_pic")
-    private String mainPic;
-    @SerializedName("original_price")
-    private Integer originalPrice;
-    @SerializedName("id")
-    private String id;
-    @SerializedName("goods_id")
-    private String goodsId;
-    @SerializedName("display_price")
-    private Integer displayPrice;
-    @SerializedName("total_people")
-    private Integer totalPeople;
+            @SerializedName("title")
+            private String title;
+            @SerializedName("main_pic")
+            private String mainPic;
+            @SerializedName("goods_id")
+            private String goodsId;
+            @SerializedName("display_price")
+            private Integer displayPrice;
+        }
 }

@@ -46,11 +46,15 @@ import java.util.Random;
 public class CongratulationsDialog extends BaseDialog<CongratulationsDialogLayoutBinding> implements DialogInterface.OnDismissListener {
     private Context mContext;
     int limitNumber = 1;
+    //当前id
+    int currentId = 0;
     private CongratulationsHandler mLotteryHandler = new CongratulationsHandler(this);
+    private String mGoodsId;
 
-    public CongratulationsDialog(Context context) {
+    public CongratulationsDialog(Context context, String goods_id) {
         super(context, R.style.dialogTransparent);//内容样式在这里引入
         this.mContext = context;
+        mGoodsId = goods_id;
     }
 
     //保存记录当前展示的商品
@@ -67,7 +71,7 @@ public class CongratulationsDialog extends BaseDialog<CongratulationsDialogLayou
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestGoodsInfo("");
+        requestGoodsInfo(mGoodsId);
 
         mDataBinding.jumpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,11 +80,19 @@ public class CongratulationsDialog extends BaseDialog<CongratulationsDialogLayou
                 if (mRecommendBean != null) {
                     dismiss();
                     ARouter.getInstance()
-                            .build(RouterFragmentPath.Lottery.PAGER_LOTTERY).withString("goods_id", mRecommendBean.getGoodsId()).withString("action", "newAction")
+                            .build(RouterFragmentPath.Lottery.PAGER_LOTTERY).withString("goods_id", mRecommendBean.getList().get(currentId).getGoodsId()).withString("action", "newAction")
                             .navigation();
                 }
             }
         });
+
+        mDataBinding.another.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initView();
+            }
+        });
+
 
         mDataBinding.closure.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,25 +107,11 @@ public class CongratulationsDialog extends BaseDialog<CongratulationsDialogLayou
         mDataBinding.jsonHand.setAnimation("lottery_finger.json");
         mDataBinding.jsonHand.loop(true);
         mDataBinding.jsonHand.playAnimation();
-        startAnimation();
         setOnDismissListener(this);
         //延迟一秒出现关闭按钮
         Message message = new Message();
         message.what = 1;
         mLotteryHandler.sendMessageDelayed(message, 1000);
-    }
-
-
-    private void startAnimation() {
-        int number = new Random().nextInt(2);
-        int pd = new Random().nextInt(500) + 500;
-        if (number == 0) {
-            initAnimation(mDataBinding.ivLh1, 0);
-            initAnimation(mDataBinding.ivLh2, pd);
-        } else {
-            initAnimation(mDataBinding.ivLh1, pd);
-            initAnimation(mDataBinding.ivLh2, 0);
-        }
     }
 
 
@@ -168,30 +166,40 @@ public class CongratulationsDialog extends BaseDialog<CongratulationsDialogLayou
 
 
     private void requestGoodsInfo(String goods_id) {
-        EasyHttp.get(LotteryModel.LOTTERY_RECOMMEND_CODE).cacheMode(CacheMode.NO_CACHE)
-                .params("goods_id", goods_id + "").execute(new com.donews.network.callback.SimpleCallBack<RecommendBean>() {
-            @Override
-            public void onError(ApiException e) {
+        if (mRecommendBean == null) {
+            EasyHttp.get(LotteryModel.LOTTERY_RECOMMEND_CODE).cacheMode(CacheMode.NO_CACHE)
+                    .params("goods_id", goods_id + "").execute(new com.donews.network.callback.SimpleCallBack<RecommendBean>() {
+                @Override
+                public void onError(ApiException e) {
 
-            }
+                }
 
-            @Override
-            public void onSuccess(RecommendBean recommendBean) {
-                if (mDataBinding != null && recommendBean != null) {
-                    mRecommendBean = recommendBean;
-                    if (mRecommendBean != null) {
-                        ImageUtils.setImage(mContext, mDataBinding.commodity, mRecommendBean.getMainPic(), 5);
-                        mDataBinding.price.setText("¥ " + mRecommendBean.getDisplayPrice());
-                        mDataBinding.originalPrice.setText("¥ " + mRecommendBean.getOriginalPrice());
-                        mDataBinding.hint.setText("累计 " + mRecommendBean.getTotalPeople() + " 人参与抢购");
-                        mDataBinding.titleName.setText(mRecommendBean.getTitle());
-                        mDataBinding.randomNumber.setText(RandomProbability.Companion.getRandomNumber() + "%");
-                        mDataBinding.originalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-
+                @Override
+                public void onSuccess(RecommendBean recommendBean) {
+                    if (mDataBinding != null && recommendBean != null && recommendBean.getList() != null) {
+                        mRecommendBean = recommendBean;
+                        limitNumber = 0;
+                        initView();
                     }
                 }
+            });
+        }
+    }
+
+
+    private void initView() {
+        if (mRecommendBean != null) {
+            if (limitNumber >= mRecommendBean.getList().size()) {
+                limitNumber = 0;
             }
-        });
+
+            currentId = limitNumber;
+            ImageUtils.setImage(mContext, mDataBinding.commodity, mRecommendBean.getList().get(limitNumber).getMainPic(), 5);
+            mDataBinding.price.setText("¥ " + mRecommendBean.getList().get(limitNumber).getDisplayPrice());
+            mDataBinding.titleName.setText(mRecommendBean.getList().get(limitNumber).getTitle());
+            mDataBinding.randomNumber.setText(RandomProbability.Companion.getRandomNumber() + "%");
+            limitNumber += 1;
+        }
     }
 
 
@@ -201,8 +209,6 @@ public class CongratulationsDialog extends BaseDialog<CongratulationsDialogLayou
 
     @Override
     public void onDismiss(DialogInterface dialog) {
-        mDataBinding.ivLh1.clearAnimation();
-        mDataBinding.ivLh2.clearAnimation();
         mLotteryHandler.removeMessages(0);
         mLotteryHandler.removeMessages(1);
         mLotteryHandler.removeCallbacksAndMessages(null);
