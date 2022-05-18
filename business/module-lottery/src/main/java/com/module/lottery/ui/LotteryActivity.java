@@ -17,6 +17,7 @@ import android.view.animation.RotateAnimation;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.core.view.NestedScrollingParent2;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -110,7 +111,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     // 是否自动开始抽奖 true 进入页面自动开始 false  受中台控制
     @Autowired(name = "start_lottery")
     public boolean mStart_lottery = false;
-
     //特权自动抽奖 不受中台控制
     @Autowired(name = "privilege")
     public boolean privilege = false;
