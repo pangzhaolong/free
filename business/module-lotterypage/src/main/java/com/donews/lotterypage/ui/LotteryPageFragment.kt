@@ -21,6 +21,7 @@ import com.donews.lotterypage.Adapter.ContentAdapter
 import com.donews.lotterypage.R
 import com.donews.lotterypage.base.BaseFragment
 import com.donews.lotterypage.base.LotteryPageBean
+import com.donews.lotterypage.base.LotteryPastBean
 import com.donews.lotterypage.databinding.LotteryPageLayoutBinding
 import com.donews.lotterypage.viewmodel.LotteryPageViewModel
 import com.donews.middle.front.FrontConfigManager
@@ -63,7 +64,7 @@ class LotteryPageFragment :
                 }
             }
         })
-
+        initContent()
         dataObservation()
     }
 
@@ -80,6 +81,13 @@ class LotteryPageFragment :
                     mContentAdapter?.setLotteryPageBean(t)
                     mContentAdapter?.notifyDataSetChanged()
                 }
+            }
+        })
+        mViewModel.livePastData.observe(viewLifecycleOwner,object :Observer<LotteryPastBean?>{
+            override fun onChanged(t: LotteryPastBean?) {
+
+
+
             }
         })
     }
