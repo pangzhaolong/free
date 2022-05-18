@@ -1065,6 +1065,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             return;
         }
         if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() == 0) {
+            dialogShow = true;
             //登录未抽奖
             showNotDrawnDialog();
             return;
