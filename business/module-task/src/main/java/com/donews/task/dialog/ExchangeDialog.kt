@@ -20,6 +20,10 @@ class ExchangeDialog : AbstractFragmentDialog<TaskDialogExchangeBinding>(false, 
 
     override fun getLayoutId() = R.layout.task_dialog_exchange
 
+    override fun getThemeStyle(): Int {
+        return R.style.TaskDialogStyle
+    }
+
     override fun initView() {
         dataBinding.eventListener = EventListener()
     }

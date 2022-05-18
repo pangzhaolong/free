@@ -11,7 +11,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.donews.base.utils.ToastUtil
-import com.donews.common.decoration.GridItemDecoration
+import com.donews.common.decoration.GridSpacingItemDecoration
 import com.donews.common.router.RouterActivityPath
 import com.donews.middle.views.TaskView
 import com.donews.unboxing.R
@@ -70,7 +70,7 @@ class UnboxingRVAdapter(layoutResId: Int) : BaseQuickAdapter<UnboxingBean, BaseV
                     removeItemDecorationAt(index)
                 }
 
-                addItemDecoration(GridItemDecoration(3, DensityUtils.dip2px(8f)))
+                addItemDecoration(GridSpacingItemDecoration(3, DensityUtils.dip2px(8f)))
                 adapter = picAdapter
             }
             picAdapter.setNewData(bean.images as MutableList<String>?)

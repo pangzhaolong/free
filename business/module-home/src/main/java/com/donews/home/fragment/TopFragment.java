@@ -22,7 +22,7 @@ import com.donews.home.viewModel.TopViewModel;
 import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.middle.bean.home.HomeGoodsBean;
 import com.donews.middle.cache.GoodsCache;
-import com.donews.middle.decoration.GridSpaceItemDecoration;
+import com.donews.middle.decoration.GridSpacingItemDecoration;
 import com.donews.middle.dialog.JumpThirdAppDialog;
 import com.donews.middle.go.GotoUtil;
 import com.donews.middle.listener.JumpThirdAppListener;
@@ -61,7 +61,7 @@ public class TopFragment extends MvvmLazyLiveDataFragment<HomeFragmentTopBinding
         for (int i = 0; i < nItemDecorationCount; i++) {
             mDataBinding.homeGoodProductRv.removeItemDecorationAt(i);
         }
-        mItemDecoration = new GridSpaceItemDecoration(2);
+        mItemDecoration = new GridSpacingItemDecoration(2);
         mDataBinding.homeGoodProductRv.addItemDecoration(mItemDecoration);
         mDataBinding.homeGoodProductRv.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
         mDataBinding.homeGoodProductRv.setAdapter(mTopGoodsAdapter);

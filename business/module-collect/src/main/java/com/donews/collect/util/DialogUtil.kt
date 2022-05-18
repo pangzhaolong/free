@@ -2,10 +2,7 @@ package com.donews.collect.util
 
 import android.annotation.SuppressLint
 import androidx.fragment.app.FragmentActivity
-import com.donews.collect.dialog.ChangeDialog
-import com.donews.collect.dialog.DrawDialog
-import com.donews.collect.dialog.FailDialog
-import com.donews.collect.dialog.GoodDialog
+import com.donews.collect.dialog.*
 
 /**
  *  make in st
@@ -94,7 +91,7 @@ object DialogUtil {
     fun showFailDialog(
         activity: FragmentActivity,
         goodJson:String,
-        dialogBtn:() -> Unit = {},
+        timeoutCall: () -> Unit = {}
     ) {
         if (failDialog != null && failDialog?.dialog != null && failDialog?.dialog!!.isShowing) {
             return
@@ -102,13 +99,91 @@ object DialogUtil {
         failDialog = FailDialog.newInstance(goodJson).apply {
             setOnDismissListener {
                 failDialog = null
-            }
-            clickDialogBtn = {
-                dialogBtn.invoke()
+                timeoutCall.invoke()
             }
         }
 
         failDialog?.showAllowingStateLoss(activity.supportFragmentManager, FailDialog::class.simpleName)
+
+    }
+
+    private var stepOneDialog: StepOneDialog? = null
+
+    fun showStepOneDialog(
+        activity: FragmentActivity,
+        timeoutCall: () -> Unit = {}
+    ) {
+        if (stepOneDialog != null && stepOneDialog?.dialog != null && stepOneDialog?.dialog!!.isShowing) {
+            return
+        }
+        stepOneDialog = StepOneDialog.newInstance().apply {
+            setOnDismissListener {
+                stepOneDialog = null
+                timeoutCall.invoke()
+            }
+        }
+
+        stepOneDialog?.showAllowingStateLoss(activity.supportFragmentManager, StepOneDialog::class.simpleName)
+
+    }
+
+    private var stepTwoDialog: StepTwoDialog? = null
+
+    fun showStepTwoDialog(
+        activity: FragmentActivity,
+        timeoutCall: () -> Unit = {}
+    ) {
+        if (stepTwoDialog != null && stepTwoDialog?.dialog != null && stepTwoDialog?.dialog!!.isShowing) {
+            return
+        }
+        stepTwoDialog = StepTwoDialog.newInstance().apply {
+            setOnDismissListener {
+                stepTwoDialog = null
+                timeoutCall.invoke()
+            }
+        }
+
+        stepTwoDialog?.showAllowingStateLoss(activity.supportFragmentManager, StepTwoDialog::class.simpleName)
+
+    }
+
+    private var stepThreeDialog: StepThreeDialog? = null
+
+    fun showStepThreeDialog(
+        activity: FragmentActivity,
+        timeoutCall: () -> Unit = {}
+    ) {
+        if (stepThreeDialog != null && stepThreeDialog?.dialog != null && stepThreeDialog?.dialog!!.isShowing) {
+            return
+        }
+        stepThreeDialog = StepThreeDialog.newInstance().apply {
+            setOnDismissListener {
+                stepThreeDialog = null
+                timeoutCall.invoke()
+            }
+        }
+
+        stepThreeDialog?.showAllowingStateLoss(activity.supportFragmentManager, StepThreeDialog::class.simpleName)
+
+    }
+
+    private var stepFourDialog: StepFourDialog? = null
+
+    fun showStepFourDialog(
+        activity: FragmentActivity,
+        dialogBtn:() -> Unit = {}
+    ) {
+        if (stepFourDialog != null && stepFourDialog?.dialog != null && stepFourDialog?.dialog!!.isShowing) {
+            return
+        }
+        stepFourDialog = StepFourDialog.newInstance().apply {
+            setOnDismissListener {
+                stepFourDialog = null
+                dialogBtn.invoke()
+            }
+        }
+
+        stepFourDialog?.showAllowingStateLoss(activity.supportFragmentManager, StepFourDialog::class.simpleName)
 
     }
 

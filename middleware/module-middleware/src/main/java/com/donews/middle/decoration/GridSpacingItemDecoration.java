@@ -9,14 +9,14 @@ import androidx.recyclerview.widget.RecyclerView;
 /**
  * created
  */
-public class GridSpaceItemDecoration extends RecyclerView.ItemDecoration {
+public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
     private int mSpanCount;//横条目数量
 
     /**
      * @param spanCount 列数
      */
-    public GridSpaceItemDecoration(int spanCount) {
+    public GridSpacingItemDecoration(int spanCount) {
         this.mSpanCount = spanCount;
     }
 

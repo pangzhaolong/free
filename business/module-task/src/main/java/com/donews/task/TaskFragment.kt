@@ -949,6 +949,9 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
 
     //抽奖操作过后,我这边上报
     //endregion
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    open fun onTurntableBeanEvent(event: LotteryEventUnlockBean?) {
+//    }
 
     override fun onDestroy() {
         super.onDestroy()

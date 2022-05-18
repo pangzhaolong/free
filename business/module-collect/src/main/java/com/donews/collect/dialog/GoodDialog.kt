@@ -45,6 +45,10 @@ class GoodDialog: AbstractFragmentDialog<CollectDialogGoodsBinding>(false, false
 
     override fun getLayoutId() = R.layout.collect_dialog_goods
 
+    override fun getThemeStyle(): Int {
+        return R.style.CollectDialogStyle
+    }
+
     private var collectList: MutableList<GoodBean> = arrayListOf()
 
     @SuppressLint("NotifyDataSetChanged")

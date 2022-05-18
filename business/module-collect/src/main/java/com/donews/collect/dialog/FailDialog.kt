@@ -53,6 +53,10 @@ class FailDialog: AbstractFragmentDialog<CollectDialogGoodsFailBinding>(false, f
 
     override fun getLayoutId() = R.layout.collect_dialog_goods_fail
 
+    override fun getThemeStyle(): Int {
+        return R.style.CollectDialogStyle
+    }
+
     val mHandler = Handler(Looper.getMainLooper())
 
     //倒计时
@@ -88,14 +92,16 @@ class FailDialog: AbstractFragmentDialog<CollectDialogGoodsFailBinding>(false, f
 
     override fun isUseDataBinding() = true
 
-    var clickDialogBtn: () -> Unit = {}
-
     inner class EventListener {
         fun receiveBtn(view: View) {
-            clickDialogBtn.invoke()
             mHandler.removeCallbacks(timer)
             disMissDialog()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mHandler.removeCallbacks(timer)
     }
 
 }

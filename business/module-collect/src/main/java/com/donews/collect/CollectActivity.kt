@@ -5,10 +5,10 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
@@ -17,10 +17,9 @@ import com.donews.base.utils.ToastUtil
 import com.donews.collect.adapter.CollectAdapter
 import com.donews.collect.bean.*
 import com.donews.collect.databinding.CollectFragmentBinding
-import com.donews.collect.util.DialogUtil
-import com.donews.collect.util.AnimationUtil
-import com.donews.collect.util.TimeUtil
+import com.donews.collect.util.*
 import com.donews.collect.view.DanMuView
+import com.donews.collect.view.GridDividerDecoration
 import com.donews.collect.vm.CollectViewModel
 import com.donews.common.base.MvvmBaseLiveDataActivity
 import com.donews.common.router.RouterFragmentPath
@@ -93,6 +92,12 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
             layoutManager = GridLayoutManager(mContext, 3)
             collectAdapter = CollectAdapter(R.layout.collect_item_fragment,collectFgList)
             adapter = collectAdapter
+            addItemDecoration(
+                GridDividerDecoration(GridLayoutManager.VERTICAL).apply {
+                    dividerHeight(DensityUtils.dip2px(4f))
+                    dividerColor(ContextCompat.getColor(context,R.color.white))
+                }
+            )
         }
     }
 
@@ -166,7 +171,7 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
     private fun initNewGoodCard() {
         mViewModel?.newGoodCard?.observe(this, {
             it?.let {
-                loadStatus()
+                handleNewCard()
                 EventBus.getDefault().post(CollectStartNewCardEvent())
             }
         })
@@ -199,7 +204,7 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
     }
 
     private fun loadDrawCard(cardId:String){
-        mViewModel?.requestStopCard(cardId)
+        mViewModel?.requestDrawCard(cardId)
     }
 
     private fun initCardCharge(){
@@ -263,7 +268,7 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
     private fun handleStatus() {
         when (mStatusInfo?.status) {
             STATUS_ZERO -> {
-                loadGoods()
+                startStepOne()
             }
             STATUS_ONE -> {
                 showLayoutMsg()
@@ -271,7 +276,70 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
             STATUS_TWO -> {
             }
             STATUS_THREE -> {
-                DialogUtil.showFailDialog(this@CollectActivity,Gson().toJson(mStatusInfo))
+                DialogUtil.showFailDialog(this@CollectActivity,Gson().toJson(mStatusInfo)){
+                    startStepOne()
+                }
+            }
+        }
+    }
+
+    //重选卡后的处理(处理新老流程)
+    private fun handleNewCard(){
+        if (mClickChangeClickStatus){
+            //点击更换集卡直接送一次碎片
+            if (mStatusInfo != null){
+                loadDrawCard(mStatusInfo!!.cardId)
+            }
+        } else {
+            //未集卡状态下走新老流程
+            if (UserStatusUtil.isNewUser()){
+                startStepTwo()
+            } else {
+                startStepThree()
+            }
+        }
+    }
+
+    private fun startStepOne(){
+        if (DayStepUtil.instance.isTodayShowOneStep()){
+            DialogUtil.showStepOneDialog(this){
+                loadGoods()
+            }
+        } else {
+            loadGoods()
+        }
+    }
+
+    private fun startStepTwo(){
+        if (DayStepUtil.instance.isTodayShowTwoStep()){
+            DialogUtil.showStepTwoDialog(this){
+                startStepFour()
+            }
+        } else {
+            startStepFour()
+        }
+    }
+
+    private fun startStepThree(){
+        if (DayStepUtil.instance.isTodayShowThreeStep()){
+            DialogUtil.showStepThreeDialog(this){
+                startStepFour()
+            }
+        } else {
+            startStepFour()
+        }
+    }
+
+    private fun startStepFour(){
+        if (DayStepUtil.instance.isTodayShowFourStep()){
+            DialogUtil.showStepFourDialog(this){
+                if (mStatusInfo != null){
+                    loadDrawCard(mStatusInfo!!.cardId)
+                }
+            }
+        } else {
+            if (mStatusInfo != null){
+                loadDrawCard(mStatusInfo!!.cardId)
             }
         }
     }
@@ -283,6 +351,7 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
         try {
             mDataBinding?.rightTv?.text = mStatusInfo?.goodsInfo?.title
             curTime = mStatusInfo?.timeOut!!
+            mHandler.removeCallbacks(timer)
             mHandler.postDelayed(timer,1000L)
             mDataBinding?.lotteryTwo?.text = mStatusInfo?.cardTimes.toString()
             val curProgress = (mStatusInfo?.uniProgress!! / 100).toDouble()
@@ -324,6 +393,9 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
         }
     }
 
+    //标记通过点击换商品按钮动作
+    private var mClickChangeClickStatus = false
+
     private fun initClick() {
         setOnClickListener(mDataBinding?.iconBack,mDataBinding?.changeGoodClick,mDataBinding?.centerBtn,
             mDataBinding?.bottomClick) {
@@ -333,7 +405,9 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
                 }
                 mDataBinding?.changeGoodClick -> {
                     if (mStatusInfo != null){
+                        mClickChangeClickStatus = true
                         DialogUtil.showChangeGoodDialog(this@CollectActivity,Gson().toJson(mStatusInfo)){
+                            mClickChangeClickStatus = false
                             loadStopCard(it)
                         }
                     }

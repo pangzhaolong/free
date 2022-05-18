@@ -1,5 +1,6 @@
 package com.donews.collect.dialog
 
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
@@ -16,6 +17,7 @@ import com.donews.collect.bean.GoodBean
 import com.donews.collect.bean.GoodInfo
 import com.donews.collect.databinding.CollectDialogGoodsBinding
 import com.donews.collect.databinding.CollectDialogGoodsDrawBinding
+import com.donews.collect.util.AnimationUtil
 import com.donews.middle.mainShare.bean.Ex
 import com.google.gson.Gson
 import java.lang.Exception
@@ -48,9 +50,14 @@ class DrawDialog: AbstractFragmentDialog<CollectDialogGoodsDrawBinding>(false, f
 
     override fun getLayoutId() = R.layout.collect_dialog_goods_draw
 
+    override fun getThemeStyle(): Int {
+        return R.style.CollectDialogStyle
+    }
+
     @SuppressLint("NotifyDataSetChanged", "SetTextI18n")
     override fun initView() {
         dataBinding.eventListener = EventListener()
+        rotate = AnimationUtil.rotate(dataBinding?.rotateView)
         try {
             mGoodInfo = Gson().fromJson(mGoodJson,DrawCardInfo::class.java)
             dataBinding?.rightTv?.text = "${mGoodInfo?.no}号碎片"
@@ -60,12 +67,22 @@ class DrawDialog: AbstractFragmentDialog<CollectDialogGoodsDrawBinding>(false, f
 
     override fun isUseDataBinding() = true
 
+    private var rotate: ObjectAnimator? = null
+
     var clickDialogBtn: () -> Unit = {}
 
     inner class EventListener {
         fun receiveBtn(view: View) {
             clickDialogBtn.invoke()
             disMissDialog()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (rotate != null && rotate!!.isRunning){
+            rotate?.cancel()
+            rotate = null
         }
     }
 
