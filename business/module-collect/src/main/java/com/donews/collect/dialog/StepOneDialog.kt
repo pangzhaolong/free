@@ -1,10 +1,9 @@
 package com.donews.collect.dialog
 
-import android.os.Handler
-import android.os.Looper
 import com.donews.base.fragmentdialog.AbstractFragmentDialog
 import com.donews.collect.R
 import com.donews.collect.databinding.CollectDialogStepOneBinding
+import com.donews.collect.util.AnimationUtil
 import com.donews.collect.util.DayStepUtil
 import com.donews.utilslibrary.utils.SPUtils
 
@@ -27,20 +26,22 @@ class StepOneDialog : AbstractFragmentDialog<CollectDialogStepOneBinding>(false,
     override fun getLayoutId() = R.layout.collect_dialog_step_one
 
     override fun initView() {
-        mHandler.postDelayed({
+        startAnimation()
+    }
+
+    private fun startAnimation(){
+        AnimationUtil.startLottieAnimation(dataBinding?.lottieAnimation){
             val curNum = SPUtils.getInformain("todayShowOneStepNum", 0)
             DayStepUtil.instance.setStepOneSp(curNum + 1)
+            cancelAnimation()
             disMissDialog()
-        }, 3000L)
+        }
     }
 
-    private val mHandler = Handler(Looper.getMainLooper())
+    private fun cancelAnimation(){
+        AnimationUtil.cancelLottieAnimation(dataBinding?.lottieAnimation)
+    }
 
     override fun isUseDataBinding() = true
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        mHandler.removeCallbacksAndMessages(null)
-    }
 
 }

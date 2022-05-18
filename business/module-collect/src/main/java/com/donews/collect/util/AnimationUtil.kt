@@ -1,13 +1,10 @@
 package com.donews.collect.util
 
-import android.animation.Keyframe
+import android.animation.*
 import android.view.animation.LinearInterpolator
 
-import android.animation.ObjectAnimator
-
-import android.animation.PropertyValuesHolder
-import android.animation.ValueAnimator
 import android.view.View
+import com.airbnb.lottie.LottieAnimationView
 import kotlin.math.sqrt
 
 
@@ -109,6 +106,32 @@ object AnimationUtil {
             repeatCount = ValueAnimator.INFINITE
             start()
         }
+    }
+
+    fun startLottieAnimation(view: LottieAnimationView?,animationEnd: ()->Unit = {}){
+        view?.let {
+            it.imageAssetsFolder = "images"
+            it.setAnimation("collect_step_one.json")
+            it.loop(true)
+            it.addAnimatorListener(object: Animator.AnimatorListener{
+                override fun onAnimationStart(animation: Animator?) {}
+
+                override fun onAnimationEnd(animation: Animator?) {
+                    animationEnd.invoke()
+                    animation?.cancel()
+                }
+
+                override fun onAnimationCancel(animation: Animator?) {}
+
+                override fun onAnimationRepeat(animation: Animator?) {}
+
+            })
+            it.playAnimation()
+        }
+    }
+
+    fun cancelLottieAnimation(view: LottieAnimationView?){
+        view?.cancelAnimation()
     }
 
 }
