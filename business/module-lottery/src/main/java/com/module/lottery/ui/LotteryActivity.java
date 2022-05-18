@@ -35,6 +35,7 @@ import com.dn.events.events.LotteryBackEvent;
 import com.dn.events.events.LotteryStatusEvent;
 import com.dn.integral.jdd.integral.ProxyIntegral;
 import com.donews.base.utils.ToastUtil;
+import com.donews.middle.bean.LotteryEventUnlockBean;
 import com.donews.yfsdk.manager.AdConfigManager;
 import com.donews.yfsdk.monitor.LotteryAdCheck;
 import com.donews.common.bean.CritMessengerBean;
@@ -776,6 +777,9 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             Toast.makeText(LotteryActivity.this, "生成抽奖码失败", Toast.LENGTH_SHORT).show();
             return;
         }
+        //抽奖成功发送通知
+        //通知首页更新
+        EventBus.getDefault().post(new LotteryEventUnlockBean());
         ExhibitCodeStartsDialog exhibitCodeStartsDialog = new ExhibitCodeStartsDialog(LotteryActivity.this, mGoodsId,
                 generateCodeBean);
         exhibitCodeStartsDialog.setOwnerActivity(LotteryActivity.this);
