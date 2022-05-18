@@ -5,7 +5,8 @@
     tools:ignore="ResourceName">
 
     <data>
-
+        <import type="com.donews.middle.front.LotteryConfigManager" />
+        <import type="android.view.View" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -20,7 +21,8 @@
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#00000000"
+            android:background="@color/transparent"
+            android:elevation="0dp"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -123,27 +125,28 @@
                 </LinearLayout>
             </RelativeLayout>
 
-            <TextView
+
+            <com.donews.middle.views.ExchanageTaskView
                 android:id="@+id/advertise"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:layout_below="@+id/hint"
-                android:layout_marginStart="13dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="13dp"
-                android:background="#77C1FB"
-                android:gravity="center"
-                android:text="运营位"
-                android:textColor="#FFFFFF" />
+                android:layout_marginEnd="10dp"
+                android:background="@color/transparent"
+                android:visibility="@{LotteryConfigManager.Ins().getConfigBean().getTask()?View.VISIBLE:View.GONE}"
+                app:layout_constraintTop_toBottomOf="@+id/front_rp_rl" />
+
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/spike_content_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clipToPadding="false"
             android:layout_marginStart="13dp"
-            android:layout_marginTop="20dp"
             android:layout_marginEnd="13dp"
+            android:paddingTop="20dp"
             android:orientation="vertical"
             android:overScrollMode="never"
             android:scrollbars="none"

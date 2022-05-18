@@ -48,6 +48,7 @@ import com.donews.middle.adutils.adcontrol.AdControlBean;
 import com.donews.middle.adutils.adcontrol.AdControlManager;
 import com.donews.middle.centralDeploy.TurntableSwitch;
 import com.donews.middle.front.FrontConfigManager;
+import com.donews.middle.front.LotteryConfigManager;
 import com.donews.utilslibrary.analysis.AnalysisHelp;
 import com.donews.utilslibrary.base.SmSdkConfig;
 import com.donews.utilslibrary.base.UtilsConfig;
@@ -597,7 +598,10 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         ABSwitch.Ins().init();
         //获取大转盘的配置
         TurntableSwitch.Ins().init();
+        //首页运营位
         FrontConfigManager.Ins().init();
+        //抽奖页运营位
+        LotteryConfigManager.Ins().init();
         mHadPermissions = true;
         if ((SPUtils.getInformain(KeySharePreferences.IS_FIRST_IN_APP,
                 0) <= 0 && ABSwitch.Ins().isSkipSplashAd4NewUser())

@@ -23,6 +23,9 @@ import com.donews.lotterypage.base.BaseFragment
 import com.donews.lotterypage.base.LotteryPageBean
 import com.donews.lotterypage.databinding.LotteryPageLayoutBinding
 import com.donews.lotterypage.viewmodel.LotteryPageViewModel
+import com.donews.middle.front.FrontConfigManager
+import com.donews.middle.front.LotteryConfigManager
+import com.donews.middle.views.TaskView
 
 @Route(path = RouterFragmentPath.HomeLottery.PAGER_LOTTERY)
 class LotteryPageFragment :
@@ -35,6 +38,14 @@ class LotteryPageFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+         //运营位
+        if (LotteryConfigManager.Ins().getConfigBean().getTask()) {
+            mDataBinding.advertise.setVisibility(View.VISIBLE);
+            mDataBinding.advertise.refreshYyw(TaskView.Place_Front);
+        } else {
+            mDataBinding.advertise.setVisibility(View.GONE);
+        }
 
         mContentAdapter = ContentAdapter(this.requireContext());
         mContentAdapter?.getLayout(R.layout.lottery_page_content_item)
