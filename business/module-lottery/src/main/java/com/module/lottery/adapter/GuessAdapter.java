@@ -122,20 +122,10 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                         }
                     }
                 });
-                boolean logType = AppInfo.checkIsWXLogin();
-                if (!logType) {
-                    listHolder.mGuesslikeHeadBinding.lotteryCodeTitle.setVisibility(View.GONE);
-                    listHolder.mGuesslikeHeadBinding.lotteryContainer.setVisibility(View.GONE);
-                    listHolder.mGuesslikeHeadBinding.barLayout.setVisibility(View.GONE);
-                } else {
                     //=======================================抽奖码=========================
-//                    if (mCommodityBean.getLotteryCodeBean() != null) {
-//                        listHolder.mGuesslikeHeadBinding.lotteryCodeTitle.setVisibility(View.VISIBLE);
-//                        listHolder.mGuesslikeHeadBinding.lotteryContainer.setVisibility(View.VISIBLE);
-//                        listHolder.mGuesslikeHeadBinding.barLayout.setVisibility(View.VISIBLE);
-//                        //初始化获取的抽奖码列表
-//                        initListLottery(listHolder.mGuesslikeHeadBinding, mCommodityBean.getLotteryCodeBean());
-//                    }
+                if (mCommodityBean.getLotteryCodeBean() != null) {
+                    //初始化获取的抽奖码列表
+                    initListLottery(listHolder.mGuesslikeHeadBinding, mCommodityBean.getLotteryCodeBean());
                 }
                 listHolder.mGuesslikeHeadBinding.raiders.setOnClickListener(new View.OnClickListener() {
                     @Override

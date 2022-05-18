@@ -20,15 +20,18 @@
             android:layout_height="match_parent"
             android:clipChildren="false">
 
+            <com.module.lottery.view.PullRecyclerViewGroup
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/lottery_gridview"
-                    android:fadingEdge="none"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:fadingEdge="none"
                     android:overScrollMode="never"
                     android:scrollbars="none" />
-
+            </com.module.lottery.view.PullRecyclerViewGroup>
 
             <ImageView
                 android:id="@+id/return_icon"
