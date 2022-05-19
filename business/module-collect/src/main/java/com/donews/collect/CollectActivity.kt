@@ -306,6 +306,7 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
     //重选卡后的处理(处理新老流程)
     private fun handleNewCard(){
         if (mClickChangeClickStatus){
+            mClickChangeClickStatus = false
             //点击更换集卡直接送一次碎片
             loadDrawCard(mCardId)
         } else {
@@ -354,6 +355,8 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
     private fun startStepFour(){
         if (DayStepUtil.instance.isTodayShowFourStep()){
             DialogUtil.showStepFourDialog(this){
+                val curNum = SPUtils.getInformain("todayShowFourStepNum", 0)
+                DayStepUtil.instance.setStepFourSp(curNum + 1)
                 loadDrawCard(mCardId)
             }
         } else {
@@ -447,7 +450,6 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
                     if (mStatusInfo != null){
                         mClickChangeClickStatus = true
                         DialogUtil.showChangeGoodDialog(this@CollectActivity,Gson().toJson(mStatusInfo)){
-                            mClickChangeClickStatus = false
                             loadStopCard(it)
                         }
                     }

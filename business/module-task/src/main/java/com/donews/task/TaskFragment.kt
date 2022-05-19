@@ -44,6 +44,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.droidsonroids.gif.GifDrawable
 import com.donews.middle.bean.globle.TurntableBean.ItemsDTO
+import com.google.gson.Gson
 
 
 /**
@@ -192,12 +193,13 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
         private const val NONE = "none"
     }
 
-    //接口统一处理气泡列表
+    //接口统一处理气泡列表(宝箱除外)
     private fun handleTaskBubbles() {
         var canReceiveBubbleNum = 0//可领取气泡数
         for (index in taskBubbleBean.list.indices) {
             bubbleIsShow(index)
-            if (taskBubbleBean.list[index].status == BUBBLE_NO_RECEIVE) {
+            if (taskBubbleBean.list[index].type != GIFT_BOX
+                && taskBubbleBean.list[index].status == BUBBLE_NO_RECEIVE) {
                 canReceiveBubbleNum++
             }
         }
@@ -312,7 +314,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                             mDataBinding?.seeAdTv?.alpha = 0.45f
                             mDataBinding?.seeAdTv?.text = "可领取(${taskBubbleVideoBean?.done ?: 0}/3)"
                             mDataBinding?.coldDownTimer?.apply {
-                                setCountTime(taskBubbleVideoBean?.cd ?: 0)
+                                setCurCountTime(taskBubbleVideoBean?.cd ?: 0)
                                 startCountdown()
                             }
                         } else {
@@ -503,7 +505,8 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
             mDataBinding?.shareTv,//分享气泡
             mDataBinding?.iconLuckDrawBubble,
             mDataBinding?.iconLuckDrawTv,//抽奖气泡
-            mDataBinding?.iconBtn
+            mDataBinding?.iconBtn,
+            mDataBinding?.fingerAnimation
         ) {
             when (this) {
                 mDataBinding?.ruleClick -> {
@@ -558,7 +561,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                     //处理抽奖逻辑
                     clickLottery()
                 }
-                mDataBinding?.iconBtn -> {
+                mDataBinding?.iconBtn,mDataBinding?.fingerAnimation -> {
                     //一键气泡处理
                     clickAllBubble()
                 }
@@ -756,11 +759,12 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
         }
     }
 
-    //一键领取所有气泡点击处理
+    //一键领取所有气泡点击处理(宝箱除外)
     private fun clickAllBubble() {
         var isHaveCanReceiveBubble = false
         for (index in taskBubbleBean.list.indices) {
-            if (taskBubbleBean.list[index].status == BUBBLE_NO_RECEIVE) {
+            if (taskBubbleBean.list[index].type != GIFT_BOX
+                && taskBubbleBean.list[index].status == BUBBLE_NO_RECEIVE) {
                 isHaveCanReceiveBubble = true
                 break
             }
