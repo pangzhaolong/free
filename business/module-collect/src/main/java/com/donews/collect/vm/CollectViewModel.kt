@@ -70,8 +70,8 @@ class CollectViewModel: BaseLiveDataViewModel<CollectRepository>() {
     }
 
     //选择新的福利卡
-    private val mNewGoodCard: MutableLiveData<Any> = MutableLiveData()
-    val newGoodCard: LiveData<Any> = mNewGoodCard
+    private val mNewGoodCard: MutableLiveData<StatusInfo> = MutableLiveData()
+    val newGoodCard: LiveData<StatusInfo> = mNewGoodCard
 
     //集卡商品
     fun requestNewGoodCard(goodId: String) {

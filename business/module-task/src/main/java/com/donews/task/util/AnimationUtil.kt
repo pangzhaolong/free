@@ -112,7 +112,7 @@ object AnimationUtil {
                             dataSource: DataSource?,
                             isFirstResource: Boolean
                         ): Boolean {
-                            resource?.setLoopCount(2)
+                            resource?.setLoopCount(1)
                             return false
                         }
                     })

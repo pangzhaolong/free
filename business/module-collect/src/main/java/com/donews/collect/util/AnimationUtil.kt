@@ -108,11 +108,21 @@ object AnimationUtil {
         }
     }
 
+    fun startFingerAnimation(view: LottieAnimationView?){
+        view?.let {
+            it.imageAssetsFolder = "images"
+            it.clearAnimation()
+            it.setAnimation("task_finger.json")
+            it.loop(true)
+            it.playAnimation()
+        }
+    }
+
     fun startLottieAnimation(view: LottieAnimationView?,animationEnd: ()->Unit = {}){
         view?.let {
             it.imageAssetsFolder = "images"
             it.setAnimation("collect_step_one.json")
-            it.loop(true)
+            it.loop(false)
             it.addAnimatorListener(object: Animator.AnimatorListener{
                 override fun onAnimationStart(animation: Animator?) {}
 

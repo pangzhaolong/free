@@ -43,7 +43,6 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.droidsonroids.gif.GifDrawable
-import com.donews.middle.bean.globle.TurntableBean
 import com.donews.middle.bean.globle.TurntableBean.ItemsDTO
 
 
@@ -219,7 +218,6 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
         when (taskBubbleBean.list[index].type) {
             TURNTABLE -> {
                 taskBubbleLuckPanBean = taskBubbleBean.list[index]
-                bubbleIsLeftOrRight = false
                 when (taskBubbleLuckPanBean?.status) {
                     BUBBLE_NO_FINISH -> {
                         mDataBinding?.iconLuckPanBubble?.alpha = 0.45f
@@ -237,7 +235,6 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
             }
             SIGN -> {
                 taskBubbleSignBean = taskBubbleBean.list[index]
-                bubbleIsLeftOrRight = true
                 when (taskBubbleSignBean?.status) {
                     BUBBLE_NO_FINISH -> {
                         mDataBinding?.iconSignBubble?.alpha = 0.45f
@@ -255,7 +252,6 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
             }
             LOTTERY -> {
                 taskBubbleLuckDrawBean = taskBubbleBean.list[index]
-                bubbleIsLeftOrRight = true
                 when (taskBubbleLuckDrawBean?.status) {
                     BUBBLE_NO_FINISH -> {
                         mDataBinding?.iconLuckDrawBubble?.alpha = 0.45f
@@ -273,7 +269,6 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
             }
             SHARE -> {
                 taskBubbleShareBean = taskBubbleBean.list[index]
-                bubbleIsLeftOrRight = false
                 when (taskBubbleShareBean?.status) {
                     BUBBLE_NO_FINISH -> {
                         mDataBinding?.iconShareBubble?.alpha = 0.45f
@@ -291,7 +286,6 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
             }
             COLLECT -> {
                 taskBubbleCollectBean = taskBubbleBean.list[index]
-                bubbleIsLeftOrRight = true
                 when (taskBubbleCollectBean?.status) {
                     BUBBLE_NO_FINISH -> {
                         mDataBinding?.iconCollectBubble?.alpha = 0.45f
@@ -309,7 +303,6 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
             }
             VIDEO -> {
                 taskBubbleVideoBean = taskBubbleBean.list[index]
-                bubbleIsLeftOrRight = true
                 when (taskBubbleVideoBean?.status) {
                     BUBBLE_NO_FINISH -> {
                         if (taskBubbleVideoBean?.cd ?: 0 > 0) {
@@ -363,6 +356,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                 loadTaskBubbles()
             }
             COLLECT -> {
+                bubbleIsLeftOrRight = true
                 makeBubbleExplosion(mDataBinding?.iconCollectBubble as View)
                 makeBubbleExplosion(mDataBinding?.iconCollectTv as View)
                 startCoinGif()
@@ -370,6 +364,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                 loadTaskBubbles()
             }
             LOTTERY -> {
+                bubbleIsLeftOrRight = true
                 makeBubbleExplosion(mDataBinding?.iconLuckDrawBubble as View)
                 makeBubbleExplosion(mDataBinding?.iconLuckDrawTv as View)
                 startCoinGif()
@@ -377,6 +372,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                 loadTaskBubbles()
             }
             TURNTABLE -> {
+                bubbleIsLeftOrRight = false
                 makeBubbleExplosion(mDataBinding?.iconLuckPanBubble as View)
                 makeBubbleExplosion(mDataBinding?.iconLuckPanTv as View)
                 startCoinGif()
@@ -384,6 +380,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                 loadTaskBubbles()
             }
             SHARE -> {
+                bubbleIsLeftOrRight = false
                 makeBubbleExplosion(mDataBinding?.iconShareBubble as View)
                 makeBubbleExplosion(mDataBinding?.shareTv as View)
                 startCoinGif()
@@ -391,6 +388,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                 loadTaskBubbles()
             }
             VIDEO -> {
+                bubbleIsLeftOrRight = true
                 startCoinGif()
                 loadUserAssets()
                 loadTaskBubbles()
@@ -404,6 +402,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                 }
             }
             NONE -> {
+                bubbleIsLeftOrRight = true
                 for (index in taskBubbleBean.list.indices) {
                     if (taskBubbleBean.list[index].status == BUBBLE_NO_RECEIVE) {
                         when (taskBubbleBean.list[index].type) {
@@ -434,7 +433,6 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                         }
                     }
                 }
-                bubbleIsLeftOrRight = true
                 startCoinGif()
                 loadUserAssets()
                 loadTaskBubbles()
@@ -591,6 +589,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                             override fun onAdClose() {
                                 super.onAdClose()
                                 Log.i("adSee-->", "-onAdClose->")
+                                mCurWhichBubbleType = GIFT_BOX
                                 //宝箱看完广告不用上报,直接领取
                                 loadBubbleReceive(
                                     taskBubbleBoxBean?.id ?: MainShareViewModel.ID_GIFT_BOX,

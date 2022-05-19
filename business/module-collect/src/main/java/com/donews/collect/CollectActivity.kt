@@ -1,12 +1,19 @@
 package com.donews.collect
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
+import android.view.animation.LinearInterpolator
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
@@ -27,10 +34,12 @@ import com.donews.middle.adutils.RewardVideoAd
 import com.donews.middle.mainShare.bus.CollectStartNewCardEvent
 import com.donews.middle.mainShare.extend.setOnClickListener
 import com.donews.utilslibrary.utils.DensityUtils
+import com.donews.utilslibrary.utils.SPUtils
 import com.google.gson.Gson
 import com.gyf.immersionbar.ImmersionBar
 import org.greenrobot.eventbus.EventBus
 import java.lang.Exception
+import java.math.BigDecimal
 import java.text.DecimalFormat
 
 /**
@@ -71,6 +80,7 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
         initLiveData()
         initRecyclerView()
         startBubbleAnimation()
+        startFingerAnimation()
         loadDanMu()
         loadStatus()
     }
@@ -120,6 +130,14 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
         }
     }
 
+    private fun startFingerAnimation(){
+        AnimationUtil.startFingerAnimation(mDataBinding?.jsonAnimation)
+    }
+
+    private fun cancelFingerAnimation(){
+        AnimationUtil.cancelLottieAnimation(mDataBinding?.jsonAnimation)
+    }
+
     //region 接口相关
     private fun initDanMu() {
         mViewModel?.danMu?.observe(this, {
@@ -138,6 +156,7 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
         mViewModel?.status?.observe(this, {
             it?.let {
                 mStatusInfo = it
+                mCardId = it.cardId
                 handleStatus()
             }
         })
@@ -171,6 +190,7 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
     private fun initNewGoodCard() {
         mViewModel?.newGoodCard?.observe(this, {
             it?.let {
+                mCardId = it.cardId
                 handleNewCard()
                 EventBus.getDefault().post(CollectStartNewCardEvent())
             }
@@ -287,9 +307,7 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
     private fun handleNewCard(){
         if (mClickChangeClickStatus){
             //点击更换集卡直接送一次碎片
-            if (mStatusInfo != null){
-                loadDrawCard(mStatusInfo!!.cardId)
-            }
+            loadDrawCard(mCardId)
         } else {
             //未集卡状态下走新老流程
             if (UserStatusUtil.isNewUser()){
@@ -330,17 +348,16 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
         }
     }
 
+    //重选后会赋值(for:未选卡的系列过渡页中途不能刷新status而中断,cardId拿不到最新值)
+    private var mCardId = "0"
+
     private fun startStepFour(){
         if (DayStepUtil.instance.isTodayShowFourStep()){
             DialogUtil.showStepFourDialog(this){
-                if (mStatusInfo != null){
-                    loadDrawCard(mStatusInfo!!.cardId)
-                }
+                loadDrawCard(mCardId)
             }
         } else {
-            if (mStatusInfo != null){
-                loadDrawCard(mStatusInfo!!.cardId)
-            }
+            loadDrawCard(mCardId)
         }
     }
     //endregion
@@ -354,24 +371,47 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
             mHandler.removeCallbacks(timer)
             mHandler.postDelayed(timer,1000L)
             mDataBinding?.lotteryTwo?.text = mStatusInfo?.cardTimes.toString()
-            val curProgress = (mStatusInfo?.uniProgress!! / 100).toDouble()
-            val str = DecimalFormat("000.00%").format(curProgress)
-            mDataBinding?.bottomTvOne?.text = str[0].toString()
-            mDataBinding?.bottomTvTwo?.text = str[1].toString()
-            mDataBinding?.bottomTvThree?.text = str[2].toString()
-            mDataBinding?.bottomTvFour?.text = str[4].toString()
-            mDataBinding?.bottomTvFive?.text = str[5].toString()
-            mDataBinding?.bottomTvSix?.text = str[6].toString()
-            when (curProgress){
-                100.0->mDataBinding?.progress?.progress = 100
-                0.0-> mDataBinding?.progress?.progress = 0
-                else-> mDataBinding?.progress?.progress = curProgress.toInt()
+            if (mStatusInfo?.uniProgress in 0..10000){
+                val div = BigDecimalUtils.div(mStatusInfo?.uniProgress.toString(), 10000.toString(), 4, false)
+                val str = DecimalFormat("000.00%").format(div.toDouble())
+                mDataBinding?.bottomTvOne?.text = str[0].toString()
+                mDataBinding?.bottomTvTwo?.text = str[1].toString()
+                mDataBinding?.bottomTvThree?.text = str[2].toString()
+                mDataBinding?.bottomTvFour?.text = str[4].toString()
+                mDataBinding?.bottomTvFive?.text = str[5].toString()
+                mDataBinding?.bottomTvSix?.text = str[6].toString()
+                mDataBinding?.progress?.max = 10000
+                val startProgress = SPUtils.getInformain("cardProgress",0).toFloat()
+                startProgressAddAnimation(startProgress,(mStatusInfo?.uniProgress ?: 0).toFloat())
             }
             collectFgList.clear()
             collectFgList.addAll(mStatusInfo?.fragments as MutableList)
             collectAdapter?.notifyDataSetChanged()
-
         } catch (e:Exception){}
+    }
+
+    private var mProgressAnim: Animator? = null
+    private fun startProgressAddAnimation(start:Float=0f,end:Float=0f){
+        mProgressAnim = ValueAnimator.ofFloat(start,end).apply {
+            duration = 3000L
+            interpolator = LinearInterpolator()
+            addUpdateListener{
+                val value: Float = it.animatedValue as Float
+                mDataBinding?.progress?.progress = value.toInt()
+            }
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationRepeat(animation: Animator?) {
+                    super.onAnimationRepeat(animation)
+
+                }
+                override fun onAnimationEnd(animation: Animator?) {
+                    super.onAnimationEnd(animation)
+                    SPUtils.setInformain("cardProgress",end.toInt())
+                    mProgressAnim = null
+                }
+            })
+            start()
+        }
     }
 
     //倒计时
@@ -398,7 +438,7 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
 
     private fun initClick() {
         setOnClickListener(mDataBinding?.iconBack,mDataBinding?.changeGoodClick,mDataBinding?.centerBtn,
-            mDataBinding?.bottomClick) {
+            mDataBinding?.bottomClick,mDataBinding?.jsonAnimation) {
             when (this) {
                 mDataBinding?.iconBack -> {
                     finish()
@@ -425,9 +465,7 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
 
                                     override fun onAdClose() {
                                         super.onAdClose()
-                                        if (mStatusInfo != null){
-                                            loadDrawCard(mStatusInfo!!.cardId)
-                                        }
+                                        loadDrawCard(mCardId)
                                     }
                                 },
                                 false
@@ -437,7 +475,7 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
                         }
                     }
                 }
-                mDataBinding?.bottomClick->{
+                mDataBinding?.bottomClick,mDataBinding?.jsonAnimation->{
                     mStatusInfo?.let {
                         if (mStatusInfo?.uniTimes!! > 0){
                             RewardVideoAd.loadRewardVideoAd(
@@ -450,9 +488,7 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
 
                                     override fun onAdClose() {
                                         super.onAdClose()
-                                        if (mStatusInfo != null){
-                                            loadCardCharge(mStatusInfo!!.cardId)
-                                        }
+                                        loadCardCharge(mCardId)
                                     }
                                 },
                                 false
@@ -471,6 +507,7 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
     override fun onDestroy() {
         super.onDestroy()
         cancelBubbleAnimation()
+        cancelFingerAnimation()
         mHandler.removeCallbacks(timer)
         mHandler.removeCallbacks(danMuTimer)
     }
