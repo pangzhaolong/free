@@ -24,6 +24,7 @@ import com.donews.lotterypage.base.LotteryPageBean
 import com.donews.lotterypage.base.LotteryPastBean
 import com.donews.lotterypage.databinding.LotteryPageLayoutBinding
 import com.donews.lotterypage.viewmodel.LotteryPageViewModel
+import com.donews.middle.bean.front.AwardBean
 import com.donews.middle.front.FrontConfigManager
 import com.donews.middle.front.LotteryConfigManager
 import com.donews.middle.views.TaskView
@@ -40,7 +41,7 @@ class LotteryPageFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-         //运营位
+        //运营位
         if (LotteryConfigManager.Ins().getConfigBean().getTask()) {
             mDataBinding.advertise.setVisibility(View.VISIBLE);
             mDataBinding.advertise.refreshYyw(TaskView.Place_Front);
@@ -66,11 +67,34 @@ class LotteryPageFragment :
         })
         initContent()
         dataObservation()
+        startTime()
+    }
+
+
+    private fun startTime(){
+        mDataBinding.newUserGiftCountDown.updateCountDownTime(1*60*60*1000)
     }
 
     override fun onResume() {
         super.onResume()
         initContent()
+        if (mDataBinding.reveal != null) {
+            mDataBinding.reveal.resumeScroll()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (mDataBinding.reveal != null) {
+            mDataBinding.reveal.pauseScroll()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (mDataBinding.reveal != null) {
+            mDataBinding.reveal.stopScroll()
+        }
     }
 
     //观察请求回来的数据
@@ -83,11 +107,10 @@ class LotteryPageFragment :
                 }
             }
         })
-        mViewModel.livePastData.observe(viewLifecycleOwner,object :Observer<LotteryPastBean?>{
-            override fun onChanged(t: LotteryPastBean?) {
-
-
-
+        //往期人员
+        mViewModel.livePastData.observe(viewLifecycleOwner, object : Observer<AwardBean?> {
+            override fun onChanged(t: AwardBean?) {
+                mDataBinding.reveal.refreshData(t?.list)
             }
         })
     }

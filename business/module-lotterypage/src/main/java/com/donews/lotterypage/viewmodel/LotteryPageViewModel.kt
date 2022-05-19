@@ -6,12 +6,13 @@ import com.donews.base.viewmodel.BaseLiveDataViewModel
 import com.donews.lotterypage.base.LotteryPageBean
 import com.donews.lotterypage.base.LotteryPastBean
 import com.donews.lotterypage.model.LotteryPageModel
+import com.donews.middle.bean.front.AwardBean
 
 class LotteryPageViewModel : BaseLiveDataViewModel<LotteryPageModel>() {
 
     var liveData = MutableLiveData<LotteryPageBean>();
 
-    var livePastData = MutableLiveData<LotteryPastBean>();
+    var livePastData = MutableLiveData<AwardBean>();
 
 
     override fun createModel(): LotteryPageModel? {

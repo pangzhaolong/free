@@ -238,13 +238,13 @@ public class BarrageView extends FrameLayout {
 
         AwardBean.AwardInfo awardInfo = mAwardList.get(mListIndex);
         if (!mExchange) {
-            mAwardView1.setUserAwardInfo(awardInfo.getAvatar(), awardInfo.getName(), awardInfo.getProduceName());
+            mAwardView1.setUserAwardInfo( awardInfo.getName(), awardInfo.getProduceName());
             mAwardView1.setTranslationY(60);
             mAwardView1.setVisibility(VISIBLE);
             mAwardView1.setAlpha(1.0f);
             mMoveAnimator1.start();
         } else {
-            mAwardView2.setUserAwardInfo(awardInfo.getAvatar(), awardInfo.getName(), awardInfo.getProduceName());
+            mAwardView2.setUserAwardInfo(awardInfo.getName(), awardInfo.getProduceName());
             mAwardView2.setTranslationY(60);
             mAwardView2.setVisibility(VISIBLE);
             mAwardView2.setAlpha(1.0f);

@@ -14,33 +14,27 @@ import com.bumptech.glide.Glide;
 import com.donews.middle.R;
 
 public class AwardInfoView extends LinearLayout {
-    private final ImageView mAvatarIv;
-    private final TextView mAwardTv;
-    private final Context mContext;
+    private TextView mAwardTv;
+    private Context mContext;
+    private TextView mUserName_;
 
     public AwardInfoView(Context context) {
-        super(context);
-        mContext = context;
-
-        LayoutInflater.from(context).inflate(R.layout.middle_award_info, this, true);
-        mAvatarIv = findViewById(R.id.middle_gift_head_iv);
-        mAwardTv = findViewById(R.id.middle_gift_text);
+        super(context, null);
     }
 
     public AwardInfoView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-
         mContext = context;
-
         LayoutInflater.from(context).inflate(R.layout.middle_award_info, this, true);
-        mAvatarIv = findViewById(R.id.middle_gift_head_iv);
-        mAwardTv = findViewById(R.id.middle_gift_text);
+        mAwardTv = findViewById(R.id.middle_text);
+        mUserName_ = findViewById(R.id.user_name);
     }
 
-    public void setUserAwardInfo(String url, String name, String award) {
-        Glide.with(mContext).load(url).into(mAvatarIv);
-        String awardInfo = String.format(mContext.getString(R.string.middle_gift_text), name, award);
-        mAwardTv.setText(Html.fromHtml(awardInfo));
+    public void setUserAwardInfo(String name, String award) {
+        if (name != null) {
+            mUserName_.setText(name);
+            mAwardTv.setText(award);
+        }
     }
 
 }
