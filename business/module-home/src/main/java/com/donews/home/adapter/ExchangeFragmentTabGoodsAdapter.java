@@ -2,33 +2,22 @@ package com.donews.home.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
-import android.text.SpannableString;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.donews.base.widget.CenterImageSpan;
 import com.donews.home.R;
 import com.donews.home.databinding.HomeExchanageFragmentGoodsItemBinding;
 import com.donews.middle.base.BaseBindingAdapter;
+import com.donews.middle.bean.home.HomeExchangeGoodsBean;
 import com.donews.middle.bean.home.HomeGoodsBean;
-import com.donews.utilslibrary.utils.UrlUtils;
+import com.donews.middle.bean.home.SearchRespBean;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ExchangeFragmentTabGoodsAdapter extends
-        BaseBindingAdapter<HomeGoodsBean.GoodsInfo, HomeExchanageFragmentGoodsItemBinding> implements View.OnClickListener {
+        BaseBindingAdapter<SearchRespBean.SearchRespItemBean, HomeExchanageFragmentGoodsItemBinding> {
 
     public interface GoodsClickListener {
         /**
@@ -36,11 +25,10 @@ public class ExchangeFragmentTabGoodsAdapter extends
          *
          * @param item
          */
-        void onExchanageClick(HomeGoodsBean.GoodsInfo item);
+        void onExchanageClick(SearchRespBean.SearchRespItemBean item);
     }
 
     private final Context mContext;
-    private final List<HomeGoodsBean.GoodsInfo> mGoodsList = new ArrayList<>();
     private GoodsClickListener mListener;
 
     public ExchangeFragmentTabGoodsAdapter(Context context, GoodsClickListener listener) {
@@ -50,28 +38,24 @@ public class ExchangeFragmentTabGoodsAdapter extends
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void refreshData(List<HomeGoodsBean.GoodsInfo> list, boolean needClear) {
+    public void refreshData(List<SearchRespBean.SearchRespItemBean> list, boolean needClear) {
         if (needClear) {
-            mGoodsList.clear();
+            setNewData(list);
+        } else {
+            addData(list);
         }
-        mGoodsList.addAll(list);
-        notifyDataSetChanged();
     }
 
     @Override
-    protected void convert(@NonNull BaseBindViewHolder<HomeExchanageFragmentGoodsItemBinding> homeExchanageFragmentGoodsItemBindingBaseBindViewHolder, @Nullable HomeGoodsBean.GoodsInfo goodsInfo) {
-
+    protected void convert(@NonNull BaseBindViewHolder<HomeExchanageFragmentGoodsItemBinding> helper,
+                           @Nullable SearchRespBean.SearchRespItemBean goodsInfo) {
+        helper.binding.setThiz(this);
+        helper.binding.setGoodInfo(goodsInfo);
     }
 
-    @Override
-    public int getItemCount() {
-        return mGoodsList.size();
-    }
-
-    @Override
-    public void onClick(View v) {
-        HomeGoodsBean.GoodsInfo gi = (HomeGoodsBean.GoodsInfo) v.getTag();
-        mListener.onExchanageClick(gi);
+    // 兑换按钮的点击事件
+    public void onExchanageClick(SearchRespBean.SearchRespItemBean item) {
+        mListener.onExchanageClick(item);
     }
 }
 

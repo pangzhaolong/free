@@ -26,6 +26,7 @@ import com.donews.middle.bean.mine2.resp.DailyTasksReportResp;
 import com.donews.middle.bean.mine2.resp.SignListResp;
 import com.donews.middle.bean.mine2.resp.SignResp;
 import com.donews.middle.bean.mine2.resp.UserAssetsResp;
+import com.donews.middle.viewmodel.BaseMiddleViewModel;
 import com.donews.mine.Api.MineHttpApi;
 import com.donews.mine.BR;
 import com.donews.mine.BuildConfig;
@@ -69,10 +70,6 @@ public class MineViewModel extends BaseLiveDataViewModel<MineModel> {
     public MutableLiveData<String> mine2UserName = new MutableLiveData<>("未登录");
     // 用户头像
     public MutableLiveData<String> mine2UserHead = new MutableLiveData<>();
-    // 金币数量
-    public MutableLiveData<Integer> mine2JBCount = new MutableLiveData<>(0);
-    // 积分数量
-    public MutableLiveData<Integer> mine2JFCount = new MutableLiveData<>(0);
     // 每日任务集合
     public MutableLiveData<List<DailyTaskResp.DailyTaskItemResp>> mineDailyTasks = new MutableLiveData<>();
     // 签到列表数据
@@ -96,6 +93,22 @@ public class MineViewModel extends BaseLiveDataViewModel<MineModel> {
     public void setDataBinDing(MineFragmentBinding dataBinding, FragmentActivity baseActivity) {
         this.dataBinding = dataBinding;
         this.baseActivity = baseActivity;
+    }
+
+    /**
+     * 获取个人中心的金币数量的订阅数据
+     * @return
+     */
+    public MutableLiveData<Integer> getMine2JBCount(){
+        return BaseMiddleViewModel.getBaseViewModel().mine2JBCount;
+    }
+
+    /**
+     * 获取个人中心的活跃(积分)数量的订阅数据
+     * @return
+     */
+    public MutableLiveData<Integer> getMine2JFCount(){
+        return BaseMiddleViewModel.getBaseViewModel().mine2JFCount;
     }
 
     /**
@@ -124,10 +137,10 @@ public class MineViewModel extends BaseLiveDataViewModel<MineModel> {
                         mine2RefeshDataLive.postValue(true);
                         mineDailyTaskReportResult.postValue(resp);
                         if (isUpdateLoclCoin) {
-                            if (mine2JBCount.getValue() != null) {
-                                mine2JBCount.postValue(mine2JBCount.getValue() + resp.coin);
+                            if (BaseMiddleViewModel.getBaseViewModel().mine2JBCount.getValue() != null) {
+                                BaseMiddleViewModel.getBaseViewModel().mine2JBCount.postValue(BaseMiddleViewModel.getBaseViewModel().mine2JBCount.getValue() + resp.coin);
                             } else {
-                                mine2JBCount.postValue(resp.coin);
+                                BaseMiddleViewModel.getBaseViewModel().mine2JBCount.postValue(resp.coin);
                             }
                         }
                     }
@@ -157,15 +170,15 @@ public class MineViewModel extends BaseLiveDataViewModel<MineModel> {
                             mineDailyTaskReceiveResult.postValue(null);
                             return;
                         }
-                        mine2RefeshDataLive.postValue(true);
-                        mineDailyTaskReceiveResult.postValue(resp);
                         if (isUpdateLoclCoin) {
-                            if (mine2JBCount.getValue() != null) {
-                                mine2JBCount.postValue(mine2JBCount.getValue() + resp.coin);
+                            if (BaseMiddleViewModel.getBaseViewModel().mine2JBCount.getValue() != null) {
+                                BaseMiddleViewModel.getBaseViewModel().mine2JBCount.postValue(BaseMiddleViewModel.getBaseViewModel().mine2JBCount.getValue() + resp.coin);
                             } else {
-                                mine2JBCount.postValue(resp.coin);
+                                BaseMiddleViewModel.getBaseViewModel().mine2JBCount.postValue(resp.coin);
                             }
                         }
+                        mine2RefeshDataLive.postValue(true);
+                        mineDailyTaskReceiveResult.postValue(resp);
                     }
                 });
     }
@@ -201,10 +214,10 @@ public class MineViewModel extends BaseLiveDataViewModel<MineModel> {
                                 mineSignResult.postValue(resp);
                             }
                             if (isUpdateLoclCoin) {
-                                if (mine2JBCount.getValue() != null) {
-                                    mine2JBCount.postValue(mine2JBCount.getValue() + resp.coin);
+                                if (BaseMiddleViewModel.getBaseViewModel().mine2JBCount.getValue() != null) {
+                                    BaseMiddleViewModel.getBaseViewModel().mine2JBCount.postValue(BaseMiddleViewModel.getBaseViewModel().mine2JBCount.getValue() + resp.coin);
                                 } else {
-                                    mine2JBCount.postValue(resp.coin);
+                                    BaseMiddleViewModel.getBaseViewModel().mine2JBCount.postValue(resp.coin);
                                 }
                             }
                         }
@@ -270,18 +283,18 @@ public class MineViewModel extends BaseLiveDataViewModel<MineModel> {
                 .execute(new SimpleCallBack<UserAssetsResp>() {
                     @Override
                     public void onError(ApiException e) {
-                        mine2JBCount.postValue(0);
-                        mine2JFCount.postValue(0);
+                        BaseMiddleViewModel.getBaseViewModel().mine2JBCount.postValue(0);
+                        BaseMiddleViewModel.getBaseViewModel().mine2JFCount.postValue(0);
                     }
 
                     @Override
                     public void onSuccess(UserAssetsResp resp) {
                         if (resp == null) {
-                            mine2JBCount.postValue(0);
-                            mine2JFCount.postValue(0);
+                            BaseMiddleViewModel.getBaseViewModel().mine2JBCount.postValue(0);
+                            BaseMiddleViewModel.getBaseViewModel().mine2JFCount.postValue(0);
                         } else {
-                            mine2JBCount.postValue(resp.coin);
-                            mine2JFCount.postValue(resp.active);
+                            BaseMiddleViewModel.getBaseViewModel().mine2JBCount.postValue(resp.coin);
+                            BaseMiddleViewModel.getBaseViewModel().mine2JFCount.postValue(resp.active);
                         }
                     }
                 });

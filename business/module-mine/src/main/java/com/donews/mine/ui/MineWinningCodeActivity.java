@@ -27,8 +27,15 @@ public class MineWinningCodeActivity extends
 
     @Autowired(name = "period")
     public int period;
+    /**
+     * 来源，
+     * 1：首页
+     * 2：往期开奖
+     * 3：个人参与记录
+     */
     @Autowired(name = "from")
     public int from = -1;
+
     @Override
     protected int getLayoutId() {
         return R.layout.mine_activity_winning_code;
@@ -54,7 +61,7 @@ public class MineWinningCodeActivity extends
     public void initView() {
         ARouter.getInstance().inject(this);
         Fragment f = RouterFragmentPath.User.getMineOpenWinFragment(
-                period, false, true, false,from);
+                period, false, true, true, from);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.mine_win_frm, f);
         ft.commitAllowingStateLoss();

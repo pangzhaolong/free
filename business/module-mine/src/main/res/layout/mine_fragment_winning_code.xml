@@ -24,7 +24,7 @@
                 android:id="@+id/main_win_code_title_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/mine_me_open_top_bg"
+                android:background="#7671FF"
                 android:fitsSystemWindows="true">
 
                 <TextView

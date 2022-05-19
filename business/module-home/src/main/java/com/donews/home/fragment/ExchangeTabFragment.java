@@ -9,26 +9,37 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.donews.base.utils.ToastUtil;
+import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.home.R;
 import com.donews.home.adapter.ExchangeFragmentTabGoodsAdapter;
+import com.donews.home.databinding.HomeExchangeGoodNotDialogBinding;
 import com.donews.home.databinding.HomeFragmentExchangeTabBinding;
+import com.donews.home.dialogs.ExchangeGoodJbFragmentDialog;
 import com.donews.home.viewModel.NorViewModel;
+import com.donews.middle.bean.home.HomeCategory2Bean;
 import com.donews.middle.bean.home.HomeCategoryBean;
+import com.donews.middle.bean.home.HomeExchangeGoodsBean;
+import com.donews.middle.bean.home.HomeExchangeReq;
+import com.donews.middle.bean.home.HomeExchangeResp;
 import com.donews.middle.bean.home.HomeGoodsBean;
+import com.donews.middle.bean.home.SearchRespBean;
 import com.donews.middle.cache.GoodsCache;
 import com.donews.middle.decoration.GridSpacingItemDecoration;
 
+/**
+ * 首页 -> 每个Tab所对应的Fragment
+ */
 public class ExchangeTabFragment extends MvvmLazyLiveDataFragment<HomeFragmentExchangeTabBinding, NorViewModel>
         implements ExchangeFragmentTabGoodsAdapter.GoodsClickListener {
 
-    private HomeCategoryBean.CategoryItem mCategoryItem;
+    private HomeCategory2Bean.Category2Item mCategoryItem;
     private ExchangeFragmentTabGoodsAdapter mNorGoodsAdapter;
 
     private int mPageId = 0;
     private RecyclerView.ItemDecoration mItemDecoration;
 
-    public ExchangeTabFragment(HomeCategoryBean.CategoryItem categoryItem) {
+    public ExchangeTabFragment(HomeCategory2Bean.Category2Item categoryItem) {
         mCategoryItem = categoryItem;
     }
 
@@ -57,7 +68,7 @@ public class ExchangeTabFragment extends MvvmLazyLiveDataFragment<HomeFragmentEx
         mDataBinding.homeNorGoodsRv.setAdapter(mNorGoodsAdapter);
 
         if (mCategoryItem != null) {
-            HomeGoodsBean tmpHomeGoodsBean = GoodsCache.readGoodsBean(HomeGoodsBean.class, mCategoryItem.getCid());
+            HomeExchangeGoodsBean tmpHomeGoodsBean = GoodsCache.readGoodsBean(HomeGoodsBean.class, mCategoryItem.category_id);
             showNorGoodsBean(tmpHomeGoodsBean);
         }
 
@@ -71,8 +82,42 @@ public class ExchangeTabFragment extends MvvmLazyLiveDataFragment<HomeFragmentEx
      * @param item 商品信息
      */
     @Override
-    public void onExchanageClick(HomeGoodsBean.GoodsInfo item) {
-        ToastUtil.showShort(getContext(), "兑换按钮点击了....");
+    public void onExchanageClick(SearchRespBean.SearchRespItemBean item) {
+        HomeExchangeReq req = new HomeExchangeReq();
+        req.goods_id = item.goods_id;
+        showLoading("兑换中");
+        mViewModel.getExchanageGoodsData(req)
+                .observe(this, (homeExchangeResp -> {
+                    hideLoading();
+                    if (homeExchangeResp == null) {
+                        ToastUtil.showShort(getActivity(), "数据获取失败");
+                        return;
+                    }
+                    showExchangeDialog(homeExchangeResp);
+                }));
+    }
+
+    //显示Dialog
+    private void showExchangeDialog(HomeExchangeResp resp) {
+        if (resp.status > 2) {
+            if (resp.status == 4) {
+                ToastUtil.showShort(getContext(), "兑换成功!");
+            } else {
+                ToastUtil.showShort(getContext(), "商品已兑完");
+            }
+            return;
+        }
+        if (resp.status < 0) {
+            ToastUtil.showShort(getContext(), "抱歉，状态错误");
+            return;
+        }
+        int type = 0;
+        if (resp.status == 2) {
+            type = 1;
+        }
+        //显示弹窗
+        ExchangeGoodJbFragmentDialog.getInstance(type, resp.diff)
+                .show(getChildFragmentManager(), ExchangeGoodJbFragmentDialog.class.getSimpleName());
     }
 
     private void initSrl() {
@@ -86,7 +131,7 @@ public class ExchangeTabFragment extends MvvmLazyLiveDataFragment<HomeFragmentEx
             return;
         }
         mPageId++;
-        mViewModel.getNorGoodsData(mCategoryItem.getCid(), mPageId).observe(getViewLifecycleOwner(), homeGoodsBean -> {
+        mViewModel.getExchanageGoodsData(mCategoryItem.category_id, mPageId).observe(getViewLifecycleOwner(), homeGoodsBean -> {
             mDataBinding.homeNorSrl.finishLoadMore();
 
             if (homeGoodsBean == null || homeGoodsBean.getList() == null || homeGoodsBean.getList().size() <= 0) {
@@ -97,7 +142,7 @@ public class ExchangeTabFragment extends MvvmLazyLiveDataFragment<HomeFragmentEx
         });
     }
 
-    private void showNorGoodsBean(HomeGoodsBean homeGoodsBean) {
+    private void showNorGoodsBean(HomeExchangeGoodsBean homeGoodsBean) {
         if (homeGoodsBean == null || homeGoodsBean.getList() == null || homeGoodsBean.getList().size() <= 0) {
             return;
         }
@@ -105,7 +150,7 @@ public class ExchangeTabFragment extends MvvmLazyLiveDataFragment<HomeFragmentEx
         mNorGoodsAdapter.refreshData(homeGoodsBean.getList(), mPageId == 1);
 
         if (mCategoryItem != null) {
-            GoodsCache.saveGoodsBean(homeGoodsBean, mCategoryItem.getCid());
+            GoodsCache.saveGoodsBean(homeGoodsBean, mCategoryItem.category_id);
         }
         mDataBinding.homeNorLoadingLl.setVisibility(View.GONE);
         mDataBinding.homeNorSrl.setVisibility(View.VISIBLE);

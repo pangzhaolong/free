@@ -64,10 +64,20 @@ public class SearchHistory {
         SPUtils.setInformain("jdd_search_history", history);
     }
 
+    /**
+     * 报错当前所有数据
+     */
+    public void saveCurrent() {
+        SPUtils.setInformain("jdd_search_history", toString());
+    }
+
     @NonNull
     public String toString() {
         StringBuilder strHistory = new StringBuilder();
         for (String s : mHistoryList) {
+            if (strHistory.toString().contains(s + ";")) {
+                continue; //已经存在数据了。跳过
+            }
             strHistory.append(s).append(";");
         }
         return strHistory.toString();

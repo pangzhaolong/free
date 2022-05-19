@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import com.donews.common.BuildConfig;
 import com.donews.middle.bean.globle.ABBean;
 import com.donews.middle.cache.GoodsCache;
+import com.donews.middle.searchs.TopSearchConfig;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
@@ -71,6 +72,8 @@ public class ABSwitch {
             mHandler.removeMessages(UPDATE_CONFIG_MSG);
             mHandler.sendEmptyMessage(UPDATE_CONFIG_MSG);
         }
+        //关联更新热门搜索数据
+        TopSearchConfig.update();
     }
 
     private void update() {

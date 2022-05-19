@@ -38,6 +38,7 @@ import com.donews.network.request.PutRequest;
 import com.donews.network.utils.HttpLog;
 import com.donews.network.utils.RxUtil;
 import com.donews.network.utils.Utils;
+import com.donews.utilslibrary.utils.AppInfo;
 import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor;
 
 import java.io.File;
@@ -115,7 +116,7 @@ public final class EasyHttp {
                 .diskConverter(new SerializableDiskConverter());      //目前只支持Serializable和Gson缓存其它可以自己扩展
 
         //添加加解密的拦截器(为了防止其他拦截器出现乱码。所以放在第一个)
-        if(BuildConfig.DEBUG){
+        if (BuildConfig.DEBUG) {
             //添加代理调试
             okHttpClientBuilder.addInterceptor(new OkHttpProfilerInterceptor());
         }
@@ -458,6 +459,17 @@ public final class EasyHttp {
      * 获取全局公共请求头
      */
     public HttpHeaders getCommonHeaders() {
+        if (mCommonHeaders != null) {
+            //检查token是否设置
+            String oldToken = mCommonHeaders.get(HttpHeaders.HEAD_AUTHORIZATION);
+            if ("Bearer ".equals(oldToken)) {
+                //没有设置新的 token
+                String newToken = AppInfo.getToken(oldToken);
+                if (newToken != null && !oldToken.equals(newToken)) {
+                    mCommonHeaders.put(HttpHeaders.HEAD_AUTHORIZATION, newToken);
+                }
+            }
+        }
         return mCommonHeaders;
     }
 

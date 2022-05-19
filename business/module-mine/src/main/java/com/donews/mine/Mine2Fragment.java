@@ -38,6 +38,7 @@ import com.donews.middle.adutils.InterstitialAd;
 import com.donews.middle.adutils.InterstitialFullAd;
 import com.donews.middle.adutils.adcontrol.AdControlManager;
 import com.donews.middle.bean.mine2.resp.SignResp;
+import com.donews.middle.front.FrontConfigManager;
 import com.donews.middle.mainShare.vm.MainShareViewModel;
 import com.donews.middle.views.TaskView;
 import com.donews.mine.adapters.Mine2FragmentTaskAdapter;
@@ -206,8 +207,34 @@ public class Mine2Fragment extends MvvmLazyLiveDataFragment<MineFragmentNewBindi
         EventBus.getDefault().unregister(this);
     }
 
+    //去往设置页面
+    public void gotoSetting() {
+        ARouter.getInstance()
+                .build(RouterActivityPath.Mine.PAGER_ACTIVITY_SETTING)
+                .navigation();
+    }
+
+    //去往登录页面
+    public void gotoLogin() {
+        //去往登录页面
+        ARouter.getInstance()
+                .build(RouterActivityPath.Mine.PAGER_MINE_WINNING_CODE_ACTIVITY)
+                .navigation();
+//        ARouter.getInstance()
+//                .build(RouterActivityPath.User.PAGER_LOGIN)
+//                .navigation();
+    }
+
     @SuppressLint("WrongConstant")
     private void initView() {
+        //设置运营位
+        if (FrontConfigManager.Ins().getConfigBean().getTask()) {
+            mDataBinding.mine2YywLl.setVisibility(View.VISIBLE);
+            mDataBinding.mine2Yyw.refreshYyw(TaskView.Place_Mine);
+        } else {
+            mDataBinding.mine2YywLl.setVisibility(View.GONE);
+        }
+
         taskAdapter = new Mine2FragmentTaskAdapter(getBaseActivity(), mViewModel);
         mDataBinding.mine2TaskList.setAdapter(taskAdapter);
         mViewModel.mine2RefeshDataLive.observe(this, (result) -> {
@@ -246,12 +273,12 @@ public class Mine2Fragment extends MvvmLazyLiveDataFragment<MineFragmentNewBindi
 
     //更新UI数据
     private void updateUIData() {
-    }
-
-    //去往设置页面
-    public void gotoSetting() {
-        ARouter.getInstance()
-                .build(RouterActivityPath.Mine.PAGER_ACTIVITY_SETTING)
-                .navigation();
+        if (AppInfo.checkIsWXLogin()) {
+            mViewModel.mine2UserHead.postValue(LoginHelp.getInstance().getUserInfoBean().getWechatExtra().getHeadimgurl());
+            mViewModel.mine2UserName.postValue(LoginHelp.getInstance().getUserInfoBean().getWechatExtra().getNickName());
+        } else {
+            mViewModel.mine2UserHead.postValue("");
+            mViewModel.mine2UserName.postValue("未登录");
+        }
     }
 }

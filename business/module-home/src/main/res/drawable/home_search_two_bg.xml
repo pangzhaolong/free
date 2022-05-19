@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ResourceName">
+
+    <!-- 中心背景 -->
+    <item>
+        <shape
+            android:shape="rectangle"
+            android:useLevel="false">
+            <stroke android:color="#7671FF" android:width="0.67dp"/>
+            <corners android:radius="80dp" />
+            <padding
+                android:bottom="2dp"
+                android:left="2dp"
+                android:right="2dp"
+                android:top="2dp" />
+        </shape>
+    </item>
+</layer-list>

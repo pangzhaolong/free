@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.donews.home.adapter.HomeSearch2Adapter" />
+
+        <import type="com.donews.middle.bean.home.SearchRespBean.SearchRespItemBean" />
+
+        <variable
+            name="thiz"
+            type="HomeSearch2Adapter" />
+
+        <variable
+            name="goodInfo"
+            type="SearchRespItemBean" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/home_goods_item_bg"
+        android:orientation="vertical"
+        android:paddingBottom="10dp">
+
+        <org.raphets.roundimageview.RoundImageView
+            android:id="@+id/home_top_goods_item_iv"
+            android:layout_width="168dp"
+            android:layout_height="168dp"
+            android:layout_gravity="center"
+            android:scaleType="centerInside"
+            app:imageUrl="@{goodInfo.main_pic}"
+            app:leftTop_corner_radius="10dp"
+            app:rightTop_corner_radius="10dp"
+            app:type="round" />
+
+        <TextView
+            android:id="@+id/home_top_goods_item_des"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@{goodInfo.title}"
+            android:textColor="#2D323A"
+            android:textSize="13.5sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="7dp"
+            android:layout_marginBottom="4dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:layout_gravity="center"
+                android:src="@drawable/home_exchage_flg_xxb" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/exchanage_item_JB"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:gravity="center"
+                android:paddingStart="3dp"
+                android:paddingEnd="4dp"
+                android:text='@{goodInfo.coin+"金币"}'
+                android:textColor="#A3A9B7"
+                android:textSize="12sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/exchanage_item_out"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:gravity="center"
+                android:paddingStart="9dp"
+                android:paddingEnd="4dp"
+                android:text='@{"已兑换:"+goodInfo.amount}'
+                android:textColor="#A3A9B7"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/exchanage_item_goto"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/middle_bg_default_theme"
+            android:onClick="@{()->thiz.onClick(goodInfo)}"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="立即兑换"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+        </RelativeLayout>
+    </LinearLayout>
+</layout>

@@ -26,6 +26,6 @@ public class FrontApi {
 
     public final static String lotteryDetailUrl = BuildConfig.API_LOTTERY_URL + "v1/detail-open-lottery-record";
 
-    public final static String serverTimeUrl = BuildConfig.API_LOTTERY_URL + "v1/get-now-time";
+    public final static String serverTimeUrl = "https://lottery.xg.tagtic.cn/lottery/v1/get-now-time";
 
 }

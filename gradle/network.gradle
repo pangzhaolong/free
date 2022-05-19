@@ -129,8 +129,7 @@ ext {
     BUGLY_ID = "ae6069ee64"
 
     // 微信API
-//    WX_API = "wx9f4a624ca2fb66b2" //趣白拿
-    WX_API = "wxc4c7ad6257a43d57" //多多有宝
+    WX_API = "wx29c2881a5fdadfc7"
 
     //穿山甲行为sdk appid
     Applog_SDK_APPID = "318600"

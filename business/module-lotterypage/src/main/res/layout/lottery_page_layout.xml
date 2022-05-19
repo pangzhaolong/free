@@ -85,14 +85,18 @@
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                    <TextView
+                    <com.donews.lotterypage.view.CountDownViewNew
+                        android:id="@+id/new_user_gift_count_down"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="我是时间计时" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/new_user_gift_tip_tv" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
                         android:text="上期开奖"
                         android:textColor="#F5562A"
                         android:textSize="12dp"
@@ -101,12 +105,15 @@
 
                 <LinearLayout
                     android:id="@+id/hint"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/time"
                     android:layout_centerHorizontal="true"
+                    android:layout_marginStart="11dp"
                     android:layout_marginTop="13dp"
+                    android:layout_marginEnd="11dp"
                     android:background="@drawable/lottery_page_white_shape_bg"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingStart="17dp"
                     android:paddingTop="5dp"
@@ -127,13 +134,11 @@
                         android:layout_marginEnd="13dp"
                         android:background="#FF939EAF" />
 
-                    <TextView
+                    <com.donews.middle.views.BarrageView
+                        android:id="@+id/reveal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="恭喜用户C****获得苹果13…"
-                        android:textColor="#A3A9B7"
-                        android:textSize="12dp"
-                        android:textStyle="bold" />
+                        android:layout_weight="1" />
                 </LinearLayout>
             </RelativeLayout>
 
