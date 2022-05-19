@@ -1,4 +1,4 @@
-package com.module.lottery.utils;
+package com.donews.middle.utils;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -21,6 +21,7 @@ import com.dn.sdk.listener.rewardvideo.SimpleRewardVideoListener;
 import com.donews.base.base.AppManager;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
+import com.donews.middle.R;
 import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.middle.adutils.InterstitialFullAd;
 import com.donews.middle.adutils.RewardVideoAd;
@@ -31,7 +32,6 @@ import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.DateManager;
 import com.donews.yfsdk.monitor.InterstitialFullAdCheck;
 import com.donews.yfsdk.monitor.LotteryAdCheck;
-import com.module_lottery.R;
 import com.orhanobut.logger.Logger;
 
 import java.lang.ref.WeakReference;
@@ -41,17 +41,24 @@ public class PlayAdUtilsTool {
     public static final String CLOSURE_HINT = "抽奖失败,请稍后再试";
     public static final String CLOSURE_HINT_TIME_OUT = "获取视频超时,请稍后再试";
     private PlayAdUtilsToolHandler mPlayAdUtilsToolHandler = new PlayAdUtilsToolHandler(this);
-    private Context mContext;
     private IStateListener mIStateListener;
     private boolean aAState = false;
     private int mNeedShowRetryDialog = 0;
     private LoadAdErrorDialog mLoadAdErrDialog = null;
 
-    public PlayAdUtilsTool(Context context) {
-        this.mContext = context;
+
+    private static PlayAdUtilsTool singletonHungary = new PlayAdUtilsTool();
+
+    //将构造器设置为private禁止通过new进行实例化
+    private PlayAdUtilsTool() {
     }
 
-    public void showRewardVideo(Activity activity, final Dialog dialog) {
+    public static PlayAdUtilsTool getInstance() {
+        return singletonHungary;
+    }
+
+
+    public void showRewardVideo(Activity activity) {
         aAState = false;
         IAdRewardVideoListener listener = new SimpleRewardVideoListener() {
             @Override
@@ -71,8 +78,7 @@ public class PlayAdUtilsTool {
 
             @Override
             public void onAdShow() {
-                //关闭dialog
-                dismissDialog(dialog);
+                mIStateListener.onFinish();
                 //广告显示成功  延时出现页面提示Toast
                 showToast();
             }
@@ -116,23 +122,26 @@ public class PlayAdUtilsTool {
                     mNeedShowRetryDialog = 1;
                 }
                 Logger.e(TAG + errorMsg + "");
-                AnalysisUtils.onEventEx(mContext, Dot.VIDEO_FAILED, "" + code);
+                AnalysisUtils.onEventEx(activity, Dot.VIDEO_FAILED, "" + code);
                 if (code == AdCustomError.PreloadAdEmptyError.getCode()) {
-                    ToastUtil.showShort(mContext, "暂无新视频，请稍后再试" + code);
+                    ToastUtil.showShort(activity, "暂无新视频，请稍后再试" + code);
                 }
                 if (code == AdCustomError.PreloadTimesError.getCode()) {
-                    ToastUtil.showShort(mContext, "加载视频超时，请稍后再试" + code);
+                    ToastUtil.showShort(activity, "加载视频超时，请稍后再试" + code);
                 }
                 if (code == AdCustomError.PreloadAdStatusError.getCode()) {
-                    ToastUtil.showShort(mContext, "加载视频异常，请稍后再试" + code);
+                    ToastUtil.showShort(activity, "加载视频异常，请稍后再试" + code);
                 } else {
-                    ToastUtil.showShort(mContext, CLOSURE_HINT + code);
+                    ToastUtil.showShort(activity, CLOSURE_HINT + code);
                 }
 
                 if (code != AdCustomError.CloseAd.getCode() && code != AdCustomError.LimitAdError.getCode()) {
-                    loadError(activity, dialog, true);
+                    loadError(activity, true);
                 } else {
-                    loadError(activity, dialog, false);
+                    loadError(activity, false);
+                }
+                if (mIStateListener != null) {
+                    mIStateListener.onError(code, errorMsg);
                 }
             }
         };
@@ -149,34 +158,8 @@ public class PlayAdUtilsTool {
                 return;
             }
         }
-
         MvvmBaseLiveDataActivity activity = ((MvvmBaseLiveDataActivity) resultActivity);
-
         activity.showLoading("加载中...");
-
-        /*InterstitialAd.INSTANCE.showAd(resultActivity, new SimpleInterstitialListener() {
-
-            @Override
-            public void onAdShow() {
-                super.onAdShow();
-                activity.hideLoading();
-            }
-
-            @Override
-            public void onAdError(int code, String errorMsg) {
-                super.onAdError(code, errorMsg);
-                activity.hideLoading();
-                closedVideoViewToast();
-            }
-
-            @Override
-            public void onAdClosed() {
-                super.onAdClosed();
-                closedVideoViewToast();
-                activity.hideLoading();
-            }
-        });*/
-
         InterstitialFullAd.INSTANCE.showAd(activity, new SimpleInterstitialFullListener() {
 
             @Override
@@ -256,12 +239,6 @@ public class PlayAdUtilsTool {
     }
 
 
-    private void dismissDialog(Dialog dialog) {
-        if (dialog != null && dialog.isShowing() && mContext != null && mContext instanceof Activity && !((Activity) mContext).isFinishing() && !((Activity) mContext).isDestroyed()) {
-            dialog.dismiss();
-        }
-    }
-
     private void showToast() {
         if (mPlayAdUtilsToolHandler != null) {
             //延时出现
@@ -271,10 +248,10 @@ public class PlayAdUtilsTool {
         }
     }
 
-    private void loadError(Activity activity, Dialog dialog, boolean needShowRetryDialog) {
+    private void loadError(Activity activity, boolean needShowRetryDialog) {
         Activity act = AppManager.getInstance().getTopActivity();
-        if (act!=null && !act.getClass().getName().equalsIgnoreCase("com.module.lottery.ui.LotteryActivity")) {
-            dismissDialog(dialog);
+        if (act != null && !act.getClass().getName().equalsIgnoreCase("com.module.lottery.ui.LotteryActivity")) {
+            mIStateListener.onFinish();
             return;
         }
         if (mNeedShowRetryDialog <= 1 && needShowRetryDialog) {
@@ -283,10 +260,10 @@ public class PlayAdUtilsTool {
                     @Override
                     public void onRetry() {
                         if (!activity.isFinishing()) {
-                            showRewardVideo(activity, dialog);
+                            mIStateListener.onFinish();
                         } else {
-                            if (mContext != null) {
-                                ToastUtil.showShort(mContext, CLOSURE_HINT);
+                            if (activity != null) {
+                                ToastUtil.showShort(activity, CLOSURE_HINT);
                             }
                         }
                         mLoadAdErrDialog.dismiss();
@@ -295,9 +272,9 @@ public class PlayAdUtilsTool {
                     @Override
                     public void onClose() {
                         mLoadAdErrDialog.dismiss();
-                        dismissDialog(dialog);
-                        if (mContext != null) {
-                            ToastUtil.showShort(mContext, CLOSURE_HINT);
+                        mIStateListener.onFinish();
+                        if (activity != null) {
+                            ToastUtil.showShort(activity, CLOSURE_HINT);
                         }
                     }
                 });
@@ -308,20 +285,21 @@ public class PlayAdUtilsTool {
             mLoadAdErrDialog.setOwnerActivity(activity);
             mLoadAdErrDialog.show();
         } else {
-            dismissDialog(dialog);
-            if (mContext != null) {
-                ToastUtil.showShort(mContext, CLOSURE_HINT);
+            mIStateListener.onFinish();
+            if (activity != null) {
+                ToastUtil.showShort(activity, CLOSURE_HINT);
             }
         }
     }
 
 
     private void addVideoViewToast() {
+        Activity activity = null;
         try {
-            Activity activity = AppManager.getInstance().getTopActivity();
+            activity = AppManager.getInstance().getTopActivity();
             if (activity != null && !activity.getClass().getSimpleName().equals("MainActivity") && !activity.getClass().getSimpleName().equals("LotteryActivity")) {
                 if (ABSwitch.Ins().isOpenVideoToast()) {
-                    View view = LayoutInflater.from(mContext).inflate(R.layout.pop_ups_layout, null);
+                    View view = LayoutInflater.from(activity).inflate(R.layout.pop_ups_layout, null);
                     LinearLayout linearLayout = view.findViewById(R.id.toast_view);
                     View decorView = activity.getWindow().getDecorView();
                     FrameLayout contentParent =
@@ -330,11 +308,13 @@ public class PlayAdUtilsTool {
                     linearLayout.setAnimation(CommonAnimationUtils.setScaleAnimation(1000));
                 }
             } else {
-                ToastUtil.showShort(mContext, "完整观看视频即可获得抽奖码");
+                ToastUtil.showShort(activity, "完整观看视频即可获得抽奖码");
             }
         } catch (Exception e) {
+            if (activity != null) {
+                ToastUtil.showShort(activity, "完整观看视频即可获得抽奖码");
+            }
             Logger.e("" + e.getMessage());
-            ToastUtil.showShort(mContext, "完整观看视频即可获得抽奖码");
         }
     }
 
@@ -370,6 +350,15 @@ public class PlayAdUtilsTool {
          */
         void onComplete();
 
+        /**
+         * 结束了请求可以进行后续逻辑
+         */
+        void onFinish();
+
+        /**
+         * 视屏加载或者播放出错
+         */
+        void onError(int code, @Nullable String errorMsg);
     }
 
 

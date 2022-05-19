@@ -30,6 +30,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.donews.middle.bean.globle.TurntableBean;
 import com.donews.turntable.R;
+import com.donews.turntable.bean.RewardedBean;
 import com.donews.turntable.bean.TurntablePrize;
 import com.donews.turntable.dialog.RuleDialog;
 import com.donews.turntable.interfaceUtils.IturntableAnimator;
@@ -39,6 +40,7 @@ import com.donews.turntable.utils.ClickDoubleUtil;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class TurntableView extends View {
 
@@ -63,6 +65,7 @@ public class TurntableView extends View {
     }
 
     private WeakTurntableView weakTurntableView = new WeakTurntableView(this);
+    //单位角度
     private float unitAngle;
     private float mNumAngle = 360f;
     private Resources mResources;
@@ -188,14 +191,18 @@ public class TurntableView extends View {
     }
 
 
-    public void startAnimator() {
-        if (objectAnimator != null && objectAnimator.isRunning() && !ClickDoubleUtil.isFastClick() || !mClickable && loadingFinished()) {
+    public void startAnimator(RewardedBean recommendBean) {
+        if (recommendBean != null && objectAnimator != null && objectAnimator.isRunning() && !ClickDoubleUtil.isFastClick() || !mClickable && loadingFinished()) {
             return;
         }
+        //最大角度
+        float endAngle = unitAngle * recommendBean.getId();
+        //起始角度
+        float startAngle = endAngle - unitAngle;
+        Random rand = new Random();
+        int angle = rand.nextInt(((int) (endAngle - (int) startAngle)) - 5) + ((int) startAngle + 5);
         mClickable = false;
         objectAnimator = AnimatorUtils.singleton().getRotateValueAnimator(this, new IturntableAnimator() {
-            TurntableBean.ItemsDTO bean;
-
             @Override
             public void onAnimationStart(Animator animation) {
 
@@ -204,7 +211,11 @@ public class TurntableView extends View {
             @Override
             public void onAnimationEnd(Animator animation) {
                 if (mTurntableResult != null) {
-                    mTurntableResult.onResult(bean);
+                    int id = recommendBean.getId() - 1;
+                    if (id < 0) {
+                        id = 0;
+                    }
+                    mTurntableResult.onResult(mItemDataList.get(id));
                 }
                 if (weakTurntableView != null) {
                     weakTurntableView.removeMessages(0);
@@ -223,16 +234,7 @@ public class TurntableView extends View {
 
             }
 
-            @Override
-            public void onLocationAngle(String value) {
-                //返回的是生成的度数
-                float angle = Float.parseFloat(value);
-                int index = (int) (angle / unitAngle);
-                TurntableBean.ItemsDTO itemsDTO = mItemDataList.get((mItemDataList.size() - 1) - index);
-                Log.d("抽奖结果    ", itemsDTO.getTitle() + "");
-                this.bean = itemsDTO;
-            }
-        });
+        }, angle);
         objectAnimator.setDuration(3000);
         objectAnimator.start();
     }
@@ -240,7 +242,7 @@ public class TurntableView extends View {
 
     public interface ITurntableResultListener {
 
-        public void onResult(TurntableBean.ItemsDTO dto);
+        public void onResult(TurntableBean.ItemsDTO itemsDTO);
 
     }
 
@@ -256,19 +258,6 @@ public class TurntableView extends View {
             Paint p = new Paint();
             Matrix matrix = new Matrix();
             matrix.postTranslate(getWidth() / 2 - (mTriangleWidth / 2), mTriangleTop);
-//            Bitmap drawMap = mItemDataList.get(i).getBitmap();
-//            if (drawMap == null) {
-//                ImageView imageView = new ImageView(mContext);
-//                imageView.setColorFilter(Color.parseColor("#000000"));
-//                imageView.setImageResource(R.mipmap.item_01);
-//                ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//                layoutParams.width = 100;
-//                layoutParams.height = 100;
-//                imageView.setLayoutParams(layoutParams);
-//                imageView.setDrawingCacheEnabled(true);
-//                BitmapDrawable bitmapDrawable = (BitmapDrawable) imageView.getDrawable();
-//                drawMap = imageScale(bitmapDrawable.getBitmap(), mTriangleWidth, (int) (getHeight() / 2 - mTriangleTop));
-//            }
             canvas.drawBitmap(mItemDataList.get(i).getBitmap(), matrix, p);
             canvas.rotate(unitAngle, getWidth() / 2, getHeight() / 2);
         }

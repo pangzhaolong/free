@@ -6,8 +6,6 @@
  */
 package com.module.lottery.dialog;
 
-import static com.module.lottery.utils.PlayAdUtilsTool.CLOSURE_HINT;
-import static com.module.lottery.utils.PlayAdUtilsTool.CLOSURE_HINT_TIME_OUT;
 
 import android.animation.Animator;
 import android.content.DialogInterface;
@@ -20,6 +18,7 @@ import androidx.annotation.Nullable;
 
 import com.donews.base.utils.ToastUtil;
 import com.donews.middle.dialog.BaseDialog;
+import com.donews.middle.utils.PlayAdUtilsTool;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.module.lottery.ui.LotteryActivity;
@@ -153,7 +152,7 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
                         if (reference.get().isShowing() && reference.get().mOnFinishListener != null) {
                             if (reference.get().getContext() != null) {
                                 AnalysisUtils.onEventEx(reference.get().getContext(), Dot.VIDEO_TIMED_OUT);
-                                ToastUtil.showShort(reference.get().getContext(), CLOSURE_HINT_TIME_OUT);
+                                ToastUtil.showShort(reference.get().getContext(), PlayAdUtilsTool.CLOSURE_HINT_TIME_OUT);
                             }
                             if (reference.get().mContext != null && !reference.get().mContext.isFinishing() && !reference.get().mContext.isDestroyed()) {
                                 reference.get().dismiss();

@@ -12,6 +12,7 @@ import android.view.animation.Interpolator;
 
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;
 
+import com.donews.turntable.bean.RewardedBean;
 import com.donews.turntable.interfaceUtils.IturntableAnimator;
 
 public class AnimatorUtils {
@@ -31,11 +32,10 @@ public class AnimatorUtils {
 
     float ring = 10f * 360f;//圈
 
-    public ObjectAnimator getRotateValueAnimator(View view, IturntableAnimator animatorListener) {
-        float angle = (float) (360f * Math.random());//生成随机数
+    public ObjectAnimator getRotateValueAnimator(View view, IturntableAnimator animatorListener, float angle ) {
+//        float angle = (float) (360f * Math.random());//生成随机数
         Log.d("随机值    ", angle + "");
-        @SuppressLint("ObjectAnimatorBinding") ObjectAnimator valueAnimator = ObjectAnimator.ofFloat(view, "rotation", 0f, ring + angle);
-        animatorListener.onLocationAngle(angle + "");
+        @SuppressLint("ObjectAnimatorBinding") ObjectAnimator valueAnimator = ObjectAnimator.ofFloat(view, "rotation", 0f,  -(ring+angle));
         valueAnimator.addListener(animatorListener);
         valueAnimator.setInterpolator(new LinearOutSlowInInterpolator());
         return valueAnimator;
