@@ -157,10 +157,17 @@ public class Mine2FragmentTaskAdapter extends
     //执行每日任务视频
     private void invokVideo(DailyTaskResp.DailyTaskItemResp item) {
         checkShowDialog(true);
-        mViewModel.mineDailyTaskReportResult.observe(fragmentActivity, mineDailyTaskReportObserver);
         AdManager.INSTANCE.loadRewardVideoAd(fragmentActivity, new SimpleRewardVideoListener() {
             //是否发放了奖励
             boolean isVerifyReward = false;
+
+            @Override
+            public void onAdShow() {
+                super.onAdShow();
+                mViewModel.mineDailyTaskReportResult.removeObserver(mineDailyTaskReportObserver);
+                mViewModel.mineDailyTaskReportResult.observe(fragmentActivity, mineDailyTaskReportObserver);
+                checkShowDialog(false);
+            }
 
             @Override
             public void onAdError(int code, @Nullable String errorMsg) {
@@ -177,13 +184,13 @@ public class Mine2FragmentTaskAdapter extends
                     req.id = item.id;
                     req.type = item.type;
                     mViewModel.requestTaskReport(req, false);
+                } else {
+                    mViewModel.mineDailyTaskReportResult.postValue(null);
                 }
             }
 
             @Override
             public void onAdClose() {
-                //一次性的。消费一次之后结束监听(注:此方法不适用高并发情况)
-                mViewModel.mineDailyTaskReportResult.removeObserver(mineDailyTaskReportObserver);
                 if (isVerifyReward) {
                     ToastUtil.showShort(fragmentActivity, "需要参与活动才能翻倍领取哦~");
                 }

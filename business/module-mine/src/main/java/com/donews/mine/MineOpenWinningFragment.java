@@ -24,6 +24,7 @@ import com.dn.sdk.listener.interstitial.SimpleInterstitialFullListener;
 import com.dn.sdk.listener.interstitial.SimpleInterstitialListener;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
+import com.donews.common.contract.LoginHelp;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.middle.adutils.InterstitialAd;
@@ -84,8 +85,11 @@ public class MineOpenWinningFragment extends
     private ViewGroup adapterNotOpenMyAddRecordHead = null;
     MineWinningCodeAdapter adapter;
     private TextView timeHH;
+    private TextView timeHH1;
     private TextView timeMM;
+    private TextView timeMM1;
     private TextView timeSS;
+    private TextView timeSS1;
     private BarrageView barrageView;
     private BarrageView barrageView2;
     private boolean isLoadStart = false;
@@ -344,8 +348,11 @@ public class MineOpenWinningFragment extends
             mTaskView.refreshYyw(TaskView.Place_Win_Code);
         }
         timeHH = adapterNotOpenWinHead.findViewById(R.id.mine_frm_win_h);
+        timeHH1 = adapterNotOpenWinHead.findViewById(R.id.mine_frm_win_h1);
         timeMM = adapterNotOpenWinHead.findViewById(R.id.mine_frm_win_m);
+        timeMM1 = adapterNotOpenWinHead.findViewById(R.id.mine_frm_win_m1);
         timeSS = adapterNotOpenWinHead.findViewById(R.id.mine_frm_win_s);
+        timeSS1 = adapterNotOpenWinHead.findViewById(R.id.mine_frm_win_s1);
         adapter = new MineWinningCodeAdapter();
         adapter.from = from;
         //设置没有更多数据
@@ -607,7 +614,7 @@ public class MineOpenWinningFragment extends
                             .loginWX(this.toString(), "开奖页>登录按钮");
                 });
             }
-            mViewModel.updateCountDownUI(timeHH, timeMM, timeSS);
+            mViewModel.updateCountDownUI(timeHH, timeMM, timeSS, timeHH1, timeMM1, timeSS1);
             if (!isInitCommData) {
                 isInitCommData = true;
                 mViewModel.loadRecommendData(adapter.pageSize); //加载推荐数据

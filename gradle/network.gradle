@@ -129,7 +129,7 @@ ext {
     BUGLY_ID = "ae6069ee64"
 
     // 微信API
-    WX_API = ""
+    WX_API = "wx29c2881a5fdadfc7"
 
     //穿山甲行为sdk appid
     Applog_SDK_APPID = "318600"

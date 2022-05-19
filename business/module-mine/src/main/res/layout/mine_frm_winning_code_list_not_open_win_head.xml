@@ -17,108 +17,164 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:layout_width="293dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/mine_lucky_number" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <View
-                android:layout_width="65dp"
-                android:layout_height="1dp"
-                android:layout_marginRight="10dp"
-                android:background="@color/white" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="开奖倒计时"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
-
-            <View
-                android:layout_width="65dp"
-                android:layout_height="1dp"
-                android:layout_marginLeft="10dp"
-                android:background="@color/white" />
-        </LinearLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingTop="15dp"
-            android:paddingBottom="15dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-            <!-- 小时 -->
-            <TextView
-                android:id="@+id/mine_frm_win_h"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/mine_open_win_doun_time_bg"
-                android:gravity="center"
-                android:includeFontPadding="false"
-                android:padding="15dp"
-                android:text="00"
-                android:textColor="#E52F2F"
-                android:textSize="35sp" />
+            android:layout_marginLeft="13dp"
+            android:layout_marginTop="19dp"
+            android:layout_marginRight="13dp"
+            android:background="@drawable/ad_shape_min_bg"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:includeFontPadding="false"
-                android:padding="5dp"
-                android:text=":"
-                android:textSize="30sp"
-                android:textStyle="bold" />
+            <ImageView
+                android:layout_width="293dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/mine_lucky_number" />
 
-            <!-- 分钟 -->
-            <TextView
-                android:id="@+id/mine_frm_win_m"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/mine_open_win_doun_time_bg"
-                android:gravity="center"
-                android:includeFontPadding="false"
-                android:padding="15dp"
-                android:text="00"
-                android:textColor="#E52F2F"
-                android:textSize="35sp" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:includeFontPadding="false"
-                android:padding="5dp"
-                android:text=":"
-                android:textSize="30sp"
-                android:textStyle="bold" />
+                <View
+                    android:layout_width="65dp"
+                    android:layout_height="1dp"
+                    android:layout_marginRight="10dp"
+                    android:background="#7B71FF" />
 
-            <!-- 秒 -->
-            <TextView
-                android:id="@+id/mine_frm_win_s"
-                android:layout_width="wrap_content"
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="15dp"
+                    android:layout_marginRight="8dp"
+                    android:src="@drawable/min_win_not_sz" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="开奖倒计时"
+                    android:textColor="#7B71FF"
+                    android:textSize="14sp" />
+
+                <View
+                    android:layout_width="65dp"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="#7B71FF" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/mine_open_win_doun_time_bg"
                 android:gravity="center"
-                android:includeFontPadding="false"
-                android:padding="15dp"
-                android:text="00"
-                android:textColor="#E52F2F"
-                android:textSize="35sp" />
+                android:orientation="horizontal"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+                <!-- 小时 -->
+                <TextView
+                    android:id="@+id/mine_frm_win_h"
+                    android:layout_width="24dp"
+                    android:layout_height="28dp"
+                    android:background="@drawable/mine_not_win_sj_bg"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:text="0"
+                    android:textColor="@color/white"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/mine_frm_win_h1"
+                    android:layout_width="24dp"
+                    android:layout_height="28dp"
+                    android:layout_marginLeft="6dp"
+                    android:background="@drawable/mine_not_win_sj_bg"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:text="0"
+                    android:textColor="@color/white"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:padding="5dp"
+                    android:text=":"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <!-- 分钟 -->
+                <TextView
+                    android:id="@+id/mine_frm_win_m"
+                    android:layout_width="24dp"
+                    android:layout_height="28dp"
+                    android:background="@drawable/mine_not_win_sj_bg"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:text="0"
+                    android:textColor="@color/white"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/mine_frm_win_m1"
+                    android:layout_width="24dp"
+                    android:layout_height="28dp"
+                    android:layout_marginLeft="6dp"
+                    android:background="@drawable/mine_not_win_sj_bg"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:text="0"
+                    android:textColor="@color/white"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:padding="5dp"
+                    android:text=":"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <!-- 秒 -->
+                <TextView
+                    android:id="@+id/mine_frm_win_s"
+                    android:layout_width="24dp"
+                    android:layout_height="28dp"
+                    android:background="@drawable/mine_not_win_sj_bg"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:text="0"
+                    android:textColor="@color/white"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+                <!-- 秒 -->
+                <TextView
+                    android:id="@+id/mine_frm_win_s1"
+                    android:layout_width="24dp"
+                    android:layout_height="28dp"
+                    android:layout_marginLeft="6dp"
+                    android:background="@drawable/mine_not_win_sj_bg"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:text="0"
+                    android:textColor="@color/white"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </LinearLayout>
 
         <TextView
@@ -141,8 +197,8 @@
             android:gravity="center"
             android:text="登录抽大奖"
             android:textColor="@color/white"
-            android:visibility="gone"
-            android:textSize="13sp" />
+            android:textSize="13sp"
+            android:visibility="gone" />
     </LinearLayout>
 
     <LinearLayout

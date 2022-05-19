@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import cn.cd.dn.sdk.models.utils.DNServiceTimeManager.Companion.getIns
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.doing.spike.adapter.SpikeContextAdapter
@@ -72,6 +73,7 @@ class LotteryPageFragment :
 
 
     private fun startTime(){
+        val time = getIns().getServiceTime()
         mDataBinding.newUserGiftCountDown.updateCountDownTime(1*60*60*1000)
     }
 

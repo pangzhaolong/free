@@ -1,10 +1,15 @@
 package com.donews.home;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.view.View;
 
+import androidx.annotation.Nullable;
+
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.dn.sdk.listener.rewardvideo.SimpleRewardVideoListener;
 import com.donews.base.utils.ToastUtil;
+import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.home.adapter.ExchangeFragmentAdapter;
@@ -12,11 +17,14 @@ import com.donews.home.databinding.ExchanageFragmentBinding;
 import com.donews.home.viewModel.ExchangeViewModel;
 import com.donews.middle.bean.home.HomeCategory2Bean;
 import com.donews.middle.bean.home.HomeCategoryBean;
+import com.donews.middle.bean.home.HomeReceiveGiftReq;
 import com.donews.middle.cache.GoodsCache;
 import com.donews.middle.front.FrontConfigManager;
 import com.donews.middle.viewmodel.BaseMiddleViewModel;
 import com.donews.middle.views.ExchanageTabItem;
 import com.donews.middle.views.TaskView;
+import com.donews.utilslibrary.utils.AppInfo;
+import com.donews.yfsdk.loader.AdManager;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -33,6 +41,11 @@ public class ExchangeFragment extends MvvmLazyLiveDataFragment<ExchanageFragment
     // Tab的Fragment
     private ExchangeFragmentAdapter mFragmentAdapter;
     private boolean isInitLoad = true;
+
+    private int downcountCountTime = 0;
+    private Runnable downcountTimeTask = null;
+    private Handler mHand = new Handler();
+    private StringBuffer tvTimeTxt = new StringBuffer();
 
     @Override
     public int getLayoutId() {
@@ -99,6 +112,53 @@ public class ExchangeFragment extends MvvmLazyLiveDataFragment<ExchanageFragment
             }
         });
 
+        //订阅是否开始计时的动作
+        mViewModel.giftCountdownIsStartCount.observe(this, (item) -> {
+            if (item) {
+                //开始计时
+                int sp = mViewModel.queryGiftCountdownStep();
+                if (downcountCountTime <= 0) {
+                    return;//计算结果不支持计时
+                }
+                mDataBinding.tvTime.setVisibility(View.VISIBLE);
+                downcountCountTime = sp;
+                if (downcountTimeTask == null) {
+                    downcountTimeTask = () -> {
+                        mViewModel.giftCountdownCount.postValue(downcountCountTime--);
+                        if (mViewModel.giftCountdownCount.getValue() > 0) {
+                            mHand.postDelayed(downcountTimeTask, 1000);
+                        }
+                    };
+                }
+                mHand.postDelayed(downcountTimeTask, 1000);
+                mDataBinding.homeSearchLb.setEnabled(false);
+            }
+        });
+        //订阅计时动作数值
+        mViewModel.giftCountdownCount.observe(this, (timeValue) -> {
+            if (timeValue <= 0) {
+                mDataBinding.tvTime.setVisibility(View.GONE);
+                mDataBinding.homeSearchLb.setEnabled(true);
+            } else {
+                //更新计时
+                tvTimeTxt.delete(0, tvTimeTxt.length());
+                int m = timeValue / 60;
+                int s = timeValue % 60;
+                if (m > 10) {
+                    tvTimeTxt.append("" + m);
+                } else {
+                    tvTimeTxt.append("0" + m);
+                }
+                tvTimeTxt.append(":");
+                if (s < 10) {
+                    tvTimeTxt.append("0" + s);
+                } else {
+                    tvTimeTxt.append("" + s);
+                }
+                mDataBinding.tvTime.setText(tvTimeTxt.toString());
+            }
+        });
+
         mDataBinding.homeSrl.setEnableLoadMore(false);
         mDataBinding.homeSrl.setOnRefreshListener((refreshLayout) -> {
             //初始化数据
@@ -111,6 +171,12 @@ public class ExchangeFragment extends MvvmLazyLiveDataFragment<ExchanageFragment
         mViewModel.getCoinCritConfig();
         //初始化数据
         loadCategory();
+    }
+
+    @Override
+    public void onDestroy() {
+        mHand.removeCallbacks(downcountTimeTask);
+        super.onDestroy();
     }
 
     //获取搜索左侧的显示文字
@@ -132,12 +198,60 @@ public class ExchangeFragment extends MvvmLazyLiveDataFragment<ExchanageFragment
 
     //搜索框右侧按钮点击
     public void getSearchRightClick() {
-        ToastUtil.showShort(getActivity(), "搜索右侧点击了");
+        mDataBinding.homeSearchLb.setEnabled(false);
+
+        MvvmBaseLiveDataActivity activity = (MvvmBaseLiveDataActivity) getActivity();
+        activity.showLoading("加载中");
+        AdManager.INSTANCE.loadRewardVideoAd(getActivity(), new SimpleRewardVideoListener() {
+
+            //是否发放奖励
+            boolean isRewvrdVerify = false;
+
+            @Override
+            public void onVideoCached() {
+                super.onVideoCached();
+                activity.hideLoading();
+            }
+
+            @Override
+            public void onAdError(int code, @Nullable String errorMsg) {
+                super.onAdError(code, errorMsg);
+                activity.hideLoading();
+            }
+
+            @Override
+            public void onRewardVerify(boolean result) {
+                if (result) {
+                    isRewvrdVerify = true;
+                    invokGiftGet();
+                }
+            }
+
+            @Override
+            public void onAdClose() {
+                if (isRewvrdVerify) {
+                    ToastUtil.showShort(activity, "要参与活动才能领取奖励哦~");
+                }
+            }
+        });
+    }
+
+    //执行宝箱奖励领取
+    private void invokGiftGet() {
+        HomeReceiveGiftReq req = new HomeReceiveGiftReq();
+        req.user_id = AppInfo.getUserId();
+        mViewModel.getReceiveGift(req)
+                .observe(this, (resp) -> {
+                    if (resp != null) {
+                        ToastUtil.showShort(getContext(), "奖励发放成功了");
+                    }
+                });
     }
 
     //初始化DataBinding
     private void initDataBinding() {
         mDataBinding.setThiz(this);
+        mDataBinding.setVModel(mViewModel);
     }
 
     //加载Tab页面

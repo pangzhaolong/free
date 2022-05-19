@@ -23,6 +23,8 @@ import com.donews.notify.launcher.utils.AppNotifyForegroundUtils;
 import com.donews.utilslibrary.utils.JsonUtils;
 import com.donews.utilslibrary.utils.LogUtil;
 
+import cn.cd.dn.sdk.models.utils.DNServiceTimeManager;
+
 public class Notify2ConfigManager {
     //更新配置桌面通知模块的配置数据
     private static final int UPDATE_CONFIG_MSG = 21002;
@@ -115,40 +117,56 @@ public class Notify2ConfigManager {
 
     //获取服务器时间
     private static void getServiceTime() {
-        EasyHttp.get(BuildConfig.API_LOTTERY_URL + "v1/get-now-time")
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(new SimpleCallBack<CurrentServiceTime>() {
-                    @Override
-                    public void onError(ApiException e) {
-                        long curTime = System.currentTimeMillis();
-                        long saveTime = com.donews.utilslibrary.utils.SPUtils.getLongInformain(TIME_SERVICE, 0L);
-                        if (curTime < saveTime) {
-                            return; //放弃保存。因为时间不可能往前走。
-                        }
-                        com.donews.utilslibrary.utils.SPUtils.setInformain(TIME_SERVICE, curTime);
-                    }
-
-                    @Override
-                    public void onSuccess(CurrentServiceTime queryBean) {
-                        long curTime = System.currentTimeMillis();
-                        long saveTime = com.donews.utilslibrary.utils.SPUtils.getLongInformain(TIME_SERVICE, 0L);
-                        if (queryBean == null || queryBean.now == null || queryBean.now.isEmpty()) {
-                            if (curTime < saveTime) {
-                                return; //放弃保存。因为时间不可能往前走。
-                            }
-                            com.donews.utilslibrary.utils.SPUtils.setInformain(TIME_SERVICE, curTime);
-                        } else {
-                            com.donews.utilslibrary.utils.SPUtils.setInformain(TIME_SERVICE,
-                                    Long.parseLong(queryBean.now));
-                        }
-                    }
-                });
+        long time = DNServiceTimeManager.Companion.getIns().getServiceTime();
+        if (time <= 0) {
+            long curTime = System.currentTimeMillis() / 1000;
+            long saveTime = com.donews.utilslibrary.utils.SPUtils.getLongInformain(TIME_SERVICE, 0L);
+            if (curTime < saveTime) {
+                return; //放弃保存。因为时间不可能往前走。
+            }
+            com.donews.utilslibrary.utils.SPUtils.setInformain(TIME_SERVICE, curTime);
+        } else {
+            long curTime = time / 1000;
+            long saveTime = com.donews.utilslibrary.utils.SPUtils.getLongInformain(TIME_SERVICE, 0L);
+            if (curTime < saveTime) {
+                return; //放弃保存。因为时间不可能往前走。
+            }
+            com.donews.utilslibrary.utils.SPUtils.setInformain(TIME_SERVICE, curTime);
+        }
+//        EasyHttp.get("https://lottery.xg.tagtic.cn/lottery/v1/get-now-time")
+//                .cacheMode(CacheMode.NO_CACHE)
+//                .execute(new SimpleCallBack<CurrentServiceTime>() {
+//                    @Override
+//                    public void onError(ApiException e) {
+//                        long curTime = System.currentTimeMillis();
+//                        long saveTime = com.donews.utilslibrary.utils.SPUtils.getLongInformain(TIME_SERVICE, 0L);
+//                        if (curTime < saveTime) {
+//                            return; //放弃保存。因为时间不可能往前走。
+//                        }
+//                        com.donews.utilslibrary.utils.SPUtils.setInformain(TIME_SERVICE, curTime);
+//                    }
+//
+//                    @Override
+//                    public void onSuccess(CurrentServiceTime queryBean) {
+//                        long curTime = System.currentTimeMillis();
+//                        long saveTime = com.donews.utilslibrary.utils.SPUtils.getLongInformain(TIME_SERVICE, 0L);
+//                        if (queryBean == null || queryBean.now == null || queryBean.now.isEmpty()) {
+//                            if (curTime < saveTime) {
+//                                return; //放弃保存。因为时间不可能往前走。
+//                            }
+//                            com.donews.utilslibrary.utils.SPUtils.setInformain(TIME_SERVICE, curTime);
+//                        } else {
+//                            com.donews.utilslibrary.utils.SPUtils.setInformain(TIME_SERVICE,
+//                                    Long.parseLong(queryBean.now));
+//                        }
+//                    }
+//                });
     }
 
     private static void update() {
         getServiceTime();
         LogUtil.i("Notify2ConfigManager update");
-        EasyHttp.get(BuildConfig.BASE_CONFIG_URL  + com.donews.common.BuildConfig.APP_IDENTIFICATION+"-"+"notify-datas" + BuildConfig.BASE_RULE_URL +
+        EasyHttp.get(BuildConfig.BASE_CONFIG_URL + com.donews.common.BuildConfig.APP_IDENTIFICATION + "-" + "notify-datas" + BuildConfig.BASE_RULE_URL +
                 JsonUtils.getCommonJson(false))
                 .cacheMode(CacheMode.NO_CACHE)
                 .isShowToast(BuildConfig.DEBUG)

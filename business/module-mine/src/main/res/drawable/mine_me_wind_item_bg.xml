@@ -5,12 +5,12 @@
         <shape
             android:shape="rectangle"
             tools:ignore="MissingDefaultResource">
+            <corners android:radius="10dp"/>
             <gradient
-                android:startColor="#7671FF"
-                android:centerColor="#AAB071FF"
-                android:endColor="#00B071FF"
-                android:centerY="0.8"
+                android:startColor="#FFE9D3"
+                android:endColor="#FFFBF4"
                 android:angle="270"/>
+            <stroke android:width="1dp" android:color="#EE702C"/>
         </shape>
     </item>
 </layer-list>

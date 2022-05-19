@@ -7,6 +7,6 @@ android {
 
 dependencies {
     implementation rootProject.ext.androidx["androidx.core-ktx"]
-    api 'io.github.15198184721:model_dncd_sdk:2.0.3'
+    api 'com.donews.lk:model_dncd_sdk:2.0.8'
     api 'org.greenrobot:eventbus:3.1.1'
 }

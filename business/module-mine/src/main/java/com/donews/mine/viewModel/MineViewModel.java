@@ -170,8 +170,6 @@ public class MineViewModel extends BaseLiveDataViewModel<MineModel> {
                             mineDailyTaskReceiveResult.postValue(null);
                             return;
                         }
-                        mine2RefeshDataLive.postValue(true);
-                        mineDailyTaskReceiveResult.postValue(resp);
                         if (isUpdateLoclCoin) {
                             if (BaseMiddleViewModel.getBaseViewModel().mine2JBCount.getValue() != null) {
                                 BaseMiddleViewModel.getBaseViewModel().mine2JBCount.postValue(BaseMiddleViewModel.getBaseViewModel().mine2JBCount.getValue() + resp.coin);
@@ -179,6 +177,8 @@ public class MineViewModel extends BaseLiveDataViewModel<MineModel> {
                                 BaseMiddleViewModel.getBaseViewModel().mine2JBCount.postValue(resp.coin);
                             }
                         }
+                        mine2RefeshDataLive.postValue(true);
+                        mineDailyTaskReceiveResult.postValue(resp);
                     }
                 });
     }

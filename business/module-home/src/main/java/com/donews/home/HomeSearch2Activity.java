@@ -23,18 +23,15 @@ import com.donews.home.listener.SearchListener;
 import com.donews.home.viewModel.NorViewModel;
 import com.donews.home.viewModel.SearchViewModel;
 import com.donews.home.views.SearchHistoryItem;
-import com.donews.middle.abswitch.ABSwitch;
 import com.donews.middle.bean.home.HomeExchangeReq;
 import com.donews.middle.bean.home.HomeExchangeResp;
-import com.donews.middle.bean.home.SearchHistory;
 import com.donews.middle.bean.home.TmpSearchHistory;
+import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.middle.dialog.JumpThirdAppDialog;
 import com.donews.middle.go.GotoUtil;
 import com.donews.middle.listener.JumpThirdAppListener;
 import com.donews.middle.searchs.TopSearchConfig;
 import com.gyf.immersionbar.ImmersionBar;
-import com.scwang.smart.refresh.layout.api.RefreshLayout;
-import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 
 import java.util.ArrayList;
 

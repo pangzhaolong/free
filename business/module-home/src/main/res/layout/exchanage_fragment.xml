@@ -10,6 +10,8 @@
 
         <import type="com.donews.middle.front.FrontConfigManager" />
 
+        <import type="com.donews.home.viewModel.ExchangeViewModel" />
+
         <import type="com.donews.home.ExchangeFragment" />
 
         <import type="android.view.View" />
@@ -17,6 +19,10 @@
         <variable
             name="thiz"
             type="ExchangeFragment" />
+
+        <variable
+            name="vModel"
+            type="ExchangeViewModel" />
     </data>
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
@@ -93,19 +99,38 @@
                             android:textSize="14sp"
                             tools:ignore="MissingConstraints" />
 
-                        <ImageView
+                        <RelativeLayout
                             android:id="@+id/home_search_lb"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
-                            android:layout_marginRight="13dp"
-                            android:background="#F5F6FA"
-                            android:onClick="@{()->thiz.getSearchRightClick()}"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/home_exchage_lw"
-                            android:textColor="@color/white"
-                            android:textSize="14sp" />
+                            android:onClick="@{()->thiz.getSearchRightClick()}">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_marginRight="13dp"
+                                android:background="#F5F6FA"
+                                android:scaleType="fitXY"
+                                android:src="@drawable/home_exchage_lw"
+                                android:textColor="@color/white"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/tv_time"
+                                android:layout_width="30dp"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:layout_marginRight="13dp"
+                                android:gravity="center"
+                                android:paddingTop="10dp"
+                                android:text="00:00"
+                                android:textColor="@color/white"
+                                android:textSize="9sp"
+                                android:textStyle="bold"
+                                android:visibility="gone" />
+                        </RelativeLayout>
                     </RelativeLayout>
 
                     <TextView

@@ -17,6 +17,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.sdk.listener.rewardvideo.SimpleRewardVideoListener;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
+import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.home.R;
 import com.donews.home.databinding.HomeExchangeGoodNotDialogBinding;
@@ -132,6 +133,9 @@ public class ExchangeGoodJbFragmentDialog extends BaseBindingFragmentDialog<Home
             loadAdVideo();
         } else {
             //赚活跃。去活动页面
+            ARouter.getInstance().build(RouterActivityPath.Main.PAGER_MAIN)
+                    .withInt("position", 2)
+                    .navigation();
             dismiss();
         }
     }

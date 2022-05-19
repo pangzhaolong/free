@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import cn.cd.dn.sdk.models.utils.DNServiceTimeManager;
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -283,29 +284,39 @@ public class MineModel extends BaseLiveDataModel {
      */
     public Disposable requestCurrentNowTime(
             MutableLiveData<String> livData) {
-        Disposable disop = EasyHttp.get(BuildConfig.API_LOTTERY_URL + "v1/get-now-time")
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(new SimpleCallBack<CurrentServiceTime>() {
-                    @Override
-                    public void onError(ApiException e) {
-                        if (livData.getValue() == null) {
-                            livData.postValue(null);
-                        } else {
-                            livData.postValue(livData.getValue());
-                        }
-                    }
-
-                    @Override
-                    public void onSuccess(CurrentServiceTime queryBean) {
-                        if (queryBean == null || queryBean.now == null || queryBean.now.isEmpty()) {
-                            livData.postValue("");
-                        } else {
-                            livData.postValue(queryBean.now);
-                        }
-                    }
-                });
-        addDisposable(disop);
-        return disop;
+        long time = DNServiceTimeManager.Companion.getIns().getServiceTime();
+        if (time <= 0) {
+            if (livData.getValue() == null) {
+                livData.postValue(null);
+            } else {
+                livData.postValue(livData.getValue());
+            }
+        } else {
+            livData.postValue("" + (time / 1000));
+        }
+//        Disposable disop = EasyHttp.get("https://lottery.xg.tagtic.cn/lottery/v1/get-now-time")
+//                .cacheMode(CacheMode.NO_CACHE)
+//                .execute(new SimpleCallBack<CurrentServiceTime>() {
+//                    @Override
+//                    public void onError(ApiException e) {
+//                        if (livData.getValue() == null) {
+//                            livData.postValue(null);
+//                        } else {
+//                            livData.postValue(livData.getValue());
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onSuccess(CurrentServiceTime queryBean) {
+//                        if (queryBean == null || queryBean.now == null || queryBean.now.isEmpty()) {
+//                            livData.postValue("");
+//                        } else {
+//                            livData.postValue(queryBean.now);
+//                        }
+//                    }
+//                });
+//        addDisposable(disop);
+        return null;
     }
 
     /**
@@ -454,7 +465,7 @@ public class MineModel extends BaseLiveDataModel {
                 .execute(new SimpleCallBack<ActiveTaskBean>() {
                     @Override
                     public void onError(ApiException e) {
-                        livData.postValue(com.donews.utilslibrary.utils.SPUtils.getInformain(CURRENT_SCORE_TASK_COUNT,0));
+                        livData.postValue(com.donews.utilslibrary.utils.SPUtils.getInformain(CURRENT_SCORE_TASK_COUNT, 0));
                     }
 
                     @Override
@@ -463,7 +474,7 @@ public class MineModel extends BaseLiveDataModel {
                             com.donews.utilslibrary.utils.SPUtils.setInformain(CURRENT_SCORE_TASK_COUNT, queryBean.times);
                             livData.postValue(queryBean.times);
                         } else {
-                            livData.postValue(com.donews.utilslibrary.utils.SPUtils.getInformain(CURRENT_SCORE_TASK_COUNT,0));
+                            livData.postValue(com.donews.utilslibrary.utils.SPUtils.getInformain(CURRENT_SCORE_TASK_COUNT, 0));
                         }
                     }
                 });

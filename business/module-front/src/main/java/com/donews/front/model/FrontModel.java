@@ -1,5 +1,9 @@
 package com.donews.front.model;
 
+import static com.donews.utilslibrary.utils.KeySharePreferences.TIME_SERVICE;
+
+import android.os.Handler;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.donews.base.model.BaseLiveDataModel;
@@ -20,6 +24,9 @@ import com.donews.network.exception.ApiException;
 import com.donews.utilslibrary.utils.HttpConfigUtilsKt;
 import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.SPUtils;
+
+import cn.cd.dn.sdk.models.utils.DNServiceTimeManager;
+import io.reactivex.Observable;
 
 public class FrontModel extends BaseLiveDataModel {
 
@@ -182,22 +189,35 @@ public class FrontModel extends BaseLiveDataModel {
         return mutableLiveData;
     }
 
+    private Handler mHandl = new Handler();
+
     public MutableLiveData<ServerTimeBean> getServerTime() {
         MutableLiveData<ServerTimeBean> mutableLiveData = new MutableLiveData<>();
-        addDisposable(EasyHttp.get(FrontApi.serverTimeUrl)
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(new SimpleCallBack<ServerTimeBean>() {
-
-                    @Override
-                    public void onError(ApiException e) {
-                        mutableLiveData.postValue(null);
-                    }
-
-                    @Override
-                    public void onSuccess(ServerTimeBean serverTimeBean) {
-                        mutableLiveData.postValue(serverTimeBean);
-                    }
-                }));
+        long time = DNServiceTimeManager.Companion.getIns().getServiceTime();
+        mHandl.postDelayed(() -> {
+            if (time <= 0) {
+                mutableLiveData.postValue(null);
+            } else {
+                long curTime = time / 1000;
+                ServerTimeBean item = new ServerTimeBean();
+                item.setNow("" + curTime);
+                mutableLiveData.postValue(item);
+            }
+        }, 1000);
+//        addDisposable(EasyHttp.get(FrontApi.serverTimeUrl)
+//                .cacheMode(CacheMode.NO_CACHE)
+//                .execute(new SimpleCallBack<ServerTimeBean>() {
+//
+//                    @Override
+//                    public void onError(ApiException e) {
+//                        mutableLiveData.postValue(null);
+//                    }
+//
+//                    @Override
+//                    public void onSuccess(ServerTimeBean serverTimeBean) {
+//                        mutableLiveData.postValue(serverTimeBean);
+//                    }
+//                }));
 
         return mutableLiveData;
     }

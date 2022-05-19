@@ -42,6 +42,7 @@ private static def addOtherRepos(RepositoryHandler handler) {
     handler.maven { url 'https://jitpack.io' }
     handler.maven { url 'https://repo1.maven.org/maven2/' }
     handler.maven { url 'https://artifact.bytedance.com/repository/Volcengine/' }
+    handler.maven { url 'http://123.57.255.137:8888/repository/lcl_maven_group/' }
     //本地计算机仓库地址
 //    handler.maven { url("D:\\\\maven\\repo") }
 }

@@ -38,7 +38,7 @@ import java.lang.ref.WeakReference;
 public class FreePanicBuyingDialog extends BaseDialog<FreePanicDialogLayoutBinding> implements DialogInterface.OnDismissListener, View.OnClickListener {
 
     private String FATHER_URL = BuildConfig.API_LOTTERY_URL;
-    String RECENT_FREE = FATHER_URL + "v1/get-now-time";
+    String RECENT_FREE = "https://lottery.xg.tagtic.cn/lottery/v1/get-now-time";
     private Context mContext;
     private int limitNumber = 1;
     private LotteryHandler mLotteryHandler;

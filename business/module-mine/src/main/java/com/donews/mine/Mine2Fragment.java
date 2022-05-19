@@ -207,6 +207,24 @@ public class Mine2Fragment extends MvvmLazyLiveDataFragment<MineFragmentNewBindi
         EventBus.getDefault().unregister(this);
     }
 
+    //去往设置页面
+    public void gotoSetting() {
+        ARouter.getInstance()
+                .build(RouterActivityPath.Mine.PAGER_ACTIVITY_SETTING)
+                .navigation();
+    }
+
+    //去往登录页面
+    public void gotoLogin() {
+        //去往登录页面
+        ARouter.getInstance()
+                .build(RouterActivityPath.Mine.PAGER_MINE_WINNING_CODE_ACTIVITY)
+                .navigation();
+//        ARouter.getInstance()
+//                .build(RouterActivityPath.User.PAGER_LOGIN)
+//                .navigation();
+    }
+
     @SuppressLint("WrongConstant")
     private void initView() {
         //设置运营位
@@ -255,12 +273,12 @@ public class Mine2Fragment extends MvvmLazyLiveDataFragment<MineFragmentNewBindi
 
     //更新UI数据
     private void updateUIData() {
-    }
-
-    //去往设置页面
-    public void gotoSetting() {
-        ARouter.getInstance()
-                .build(RouterActivityPath.Mine.PAGER_ACTIVITY_SETTING)
-                .navigation();
+        if (AppInfo.checkIsWXLogin()) {
+            mViewModel.mine2UserHead.postValue(LoginHelp.getInstance().getUserInfoBean().getWechatExtra().getHeadimgurl());
+            mViewModel.mine2UserName.postValue(LoginHelp.getInstance().getUserInfoBean().getWechatExtra().getNickName());
+        } else {
+            mViewModel.mine2UserHead.postValue("");
+            mViewModel.mine2UserName.postValue("未登录");
+        }
     }
 }
