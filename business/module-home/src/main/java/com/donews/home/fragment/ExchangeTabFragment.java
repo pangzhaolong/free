@@ -25,7 +25,7 @@ import com.donews.middle.bean.home.HomeExchangeResp;
 import com.donews.middle.bean.home.HomeGoodsBean;
 import com.donews.middle.bean.home.SearchRespBean;
 import com.donews.middle.cache.GoodsCache;
-import com.donews.middle.decoration.GridSpaceItemDecoration;
+import com.donews.middle.decoration.GridSpacingItemDecoration;
 
 /**
  * 首页 -> 每个Tab所对应的Fragment
@@ -62,7 +62,7 @@ public class ExchangeTabFragment extends MvvmLazyLiveDataFragment<HomeFragmentEx
         for (int i = 0; i < nItemDecorationCount; i++) {
             mDataBinding.homeNorGoodsRv.removeItemDecorationAt(i);
         }
-        mItemDecoration = new GridSpaceItemDecoration(2);
+        mItemDecoration = new GridSpacingItemDecoration(2);
         mDataBinding.homeNorGoodsRv.addItemDecoration(mItemDecoration);
         mDataBinding.homeNorGoodsRv.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
         mDataBinding.homeNorGoodsRv.setAdapter(mNorGoodsAdapter);

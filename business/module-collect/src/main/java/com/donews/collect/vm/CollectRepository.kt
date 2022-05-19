@@ -1,9 +1,7 @@
 package com.donews.collect.vm
 
 import com.donews.base.model.BaseLiveDataModel
-import com.donews.collect.bean.DanMuInfo
-import com.donews.collect.bean.GoodInfo
-import com.donews.collect.bean.StatusInfo
+import com.donews.collect.bean.*
 import com.donews.middle.BuildConfig
 import com.donews.middle.mainShare.upJson.PostCardBean
 import com.donews.middle.mainShare.upJson.PostGoodBean
@@ -116,17 +114,63 @@ class CollectRepository: BaseLiveDataModel() {
     /**
      * 结束当前集卡
      */
-    fun startStopCard(goodId: String): Flow<StatusInfo?> {
+    fun startStopCard(cardId: String): Flow<StatusInfo?> {
         return callbackFlow {
             val disposable = EasyHttp.post(BuildConfig.BASE_QBN_API + "activity/v1/stop-card")
                 .cacheMode(CacheMode.NO_CACHE)
-                .upJson(Gson().toJson(PostCardBean(goodId)))
+                .upJson(Gson().toJson(PostCardBean(cardId)))
                 .execute(object : SimpleCallBack<StatusInfo>() {
                     override fun onError(e: ApiException?) {
                         trySend(null)
                     }
 
                     override fun onSuccess(t: StatusInfo?) {
+                        trySend(t)
+                    }
+                })
+            awaitClose {
+                disposable.dispose()
+            }
+        }
+    }
+
+    /**
+     * 抽碎片
+     */
+    fun startDrawCard(cardId: String): Flow<DrawCardInfo?> {
+        return callbackFlow {
+            val disposable = EasyHttp.post(BuildConfig.BASE_QBN_API + "activity/v1/draw-card")
+                .cacheMode(CacheMode.NO_CACHE)
+                .upJson(Gson().toJson(PostCardBean(cardId)))
+                .execute(object : SimpleCallBack<DrawCardInfo>() {
+                    override fun onError(e: ApiException?) {
+                        trySend(null)
+                    }
+
+                    override fun onSuccess(t: DrawCardInfo?) {
+                        trySend(t)
+                    }
+                })
+            awaitClose {
+                disposable.dispose()
+            }
+        }
+    }
+
+    /**
+     * 充能
+     */
+    fun startCardCharge(cardId: String): Flow<CardChargeInfo?> {
+        return callbackFlow {
+            val disposable = EasyHttp.post(BuildConfig.BASE_QBN_API + "activity/v1/card_charge")
+                .cacheMode(CacheMode.NO_CACHE)
+                .upJson(Gson().toJson(PostCardBean(cardId)))
+                .execute(object : SimpleCallBack<CardChargeInfo>() {
+                    override fun onError(e: ApiException?) {
+                        trySend(null)
+                    }
+
+                    override fun onSuccess(t: CardChargeInfo?) {
                         trySend(t)
                     }
                 })

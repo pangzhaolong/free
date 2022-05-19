@@ -21,8 +21,13 @@ import com.donews.lotterypage.Adapter.ContentAdapter
 import com.donews.lotterypage.R
 import com.donews.lotterypage.base.BaseFragment
 import com.donews.lotterypage.base.LotteryPageBean
+import com.donews.lotterypage.base.LotteryPastBean
 import com.donews.lotterypage.databinding.LotteryPageLayoutBinding
 import com.donews.lotterypage.viewmodel.LotteryPageViewModel
+import com.donews.middle.bean.front.AwardBean
+import com.donews.middle.front.FrontConfigManager
+import com.donews.middle.front.LotteryConfigManager
+import com.donews.middle.views.TaskView
 
 @Route(path = RouterFragmentPath.HomeLottery.PAGER_LOTTERY)
 class LotteryPageFragment :
@@ -35,6 +40,14 @@ class LotteryPageFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //运营位
+        if (LotteryConfigManager.Ins().getConfigBean().getTask()) {
+            mDataBinding.advertise.setVisibility(View.VISIBLE);
+            mDataBinding.advertise.refreshYyw(TaskView.Place_Front);
+        } else {
+            mDataBinding.advertise.setVisibility(View.GONE);
+        }
 
         mContentAdapter = ContentAdapter(this.requireContext());
         mContentAdapter?.getLayout(R.layout.lottery_page_content_item)
@@ -52,13 +65,36 @@ class LotteryPageFragment :
                 }
             }
         })
-
+        initContent()
         dataObservation()
+        startTime()
+    }
+
+
+    private fun startTime(){
+        mDataBinding.newUserGiftCountDown.updateCountDownTime(1*60*60*1000)
     }
 
     override fun onResume() {
         super.onResume()
         initContent()
+        if (mDataBinding.reveal != null) {
+            mDataBinding.reveal.resumeScroll()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (mDataBinding.reveal != null) {
+            mDataBinding.reveal.pauseScroll()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (mDataBinding.reveal != null) {
+            mDataBinding.reveal.stopScroll()
+        }
     }
 
     //观察请求回来的数据
@@ -69,6 +105,12 @@ class LotteryPageFragment :
                     mContentAdapter?.setLotteryPageBean(t)
                     mContentAdapter?.notifyDataSetChanged()
                 }
+            }
+        })
+        //往期人员
+        mViewModel.livePastData.observe(viewLifecycleOwner, object : Observer<AwardBean?> {
+            override fun onChanged(t: AwardBean?) {
+                mDataBinding.reveal.refreshData(t?.list)
             }
         })
     }

@@ -72,4 +72,28 @@ class MainShareViewModel : BaseLiveDataViewModel<MainShareRepository>() {
         }
     }
 
+    companion object{
+        //转盘
+        const val TYPE_TURNTABLE = "turntable"
+        const val ID_TURNTABLE = 0
+        //签到
+        const val TYPE_SIGN = "sign"
+        const val ID_SIGN = 1
+        //抽奖
+        const val TYPE_LOTTERY = "lottery"
+        const val ID_LOTTERY  = 2
+        //分享
+        const val TYPE_SHARE = "share"
+        const val ID_SHARE = 3
+        //集卡
+        const val TYPE_COLLECT = "collect"
+        const val ID_COLLECT = 4
+        //视频
+        const val TYPE_VIDEO = "video"
+        const val ID_VIDEO = 5
+        //宝箱
+        const val TYPE_GIFT_BOX = "giftbox"
+        const val ID_GIFT_BOX = 6
+    }
+
 }

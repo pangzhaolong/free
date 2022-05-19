@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:background="@color/black"
+        tools:ignore="all">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="125dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/collect_icon_step_two_title" />
+
+                <TextView
+                    android:id="@+id/titleOne"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/collect_icon_dialog_top"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/title" />
+
+                <TextView
+                    android:id="@+id/tvLeft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="你近期集卡 可享"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/titleOne"
+                    app:layout_constraintEnd_toStartOf="@+id/tvRight"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/titleOne" />
+
+                <TextView
+                    android:id="@+id/tvRight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="新人福利"
+                    android:textColor="#FFF3B4"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tvLeft"
+                    app:layout_constraintTop_toTopOf="@+id/tvLeft" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/rotateView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/titleOne"
+                    app:srcCompat="@drawable/collect_icon_rotate" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@+id/rotateView"
+                    app:layout_constraintEnd_toEndOf="@+id/rotateView"
+                    app:layout_constraintStart_toStartOf="@+id/rotateView"
+                    app:layout_constraintTop_toTopOf="@+id/rotateView"
+                    app:srcCompat="@drawable/collect_icon_step_star" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@+id/rotateView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/rotateView"
+                    app:layout_constraintTop_toBottomOf="@+id/titleOne"
+                    app:srcCompat="@drawable/collect_icon_step_two_img" />
+
+                <TextView
+                    android:id="@+id/tvLeftBottom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:text="集卡"
+                    android:textColor="@color/white"
+                    android:textSize="17.33sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/rotateView"
+                    app:layout_constraintEnd_toStartOf="@+id/tvRightBottom"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvRightBottom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="18"
+                    android:textColor="#FFF2B3"
+                    android:textSize="28sp"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/tvLeftBottom"
+                    app:layout_constraintEnd_toStartOf="@+id/tvOtherBottom"
+                    app:layout_constraintStart_toEndOf="@+id/tvLeftBottom" />
+
+                <TextView
+                    android:id="@+id/tvOtherBottom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="张"
+                    android:textColor="@color/white"
+                    android:textSize="17.33sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvLeftBottom"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toEndOf="@+id/tvRightBottom" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</layout>

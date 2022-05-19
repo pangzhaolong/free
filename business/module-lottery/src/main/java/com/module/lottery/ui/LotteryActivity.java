@@ -17,6 +17,7 @@ import android.view.animation.RotateAnimation;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.core.view.NestedScrollingParent2;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,6 +36,7 @@ import com.dn.events.events.LotteryBackEvent;
 import com.dn.events.events.LotteryStatusEvent;
 import com.dn.integral.jdd.integral.ProxyIntegral;
 import com.donews.base.utils.ToastUtil;
+import com.donews.middle.bean.LotteryEventUnlockBean;
 import com.donews.yfsdk.manager.AdConfigManager;
 import com.donews.yfsdk.monitor.LotteryAdCheck;
 import com.donews.common.bean.CritMessengerBean;
@@ -109,7 +111,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     // 是否自动开始抽奖 true 进入页面自动开始 false  受中台控制
     @Autowired(name = "start_lottery")
     public boolean mStart_lottery = false;
-
     //特权自动抽奖 不受中台控制
     @Autowired(name = "privilege")
     public boolean privilege = false;
@@ -776,6 +777,9 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             Toast.makeText(LotteryActivity.this, "生成抽奖码失败", Toast.LENGTH_SHORT).show();
             return;
         }
+        //抽奖成功发送通知
+        //通知首页更新
+        EventBus.getDefault().post(new LotteryEventUnlockBean());
         ExhibitCodeStartsDialog exhibitCodeStartsDialog = new ExhibitCodeStartsDialog(LotteryActivity.this, mGoodsId,
                 generateCodeBean);
         exhibitCodeStartsDialog.setOwnerActivity(LotteryActivity.this);
@@ -1061,6 +1065,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             return;
         }
         if (mLotteryCodeBean != null && mLotteryCodeBean.getCodes().size() == 0) {
+            dialogShow = true;
             //登录未抽奖
             showNotDrawnDialog();
             return;

@@ -19,7 +19,7 @@ import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.middle.bean.home.HomeCategoryBean;
 import com.donews.middle.bean.home.HomeGoodsBean;
 import com.donews.middle.cache.GoodsCache;
-import com.donews.middle.decoration.GridSpaceItemDecoration;
+import com.donews.middle.decoration.GridSpacingItemDecoration;
 import com.donews.middle.dialog.JumpThirdAppDialog;
 import com.donews.middle.go.GotoUtil;
 import com.donews.middle.listener.JumpThirdAppListener;
@@ -59,7 +59,7 @@ public class NorFragment extends MvvmLazyLiveDataFragment<HomeFragmentNorBinding
         for (int i = 0; i < nItemDecorationCount; i++) {
             mDataBinding.homeNorGoodsRv.removeItemDecorationAt(i);
         }
-        mItemDecoration = new GridSpaceItemDecoration(2);
+        mItemDecoration = new GridSpacingItemDecoration(2);
         mDataBinding.homeNorGoodsRv.addItemDecoration(mItemDecoration);
         mDataBinding.homeNorGoodsRv.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
         mDataBinding.homeNorGoodsRv.setAdapter(mNorGoodsAdapter);

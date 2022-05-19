@@ -24,7 +24,7 @@ import com.donews.home.views.SearchHistoryItem;
 import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.middle.bean.home.SearchHistory;
 import com.donews.middle.bean.home.TmpSearchHistory;
-import com.donews.middle.decoration.GridSpaceItemDecoration;
+import com.donews.middle.decoration.GridSpacingItemDecoration;
 import com.donews.middle.dialog.JumpThirdAppDialog;
 import com.donews.middle.go.GotoUtil;
 import com.donews.middle.listener.JumpThirdAppListener;
@@ -169,7 +169,7 @@ public class HomeSearchActivity extends MvvmBaseLiveDataActivity<HomeJddSearchSe
         //大家都在买
         mBuysGoodsAdapter = new BuysGoodsAdapter(this, this);
         mDataBinding.homeSearchBuysRv.setLayoutManager(new GridLayoutManager(this, 2));
-        mDataBinding.homeSearchBuysRv.addItemDecoration(new GridSpaceItemDecoration(2));
+        mDataBinding.homeSearchBuysRv.addItemDecoration(new GridSpacingItemDecoration(2));
         mDataBinding.homeSearchBuysRv.setAdapter(mBuysGoodsAdapter);
 
         mDataBinding.homeSearchSrl.setEnableRefresh(false);

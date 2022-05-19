@@ -48,6 +48,10 @@ class ChangeDialog: AbstractFragmentDialog<CollectDialogGoodsChangeBinding>(fals
 
     override fun getLayoutId() = R.layout.collect_dialog_goods_change
 
+    override fun getThemeStyle(): Int {
+        return R.style.CollectDialogStyle
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     override fun initView() {
         dataBinding.eventListener = EventListener()
@@ -65,14 +69,11 @@ class ChangeDialog: AbstractFragmentDialog<CollectDialogGoodsChangeBinding>(fals
         fun cancelBtn(view: View) {
             disMissDialog()
         }
-        fun receiveBtn(view: View) {
+        fun deleteBtn(view: View) {
             disMissDialog()
             if (mGoodInfo != null){
                 clickDialogBtn.invoke(mGoodInfo?.cardId!!)
             }
-        }
-        fun deleteBtn(view: View) {
-            disMissDialog()
         }
     }
 

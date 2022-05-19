@@ -19,6 +19,10 @@ class RuleDialog : AbstractFragmentDialog<TaskDialogRuleBinding>(false, false) {
 
     override fun getLayoutId() = R.layout.task_dialog_rule
 
+    override fun getThemeStyle(): Int {
+        return R.style.TaskDialogStyle
+    }
+
     override fun initView() {
         dataBinding.eventListener = EventListener()
     }

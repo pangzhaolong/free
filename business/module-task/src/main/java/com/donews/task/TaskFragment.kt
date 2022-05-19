@@ -20,6 +20,7 @@ import com.donews.common.base.MvvmLazyLiveDataFragment
 import com.donews.common.router.RouterActivityPath
 import com.donews.common.router.RouterFragmentPath
 import com.donews.middle.adutils.RewardVideoAd
+import com.donews.middle.bean.LotteryEventUnlockBean
 import com.donews.middle.mainShare.bean.BubbleBean
 import com.donews.middle.mainShare.bean.TaskBubbleInfo
 import com.donews.middle.mainShare.bus.CollectStartNewCardEvent
@@ -42,6 +43,9 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.droidsonroids.gif.GifDrawable
+import com.donews.middle.bean.globle.TurntableBean
+import com.donews.middle.bean.globle.TurntableBean.ItemsDTO
+
 
 /**
  *  make in st
@@ -589,7 +593,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                                 Log.i("adSee-->", "-onAdClose->")
                                 //宝箱看完广告不用上报,直接领取
                                 loadBubbleReceive(
-                                    taskBubbleBoxBean?.id ?: 6,
+                                    taskBubbleBoxBean?.id ?: MainShareViewModel.ID_GIFT_BOX,
                                     taskBubbleBoxBean?.type ?: GIFT_BOX
                                 )
                             }
@@ -632,7 +636,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                                     super.onAdClose()
                                     Log.i("adSee-->", "-onAdClose->")
                                     loadAdReport(
-                                        taskBubbleVideoBean?.id ?: 5,
+                                        taskBubbleVideoBean?.id ?: MainShareViewModel.ID_VIDEO,
                                         taskBubbleVideoBean?.type ?: VIDEO
                                     )
                                 }
@@ -645,7 +649,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
             BUBBLE_NO_RECEIVE -> {
                 mCurWhichBubbleType = VIDEO
                 loadBubbleReceive(
-                    taskBubbleVideoBean?.id ?: 5,
+                    taskBubbleVideoBean?.id ?: MainShareViewModel.ID_VIDEO,
                     taskBubbleVideoBean?.type ?: VIDEO
                 )
             }
@@ -667,7 +671,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
             BUBBLE_NO_RECEIVE -> {
                 mCurWhichBubbleType = SIGN
                 loadBubbleReceive(
-                    taskBubbleSignBean?.id ?: 1,
+                    taskBubbleSignBean?.id ?: MainShareViewModel.ID_SIGN,
                     taskBubbleSignBean?.type ?: SIGN
                 )
             }
@@ -683,9 +687,9 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                     .navigation()
             }
             BUBBLE_NO_RECEIVE -> {
-                mCurWhichBubbleType = COLLECT
+                mCurWhichBubbleType = TURNTABLE
                 loadBubbleReceive(
-                    taskBubbleLuckPanBean?.id ?: 0,
+                    taskBubbleLuckPanBean?.id ?: MainShareViewModel.ID_TURNTABLE,
                     taskBubbleLuckPanBean?.type ?: TURNTABLE
                 )
             }
@@ -704,7 +708,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
             BUBBLE_NO_RECEIVE -> {
                 mCurWhichBubbleType = COLLECT
                 loadBubbleReceive(
-                    taskBubbleCollectBean?.id ?: 4,
+                    taskBubbleCollectBean?.id ?: MainShareViewModel.ID_COLLECT,
                     taskBubbleCollectBean?.type ?: COLLECT
                 )
             }
@@ -725,9 +729,9 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                 }
             }
             BUBBLE_NO_RECEIVE -> {
-                mCurWhichBubbleType = COLLECT
+                mCurWhichBubbleType = SHARE
                 loadBubbleReceive(
-                    taskBubbleShareBean?.id ?: 3,
+                    taskBubbleShareBean?.id ?: MainShareViewModel.ID_SHARE,
                     taskBubbleShareBean?.type ?: SHARE
                 )
             }
@@ -744,9 +748,9 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                     .navigation()
             }
             BUBBLE_NO_RECEIVE -> {
-                mCurWhichBubbleType = SIGN
+                mCurWhichBubbleType = LOTTERY
                 loadBubbleReceive(
-                    taskBubbleLuckDrawBean?.id ?: 2,
+                    taskBubbleLuckDrawBean?.id ?: MainShareViewModel.ID_LOTTERY,
                     taskBubbleLuckDrawBean?.type ?: LOTTERY
                 )
             }
@@ -928,13 +932,26 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
     //分享通知
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun shareClickNotify(event: ShareClickNotifyEvent?) {
-        mShareVideModel.requestAdReport(3, "share")
+        mShareVideModel.requestAdReport(MainShareViewModel.ID_SHARE, MainShareViewModel.TYPE_SHARE)
     }
 
     //集卡抽卡通知
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun startNewCardNotify(event: CollectStartNewCardEvent?) {
-        mShareVideModel.requestAdReport(4, "collect")
+        mShareVideModel.requestAdReport(MainShareViewModel.ID_COLLECT, MainShareViewModel.TYPE_COLLECT)
+    }
+
+    //注意:签到是签到那边上报的
+    //转盘操作过后,我这边上报
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onTurntableBeanEvent(event: ItemsDTO?) {
+        mShareVideModel.requestAdReport(MainShareViewModel.ID_TURNTABLE, MainShareViewModel.TYPE_TURNTABLE)
+    }
+
+    //抽奖操作过后,我这边上报
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    open fun onTurntableBeanEvent(event: LotteryEventUnlockBean?) {
+        mShareVideModel.requestAdReport(MainShareViewModel.ID_LOTTERY, MainShareViewModel.TYPE_LOTTERY)
     }
     //endregion
 
@@ -952,6 +969,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
             gifDrawable?.recycle()
             gifDrawable = null
         }
+        mHandler.removeCallbacks(boxTimer)
     }
 
 }

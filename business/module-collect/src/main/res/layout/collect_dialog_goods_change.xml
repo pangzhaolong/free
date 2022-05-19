@@ -76,7 +76,7 @@
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:gravity="center"
-                    android:onClick="@{eventListener::receiveBtn}"
+                    android:onClick="@{eventListener::cancelBtn}"
                     android:background="@drawable/collect_icon_dialog_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

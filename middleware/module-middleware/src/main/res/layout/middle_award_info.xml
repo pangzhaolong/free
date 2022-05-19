@@ -11,30 +11,30 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
-        android:text="恭喜"
-        android:textColor="#D17500"
+        android:text="恭喜用户"
+        android:textColor="#A3A9B7"
         android:textSize="14sp"
         android:textStyle="bold" />
 
-    <org.raphets.roundimageview.RoundImageView
-        android:id="@+id/middle_gift_head_iv"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginStart="3dp"
-        android:background="@color/transparent"
-        android:scaleType="centerInside"
-        app:type="circle" />
-
     <TextView
-        android:id="@+id/middle_gift_text"
+        android:id="@+id/user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:text="C***"
+        android:textColor="#A3A9B7"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/middle_text"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginStart="3dp"
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="1"
-        android:textColor="#D17500"
+        android:text="获得苹果13…"
+        android:textColor="#A3A9B7"
         android:textSize="14sp"
         android:textStyle="bold" />
 </LinearLayout>

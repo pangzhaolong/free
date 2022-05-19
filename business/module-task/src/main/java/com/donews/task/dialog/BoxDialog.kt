@@ -6,8 +6,6 @@ import android.view.View
 import com.donews.base.fragmentdialog.AbstractFragmentDialog
 import com.donews.task.R
 import com.donews.task.databinding.TaskDialogBoxBinding
-import com.donews.task.databinding.TaskDialogExchangeBinding
-import com.donews.task.databinding.TaskDialogRuleBinding
 
 /**
  *  make in st
@@ -32,6 +30,10 @@ class BoxDialog : AbstractFragmentDialog<TaskDialogBoxBinding>(false, false) {
         arguments?.let {
             mIsActive = it.getBoolean("isActive")
         }
+    }
+
+    override fun getThemeStyle(): Int {
+        return R.style.TaskDialogStyle
     }
 
     override fun getLayoutId() = R.layout.task_dialog_box

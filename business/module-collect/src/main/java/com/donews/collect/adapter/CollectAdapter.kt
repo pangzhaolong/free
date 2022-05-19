@@ -26,16 +26,16 @@ class CollectAdapter(resId: Int, dataList: MutableList<CardFragment>) :
                 data?.img,
                 collectFgBinding?.image,
                 RoundCornersTransform(
-                    DensityUtils.dip2px(10f).toFloat(),
-                    DensityUtils.dip2px(10f).toFloat(),
-                    DensityUtils.dip2px(10f).toFloat(),
-                    DensityUtils.dip2px(10f).toFloat()
+                    DensityUtils.dip2px(0f).toFloat(),
+                    DensityUtils.dip2px(0f).toFloat(),
+                    DensityUtils.dip2px(0f).toFloat(),
+                    DensityUtils.dip2px(0f).toFloat()
                 )
             )
             if (data?.holdNum!! >= data.needNum){
-                collectFgBinding?.root?.alpha = 1f
+                collectFgBinding?.image?.alpha = 1f
             } else {
-                collectFgBinding?.root?.alpha = 0.5f
+                collectFgBinding?.image?.alpha = 0.3f
             }
         } catch (e:Exception){}
     }

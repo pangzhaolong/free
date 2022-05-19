@@ -1,147 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="ResourceName">
 
     <data>
 
+        <import type="com.donews.middle.front.LotteryConfigManager" />
+
+        <import type="android.view.View" />
     </data>
 
-    <RelativeLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/bg_color"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:background="@drawable/grab_it_now_bg" />
 
-
-        <ImageView
-            android:id="@+id/name_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="49dp"
-            android:background="@mipmap/app_name_text" />
-
-        <ImageView
-            android:id="@+id/lottery_title_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/name_txt"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="19dp"
-            android:background="@mipmap/lottery_title_img" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/name_txt"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="20dp"
-            android:background="@mipmap/lottery_right_light_img" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/name_txt"
-            android:background="@mipmap/lottery_lift_light_img" />
-
-        <LinearLayout
-            android:id="@+id/time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/lottery_title_img"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="12dp"
-            android:background="@mipmap/lottery_page_time_bg"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="我是时间计时" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="上期开奖"
-                android:textColor="#F5562A"
-                android:textSize="12dp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/hint"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/time"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="13dp"
-            android:background="@drawable/lottery_page_white_shape_bg"
-            android:orientation="horizontal"
-            android:paddingStart="17dp"
-            android:paddingTop="5dp"
-            android:paddingEnd="17dp"
-            android:paddingBottom="5dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="往期获奖"
-                android:textColor="#F5562A"
-                android:textSize="13dp" />
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="13dp"
-                android:layout_marginEnd="13dp"
-                android:background="#FF939EAF" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="恭喜用户C****获得苹果13…"
-                android:textColor="#A3A9B7"
-                android:textSize="12dp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/advertise"
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:layout_below="@+id/hint"
-            android:layout_marginTop="10dp"
-            android:background="#77C1FB"
-            android:gravity="center"
-            android:layout_marginStart="13dp"
-            android:layout_marginEnd="13dp"
-            android:text="运营位"
-            android:textColor="#FFFFFF" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/advertise"
-            android:layout_marginStart="13dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="13dp"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:elevation="0dp"
             android:orientation="vertical">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/spike_content_recycler_view"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_scrollFlags="scroll|enterAlways|exitUntilCollapsed">
 
-        </LinearLayout>
+                <ImageView
+                    android:id="@+id/name_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="49dp"
+                    android:background="@mipmap/app_name_text" />
+
+                <ImageView
+                    android:id="@+id/lottery_title_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/name_txt"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="19dp"
+                    android:background="@mipmap/lottery_title_img" />
 
 
-    </RelativeLayout>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/name_txt"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="20dp"
+                    android:background="@mipmap/lottery_right_light_img" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/name_txt"
+                    android:background="@mipmap/lottery_lift_light_img" />
+
+                <ImageView
+                    android:id="@+id/lottery_page_banner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/lottery_title_img"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:background="@mipmap/lottery_page_banner" />
+
+                <LinearLayout
+                    android:id="@+id/time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/lottery_page_banner"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="12dp"
+                    android:background="@mipmap/lottery_page_time_bg"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <com.donews.lotterypage.view.CountDownViewNew
+                        android:id="@+id/new_user_gift_count_down"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/new_user_gift_tip_tv" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="上期开奖"
+                        android:textColor="#F5562A"
+                        android:textSize="12dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/time"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginEnd="11dp"
+                    android:background="@drawable/lottery_page_white_shape_bg"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="17dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="17dp"
+                    android:paddingBottom="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="往期获奖"
+                        android:textColor="#F5562A"
+                        android:textSize="13dp" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="13dp"
+                        android:layout_marginEnd="13dp"
+                        android:background="#FF939EAF" />
+
+                    <com.donews.middle.views.BarrageView
+                        android:id="@+id/reveal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                </LinearLayout>
+            </RelativeLayout>
+
+
+            <com.donews.middle.views.ExchanageTaskView
+                android:id="@+id/advertise"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@color/transparent"
+                android:visibility="@{LotteryConfigManager.Ins().getConfigBean().getTask()?View.VISIBLE:View.GONE}"
+                app:layout_constraintTop_toBottomOf="@+id/front_rp_rl" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/spike_content_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="13dp"
+            android:layout_marginEnd="13dp"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:overScrollMode="never"
+            android:paddingTop="20dp"
+            android:scrollbars="none"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

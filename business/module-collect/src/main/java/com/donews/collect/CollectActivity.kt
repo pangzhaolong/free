@@ -8,19 +8,22 @@ import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
+import com.dn.sdk.listener.rewardvideo.SimpleRewardVideoListener
+import com.donews.base.utils.ToastUtil
 import com.donews.collect.adapter.CollectAdapter
 import com.donews.collect.bean.*
 import com.donews.collect.databinding.CollectFragmentBinding
-import com.donews.collect.util.DialogUtil
-import com.donews.collect.util.AnimationUtil
-import com.donews.collect.util.TimeUtil
+import com.donews.collect.util.*
 import com.donews.collect.view.DanMuView
+import com.donews.collect.view.GridDividerDecoration
 import com.donews.collect.vm.CollectViewModel
 import com.donews.common.base.MvvmBaseLiveDataActivity
 import com.donews.common.router.RouterFragmentPath
+import com.donews.middle.adutils.RewardVideoAd
 import com.donews.middle.mainShare.bus.CollectStartNewCardEvent
 import com.donews.middle.mainShare.extend.setOnClickListener
 import com.donews.utilslibrary.utils.DensityUtils
@@ -78,6 +81,8 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
         initGoods()
         initNewGoodCard()
         initStopCard()
+        initDrawCard()
+        initCardCharge()
     }
 
     private var collectAdapter: CollectAdapter? = null
@@ -87,6 +92,12 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
             layoutManager = GridLayoutManager(mContext, 3)
             collectAdapter = CollectAdapter(R.layout.collect_item_fragment,collectFgList)
             adapter = collectAdapter
+            addItemDecoration(
+                GridDividerDecoration(GridLayoutManager.VERTICAL).apply {
+                    dividerHeight(DensityUtils.dip2px(4f))
+                    dividerColor(ContextCompat.getColor(context,R.color.white))
+                }
+            )
         }
     }
 
@@ -160,7 +171,7 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
     private fun initNewGoodCard() {
         mViewModel?.newGoodCard?.observe(this, {
             it?.let {
-                loadStatus()
+                handleNewCard()
                 EventBus.getDefault().post(CollectStartNewCardEvent())
             }
         })
@@ -180,6 +191,32 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
 
     private fun loadStopCard(cardId:String){
         mViewModel?.requestStopCard(cardId)
+    }
+
+    private fun initDrawCard(){
+        mViewModel?.drawCard?.observe(this, {
+            it?.let {
+                DialogUtil.showDrawDialog(this,Gson().toJson(it)){
+                    loadStatus()
+                }
+            }
+        })
+    }
+
+    private fun loadDrawCard(cardId:String){
+        mViewModel?.requestDrawCard(cardId)
+    }
+
+    private fun initCardCharge(){
+        mViewModel?.cardCharge?.observe(this, {
+            it?.let {
+                loadStatus()
+            }
+        })
+    }
+
+    private fun loadCardCharge(cardId:String){
+        mViewModel?.requestCardCharge(cardId)
     }
     //endregion
 
@@ -231,7 +268,7 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
     private fun handleStatus() {
         when (mStatusInfo?.status) {
             STATUS_ZERO -> {
-                loadGoods()
+                startStepOne()
             }
             STATUS_ONE -> {
                 showLayoutMsg()
@@ -239,6 +276,70 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
             STATUS_TWO -> {
             }
             STATUS_THREE -> {
+                DialogUtil.showFailDialog(this@CollectActivity,Gson().toJson(mStatusInfo)){
+                    startStepOne()
+                }
+            }
+        }
+    }
+
+    //重选卡后的处理(处理新老流程)
+    private fun handleNewCard(){
+        if (mClickChangeClickStatus){
+            //点击更换集卡直接送一次碎片
+            if (mStatusInfo != null){
+                loadDrawCard(mStatusInfo!!.cardId)
+            }
+        } else {
+            //未集卡状态下走新老流程
+            if (UserStatusUtil.isNewUser()){
+                startStepTwo()
+            } else {
+                startStepThree()
+            }
+        }
+    }
+
+    private fun startStepOne(){
+        if (DayStepUtil.instance.isTodayShowOneStep()){
+            DialogUtil.showStepOneDialog(this){
+                loadGoods()
+            }
+        } else {
+            loadGoods()
+        }
+    }
+
+    private fun startStepTwo(){
+        if (DayStepUtil.instance.isTodayShowTwoStep()){
+            DialogUtil.showStepTwoDialog(this){
+                startStepFour()
+            }
+        } else {
+            startStepFour()
+        }
+    }
+
+    private fun startStepThree(){
+        if (DayStepUtil.instance.isTodayShowThreeStep()){
+            DialogUtil.showStepThreeDialog(this){
+                startStepFour()
+            }
+        } else {
+            startStepFour()
+        }
+    }
+
+    private fun startStepFour(){
+        if (DayStepUtil.instance.isTodayShowFourStep()){
+            DialogUtil.showStepFourDialog(this){
+                if (mStatusInfo != null){
+                    loadDrawCard(mStatusInfo!!.cardId)
+                }
+            }
+        } else {
+            if (mStatusInfo != null){
+                loadDrawCard(mStatusInfo!!.cardId)
             }
         }
     }
@@ -250,6 +351,7 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
         try {
             mDataBinding?.rightTv?.text = mStatusInfo?.goodsInfo?.title
             curTime = mStatusInfo?.timeOut!!
+            mHandler.removeCallbacks(timer)
             mHandler.postDelayed(timer,1000L)
             mDataBinding?.lotteryTwo?.text = mStatusInfo?.cardTimes.toString()
             val curProgress = (mStatusInfo?.uniProgress!! / 100).toDouble()
@@ -282,26 +384,81 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
                     TimeUtil.timeConversion(curTime.toLong(),mDataBinding?.tvOne!!,
                         mDataBinding?.tvTwo!!,mDataBinding?.tvThree!!,mDataBinding?.tvFour!!)
                     if (curTime == 0) {
-                        //timeout
+                       loadStatus()
                     } else {
                         mHandler.postDelayed(this, 1000L)
                     }
                 }
             } catch (e:Exception){}
         }
-
     }
 
+    //标记通过点击换商品按钮动作
+    private var mClickChangeClickStatus = false
+
     private fun initClick() {
-        setOnClickListener(mDataBinding?.iconBack,mDataBinding?.changeGoodClick) {
+        setOnClickListener(mDataBinding?.iconBack,mDataBinding?.changeGoodClick,mDataBinding?.centerBtn,
+            mDataBinding?.bottomClick) {
             when (this) {
                 mDataBinding?.iconBack -> {
                     finish()
                 }
                 mDataBinding?.changeGoodClick -> {
                     if (mStatusInfo != null){
+                        mClickChangeClickStatus = true
                         DialogUtil.showChangeGoodDialog(this@CollectActivity,Gson().toJson(mStatusInfo)){
+                            mClickChangeClickStatus = false
                             loadStopCard(it)
+                        }
+                    }
+                }
+                mDataBinding?.centerBtn->{
+                    mStatusInfo?.let {
+                        if (mStatusInfo?.cardTimes!! > 0){
+                            RewardVideoAd.loadRewardVideoAd(
+                                this@CollectActivity,
+                                object : SimpleRewardVideoListener() {
+                                    override fun onAdError(code: Int, errorMsg: String?) {
+                                        super.onAdError(code, errorMsg)
+                                        ToastUtil.show(mContext, "视频加载失败请稍后再试")
+                                    }
+
+                                    override fun onAdClose() {
+                                        super.onAdClose()
+                                        if (mStatusInfo != null){
+                                            loadDrawCard(mStatusInfo!!.cardId)
+                                        }
+                                    }
+                                },
+                                false
+                            )
+                        } else {
+                            ToastUtil.show(context,"今日抽碎片剩余次数不足,明日再来!")
+                        }
+                    }
+                }
+                mDataBinding?.bottomClick->{
+                    mStatusInfo?.let {
+                        if (mStatusInfo?.uniTimes!! > 0){
+                            RewardVideoAd.loadRewardVideoAd(
+                                this@CollectActivity,
+                                object : SimpleRewardVideoListener() {
+                                    override fun onAdError(code: Int, errorMsg: String?) {
+                                        super.onAdError(code, errorMsg)
+                                        ToastUtil.show(mContext, "视频加载失败请稍后再试")
+                                    }
+
+                                    override fun onAdClose() {
+                                        super.onAdClose()
+                                        if (mStatusInfo != null){
+                                            loadCardCharge(mStatusInfo!!.cardId)
+                                        }
+                                    }
+                                },
+                                false
+                            )
+                        } else {
+                            ToastUtil.show(context,"今日充能剩余次数不足,明日再来!")
                         }
                     }
                 }
@@ -314,6 +471,8 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
     override fun onDestroy() {
         super.onDestroy()
         cancelBubbleAnimation()
+        mHandler.removeCallbacks(timer)
+        mHandler.removeCallbacks(danMuTimer)
     }
 
 }

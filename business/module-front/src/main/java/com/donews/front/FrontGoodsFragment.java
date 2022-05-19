@@ -27,7 +27,7 @@ import com.donews.front.viewModel.NorViewModel;
 import com.donews.middle.bean.front.LotteryCategoryBean;
 import com.donews.middle.bean.front.LotteryGoodsBean;
 import com.donews.middle.cache.GoodsCache;
-import com.donews.middle.decoration.GridSpaceItemDecoration;
+import com.donews.middle.decoration.GridSpacingItemDecoration;
 import com.donews.middle.utils.CriticalModelTool;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
@@ -92,7 +92,7 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
             mDataBinding.frontNorRv.setLayoutManager(new LinearLayoutManager(this.getContext()));
             mNorGoodsAdapter.setCols(1);
         } else {
-            mItemDecoration = new GridSpaceItemDecoration(2);
+            mItemDecoration = new GridSpacingItemDecoration(2);
             mDataBinding.frontNorRv.addItemDecoration(mItemDecoration);
             mDataBinding.frontNorRv.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
             mNorGoodsAdapter.setCols(2);
