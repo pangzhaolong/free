@@ -90,7 +90,6 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
 
     private void showBenefitUpgradeDialog() {
         mTaskStateSchedule = true;
-        AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.WELFARE_TASK_SUCCESS, "true");
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -140,22 +139,17 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
             }
         });
 
-        AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.WELFARE_PAGE_IN);
         setObserveList();
     }
 
     @Override
     protected void onDestroy() {
-        AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.WELFARE_PAGE_OUT);
         //上报任务状态
-        AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.WELFARE_QUIT_STATE, mTaskStateSchedule + "");
 
         if (mTimer == null) {
             //上报退出页面时是否触发积分任务
-            AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.WELFARE_QUIT_POINT_STASE, "false");
         } else {
             //上报退出页面时是否触发积分任务
-            AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.WELFARE_QUIT_POINT_STASE, "true");
         }
         if (mActivityRuleDialog != null && mActivityRuleDialog.isShowing()) {
             mActivityRuleDialog.dismiss();
@@ -315,7 +309,6 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
         if (integralBean == null) {
             return;
         }
-        AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.WELFARE_APP_NAME, integralBean.getAppName() + "");
 
         Glide.with(this).asDrawable().load(integralBean.getIcon()).into(mDataBinding.apkIcon);
         mDataBinding.apkName.setText(integralBean.getAppName());
@@ -324,12 +317,10 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
         IntegralComponent.getInstance().setIntegralBindView(WelfareActivity.this, integralBean, mDataBinding.adView, clickViews, new IntegralStateListener() {
             @Override
             public void onAdShow() {
-                AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.WELFARE_APP_SHOW);
             }
 
             @Override
             public void onAdClick() {
-                AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.WELFARE_APP_CLICK);
             }
 
             @Override
@@ -353,7 +344,6 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
 
             @Override
             public void onComplete() {
-                AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.WELFARE_APP_COMPLETE);
                 mDataBinding.downloadBt.post(new Runnable() {
                     @Override
                     public void run() {
@@ -366,7 +356,6 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
             //安装完成
             @Override
             public void onInstalled() {
-                AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.WELFARE_APP_INSTALLED);
                 Logger.d(TAG + "安装完成");
                 mDataBinding.downloadBt.post(new Runnable() {
                     @Override
@@ -386,7 +375,6 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
             //激活成功
             @Override
             public void onRewardVerify() {
-                AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.WELFARE_APP_REWARD_S);
                 Logger.d(TAG + "激活成功");
                 mDataBinding.downloadBt.post(new Runnable() {
                     @Override
@@ -406,7 +394,6 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
 
             @Override
             public void onRewardVerifyError(String s) {
-                AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.WELFARE_APP_REWARD_N);
                 Logger.d(TAG + " 任务 激活失败" + s);
                 mDataBinding.downloadBt.post(new Runnable() {
                     @Override
@@ -446,7 +433,6 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
                     Logger.d(TAG + "激活失败");
                 }
                 if (ifTimerRun) {
-                    AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.WELFARE_ONE_REQUEST_SERVICE, "false");
                 }
                 return;
             }
@@ -454,10 +440,8 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
             //任务成功
             mIntegralDownloadStateDean = IntegralDownloadStateDean;
             if (!ifTimerRun) {
-                AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.WELFARE_TWO_REQUEST_SERVICE, mIntegralDownloadStateDean.getHandout() + "");
                 taskCompleted();
             } else {
-                AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.WELFARE_ONE_REQUEST_SERVICE, mIntegralDownloadStateDean.getHandout() + "");
             }
         });
     }
@@ -468,7 +452,6 @@ public class WelfareActivity extends BaseActivity<IntegralWelfareLayoutBinding, 
             Logger.d(TAG + "不能重复创建");
             return;
         }
-        AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.WELFARE_START_REWARD);
         //初始化暴击体验时长
         mStartTime = ABSwitch.Ins().getScoreTaskPlayTime();
         if (mTimer != null) {

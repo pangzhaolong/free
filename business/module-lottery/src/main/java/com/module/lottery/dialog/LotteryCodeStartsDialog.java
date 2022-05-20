@@ -151,7 +151,6 @@ public class LotteryCodeStartsDialog extends BaseDialog<LotteryStartDialogLayout
                     if (reference.get() != null) {
                         if (reference.get().isShowing() && reference.get().mOnFinishListener != null) {
                             if (reference.get().getContext() != null) {
-                                AnalysisUtils.onEventEx(reference.get().getContext(), Dot.VIDEO_TIMED_OUT);
                                 ToastUtil.showShort(reference.get().getContext(), PlayAdUtilsTool.CLOSURE_HINT_TIME_OUT);
                             }
                             if (reference.get().mContext != null && !reference.get().mContext.isFinishing() && !reference.get().mContext.isDestroyed()) {

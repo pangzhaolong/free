@@ -136,7 +136,6 @@ public class LotteryCritOverDialog extends BaseDialog<LotteryCritOverDialogLayou
                         if (mOnFinishListener != null) {
                             mOnFinishListener.onFinish();
                         }
-                        AnalysisUtils.onEventEx(getContext(), Dot.PAY_FAIL);
                         Toast.makeText(getContext(), "抽奖码获取失败", Toast.LENGTH_SHORT).show();
                     }
 

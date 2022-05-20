@@ -122,7 +122,6 @@ public class PlayAdUtilsTool {
                     mNeedShowRetryDialog = 1;
                 }
                 Logger.e(TAG + errorMsg + "");
-                AnalysisUtils.onEventEx(activity, Dot.VIDEO_FAILED, "" + code);
                 if (code == AdCustomError.PreloadAdEmptyError.getCode()) {
                     ToastUtil.showShort(activity, "暂无新视频，请稍后再试" + code);
                 }

@@ -230,7 +230,6 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
         mDataBinding.mineMeListLayout.getRefeshLayout().setEnableRefresh(false);
         mViewModel.setDataBinDing(mDataBinding, getBaseActivity());
         getView().findViewById(R.id.iv_top_bar_kf).setOnClickListener((v) -> {
-            AnalysisUtils.onEventEx(getActivity(), Dot.Page_ContactService);
             Bundle bundle = new Bundle();
             bundle.putString("url",
                     "https://recharge-web.xg.tagtic.cn/jdd/index.html#/customer");

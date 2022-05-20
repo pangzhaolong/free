@@ -76,7 +76,6 @@ public class NotDrawnDialog extends BaseDialog<NotDrawnDialogLayoutBinding> {
         }
         setOnDismissListener((d)->{
             if(isSendCloseEvent) {
-                AnalysisUtils.onEventEx(mContext, Dot.Lottery_Increase_ChancesDialog_Close);
             }
         });
         mDataBinding.closure.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +89,6 @@ public class NotDrawnDialog extends BaseDialog<NotDrawnDialogLayoutBinding> {
             @Override
             public void onClick(View v) {
                 isSendCloseEvent = false;
-                AnalysisUtils.onEventEx(mContext, Dot.Lottery_Increase_ChancesDialog_Continue);
                 if (mOnFinishListener != null) {
                     mOnFinishListener.onFinishAd();
                     dismiss();

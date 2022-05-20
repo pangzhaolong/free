@@ -254,7 +254,6 @@ public class TaskView extends LinearLayout {
             mImageViews[0].setOnClickListener(v -> {
                 GotoUtil.doAction(mContext, mYywItemList.get(0).getSubItems().get(mYywIdxs[0]).getAction()
                         , mYywItemList.get(0).getSubItems().get(mYywIdxs[0]).getTitle());
-                AnalysisUtils.onEventEx(mContext, Dot.TASK_CLICK, mDotFrom + "-" + mTaskGroup + "-0-" + mYywIdxs[0]);
                 mYywIdxs[0]++;
                 checkYywIndex();
                 if (mTaskHandler != null) {
@@ -267,7 +266,6 @@ public class TaskView extends LinearLayout {
             mImageViews[1].setOnClickListener(v -> {
                 GotoUtil.doAction(mContext, mYywItemList.get(1).getSubItems().get(mYywIdxs[1]).getAction()
                         , mYywItemList.get(1).getSubItems().get(mYywIdxs[1]).getTitle());
-                AnalysisUtils.onEventEx(mContext, Dot.TASK_CLICK, mDotFrom + "-" + mTaskGroup + "-1-" + mYywIdxs[1]);
                 mYywIdxs[1]++;
                 checkYywIndex();
                 if (mTaskHandler != null) {
@@ -280,7 +278,6 @@ public class TaskView extends LinearLayout {
             mImageViews[2].setOnClickListener(v -> {
                 GotoUtil.doAction(mContext, mYywItemList.get(2).getSubItems().get(mYywIdxs[2]).getAction()
                         , mYywItemList.get(2).getSubItems().get(mYywIdxs[2]).getTitle());
-                AnalysisUtils.onEventEx(mContext, Dot.TASK_CLICK, mDotFrom + "-" + mTaskGroup + "-2-" + mYywIdxs[2]);
                 mYywIdxs[2]++;
                 checkYywIndex();
                 if (mTaskHandler != null) {
@@ -293,7 +290,6 @@ public class TaskView extends LinearLayout {
             mImageViews[3].setOnClickListener(v -> {
                 GotoUtil.doAction(mContext, mYywItemList.get(3).getSubItems().get(mYywIdxs[3]).getAction()
                         , mYywItemList.get(3).getSubItems().get(mYywIdxs[3]).getTitle());
-                AnalysisUtils.onEventEx(mContext, Dot.TASK_CLICK, mDotFrom + "-" + mTaskGroup + "-3-" + mYywIdxs[3]);
                 mYywIdxs[3]++;
                 checkYywIndex();
                 if (mTaskHandler != null) {

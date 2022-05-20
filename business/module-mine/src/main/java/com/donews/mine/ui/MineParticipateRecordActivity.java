@@ -65,7 +65,6 @@ public class MineParticipateRecordActivity extends
                 .autoDarkModeEnable(true)
                 .init();
         initView();
-        AnalysisUtils.onEventEx(this, Dot.Page_PartInRecords);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

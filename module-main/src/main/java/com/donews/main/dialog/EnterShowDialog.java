@@ -101,9 +101,7 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBinding> {
         mDataBinding.btnNext.setOnClickListener(v -> {
             isSendCloseEvent = false;
             if (AppInfo.checkIsWXLogin()) {
-                AnalysisUtils.onEventEx(mContext, Dot.But_Hme_Recommend_Login_Next);
             } else {
-                AnalysisUtils.onEventEx(mContext, Dot.But_Hme_Recommend_Not_Login_Next);
             }
             mDataBinding.tvProbability1.setText(randLucky());
             mChangeOne = true;
@@ -113,7 +111,6 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBinding> {
         mDataBinding.btnLottery.setOnClickListener(v -> {
             isSendCloseEvent = false;
             if (AppInfo.checkIsWXLogin()) {
-                AnalysisUtils.onEventEx(mContext, Dot.But_Hme_Recommend_Login_Snap);
 
                 ARouter.getInstance()
                         .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
@@ -123,7 +120,6 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBinding> {
 
                 dismissEx();
             } else {
-                AnalysisUtils.onEventEx(mContext, Dot.But_Hme_Recommend_Not_Login_Snap);
 
                 RouterActivityPath.LoginProvider.getLoginProvider()
                         .loginWX(LOGIN_TAG, "首页>热门商品推荐>未登录弹窗");
@@ -155,9 +151,7 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBinding> {
         setOnDismissListener(dialog -> {
             if (isSendCloseEvent) {
                 if (AppInfo.checkIsWXLogin()) {
-                    AnalysisUtils.onEventEx(mContext, Dot.But_Hme_Recommend_Login_Close);
                 } else {
-                    AnalysisUtils.onEventEx(mContext, Dot.But_Hme_Recommend_Not_Login_Close);
                 }
             }
         });

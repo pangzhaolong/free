@@ -155,7 +155,6 @@ public class ShareToDialogFragment extends DialogFragment {
      * @param type 1-联系人，2-朋友圈
      */
     private void share(int type) {
-        AnalysisUtils.onEventEx(getActivity(), Dot.Btn_Share);
         ShareManager sharManager = new ShareManager();
         ShareItem shareItem = new ShareItem();
         shareItem.setType(ShareItem.TYPE_H5);

@@ -132,7 +132,6 @@ public class FeedbackActivity extends MvvmBaseLiveDataActivity<ActivityFeedbackB
         }
         //联系客服
         mDataBinding.feedCallKf.setOnClickListener(v -> {
-            AnalysisUtils.onEventEx(this, Dot.Page_ContactService);
             lxkf();
         });
         //设置关闭

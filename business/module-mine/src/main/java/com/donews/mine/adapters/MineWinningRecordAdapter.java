@@ -78,7 +78,6 @@ public class MineWinningRecordAdapter extends BaesLoadMoreAdapter<WinRecordResp.
         }
         baseViewHolder.itemView
                 .setOnClickListener((v) -> {
-                    AnalysisUtils.onEventEx(baseViewHolder.itemView.getContext(), Dot.Page_ContactService);
                     Bundle bundle = new Bundle();
                     bundle.putString("url",
                             "https://recharge-web.xg.tagtic.cn/jdd/index.html#/customer");

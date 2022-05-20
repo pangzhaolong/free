@@ -76,7 +76,6 @@ public class CongratulationsDialog extends BaseDialog<CongratulationsDialogLayou
         mDataBinding.jumpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AnalysisUtils.onEventEx(v.getContext(), Dot.Btn_LotteryNow);
                 if (mRecommendBean != null) {
                     dismiss();
                     ARouter.getInstance()

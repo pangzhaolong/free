@@ -57,7 +57,6 @@ public class YywView extends androidx.appcompat.widget.AppCompatImageView {
         this.requestLayout();
         this.setOnClickListener(v -> {
             GotoUtil.doAction(mContext, bannerItem.getAction(), bannerItem.getTitle());
-            AnalysisUtils.onEventEx(mContext, Dot.BANNER_CLICK, mFrom + "-" + mYYWIndex);
             if (mYywHandler != null) {
                 mYywHandler.removeMessages(MESSAGE_SWITCH_ID);
                 mYywHandler.sendEmptyMessageDelayed(MESSAGE_SWITCH_ID, 1500);

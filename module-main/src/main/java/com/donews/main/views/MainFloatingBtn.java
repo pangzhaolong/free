@@ -74,7 +74,6 @@ public class MainFloatingBtn extends FrameLayout implements IntegralComponent.IS
                     @Override
                     public void onAdClick() {
                         LogUtil.e("dn_integral onSecondStayTask onAdClick");
-                        AnalysisUtils.onEventEx(mContext, Dot.RETENTION_CLICK);
                     }
 
                     @Override

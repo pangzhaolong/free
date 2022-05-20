@@ -208,11 +208,9 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 startActivity(intent);
                 if (typePath.equals("1")) {
                     //来源分享
-                    AnalysisUtils.onEventEx(LotteryActivity.this, Dot.RECEIVE_BENEFITS_SHARE);
                 }
                 if (typePath.equals("2")) {
                     //来源购买
-                    AnalysisUtils.onEventEx(LotteryActivity.this, Dot.RECEIVE_BENEFITS_APP_BUY);
                 }
             } catch (Exception e) {
                 if (rulValue != null && !rulValue.equals("")) {
@@ -225,11 +223,9 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                         startActivity(intent);
                         if (typePath.equals("1")) {
                             //来源分享
-                            AnalysisUtils.onEventEx(LotteryActivity.this, Dot.RECEIVE_BENEFITS_WEB_SHARE);
                         }
                         if (typePath.equals("2")) {
                             //来源购买
-                            AnalysisUtils.onEventEx(LotteryActivity.this, Dot.RECEIVE_BENEFITS_WEB_BUY);
                         }
                     }
                 }
@@ -440,7 +436,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
     //开始抽奖
     private void startLottery() {
-        AnalysisUtils.onEventEx(this, Dot.Btn_LotteryNow);
         //判断是否打开了视频广告
         if (AdConfigManager.INSTANCE.getMNormalAdBean().getEnable()) {
             //当次事件有效
@@ -567,7 +562,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 public void onJump(GenerateCodeBean generateCodeBean) {
                     if (generateCodeBean == null) {
                         privilege = false;
-                        AnalysisUtils.onEventEx(LotteryActivity.this, Dot.PAY_FAIL);
                         Toast.makeText(LotteryActivity.this, "生成抽奖码失败", Toast.LENGTH_SHORT).show();
                         //不跳转广告 展示生成的随机抽奖码
                         if (generateCodeDialog != null && !LotteryActivity.this.isFinishing()) {
