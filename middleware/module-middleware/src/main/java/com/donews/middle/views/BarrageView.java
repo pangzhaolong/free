@@ -155,6 +155,9 @@ public class BarrageView extends FrameLayout {
     }
 
     public void refreshData(List<AwardBean.AwardInfo> list) {
+        if(list == null){
+            return;
+        }
         mAwardList.clear();
         mAwardList.addAll(list);
 

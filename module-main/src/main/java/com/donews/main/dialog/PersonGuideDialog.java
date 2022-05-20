@@ -128,7 +128,7 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
             public void updateDrawState(@NonNull TextPaint ds) {
 
                 //设置颜色
-                ds.setColor(Color.parseColor("#F33838"));
+                ds.setColor(Color.parseColor("#8581FF"));
                 ds.setFakeBoldText(true);
                 //去掉下划线
                 ds.setUnderlineText(false);
@@ -155,7 +155,7 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
             public void updateDrawState(@NonNull TextPaint ds) {
 
                 //设置颜色
-                ds.setColor(Color.parseColor("#F33838"));
+                ds.setColor(Color.parseColor("#8581FF"));
                 ds.setFakeBoldText(true);
                 //去掉下划线
                 ds.setUnderlineText(false);

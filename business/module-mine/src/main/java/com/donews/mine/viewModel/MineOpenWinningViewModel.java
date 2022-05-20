@@ -331,9 +331,6 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
         int timeHH = 0;
         int timeMM = 0;
         int timeSS = 0;
-        int timeHH1 = 0;
-        int timeMM1 = 0;
-        int timeSS1 = 0;
         if (oldBaseTime == null) {
             hh.setText("0");
             mm.setText("0");
@@ -544,14 +541,14 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             windCode.setText(Html.fromHtml(TextWinUtils.drawOldText(
                     detailLivData.getValue().code, item.code
             )));
-            seal.setVisibility(View.VISIBLE);
-            if (WinTypes.Alike.type.equals(item.winType)) {
-                seal.setText(WinTypes.Alike.name);
-            } else if (WinTypes.Equal.type.equals(item.winType)) {
-                seal.setText(WinTypes.Equal.name);
-            } else {
-                seal.setText(WinTypes.None.name);
-            }
+//            seal.setVisibility(View.VISIBLE);
+//            if (WinTypes.Alike.type.equals(item.winType)) {
+//                seal.setText(WinTypes.Alike.name);
+//            } else if (WinTypes.Equal.type.equals(item.winType)) {
+//                seal.setText(WinTypes.Equal.name);
+//            } else {
+//                seal.setText(WinTypes.None.name);
+//            }
             name.setText(item.goods.title);
             picre.setText("¥" + item.goods.price);
             GlideUtils.loadImageView(view.getContext(), UrlUtils.formatUrlPrefix(item.goods.image), icon);
@@ -731,13 +728,13 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             TextView goodPice = childView.findViewById(R.id.main_win_code_sele_good_pic);
             TextView goTo = childView.findViewById(R.id.main_win_code_sele_good_goto);
             //开始绑定数据
-            if (WinTypes.Alike.type.equals(item.winType)) {
-                seal.setText(WinTypes.Alike.name);
-            } else if (WinTypes.Equal.type.equals(item.winType)) {
-                seal.setText(WinTypes.Equal.name);
-            } else {
-                seal.setText(WinTypes.None.name);
-            }
+//            if (WinTypes.Alike.type.equals(item.winType)) {
+//                seal.setText(WinTypes.Alike.name);
+//            } else if (WinTypes.Equal.type.equals(item.winType)) {
+//                seal.setText(WinTypes.Equal.name);
+//            } else {
+//                seal.setText(WinTypes.None.name);
+//            }
             GlideUtils.loadImageView(view.getContext(), UrlUtils.formatHeadUrlPrefix(item.avatar), headImg);
             userName.setText(item.userName);
             winCode.setText(Html.fromHtml(
@@ -782,7 +779,7 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             childView.setOnClickListener(v -> {
                 //去往首页
                 ARouter.getInstance().build(RouterActivityPath.Main.PAGER_MAIN)
-                        .withInt("position", 0)
+                        .withInt("position", 1)
                         .navigation();
             });
         }

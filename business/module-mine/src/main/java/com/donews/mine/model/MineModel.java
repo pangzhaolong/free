@@ -360,47 +360,47 @@ public class MineModel extends BaseLiveDataModel {
      */
     public Disposable requestWithdrawCenterConfig(
             MutableLiveData<List<WithdrawConfigResp.WithdrawListDTO>> livData) {
-        Disposable disop = EasyHttp.get(BuildConfig.API_WALLET_URL + "v1/withdraw/config")
-                .cacheMode(CacheMode.NO_CACHE)
-                .isShowToast(false)
-                .execute(new SimpleCallBack<WithdrawConfigResp>() {
-                    @Override
-                    public void onError(ApiException e) {
-                        String locJson = SPUtils.getInstance().getString("withdraw_config");
-                        try {
-                            WithdrawConfigResp queryBean = GsonUtils.fromLocalJson(locJson, WithdrawConfigResp.class);
-                            if (queryBean == null || queryBean.list == null || queryBean.list.isEmpty()) {
-                                if (livData != null) {
-                                    livData.postValue(null);
-                                }
-                            } else {
-                                if (livData != null) {
-                                    livData.postValue(queryBean.list);
-                                }
-                            }
-                        } catch (Exception err) {
-                            if (livData != null) {
-                                livData.postValue(null);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onSuccess(WithdrawConfigResp queryBean) {
-                        if (queryBean == null || queryBean.list == null || queryBean.list.isEmpty()) {
-                            if (livData != null) {
-                                livData.postValue(new ArrayList<WithdrawConfigResp.WithdrawListDTO>());
-                            }
-                        } else {
-                            SPUtils.getInstance().put("withdraw_config", GsonUtils.toJson(queryBean));
-                            if (livData != null) {
-                                livData.postValue(queryBean.list);
-                            }
-                        }
-                    }
-                });
-        addDisposable(disop);
-        return disop;
+//        Disposable disop = EasyHttp.get(BuildConfig.API_WALLET_URL + "v1/withdraw/config")
+//                .cacheMode(CacheMode.NO_CACHE)
+//                .isShowToast(false)
+//                .execute(new SimpleCallBack<WithdrawConfigResp>() {
+//                    @Override
+//                    public void onError(ApiException e) {
+//                        String locJson = SPUtils.getInstance().getString("withdraw_config");
+//                        try {
+//                            WithdrawConfigResp queryBean = GsonUtils.fromLocalJson(locJson, WithdrawConfigResp.class);
+//                            if (queryBean == null || queryBean.list == null || queryBean.list.isEmpty()) {
+//                                if (livData != null) {
+//                                    livData.postValue(null);
+//                                }
+//                            } else {
+//                                if (livData != null) {
+//                                    livData.postValue(queryBean.list);
+//                                }
+//                            }
+//                        } catch (Exception err) {
+//                            if (livData != null) {
+//                                livData.postValue(null);
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onSuccess(WithdrawConfigResp queryBean) {
+//                        if (queryBean == null || queryBean.list == null || queryBean.list.isEmpty()) {
+//                            if (livData != null) {
+//                                livData.postValue(new ArrayList<WithdrawConfigResp.WithdrawListDTO>());
+//                            }
+//                        } else {
+//                            SPUtils.getInstance().put("withdraw_config", GsonUtils.toJson(queryBean));
+//                            if (livData != null) {
+//                                livData.postValue(queryBean.list);
+//                            }
+//                        }
+//                    }
+//                });
+//        addDisposable(disop);
+        return null;
     }
 
     /**
@@ -411,43 +411,43 @@ public class MineModel extends BaseLiveDataModel {
      */
     public Disposable requestWithdraWallet(
             MutableLiveData<WithdraWalletResp> livData) {
-        Disposable disop = EasyHttp.get(BuildConfig.API_WALLET_URL + "v1/wallet")
-                .cacheMode(CacheMode.NO_CACHE)
-                .isShowToast(false)
-                .execute(new SimpleCallBack<WithdraWalletResp>() {
-                    @Override
-                    public void onError(ApiException e) {
-                        String locJson = SPUtils.getInstance().getString("withdraw_detail");
-                        try {
-                            WithdraWalletResp queryBean = GsonUtils.fromLocalJson(locJson, WithdraWalletResp.class);
-                            if (queryBean == null) {
-                                if (livData != null) {
-                                    livData.postValue(null);
-                                }
-                            } else {
-                                if (livData != null) {
-                                    livData.postValue(queryBean);
-                                }
-                            }
-                        } catch (Exception err) {
-                            if (livData != null) {
-                                livData.postValue(null);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onSuccess(WithdraWalletResp queryBean) {
-                        if (queryBean != null) {
-                            SPUtils.getInstance().put("withdraw_detail", GsonUtils.toJson(queryBean));
-                        }
-                        if (livData != null) {
-                            livData.postValue(queryBean);
-                        }
-                    }
-                });
-        addDisposable(disop);
-        return disop;
+//        Disposable disop = EasyHttp.get(BuildConfig.API_WALLET_URL + "v1/wallet")
+//                .cacheMode(CacheMode.NO_CACHE)
+//                .isShowToast(false)
+//                .execute(new SimpleCallBack<WithdraWalletResp>() {
+//                    @Override
+//                    public void onError(ApiException e) {
+//                        String locJson = SPUtils.getInstance().getString("withdraw_detail");
+//                        try {
+//                            WithdraWalletResp queryBean = GsonUtils.fromLocalJson(locJson, WithdraWalletResp.class);
+//                            if (queryBean == null) {
+//                                if (livData != null) {
+//                                    livData.postValue(null);
+//                                }
+//                            } else {
+//                                if (livData != null) {
+//                                    livData.postValue(queryBean);
+//                                }
+//                            }
+//                        } catch (Exception err) {
+//                            if (livData != null) {
+//                                livData.postValue(null);
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onSuccess(WithdraWalletResp queryBean) {
+//                        if (queryBean != null) {
+//                            SPUtils.getInstance().put("withdraw_detail", GsonUtils.toJson(queryBean));
+//                        }
+//                        if (livData != null) {
+//                            livData.postValue(queryBean);
+//                        }
+//                    }
+//                });
+//        addDisposable(disop);
+        return null;
     }
 
     /**

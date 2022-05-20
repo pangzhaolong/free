@@ -113,7 +113,7 @@ object RewardVideoAdCache {
             override fun onRewardVerify(result: Boolean) {
                 mListener?.onRewardVerify(result)
                 AdLoggerUtils.d("预加载激励视频获取奖励回调-----------onRewardVerify($result)")
-                preloadRewardVideo(activity, needShow, listener, needReportEcpmWhenReward)
+                preloadRewardVideo(activity, false, listener, needReportEcpmWhenReward)
             }
 
             override fun onAdClose() {

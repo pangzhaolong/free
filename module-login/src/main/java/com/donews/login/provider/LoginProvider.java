@@ -98,7 +98,7 @@ public class LoginProvider implements IProvider {
 //            preRegister();
         } else {
             //走微信登录
-            UserInfoManage.onLoadNetUserInfo(UserInfoManage.getNetDataStr(wxCode), null, "微信登录页");
+            UserInfoManage.onLoadNetUserInfoWxBind(UserInfoManage.getNetDataStr(wxCode), null, "微信登录页");
         }
     }
 

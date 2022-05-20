@@ -121,8 +121,13 @@ public class RouterFragmentPath {
         private static final String UNBOXING = "/unboxing";
 
         public static final String PAGER_UNBOXING_FRAGMENT = UNBOXING + "/unboxing";
+        public static final String PAGER_UNBOXING_ACTIVITY = UNBOXING + "/UnboxingActivity";
 
         public static Fragment getUnboxingFragment() {
+            return (Fragment) ARouter.getInstance().build(PAGER_UNBOXING_FRAGMENT).navigation();
+        }
+
+        public static Fragment goUnboxingActivity() {
             return (Fragment) ARouter.getInstance().build(PAGER_UNBOXING_FRAGMENT).navigation();
         }
     }

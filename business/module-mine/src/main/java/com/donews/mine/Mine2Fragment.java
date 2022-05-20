@@ -218,10 +218,11 @@ public class Mine2Fragment extends MvvmLazyLiveDataFragment<MineFragmentNewBindi
     public void gotoLogin() {
         //去往登录页面
         ARouter.getInstance()
-                .build(RouterActivityPath.Mine.PAGER_MINE_WINNING_CODE_ACTIVITY)
+                .build(RouterActivityPath.User.PAGER_LOGIN)
                 .navigation();
+        //go to
 //        ARouter.getInstance()
-//                .build(RouterActivityPath.User.PAGER_LOGIN)
+//                .build(RouterActivityPath.Mine.PAGER_MINE_WINNING_CODE_ACTIVITY)
 //                .navigation();
     }
 

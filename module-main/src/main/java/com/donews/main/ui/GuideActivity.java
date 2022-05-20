@@ -53,15 +53,17 @@ public class GuideActivity
     public static void start(Context context) {
         isCenterConfigShow = ABSwitch.Ins().isOpenGuidGif();//中台配置是否显示
         isLoadGuide = SPUtils.getInstance().getBoolean("mainGuideIsShow", true);
-        if (isLoadGuide && isCenterConfigShow && !ABSwitch.Ins().isOpenAB()) {
-            //需要显示引导页，去往引导页
-            ARouter.getInstance().build(RouterActivityPath.Main.PAGER_GUIDE_ACTIVITY)
-                    .navigation(context);
-//            context.startActivity(new Intent(context, GuideActivity.class));
-        } else {
-            //不显示引导页直接去首页
-            MainActivity.start(context);
-        }
+        // 不在需要引导页。直接去首页
+        MainActivity.start(context);
+//        if (isLoadGuide && isCenterConfigShow && !ABSwitch.Ins().isOpenAB()) {
+//            //需要显示引导页，去往引导页
+//            ARouter.getInstance().build(RouterActivityPath.Main.PAGER_GUIDE_ACTIVITY)
+//                    .navigation(context);
+////            context.startActivity(new Intent(context, GuideActivity.class));
+//        } else {
+//            //不显示引导页直接去首页
+//            MainActivity.start(context);
+//        }
     }
 
     @Override

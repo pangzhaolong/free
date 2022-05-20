@@ -459,6 +459,73 @@ public class UserInfoManage {
     }
 
     /**
+     * 登录的接口(相同的逻辑。只是变成了绑定而已)
+     *
+     * @param data 请求的参数
+     * @param tag  本次请求的标记(通知为了区分目标源),如果为空则表示不需要
+     * @param from 需要上报到后台的登录源：就是发起登录的位置
+     */
+    public static MutableLiveData<UserInfoBean> onLoadNetUserInfoWxBind(String data, String tag, String from) {
+        AnalysisUtils.onEventEx(BaseApplication.getInstance(), AnalysisParam.REGISTER);
+        boolean isWxLogin = (AppInfo.getWXLoginCode() != null &&
+                AppInfo.getWXLoginCode().length() > 0);
+        boolean isSendLoginEvent = (from != null && from.length() > 0);
+        LoginLodingStartStatus eventLoadIngStatus;
+        if (tag == null || tag.isEmpty()) {
+            eventLoadIngStatus = new LoginLodingStartStatus();
+        } else {
+            eventLoadIngStatus = new LoginLodingStartStatus(tag);
+        }
+        eventLoadIngStatus.setBind(true);
+        eventLoadIngStatus.setPreReg(false);
+        EventBus.getDefault().post(eventLoadIngStatus);
+        MutableLiveData<UserInfoBean> mutableLiveData = new MutableLiveData<UserInfoBean>();
+        //判断是否登录
+        if(!LoginHelp.getInstance().isLogin()){
+            EventBus.getDefault().post(new LoginUserStatus(-1));
+            return mutableLiveData;
+        }
+        EasyHttp.post(LoginApi.BIND)
+                .upJson(data)
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new SimpleCallBack<UserInfoBean>() {
+                    @Override
+                    public void onError(ApiException e) {
+                        eventLoadIngStatus.getLoginLoadingLiveData().postValue(-1);
+                        EventBus.getDefault().post(new LoginUserStatus(-1));
+                        LogUtil.i(e.getCode() + e.getMessage() + "");
+                        if (isWxLogin && isSendLoginEvent && BaseApplication.getInstance() != null) {
+                        }
+                    }
+
+                    @Override
+                    public void onSuccess(UserInfoBean userInfoBean) {
+                        if (userInfoBean == null) {
+                            EventBus.getDefault().post(new LoginUserStatus(0));
+                            eventLoadIngStatus.getLoginLoadingLiveData().postValue(1);
+                            if (isWxLogin && isSendLoginEvent && BaseApplication.getInstance() != null) {
+                            }
+                            return;
+                        }
+                        if (isWxLogin && isSendLoginEvent && BaseApplication.getInstance() != null) {
+                        }
+                        eventLoadIngStatus.getLoginLoadingLiveData().postValue(2);
+                        setHttpToken(userInfoBean);
+                        LogUtil.i(userInfoBean.toString());
+                        mutableLiveData.postValue(userInfoBean);
+                        refreshUserTag(userInfoBean);
+                        EventBus.getDefault().post(new LoginUserStatus(1));
+                        MiddleModuleInit.requestCriticalWallet(null, "false");
+                        // 同步预注册信息(兼容以前的业务逻辑)
+                        // 这是再业务接口需要token。但是预注册只有id没有token的一种兼容处理
+                        syncPreRegisterParams(userInfoBean);
+                    }
+                });
+
+        return mutableLiveData;
+    }
+
+    /**
      * 同步预注册参数。防止影响以前的业务逻辑
      *
      * @param userInfo

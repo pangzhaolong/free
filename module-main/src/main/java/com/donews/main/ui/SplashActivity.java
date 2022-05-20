@@ -13,8 +13,10 @@ import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
 import android.widget.Toast;
 
@@ -116,7 +118,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
 
     private ValueAnimator mLoadAdAnimator;
 
-    private ScaleAnimation mScaleAnimation;
+    private Animation mScaleAnimation;
 
     private int mNetworkIsAvailable = 0;
 
@@ -164,11 +166,22 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
             checkDeal();
         }
         if (mScaleAnimation == null) {
-            mScaleAnimation = new ScaleAnimation(1.15f, 0.9f, 1.15f, 0.9f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-            mScaleAnimation.setInterpolator(new LinearInterpolator());
-            mScaleAnimation.setRepeatMode(Animation.REVERSE);
-            mScaleAnimation.setRepeatCount(Animation.INFINITE);
-            mScaleAnimation.setDuration(1000);
+
+//            mScaleAnimation = new ScaleAnimation(1.15f, 0.9f, 1.15f, 0.9f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+//            mScaleAnimation.setInterpolator(new LinearInterpolator());
+//            mScaleAnimation.setRepeatMode(Animation.REVERSE);
+//            mScaleAnimation.setRepeatCount(Animation.INFINITE);
+//            mScaleAnimation.setDuration(1000);
+            mScaleAnimation = new RotateAnimation(
+                    -10, 10,
+                    Animation.RELATIVE_TO_SELF, 0.5F,
+                    Animation.RELATIVE_TO_SELF, 0.5F);
+            RotateAnimation ranm = (RotateAnimation) mScaleAnimation;
+            ranm.setDuration(150);
+            ranm.setRepeatCount(Animation.INFINITE );//动画的反复次数
+            ranm.setRepeatMode(Animation.REVERSE);
+//            ranm.setInterpolator(new AccelerateInterpolator());
+//            animation.setFillAfter(true);//设置为true，动画转化结束后被应用
         }
 
         ABSwitch.Ins().addCallBack(new ABSwitch.CallBack() {
@@ -285,7 +298,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
             initSdk();
             return;
         }
-        if (personGuideDialog == null ) {
+        if (personGuideDialog == null) {
             Logger.d("personGuideDialog no isAdded");
             personGuideDialog = new PersonGuideDialog();
             personGuideDialog.setSureListener(this::initSdk).setCancelListener(() -> {
@@ -380,7 +393,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
 /*                if (doubleSplash) {
                     loadSplash(halfScreen, hotStart, false);
                 } else {*/
-                    goToMain();
+                goToMain();
 //                }
             }
         };

@@ -29,6 +29,11 @@ class LoginLodingStartStatus {
      */
     var isPreReg: Boolean = false
 
+    /**
+     * 是否为预注册,T:绑定，F:非绑定(登录)
+     */
+    var isBind: Boolean = false
+
     constructor() {
     }
 

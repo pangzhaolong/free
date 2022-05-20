@@ -69,19 +69,19 @@ public class MiddleModuleInit implements IModuleInit {
      * @return
      */
     public void requestWithdraWallet() {
-        EasyHttp.get(BuildConfig.API_WALLET_URL + "v1/wallet")
-                .cacheMode(CacheMode.NO_CACHE)
-                .isShowToast(false)
-                .execute(new SimpleCallBack<WithdraWalletResp>() {
-                    @Override
-                    public void onError(ApiException e) {
-                    }
-
-                    @Override
-                    public void onSuccess(WithdraWalletResp queryBean) {
-                        SPUtils.getInstance().put("withdraw_detail", GsonUtils.toJson(queryBean));
-                    }
-                });
+//        EasyHttp.get(BuildConfig.API_WALLET_URL + "v1/wallet")
+//                .cacheMode(CacheMode.NO_CACHE)
+//                .isShowToast(false)
+//                .execute(new SimpleCallBack<WithdraWalletResp>() {
+//                    @Override
+//                    public void onError(ApiException e) {
+//                    }
+//
+//                    @Override
+//                    public void onSuccess(WithdraWalletResp queryBean) {
+//                        SPUtils.getInstance().put("withdraw_detail", GsonUtils.toJson(queryBean));
+//                    }
+//                });
     }
 
 
@@ -132,20 +132,20 @@ public class MiddleModuleInit implements IModuleInit {
      * @return
      */
     private void requestWithdrawCenterConfig() {
-        EasyHttp.get(BuildConfig.API_WALLET_URL + "v1/withdraw/config")
-                .cacheMode(CacheMode.NO_CACHE)
-                .isShowToast(false)
-                .execute(new SimpleCallBack<WithdrawConfigResp>() {
-                    @Override
-                    public void onError(ApiException e) {
-
-                    }
-
-                    @Override
-                    public void onSuccess(WithdrawConfigResp queryBean) {
-                        SPUtils.getInstance().put("withdraw_config", GsonUtils.toJson(queryBean));
-                    }
-                });
+//        EasyHttp.get(BuildConfig.API_WALLET_URL + "v1/withdraw/config")
+//                .cacheMode(CacheMode.NO_CACHE)
+//                .isShowToast(false)
+//                .execute(new SimpleCallBack<WithdrawConfigResp>() {
+//                    @Override
+//                    public void onError(ApiException e) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onSuccess(WithdrawConfigResp queryBean) {
+//                        SPUtils.getInstance().put("withdraw_config", GsonUtils.toJson(queryBean));
+//                    }
+//                });
     }
 
 

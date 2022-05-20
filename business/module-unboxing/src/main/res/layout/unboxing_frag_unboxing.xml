@@ -14,9 +14,20 @@
             type="com.donews.unboxing.fragment.UnboxingFragment.OnEventListener" />
     </data>
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:paddingLeft="15dp"
+            android:paddingTop="20dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="20dp"
+            android:src="@drawable/mine_win_write_back" />
 
         <TextView
             android:id="@+id/tv_title"
