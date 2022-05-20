@@ -245,7 +245,6 @@ public class UserCancellationWhyDialogFragment extends DialogFragment {
 
     //提交完成
     private void submitFinish() {
-        AnalysisHelp.onEvent(getActivity(), Dot.Btn_unsubscribe);
         hideLoading();
         resultUICount = 5;
         goResultUI();

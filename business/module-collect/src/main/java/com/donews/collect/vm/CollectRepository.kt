@@ -162,7 +162,7 @@ class CollectRepository: BaseLiveDataModel() {
      */
     fun startCardCharge(cardId: String): Flow<CardChargeInfo?> {
         return callbackFlow {
-            val disposable = EasyHttp.post(BuildConfig.BASE_QBN_API + "activity/v1/card_charge")
+            val disposable = EasyHttp.post(BuildConfig.BASE_QBN_API + "activity/v1/card-charge")
                 .cacheMode(CacheMode.NO_CACHE)
                 .upJson(Gson().toJson(PostCardBean(cardId)))
                 .execute(object : SimpleCallBack<CardChargeInfo>() {

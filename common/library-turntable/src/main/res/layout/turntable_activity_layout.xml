@@ -80,7 +80,7 @@
             android:paddingTop="10dp"
             android:paddingEnd="10dp"
             android:paddingBottom="10dp"
-            android:text="获得1次大转盘抽奖机会"
+            android:text="点击开始抽奖"
             android:textColor="#FFFFFF"
             android:textSize="18dp"
             android:textStyle="bold"

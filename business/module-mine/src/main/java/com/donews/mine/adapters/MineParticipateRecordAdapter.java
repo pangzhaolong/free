@@ -70,8 +70,6 @@ public class MineParticipateRecordAdapter extends BaesLoadMoreAdapter<RecommendG
         );
         helper.itemView
                 .setOnClickListener(v -> {
-                    AnalysisUtils.onEventEx(this.getContext(),
-                            Dot.But_Goto_Lottery, "参与记录>精选推荐");
                     ARouter.getInstance()
                             .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                             .withBoolean("needLotteryEvent", true)

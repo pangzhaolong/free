@@ -153,7 +153,6 @@ public class FreePanicBuyingDialog extends BaseDialog<FreePanicDialogLayoutBindi
                 if (mDataBinding.checkBox.isChecked()) {
                     //存储状态
                     isSendCloseEvent = false;
-                    AnalysisUtils.onEventEx(mContext, Dot.Btn_Home_Login_Immediately);
                     getEditor().putBoolean("Free", true).commit();
                     RouterActivityPath.LoginProvider.getLoginProvider()
                             .loginWX(null, "首页>未登陆弹窗");
@@ -199,7 +198,6 @@ public class FreePanicBuyingDialog extends BaseDialog<FreePanicDialogLayoutBindi
     @Override
     public void onDismiss(DialogInterface dialog) {
         if (isSendCloseEvent) {
-            AnalysisUtils.onEventEx(mContext, Dot.Btn_Home_Login_Immediately_Close);
         }
         if (mLotteryHandler != null) {
             mLotteryHandler.removeMessages(0);

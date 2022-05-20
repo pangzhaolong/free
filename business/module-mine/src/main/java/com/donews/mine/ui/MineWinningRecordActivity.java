@@ -48,7 +48,6 @@ public class MineWinningRecordActivity extends
                 .autoDarkModeEnable(true)
                 .init();
         initView();
-        AnalysisUtils.onEventEx(this, Dot.Page_AwardRecords);
     }
 
     @Override

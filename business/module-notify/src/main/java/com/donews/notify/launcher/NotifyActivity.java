@@ -244,18 +244,12 @@ public class NotifyActivity extends FragmentActivity {
         int gernPo = new Random().nextInt(100);
         if (!isPerformed && gernPo > po) {
             mNotifyAnimationView.hide();
-            AnalysisUtils.onEventEx(BaseApplication.getInstance(),
-                    Dot.Desktop_Notify_Click_Is_Accident, "误点击(已过滤)");
             return; //小于中台配置的概率。所以需要取大于此值得部分
         }
         if(task == null){
             //只有其他区域点击才启用概率
             if(isPerformed){
-                AnalysisUtils.onEventEx(BaseApplication.getInstance(),
-                        Dot.Desktop_Notify_Click_Is_Accident, "有效点击(未配置动作)");
             }else{
-                AnalysisUtils.onEventEx(BaseApplication.getInstance(),
-                        Dot.Desktop_Notify_Click_Is_Accident, "误点击(未过滤)");
             }
             oldClickInvok(isProbability && !isPerformed);
             return;
@@ -265,12 +259,8 @@ public class NotifyActivity extends FragmentActivity {
         if(isClickSucce){
             //已经由于每个通知自己处理。明确告知不在轴原逻辑了。直接取消处理
             mNotifyAnimationView.hide();
-            AnalysisUtils.onEventEx(BaseApplication.getInstance(),
-                    Dot.Desktop_Notify_Click_Is_Accident, "有效点击(成功)");
         }else{
             //先逻辑执行失败。那么走原始初始逻辑
-            AnalysisUtils.onEventEx(BaseApplication.getInstance(),
-                    Dot.Desktop_Notify_Click_Is_Accident, "有效点击(配置动作处理失败)");
             oldClickInvok(false);
         }
     }

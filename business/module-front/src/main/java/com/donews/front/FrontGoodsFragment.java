@@ -275,7 +275,6 @@ public class FrontGoodsFragment extends MvvmLazyLiveDataFragment<FrontNorFragmen
         if (mCategoryBean == null) {
             return;
         }
-        AnalysisUtils.onEventEx(this.getContext(), Dot.But_Goto_Lottery, mCategoryBean.getName());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

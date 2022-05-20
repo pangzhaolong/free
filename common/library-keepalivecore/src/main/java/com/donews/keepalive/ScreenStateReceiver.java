@@ -81,7 +81,6 @@ public class ScreenStateReceiver extends BroadcastReceiver {
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     context.startActivity(intent);
-                    AnalysisUtils.onEventEx(context, Dot.UNLOCK_JUMP_APP);
                 } catch (Exception e) {
                     if (rulValue != null && !rulValue.equals("")) {
                         String splitValueList[] = rulValue.split("//");
@@ -91,14 +90,11 @@ public class ScreenStateReceiver extends BroadcastReceiver {
                             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             context.startActivity(intent);
-                            AnalysisUtils.onEventEx(context, Dot.UNLOCK_JUMP_WEB);
                         }
                     }
                 }
-                AnalysisUtils.onEventEx(context, Dot.UNLOCK_JUMP);
             }
         } else {
-            AnalysisUtils.onEventEx(context, Dot.UNLOCK_JUMP_ERROR, "" + rulValue + "");
         }
     }
 

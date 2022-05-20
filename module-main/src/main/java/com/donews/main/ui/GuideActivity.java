@@ -110,7 +110,6 @@ public class GuideActivity
     public void initView() {
         mDataBinding.llMainLogin.setEnabled(false);
         mDataBinding.tvGotoGuide.setOnClickListener(v -> {
-            AnalysisUtils.onEventEx(this, Dot.But_Guide_Skip);
             MainActivity.start(this);
             isLoadGuide = false;
             SPUtils.getInstance().put("mainGuideIsShow", false);

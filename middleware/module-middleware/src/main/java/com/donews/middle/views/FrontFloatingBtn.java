@@ -129,7 +129,6 @@ public class FrontFloatingBtn extends LinearLayout {
         }
         this.setOnClickListener(v -> {
             GotoUtil.doAction(mContext, floatingItem.getAction(), floatingItem.getTitle());
-            AnalysisUtils.onEventEx(mContext, Dot.FRONT_YYW_CLICK, Dot.FRONT_YYW_CLICK + "-" + mYYWIndex);
 
             if (mFloatHandler != null) {
                 mFloatHandler.removeCallbacksAndMessages(null);

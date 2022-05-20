@@ -112,8 +112,6 @@ public class NotifyAnimationView extends LinearLayout {
             }
             if(getTag() instanceof Notify2DataConfigBean.UiTemplat) {
                 Notify2DataConfigBean.UiTemplat item = (Notify2DataConfigBean.UiTemplat) getTag();
-                AnalysisUtils.onEventEx(BaseApplication.getInstance(),
-                        Dot.Desktop_Notify_Show, "分类:" + item.notifyTypeId + "->模板:" + item.id);
             }
         } catch (Throwable t) {
             t.printStackTrace();

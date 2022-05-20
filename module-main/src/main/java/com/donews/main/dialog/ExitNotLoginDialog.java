@@ -119,7 +119,6 @@ public class ExitNotLoginDialog extends BaseDialog<MainInterceptDialogLayoutBind
 
     //立即抢购
     private void immediatelySnappedUp() {
-        AnalysisUtils.onEventEx(mContext, Dot.Btn_LotteryNow);
         if (ClickDoubleUtil.isFastClick()) {
             if (mOnFinishListener != null) {
                 mOnFinishListener.onDismiss();
@@ -175,7 +174,6 @@ public class ExitNotLoginDialog extends BaseDialog<MainInterceptDialogLayoutBind
                     if (mDataBinding.checkBox.isChecked()) {
                         //存储状态
                         isSendCloseEvent = false;
-                        AnalysisUtils.onEventEx(mContext, Dot.But_Home_Exit_Not_Login_Continue);
                         getEditor().putBoolean("protocol", true).commit();
                         RouterActivityPath.LoginProvider.getLoginProvider()
                                 .loginWX(null, "首页>退出拦截>未登陆弹窗");
@@ -224,7 +222,6 @@ public class ExitNotLoginDialog extends BaseDialog<MainInterceptDialogLayoutBind
     @Override
     public void onDismiss(DialogInterface dialog) {
         if (isSendCloseEvent) {
-            AnalysisUtils.onEventEx(mContext, Dot.But_Home_Exit_Not_Login_Close);
         }
         if (mLotteryHandler != null) {
             mLotteryHandler.removeMessages(0);

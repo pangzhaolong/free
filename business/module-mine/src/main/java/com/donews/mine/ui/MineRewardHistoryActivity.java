@@ -42,7 +42,6 @@ public class MineRewardHistoryActivity extends MvvmBaseLiveDataActivity<MineRewa
                 .fitsSystemWindows(true)
                 .autoDarkModeEnable(true)
                 .init();
-        AnalysisUtils.onEventEx(this, Dot.Page_LotteryHistory);
     }
 
     @Override

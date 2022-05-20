@@ -132,7 +132,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/timeOne"
                 android:background="@drawable/collect_icon_time"
                 tools:text="-"
-                android:text="-"
+                android:text=""
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:gravity="center"
@@ -161,7 +161,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/changeGoodClick"
                 android:background="@drawable/collect_icon_time"
                 tools:text="--"
-                android:text="--"
+                android:text=""
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:gravity="center"
@@ -185,7 +185,7 @@
                 android:id="@+id/tvThree"
                 android:background="@drawable/collect_icon_time"
                 tools:text="--"
-                android:text="--"
+                android:text=""
                 app:layout_constraintStart_toEndOf="@+id/timeTwo"
                 android:layout_marginStart="3.33dp"
                 android:textColor="@color/white"
@@ -216,7 +216,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/changeGoodClick"
                 android:background="@drawable/collect_icon_time"
                 tools:text="--"
-                android:text="--"
+                android:text=""
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:gravity="center"
@@ -487,6 +487,26 @@
                 app:layout_constraintTop_toBottomOf="@+id/progressView"
                 android:layout_width="150dp"
                 android:layout_height="50dp"/>
+
+            <Space
+                android:id="@+id/spaceView"
+                android:layout_marginEnd="30dp"
+                app:layout_constraintEnd_toEndOf="@+id/bottomClick"
+                app:layout_constraintTop_toTopOf="@+id/bottomClick"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <!--小手-->
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/jsonAnimation"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:layout_alignParentBottom="true"
+                app:layout_constraintTop_toTopOf="@+id/spaceView"
+                app:layout_constraintStart_toStartOf="@+id/spaceView"
+                android:layout_marginEnd="40dp"
+                app:lottie_loop="true"
+                tools:ignore="MissingConstraints" />
 
             <TextView
                 android:id="@+id/bottomMsgTv"

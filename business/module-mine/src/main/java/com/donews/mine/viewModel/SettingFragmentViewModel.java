@@ -88,7 +88,6 @@ public class SettingFragmentViewModel extends BaseLiveDataViewModel<SettingModel
                 if (AppInfo.checkIsWXLogin()) {
                     ARouter.getInstance().build(PAGER_ACTIVITY_FEEDBACK)
                             .navigation(baseActivity);
-                    AnalysisUtils.onEventEx(baseActivity, Dot.Page_Feedback);
                 } else {
                     ARouter.getInstance()
                             .build(RouterActivityPath.User.PAGER_LOGIN)

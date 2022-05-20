@@ -1,6 +1,9 @@
 package com.donews.task.vm
 
+import android.util.Log
+import com.blankj.utilcode.util.ToastUtils
 import com.donews.base.model.BaseLiveDataModel
+import com.donews.base.utils.ToastUtil
 import com.donews.middle.BuildConfig
 import com.donews.middle.mainShare.upJson.PostBean
 import com.donews.middle.mainShare.upJson.PostExchangeBean
@@ -58,6 +61,7 @@ class TaskRepository : BaseLiveDataModel() {
                 .upJson(Gson().toJson(PostExchangeBean(exchangeActiveNum)))
                 .execute(object : SimpleCallBack<Any>() {
                     override fun onError(e: ApiException?) {
+                        ToastUtils.showShort(e?.message)
                         trySend(null)
                     }
 

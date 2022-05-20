@@ -278,7 +278,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
             return;
         }
 
-        AnalysisUtils.onEventEx(mContext, Dot.But_Category_Click, bean.getName());
     }
 
     private static class FrontHandler extends Handler {
@@ -917,7 +916,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                         .navigation();*/
 
                 EventBus.getDefault().post(new DoubleRpEvent(9, 0f, "", "", 0f));
-                AnalysisUtils.onEventEx(mContext, Dot.But_Rp_Click, String.valueOf(1));
             } else {
                 openRp();
             }
@@ -937,7 +935,6 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
                 continue;
             }
             if (bean1.getLotteryTotal() <= bean1.getHadLotteryTotal()) {
-                AnalysisUtils.onEventEx(mContext, Dot.But_Rp_Click, String.valueOf(i + 1));
                 openRp();
                 break;
             }

@@ -45,7 +45,6 @@ public class MineSettingFragment extends
         mViewModel.updateUIFlg.observe(this, result -> {
             bindViewText();
         });
-        AnalysisUtils.onEventEx(getActivity(), Dot.Page_Setting);
     }
 
     @Override
@@ -101,7 +100,6 @@ public class MineSettingFragment extends
                 ToastUtil.show(getBaseActivity(), "请检查网络连接");
                 return;
             }
-            AnalysisUtils.onEventEx(getActivity(), Dot.Btn_Logout);
             showLoading();
             AppInfo.exitWXLogin();
             CommonParams.setNetWorkExitOrUnReg();

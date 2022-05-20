@@ -51,11 +51,7 @@ public class JumpActionUtils {
         if (scheme == null || scheme.isEmpty()) {
             return false;//不支持的协议。不处理跳转逻辑
         }
-        AnalysisUtils.onEventEx(BaseApplication.getInstance(),
-                Dot.Desktop_Notify_Click, "分类:" + uiTemplat.notifyTypeId + "->模板:" + uiTemplat.id);
         if (scheme.startsWith(SchemeHttp)) {
-            AnalysisUtils.onEventEx(BaseApplication.getInstance(),
-                    Dot.Desktop_Notify_Click_To, "站外");
             String title = uri.getQueryParameter("title");
             if (title == null || title.isEmpty()) {
                 title = "通知详情";
@@ -68,8 +64,6 @@ public class JumpActionUtils {
         } else if (scheme.equals(NotifyAction)) {
             //自定义的本地协议处理
             try {
-                AnalysisUtils.onEventEx(BaseApplication.getInstance(),
-                        Dot.Desktop_Notify_Click_To, "站内");
                 String actPageCzz = uri.getHost();
                 if (actPageCzz == null || actPageCzz.isEmpty()) {
                     if (BuildConfig.DEBUG) {

@@ -9,6 +9,8 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 import com.donews.middle.bean.globle.TurntableBean;
 import com.donews.middle.dialog.BaseDialog;
 import com.donews.turntable.R;
@@ -43,6 +45,9 @@ public class DoingResultDialog extends BaseDialog<TurntableDoingDialogLayoutBind
                 dismiss();
             }
         });
+
+        Glide.with(getContext()).load(mPrize.getIcon()).override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).into(mDataBinding.icon);
+
     }
 
 

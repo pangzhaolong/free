@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
+import com.airbnb.lottie.LottieAnimationView
 import com.donews.base.fragmentdialog.AbstractFragmentDialog
 import com.donews.base.utils.ToastUtil
 import com.donews.base.utils.glide.GlideUtils
@@ -16,6 +17,7 @@ import com.donews.collect.bean.GoodInfo
 import com.donews.collect.bean.StatusInfo
 import com.donews.collect.databinding.CollectDialogGoodsBinding
 import com.donews.collect.databinding.CollectDialogGoodsChangeBinding
+import com.donews.collect.util.AnimationUtil
 import com.donews.middle.mainShare.bean.Ex
 import com.google.gson.Gson
 import java.lang.Exception
@@ -59,6 +61,7 @@ class ChangeDialog: AbstractFragmentDialog<CollectDialogGoodsChangeBinding>(fals
             mGoodInfo = Gson().fromJson(mGoodJson,StatusInfo::class.java)
             GlideUtils.loadImageView(context,mGoodInfo?.goodsInfo?.mainPic,dataBinding?.goodImage)
         } catch (e:Exception){}
+        AnimationUtil.startFingerAnimation(dataBinding.jsonAnimation)
     }
 
     override fun isUseDataBinding() = true
@@ -75,6 +78,11 @@ class ChangeDialog: AbstractFragmentDialog<CollectDialogGoodsChangeBinding>(fals
                 clickDialogBtn.invoke(mGoodInfo?.cardId!!)
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        AnimationUtil.cancelLottieAnimation(dataBinding.jsonAnimation)
     }
 
 }

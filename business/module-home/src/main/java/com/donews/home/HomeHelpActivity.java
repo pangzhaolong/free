@@ -30,6 +30,5 @@ public class HomeHelpActivity extends AppCompatActivity {
 
         findViewById(R.id.home_help_back).setOnClickListener(v -> finish());
 
-        AnalysisUtils.onEventEx(this, Dot.Page_SaveMoneyDoc);
     }
 }

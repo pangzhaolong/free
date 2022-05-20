@@ -64,16 +64,6 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
      */
     public static void goLotteryPage(
             boolean needLotteryEvent, int position, String goods_id, int from) {
-        if (from == 1) {
-            AnalysisUtils.onEventEx(BaseApplication.getInstance(),
-                    Dot.But_Goto_Lottery, "首页->开奖页面>热门抽奖");
-        } else if (from == 2) {
-            AnalysisUtils.onEventEx(BaseApplication.getInstance(),
-                    Dot.But_Goto_Lottery, "往期记录>开奖详情页>热门抽奖");
-        } else if (from == 3) {
-            AnalysisUtils.onEventEx(BaseApplication.getInstance(),
-                    Dot.But_Goto_Lottery, "参与记录>开奖详情页>热门抽奖");
-        }
         Postcard posta = ARouter.getInstance()
                 .build(RouterFragmentPath.Lottery.PAGER_LOTTERY);
         if (position >= 0) {
@@ -566,7 +556,6 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
                     TextWinUtils.drawOldText(detailLivData.getValue().code, item.code)));
             goTo.setText("去领奖");
             childView.setOnClickListener((v) -> {
-                AnalysisUtils.onEventEx(mContext, Dot.Page_ContactService);
                 Bundle bundle = new Bundle();
                 bundle.putString("url",
                         "https://recharge-web.xg.tagtic.cn/jdd/index.html#/customer");
@@ -671,16 +660,6 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
                 code.setMaxLines(3);
             });
             childView.setOnClickListener((v) -> {
-                if (from == 1) {
-                    AnalysisUtils.onEventEx(mContext,
-                            Dot.But_Goto_Lottery, "首页>开奖页面>我的参与");
-                } else if (from == 2) {
-                    AnalysisUtils.onEventEx(mContext,
-                            Dot.But_Goto_Lottery, "往期记录>抽奖详情页>我的参与");
-                } else if (from == 3) {
-                    AnalysisUtils.onEventEx(mContext,
-                            Dot.But_Goto_Lottery, "参与记录>抽奖详情页>我的参与");
-                }
                 ARouter.getInstance()
                         .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                         .withString("goods_id", item.goods.id)
@@ -765,16 +744,6 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             goodPice.setText("" + item.goods.price);
             goTo.setText("试试手气");
             childView.setOnClickListener((v) -> {
-                if (from == 1) {
-                    AnalysisUtils.onEventEx(mContext,
-                            Dot.But_Goto_Lottery, "首页>开奖页面>中奖名单");
-                } else if (from == 2) {
-                    AnalysisUtils.onEventEx(mContext,
-                            Dot.But_Goto_Lottery, "往期记录>抽奖详情页>中奖名单");
-                } else if (from == 3) {
-                    AnalysisUtils.onEventEx(mContext,
-                            Dot.But_Goto_Lottery, "参与记录>抽奖详情页>中奖名单");
-                }
                 ARouter.getInstance()
                         .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                         .withString("goods_id", item.goods.id)

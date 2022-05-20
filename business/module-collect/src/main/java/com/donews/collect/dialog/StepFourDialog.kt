@@ -37,7 +37,7 @@ class StepFourDialog : AbstractFragmentDialog<CollectDialogStepFourBinding>(fals
         rotate = AnimationUtil.rotate(dataBinding?.rotateView)
         AnimationUtil.rotate(dataBinding?.rotateView)
         //难度低于用户数，从18000-58000随机取数
-        val res = (Math.random() * (58000 - 18000 + 1) + 18000).toString()
+        val res = (Math.random() * (58000 - 18000 + 1) + 18000).toInt().toString()
         dataBinding?.tvRight?.text = res
     }
 

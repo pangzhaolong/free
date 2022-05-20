@@ -43,7 +43,6 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
     protected void initView() {
         //拒绝协议
         dataBinding.tvRefuse.setOnClickListener(v -> {
-            AnalysisUtils.onEventEx(getActivity(), Dot.Btn_ServiceThink);
             dataBinding.llGuide.setVisibility(View.GONE);
             dataBinding.imgMainPeople.setVisibility(View.GONE);
             dataBinding.llRefuseHint.setVisibility(View.VISIBLE);
@@ -54,7 +53,6 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
         //同意协议
         dataBinding.tvAgree.setOnClickListener(v -> {
             if (sureListener != null) {
-                AnalysisUtils.onEventEx(getActivity(), Dot.Btn_ServiceOk);
                 sureListener.onSure();
             }
             disMissDialog();
@@ -67,7 +65,6 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
 
         //退出应用
         dataBinding.tvExit.setOnClickListener(v -> {
-            AnalysisUtils.onEventEx(getActivity(), Dot.Btn_ServiceThinkExit);
             SplashUtils.INSTANCE.savePersonExit(false);
             if (getOnCancelListener() != null) {
                 getOnCancelListener().onCancel();
@@ -76,7 +73,6 @@ public class PersonGuideDialog extends AbstractFragmentDialog<MainDialogPeopleGu
 
         //查看指引
         dataBinding.tvLookGuide.setOnClickListener(v -> {
-            AnalysisUtils.onEventEx(getActivity(), Dot.Btn_ServiceThinkOk);
             if (sureListener != null) {
                 sureListener.onSure();
             }

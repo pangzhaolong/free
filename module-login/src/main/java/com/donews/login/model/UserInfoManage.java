@@ -347,7 +347,6 @@ public class UserInfoManage {
     }
 
     public static MutableLiveData<PreRegisterBean> onPreRegister() {
-        AnalysisUtils.onEventEx(BaseApplication.getInstance(), AnalysisParam.PRE_REGISTER);
         LoginLodingStartStatus eventLoadIngStatus;
         eventLoadIngStatus = new LoginLodingStartStatus();
         eventLoadIngStatus.setPreReg(true);
@@ -407,7 +406,6 @@ public class UserInfoManage {
      * @param from 需要上报到后台的登录源：就是发起登录的位置
      */
     public static MutableLiveData<UserInfoBean> onLoadNetUserInfo(String data, String tag, String from) {
-        AnalysisUtils.onEventEx(BaseApplication.getInstance(), AnalysisParam.REGISTER);
         boolean isWxLogin = (AppInfo.getWXLoginCode() != null &&
                 AppInfo.getWXLoginCode().length() > 0);
         boolean isSendLoginEvent = (from != null && from.length() > 0);
@@ -430,9 +428,6 @@ public class UserInfoManage {
                         EventBus.getDefault().post(new LoginUserStatus(-1));
                         LogUtil.i(e.getCode() + e.getMessage() + "");
                         if (isWxLogin && isSendLoginEvent && BaseApplication.getInstance() != null) {
-                            AnalysisUtils.onEventEx(
-                                    BaseApplication.getInstance(),
-                                    Dot.WX_Login, from + "(网络异常)");
                         }
                     }
 
@@ -442,16 +437,10 @@ public class UserInfoManage {
                             EventBus.getDefault().post(new LoginUserStatus(0));
                             eventLoadIngStatus.getLoginLoadingLiveData().postValue(1);
                             if (isWxLogin && isSendLoginEvent && BaseApplication.getInstance() != null) {
-                                AnalysisUtils.onEventEx(
-                                        BaseApplication.getInstance(),
-                                        Dot.WX_Login, from + "(后台业务服务失败)");
                             }
                             return;
                         }
                         if (isWxLogin && isSendLoginEvent && BaseApplication.getInstance() != null) {
-                            AnalysisUtils.onEventEx(
-                                    BaseApplication.getInstance(),
-                                    Dot.WX_Login, from + "(成功)");
                         }
                         eventLoadIngStatus.getLoginLoadingLiveData().postValue(2);
                         setHttpToken(userInfoBean);
