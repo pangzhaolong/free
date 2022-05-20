@@ -16,11 +16,10 @@ import com.donews.home.adapter.ExchangeFragmentAdapter;
 import com.donews.home.databinding.ExchanageFragmentBinding;
 import com.donews.home.viewModel.ExchangeViewModel;
 import com.donews.middle.bean.home.HomeCategory2Bean;
-import com.donews.middle.bean.home.HomeCategoryBean;
 import com.donews.middle.bean.home.HomeReceiveGiftReq;
 import com.donews.middle.cache.GoodsCache;
+import com.donews.middle.dialog.qbn.DoingResultDialog;
 import com.donews.middle.front.FrontConfigManager;
-import com.donews.middle.viewmodel.BaseMiddleViewModel;
 import com.donews.middle.views.ExchanageTabItem;
 import com.donews.middle.views.TaskView;
 import com.donews.utilslibrary.utils.AppInfo;
@@ -117,15 +116,17 @@ public class ExchangeFragment extends MvvmLazyLiveDataFragment<ExchanageFragment
             if (item) {
                 //开始计时
                 int sp = mViewModel.queryGiftCountdownStep();
-                if (downcountCountTime <= 0) {
+                if (sp <= 0) {
                     return;//计算结果不支持计时
                 }
+                mHand.removeCallbacks(downcountTimeTask);
                 mDataBinding.tvTime.setVisibility(View.VISIBLE);
-                downcountCountTime = sp;
+                downcountCountTime = sp; //重新开始两分钟计时动作
                 if (downcountTimeTask == null) {
                     downcountTimeTask = () -> {
-                        mViewModel.giftCountdownCount.postValue(downcountCountTime--);
-                        if (mViewModel.giftCountdownCount.getValue() > 0) {
+                        downcountCountTime = downcountCountTime--;
+                        mViewModel.giftCountdownCount.postValue(downcountCountTime);
+                        if (downcountCountTime > 0) {
                             mHand.postDelayed(downcountTimeTask, 1000);
                         }
                     };
@@ -143,7 +144,7 @@ public class ExchangeFragment extends MvvmLazyLiveDataFragment<ExchanageFragment
                 //更新计时
                 tvTimeTxt.delete(0, tvTimeTxt.length());
                 int m = timeValue / 60;
-                int s = timeValue % 60;
+                int s = (timeValue - m * 60) % 60;
                 if (m > 10) {
                     tvTimeTxt.append("" + m);
                 } else {
@@ -162,15 +163,16 @@ public class ExchangeFragment extends MvvmLazyLiveDataFragment<ExchanageFragment
         mDataBinding.homeSrl.setEnableLoadMore(false);
         mDataBinding.homeSrl.setOnRefreshListener((refreshLayout) -> {
             //初始化数据
-            isInitLoad = false;
+            if (isInitLoad) {
+                isInitLoad = false;
+            }
             loadCategory();
         });
 
-        isInitLoad = true;
         //更新配置信息(对话相关的配置)
         mViewModel.getCoinCritConfig();
         //初始化数据
-        loadCategory();
+        mDataBinding.homeSrl.autoRefresh();
     }
 
     @Override
@@ -243,7 +245,7 @@ public class ExchangeFragment extends MvvmLazyLiveDataFragment<ExchanageFragment
         mViewModel.getReceiveGift(req)
                 .observe(this, (resp) -> {
                     if (resp != null) {
-                        ToastUtil.showShort(getContext(), "奖励发放成功了");
+                        showDoingResultDialog(resp.coin);
                     }
                 });
     }
@@ -275,5 +277,13 @@ public class ExchangeFragment extends MvvmLazyLiveDataFragment<ExchanageFragment
             }
             GoodsCache.saveGoodsBean(mHomeBean, "exchanage_category");
         });
+    }
+
+    // 显示活动奖励弹窗
+    private void showDoingResultDialog(int count) {
+        DoingResultDialog dialog = new DoingResultDialog(getActivity(), count, R.drawable.sign_reward_mine_dialog_djb);
+        dialog.setStateListener(() -> {
+        });
+        dialog.show(getActivity());
     }
 }

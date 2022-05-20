@@ -495,9 +495,6 @@ public class UserInfoManage {
                         EventBus.getDefault().post(new LoginUserStatus(-1));
                         LogUtil.i(e.getCode() + e.getMessage() + "");
                         if (isWxLogin && isSendLoginEvent && BaseApplication.getInstance() != null) {
-                            AnalysisUtils.onEventEx(
-                                    BaseApplication.getInstance(),
-                                    Dot.WX_Login, from + "(网络异常)");
                         }
                     }
 
@@ -507,16 +504,10 @@ public class UserInfoManage {
                             EventBus.getDefault().post(new LoginUserStatus(0));
                             eventLoadIngStatus.getLoginLoadingLiveData().postValue(1);
                             if (isWxLogin && isSendLoginEvent && BaseApplication.getInstance() != null) {
-                                AnalysisUtils.onEventEx(
-                                        BaseApplication.getInstance(),
-                                        Dot.WX_Login, from + "(后台业务服务失败)");
                             }
                             return;
                         }
                         if (isWxLogin && isSendLoginEvent && BaseApplication.getInstance() != null) {
-                            AnalysisUtils.onEventEx(
-                                    BaseApplication.getInstance(),
-                                    Dot.WX_Login, from + "(成功)");
                         }
                         eventLoadIngStatus.getLoginLoadingLiveData().postValue(2);
                         setHttpToken(userInfoBean);

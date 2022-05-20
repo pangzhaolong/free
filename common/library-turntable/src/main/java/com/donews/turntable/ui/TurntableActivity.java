@@ -19,7 +19,7 @@ import com.donews.common.router.RouterActivityPath;
 import com.donews.middle.bean.globle.TurntableBean;
 import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.middle.centralDeploy.TurntableSwitch;
-import com.donews.middle.utils.CriticalModelTool;
+import com.donews.middle.dialog.qbn.DoingResultDialog;
 import com.donews.middle.utils.PlayAdUtilsTool;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
@@ -28,14 +28,10 @@ import com.donews.network.exception.ApiException;
 import com.donews.turntable.R;
 import com.donews.turntable.base.TurntableBaseActivity;
 import com.donews.turntable.bean.RewardedBean;
-import com.donews.turntable.bean.TurntablePrize;
 import com.donews.turntable.databinding.TurntableActivityLayoutBinding;
-import com.donews.turntable.dialog.DoingResultDialog;
 import com.donews.turntable.dialog.RuleDialog;
 import com.donews.turntable.utils.ClickDoubleUtil;
 import com.donews.turntable.view.TurntableView;
-import com.donews.yfsdk.monitor.LotteryAdCheck;
-import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 

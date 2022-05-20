@@ -38,6 +38,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import cn.cd.dn.sdk.models.utils.DNServiceTimeManager;
+
 /**
  * <p> </p>
  * 作者： created by dw<br>
@@ -84,17 +86,17 @@ public class ExchangeViewModel extends BaseLiveDataViewModel<ExchangeModel> {
      * @return 需要倒计时的秒数，0：不需要计时，>0需要倒计时的秒数
      */
     public int queryGiftCountdownStep() {
-        long curLocalTime = System.currentTimeMillis() / 1000;
+        long curLocalTime = DNServiceTimeManager.Companion.getIns().getServiceTime() / 1000;
         long fastSaveTime = SPUtils.getInstance(this.getClass().getSimpleName())
-                .getLong("giftCountdownTime", curLocalTime / 1000);
+                .getLong("giftCountdownTime", curLocalTime);
         if (fastSaveTime > curLocalTime) {
             return 0;// 无效时间
         }
         if (curLocalTime - fastSaveTime > 2 * 60) {
             return 0; //超过两分钟了。那么不在计时
         }
-        // 返回需要计时的差值
-        return (int) (curLocalTime - fastSaveTime);
+        // 返回需要计时的差值,距离2分钟的差值
+        return 120 - (int) (curLocalTime - fastSaveTime);
     }
 
     /**
@@ -104,7 +106,7 @@ public class ExchangeViewModel extends BaseLiveDataViewModel<ExchangeModel> {
      */
     public MutableLiveData<HomeReceiveGiftResp> getReceiveGift(HomeReceiveGiftReq req) {
         SPUtils.getInstance(this.getClass().getSimpleName())
-                .put("giftCountdownTime", System.currentTimeMillis());
+                .put("giftCountdownTime", DNServiceTimeManager.Companion.getIns().getServiceTime() / 1000);
         giftCountdownIsStartCount.postValue(true);
         MutableLiveData<HomeReceiveGiftResp> mutableLiveData = new MutableLiveData<>();
         String url = (BuildConfig.BASE_QBN_API + "exchange/v1/receive-gift");

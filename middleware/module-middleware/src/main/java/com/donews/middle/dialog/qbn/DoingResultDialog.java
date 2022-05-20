@@ -1,4 +1,4 @@
-package com.donews.turntable.dialog;
+package com.donews.middle.dialog.qbn;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,10 +11,10 @@ import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
+import com.donews.middle.R;
 import com.donews.middle.bean.globle.TurntableBean;
+import com.donews.middle.databinding.TurntableDoingDialogLayoutBinding;
 import com.donews.middle.dialog.BaseDialog;
-import com.donews.turntable.R;
-import com.donews.turntable.databinding.TurntableDoingDialogLayoutBinding;
 
 import java.lang.ref.WeakReference;
 
@@ -23,10 +23,21 @@ public class DoingResultDialog extends BaseDialog<TurntableDoingDialogLayoutBind
     private WeakDoingResult weakDoingResult = new WeakDoingResult(this);
     private OnStateListener mOnFinishListener;
     TurntableBean.ItemsDTO mPrize;
+    //直接指定金币数量
+    int count = 0;
+    //需要显示的icon资源id
+    int iconRes = 0;
 
     public DoingResultDialog(@NonNull Context context, TurntableBean.ItemsDTO itemsDTO) {
         super(context, R.style.dialogTransparent);
         mPrize = itemsDTO;
+    }
+
+    public DoingResultDialog(@NonNull Context context, int count, int iconRes) {
+        super(context, R.style.dialogTransparent);
+        mPrize = null;
+        this.count = count;
+        this.iconRes = iconRes;
     }
 
 
@@ -38,7 +49,11 @@ public class DoingResultDialog extends BaseDialog<TurntableDoingDialogLayoutBind
         message.what = 1;
         weakDoingResult.sendMessageDelayed(message, 1000);
         setOnDismissListener(this);
-        mDataBinding.award.setText(mPrize.getTitle());
+        if (mPrize != null) {
+            mDataBinding.award.setText(mPrize.getTitle());
+        } else {
+            mDataBinding.award.setText("" + count);
+        }
         mDataBinding.accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,7 +61,11 @@ public class DoingResultDialog extends BaseDialog<TurntableDoingDialogLayoutBind
             }
         });
 
-        Glide.with(getContext()).load(mPrize.getIcon()).override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).into(mDataBinding.icon);
+        if (mPrize != null) {
+            Glide.with(getContext()).load(mPrize.getIcon()).override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).into(mDataBinding.icon);
+        } else {
+            mDataBinding.icon.setImageResource(iconRes);
+        }
 
     }
 
