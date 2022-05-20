@@ -2,6 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="TaskDialogStyle" parent="BaseDialogStyle" tools:ignore="ResourceName">
-        <item name="android:backgroundDimAmount">0.7</item>
+        <item name="android:backgroundDimAmount">0.8</item>
     </style>
 </resources>

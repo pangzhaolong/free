@@ -111,22 +111,22 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
         }
     }
 
-    private var bubbleFloutOneAnimation: ObjectAnimator? = null
-    private var bubbleFloutTwoAnimation: ObjectAnimator? = null
+    private var bubbleFloatOneAnimation: ObjectAnimator? = null
+    private var bubbleFloatTwoAnimation: ObjectAnimator? = null
     private fun startBubbleAnimation(){
-        bubbleFloutOneAnimation = AnimationUtil.bubbleFloat(mDataBinding?.bubbleOne,3000,10f,-1)
-        bubbleFloutOneAnimation?.start()
-        bubbleFloutTwoAnimation = AnimationUtil.bubbleFloat(mDataBinding?.bubbleTwo,2000,10f,-1)
-        bubbleFloutTwoAnimation?.start()
+        bubbleFloatOneAnimation = AnimationUtil.bubbleFloat(mDataBinding?.bubbleOne,3000,10f,-1)
+        bubbleFloatOneAnimation?.start()
+        bubbleFloatTwoAnimation = AnimationUtil.bubbleFloat(mDataBinding?.bubbleTwo,2000,10f,-1)
+        bubbleFloatTwoAnimation?.start()
     }
     private fun cancelBubbleAnimation(){
-        if (bubbleFloutOneAnimation != null && bubbleFloutOneAnimation!!.isRunning){
-            bubbleFloutOneAnimation?.cancel()
-            bubbleFloutOneAnimation = null
+        if (bubbleFloatOneAnimation != null && bubbleFloatOneAnimation!!.isRunning){
+            bubbleFloatOneAnimation?.cancel()
+            bubbleFloatOneAnimation = null
         }
-        if (bubbleFloutTwoAnimation != null && bubbleFloutTwoAnimation!!.isRunning){
-            bubbleFloutTwoAnimation?.cancel()
-            bubbleFloutTwoAnimation = null
+        if (bubbleFloatTwoAnimation != null && bubbleFloatTwoAnimation!!.isRunning){
+            bubbleFloatTwoAnimation?.cancel()
+            bubbleFloatTwoAnimation = null
         }
     }
 
@@ -156,7 +156,6 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
         mViewModel?.status?.observe(this, {
             it?.let {
                 mStatusInfo = it
-                mCardId = it.cardId
                 handleStatus()
             }
         })
@@ -190,7 +189,8 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
     private fun initNewGoodCard() {
         mViewModel?.newGoodCard?.observe(this, {
             it?.let {
-                mCardId = it.cardId
+                //抽选卡后及时赋值(中途不能刷新),保证cardId正确
+                mStatusInfo = it
                 handleNewCard()
                 EventBus.getDefault().post(CollectStartNewCardEvent())
             }
@@ -216,13 +216,14 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
     private fun initDrawCard(){
         mViewModel?.drawCard?.observe(this, {
             it?.let {
-                DialogUtil.showDrawDialog(this,Gson().toJson(it)){
+                DialogUtil.showDrawDialog(this,it.no,it.img){
                     loadStatus()
                 }
             }
         })
     }
 
+    //抽碎片才消耗次数
     private fun loadDrawCard(cardId:String){
         mViewModel?.requestDrawCard(cardId)
     }
@@ -305,10 +306,11 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
 
     //重选卡后的处理(处理新老流程)
     private fun handleNewCard(){
+        Log.i("adsfadf-->","-ads-->${mClickChangeClickStatus}")
         if (mClickChangeClickStatus){
             mClickChangeClickStatus = false
             //点击更换集卡直接送一次碎片
-            loadDrawCard(mCardId)
+            showDrawDialog()
         } else {
             //未集卡状态下走新老流程
             if (UserStatusUtil.isNewUser()){
@@ -349,19 +351,32 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
         }
     }
 
-    //重选后会赋值(for:未选卡的系列过渡页中途不能刷新status而中断,cardId拿不到最新值)
-    private var mCardId = "0"
-
     private fun startStepFour(){
         if (DayStepUtil.instance.isTodayShowFourStep()){
             DialogUtil.showStepFourDialog(this){
                 val curNum = SPUtils.getInformain("todayShowFourStepNum", 0)
                 DayStepUtil.instance.setStepFourSp(curNum + 1)
-                loadDrawCard(mCardId)
+                showDrawDialog()
             }
         } else {
-            loadDrawCard(mCardId)
+            showDrawDialog()
         }
+    }
+
+    private fun showDrawDialog(){
+        var newIndex = 0
+        try {
+            for (index in mStatusInfo!!.fragments.indices){
+                if (mStatusInfo!!.fragments[index].holdNum == 1){
+                    newIndex = index
+                    break
+                }
+            }
+            DialogUtil.showDrawDialog(this,mStatusInfo!!.fragments[newIndex].no,mStatusInfo!!.fragments[newIndex].img){
+                loadStatus()
+            }
+        } catch (e:Exception){}
+
     }
     //endregion
 
@@ -448,6 +463,7 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
                 }
                 mDataBinding?.changeGoodClick -> {
                     if (mStatusInfo != null){
+                        Log.i("adsfadf-->","-ads-adsa->${mClickChangeClickStatus}")
                         mClickChangeClickStatus = true
                         DialogUtil.showChangeGoodDialog(this@CollectActivity,Gson().toJson(mStatusInfo)){
                             loadStopCard(it)
@@ -467,7 +483,9 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
 
                                     override fun onAdClose() {
                                         super.onAdClose()
-                                        loadDrawCard(mCardId)
+                                        if (mStatusInfo!=null){
+                                            loadDrawCard(mStatusInfo!!.cardId)
+                                        }
                                     }
                                 },
                                 false
@@ -490,7 +508,9 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
 
                                     override fun onAdClose() {
                                         super.onAdClose()
-                                        loadCardCharge(mCardId)
+                                        if (mStatusInfo != null){
+                                            loadCardCharge(mStatusInfo!!.cardId)
+                                        }
                                     }
                                 },
                                 false

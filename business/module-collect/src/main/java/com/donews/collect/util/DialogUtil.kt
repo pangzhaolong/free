@@ -67,13 +67,14 @@ object DialogUtil {
 
     fun showDrawDialog(
         activity: FragmentActivity,
-        goodJson:String,
+        no:Int = 0,
+        img:String = "",
         dialogBtn:() -> Unit = {},
     ) {
         if (drawDialog != null && drawDialog?.dialog != null && drawDialog?.dialog!!.isShowing) {
             return
         }
-        drawDialog = DrawDialog.newInstance(goodJson).apply {
+        drawDialog = DrawDialog.newInstance(no,img).apply {
             setOnDismissListener {
                 drawDialog = null
             }

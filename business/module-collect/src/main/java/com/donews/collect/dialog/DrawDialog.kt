@@ -4,47 +4,38 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.recyclerview.widget.GridLayoutManager
 import com.donews.base.fragmentdialog.AbstractFragmentDialog
-import com.donews.base.utils.ToastUtil
 import com.donews.base.utils.glide.GlideUtils
 import com.donews.collect.R
-import com.donews.collect.adapter.GoodAdapter
-import com.donews.collect.bean.DrawCardInfo
-import com.donews.collect.bean.GoodBean
-import com.donews.collect.bean.GoodInfo
-import com.donews.collect.databinding.CollectDialogGoodsBinding
 import com.donews.collect.databinding.CollectDialogGoodsDrawBinding
 import com.donews.collect.util.AnimationUtil
-import com.donews.middle.mainShare.bean.Ex
-import com.google.gson.Gson
-import java.lang.Exception
 
 /**
  *  make in st
  *  on 2022/5/16 17:11
  */
-class DrawDialog: AbstractFragmentDialog<CollectDialogGoodsDrawBinding>(false, false) {
+class DrawDialog : AbstractFragmentDialog<CollectDialogGoodsDrawBinding>(false, false) {
 
     companion object {
-        fun newInstance(goodJson:String = ""): DrawDialog {
+        fun newInstance(no: Int = 0, img: String = ""): DrawDialog {
             return DrawDialog().apply {
                 arguments = Bundle().apply {
-                    putString("goodJson", goodJson)
+                    putInt("no", no)
+                    putString("img", img)
                 }
             }
         }
     }
 
-    private var mGoodJson = ""
-    private var mGoodInfo: DrawCardInfo? = null
+    private var mNo = 0
+    private var mImg = ""
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         arguments?.let {
-            mGoodJson = it.getString("goodJson","")
+            mNo = it.getInt("no", 0)
+            mImg = it.getString("img", "")
         }
     }
 
@@ -59,10 +50,10 @@ class DrawDialog: AbstractFragmentDialog<CollectDialogGoodsDrawBinding>(false, f
         dataBinding.eventListener = EventListener()
         rotate = AnimationUtil.rotate(dataBinding?.rotateView)
         try {
-            mGoodInfo = Gson().fromJson(mGoodJson,DrawCardInfo::class.java)
-            dataBinding?.rightTv?.text = "${mGoodInfo?.no}号碎片"
-            GlideUtils.loadImageView(context,mGoodInfo?.img,dataBinding.img)
-        } catch (e:Exception){}
+            dataBinding?.rightTv?.text = "${mNo}号碎片"
+            GlideUtils.loadImageView(context, mImg, dataBinding.img)
+        } catch (e: Exception) {
+        }
     }
 
     override fun isUseDataBinding() = true
@@ -80,7 +71,7 @@ class DrawDialog: AbstractFragmentDialog<CollectDialogGoodsDrawBinding>(false, f
 
     override fun onDestroy() {
         super.onDestroy()
-        if (rotate != null && rotate!!.isRunning){
+        if (rotate != null && rotate!!.isRunning) {
             rotate?.cancel()
             rotate = null
         }

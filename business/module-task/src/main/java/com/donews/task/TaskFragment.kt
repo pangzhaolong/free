@@ -16,6 +16,8 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.bumptech.glide.Glide
 import com.dn.sdk.listener.rewardvideo.SimpleRewardVideoListener
 import com.donews.base.utils.ToastUtil
+import com.donews.base.utils.glide.GlideUtils
+import com.donews.base.utils.glide.RoundCornersTransform
 import com.donews.common.base.MvvmLazyLiveDataFragment
 import com.donews.common.router.RouterActivityPath
 import com.donews.common.router.RouterFragmentPath
@@ -44,6 +46,8 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.droidsonroids.gif.GifDrawable
 import com.donews.middle.bean.globle.TurntableBean.ItemsDTO
+import com.donews.middle.bean.mine2.resp.UserAssetsResp
+import com.donews.utilslibrary.utils.DensityUtils
 import com.google.gson.Gson
 
 
@@ -90,6 +94,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
         initBubble()
         initColdTimerView()
         initTaskView()
+        startBubbleAnimation()
     }
 
     //region 接口调用相关
@@ -224,10 +229,12 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                     BUBBLE_NO_FINISH -> {
                         mDataBinding?.iconLuckPanBubble?.alpha = 0.45f
                         mDataBinding?.iconLuckPanTv?.alpha = 0.45f
+                        mDataBinding?.iconLuckPanTv?.text = "转盘"
                     }
                     BUBBLE_NO_RECEIVE -> {
                         mDataBinding?.iconLuckPanBubble?.alpha = 1f
                         mDataBinding?.iconLuckPanTv?.alpha = 1f
+                        mDataBinding?.iconLuckPanTv?.text = "可领取"
                     }
                     BUBBLE_HAVE_FINISH -> {
                         mDataBinding?.iconLuckPanBubble?.alpha = 0f
@@ -241,10 +248,12 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                     BUBBLE_NO_FINISH -> {
                         mDataBinding?.iconSignBubble?.alpha = 0.45f
                         mDataBinding?.iconSignTv?.alpha = 0.45f
+                        mDataBinding?.iconSignTv?.text = "签到"
                     }
                     BUBBLE_NO_RECEIVE -> {
                         mDataBinding?.iconSignBubble?.alpha = 1f
                         mDataBinding?.iconSignTv?.alpha = 1f
+                        mDataBinding?.iconSignTv?.text = "可领取"
                     }
                     BUBBLE_HAVE_FINISH -> {
                         mDataBinding?.iconSignBubble?.alpha = 0f
@@ -258,10 +267,12 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                     BUBBLE_NO_FINISH -> {
                         mDataBinding?.iconLuckDrawBubble?.alpha = 0.45f
                         mDataBinding?.iconLuckDrawTv?.alpha = 0.45f
+                        mDataBinding?.iconLuckDrawTv?.text = "抽奖"
                     }
                     BUBBLE_NO_RECEIVE -> {
                         mDataBinding?.iconLuckDrawBubble?.alpha = 1f
                         mDataBinding?.iconLuckDrawTv?.alpha = 1f
+                        mDataBinding?.iconLuckDrawTv?.text = "可领取"
                     }
                     BUBBLE_HAVE_FINISH -> {
                         mDataBinding?.iconLuckDrawBubble?.alpha = 0f
@@ -275,10 +286,12 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                     BUBBLE_NO_FINISH -> {
                         mDataBinding?.iconShareBubble?.alpha = 0.45f
                         mDataBinding?.shareTv?.alpha = 0.45f
+                        mDataBinding?.shareTv?.text = "分享"
                     }
                     BUBBLE_NO_RECEIVE -> {
                         mDataBinding?.iconShareBubble?.alpha = 1f
                         mDataBinding?.shareTv?.alpha = 1f
+                        mDataBinding?.shareTv?.text = "可领取"
                     }
                     BUBBLE_HAVE_FINISH -> {
                         mDataBinding?.iconShareBubble?.alpha = 0f
@@ -292,10 +305,12 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                     BUBBLE_NO_FINISH -> {
                         mDataBinding?.iconCollectBubble?.alpha = 0.45f
                         mDataBinding?.iconCollectTv?.alpha = 0.45f
+                        mDataBinding?.iconCollectTv?.text = "集卡"
                     }
                     BUBBLE_NO_RECEIVE -> {
                         mDataBinding?.iconCollectBubble?.alpha = 1f
                         mDataBinding?.iconCollectTv?.alpha = 1f
+                        mDataBinding?.iconCollectTv?.text = "可领取"
                     }
                     BUBBLE_HAVE_FINISH -> {
                         mDataBinding?.iconCollectBubble?.alpha = 0f
@@ -310,7 +325,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                         if (taskBubbleVideoBean?.cd ?: 0 > 0) {
                             //领取后cd=180,status=0
                             mDataBinding?.coldDownTimer?.alpha = 0.45f
-                            mDataBinding?.countDownTimeTv?.alpha = 0.45f
+                            mDataBinding?.countDownTimeTv?.alpha = 0.6f
                             mDataBinding?.seeAdTv?.alpha = 0.45f
                             mDataBinding?.seeAdTv?.text = "可领取(${taskBubbleVideoBean?.done ?: 0}/3)"
                             mDataBinding?.coldDownTimer?.apply {
@@ -320,7 +335,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                         } else {
                             //第一次进来cd=0,status=0
                             mDataBinding?.coldDownTimer?.alpha = 0.45f
-                            mDataBinding?.countDownTimeTv?.alpha = 0.45f
+                            mDataBinding?.countDownTimeTv?.alpha = 0.6f
                             mDataBinding?.seeAdTv?.alpha = 0.45f
                             mDataBinding?.seeAdTv?.text = "可领取(${taskBubbleVideoBean?.done ?: 0}/3)"
                         }
@@ -333,7 +348,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                     }
                     BUBBLE_HAVE_FINISH -> {
                         mDataBinding?.coldDownTimer?.alpha = 0.45f
-                        mDataBinding?.countDownTimeTv?.alpha = 0.45f
+                        mDataBinding?.countDownTimeTv?.alpha = 0.6f
                         mDataBinding?.seeAdTv?.alpha = 0.45f
                         mDataBinding?.seeAdTv?.text = "明日再来"
                     }
@@ -479,9 +494,22 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
     //region 运营位及底部抽奖、转盘图片中台拉取并展示
     private fun initTaskView() {
         mDataBinding?.taskBgRunning?.refreshYyw(TaskView.Place_Task)
-        Glide.with(this).load(taskControlConfig?.img?.luckPanImg).into(mDataBinding.taskBgLuckPan)
-        Glide.with(this).load(taskControlConfig?.img?.luckCollectImg)
-            .into(mDataBinding.taskBgCollect)
+        GlideUtils.loadImageRoundCorner(context,taskControlConfig?.img?.luckPanImg,mDataBinding.taskBgLuckPan,
+            RoundCornersTransform(
+                DensityUtils.dip2px(15f).toFloat(),
+                DensityUtils.dip2px(15f).toFloat(),
+                DensityUtils.dip2px(15f).toFloat(),
+                DensityUtils.dip2px(15f).toFloat()
+            )
+        )
+        GlideUtils.loadImageRoundCorner(context,taskControlConfig?.img?.luckCollectImg,mDataBinding.taskBgCollect,
+            RoundCornersTransform(
+                DensityUtils.dip2px(15f).toFloat(),
+                DensityUtils.dip2px(15f).toFloat(),
+                DensityUtils.dip2px(15f).toFloat(),
+                DensityUtils.dip2px(15f).toFloat()
+            )
+        )
     }
     //endregion
 
@@ -605,7 +633,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                 }
             }
             BUBBLE_HAVE_FINISH -> {
-                ToastUtil.show(mContext, "明日再来!")
+                ToastUtil.show(mContext, "今日次数已达上限,明日再来!")
             }
         }
     }
@@ -656,7 +684,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                 )
             }
             BUBBLE_HAVE_FINISH -> {
-                ToastUtil.show(mContext, "明日再来")
+                ToastUtil.show(mContext, "今日次数已达上限,明日再来")
             }
         }
     }
@@ -810,6 +838,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
             mViewModel?.isShowBoxTimeView?.set(true)
             mViewModel?.isShowIconCanGet?.set(false)
             boxCurTime = taskBubbleBoxBean?.cd!!
+            mHandler.removeCallbacks(boxTimer)
             mHandler.postDelayed(boxTimer, 1000L)
         } else {
             when (taskBubbleBoxBean?.status) {
@@ -901,6 +930,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
     private var shakeAnimation1: ObjectAnimator? = null
 
     private fun startBoxAnimation() {
+        cancelBoxAnimation()
         shakeAnimation = AnimationUtil.startShakeAnimation(mDataBinding?.iconBox, 1f)
         shakeAnimation1 = AnimationUtil.startShakeAnimation(mDataBinding?.iconCanGet, 1f)
     }
@@ -958,6 +988,103 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
     }
     //endregion
 
+    private var bubbleFloatSignAnimation: ObjectAnimator? = null
+    private var bubbleFloatSignTvAnimation: ObjectAnimator? = null
+    private var bubbleFloatTimerAdTvAnimation: ObjectAnimator? = null
+    private var bubbleFloatAdTimerTvAnimation: ObjectAnimator? = null
+    private var bubbleFloatAdTimerTvTvAnimation: ObjectAnimator? = null
+    private var bubbleFloatLuckPanAnimation: ObjectAnimator? = null
+    private var bubbleFloatLuckPanTvAnimation: ObjectAnimator? = null
+    private var bubbleFloatCollectAnimation: ObjectAnimator? = null
+    private var bubbleFloatCollectTvAnimation: ObjectAnimator? = null
+    private var bubbleFloatShareAnimation: ObjectAnimator? = null
+    private var bubbleFloatShareTvAnimation: ObjectAnimator? = null
+    private var bubbleFloatLuckDrawAnimation: ObjectAnimator? = null
+    private var bubbleFloatLuckDrawTvAnimation: ObjectAnimator? = null
+    private fun startBubbleAnimation(){
+        bubbleFloatSignAnimation = AnimationUtil.bubbleFloat(mDataBinding?.iconSignBubble,4000,10f,-1)
+        bubbleFloatSignAnimation?.start()
+        bubbleFloatSignTvAnimation = AnimationUtil.bubbleFloat(mDataBinding?.iconSignTv,4000,10f,-1)
+        bubbleFloatSignTvAnimation?.start()
+        bubbleFloatTimerAdTvAnimation = AnimationUtil.bubbleFloat(mDataBinding?.coldDownTimer,2000,10f,-1)
+        bubbleFloatTimerAdTvAnimation?.start()
+        bubbleFloatAdTimerTvAnimation = AnimationUtil.bubbleFloat(mDataBinding?.countDownTimeTv,2000,10f,-1)
+        bubbleFloatAdTimerTvAnimation?.start()
+        bubbleFloatAdTimerTvTvAnimation = AnimationUtil.bubbleFloat(mDataBinding?.seeAdTv,2000,10f,-1)
+        bubbleFloatAdTimerTvTvAnimation?.start()
+        bubbleFloatLuckPanAnimation = AnimationUtil.bubbleFloat(mDataBinding?.iconLuckPanBubble,3000,10f,-1)
+        bubbleFloatLuckPanAnimation?.start()
+        bubbleFloatLuckPanTvAnimation = AnimationUtil.bubbleFloat(mDataBinding?.iconLuckPanTv,3000,10f,-1)
+        bubbleFloatLuckPanTvAnimation?.start()
+        bubbleFloatCollectAnimation = AnimationUtil.bubbleFloat(mDataBinding?.iconCollectBubble,3500,10f,-1)
+        bubbleFloatCollectAnimation?.start()
+        bubbleFloatCollectTvAnimation = AnimationUtil.bubbleFloat(mDataBinding?.iconCollectTv,3500,10f,-1)
+        bubbleFloatCollectTvAnimation?.start()
+        bubbleFloatShareAnimation = AnimationUtil.bubbleFloat(mDataBinding?.iconShareBubble,2500,10f,-1)
+        bubbleFloatShareAnimation?.start()
+        bubbleFloatShareTvAnimation = AnimationUtil.bubbleFloat(mDataBinding?.shareTv,2500,10f,-1)
+        bubbleFloatShareTvAnimation?.start()
+        bubbleFloatLuckDrawAnimation = AnimationUtil.bubbleFloat(mDataBinding?.iconLuckDrawBubble,1500,10f,-1)
+        bubbleFloatLuckDrawAnimation?.start()
+        bubbleFloatLuckDrawTvAnimation = AnimationUtil.bubbleFloat(mDataBinding?.iconLuckDrawTv,1500,10f,-1)
+        bubbleFloatLuckDrawTvAnimation?.start()
+    }
+
+    private fun cancelBubbleAnimation(){
+        if (bubbleFloatSignAnimation != null && bubbleFloatSignAnimation!!.isRunning){
+            bubbleFloatSignAnimation?.cancel()
+            bubbleFloatSignAnimation = null
+        }
+        if (bubbleFloatSignTvAnimation != null && bubbleFloatSignTvAnimation!!.isRunning){
+            bubbleFloatSignTvAnimation?.cancel()
+            bubbleFloatSignTvAnimation = null
+        }
+        if (bubbleFloatTimerAdTvAnimation != null && bubbleFloatTimerAdTvAnimation!!.isRunning){
+            bubbleFloatTimerAdTvAnimation?.cancel()
+            bubbleFloatTimerAdTvAnimation = null
+        }
+        if (bubbleFloatAdTimerTvAnimation != null && bubbleFloatAdTimerTvAnimation!!.isRunning){
+            bubbleFloatAdTimerTvAnimation?.cancel()
+            bubbleFloatAdTimerTvAnimation = null
+        }
+        if (bubbleFloatAdTimerTvTvAnimation != null && bubbleFloatAdTimerTvTvAnimation!!.isRunning){
+            bubbleFloatAdTimerTvTvAnimation?.cancel()
+            bubbleFloatAdTimerTvTvAnimation = null
+        }
+        if (bubbleFloatLuckPanAnimation != null && bubbleFloatLuckPanAnimation!!.isRunning){
+            bubbleFloatLuckPanAnimation?.cancel()
+            bubbleFloatLuckPanAnimation = null
+        }
+        if (bubbleFloatLuckPanTvAnimation != null && bubbleFloatLuckPanTvAnimation!!.isRunning){
+            bubbleFloatLuckPanTvAnimation?.cancel()
+            bubbleFloatLuckPanTvAnimation = null
+        }
+        if (bubbleFloatCollectAnimation != null && bubbleFloatCollectAnimation!!.isRunning){
+            bubbleFloatCollectAnimation?.cancel()
+            bubbleFloatCollectAnimation = null
+        }
+        if (bubbleFloatCollectTvAnimation != null && bubbleFloatCollectTvAnimation!!.isRunning){
+            bubbleFloatCollectTvAnimation?.cancel()
+            bubbleFloatCollectTvAnimation = null
+        }
+        if (bubbleFloatShareAnimation != null && bubbleFloatShareAnimation!!.isRunning){
+            bubbleFloatShareAnimation?.cancel()
+            bubbleFloatShareAnimation = null
+        }
+        if (bubbleFloatShareTvAnimation != null && bubbleFloatShareTvAnimation!!.isRunning){
+            bubbleFloatShareTvAnimation?.cancel()
+            bubbleFloatShareTvAnimation = null
+        }
+        if (bubbleFloatLuckDrawAnimation != null && bubbleFloatLuckDrawAnimation!!.isRunning){
+            bubbleFloatLuckDrawAnimation?.cancel()
+            bubbleFloatLuckDrawAnimation = null
+        }
+        if (bubbleFloatLuckDrawTvAnimation != null && bubbleFloatLuckDrawTvAnimation!!.isRunning){
+            bubbleFloatLuckDrawTvAnimation?.cancel()
+            bubbleFloatLuckDrawTvAnimation = null
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         if (shakeAnimation != null && shakeAnimation!!.isRunning) {
@@ -972,6 +1099,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
             gifDrawable?.recycle()
             gifDrawable = null
         }
+        cancelBubbleAnimation()
         mHandler.removeCallbacks(boxTimer)
     }
 

@@ -516,6 +516,7 @@
                 android:layout_marginTop="9.94dp"
                 android:textColor="@color/white"
                 android:textSize="12.67sp"
+                android:alpha="0.6"
                 android:text="万能卡可兑换任意卡片（充能需要看创意视频）"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

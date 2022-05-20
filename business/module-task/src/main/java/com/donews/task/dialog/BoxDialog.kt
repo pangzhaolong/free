@@ -48,9 +48,6 @@ class BoxDialog : AbstractFragmentDialog<TaskDialogBoxBinding>(false, false) {
     var clickDialogBtn: () -> Unit = {}
 
     inner class EventListener {
-        fun cancelBtn(view: View) {
-            disMissDialog()
-        }
         fun receiveBtn(view: View) {
             clickDialogBtn.invoke()
             disMissDialog()
