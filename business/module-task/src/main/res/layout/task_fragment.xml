@@ -120,8 +120,8 @@
             android:id="@+id/iconSignBubble"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="29dp"
+            android:layout_marginStart="27dp"
+            android:layout_marginTop="40dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/goldCoinIcon"
             app:srcCompat="@drawable/task_icon_sign" />
@@ -130,7 +130,7 @@
             android:id="@+id/iconSignTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="7.45dp"
+            android:layout_marginTop="6dp"
             android:text="签到"
             android:textColor="#8B3112"
             android:textSize="12sp"
@@ -144,8 +144,7 @@
             android:id="@+id/coldDownTimer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="15.33dp"
+            android:layout_marginTop="25dp"
             android:src="@drawable/task_icon_video"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -160,17 +159,17 @@
             android:shadowColor="@android:color/black"
             android:shadowRadius="10"
             android:textColor="@android:color/white"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/coldDownTimer"
             app:layout_constraintEnd_toEndOf="@+id/coldDownTimer"
             app:layout_constraintStart_toStartOf="@+id/coldDownTimer"
-            app:layout_constraintTop_toTopOf="@+id/coldDownTimer" />
+            android:layout_marginBottom="10dp" />
 
         <TextView
             android:id="@+id/seeAdTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="7.45dp"
+            android:layout_marginTop="6dp"
             android:textColor="#8B3112"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="@+id/coldDownTimer"
@@ -184,8 +183,8 @@
             android:id="@+id/iconLuckPanBubble"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32.33dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="27dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/goldCoinIcon"
             app:srcCompat="@drawable/task_icon_luck_pan" />
@@ -194,7 +193,7 @@
             android:id="@+id/iconLuckPanTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="7.45dp"
+            android:layout_marginTop="6dp"
             android:text="转盘"
             android:textColor="#8B3112"
             android:textSize="12sp"
@@ -208,8 +207,8 @@
             android:id="@+id/iconCollectBubble"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="45.79dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="50dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iconSignBubble"
             app:srcCompat="@drawable/task_icon_collect" />
@@ -218,7 +217,7 @@
             android:id="@+id/iconCollectTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="6dp"
             android:text="集卡"
             android:textColor="#8B3112"
             android:textSize="12sp"
@@ -232,8 +231,8 @@
             android:id="@+id/iconShareBubble"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="45.79dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="55dp"
+            android:layout_marginEnd="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iconSignBubble"
             app:srcCompat="@drawable/task_icon_share" />
@@ -242,7 +241,7 @@
             android:id="@+id/shareTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="6dp"
             android:text="分享"
             android:textColor="#8B3112"
             android:textSize="12sp"
@@ -256,7 +255,7 @@
             android:id="@+id/iconLuckDrawBubble"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="40.33dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iconCollectBubble"
@@ -266,7 +265,7 @@
             android:id="@+id/iconLuckDrawTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="6dp"
             android:text="抽奖"
             android:textColor="#8B3112"
             android:textSize="12sp"
@@ -280,7 +279,7 @@
             android:id="@+id/iconCanGet"
             android:layout_width="52dp"
             android:layout_height="22.17dp"
-            android:layout_marginTop="102.67dp"
+            android:layout_marginTop="82.67dp"
             android:layout_marginEnd="13.33dp"
             android:background="@drawable/task_icon_can_get"
             android:gravity="center_horizontal"
@@ -291,7 +290,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iconShareBubble" />
 
-        <com.airbnb.lottie.LottieAnimationView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iconBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -308,7 +307,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="3dp"
             android:textColor="@color/white"
-            android:textSize="12sp"
+            android:textSize="10sp"
             android:textStyle="bold"
             android:visibility="@{taskModel.isShowBoxTimeView ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="@+id/iconBox"
@@ -316,6 +315,60 @@
             app:layout_constraintStart_toStartOf="@+id/iconBox"
             tools:text="00:00" />
         <!--endregion -->
+
+        <!--region gif-->
+        <Space
+            android:id="@+id/leftSpace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="60dp"
+            android:layout_marginBottom="60dp"
+            app:layout_constraintBottom_toTopOf="@+id/iconBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/leftCoinGif"
+            android:layout_width="40dp"
+            android:layout_height="160dp"
+            android:scaleType="fitXY"
+            app:layout_constraintEnd_toEndOf="@+id/leftSpace"
+            app:layout_constraintBottom_toTopOf="@+id/leftSpace"/>
+
+        <Space
+            android:id="@+id/rightSpace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+            android:layout_marginBottom="60dp"
+            app:layout_constraintBottom_toTopOf="@+id/iconBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/rightCoinGif"
+            android:layout_width="40dp"
+            android:layout_height="160dp"
+            android:scaleType="fitXY"
+            app:layout_constraintStart_toStartOf="@+id/rightSpace"
+            app:layout_constraintBottom_toTopOf="@+id/rightSpace" />
+
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/taskGif"
+            android:layout_width="220.96dp"
+            android:layout_height="230.33dp"
+            android:scaleType="fitXY"
+            app:layout_constraintTop_toBottomOf="@+id/seeAdTv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+        <!--endregion -->
+
+        <Space
+            android:id="@+id/liSpace"
+            android:layout_marginBottom="40dp"
+            app:layout_constraintBottom_toBottomOf="@+id/taskGif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
         <!--region btn相关-->
         <androidx.appcompat.widget.AppCompatImageView
@@ -325,7 +378,7 @@
             android:layout_marginTop="22dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iconLuckDrawBubble"
+            app:layout_constraintTop_toBottomOf="@+id/liSpace"
             app:srcCompat="@drawable/task_icon_btn" />
 
         <TextView
@@ -355,53 +408,6 @@
             app:layout_constraintEnd_toEndOf="@+id/spacePoint"
             app:layout_constraintTop_toTopOf="@+id/spacePoint"
             app:lottie_loop="true" />
-        <!--endregion -->
-
-        <!--region gif-->
-        <Space
-            android:id="@+id/leftSpace"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="50dp"
-            android:layout_marginBottom="50dp"
-            app:layout_constraintBottom_toTopOf="@+id/iconBtn"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <ImageView
-            android:id="@+id/leftCoinGif"
-            android:layout_width="40dp"
-            android:layout_height="160dp"
-            android:scaleType="fitXY"
-            app:layout_constraintEnd_toEndOf="@+id/leftSpace"
-            app:layout_constraintBottom_toTopOf="@+id/leftSpace"/>
-
-        <Space
-            android:id="@+id/rightSpace"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginBottom="50dp"
-            app:layout_constraintBottom_toTopOf="@+id/iconBtn"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <ImageView
-            android:id="@+id/rightCoinGif"
-            android:layout_width="40dp"
-            android:layout_height="160dp"
-            android:scaleType="fitXY"
-            app:layout_constraintStart_toStartOf="@+id/rightSpace"
-            app:layout_constraintBottom_toTopOf="@+id/rightSpace" />
-
-        <pl.droidsonroids.gif.GifImageView
-            android:id="@+id/taskGif"
-            android:layout_width="200.96dp"
-            android:layout_height="194.33dp"
-            android:scaleType="fitXY"
-            app:layout_constraintBottom_toTopOf="@+id/iconBtn"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
         <!--endregion -->
 
         <!--region 底部相关-->
@@ -528,7 +534,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="89.33dp"
                     android:layout_marginStart="13dp"
-                    android:layout_marginTop="10.33dp"
+                    android:layout_marginTop="4.33dp"
                     android:layout_marginEnd="13dp"
                     android:layout_marginBottom="10dp"
                     android:scaleType="fitXY"

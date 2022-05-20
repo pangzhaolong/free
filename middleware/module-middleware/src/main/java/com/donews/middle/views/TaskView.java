@@ -13,11 +13,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
+import com.donews.base.utils.glide.RoundCornersTransform;
 import com.donews.middle.bean.front.FrontConfigBean;
 import com.donews.middle.front.FrontConfigManager;
 import com.donews.middle.go.GotoUtil;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
+import com.donews.utilslibrary.utils.DensityUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

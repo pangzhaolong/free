@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.animation.ValueAnimator
 import android.view.View
+import android.view.animation.LinearInterpolator
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.airbnb.lottie.LottieAnimationView
@@ -16,6 +17,7 @@ import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.donews.task.R
+import kotlin.math.sqrt
 
 /**
  *  make in st
@@ -77,7 +79,9 @@ object AnimationUtil {
 
     fun startTaskFingerAnimation(view: LottieAnimationView?){
        view?.let {
+           it.visibility = View.VISIBLE
            it.imageAssetsFolder = "images"
+           it.cancelAnimation()
            it.setAnimation("task_finger.json")
            it.loop(true)
            it.playAnimation()
@@ -85,7 +89,10 @@ object AnimationUtil {
     }
 
     fun cancelFingerAnimation(view: LottieAnimationView?){
-        view?.cancelAnimation()
+        view?.let {
+            it.cancelAnimation()
+            it.visibility = View.GONE
+        }
     }
 
     fun coinGifStart(context: Fragment,imageView: ImageView?) {
@@ -94,7 +101,6 @@ object AnimationUtil {
                 Glide.with(context)
                     .asGif()
                     .load(R.drawable.task_coin_gif)
-                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .addListener(object :
                         RequestListener<GifDrawable> {
                         override fun onLoadFailed(
@@ -121,6 +127,90 @@ object AnimationUtil {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    /**
+     * 气泡漂浮动画
+     * @param view
+     * @param duration  动画运行时间
+     * @param offset    动画运行幅度
+     * @param repeatCount   动画运行次数
+     * @return
+     */
+    fun bubbleFloat(view: View?, duration: Int, offset: Float, repeatCount: Int): ObjectAnimator {
+        val path = (sqrt(3.0) / 2 * offset).toFloat()
+        val translateX: PropertyValuesHolder = PropertyValuesHolder.ofKeyframe(
+            View.TRANSLATION_X,
+            Keyframe.ofFloat(0f, 0f),
+            Keyframe.ofFloat(1 / 12f, offset / 2),
+            Keyframe.ofFloat(2 / 12f, path),
+            Keyframe.ofFloat(3 / 12f, offset),
+            Keyframe.ofFloat(4 / 12f, path),
+            Keyframe.ofFloat(5 / 12f, offset / 2),
+            Keyframe.ofFloat(6 / 12f, 0f),
+            Keyframe.ofFloat(7 / 12f, -offset / 2),
+            Keyframe.ofFloat(8 / 12f, -path),
+            Keyframe.ofFloat(9 / 12f, -offset),
+            Keyframe.ofFloat(10 / 12f, -path),
+            Keyframe.ofFloat(11 / 12f, -offset / 2),
+            Keyframe.ofFloat(1f, 0f)
+        )
+        val translateY: PropertyValuesHolder = PropertyValuesHolder.ofKeyframe(
+            View.TRANSLATION_Y,
+            Keyframe.ofFloat(0f, 0f),
+            Keyframe.ofFloat(1 / 12f, offset - path),
+            Keyframe.ofFloat(2 / 12f, offset / 2),
+            Keyframe.ofFloat(3 / 12f, offset),
+            Keyframe.ofFloat(4 / 12f, offset * 3 / 2),
+            Keyframe.ofFloat(5 / 12f, offset + path),
+            Keyframe.ofFloat(6 / 12f, offset * 2),
+            Keyframe.ofFloat(7 / 12f, offset + path),
+            Keyframe.ofFloat(8 / 12f, offset * 3 / 2),
+            Keyframe.ofFloat(9 / 12f, offset),
+            Keyframe.ofFloat(10 / 12f, offset / 2),
+            Keyframe.ofFloat(11 / 12f, offset - path),
+            Keyframe.ofFloat(1f, 0f)
+        )
+        val rotateX: PropertyValuesHolder = PropertyValuesHolder.ofKeyframe(
+            View.ROTATION_X,
+            Keyframe.ofFloat(0f, 0f),
+            Keyframe.ofFloat(1 / 12f, offset / 2),
+            Keyframe.ofFloat(2 / 12f, path),
+            Keyframe.ofFloat(3 / 12f, offset),
+            Keyframe.ofFloat(4 / 12f, path),
+            Keyframe.ofFloat(5 / 12f, offset / 2),
+            Keyframe.ofFloat(6 / 12f, 0f),
+            Keyframe.ofFloat(7 / 12f, -offset / 2),
+            Keyframe.ofFloat(8 / 12f, -path),
+            Keyframe.ofFloat(9 / 12f, -offset),
+            Keyframe.ofFloat(10 / 12f, -path),
+            Keyframe.ofFloat(11 / 12f, -offset / 2),
+            Keyframe.ofFloat(1f, 0f)
+        )
+        val rotateY: PropertyValuesHolder = PropertyValuesHolder.ofKeyframe(
+            View.ROTATION_Y,
+            Keyframe.ofFloat(0f, 0f),
+            Keyframe.ofFloat(1 / 12f, offset / 2),
+            Keyframe.ofFloat(2 / 12f, path),
+            Keyframe.ofFloat(3 / 12f, offset),
+            Keyframe.ofFloat(4 / 12f, path),
+            Keyframe.ofFloat(5 / 12f, offset / 2),
+            Keyframe.ofFloat(6 / 12f, 0f),
+            Keyframe.ofFloat(7 / 12f, -offset / 2),
+            Keyframe.ofFloat(8 / 12f, -path),
+            Keyframe.ofFloat(9 / 12f, -offset),
+            Keyframe.ofFloat(10 / 12f, -path),
+            Keyframe.ofFloat(11 / 12f, -offset / 2),
+            Keyframe.ofFloat(1f, 0f)
+        )
+        val animator: ObjectAnimator =
+            ObjectAnimator.ofPropertyValuesHolder(view, translateX, translateY, rotateX, rotateY)
+                .setDuration(
+                    duration.toLong()
+                )
+        animator.repeatCount = repeatCount
+        animator.interpolator = LinearInterpolator()
+        return animator
     }
 
 }

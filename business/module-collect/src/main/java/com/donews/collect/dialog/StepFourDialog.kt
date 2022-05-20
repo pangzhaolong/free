@@ -8,10 +8,7 @@ import android.view.View
 import com.donews.base.fragmentdialog.AbstractFragmentDialog
 import com.donews.collect.R
 import com.donews.collect.databinding.CollectDialogStepFourBinding
-import com.donews.collect.databinding.CollectDialogStepThreeBinding
-import com.donews.collect.databinding.CollectDialogStepTwoBinding
 import com.donews.collect.util.AnimationUtil
-import java.lang.Exception
 
 /**
  *  make in st
@@ -33,7 +30,7 @@ class StepFourDialog : AbstractFragmentDialog<CollectDialogStepFourBinding>(fals
 
     override fun initView() {
         dataBinding.eventListener = EventListener()
-        mHandler.postDelayed(timer,1000L)
+        mHandler.postDelayed(timer, 1000L)
         rotate = AnimationUtil.rotate(dataBinding?.rotateView)
         AnimationUtil.rotate(dataBinding?.rotateView)
         //难度低于用户数，从18000-58000随机取数
@@ -70,7 +67,8 @@ class StepFourDialog : AbstractFragmentDialog<CollectDialogStepFourBinding>(fals
                         mHandler.postDelayed(this, 1000L)
                     }
                 }
-            } catch (e: Exception){}
+            } catch (e: Exception) {
+            }
         }
 
     }
@@ -78,7 +76,7 @@ class StepFourDialog : AbstractFragmentDialog<CollectDialogStepFourBinding>(fals
     override fun onDestroyView() {
         super.onDestroyView()
         mHandler.removeCallbacksAndMessages(null)
-        if (rotate != null && rotate!!.isRunning){
+        if (rotate != null && rotate!!.isRunning) {
             rotate?.cancel()
             rotate = null
         }
