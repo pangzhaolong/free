@@ -51,12 +51,43 @@
                     android:background="@mipmap/lottery_title_img" />
 
 
+                <TextView
+                    android:id="@+id/popular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="59dp"
+                    android:background="@drawable/item_card_shape"
+                    android:paddingStart="13dp"
+                    android:paddingTop="7dp"
+                    android:paddingBottom="7dp"
+                    android:text="热门晒单"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/open_lottery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/popular"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="18dp"
+                    android:background="@drawable/item_card_shape"
+                    android:paddingStart="13dp"
+                    android:paddingTop="7dp"
+                    android:paddingBottom="7dp"
+                    android:text="每期开奖"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12dp" />
+
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/name_txt"
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="20dp"
+                    android:layout_marginEnd="40dp"
                     android:background="@mipmap/lottery_right_light_img" />
 
                 <ImageView
@@ -106,7 +137,7 @@
                 <LinearLayout
                     android:id="@+id/hint"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="29dp"
                     android:layout_below="@+id/time"
                     android:layout_centerHorizontal="true"
                     android:layout_marginStart="11dp"

@@ -49,6 +49,15 @@ class LotteryPageFragment :
         } else {
             mDataBinding.advertise.setVisibility(View.GONE);
         }
+        mDataBinding.popular.setOnClickListener(View.OnClickListener {
+
+
+        })
+        mDataBinding.openLottery.setOnClickListener(View.OnClickListener {
+            ARouter.getInstance()
+                .build(RouterActivityPath.Mine.PAGER_MINE_WINNING_CODE_ACTIVITY)
+                .navigation();
+        })
 
         mContentAdapter = ContentAdapter(this.requireContext());
         mContentAdapter?.getLayout(R.layout.lottery_page_content_item)
@@ -72,9 +81,9 @@ class LotteryPageFragment :
     }
 
 
-    private fun startTime(){
+    private fun startTime() {
         val time = getIns().getServiceTime()
-        mDataBinding.newUserGiftCountDown.updateCountDownTime(1*60*60*1000)
+        mDataBinding.newUserGiftCountDown.updateCountDownTime(1 * 60 * 60 * 1000)
     }
 
     override fun onResume() {
