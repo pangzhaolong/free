@@ -488,7 +488,6 @@ public class MainActivity
 
                 EventBus.getDefault().post(
                         new DoubleRpEvent(10, doubleRedPacketBean.getScore(), doubleRedPacketBean.getRestId(), "", 0f));
-                AnalysisUtils.onEventEx(this, Dot.But_Rp_Double);
             });
         }
 
@@ -505,7 +504,6 @@ public class MainActivity
             HashMap<String, Object> para = new HashMap<>();
             String paramsValue = "testParams" + new Random().nextInt(10);
             para.put("source", paramsValue);
-            AnalysisUtils.onEventEx(this, "TEST_ABCDEF", para);
         }
     }
 
@@ -1111,7 +1109,6 @@ public class MainActivity
             });
             mDrawDialog.show(getSupportFragmentManager(), "AnAddDialog");
             EventBus.getDefault().post(new WalletRefreshEvent(0));
-            AnalysisUtils.onEventEx(this, Dot.But_Rp_Double);
         });
     }
 
@@ -1151,7 +1148,6 @@ public class MainActivity
                     return;
                 }
 
-                AnalysisUtils.onEventEx(MainActivity.this, Dot.RETENTION_DO_FINISH);
 
                 LogUtil.e("onHotStartEvent6:");
                 SPUtils.setInformain(KeySharePreferences.RETENTION_TASK_WALL_REQUEST_ID, "");
@@ -1163,7 +1159,6 @@ public class MainActivity
                 MainRpDialog dialog = new MainRpDialog("wallTask", wallTaskRpBean.getScore(),
                         wallTaskRpBean.getRestId(), "");
                 dialog.show(getSupportFragmentManager(), "mainRpDialog");
-                AnalysisUtils.onEventEx(this, Dot.But_Rp_Double);
             });
         });
     }

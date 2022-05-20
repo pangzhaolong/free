@@ -52,10 +52,6 @@ class RouterLoginProvider : IARouterLoginProvider {
                     ToastUtil.showShort(context, "微信处理失败")
                 }
                 if (from?.isNotEmpty() == true && context != null) {
-                    AnalysisUtils.onEventEx(
-                        context,
-                        Dot.WX_Login, "$from(微信服务异常)"
-                    )
                 }
             }
         })

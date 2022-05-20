@@ -137,7 +137,6 @@ class NotLotteryDialog : AbstractFragmentDialog<MainExitDialogNotLotteryBinding>
 
     inner class EventListener {
         fun clickNext(view: View) {
-            AnalysisUtils.onEventEx(context, Dot.Btn_Change1)
             requestGoodsInfo()
         }
 
@@ -145,7 +144,6 @@ class NotLotteryDialog : AbstractFragmentDialog<MainExitDialogNotLotteryBinding>
             if (onSureListener != null) {
                 onSureListener.onSure()
             }
-            AnalysisUtils.onEventEx(context, Dot.Btn_BuyNow)
             goodsInfo?.run {
                 ARouter.getInstance()
                         .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)

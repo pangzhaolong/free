@@ -315,7 +315,6 @@ public class MineOpenWinningFragment extends
         ARouter.getInstance().inject(this);
         if (period == 0) {
             mViewModel.isAutoPeriod = true;
-            AnalysisUtils.onEventEx(this.getActivity(), Dot.Page_Lottery); //开奖事件
         }
         mViewModel.isMainLoad = isMainLoad;
         mViewModel.from = from;
@@ -330,7 +329,6 @@ public class MineOpenWinningFragment extends
                     "https://recharge-web.xg.tagtic.cn/jdd/index.html#/rule");
             bundle.putString("title", "中奖规则");
             ARouteHelper.routeSkip(RouterActivityPath.Web.PAGER_WEB_ACTIVITY, bundle);
-            AnalysisUtils.onEventEx(getActivity(), Dot.Page_DetailRule);
         });
         adapterOpenWinHead.findViewById(R.id.mine_win_code_scan_all).setOnClickListener((v) -> {
             //去往晒单页

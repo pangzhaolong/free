@@ -50,7 +50,6 @@ public class MineWinningCodeActivity extends
                 .fitsSystemWindows(false)
                 .autoDarkModeEnable(true)
                 .init();
-        AnalysisUtils.onEventEx(this, Dot.Page_Award); //中奖页
     }
 
     @Override

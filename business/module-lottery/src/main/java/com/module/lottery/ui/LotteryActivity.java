@@ -3,6 +3,7 @@ package com.module.lottery.ui;
 import static com.donews.common.config.CritParameterConfig.CRIT_STATE;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -37,6 +38,7 @@ import com.dn.events.events.LotteryStatusEvent;
 import com.dn.integral.jdd.integral.ProxyIntegral;
 import com.donews.base.utils.ToastUtil;
 import com.donews.middle.bean.LotteryEventUnlockBean;
+import com.donews.middle.utils.PlayAdUtilsTool;
 import com.donews.yfsdk.manager.AdConfigManager;
 import com.donews.yfsdk.monitor.LotteryAdCheck;
 import com.donews.common.bean.CritMessengerBean;
@@ -70,7 +72,6 @@ import com.module.lottery.dialog.UnlockMaxCodeDialog;
 import com.module.lottery.model.LotteryModel;
 import com.module.lottery.utils.ClickDoubleUtil;
 import com.module.lottery.utils.GridSpaceItemDecoration;
-import com.module.lottery.utils.PlayAdUtilsTool;
 import com.module.lottery.viewModel.LotteryViewModel;
 import com.module_lottery.R;
 import com.module_lottery.databinding.GuesslikeHeadLayoutBinding;
@@ -150,7 +151,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         ARouter.getInstance().inject(this);
         EventBus.getDefault().register(this);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 1);
-        mPlayAdUtilsTool = new PlayAdUtilsTool(LotteryActivity.this);
+        mPlayAdUtilsTool = PlayAdUtilsTool.getInstance();
         guessAdapter = new GuessAdapter(LotteryActivity.this);
         guessAdapter.getLayout(R.layout.guesslike_item_layout);
         mDataBinding.lotteryGridview.setLayoutManager(gridLayoutManager);
@@ -207,11 +208,9 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 startActivity(intent);
                 if (typePath.equals("1")) {
                     //来源分享
-                    AnalysisUtils.onEventEx(LotteryActivity.this, Dot.RECEIVE_BENEFITS_SHARE);
                 }
                 if (typePath.equals("2")) {
                     //来源购买
-                    AnalysisUtils.onEventEx(LotteryActivity.this, Dot.RECEIVE_BENEFITS_APP_BUY);
                 }
             } catch (Exception e) {
                 if (rulValue != null && !rulValue.equals("")) {
@@ -224,11 +223,9 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                         startActivity(intent);
                         if (typePath.equals("1")) {
                             //来源分享
-                            AnalysisUtils.onEventEx(LotteryActivity.this, Dot.RECEIVE_BENEFITS_WEB_SHARE);
                         }
                         if (typePath.equals("2")) {
                             //来源购买
-                            AnalysisUtils.onEventEx(LotteryActivity.this, Dot.RECEIVE_BENEFITS_WEB_BUY);
                         }
                     }
                 }
@@ -439,7 +436,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
     //开始抽奖
     private void startLottery() {
-        AnalysisUtils.onEventEx(this, Dot.Btn_LotteryNow);
         //判断是否打开了视频广告
         if (AdConfigManager.INSTANCE.getMNormalAdBean().getEnable()) {
             //当次事件有效
@@ -475,7 +471,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
     private void loadAdAndStatusCallback(final Dialog dialog) {
         if (mPlayAdUtilsTool != null) {
-            mPlayAdUtilsTool.showRewardVideo(this, dialog);
+            mPlayAdUtilsTool.showRewardVideo(this);
             mPlayAdUtilsTool.setIStateListener(new PlayAdUtilsTool.IStateListener() {
                 @Override
                 public void onComplete() {
@@ -512,6 +508,18 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                         }
                     }
                     generateLotteryCode();
+                }
+
+                @Override
+                public void onFinish() {
+                    if (dialog != null && dialog.isShowing()) {
+                        dialog.dismiss();
+                    }
+                }
+
+                @Override
+                public void onError(int code, @Nullable String errorMsg) {
+
                 }
             });
         }
@@ -554,7 +562,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
                 public void onJump(GenerateCodeBean generateCodeBean) {
                     if (generateCodeBean == null) {
                         privilege = false;
-                        AnalysisUtils.onEventEx(LotteryActivity.this, Dot.PAY_FAIL);
                         Toast.makeText(LotteryActivity.this, "生成抽奖码失败", Toast.LENGTH_SHORT).show();
                         //不跳转广告 展示生成的随机抽奖码
                         if (generateCodeDialog != null && !LotteryActivity.this.isFinishing()) {

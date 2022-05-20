@@ -131,7 +131,6 @@ public class WebViewObjActivity extends MvvmBaseLiveDataActivity<WebViewObjActiv
 
                         @Override
                         public void onAdLoad() {
-                            AnalysisUtils.onEventEx(WebViewObjActivity.this, Dot.YYW_INTERSTITIAL_FULL_LOAD);
                         }
 
                         @Override
@@ -141,12 +140,10 @@ public class WebViewObjActivity extends MvvmBaseLiveDataActivity<WebViewObjActiv
 
                         @Override
                         public void onAdError(int errorCode, @NonNull String errprMsg) {
-                            AnalysisUtils.onEventEx(WebViewObjActivity.this, Dot.YYW_INTERSTITIAL_FULL_ERR, String.valueOf(errorCode));
                         }
 
                         @Override
                         public void onAdShow() {
-                            AnalysisUtils.onEventEx(WebViewObjActivity.this, Dot.YYW_INTERSTITIAL_FULL_SHOW);
                         }
 
                         @Override
@@ -176,7 +173,6 @@ public class WebViewObjActivity extends MvvmBaseLiveDataActivity<WebViewObjActiv
 
                         @Override
                         public void onAdShowFail(int errCode, @NonNull String errMsg) {
-                            AnalysisUtils.onEventEx(WebViewObjActivity.this, Dot.YYW_INTERSTITIAL_FULL_SHOW_FAIL, String.valueOf(errCode));
                         }
 
                         @Override
@@ -186,11 +182,8 @@ public class WebViewObjActivity extends MvvmBaseLiveDataActivity<WebViewObjActiv
 
                         @Override
                         public void onAdStartLoad() {
-                            AnalysisUtils.onEventEx(WebViewObjActivity.this, Dot.YYW_INTERSTITIAL_FULL_LOAD);
                         }
                     });
-                    AnalysisUtils.onEventEx(WebViewObjActivity.this, Dot.YYW_INTERSTITIAL_FULL);
-//                    AdManager.INSTANCE.loadInterstitialAd(WebViewObjActivity.this, null);
                 }
             }, 500);
         }

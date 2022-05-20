@@ -67,8 +67,6 @@ public class NotifyBarShowManager {
             return;
         }
         currentInvokSytle = uiInvok;
-        AnalysisUtils.onEventEx(BaseApplication.getInstance(),
-                Dot.Notify_Bar_Show, "样式->" + item.uiType);
         uiInvok.showNotify(BaseApplication.getInstance(), item);
     }
 

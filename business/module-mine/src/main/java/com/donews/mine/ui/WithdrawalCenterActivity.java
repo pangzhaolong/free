@@ -62,7 +62,6 @@ public class WithdrawalCenterActivity extends
                 .fitsSystemWindows(true)
                 .autoDarkModeEnable(true)
                 .init();
-        AnalysisUtils.onEventEx(this, Dot.Page_Cash);
     }
 
     public void initView() {
@@ -109,8 +108,6 @@ public class WithdrawalCenterActivity extends
             } else {
                 if (mViewModel.withdrawDatilesLivData.getValue().total < mViewModel.withdrawSelectDto.money) {
                     //去往首页
-                    AnalysisUtils.onEventEx(WithdrawalCenterActivity.this,
-                            Dot.Page_Cash_Go_Home);
                     ARouter.getInstance().build(RouterActivityPath.Main.PAGER_MAIN)
                             .withInt("position", 0)
                             .navigation();
@@ -289,8 +286,6 @@ public class WithdrawalCenterActivity extends
             public void onSuccess(ProxyIntegral integralBean) {
                 runOnUiThread(() -> {
                     hideLoading();
-                    AnalysisUtils.onEventEx(WithdrawalCenterActivity.this,
-                            Dot.Page_Cash_Go_Intgral);
                     ARouter.getInstance()
                             .build(RouterFragmentPath.Integral.PAGER_INTEGRAL)
 //                            .withSerializable("proxyIntegral", integralBean)
@@ -310,8 +305,6 @@ public class WithdrawalCenterActivity extends
             public void onNoTask() {
                 runOnUiThread(() -> {
                     hideLoading();
-                    AnalysisUtils.onEventEx(WithdrawalCenterActivity.this,
-                            Dot.Page_Cash_Go_Not_Task);
                     ARouter.getInstance()
                             .build(RouterFragmentPath.Integral.PAGER_INTEGRAL_NOT_TASK)
                             .navigation();

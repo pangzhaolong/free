@@ -46,7 +46,6 @@ public class CommonUtils {
                         //判断开启了多少次
                         //通知开始暴击模式  模拟开启暴击模式
                         EventBus.getDefault().post(new CritMessengerBean(200));
-                        AnalysisUtils.onEventEx(BaseApplication.getInstance(), Dot.CRITICAL_NUMBER_AND_SUM_NUMBER,numberBean.getUseTimes()+"/"+numberBean.getTotalTimes()+"");
 
 
                     }

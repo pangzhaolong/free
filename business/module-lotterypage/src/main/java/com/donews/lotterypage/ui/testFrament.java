@@ -42,7 +42,12 @@ public class testFrament extends MvvmLazyLiveDataFragment<LotteryPageLayoutBindi
             }
         });
 
+        mdata.getRoot().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
         return mdata.getRoot();
     }
 

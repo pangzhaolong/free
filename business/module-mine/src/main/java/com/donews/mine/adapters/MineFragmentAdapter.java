@@ -64,8 +64,6 @@ public class MineFragmentAdapter extends BaesLoadMoreAdapter<RecommendGoodsResp.
         );
         helper.itemView
                 .setOnClickListener(v -> {
-                    AnalysisUtils.onEventEx(this.getContext(),
-                            Dot.But_Goto_Lottery, "个人中心>热门抽奖");
                     ARouter.getInstance()
                             .build(RouterFragmentPath.Lottery.PAGER_LOTTERY)
                             .withBoolean("needLotteryEvent", true)

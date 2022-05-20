@@ -76,7 +76,6 @@ public class MineCongratulationsDialog extends BaseDialog<MineCongratulationsDia
         requestGoodsInfo("", false);
 
         mDataBinding.jumpButton.setOnClickListener(v -> {
-            AnalysisUtils.onEventEx(v.getContext(), Dot.Btn_LotteryNow);
             if (mRecommendBean != null) {
                 dismiss();
                 ARouter.getInstance()

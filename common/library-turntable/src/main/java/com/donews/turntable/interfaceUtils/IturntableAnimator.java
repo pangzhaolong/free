@@ -25,8 +25,4 @@ public class IturntableAnimator implements Animator.AnimatorListener{
 
     }
 
-    public void onLocationAngle(String  value) {
-
-    }
-
 }

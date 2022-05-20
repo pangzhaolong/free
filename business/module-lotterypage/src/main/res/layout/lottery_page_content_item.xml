@@ -8,22 +8,23 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="15dp"
         android:background="@drawable/spike_item_shape"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="140dp"
+
             android:orientation="horizontal"
             android:paddingStart="13dp"
-            android:paddingTop="13dp"
-            android:paddingBottom="13dp">
+            android:paddingTop="18dp"
+            android:paddingBottom="18dp">
 
             <ImageView
                 android:id="@+id/picture"
                 android:layout_width="114dp"
-                android:layout_height="114dp"
+                android:layout_height="match_parent"
                 android:scaleType="fitXY" />
 
             <LinearLayout
@@ -37,14 +38,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:singleLine="true"
-                    android:text="1112"
+                    android:lines="2"
+                    android:text="撒发动机爱上的看法斯柯达没法看乐山大佛米克拉省得麻烦开始啦多福多寿"
                     android:textColor="#000000" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:layout_marginTop="50dp"
                     android:orientation="horizontal">
 
                     <LinearLayout
