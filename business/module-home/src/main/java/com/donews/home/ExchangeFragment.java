@@ -263,6 +263,9 @@ public class ExchangeFragment extends MvvmLazyLiveDataFragment<ExchanageFragment
         mViewModel.getHomeCategoryBean().observe(this, homeBean -> {
             mDataBinding.homeSrl.finishRefresh();
             if (homeBean == null) {
+                if (mHomeBean == null) {
+                    ToastUtil.showShort(this.getContext(), "数据加载出错,请手动刷新");
+                }
                 return;
             }
             mHomeBean = homeBean;

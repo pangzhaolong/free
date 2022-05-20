@@ -36,20 +36,49 @@ class RouterLoginProvider : IARouterLoginProvider {
     }
 
     override fun loginWX(loginTag: String?, from: String?) {
-        WXHolderHelp.login(object : ISWXSuccessCallBack {
+//        WXHolderHelp.login(object : ISWXSuccessCallBack {
+//            override fun onSuccess(state: Int, wxCode: String?) {
+//                LogUtil.i("state和code的值$state==$wxCode")
+//                AppInfo.saveWXLoginCode(wxCode)
+//                UserInfoManage.onLoadNetUserInfo(
+//                    UserInfoManage.getNetDataStr(wxCode),
+//                    loginTag,
+//                    from
+//                )
+//            }
+//
+//            override fun onFailed(msg: String?) {
+//                if (context != null) {
+//                    ToastUtil.showShort(context, "微信处理失败")
+//                }
+//                if (from?.isNotEmpty() == true && context != null) {
+//                    AnalysisUtils.onEventEx(
+//                        context,
+//                        Dot.WX_Login, "$from(微信服务异常)"
+//                    )
+//                }
+//            }
+//        })
+        //所有微信登录都走绑定操作
+        bindWX(loginTag, from)
+    }
+
+    override fun bindWX(loginTag: String?, from: String?) {
+
+        WXHolderHelp.onBind(WXHolderHelp.STATE_BINDING, object : ISWXSuccessCallBack {
             override fun onSuccess(state: Int, wxCode: String?) {
                 LogUtil.i("state和code的值$state==$wxCode")
                 AppInfo.saveWXLoginCode(wxCode)
-                UserInfoManage.onLoadNetUserInfo(
-                    UserInfoManage.getNetDataStr(wxCode),
+                UserInfoManage.onLoadNetUserInfoWxBind(
+                    UserInfoManage.getNetBindStr("", "", wxCode),
                     loginTag,
                     from
                 )
             }
 
             override fun onFailed(msg: String?) {
-                if(context != null){
-                    ToastUtil.showShort(context, "微信处理失败")
+                if (context != null) {
+                    ToastUtil.showShort(context, "微信绑定处理失败")
                 }
                 if (from?.isNotEmpty() == true && context != null) {
                     AnalysisUtils.onEventEx(

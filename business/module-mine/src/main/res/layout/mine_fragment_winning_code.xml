@@ -86,7 +86,7 @@
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="18dp"
                     android:layout_weight="0.82"
-                    android:background="@drawable/wachat_login_bg"
+                    android:background="@drawable/middle_bg_default_circel_theme"
                     android:gravity="center"
                     android:text="立即登录抽奖"
                     android:textColor="#FFFFFF"

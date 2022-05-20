@@ -26,6 +26,8 @@ import com.donews.utilslibrary.utils.AppInfo;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import cn.cd.dn.sdk.models.prints.DNPrint;
+
 /**
  * 作者： created by lcl<br>
  * * 日期： 2021/10/10 9:13<br>
@@ -56,6 +58,8 @@ public class MineSettingFragment extends
         super.onResume();
         bindViewText();
         onRefresh();
+        DNPrint.INSTANCE.logI("用户id=" + LoginHelp.getInstance().getUserInfoBean().getId());
+        DNPrint.INSTANCE.logI("用户Token=" + LoginHelp.getInstance().getUserInfoBean().getToken());
     }
 
     private void onRefresh() {
@@ -80,9 +84,11 @@ public class MineSettingFragment extends
                 AppInfo.exitLogin();
                 //切换为设备登录
                 ToastUtil.show(getBaseActivity(), "执行成功");
-                hideLoading();
             } else if (event.isPreReg() && result == -1) {
                 ToastUtil.show(getBaseActivity(), "操作异常");
+            }
+            if (result != 0) {
+                hideLoading();
             }
         });
     }

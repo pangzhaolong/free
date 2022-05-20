@@ -37,32 +37,48 @@
                     android:id="@+id/icnl_mine_win_num0"
                     layout="@layout/incl_mine_win_code_number"
                     android:layout_width="@dimen/mine_win_mun_wh"
-                    android:layout_height="@dimen/mine_win_mun_wh" />
+                    android:layout_height="@dimen/mine_win_mun_wh"
+                    android:layout_marginRight="-7dp"/>
 
                 <include
                     android:id="@+id/icnl_mine_win_num0"
                     style="@style/MineWinCodeNum"
-                    layout="@layout/incl_mine_win_code_number" />
+                    android:layout_width="@dimen/mine_win_mun_wh"
+                    android:layout_height="@dimen/mine_win_mun_wh"
+                    layout="@layout/incl_mine_win_code_number"
+                    android:layout_marginRight="-7dp"/>
 
                 <include
                     android:id="@+id/icnl_mine_win_num2"
                     style="@style/MineWinCodeNum"
-                    layout="@layout/incl_mine_win_code_number" />
+                    android:layout_width="@dimen/mine_win_mun_wh"
+                    android:layout_height="@dimen/mine_win_mun_wh"
+                    layout="@layout/incl_mine_win_code_number"
+                    android:layout_marginRight="-7dp"/>
 
                 <include
                     android:id="@+id/icnl_mine_win_num3"
                     style="@style/MineWinCodeNum"
-                    layout="@layout/incl_mine_win_code_number" />
+                    android:layout_width="@dimen/mine_win_mun_wh"
+                    android:layout_height="@dimen/mine_win_mun_wh"
+                    layout="@layout/incl_mine_win_code_number"
+                    android:layout_marginRight="-7dp"/>
 
                 <include
                     android:id="@+id/icnl_mine_win_num4"
                     style="@style/MineWinCodeNum"
-                    layout="@layout/incl_mine_win_code_number" />
+                    android:layout_width="@dimen/mine_win_mun_wh"
+                    android:layout_height="@dimen/mine_win_mun_wh"
+                    layout="@layout/incl_mine_win_code_number"
+                    android:layout_marginRight="-7dp"/>
 
                 <include
                     android:id="@+id/icnl_mine_win_num5"
                     style="@style/MineWinCodeNum"
-                    layout="@layout/incl_mine_win_code_number" />
+                    android:layout_width="@dimen/mine_win_mun_wh"
+                    android:layout_height="@dimen/mine_win_mun_wh"
+                    layout="@layout/incl_mine_win_code_number"
+                    android:layout_marginRight="-7dp"/>
 
                 <include
                     android:id="@+id/icnl_mine_win_num6"

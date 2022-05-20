@@ -50,7 +50,11 @@ public class LoginModel extends BaseLiveDataModel {
      */
     public MutableLiveData<UserInfoBean> onWXLogin(String code) {
         AppInfo.saveWXLoginCode(code);
-        return UserInfoManage.onLoadNetUserInfo(UserInfoManage.getNetDataStr(code),null,"微信登录页");
+        if (code != null && code.length() > 0) {
+            //微信。都走绑定。而不再走登录
+            return UserInfoManage.onLoadNetUserInfoWxBind(UserInfoManage.getNetDataStr(code), null, "微信登录页");
+        }
+        return UserInfoManage.onLoadNetUserInfo(UserInfoManage.getNetDataStr(code), null, "微信登录页");
     }
 
     /**
