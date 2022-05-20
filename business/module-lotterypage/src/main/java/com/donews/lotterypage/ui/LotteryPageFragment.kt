@@ -50,8 +50,7 @@ class LotteryPageFragment :
             mDataBinding.advertise.setVisibility(View.GONE);
         }
         mDataBinding.popular.setOnClickListener(View.OnClickListener {
-
-
+            RouterFragmentPath.Unboxing.goUnboxingActivity()
         })
         mDataBinding.openLottery.setOnClickListener(View.OnClickListener {
             ARouter.getInstance()
