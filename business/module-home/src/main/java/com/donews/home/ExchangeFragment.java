@@ -124,7 +124,7 @@ public class ExchangeFragment extends MvvmLazyLiveDataFragment<ExchanageFragment
                 downcountCountTime = sp; //重新开始两分钟计时动作
                 if (downcountTimeTask == null) {
                     downcountTimeTask = () -> {
-                        downcountCountTime = downcountCountTime--;
+                        downcountCountTime -= 1;
                         mViewModel.giftCountdownCount.postValue(downcountCountTime);
                         if (downcountCountTime > 0) {
                             mHand.postDelayed(downcountTimeTask, 1000);
