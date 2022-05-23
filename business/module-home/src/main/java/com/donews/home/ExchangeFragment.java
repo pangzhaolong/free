@@ -22,6 +22,7 @@ import com.donews.middle.dialog.qbn.DoingResultDialog;
 import com.donews.middle.front.FrontConfigManager;
 import com.donews.middle.views.ExchanageTabItem;
 import com.donews.middle.views.TaskView;
+import com.donews.network.EasyHttp;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.yfsdk.loader.AdManager;
 import com.google.android.material.tabs.TabLayout;

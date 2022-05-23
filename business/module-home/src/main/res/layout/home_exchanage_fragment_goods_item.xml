@@ -102,7 +102,7 @@
             android:layout_marginEnd="5dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/middle_bg_default_theme"
+            android:background="@drawable/middle_bg_default_circel_theme"
             android:onClick="@{()->thiz.onExchanageClick(goodInfo)}"
             android:paddingTop="8dp"
             android:paddingBottom="8dp">

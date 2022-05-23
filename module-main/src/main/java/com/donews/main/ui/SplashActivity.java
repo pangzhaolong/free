@@ -3,6 +3,7 @@ package com.donews.main.ui;
 import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Intent;
@@ -10,6 +11,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
@@ -118,8 +121,6 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
 
     private ValueAnimator mLoadAdAnimator;
 
-    private Animation mScaleAnimation;
-
     private int mNetworkIsAvailable = 0;
 
     @Override
@@ -165,33 +166,13 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
             //检测隐私协议
             checkDeal();
         }
-        if (mScaleAnimation == null) {
-
-//            mScaleAnimation = new ScaleAnimation(1.15f, 0.9f, 1.15f, 0.9f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-//            mScaleAnimation.setInterpolator(new LinearInterpolator());
-//            mScaleAnimation.setRepeatMode(Animation.REVERSE);
-//            mScaleAnimation.setRepeatCount(Animation.INFINITE);
-//            mScaleAnimation.setDuration(1000);
-            mScaleAnimation = new RotateAnimation(
-                    -10, 10,
-                    Animation.RELATIVE_TO_SELF, 0.5F,
-                    Animation.RELATIVE_TO_SELF, 0.5F);
-            RotateAnimation ranm = (RotateAnimation) mScaleAnimation;
-            ranm.setDuration(150);
-            ranm.setRepeatCount(Animation.INFINITE );//动画的反复次数
-            ranm.setRepeatMode(Animation.REVERSE);
-//            ranm.setInterpolator(new AccelerateInterpolator());
-//            animation.setFillAfter(true);//设置为true，动画转化结束后被应用
-        }
 
         ABSwitch.Ins().addCallBack(new ABSwitch.CallBack() {
             @Override
             public void onSuccess() {
                 if (ABSwitch.Ins().isShowSplashScaleBtn()) {
                     mDataBinding.splashScaleTv.setVisibility(View.VISIBLE);
-                    if (mScaleAnimation != null) {
-                        mDataBinding.splashScaleTv.startAnimation(mScaleAnimation);
-                    }
+                    startGuideViewAnim();
                 } else {
                     mDataBinding.splashScaleTv.setVisibility(View.GONE);
                 }
@@ -201,14 +182,45 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
             public void onFail() {
                 if (ABSwitch.Ins().isShowSplashScaleBtn()) {
                     mDataBinding.splashScaleTv.setVisibility(View.VISIBLE);
-                    if (mScaleAnimation != null) {
-                        mDataBinding.splashScaleTv.startAnimation(mScaleAnimation);
-                    }
+                    startGuideViewAnim();
                 } else {
                     mDataBinding.splashScaleTv.setVisibility(View.GONE);
                 }
             }
         });
+    }
+
+    private final Handler mAnimatorHandler = new Handler(Looper.getMainLooper());
+    private ObjectAnimator mGuideViewAnim;
+
+    private void startGuideViewAnim() {
+        cancelGuideAnim();
+        mGuideViewAnim = ObjectAnimator.ofFloat(mDataBinding.splashScaleTv, "rotation", 0, 3f, 0, -3f, 0);
+        mGuideViewAnim.setInterpolator(new LinearInterpolator());
+        mGuideViewAnim.setRepeatMode(ValueAnimator.RESTART);
+        mGuideViewAnim.setRepeatCount(2);
+        mGuideViewAnim.setDuration(150);
+        mGuideViewAnim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                mAnimatorHandler.removeCallbacksAndMessages(null);
+                mAnimatorHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startGuideViewAnim();
+                    }
+                }, 500);
+            }
+        });
+        mGuideViewAnim.start();
+    }
+
+
+    private void cancelGuideAnim() {
+        if (mGuideViewAnim != null) {
+            mGuideViewAnim.cancel();
+        }
     }
 
     @Override
@@ -528,10 +540,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
 
     private void goToMain() {
         stopProgressAnim();
-        if (mScaleAnimation != null) {
-            mScaleAnimation.cancel();
-            mScaleAnimation = null;
-        }
+        cancelGuideAnim();
         mDataBinding.splashScaleTv.clearAnimation();
 
         if (checkNetWork() != 0) {
