@@ -225,6 +225,10 @@ public class PullRecyclerViewGroup extends LinearLayout implements ViewTreeObser
      */
     private boolean isCanPullDown() {
 
+        if(true){
+            return false;
+        }
+
         final RecyclerView.Adapter adapter = ((RecyclerView) childView).getAdapter();
         if (null == adapter) {
             return true;
