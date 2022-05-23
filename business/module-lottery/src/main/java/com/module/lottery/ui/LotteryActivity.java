@@ -743,7 +743,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
 
 
     private void finishReturn() {
-        EventBus.getDefault().post(new LotteryBackEvent(1));
+//        EventBus.getDefault().post(new LotteryBackEvent(1));
         if (!mMeedLotteryEvent) {
             return;
         }
