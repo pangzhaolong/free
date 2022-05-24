@@ -45,6 +45,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.droidsonroids.gif.GifDrawable
 import com.donews.middle.bean.globle.TurntableBean.ItemsDTO
+import com.donews.middle.events.TaskReportEvent
 import com.donews.middle.viewmodel.BaseMiddleViewModel
 import com.donews.utilslibrary.utils.DensityUtils
 
@@ -987,7 +988,6 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
         mShareVideModel.requestAdReport(MainShareViewModel.ID_COLLECT, MainShareViewModel.TYPE_COLLECT)
     }
 
-    //注意:签到是签到那边上报的
     //转盘操作过后,我这边上报
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onTurntableBeanEvent(event: ItemsDTO?) {
@@ -1000,10 +1000,12 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
         mShareVideModel.requestAdReport(MainShareViewModel.ID_LOTTERY, MainShareViewModel.TYPE_LOTTERY)
     }
 
-    //签到会上报,我这边刷新列表
+    //签到自己上报,我这边只需要刷新列表
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSignEvent(event: LotteryEventUnlockBean?) {
-        mShareVideModel.requestAdReport(MainShareViewModel.ID_LOTTERY, MainShareViewModel.TYPE_LOTTERY)
+    fun onSignEvent(event: TaskReportEvent?) {
+        if (event?.eventType == SIGN){
+            mShareVideModel.requestTaskBubbles()
+        }
     }
     //endregion
 
