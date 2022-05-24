@@ -2,42 +2,25 @@ package com.donews.mine;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.blankj.utilcode.util.BarUtils;
-import com.blankj.utilcode.util.SPUtils;
-import com.dn.drouter.ARouteHelper;
 import com.dn.events.events.LoginUserStatus;
-import com.dn.events.events.LotteryStatusEvent;
 import com.dn.events.events.UserTelBindEvent;
-import com.dn.events.events.WalletRefreshEvent;
 import com.dn.sdk.AdCustomError;
 import com.dn.sdk.listener.interstitial.SimpleInterstitialFullListener;
 import com.dn.sdk.listener.interstitial.SimpleInterstitialListener;
-import com.donews.base.utils.GsonUtils;
-import com.donews.base.utils.ToastUtil;
-import com.donews.base.utils.glide.GlideUtils;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.common.contract.LoginHelp;
-import com.donews.common.contract.UserInfoBean;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.middle.IMainParams;
@@ -51,23 +34,10 @@ import com.donews.middle.mainShare.vm.MainShareViewModel;
 import com.donews.middle.viewmodel.BaseMiddleViewModel;
 import com.donews.middle.views.TaskView;
 import com.donews.mine.adapters.Mine2FragmentTaskAdapter;
-import com.donews.mine.adapters.MineFragmentAdapter;
-import com.donews.mine.bean.MineWithdraWallBean;
-import com.donews.mine.bean.resps.RecommendGoodsResp;
-import com.donews.mine.databinding.MineFragmentBinding;
 import com.donews.mine.databinding.MineFragmentNewBinding;
 import com.donews.mine.utils.TextViewNumberUtil;
 import com.donews.mine.viewModel.MineViewModel;
-import com.donews.mine.views.operating.MineOperatingPosView;
-import com.donews.network.BuildConfig;
-import com.donews.network.EasyHttp;
-import com.donews.network.cache.model.CacheMode;
-import com.donews.network.callback.SimpleCallBack;
-import com.donews.network.exception.ApiException;
-import com.donews.utilslibrary.analysis.AnalysisUtils;
-import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
-import com.donews.utilslibrary.utils.JsonUtils;
 import com.donews.yfsdk.check.InterstitialAdCheck;
 import com.donews.yfsdk.moniter.PageMonitor;
 import com.donews.yfsdk.monitor.InterstitialFullAdCheck;
@@ -310,7 +280,6 @@ public class Mine2Fragment extends MvvmLazyLiveDataFragment<MineFragmentNewBindi
         mViewModel.mine2RefeshDataLive.observe(this, (result) -> {
             if (result) {
                 loadData(); //刷新数据
-                syncActivitiesModel(); //同步刷新
             }
         });
         BaseMiddleViewModel.getBaseViewModel().mine2DailyTask.observe(this, (result) -> {

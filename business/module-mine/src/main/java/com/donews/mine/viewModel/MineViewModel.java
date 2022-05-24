@@ -26,6 +26,7 @@ import com.donews.middle.bean.mine2.resp.DailyTasksReportResp;
 import com.donews.middle.bean.mine2.resp.SignListResp;
 import com.donews.middle.bean.mine2.resp.SignResp;
 import com.donews.middle.bean.mine2.resp.UserAssetsResp;
+import com.donews.middle.events.TaskReportEvent;
 import com.donews.middle.viewmodel.BaseMiddleViewModel;
 import com.donews.mine.Api.MineHttpApi;
 import com.donews.mine.BR;
@@ -41,6 +42,8 @@ import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
 import com.donews.utilslibrary.utils.HttpConfigUtilsKt;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,17 +98,19 @@ public class MineViewModel extends BaseLiveDataViewModel<MineModel> {
 
     /**
      * 获取个人中心的金币数量的订阅数据
+     *
      * @return
      */
-    public MutableLiveData<Integer> getMine2JBCount(){
+    public MutableLiveData<Integer> getMine2JBCount() {
         return BaseMiddleViewModel.getBaseViewModel().mine2JBCount;
     }
 
     /**
      * 获取个人中心的活跃(积分)数量的订阅数据
+     *
      * @return
      */
-    public MutableLiveData<Integer> getMine2JFCount(){
+    public MutableLiveData<Integer> getMine2JFCount() {
         return BaseMiddleViewModel.getBaseViewModel().mine2JFCount;
     }
 
@@ -132,6 +137,8 @@ public class MineViewModel extends BaseLiveDataViewModel<MineModel> {
                             mineDailyTaskReportResult.postValue(null);
                             return;
                         }
+                        //通知上报事件成功
+                        EventBus.getDefault().post(new TaskReportEvent(req.type));
                         mine2RefeshDataLive.postValue(true);
                         mineDailyTaskReportResult.postValue(resp);
                         if (isUpdateLoclCoin) {
