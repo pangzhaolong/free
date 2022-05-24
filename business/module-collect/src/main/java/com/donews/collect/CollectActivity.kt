@@ -490,16 +490,12 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
         }
         if (mStatusInfo?.uniTimes ?: 0 > 0){
             if (isTwoTimeLimit()){
-                mDataBinding?.timeLimitTwoTv?.visibility = View.VISIBLE
-                mDataBinding?.bottomClick?.alpha = 0.75f
-                mDataBinding?.addTv?.alpha = 0.75f
+                mDataBinding?.timeLimitTwoTv?.visibility = View.INVISIBLE
                 addTime = ((SPUtils.getLongInformain("twoTimeLimitTime",0L) - System.currentTimeMillis()) / 1000).toInt()
                 mHandler.removeCallbacks(addTimer)
                 mHandler.postDelayed(addTimer,1000L)
             } else {
                 mDataBinding?.timeLimitTwoTv?.visibility = View.INVISIBLE
-                mDataBinding?.bottomClick?.alpha = 1f
-                mDataBinding?.addTv?.alpha = 1f
             }
         } else {
             mDataBinding?.timeLimitTwoTv?.visibility = View.INVISIBLE
@@ -546,7 +542,7 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
             mStatusInfo?.let {
                 if (mStatusInfo?.cardTimes!! > 0){
                     if (isOneTimeLimit()){
-                        ToastUtils.showShort("倒计时结束后才可以抽碎片")
+                        ToastUtils.showShort("倒计时结束后即可抽碎片")
                     } else {
                         RewardVideoAd.loadRewardVideoAd(
                             this@CollectActivity,
@@ -589,14 +585,10 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
                     addTime--
                     mDataBinding?.timeLimitTwoTv?.text = TimeUtil.stringForTimeNoHour(addTime * 1000L)
                     if (addTime == 0) {
-                        mDataBinding?.timeLimitTwoTv?.visibility = View.GONE
-                        mDataBinding?.bottomClick?.alpha = 1f
-                        mDataBinding?.addTv?.alpha = 1f
+                        mDataBinding?.timeLimitTwoTv?.visibility = View.INVISIBLE
                     } else {
                         mHandler.postDelayed(this, 1000L)
-                        mDataBinding?.timeLimitTwoTv?.visibility = View.VISIBLE
-                        mDataBinding?.bottomClick?.alpha = 0.75f
-                        mDataBinding?.addTv?.alpha = 0.75f
+                        mDataBinding?.timeLimitTwoTv?.visibility = View.INVISIBLE
                     }
                 }
             } catch (e:Exception){}
@@ -617,7 +609,7 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
             mStatusInfo?.let {
             if (mStatusInfo?.uniTimes!! > 0){
                 if (isTwoTimeLimit()){
-                    ToastUtils.showShort("倒计时结束后才可以冲能")
+                    ToastUtils.showShort("${addTime}后即可冲能")
                 } else {
                     RewardVideoAd.loadRewardVideoAd(
                         this@CollectActivity,

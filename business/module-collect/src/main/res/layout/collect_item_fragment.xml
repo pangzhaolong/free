@@ -17,10 +17,23 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/image"
+            app:srcCompat="@drawable/collect_icon_step_two_img"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="78.54dp"
             android:layout_height="78.54dp"/>
+
+        <TextView
+            android:id="@+id/numTv"
+            android:text="0/1"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="5dp"
+            android:textColor="#999999"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@+id/image"
+            app:layout_constraintTop_toTopOf="@+id/image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
