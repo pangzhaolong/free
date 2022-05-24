@@ -214,7 +214,6 @@ public class ExchangeFragment extends MvvmLazyLiveDataFragment<ExchanageFragment
                     };
                 }
                 mHand.postDelayed(downcountTimeTask, 1000);
-                mDataBinding.homeSearchLb.setEnabled(false);
             }
         });
         //订阅计时动作数值
@@ -284,7 +283,11 @@ public class ExchangeFragment extends MvvmLazyLiveDataFragment<ExchanageFragment
 
     //搜索框右侧按钮点击
     public void getSearchRightClick() {
-        mDataBinding.homeSearchLb.setEnabled(false);
+
+        if (downcountCountTime > 0) {
+            ToastUtil.showShort(getActivity(), "距离下次领取还剩 " + mDataBinding.tvTime.getText());
+            return;//还在倒计时中
+        }
 
         MvvmBaseLiveDataActivity activity = (MvvmBaseLiveDataActivity) getActivity();
         activity.showLoading("加载中");

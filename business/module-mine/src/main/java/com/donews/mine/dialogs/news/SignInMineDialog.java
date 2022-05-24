@@ -4,9 +4,12 @@ package com.donews.mine.dialogs.news;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
+
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.GsonUtils;
+import com.dn.sdk.listener.rewardvideo.SimpleRewardVideoListener;
 import com.donews.base.base.BaseApplication;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
@@ -21,6 +24,7 @@ import com.donews.mine.BuildConfig;
 import com.donews.mine.R;
 import com.donews.mine.databinding.Mine2SigninDialogBinding;
 import com.donews.mine.viewModel.MineViewModel;
+import com.donews.yfsdk.loader.AdManager;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -118,7 +122,9 @@ public class SignInMineDialog extends BaseBindingFragmentDialog<Mine2SigninDialo
     @Override
     public void onResume() {
         super.onResume();
-        initData();
+        if (itemDatas != null && itemDatas.size() > 0) {
+            initData();
+        }
     }
 
     @Override
@@ -150,40 +156,83 @@ public class SignInMineDialog extends BaseBindingFragmentDialog<Mine2SigninDialo
         dataBinding.setDatas(itemDatas);
         //设置item的点击，是可签到项目的点击
         dataBinding.setItemClick((item) -> {
-            //发起签到
-            if (!isAddSignResultObser) {
-                mineViewModel.mineSignResult.postValue(null);
-                mineViewModel.mineSignResult.observe(this, (result) -> {
+            if (getActivity() instanceof MvvmBaseLiveDataActivity) {
+                ((MvvmBaseLiveDataActivity<?, ?>) getActivity()).showLoading("加载中");
+            }
+            AdManager.INSTANCE.loadRewardVideoAd(getActivity(), new SimpleRewardVideoListener() {
+                //是否发放奖励
+                private boolean isSendReward = false;
+
+                @Override
+                public void onAdError(int code, @Nullable String errorMsg) {
+                    super.onAdError(code, errorMsg);
                     if (getActivity() instanceof MvvmBaseLiveDataActivity) {
                         ((MvvmBaseLiveDataActivity<?, ?>) getActivity()).hideLoading();
                     }
-                    if (result != null) {
-                        //开始发起下一步操作。弹出双倍弹窗
-                        SignInRewardMineDialog.getInstance(0)
-                                .show(getActivity().getSupportFragmentManager(), "aaaa");
-                        dismiss();
-                    } else {
-                        ToastUtil.showShort(getActivity(), "请求失败,请稍后重试");
+                    ToastUtil.showShort(getContext(), "视频加载失败,请稍后再试!");
+                }
+
+                @Override
+                public void onAdShow() {
+                    if (getActivity() instanceof MvvmBaseLiveDataActivity) {
+                        ((MvvmBaseLiveDataActivity<?, ?>) getActivity()).hideLoading();
                     }
-                });
-                isAddSignResultObser = true;
-            }
-            if (getActivity() instanceof MvvmBaseLiveDataActivity) {
-                ((MvvmBaseLiveDataActivity<?, ?>) getActivity()).showLoading("签到中...");
-            }
-            mineViewModel.requestSign(new SignReq(), true);
+                }
+
+                @Override
+                public void onRewardVerify(boolean result) {
+                    super.onRewardVerify(result);
+                    isSendReward = result;
+                }
+
+                @Override
+                public void onAdClose() {
+                    super.onAdClose();
+                    if (isSendReward) {
+                        sendSigninJL();
+                    }
+                }
+            });
         });
         dataBinding.setItemNotNextClick((item) -> {
             if (System.currentTimeMillis() - notNextClickToastNewTime > notNextClickToastStepTime) {
                 int curDay = getCurrentAllowSignDay();
                 int clickDay = item.day;
                 if (clickDay > curDay) {
-                    ToastUtil.show(getContext(), "请在" + (clickDay - curDay) + "天后记得签到哦");
+                    ToastUtil.show(getContext(), "请在" + (clickDay - curDay) + "天后记得来签到哦");
                 } else {
-                    ToastUtil.show(getContext(), "暂不签到,请正第" + item.day + "天再来!");
+                    ToastUtil.show(getContext(), "暂不签到,请正第" + item.day + "天后再来!");
                 }
                 notNextClickToastNewTime = System.currentTimeMillis();
             }
         });
+    }
+
+    /**
+     * 发放签到奖励
+     */
+    private void sendSigninJL() {
+        //发起签到
+        if (!isAddSignResultObser) {
+            mineViewModel.mineSignResult.postValue(null);
+            mineViewModel.mineSignResult.observe(this, (result) -> {
+                if (getActivity() instanceof MvvmBaseLiveDataActivity) {
+                    ((MvvmBaseLiveDataActivity<?, ?>) getActivity()).hideLoading();
+                }
+                if (result != null) {
+                    //开始发起下一步操作。弹出双倍弹窗
+                    SignInRewardMineDialog.getInstance(0)
+                            .show(getActivity().getSupportFragmentManager(), "aaaa");
+                    dismiss();
+                } else {
+                    ToastUtil.showShort(getActivity(), "请求失败,请稍后重试");
+                }
+            });
+            isAddSignResultObser = true;
+        }
+        if (getActivity() instanceof MvvmBaseLiveDataActivity) {
+            ((MvvmBaseLiveDataActivity<?, ?>) getActivity()).showLoading("签到中...");
+        }
+        mineViewModel.requestSign(new SignReq(), true);
     }
 }

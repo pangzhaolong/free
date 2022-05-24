@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="MineTaskDialogStyle" parent="BaseDialogStyle" tools:ignore="ResourceName">
+    <style name="MainTaskDialogStyle" parent="BaseDialogStyle" tools:ignore="ResourceName">
         <item name="android:backgroundDimAmount">0.8</item>
     </style>
 

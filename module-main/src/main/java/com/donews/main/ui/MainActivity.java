@@ -131,6 +131,9 @@ public class MainActivity
         extends MvvmBaseLiveDataActivity<MainActivityMainBinding, MainViewModel> implements
         RetentionTaskListener, IMainParams {
 
+    //是否显示过签到弹窗了
+    private static boolean s_IsShowSigninDialog = false;
+
     private boolean isShowSigninDialog = false;
 
     private List<Fragment> fragments;
@@ -144,6 +147,7 @@ public class MainActivity
     private final long CruelDuration = 5 * 60 * 1000;
     //下载应用的积分墙弹窗
     DialogFragment appDownDialog;
+    private Handler mHandler = new Handler();
 
     private EnterShowDialog mEnterShowDialog = null;
 
@@ -206,12 +210,15 @@ public class MainActivity
                     }
                 }
             }
-            if(isShowSingDialog) {
+            if (isShowSingDialog && !s_IsShowSigninDialog) {
                 //显示签到弹窗
-                RouterFragmentPath.User.getSingDialog()
-                        .show(getSupportFragmentManager(), "alksdjfklj");
-            }else{
-                //已经完成或者其他状态。不显示。走原始逻辑即可
+                s_IsShowSigninDialog = true;
+                mHandler.postDelayed(() -> {
+                    RouterFragmentPath.User.getSingDialog()
+                            .show(getSupportFragmentManager(), "alksdjfklj");
+                }, 500);
+            } else {
+                //已经完成或者其他状态,或者不满足签到弹窗。不显示。走原始逻辑即可
                 isShowSigninDialog = true;
                 showDrawDialog();
             }
@@ -334,7 +341,7 @@ public class MainActivity
     @Override
     public int getThisFragmentCurrentPos(@NonNull Fragment f) {
         for (int i = 0; i < fragments.size(); i++) {
-            if(f == fragments.get(i)){
+            if (f == fragments.get(i)) {
                 return i;
             }
         }
@@ -1252,8 +1259,7 @@ public class MainActivity
             mRetryCount = 0;
             checkRetentionTask();           //检查次留任务
             if (!isFromNotify()) {
-//                InterstitialAd.INSTANCE.showAd(this, null);
-                InterstitialFullAd.INSTANCE.showAd(MainActivity.this, null);
+//                InterstitialFullAd.INSTANCE.showAd(MainActivity.this, null);
             }
         }
     }
