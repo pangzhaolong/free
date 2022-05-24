@@ -2,6 +2,7 @@ package com.donews.task
 
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
@@ -13,6 +14,9 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
+import com.dn.sdk.AdCustomError
+import com.dn.sdk.listener.interstitial.SimpleInterstitialFullListener
+import com.dn.sdk.listener.interstitial.SimpleInterstitialListener
 import com.dn.sdk.listener.rewardvideo.SimpleRewardVideoListener
 import com.donews.base.utils.ToastUtil
 import com.donews.base.utils.glide.GlideUtils
@@ -20,7 +24,14 @@ import com.donews.base.utils.glide.RoundCornersTransform
 import com.donews.common.base.MvvmLazyLiveDataFragment
 import com.donews.common.router.RouterActivityPath
 import com.donews.common.router.RouterFragmentPath
+import com.donews.middle.IMainParams
+import com.donews.middle.adutils.InterstitialAd
+import com.donews.middle.adutils.InterstitialAd.showAd
+import com.donews.middle.adutils.InterstitialFullAd
+import com.donews.middle.adutils.InterstitialFullAd.showAd
 import com.donews.middle.adutils.RewardVideoAd
+import com.donews.middle.adutils.adcontrol.AdControlManager
+import com.donews.middle.adutils.adcontrol.AdControlManager.adControlBean
 import com.donews.middle.bean.LotteryEventUnlockBean
 import com.donews.middle.mainShare.bean.BubbleBean
 import com.donews.middle.mainShare.bean.TaskBubbleInfo
@@ -45,9 +56,18 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.droidsonroids.gif.GifDrawable
 import com.donews.middle.bean.globle.TurntableBean.ItemsDTO
+import com.donews.middle.centralDeploy.OutherSwitchConfig
 import com.donews.middle.events.TaskReportEvent
 import com.donews.middle.viewmodel.BaseMiddleViewModel
 import com.donews.utilslibrary.utils.DensityUtils
+import com.donews.yfsdk.check.InterstitialAdCheck
+import com.donews.yfsdk.check.InterstitialAdCheck.isEnable
+import com.donews.yfsdk.moniter.PageMonitor
+import com.donews.yfsdk.monitor.InterstitialFullAdCheck
+import com.donews.yfsdk.monitor.InterstitialFullAdCheck.isEnable
+import com.donews.yfsdk.monitor.PageMoniterCheck
+import com.donews.yfsdk.monitor.PageMoniterCheck.showAdSuccess
+import com.orhanobut.logger.Logger
 
 
 /**
@@ -104,6 +124,63 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
         initAdReport()
         initExchange()
         initOtherAssets()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        PageMonitor().attach(this, object : PageMonitor.PageListener {
+            override fun checkShowAd(): AdCustomError {
+                return if (adControlBean.useInstlFullWhenSwitch) {
+                    InterstitialFullAdCheck.isEnable()
+                } else {
+                    InterstitialAdCheck.isEnable()
+                }
+            }
+
+            override fun getIdleTime(): Int {
+                return adControlBean.noOperationDuration
+            }
+
+            override fun showAd() {
+                val activity: Activity = requireActivity()
+                if (activity == null || activity.isFinishing) {
+                    return
+                }
+                if (activity is IMainParams &&
+                    !OutherSwitchConfig.Ins().checkMainTabInterstitial(
+                        (activity as IMainParams).getThisFragmentCurrentPos(this@TaskFragment)
+                    )
+                ) {
+                    //后台设置当前Tab不允许加载插屏
+                    return
+                }
+                if (!adControlBean.useInstlFullWhenSwitch) {
+                    showAd(activity, object : SimpleInterstitialListener() {
+                        override fun onAdError(code: Int, errorMsg: String?) {
+                            super.onAdError(code, errorMsg)
+                            Logger.d("晒单页插屏加载广告错误---- code = \$code ,msg =  \$errorMsg ")
+                        }
+
+                        override fun onAdClosed() {
+                            super.onAdClosed()
+                            showAdSuccess("mine_fragment")
+                        }
+                    })
+                } else {
+                    showAd(activity, object : SimpleInterstitialFullListener() {
+                        override fun onAdError(errorCode: Int, errprMsg: String) {
+                            super.onAdError(errorCode, errprMsg)
+                            Logger.d("晒单页插全屏加载广告错误---- code = \$errorCode ,msg =  \$errprMsg ")
+                        }
+
+                        override fun onAdClose() {
+                            super.onAdClose()
+                            showAdSuccess("mine_fragment")
+                        }
+                    })
+                }
+            }
+        })
     }
 
     //订阅其他页面金币和活跃度发生的改变

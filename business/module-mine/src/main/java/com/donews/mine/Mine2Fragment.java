@@ -303,6 +303,10 @@ public class Mine2Fragment extends MvvmLazyLiveDataFragment<MineFragmentNewBindi
                 try {
                     isExietisJBAnimTask = false;
                     double startDouble = Double.parseDouble(mDataBinding.mine2JbCount.getText().toString());
+                    if (startDouble >= jb) {
+                        TextViewNumberUtil.addTextViewAddAnim(mDataBinding.mine2JbCount, 0, jb);
+                        return;
+                    }
                     TextViewNumberUtil.addTextViewAddAnim(mDataBinding.mine2JbCount, startDouble, jb);
                 } catch (Exception e) {
                     mDataBinding.mine2JbCount.setText("" + jb);
@@ -316,6 +320,10 @@ public class Mine2Fragment extends MvvmLazyLiveDataFragment<MineFragmentNewBindi
                 try {
                     isExietisJFAnimTask = true;
                     double startDouble = Double.parseDouble(mDataBinding.mine2JfCount.getText().toString());
+                    if (startDouble >= jf) {
+                        TextViewNumberUtil.addTextViewAddAnim(mDataBinding.mine2JbCount, 0, jf);
+                        return;
+                    }
                     TextViewNumberUtil.addTextViewAddAnim(mDataBinding.mine2JfCount, startDouble, jf);
                 } catch (Exception e) {
                     mDataBinding.mine2JfCount.setText("" + jf);

@@ -1,6 +1,7 @@
 package com.donews.lotterypage.ui
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,6 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import cn.cd.dn.sdk.models.utils.DNServiceTimeManager.Companion.getIns
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
+import com.dn.sdk.AdCustomError
+import com.dn.sdk.listener.interstitial.SimpleInterstitialFullListener
+import com.dn.sdk.listener.interstitial.SimpleInterstitialListener
 import com.doing.spike.adapter.SpikeContextAdapter
 import com.doing.spike.bean.CombinationSpikeBean
 import com.doing.spike.bean.SpikeBean
@@ -25,10 +29,20 @@ import com.donews.lotterypage.base.LotteryPageBean
 import com.donews.lotterypage.base.LotteryPastBean
 import com.donews.lotterypage.databinding.LotteryPageLayoutBinding
 import com.donews.lotterypage.viewmodel.LotteryPageViewModel
+import com.donews.middle.IMainParams
+import com.donews.middle.adutils.InterstitialAd
+import com.donews.middle.adutils.InterstitialFullAd
+import com.donews.middle.adutils.adcontrol.AdControlManager
 import com.donews.middle.bean.front.AwardBean
+import com.donews.middle.centralDeploy.OutherSwitchConfig
 import com.donews.middle.front.FrontConfigManager
 import com.donews.middle.front.LotteryConfigManager
 import com.donews.middle.views.TaskView
+import com.donews.yfsdk.check.InterstitialAdCheck
+import com.donews.yfsdk.moniter.PageMonitor
+import com.donews.yfsdk.monitor.InterstitialFullAdCheck
+import com.donews.yfsdk.monitor.PageMoniterCheck
+import com.orhanobut.logger.Logger
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -40,6 +54,63 @@ class LotteryPageFragment :
     }
 
     var mContentAdapter: ContentAdapter? = null;
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        PageMonitor().attach(this, object : PageMonitor.PageListener {
+            override fun checkShowAd(): AdCustomError {
+                return if (AdControlManager.adControlBean.useInstlFullWhenSwitch) {
+                    InterstitialFullAdCheck.isEnable()
+                } else {
+                    InterstitialAdCheck.isEnable()
+                }
+            }
+
+            override fun getIdleTime(): Int {
+                return AdControlManager.adControlBean.noOperationDuration
+            }
+
+            override fun showAd() {
+                val activity: Activity = requireActivity()
+                if (activity == null || activity.isFinishing) {
+                    return
+                }
+                if (activity is IMainParams &&
+                    !OutherSwitchConfig.Ins().checkMainTabInterstitial(
+                        (activity as IMainParams).getThisFragmentCurrentPos(this@LotteryPageFragment)
+                    )
+                ) {
+                    //后台设置当前Tab不允许加载插屏
+                    return
+                }
+                if (!AdControlManager.adControlBean.useInstlFullWhenSwitch) {
+                    InterstitialAd.showAd(activity, object : SimpleInterstitialListener() {
+                        override fun onAdError(code: Int, errorMsg: String?) {
+                            super.onAdError(code, errorMsg)
+                            Logger.d("晒单页插屏加载广告错误---- code = \$code ,msg =  \$errorMsg ")
+                        }
+
+                        override fun onAdClosed() {
+                            super.onAdClosed()
+                            PageMoniterCheck.showAdSuccess("mine_fragment")
+                        }
+                    })
+                } else {
+                    InterstitialFullAd.showAd(activity, object : SimpleInterstitialFullListener() {
+                        override fun onAdError(errorCode: Int, errprMsg: String) {
+                            super.onAdError(errorCode, errprMsg)
+                            Logger.d("晒单页插全屏加载广告错误---- code = \$errorCode ,msg =  \$errprMsg ")
+                        }
+
+                        override fun onAdClose() {
+                            super.onAdClose()
+                            PageMoniterCheck.showAdSuccess("mine_fragment")
+                        }
+                    })
+                }
+            }
+        })
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -57,7 +57,7 @@ public class TextViewNumberUtil {
     }
 
     //核心类
-    static class TextViewEvaluator implements TypeEvaluator {
+    static class TextViewEvaluator implements TypeEvaluator<TextView> {
         private double value = 0;
         private double initValue = 0;
 
@@ -67,7 +67,7 @@ public class TextViewNumberUtil {
         }
 
         @Override
-        public Object evaluate(float fraction, Object startValue, Object textView) {
+        public TextView evaluate(float fraction, TextView startValue, TextView textView) {
             //样式具体改变 (自定义)
             TextView tv = (TextView) textView;
             DecimalFormat df = new DecimalFormat("#0");
