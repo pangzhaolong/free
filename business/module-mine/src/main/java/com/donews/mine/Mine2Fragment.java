@@ -208,7 +208,7 @@ public class Mine2Fragment extends MvvmLazyLiveDataFragment<MineFragmentNewBindi
                 if (list.get(i) instanceof DialogFragment) {
                     if (!list.get(i).isHidden()) {
                         ((DialogFragment) list.get(i)).getDialog();
-                        WindowManager windowManager = (WindowManager) getBaseActivity().getSystemService(Context.WINDOW_SERVICE)
+                        WindowManager windowManager = (WindowManager) getBaseActivity().getSystemService(Context.WINDOW_SERVICE);
                         isFragmentDialogShow = true;
                         break;
                     }
