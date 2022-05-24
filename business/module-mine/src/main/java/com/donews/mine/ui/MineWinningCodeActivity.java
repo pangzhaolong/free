@@ -60,8 +60,15 @@ public class MineWinningCodeActivity extends
 
     public void initView() {
         ARouter.getInstance().inject(this);
-        Fragment f = RouterFragmentPath.User.getMineOpenWinFragment(
-                period, false, true, true, from);
+        Fragment f = null;
+        if (from == 2) {
+            //往期进入。不显示更多(往期)
+            f = RouterFragmentPath.User.getMineOpenWinFragment(
+                    period, false, true, false, from);
+        } else {
+            f = RouterFragmentPath.User.getMineOpenWinFragment(
+                    period, false, true, true, from);
+        }
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.mine_win_frm, f);
         ft.commitAllowingStateLoss();

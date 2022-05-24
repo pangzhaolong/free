@@ -127,8 +127,8 @@ public class RouterFragmentPath {
             return (Fragment) ARouter.getInstance().build(PAGER_UNBOXING_FRAGMENT).navigation();
         }
 
-        public static Fragment goUnboxingActivity() {
-            return (Fragment) ARouter.getInstance().build(PAGER_UNBOXING_FRAGMENT).navigation();
+        public static void goUnboxingActivity() {
+            ARouter.getInstance().build(PAGER_UNBOXING_ACTIVITY).navigation();
         }
     }
 

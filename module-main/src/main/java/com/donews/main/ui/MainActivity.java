@@ -74,7 +74,10 @@ import com.donews.main.utils.ExtDialogUtil;
 import com.donews.main.viewModel.MainViewModel;
 import com.donews.main.views.CornerMarkUtils;
 import com.donews.main.views.MainBottomTanItem;
+import com.donews.middle.IMainParams;
 import com.donews.middle.bean.globle.TurntableBean;
+import com.donews.middle.bean.mine2.emuns.Mine2TaskType;
+import com.donews.middle.bean.mine2.resp.DailyTaskResp;
 import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.middle.adutils.BannerAd;
 import com.donews.middle.adutils.DnSdkInit;
@@ -85,13 +88,14 @@ import com.donews.middle.bean.HighValueGoodsBean;
 import com.donews.middle.bean.RedEnvelopeUnlockBean;
 import com.donews.middle.bean.TaskActionBean;
 import com.donews.middle.cache.GoodsCache;
+import com.donews.middle.events.SigninCloseEvent;
 import com.donews.middle.request.RequestUtil;
 import com.donews.middle.utils.CriticalModelTool;
 import com.donews.middle.utils.HotStartCacheUtils;
+import com.donews.middle.viewmodel.BaseMiddleViewModel;
 import com.donews.middle.views.FrontFloatingBtn;
 import com.donews.utilslibrary.analysis.AnalysisParam;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
-import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.DateManager;
 import com.donews.utilslibrary.utils.DensityUtils;
@@ -124,7 +128,10 @@ import me.majiajie.pagerbottomtabstrip.NavigationController;
 
 @Route(path = RouterActivityPath.Main.PAGER_MAIN)
 public class MainActivity
-        extends MvvmBaseLiveDataActivity<MainActivityMainBinding, MainViewModel> implements RetentionTaskListener {
+        extends MvvmBaseLiveDataActivity<MainActivityMainBinding, MainViewModel> implements
+        RetentionTaskListener, IMainParams {
+
+    private boolean isShowSigninDialog = false;
 
     private List<Fragment> fragments;
 
@@ -181,7 +188,34 @@ public class MainActivity
         SPUtils.setInformain(KeySharePreferences.IS_FIRST_IN_APP, nInAppCount);
 
         EventBus.getDefault().register(this);
-        showDrawDialog();
+        if (isShowSigninDialog) {
+            showDrawDialog();
+        } else {
+            boolean isShowSingDialog = false;
+            if (BaseMiddleViewModel.getBaseViewModel().mine2DailyTask.getValue() == null) {
+                //没有拉取到签到相关数据
+                isShowSigninDialog = true;
+                showDrawDialog();
+            } else {
+                //记录是否需要显示签到弹窗
+                for (int i = 0; i < BaseMiddleViewModel.getBaseViewModel().mine2DailyTask.getValue().size(); i++) {
+                    DailyTaskResp.DailyTaskItemResp task = BaseMiddleViewModel.getBaseViewModel().mine2DailyTask.getValue().get(i);
+                    if (Mine2TaskType.sign.type.equals(task.type) && task.status == 0) {
+                        isShowSingDialog = true; //是签到任务。并且未完成。需要显示签到弹窗
+                        break;
+                    }
+                }
+            }
+            if(isShowSingDialog) {
+                //显示签到弹窗
+                RouterFragmentPath.User.getSingDialog()
+                        .show(getSupportFragmentManager(), "alksdjfklj");
+            }else{
+                //已经完成或者其他状态。不显示。走原始逻辑即可
+                isShowSigninDialog = true;
+                showDrawDialog();
+            }
+        }
         //检查浮标
         mViewModel.openWindFastNewPeriod.observe(this, result -> {
             if (result == null) {
@@ -297,6 +331,16 @@ public class MainActivity
         }
     }
 
+    @Override
+    public int getThisFragmentCurrentPos(@NonNull Fragment f) {
+        for (int i = 0; i < fragments.size(); i++) {
+            if(f == fragments.get(i)){
+                return i;
+            }
+        }
+        return -1;
+    }
+
     //去往通知页面
     private void testGotoNotify() {
         try {
@@ -365,6 +409,16 @@ public class MainActivity
         mDataBinding.mainFloatingBtn.setModel(FrontFloatingBtn.CRITICAL_MODEL);
         showCriticalBtn();
         EventBus.getDefault().post(new CritMessengerBean(300));
+    }
+
+    @Subscribe
+    public void bind(SigninCloseEvent event) {
+        if (isShowSigninDialog) {
+            return; //已经显示过了。不在继续显示
+        }
+        isShowSigninDialog = true;
+        //显示原始流程
+        showDrawDialog();
     }
 
     @Subscribe
@@ -571,30 +625,40 @@ public class MainActivity
             });
             mDrawDialog.requestGoodsInfo(getApplicationContext());
         } else {
-            FreePanicBuyingDialog mFreePanicBuyingDialog = new FreePanicBuyingDialog(MainActivity.this);
-            mFreePanicBuyingDialog.setFinishListener(new FreePanicBuyingDialog.OnFinishListener() {
-                @Override
-                public void onDismiss() {
-                    if (SPUtils.getInformain(KeySharePreferences.SHOW_DIALOG_WHEN_LAUNCH, true)) {
+//            if (SPUtils.getInformain(KeySharePreferences.SHOW_DIALOG_WHEN_LAUNCH, true)) {
 //                        new EnterShowDialog(MainActivity.this).showEx();
-                        if (mEnterShowDialog == null) {
-                            mEnterShowDialog = new EnterShowDialog(MainActivity.this);
-                            mEnterShowDialog.setOwnerActivity(MainActivity.this);
-                        }
-                        if (!mEnterShowDialog.isShowing()) {
-                            mEnterShowDialog.showEx();
-                        }
-                    }
-                }
-
-                @Override
-                public void onShow() {
-                    if (mFreePanicBuyingDialog != null && !MainActivity.this.isFinishing()) {
-                        mFreePanicBuyingDialog.show();
-                    }
-                }
-            });
-            mFreePanicBuyingDialog.requestGoodsInfo(getApplicationContext());
+//                if (mEnterShowDialog == null) {
+//                    mEnterShowDialog = new EnterShowDialog(MainActivity.this);
+//                    mEnterShowDialog.setOwnerActivity(MainActivity.this);
+//                }
+//                if (!mEnterShowDialog.isShowing()) {
+//                    mEnterShowDialog.showEx();
+//                }
+//            }
+//            FreePanicBuyingDialog mFreePanicBuyingDialog = new FreePanicBuyingDialog(MainActivity.this);
+//            mFreePanicBuyingDialog.setFinishListener(new FreePanicBuyingDialog.OnFinishListener() {
+//                @Override
+//                public void onDismiss() {
+//                    if (SPUtils.getInformain(KeySharePreferences.SHOW_DIALOG_WHEN_LAUNCH, true)) {
+////                        new EnterShowDialog(MainActivity.this).showEx();
+//                        if (mEnterShowDialog == null) {
+//                            mEnterShowDialog = new EnterShowDialog(MainActivity.this);
+//                            mEnterShowDialog.setOwnerActivity(MainActivity.this);
+//                        }
+//                        if (!mEnterShowDialog.isShowing()) {
+//                            mEnterShowDialog.showEx();
+//                        }
+//                    }
+//                }
+//
+//                @Override
+//                public void onShow() {
+//                    if (mFreePanicBuyingDialog != null && !MainActivity.this.isFinishing()) {
+//                        mFreePanicBuyingDialog.show();
+//                    }
+//                }
+//            });
+//            mFreePanicBuyingDialog.requestGoodsInfo(getApplicationContext());
         }
     }
 

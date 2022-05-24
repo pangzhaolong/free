@@ -27,7 +27,7 @@
         android:orientation="vertical"
         android:paddingLeft="14dp"
         android:paddingRight="14dp"
-        android:paddingBottom="100dp">
+        android:paddingBottom="130dp">
 
         <ImageView
             android:id="@+id/sign_top_bg"
@@ -65,7 +65,7 @@
                 android:layout_marginTop="7dp"
                 android:text='@{thiz.modeType == 1?"感谢支持":"金币不足,快看视频赚金币吧"}'
                 android:textColor="#2D323A"
-                android:textSize="14sp"
+                android:textSize="15sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_title" />
@@ -74,10 +74,10 @@
                 android:id="@+id/tv_desc_next"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
+                android:layout_marginTop="4dp"
                 android:text='@{thiz.getStatusText()}'
                 android:textColor="#2D323A"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_desc" />
@@ -92,8 +92,10 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_desc_next">
 
                 <TextView
+                    android:id="@+id/tv_close"
                     android:layout_width="93dp"
                     android:layout_height="43dp"
+                    android:alpha="0"
                     android:background="@drawable/middle_bg_default_theme_border"
                     android:gravity="center"
                     android:onClick="@{thiz.leftGoTo}"
@@ -136,6 +138,7 @@
             android:padding="10dp"
             android:text="稍后再说"
             android:textColor="@color/white"
-            android:textSize="13sp" />
+            android:textSize="13sp"
+            android:visibility="gone" />
     </RelativeLayout>
 </layout>

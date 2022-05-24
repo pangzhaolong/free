@@ -116,7 +116,7 @@
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                    <com.donews.lotterypage.view.CountDownViewNew
+                    <com.donews.middle.views.CountDownViewNew
                         android:id="@+id/new_user_gift_count_down"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

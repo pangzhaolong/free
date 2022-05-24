@@ -17,11 +17,14 @@ import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.middle.bean.mine2.reqs.SignReq;
 import com.donews.middle.dialog.BaseBindingFragmentDialog;
+import com.donews.middle.events.SigninCloseEvent;
 import com.donews.mine.BuildConfig;
 import com.donews.mine.R;
 import com.donews.mine.databinding.Mine2SigninRewardDialogBinding;
 import com.donews.mine.viewModel.MineViewModel;
 import com.donews.yfsdk.loader.AdManager;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * 个人中心任务 签到奖励弹窗(签到奖励、激励、任务奖励)
@@ -103,6 +106,15 @@ public class SignInRewardMineDialog extends BaseBindingFragmentDialog<Mine2Signi
             dataBinding.signGoText.getHandler().removeCallbacks(updateTextRun);
         }
         super.dismiss();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(modeType == 0){
+            //激励模式。通知签到流程完毕
+            EventBus.getDefault().post(new SigninCloseEvent());
+        }
     }
 
     @Override

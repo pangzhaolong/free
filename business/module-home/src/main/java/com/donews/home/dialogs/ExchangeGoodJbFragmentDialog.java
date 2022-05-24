@@ -1,6 +1,8 @@
 package com.donews.home.dialogs;
 
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -91,6 +93,21 @@ public class ExchangeGoodJbFragmentDialog extends BaseBindingFragmentDialog<Home
             config = exchanViewMovdel.querySaveCoinCritConfig();
         }
         initDatabinding();
+        showClose();
+    }
+
+    //显示关闭弹窗
+    private void showClose() {
+        ValueAnimator alAm = ValueAnimator.ofFloat(0, 1);
+        alAm.addUpdateListener(animation -> {
+            float valu = (float) animation.getAnimatedValue();
+            if (valu > 1) {
+                dataBinding.tvClose.setAlpha(1);
+                return;
+            }
+            dataBinding.tvClose.setAlpha(valu);
+        });
+        alAm.setDuration(3500).start();
     }
 
     @Override
@@ -144,6 +161,9 @@ public class ExchangeGoodJbFragmentDialog extends BaseBindingFragmentDialog<Home
      * 左侧按钮的点击事件
      */
     public void leftGoTo(View view) {
+        if (dataBinding.tvClose.getAlpha() < 1) {
+            return;
+        }
         dismiss();
     }
 

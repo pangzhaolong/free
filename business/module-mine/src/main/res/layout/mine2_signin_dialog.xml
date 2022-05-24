@@ -34,9 +34,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="100dp"
         android:paddingLeft="14dp"
-        android:paddingRight="14dp">
+        android:paddingRight="14dp"
+        android:paddingBottom="100dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="320dp"
@@ -163,5 +163,16 @@
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="-51dp"
             android:src="@drawable/sign_dialog_top_icon" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/sign_top_iv"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginEnd="10.59dp"
+            android:layout_marginBottom="25dp"
+            android:onClick="@{()->thiz.dismiss()}"
+            app:srcCompat="@drawable/task_icon_cancel" />
     </RelativeLayout>
 </layout>

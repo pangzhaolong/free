@@ -74,6 +74,8 @@ public class ABSwitch {
         }
         //关联更新热门搜索数据
         TopSearchConfig.update();
+        //其他控制初始化
+        OutherSwitchConfig.Ins().init();
     }
 
     private void update() {

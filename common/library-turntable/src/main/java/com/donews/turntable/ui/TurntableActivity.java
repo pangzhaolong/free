@@ -21,6 +21,7 @@ import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.middle.centralDeploy.TurntableSwitch;
 import com.donews.middle.dialog.qbn.DoingResultDialog;
 import com.donews.middle.utils.PlayAdUtilsTool;
+import com.donews.middle.viewmodel.BaseMiddleViewModel;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
@@ -63,6 +64,8 @@ public class TurntableActivity extends TurntableBaseActivity<TurntableActivityLa
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        BaseMiddleViewModel.getBaseViewModel()
+                .getDailyTasks(null);
     }
 
 
