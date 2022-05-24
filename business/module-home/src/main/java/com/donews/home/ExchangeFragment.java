@@ -1,12 +1,18 @@
 package com.donews.home;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.dn.sdk.AdCustomError;
+import com.dn.sdk.listener.interstitial.SimpleInterstitialFullListener;
+import com.dn.sdk.listener.interstitial.SimpleInterstitialListener;
 import com.dn.sdk.listener.rewardvideo.SimpleRewardVideoListener;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
@@ -16,18 +22,28 @@ import com.donews.home.adapter.ExchangeFragmentAdapter;
 import com.donews.home.databinding.ExchanageFragmentBinding;
 import com.donews.home.dialogs.ExchangeRuleDialog;
 import com.donews.home.viewModel.ExchangeViewModel;
+import com.donews.middle.IMainParams;
+import com.donews.middle.adutils.InterstitialAd;
+import com.donews.middle.adutils.InterstitialFullAd;
+import com.donews.middle.adutils.adcontrol.AdControlManager;
 import com.donews.middle.bean.home.HomeCategory2Bean;
 import com.donews.middle.bean.home.HomeReceiveGiftReq;
 import com.donews.middle.cache.GoodsCache;
+import com.donews.middle.centralDeploy.OutherSwitchConfig;
 import com.donews.middle.dialog.qbn.DoingResultDialog;
 import com.donews.middle.front.FrontConfigManager;
 import com.donews.middle.views.ExchanageTabItem;
 import com.donews.middle.views.TaskView;
 import com.donews.network.EasyHttp;
 import com.donews.utilslibrary.utils.AppInfo;
+import com.donews.yfsdk.check.InterstitialAdCheck;
 import com.donews.yfsdk.loader.AdManager;
+import com.donews.yfsdk.moniter.PageMonitor;
+import com.donews.yfsdk.monitor.InterstitialFullAdCheck;
+import com.donews.yfsdk.monitor.PageMoniterCheck;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.orhanobut.logger.Logger;
 
 /**
  * @author lcl
@@ -51,6 +67,70 @@ public class ExchangeFragment extends MvvmLazyLiveDataFragment<ExchanageFragment
     @Override
     public int getLayoutId() {
         return R.layout.exchanage_fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        new PageMonitor().attach(this, new PageMonitor.PageListener() {
+            @NonNull
+            @Override
+            public AdCustomError checkShowAd() {
+                if (AdControlManager.INSTANCE.getAdControlBean().getUseInstlFullWhenSwitch()) {
+                    return InterstitialFullAdCheck.INSTANCE.isEnable();
+                } else {
+                    return InterstitialAdCheck.INSTANCE.isEnable();
+                }
+            }
+
+            @Override
+            public int getIdleTime() {
+                return AdControlManager.INSTANCE.getAdControlBean().getNoOperationDuration();
+            }
+
+            @Override
+            public void showAd() {
+                Activity activity = requireActivity();
+                if (activity == null || activity.isFinishing()) {
+                    return;
+                }
+                if (activity instanceof IMainParams &&
+                        !OutherSwitchConfig.Ins().checkMainTabInterstitial(
+                                ((IMainParams) activity).getThisFragmentCurrentPos(ExchangeFragment.this))) {
+                    //后台设置当前Tab不允许加载插屏
+                    return;
+                }
+                if (!AdControlManager.INSTANCE.getAdControlBean().getUseInstlFullWhenSwitch()) {
+                    InterstitialAd.INSTANCE.showAd(activity, new SimpleInterstitialListener() {
+                        @Override
+                        public void onAdError(int code, String errorMsg) {
+                            super.onAdError(code, errorMsg);
+                            Logger.d("晒单页插屏加载广告错误---- code = $code ,msg =  $errorMsg ");
+                        }
+
+                        @Override
+                        public void onAdClosed() {
+                            super.onAdClosed();
+                            PageMoniterCheck.INSTANCE.showAdSuccess("mine_fragment");
+                        }
+                    });
+                } else {
+                    InterstitialFullAd.INSTANCE.showAd(activity, new SimpleInterstitialFullListener() {
+                        @Override
+                        public void onAdError(int errorCode, String errprMsg) {
+                            super.onAdError(errorCode, errprMsg);
+                            Logger.d("晒单页插全屏加载广告错误---- code = $errorCode ,msg =  $errprMsg ");
+                        }
+
+                        @Override
+                        public void onAdClose() {
+                            super.onAdClose();
+                            PageMoniterCheck.INSTANCE.showAdSuccess("mine_fragment");
+                        }
+                    });
+                }
+            }
+        });
     }
 
     @Override

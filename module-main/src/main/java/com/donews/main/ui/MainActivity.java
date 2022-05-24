@@ -74,6 +74,7 @@ import com.donews.main.utils.ExtDialogUtil;
 import com.donews.main.viewModel.MainViewModel;
 import com.donews.main.views.CornerMarkUtils;
 import com.donews.main.views.MainBottomTanItem;
+import com.donews.middle.IMainParams;
 import com.donews.middle.bean.globle.TurntableBean;
 import com.donews.middle.bean.mine2.emuns.Mine2TaskType;
 import com.donews.middle.bean.mine2.resp.DailyTaskResp;
@@ -95,7 +96,6 @@ import com.donews.middle.viewmodel.BaseMiddleViewModel;
 import com.donews.middle.views.FrontFloatingBtn;
 import com.donews.utilslibrary.analysis.AnalysisParam;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
-import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.DateManager;
 import com.donews.utilslibrary.utils.DensityUtils;
@@ -128,7 +128,8 @@ import me.majiajie.pagerbottomtabstrip.NavigationController;
 
 @Route(path = RouterActivityPath.Main.PAGER_MAIN)
 public class MainActivity
-        extends MvvmBaseLiveDataActivity<MainActivityMainBinding, MainViewModel> implements RetentionTaskListener {
+        extends MvvmBaseLiveDataActivity<MainActivityMainBinding, MainViewModel> implements
+        RetentionTaskListener, IMainParams {
 
     private boolean isShowSigninDialog = false;
 
@@ -328,6 +329,16 @@ public class MainActivity
         if (!HotStartCacheUtils.INSTANCE.isShowing()) {
             isFromNotify();
         }
+    }
+
+    @Override
+    public int getThisFragmentCurrentPos(@NonNull Fragment f) {
+        for (int i = 0; i < fragments.size(); i++) {
+            if(f == fragments.get(i)){
+                return i;
+            }
+        }
+        return -1;
     }
 
     //去往通知页面

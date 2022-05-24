@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Message;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -38,10 +40,12 @@ import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.UserInfoBean;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
+import com.donews.middle.IMainParams;
 import com.donews.middle.adutils.InterstitialAd;
 import com.donews.middle.adutils.InterstitialFullAd;
 import com.donews.middle.adutils.adcontrol.AdControlManager;
 import com.donews.middle.bean.mine2.resp.SignResp;
+import com.donews.middle.centralDeploy.OutherSwitchConfig;
 import com.donews.middle.front.FrontConfigManager;
 import com.donews.middle.mainShare.vm.MainShareViewModel;
 import com.donews.middle.viewmodel.BaseMiddleViewModel;
@@ -74,6 +78,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -115,6 +120,12 @@ public class Mine2Fragment extends MvvmLazyLiveDataFragment<MineFragmentNewBindi
             public void showAd() {
                 Activity activity = requireActivity();
                 if (activity == null || activity.isFinishing()) {
+                    return;
+                }
+                if (activity instanceof IMainParams &&
+                        !OutherSwitchConfig.Ins().checkMainTabInterstitial(
+                                ((IMainParams) activity).getThisFragmentCurrentPos(Mine2Fragment.this))) {
+                    //后台设置当前Tab不允许加载插屏
                     return;
                 }
                 if (!AdControlManager.INSTANCE.getAdControlBean().getUseInstlFullWhenSwitch()) {
@@ -194,29 +205,52 @@ public class Mine2Fragment extends MvvmLazyLiveDataFragment<MineFragmentNewBindi
     public void onResume() {
         super.onResume();
         onRefresh();
-        if (isFragmentDialogShow()) {
-            // 存在显示
-        }
     }
 
     //检查是否有DialogFragmnet显示。T:有，F:没有
-    private boolean isFragmentDialogShow() {
+    private void isFragmentDialogShow(Runnable finishCall) {
         try {
             boolean isFragmentDialogShow = false;
             List<Fragment> list = getBaseActivity().getSupportFragmentManager().getFragments();
+            DialogFragment dialogFragment = null;
             for (int i = 0; i < list.size(); i++) {
                 if (list.get(i) instanceof DialogFragment) {
                     if (!list.get(i).isHidden()) {
-                        ((DialogFragment) list.get(i)).getDialog();
-                        WindowManager windowManager = (WindowManager) getBaseActivity().getSystemService(Context.WINDOW_SERVICE);
+                        dialogFragment = (DialogFragment) list.get(i);
                         isFragmentDialogShow = true;
                         break;
                     }
                 }
             }
-            return isFragmentDialogShow;
+            if (!isFragmentDialogShow) {
+                finishCall.run();
+                return;
+            }
+            Message dissMessage = null;
+            try {
+                if (dialogFragment == null ||
+                        dialogFragment.getDialog() == null) {
+                    finishCall.run();
+                    return;
+                }
+                //获取原始的监听
+                Field field = dialogFragment.getDialog().getClass().getDeclaredField("mDismissMessage");
+                field.setAccessible(true);
+                dissMessage = (Message) field.get(dialogFragment);
+            } catch (Exception e) {
+            } finally {
+                Message finalDissMessage = dissMessage;
+                if (finalDissMessage == null) {
+                    finishCall.run();
+                } else {
+                    dialogFragment.getDialog().setOnDismissListener(dialog -> {
+                        //执行原始的关闭事件
+                        Message.obtain(finalDissMessage).sendToTarget();
+                    });
+                }
+            }
         } catch (Exception e) {
-            return false;
+            finishCall.run();
         }
     }
 
@@ -256,6 +290,11 @@ public class Mine2Fragment extends MvvmLazyLiveDataFragment<MineFragmentNewBindi
 //                .navigation();
     }
 
+    //是否存在金币播放任务了已经
+    private boolean isExietisJBAnimTask = false;
+    //是否存在金币播放任务了已经
+    private boolean isExietisJFAnimTask = false;
+
     @SuppressLint("WrongConstant")
     private void initView() {
         //设置运营位
@@ -290,21 +329,29 @@ public class Mine2Fragment extends MvvmLazyLiveDataFragment<MineFragmentNewBindi
         });
         //金币
         mViewModel.getMine2JBCount().observe(this, jb -> {
-            try {
-                double startDouble = Double.parseDouble(mDataBinding.mine2JbCount.getText().toString());
-                TextViewNumberUtil.addTextViewAddAnim(mDataBinding.mine2JbCount, startDouble, jb);
-            } catch (Exception e) {
-                mDataBinding.mine2JbCount.setText("" + jb);
-            }
+            isExietisJBAnimTask = true;
+            isFragmentDialogShow(() -> {
+                try {
+                    isExietisJBAnimTask = false;
+                    double startDouble = Double.parseDouble(mDataBinding.mine2JbCount.getText().toString());
+                    TextViewNumberUtil.addTextViewAddAnim(mDataBinding.mine2JbCount, startDouble, jb);
+                } catch (Exception e) {
+                    mDataBinding.mine2JbCount.setText("" + jb);
+                }
+            });
         });
         //积分
         mViewModel.getMine2JFCount().observe(this, jf -> {
-            try {
-                double startDouble = Double.parseDouble(mDataBinding.mine2JfCount.getText().toString());
-                TextViewNumberUtil.addTextViewAddAnim(mDataBinding.mine2JfCount, startDouble, jf);
-            } catch (Exception e) {
-                mDataBinding.mine2JfCount.setText("" + jf);
-            }
+            isExietisJFAnimTask = true;
+            isFragmentDialogShow(() -> {
+                try {
+                    isExietisJFAnimTask = true;
+                    double startDouble = Double.parseDouble(mDataBinding.mine2JfCount.getText().toString());
+                    TextViewNumberUtil.addTextViewAddAnim(mDataBinding.mine2JfCount, startDouble, jf);
+                } catch (Exception e) {
+                    mDataBinding.mine2JfCount.setText("" + jf);
+                }
+            });
         });
     }
 

@@ -54,6 +54,11 @@ public class OutherSwitchConfig {
         }
     }
 
+    /**
+     * 获取配置实体
+     *
+     * @return
+     */
     public OutherSwitchConfigBean getBean() {
         if (bean == null) {
             bean = new OutherSwitchConfigBean();
@@ -61,11 +66,36 @@ public class OutherSwitchConfig {
         return bean;
     }
 
+    /**
+     * 更新配置实体
+     *
+     * @return
+     */
     public void setBean(OutherSwitchConfigBean bean) {
         this.bean = bean;
     }
 
+    /**
+     * 检查首页Tab切换的插屏开关是否打开。决定切换时候是否允许加载插屏广告
+     *
+     * @param tabPos 需要检查的tab下标
+     * @return T:允许加载广告，F:中台关闭的插屏广告
+     */
+    public boolean checkMainTabInterstitial(int tabPos) {
+        if (tabPos < 0) {
+            return true;
+        }
+        OutherSwitchConfigBean item = getBean();
+        List<Boolean> switchItems = item.getMainInterstitialSwitch();
+        if (tabPos > switchItems.size()) {
+            return true;
+        }
+        return switchItems.get(tabPos);
+    }
 
+    /**
+     * 初始化
+     */
     public void init() {
         if (mHandler != null) {
             mHandler.removeMessages(UPDATE_CONFIG_MSG);
