@@ -1,4 +1,4 @@
-package com.donews.lotterypage.view;
+package com.donews.middle.views;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.donews.lotterypage.R;
+import com.donews.middle.R;
 
 
 @SuppressLint("ViewConstructor")
