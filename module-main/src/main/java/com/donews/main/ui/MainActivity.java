@@ -692,15 +692,15 @@ public class MainActivity
         if (!ABSwitch.Ins().isOpenAB()) {
             MainBottomTanItem homeItem = new MainBottomTanItem(this);
             homeItem.initialization("首页", R.drawable.main_home_checked, defaultColor, checkColor,
-                    "main_bottom_tab_home.json");
+                    R.drawable.main_home_checked_secect);
 
             MainBottomTanItem lotteryItem = new MainBottomTanItem(this);
-            lotteryItem.initialization("抽奖", R.drawable.main_mine, defaultColor, checkColor, "main_bottom_tab_me.json");
+            lotteryItem.initialization("抽奖", R.drawable.main_lottery_icon, defaultColor, checkColor, R.drawable.main_lottery_icon_seclect);
 
             MainBottomTanItem taskItem = new MainBottomTanItem(this);
-            taskItem.initialization("活动", R.drawable.main_mine, defaultColor, checkColor, "main_bottom_tab_me.json");
+            taskItem.initialization("活动", R.drawable.main_action, defaultColor, checkColor, R.drawable.main_action_select);
             MainBottomTanItem mineItem = new MainBottomTanItem(this);
-            mineItem.initialization("我的", R.drawable.main_mine, defaultColor, checkColor, "main_bottom_tab_me.json");
+            mineItem.initialization("我的", R.drawable.main_mine, defaultColor, checkColor, R.drawable.main_mine_select);
             mNavigationController = mDataBinding.bottomView.custom()
                     .addItem(homeItem)
                     .addItem(lotteryItem)
@@ -711,13 +711,13 @@ public class MainActivity
         } else {
             MainBottomTanItem homeItem = new MainBottomTanItem(this);
             homeItem.initialization("首页", R.drawable.main_home_checked, defaultColor, checkColor,
-                    "main_bottom_tab_home.json");
+                    R.drawable.main_home_checked_secect);
             MainBottomTanItem lotteryItem = new MainBottomTanItem(this);
             lotteryItem.initialization("特惠购", R.drawable.main_lottery, defaultColor, checkColor,
-                    "main_bottom_tab_kaijiang.json");
+                    R.drawable.main_lottery_icon_seclect);
 
             MainBottomTanItem mineItem = new MainBottomTanItem(this);
-            mineItem.initialization("设置", R.drawable.main_mine, defaultColor, checkColor, "main_bottom_tab_me.json");
+            mineItem.initialization("设置", R.drawable.main_mine, defaultColor, checkColor,  R.drawable.main_mine_select);
 
             mNavigationController = mDataBinding.bottomView.custom()
                     .addItem(homeItem)
