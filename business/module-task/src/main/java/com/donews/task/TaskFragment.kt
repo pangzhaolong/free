@@ -13,7 +13,6 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
-import com.bumptech.glide.Glide
 import com.dn.sdk.listener.rewardvideo.SimpleRewardVideoListener
 import com.donews.base.utils.ToastUtil
 import com.donews.base.utils.glide.GlideUtils
@@ -46,9 +45,8 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.droidsonroids.gif.GifDrawable
 import com.donews.middle.bean.globle.TurntableBean.ItemsDTO
-import com.donews.middle.bean.mine2.resp.UserAssetsResp
+import com.donews.middle.viewmodel.BaseMiddleViewModel
 import com.donews.utilslibrary.utils.DensityUtils
-import com.google.gson.Gson
 
 
 /**
@@ -104,6 +102,21 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
         initBubbleReceive()
         initAdReport()
         initExchange()
+        initOtherAssets()
+    }
+
+    //订阅其他页面金币和活跃度发生的改变
+    private fun initOtherAssets(){
+        BaseMiddleViewModel.getBaseViewModel().mine2JBCount.observe(viewLifecycleOwner,{
+            it?.let {
+                mViewModel?.goldCoinNum?.set(it.toString())
+            }
+        })
+        BaseMiddleViewModel.getBaseViewModel().mine2JFCount.observe(viewLifecycleOwner,{
+            it?.let {
+                mViewModel?.activityNum?.set(it.toString())
+            }
+        })
     }
 
     private fun initUserAssets() {

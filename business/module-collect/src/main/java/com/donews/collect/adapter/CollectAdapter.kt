@@ -1,5 +1,6 @@
 package com.donews.collect.adapter
 
+import android.annotation.SuppressLint
 import com.donews.base.utils.glide.GlideUtils
 import com.donews.base.utils.glide.RoundCornersTransform
 import com.donews.collect.bean.CardFragment
@@ -18,6 +19,7 @@ class CollectAdapter(resId: Int, dataList: MutableList<CardFragment>) :
 
     private var collectFgBinding: CollectItemFragmentBinding? = null
 
+    @SuppressLint("SetTextI18n")
     override fun convert(viewHolder: DataBindBaseViewHolder?, data: CardFragment?, position: Int) {
         collectFgBinding = viewHolder?.getBinding() as CollectItemFragmentBinding
         try {
@@ -37,6 +39,7 @@ class CollectAdapter(resId: Int, dataList: MutableList<CardFragment>) :
             } else {
                 collectFgBinding?.image?.alpha = 0.3f
             }
+            collectFgBinding?.numTv?.text = "${data.holdNum}/${data.needNum}"
         } catch (e:Exception){}
     }
 
