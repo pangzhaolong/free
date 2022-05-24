@@ -2,14 +2,18 @@ package com.donews.mine;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,6 +44,7 @@ import com.donews.middle.adutils.adcontrol.AdControlManager;
 import com.donews.middle.bean.mine2.resp.SignResp;
 import com.donews.middle.front.FrontConfigManager;
 import com.donews.middle.mainShare.vm.MainShareViewModel;
+import com.donews.middle.viewmodel.BaseMiddleViewModel;
 import com.donews.middle.views.TaskView;
 import com.donews.mine.adapters.Mine2FragmentTaskAdapter;
 import com.donews.mine.adapters.MineFragmentAdapter;
@@ -47,6 +52,7 @@ import com.donews.mine.bean.MineWithdraWallBean;
 import com.donews.mine.bean.resps.RecommendGoodsResp;
 import com.donews.mine.databinding.MineFragmentBinding;
 import com.donews.mine.databinding.MineFragmentNewBinding;
+import com.donews.mine.utils.TextViewNumberUtil;
 import com.donews.mine.viewModel.MineViewModel;
 import com.donews.mine.views.operating.MineOperatingPosView;
 import com.donews.network.BuildConfig;
@@ -188,10 +194,34 @@ public class Mine2Fragment extends MvvmLazyLiveDataFragment<MineFragmentNewBindi
     public void onResume() {
         super.onResume();
         onRefresh();
+        if (isFragmentDialogShow()) {
+            // 存在显示
+        }
+    }
+
+    //检查是否有DialogFragmnet显示。T:有，F:没有
+    private boolean isFragmentDialogShow() {
+        try {
+            boolean isFragmentDialogShow = false;
+            List<Fragment> list = getBaseActivity().getSupportFragmentManager().getFragments();
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i) instanceof DialogFragment) {
+                    if (!list.get(i).isHidden()) {
+                        ((DialogFragment) list.get(i)).getDialog();
+                        WindowManager windowManager = (WindowManager) getBaseActivity().getSystemService(Context.WINDOW_SERVICE)
+                        isFragmentDialogShow = true;
+                        break;
+                    }
+                }
+            }
+            return isFragmentDialogShow;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     private void onRefresh() {
-        if (mViewModel.mineDailyTasks.getValue() != null &&
+        if (BaseMiddleViewModel.getBaseViewModel().mine2DailyTask.getValue() != null &&
                 System.currentTimeMillis() - fastUpdateTime < 5 * 60 * 1000) {
             return; //如果加载成功之后。才会进行时间计算。否则只要切换就会加载
         }
@@ -244,7 +274,7 @@ public class Mine2Fragment extends MvvmLazyLiveDataFragment<MineFragmentNewBindi
                 syncActivitiesModel(); //同步刷新
             }
         });
-        mViewModel.mineDailyTasks.observe(this, (result) -> {
+        BaseMiddleViewModel.getBaseViewModel().mine2DailyTask.observe(this, (result) -> {
             if (result == null) {
                 taskAdapter.setNewData(new ArrayList<>());
             } else {
@@ -257,6 +287,24 @@ public class Mine2Fragment extends MvvmLazyLiveDataFragment<MineFragmentNewBindi
         mShareVideModel.userAssets.observe(this, (item) -> {
             //活动模块同步
             loadData();
+        });
+        //金币
+        mViewModel.getMine2JBCount().observe(this, jb -> {
+            try {
+                double startDouble = Double.parseDouble(mDataBinding.mine2JbCount.getText().toString());
+                TextViewNumberUtil.addTextViewAddAnim(mDataBinding.mine2JbCount, startDouble, jb);
+            } catch (Exception e) {
+                mDataBinding.mine2JbCount.setText("" + jb);
+            }
+        });
+        //积分
+        mViewModel.getMine2JFCount().observe(this, jf -> {
+            try {
+                double startDouble = Double.parseDouble(mDataBinding.mine2JfCount.getText().toString());
+                TextViewNumberUtil.addTextViewAddAnim(mDataBinding.mine2JfCount, startDouble, jf);
+            } catch (Exception e) {
+                mDataBinding.mine2JfCount.setText("" + jf);
+            }
         });
     }
 

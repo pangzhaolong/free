@@ -62,9 +62,11 @@ public class DoingResultDialog extends BaseDialog<TurntableDoingDialogLayoutBind
         });
 
         if (mPrize != null) {
+            mDataBinding.ivLocalIcon.setVisibility(View.GONE);
             Glide.with(getContext()).load(mPrize.getIcon()).override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).into(mDataBinding.icon);
         } else {
-            mDataBinding.icon.setImageResource(iconRes);
+            mDataBinding.ivLocalIcon.setVisibility(View.VISIBLE);
+            mDataBinding.ivLocalIcon.setImageResource(iconRes);
         }
 
     }

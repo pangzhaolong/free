@@ -151,9 +151,8 @@
                                 android:id="@+id/mine2_jb_count"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="12dp"
                                 android:layout_marginTop="3dp"
-                                android:text='@={""+viewModel.mine2JBCount}'
+                                android:text=''
                                 android:textColor="#2D323A"
                                 android:textSize="20sp"
                                 app:layout_constraintBottom_toBottomOf="@+id/mine2_jb_icon"
@@ -198,9 +197,8 @@
                                 android:id="@+id/mine2_jf_count"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="12dp"
                                 android:layout_marginTop="3dp"
-                                android:text='@={""+viewModel.mine2JFCount}'
+                                android:text=''
                                 android:textColor="#2D323A"
                                 android:textSize="20sp"
                                 app:layout_constraintBottom_toBottomOf="@+id/mine2_jf_icon"

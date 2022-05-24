@@ -14,10 +14,13 @@ import com.donews.common.router.RouterFragmentPath;
 import com.donews.middle.bean.mine2.reqs.SignReq;
 import com.donews.middle.bean.mine2.resp.SignListResp;
 import com.donews.middle.dialog.BaseBindingFragmentDialog;
+import com.donews.middle.events.SigninCloseEvent;
 import com.donews.mine.BuildConfig;
 import com.donews.mine.R;
 import com.donews.mine.databinding.Mine2SigninDialogBinding;
 import com.donews.mine.viewModel.MineViewModel;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,6 +117,13 @@ public class SignInMineDialog extends BaseBindingFragmentDialog<Mine2SigninDialo
     public void onResume() {
         super.onResume();
         initData();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //激励模式。通知签到流程完毕
+        EventBus.getDefault().post(new SigninCloseEvent());
     }
 
     /**

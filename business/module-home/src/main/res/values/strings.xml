@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="ResourceName">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ResourceName">
+
+    <string name="main_str_exchange_rule_msg">
+        &lt;b>兑换规则：&lt;/b>&lt;br>&lt;/br>
+        1. 金币可兑换商城指定商品，可以通过任务和活动获得；&lt;br>&lt;/br>
+        2. 兑换流程：获取金币→选择商品→立即兑换→填写收货地址→客服核实后等待发货（7个工作日内包邮发货）；&lt;br>&lt;/br>
+        3. 兑换商品图片仅供参考，商品以实际领取为准，如商品有新老包装，则随机发送；&lt;br>&lt;/br>
+        4. 部分稀有周边数量有限，优先对老用户开启兑换，且需要满足活跃等其他条件才能兑换；&lt;br>&lt;/br>
+        5. 部分无法邮寄商品（如汽车等），可与官方客服进一步沟通细节。&lt;br>&lt;/br>&lt;br>&lt;/br>
+        &lt;b>关于退换货：&lt;/b>&lt;br>&lt;/br>
+        1. 对于金币兑换成功产生的商品，商品属于私密个人用品，拆封后无法进行二次销售，不支持退换货；&lt;br>&lt;/br>
+        2. 对于成功兑换商品所扣除的金币均不退回。&lt;br>&lt;/br>&lt;br>&lt;/br>
+        &lt;b>关于快递：&lt;/b>&lt;br>&lt;/br>
+        全国大部分地区包邮，不接受指定快递，偏远地区“新疆、西藏、内蒙古、青海、海南宁夏”等地区不包邮，如需购买（兑换）需另补运费。金币兑换商品会在兑换后2-7天内发货，请您耐心等待。&lt;br>&lt;/br>&lt;br>&lt;/br>
+        &lt;b>其他注意事项：&lt;/b>&lt;br>&lt;/br>
+        1. 如果用户存在违规行为（包括不限于领取作弊，刷IP）等，平台有权撤销相关违规操作，并回收非法金币（包括已使用和未使用），必要时有权追究法律责任；&lt;br>&lt;/br>
+        2. 平台可以根据具体情况兑换规则进行变动和调整，相关的变动和调整将公布在页面上或以合适的形式通知您。</string>
 </resources>

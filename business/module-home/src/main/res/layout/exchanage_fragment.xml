@@ -121,15 +121,15 @@
                                 android:id="@+id/tv_time"
                                 android:layout_width="30dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginRight="13dp"
                                 android:layout_centerVertical="true"
+                                android:layout_marginRight="13dp"
                                 android:gravity="center"
-                                android:paddingTop="10dp"
+                                android:paddingTop="13dp"
                                 android:text="00:00"
                                 android:textColor="@color/white"
                                 android:textSize="9sp"
-                                android:visibility="gone"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:visibility="gone" />
                         </RelativeLayout>
                     </RelativeLayout>
 

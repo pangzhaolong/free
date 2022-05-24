@@ -70,8 +70,6 @@ public class MineViewModel extends BaseLiveDataViewModel<MineModel> {
     public MutableLiveData<String> mine2UserName = new MutableLiveData<>("未登录");
     // 用户头像
     public MutableLiveData<String> mine2UserHead = new MutableLiveData<>();
-    // 每日任务集合
-    public MutableLiveData<List<DailyTaskResp.DailyTaskItemResp>> mineDailyTasks = new MutableLiveData<>();
     // 签到列表数据
     public MutableLiveData<SignListResp> mineSignLists = new MutableLiveData<>();
     // 签到结果数据(最新的签到数据)
@@ -253,24 +251,9 @@ public class MineViewModel extends BaseLiveDataViewModel<MineModel> {
      * （新版本）获取每日任务
      */
     public void getDailyTasks() {
-        String url = (BuildConfig.BASE_QBN_API + "activity/v1/daily-tasks");
-        EasyHttp.get(HttpConfigUtilsKt.withConfigParams(url, true))
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(new SimpleCallBack<DailyTaskResp>() {
-                    @Override
-                    public void onError(ApiException e) {
-                        mineDailyTasks.postValue(null);
-                    }
-
-                    @Override
-                    public void onSuccess(DailyTaskResp dailyTaskResp) {
-                        if (dailyTaskResp.list != null) {
-                            mineDailyTasks.postValue(dailyTaskResp.list);
-                        } else {
-                            mineDailyTasks.postValue(new ArrayList<>());
-                        }
-                    }
-                });
+        //调用中间件全局的对象
+        BaseMiddleViewModel.getBaseViewModel()
+                .getDailyTasks(null);
     }
 
     /**

@@ -16,11 +16,7 @@ import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
-import android.view.animation.ScaleAnimation;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -54,6 +50,7 @@ import com.donews.middle.adutils.adcontrol.AdControlManager;
 import com.donews.middle.centralDeploy.TurntableSwitch;
 import com.donews.middle.front.FrontConfigManager;
 import com.donews.middle.front.LotteryConfigManager;
+import com.donews.middle.viewmodel.BaseMiddleViewModel;
 import com.donews.utilslibrary.analysis.AnalysisHelp;
 import com.donews.utilslibrary.base.SmSdkConfig;
 import com.donews.utilslibrary.base.UtilsConfig;
@@ -624,6 +621,9 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         FrontConfigManager.Ins().init();
         //抽奖页运营位
         LotteryConfigManager.Ins().init();
+        //拉去首页相关签到配置
+        BaseMiddleViewModel.getBaseViewModel()
+                .getDailyTasks(null);
         mHadPermissions = true;
         if ((SPUtils.getInformain(KeySharePreferences.IS_FIRST_IN_APP,
                 0) <= 0 && ABSwitch.Ins().isSkipSplashAd4NewUser())

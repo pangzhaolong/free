@@ -19,15 +19,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:paddingLeft="15dp"
-            android:paddingTop="20dp"
-            android:paddingRight="20dp"
-            android:paddingBottom="20dp"
-            android:src="@drawable/mine_win_write_back" />
+        <LinearLayout
+            android:id="@+id/iv_back_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            android:gravity="bottom"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_title"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="17dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="17dp"
+                android:src="@drawable/middle_back" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_title"
@@ -39,14 +50,15 @@
             android:textColor="#2c2c2c"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/iv_back_ll"
+            app:layout_constraintRight_toLeftOf="@+id/tv_show_product"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_show_product"
             android:layout_width="0dp"
             android:layout_height="48dp"
+            android:background="@color/white"
             android:gravity="center"
             android:paddingStart="13dp"
             android:paddingEnd="13dp"

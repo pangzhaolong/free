@@ -14,6 +14,7 @@ import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.home.adapter.ExchangeFragmentAdapter;
 import com.donews.home.databinding.ExchanageFragmentBinding;
+import com.donews.home.dialogs.ExchangeRuleDialog;
 import com.donews.home.viewModel.ExchangeViewModel;
 import com.donews.middle.bean.home.HomeCategory2Bean;
 import com.donews.middle.bean.home.HomeReceiveGiftReq;
@@ -189,7 +190,9 @@ public class ExchangeFragment extends MvvmLazyLiveDataFragment<ExchanageFragment
 
     //搜索框左侧的点击
     public void getSearchLeftClick() {
-        ToastUtil.showShort(getActivity(), "搜索左侧点击了");
+        //显示规则弹窗
+        ExchangeRuleDialog.Companion.newInstance()
+                .show(getChildFragmentManager(), "halsjdflk");
     }
 
     //搜索框的点击操作
@@ -233,7 +236,6 @@ public class ExchangeFragment extends MvvmLazyLiveDataFragment<ExchanageFragment
             @Override
             public void onAdClose() {
                 if (isRewvrdVerify) {
-                    ToastUtil.showShort(activity, "要参与活动才能领取奖励哦~");
                 }
             }
         });
@@ -247,6 +249,8 @@ public class ExchangeFragment extends MvvmLazyLiveDataFragment<ExchanageFragment
                 .observe(this, (resp) -> {
                     if (resp != null) {
                         showDoingResultDialog(resp.coin);
+                    } else {
+                        ToastUtil.showShort(getActivity(), "奖励领取失败,请稍后重试!");
                     }
                 });
     }
