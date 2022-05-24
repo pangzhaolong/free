@@ -133,11 +133,33 @@
             android:background="#F5F6FA"
             android:gravity="center"
             android:orientation="horizontal"
-            android:paddingStart="26dp"
+            android:paddingStart="20dp"
             android:paddingTop="9dp"
             android:paddingEnd="29dp"
             android:paddingBottom="9dp">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="7"
+                android:gravity="center"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:src="@mipmap/video_icon" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="1dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="1dp"
+                    android:text="观看视频"
+                    android:textColor="#2C2C2C"
+                    android:textSize="13dp"
+
+                    />
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -248,7 +270,7 @@
                     android:layout_marginStart="1dp"
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="1dp"
-                    android:text="0元包邮领奖"
+                    android:text="包邮到家"
                     android:textColor="#2C2C2C"
                     android:textSize="13dp" />
 

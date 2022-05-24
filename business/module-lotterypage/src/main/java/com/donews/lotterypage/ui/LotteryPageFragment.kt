@@ -29,6 +29,8 @@ import com.donews.middle.bean.front.AwardBean
 import com.donews.middle.front.FrontConfigManager
 import com.donews.middle.front.LotteryConfigManager
 import com.donews.middle.views.TaskView
+import java.text.SimpleDateFormat
+import java.util.*
 
 @Route(path = RouterFragmentPath.HomeLottery.PAGER_LOTTERY)
 class LotteryPageFragment :
@@ -81,8 +83,39 @@ class LotteryPageFragment :
 
 
     private fun startTime() {
+        timeFormat();
+
+    }
+
+
+    private fun timeFormat() {
+        val calendar = Calendar.getInstance()
+        //服务器时间
         val time = getIns().getServiceTime()
-        mDataBinding.newUserGiftCountDown.updateCountDownTime(1 * 60 * 60 * 1000)
+        calendar.timeInMillis = time
+        //小时
+        var hour = calendar.get(Calendar.HOUR_OF_DAY)
+        //分钟
+        var minute = calendar.get(Calendar.MINUTE)
+        //秒
+        var second = calendar.get(Calendar.SECOND)
+        if (hour <= 10) {
+            //剩余的小时
+            var h = (10 - hour) * 60 * 60 * 1000
+            //剩余的分钟
+            var f = (60 - minute) * 60 * 1000
+            //剩余的分钟
+            var s = (60 - second) * 1000
+
+            var sum = h + f + s;
+            mDataBinding.newUserGiftCountDown.updateCountDownTime(sum.toLong())
+            mDataBinding.titleTime.visibility = View.VISIBLE
+            mDataBinding.newUserGiftCountDown.visibility = View.VISIBLE
+        } else {
+            mDataBinding.titleTime.text = "每日10点开奖"
+            mDataBinding.titleTime.visibility = View.VISIBLE
+            mDataBinding.newUserGiftCountDown.visibility = View.GONE
+        }
     }
 
     override fun onResume() {

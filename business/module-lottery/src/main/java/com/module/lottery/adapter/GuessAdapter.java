@@ -101,9 +101,9 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             if (holder instanceof ListHolder && mCommodityBean != null) {
                 ListHolder listHolder = ((ListHolder) (holder));
                 //价格
-                listHolder.mGuesslikeHeadBinding.price.setText(mCommodityBean.getDisplayPrice() + "");
+                listHolder.mGuesslikeHeadBinding.price.setText("0");
                 //参考价格
-                listHolder.mGuesslikeHeadBinding.referPrice.setText("参考价: " + "999");
+                listHolder.mGuesslikeHeadBinding.referPrice.setText("参考价: " + mCommodityBean.getDisplayPrice());
                 listHolder.mGuesslikeHeadBinding.referPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG); //中划线
                 int w = mContext.getResources().getDimensionPixelOffset(R.dimen.lottery_constant_144);
                 int h = mContext.getResources().getDimensionPixelOffset(R.dimen.lottery_constant_52);
