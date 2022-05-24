@@ -11,14 +11,13 @@ import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AlphaAnimation
-import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
+import com.blankj.utilcode.util.ToastUtils
 import com.dn.sdk.listener.rewardvideo.SimpleRewardVideoListener
 import com.donews.base.utils.ToastUtil
 import com.donews.collect.adapter.CollectAdapter
@@ -39,7 +38,6 @@ import com.google.gson.Gson
 import com.gyf.immersionbar.ImmersionBar
 import org.greenrobot.eventbus.EventBus
 import java.lang.Exception
-import java.math.BigDecimal
 import java.text.DecimalFormat
 
 /**
@@ -204,7 +202,12 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
     private fun initStopCard(){
         mViewModel?.stopCard?.observe(this, {
             it?.let {
-                loadGoods()
+                if (mFailProcessStatus){
+                    mFailProcessStatus = false
+                    startStepOne()
+                } else {
+                    loadGoods()
+                }
             }
         })
     }
@@ -216,6 +219,11 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
     private fun initDrawCard(){
         mViewModel?.drawCard?.observe(this, {
             it?.let {
+                if (it.cardTimes > 0){
+                    SPUtils.setInformain("oneTimeLimitTime",System.currentTimeMillis() + MAX_FRAGMENT_TIME * 1000)
+                    mHandler.removeCallbacks(fragmentTimer)
+                    mHandler.postDelayed(fragmentTimer,1000L)
+                }
                 DialogUtil.showDrawDialog(this,it.no,it.img){
                     loadStatus()
                 }
@@ -231,6 +239,11 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
     private fun initCardCharge(){
         mViewModel?.cardCharge?.observe(this, {
             it?.let {
+                if (it.uniTimes > 0){
+                    SPUtils.setInformain("twoTimeLimitTime",System.currentTimeMillis() + MAX_ADD_TIME * 1000)
+                    mHandler.removeCallbacks(addTimer)
+                    mHandler.postDelayed(addTimer,1000L)
+                }
                 loadStatus()
             }
         })
@@ -283,10 +296,15 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
         private const val STATUS_ONE = 1
         private const val STATUS_TWO = 2
         private const val STATUS_THREE = 3
+        //抽碎片可抽情况下的倒计时最大值
+        private const val MAX_FRAGMENT_TIME = 300
+        //冲能可冲情况下的倒计时最大值
+        private const val MAX_ADD_TIME = 60
     }
 
     //集卡状态处理
     private fun handleStatus() {
+        showFragmentAndAddBtnStatus()
         when (mStatusInfo?.status) {
             STATUS_ZERO -> {
                 startStepOne()
@@ -297,8 +315,11 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
             STATUS_TWO -> {
             }
             STATUS_THREE -> {
+                mFailProcessStatus = true
                 DialogUtil.showFailDialog(this@CollectActivity,Gson().toJson(mStatusInfo)){
-                    startStepOne()
+                    if (mStatusInfo?.cardId != null){
+                        loadStopCard(mStatusInfo?.cardId!!)
+                    }
                 }
             }
         }
@@ -451,8 +472,185 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
         }
     }
 
+    //抽碎片按钮和冲能按钮状态展示
+    private fun showFragmentAndAddBtnStatus(){
+        if (mStatusInfo?.cardTimes ?: 0 > 0){
+            if (isOneTimeLimit()){
+                mDataBinding?.timeLimitOneTv?.visibility = View.VISIBLE
+                mDataBinding?.centerBtn?.alpha = 0.5f
+                fragmentTime = ((SPUtils.getLongInformain("oneTimeLimitTime",0L) - System.currentTimeMillis()) / 1000).toInt()
+                mHandler.removeCallbacks(fragmentTimer)
+                mHandler.postDelayed(fragmentTimer,1000L)
+            } else {
+                mDataBinding?.timeLimitOneTv?.visibility = View.INVISIBLE
+                mDataBinding?.centerBtn?.alpha = 1f
+            }
+        } else {
+            mDataBinding?.timeLimitOneTv?.visibility = View.INVISIBLE
+        }
+        if (mStatusInfo?.uniTimes ?: 0 > 0){
+            if (isTwoTimeLimit()){
+                mDataBinding?.timeLimitTwoTv?.visibility = View.VISIBLE
+                mDataBinding?.bottomClick?.alpha = 0.75f
+                mDataBinding?.addTv?.alpha = 0.75f
+                addTime = ((SPUtils.getLongInformain("twoTimeLimitTime",0L) - System.currentTimeMillis()) / 1000).toInt()
+                mHandler.removeCallbacks(addTimer)
+                mHandler.postDelayed(addTimer,1000L)
+            } else {
+                mDataBinding?.timeLimitTwoTv?.visibility = View.INVISIBLE
+                mDataBinding?.bottomClick?.alpha = 1f
+                mDataBinding?.addTv?.alpha = 1f
+            }
+        } else {
+            mDataBinding?.timeLimitTwoTv?.visibility = View.INVISIBLE
+        }
+    }
+
+    //抽碎片按钮是否处于5分钟倒计时中
+    private fun isOneTimeLimit(): Boolean{
+        return SPUtils.getLongInformain("oneTimeLimitTime",0L) > System.currentTimeMillis()
+    }
+
+    private var fragmentTime = MAX_FRAGMENT_TIME
+    private val fragmentTimer = object : Runnable{
+        override fun run() {
+            try {
+                if (fragmentTime > 0) {
+                    fragmentTime--
+                    mDataBinding?.timeLimitOneTv?.text = TimeUtil.stringForTimeNoHour(fragmentTime * 1000L)
+                    if (fragmentTime == 0) {
+                        mDataBinding?.timeLimitOneTv?.visibility = View.GONE
+                        mDataBinding?.centerBtn?.alpha = 1f
+                    } else {
+                        mHandler.postDelayed(this, 1000L)
+                        mDataBinding?.timeLimitOneTv?.visibility = View.VISIBLE
+                        mDataBinding?.centerBtn?.alpha = 0.5f
+                    }
+                }
+            } catch (e:Exception){}
+        }
+
+    }
+
+    //点击抽碎片按钮
+    private var isSortFgClick = false//控制抽碎片连续点击
+    private fun clickFragmentBtn(){
+        if (isSortFgClick) return
+        isSortFgClick = true
+        mHandler.postDelayed({
+            isSortFgClick = false
+        },5000L)
+        AnimationUtil.startShakeAnimation(mDataBinding?.centerBtn, 1f,1)
+        AnimationUtil.startShakeAnimation(mDataBinding?.chouTv, 1f,1)
+        AnimationUtil.startShakeAnimation(mDataBinding?.timeLimitOneTv, 1f,1){
+            mStatusInfo?.let {
+                if (mStatusInfo?.cardTimes!! > 0){
+                    if (isOneTimeLimit()){
+                        ToastUtils.showShort("倒计时结束后才可以抽碎片")
+                    } else {
+                        RewardVideoAd.loadRewardVideoAd(
+                            this@CollectActivity,
+                            object : SimpleRewardVideoListener() {
+                                override fun onAdError(code: Int, errorMsg: String?) {
+                                    super.onAdError(code, errorMsg)
+                                    ToastUtil.show(mContext, "视频加载失败请稍后再试")
+                                }
+                                override fun onAdShow() {
+                                    super.onAdShow()
+                                    isSortFgClick = false
+                                }
+                                override fun onAdClose() {
+                                    super.onAdClose()
+                                    if (mStatusInfo!=null){
+                                        loadDrawCard(mStatusInfo!!.cardId)
+                                    }
+                                }
+                            },
+                            false
+                        )
+                    }
+                } else {
+                    ToastUtils.showShort("今日抽碎片剩余次数不足,明日再来!")
+                }
+            }
+        }
+    }
+
+    //充能按钮是否处于1分钟倒计时中
+    private fun isTwoTimeLimit(): Boolean{
+        return SPUtils.getLongInformain("twoTimeLimitTime",0L) > System.currentTimeMillis()
+    }
+
+    private var addTime = MAX_ADD_TIME
+    private val addTimer = object : Runnable{
+        override fun run() {
+            try {
+                if (addTime > 0) {
+                    addTime--
+                    mDataBinding?.timeLimitTwoTv?.text = TimeUtil.stringForTimeNoHour(addTime * 1000L)
+                    if (addTime == 0) {
+                        mDataBinding?.timeLimitTwoTv?.visibility = View.GONE
+                        mDataBinding?.bottomClick?.alpha = 1f
+                        mDataBinding?.addTv?.alpha = 1f
+                    } else {
+                        mHandler.postDelayed(this, 1000L)
+                        mDataBinding?.timeLimitTwoTv?.visibility = View.VISIBLE
+                        mDataBinding?.bottomClick?.alpha = 0.75f
+                        mDataBinding?.addTv?.alpha = 0.75f
+                    }
+                }
+            } catch (e:Exception){}
+        }
+
+    }
+
+    //点击充能按钮
+    private var isSortAddClick = false//控制充能连续点击
+    private fun clickAddBtn(){
+        if (isSortAddClick) return
+        isSortAddClick = true
+        mHandler.postDelayed({
+            isSortAddClick = false
+        },5000L)
+        AnimationUtil.clickPressAnimation(mDataBinding?.addTv)
+        AnimationUtil.clickPressAnimation(mDataBinding?.bottomClick){
+            mStatusInfo?.let {
+            if (mStatusInfo?.uniTimes!! > 0){
+                if (isTwoTimeLimit()){
+                    ToastUtils.showShort("倒计时结束后才可以冲能")
+                } else {
+                    RewardVideoAd.loadRewardVideoAd(
+                        this@CollectActivity,
+                        object : SimpleRewardVideoListener() {
+                            override fun onAdError(code: Int, errorMsg: String?) {
+                                super.onAdError(code, errorMsg)
+                                ToastUtil.show(mContext, "视频加载失败请稍后再试")
+                            }
+                            override fun onAdShow() {
+                                super.onAdShow()
+                                isSortAddClick = false
+                            }
+                            override fun onAdClose() {
+                                super.onAdClose()
+                                if (mStatusInfo != null){
+                                    loadCardCharge(mStatusInfo!!.cardId)
+                                }
+                            }
+                        },
+                        false
+                    )
+                }
+            } else {
+                ToastUtils.showShort("今日充能剩余次数不足,明日再来!")
+            }
+        }
+        }
+    }
+
     //标记通过点击换商品按钮动作
     private var mClickChangeClickStatus = false
+    //标记通过集卡过期弹窗触发
+    private var mFailProcessStatus = false
 
     private fun initClick() {
         setOnClickListener(mDataBinding?.iconBack,mDataBinding?.changeGoodClick,mDataBinding?.centerBtn,
@@ -471,54 +669,10 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
                     }
                 }
                 mDataBinding?.centerBtn->{
-                    mStatusInfo?.let {
-                        if (mStatusInfo?.cardTimes!! > 0){
-                            RewardVideoAd.loadRewardVideoAd(
-                                this@CollectActivity,
-                                object : SimpleRewardVideoListener() {
-                                    override fun onAdError(code: Int, errorMsg: String?) {
-                                        super.onAdError(code, errorMsg)
-                                        ToastUtil.show(mContext, "视频加载失败请稍后再试")
-                                    }
-
-                                    override fun onAdClose() {
-                                        super.onAdClose()
-                                        if (mStatusInfo!=null){
-                                            loadDrawCard(mStatusInfo!!.cardId)
-                                        }
-                                    }
-                                },
-                                false
-                            )
-                        } else {
-                            ToastUtil.show(context,"今日抽碎片剩余次数不足,明日再来!")
-                        }
-                    }
+                    clickFragmentBtn()
                 }
                 mDataBinding?.bottomClick,mDataBinding?.jsonAnimation->{
-                    mStatusInfo?.let {
-                        if (mStatusInfo?.uniTimes!! > 0){
-                            RewardVideoAd.loadRewardVideoAd(
-                                this@CollectActivity,
-                                object : SimpleRewardVideoListener() {
-                                    override fun onAdError(code: Int, errorMsg: String?) {
-                                        super.onAdError(code, errorMsg)
-                                        ToastUtil.show(mContext, "视频加载失败请稍后再试")
-                                    }
-
-                                    override fun onAdClose() {
-                                        super.onAdClose()
-                                        if (mStatusInfo != null){
-                                            loadCardCharge(mStatusInfo!!.cardId)
-                                        }
-                                    }
-                                },
-                                false
-                            )
-                        } else {
-                            ToastUtil.show(context,"今日充能剩余次数不足,明日再来!")
-                        }
-                    }
+                    clickAddBtn()
                 }
             }
         }

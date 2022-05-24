@@ -37,7 +37,7 @@ class StepThreeDialog : AbstractFragmentDialog<CollectDialogStepThreeBinding>(fa
             val curNum = SPUtils.getInformain("todayShowThreeStepNum", 0)
             DayStepUtil.instance.setStepThreeSp(curNum + 1)
             disMissDialog()
-        },3000L)
+        },5000L)
     }
 
     override fun isUseDataBinding() = true

@@ -1,6 +1,7 @@
 package com.donews.collect.util
 
 import android.widget.TextView
+import java.util.*
 
 /**
  *  make in st
@@ -65,6 +66,14 @@ object TimeUtil {
         tvMinute.text = (if (minutes < 10) "0$minutes" else minutes).toString()
         tvSecond.text = (if (second < 10) "0$second" else second).toString()
         return (if (day < 10) "0$day" else day).toString() + "天" + (if (hour < 10) "0$hour" else hour) + "时" + (if (minutes < 10) "0$minutes" else minutes) + "分" + (if (second < 10) "0$second" else second) + "秒"
+    }
+
+    //毫秒值转两位数(分:秒)格式（00:00）
+    fun stringForTimeNoHour(timeMs: Long): String {
+        val totalSeconds = timeMs / 1000
+        val seconds = totalSeconds % 60
+        val minutes = totalSeconds / 60 % 60
+        return Formatter().format("%02d:%02d", minutes, seconds).toString()
     }
 
 }

@@ -144,4 +144,86 @@ object AnimationUtil {
         view?.cancelAnimation()
     }
 
+    fun clickPressAnimation(view: View?,animationEndCall:()->Unit={}){
+        view?.let {
+            val animatorSet = AnimatorSet()
+            val animatorA = ObjectAnimator.ofFloat(view, "translationY", 0f, 15f).setDuration(500)
+            val animatorB = ObjectAnimator.ofFloat(view, "translationY", 15f, 0f).setDuration(500)
+            animatorSet.play(animatorA).before(animatorB)
+            animatorSet.addListener(object : Animator.AnimatorListener{
+                override fun onAnimationStart(animation: Animator?) {}
+                override fun onAnimationEnd(animation: Animator?) {
+                    animatorA.cancel()
+                    animatorB.cancel()
+                    animatorSet.cancel()
+                    animationEndCall.invoke()
+                }
+                override fun onAnimationCancel(animation: Animator?) {}
+                override fun onAnimationRepeat(animation: Animator?) {}
+            })
+            animatorSet.start()
+        }
+    }
+
+    /**
+     * 抖动
+     */
+    fun startShakeAnimation(view: View?, shakeFactor: Float = 1f,mRepeatCount: Int = ValueAnimator.INFINITE,mDuration:Long = 500L,animationEndCall:()->Unit={}):ObjectAnimator {
+        val pvhScaleX = PropertyValuesHolder.ofKeyframe(
+            View.SCALE_X,
+            Keyframe.ofFloat(0f, 1f),
+            Keyframe.ofFloat(.1f, .9f),
+            Keyframe.ofFloat(.2f, .9f),
+            Keyframe.ofFloat(.3f, 1.1f),
+            Keyframe.ofFloat(.4f, 1.1f),
+            Keyframe.ofFloat(.5f, 1.1f),
+            Keyframe.ofFloat(.6f, 1.1f),
+            Keyframe.ofFloat(.7f, 1.1f),
+            Keyframe.ofFloat(.8f, 1.1f),
+            Keyframe.ofFloat(.9f, 1.1f),
+            Keyframe.ofFloat(1f, 1f))
+        val pvhScaleY = PropertyValuesHolder.ofKeyframe(
+            View.SCALE_Y,
+            Keyframe.ofFloat(0f, 1f),
+            Keyframe.ofFloat(.1f, .9f),
+            Keyframe.ofFloat(.2f, .9f),
+            Keyframe.ofFloat(.3f, 1.1f),
+            Keyframe.ofFloat(.4f, 1.1f),
+            Keyframe.ofFloat(.5f, 1.1f),
+            Keyframe.ofFloat(.6f, 1.1f),
+            Keyframe.ofFloat(.7f, 1.1f),
+            Keyframe.ofFloat(.8f, 1.1f),
+            Keyframe.ofFloat(.9f, 1.1f),
+            Keyframe.ofFloat(1f, 1f)
+        )
+        val pvhRotate = PropertyValuesHolder.ofKeyframe(
+            View.ROTATION,
+            Keyframe.ofFloat(0f, 0f),
+            Keyframe.ofFloat(.1f, -3f * shakeFactor),
+            Keyframe.ofFloat(.2f, -3f * shakeFactor),
+            Keyframe.ofFloat(.3f, 3f * shakeFactor),
+            Keyframe.ofFloat(.4f, -3f * shakeFactor),
+            Keyframe.ofFloat(.5f, 3f * shakeFactor),
+            Keyframe.ofFloat(.6f, -3f * shakeFactor),
+            Keyframe.ofFloat(.7f, 3f * shakeFactor),
+            Keyframe.ofFloat(.8f, -3f * shakeFactor),
+            Keyframe.ofFloat(.9f, 3f * shakeFactor),
+            Keyframe.ofFloat(1f, 0f)
+        )
+        return ObjectAnimator.ofPropertyValuesHolder(view, pvhScaleX, pvhScaleY, pvhRotate)
+            .setDuration(mDuration).apply {
+                repeatCount = mRepeatCount
+                addListener(object: Animator.AnimatorListener{
+                    override fun onAnimationStart(animation: Animator?) {}
+                    override fun onAnimationEnd(animation: Animator?) {
+                        cancel()
+                        animationEndCall.invoke()
+                    }
+                    override fun onAnimationCancel(animation: Animator?) {}
+                    override fun onAnimationRepeat(animation: Animator?) {}
+                })
+                start()
+            }
+    }
+
 }

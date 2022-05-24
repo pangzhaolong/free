@@ -36,7 +36,7 @@ class StepTwoDialog : AbstractFragmentDialog<CollectDialogStepTwoBinding>(false,
             val curNum = SPUtils.getInformain("todayShowTwoStepNum", 0)
             DayStepUtil.instance.setStepTwoSp(curNum + 1)
             disMissDialog()
-        },3000L)
+        },5000L)
     }
 
     override fun isUseDataBinding() = true
