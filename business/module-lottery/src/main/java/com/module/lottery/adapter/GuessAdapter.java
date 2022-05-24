@@ -55,6 +55,7 @@ import com.module_lottery.databinding.GuesslikeItemLayoutBinding;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -109,8 +110,7 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 int h = mContext.getResources().getDimensionPixelOffset(R.dimen.lottery_constant_52);
 
                 setTextImage(w, h, listHolder.mGuesslikeHeadBinding.title, mCommodityBean.getTitle(), R.mipmap.free_panic_buying);
-
-                listHolder.mGuesslikeHeadBinding.cycle.setText("第" + mCommodityBean.getPeriod() + "期");
+                listHolder.mGuesslikeHeadBinding.timeTask.updateCountDownTime(getSurplusTime());
                 initViewPager(listHolder);
 
 
@@ -122,7 +122,7 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                         }
                     }
                 });
-                    //=======================================抽奖码=========================
+                //=======================================抽奖码=========================
                 if (mCommodityBean.getLotteryCodeBean() != null) {
                     //初始化获取的抽奖码列表
                     initListLottery(listHolder.mGuesslikeHeadBinding, mCommodityBean.getLotteryCodeBean());
@@ -154,6 +154,28 @@ public class GuessAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 }
             }
         }
+    }
+
+
+    private int getSurplusTime() {
+        Calendar calendar = Calendar.getInstance();
+        //小时
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        //分钟
+        int minute = calendar.get(Calendar.MINUTE);
+        //秒
+        int second = calendar.get(Calendar.SECOND);
+
+        //剩余的小时
+        int h = (24 - hour) * 60 * 60 * 1000;
+        //剩余的分钟;
+        int f = (60 - minute) * 60 * 1000;
+        //剩余的分钟
+        int s = (60 - second) * 1000;
+        int sum = h + f + s;
+
+        return sum;
+
     }
 
 
