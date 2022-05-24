@@ -996,7 +996,13 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
 
     //抽奖操作过后,我这边上报
     @Subscribe(threadMode = ThreadMode.MAIN)
-    open fun onTurntableBeanEvent(event: LotteryEventUnlockBean?) {
+    fun onLotteryEvent(event: LotteryEventUnlockBean?) {
+        mShareVideModel.requestAdReport(MainShareViewModel.ID_LOTTERY, MainShareViewModel.TYPE_LOTTERY)
+    }
+
+    //签到会上报,我这边刷新列表
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSignEvent(event: LotteryEventUnlockBean?) {
         mShareVideModel.requestAdReport(MainShareViewModel.ID_LOTTERY, MainShareViewModel.TYPE_LOTTERY)
     }
     //endregion
