@@ -82,11 +82,11 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/rotateView"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="34.31dp"
+                    android:layout_marginEnd="34.31dp"
                     android:scaleType="fitXY"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/titleOne"
                     app:srcCompat="@drawable/collect_icon_rotate" />
 
@@ -100,23 +100,25 @@
                     app:srcCompat="@drawable/collect_icon_step_star" />
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginEnd="50dp"
                     app:layout_constraintBottom_toBottomOf="@+id/rotateView"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/rotateView"
                     app:layout_constraintStart_toStartOf="@+id/rotateView"
-                    app:layout_constraintTop_toBottomOf="@+id/titleOne"
+                    app:layout_constraintTop_toTopOf="@+id/titleOne"
                     app:srcCompat="@drawable/collect_icon_step_two_img" />
 
                 <TextView
                     android:id="@+id/btn"
-                    android:onClick="@{eventListener::receiveBtn}"
-                    android:background="@drawable/collect_icon_step_four_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/btSpace"
+                    android:background="@drawable/collect_icon_step_four_btn"
+                    android:onClick="@{eventListener::receiveBtn}"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btSpace" />
 
                 <TextView
                     android:id="@+id/tvLeftBottom"
@@ -125,7 +127,7 @@
                     android:layout_marginBottom="15dp"
                     android:text="集卡"
                     android:textColor="@color/white"
-                    android:textSize="17.33sp"
+                    android:textSize="15.33sp"
                     app:layout_constraintBottom_toBottomOf="@+id/rotateView"
                     app:layout_constraintEnd_toStartOf="@+id/tvRightBottom"
                     app:layout_constraintHorizontal_chainStyle="packed"
@@ -137,7 +139,7 @@
                     android:layout_height="wrap_content"
                     android:text="9"
                     android:textColor="#FFF2B3"
-                    android:textSize="28sp"
+                    android:textSize="24sp"
                     app:layout_constraintBaseline_toBaselineOf="@+id/tvLeftBottom"
                     app:layout_constraintEnd_toStartOf="@+id/tvOtherBottom"
                     app:layout_constraintStart_toEndOf="@+id/tvLeftBottom" />
@@ -148,7 +150,7 @@
                     android:layout_height="wrap_content"
                     android:text="张"
                     android:textColor="@color/white"
-                    android:textSize="17.33sp"
+                    android:textSize="15.33sp"
                     app:layout_constraintBottom_toBottomOf="@+id/tvLeftBottom"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_chainStyle="packed"
@@ -156,38 +158,38 @@
 
                 <Space
                     android:id="@+id/btSpace"
-                    android:layout_marginBottom="5dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/rotateView"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/rotateView" />
 
                 <TextView
                     android:id="@+id/leftTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:text="开启“超容易”模式"
-                    app:layout_constraintTop_toTopOf="@+id/btn"
-                    app:layout_constraintBottom_toBottomOf="@id/btn"
-                    app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintEnd_toStartOf="@+id/rightTv"
-                    app:layout_constraintStart_toStartOf="@+id/btn"
                     android:textColor="@color/white"
                     android:textSize="16sp"
-                    android:gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    app:layout_constraintBottom_toBottomOf="@id/btn"
+                    app:layout_constraintEnd_toStartOf="@+id/rightTv"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="@+id/btn"
+                    app:layout_constraintTop_toTopOf="@+id/btn" />
 
                 <TextView
                     android:id="@+id/rightTv"
-                    app:layout_constraintBottom_toBottomOf="@id/btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:gravity="center"
                     android:text="(5s)"
-                    app:layout_constraintTop_toTopOf="@+id/btn"
-                    app:layout_constraintStart_toEndOf="@+id/leftTv"
-                    app:layout_constraintEnd_toEndOf="@+id/btn"
                     android:textColor="@color/white"
                     android:textSize="14.67sp"
-                    android:gravity="center"
-                    android:layout_marginStart="4dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    app:layout_constraintBottom_toBottomOf="@id/btn"
+                    app:layout_constraintEnd_toEndOf="@+id/btn"
+                    app:layout_constraintStart_toEndOf="@+id/leftTv"
+                    app:layout_constraintTop_toTopOf="@+id/btn" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

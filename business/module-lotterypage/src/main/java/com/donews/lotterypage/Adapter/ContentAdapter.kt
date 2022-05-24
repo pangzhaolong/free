@@ -1,5 +1,6 @@
 package com.donews.lotterypage.Adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Paint
 import android.view.LayoutInflater
@@ -39,6 +40,7 @@ public class ContentAdapter(context: Context) :
         mLayoutId = layoutId
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ContentHolder, position: Int) {
         val goodsListDTO = mLotteryPageBean!!.list[position]
         val roundedCorners = RoundedCorners(5)
@@ -47,13 +49,15 @@ public class ContentAdapter(context: Context) :
         imageUrl = UrlUtils.formatUrlPrefix(imageUrl)
         Glide.with(mContext).load(imageUrl).apply(options)
             .into(holder.mSpikeContextItemBinding.picture)
-        holder.mSpikeContextItemBinding.nameLab.text=mLotteryPageBean!!.list[position].title
+        holder.mSpikeContextItemBinding.nameLab.text = mLotteryPageBean!!.list[position].title
         var valuePrice = mLotteryPageBean!!.list[position]?.displayPrice
         holder.itemView.setOnClickListener {
             if (mListener != null) {
                 mListener!!.onItemClick(goodsListDTO)
             }
         }
+        holder.mSpikeContextItemBinding.price.text = ""+mLotteryPageBean!!.list.get(position).displayPrice
+
     }
 
     override fun getItemCount(): Int {

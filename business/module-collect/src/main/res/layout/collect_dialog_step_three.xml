@@ -29,11 +29,11 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/rotateView"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:scaleType="fitXY"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginEnd="34.31dp"
+                    android:layout_marginStart="34.31dp"
                     app:layout_constraintTop_toTopOf="@+id/title"
                     app:srcCompat="@drawable/collect_icon_rotate" />
 
@@ -47,12 +47,14 @@
                     app:srcCompat="@drawable/collect_icon_step_star" />
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginEnd="50dp"
                     app:layout_constraintBottom_toBottomOf="@+id/rotateView"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/rotateView"
                     app:layout_constraintStart_toStartOf="@+id/rotateView"
-                    app:layout_constraintTop_toBottomOf="@+id/title"
+                    app:layout_constraintTop_toTopOf="@+id/rotateView"
                     app:srcCompat="@drawable/collect_icon_step_two_img" />
 
                 <TextView
@@ -62,7 +64,7 @@
                     android:layout_marginBottom="15dp"
                     android:text="集卡"
                     android:textColor="@color/white"
-                    android:textSize="17.33sp"
+                    android:textSize="15.33sp"
                     app:layout_constraintBottom_toBottomOf="@+id/rotateView"
                     app:layout_constraintEnd_toStartOf="@+id/tvRightBottom"
                     app:layout_constraintHorizontal_chainStyle="packed"
@@ -74,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:text="18"
                     android:textColor="#FFF2B3"
-                    android:textSize="28sp"
+                    android:textSize="24sp"
                     app:layout_constraintBaseline_toBaselineOf="@+id/tvLeftBottom"
                     app:layout_constraintEnd_toStartOf="@+id/tvOtherBottom"
                     app:layout_constraintStart_toEndOf="@+id/tvLeftBottom" />
@@ -85,7 +87,7 @@
                     android:layout_height="wrap_content"
                     android:text="张"
                     android:textColor="@color/white"
-                    android:textSize="17.33sp"
+                    android:textSize="15.33sp"
                     app:layout_constraintBottom_toBottomOf="@+id/tvLeftBottom"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_chainStyle="packed"
