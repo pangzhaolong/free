@@ -25,12 +25,9 @@ import com.donews.common.base.MvvmLazyLiveDataFragment
 import com.donews.common.router.RouterActivityPath
 import com.donews.common.router.RouterFragmentPath
 import com.donews.middle.IMainParams
-import com.donews.middle.adutils.InterstitialAd
 import com.donews.middle.adutils.InterstitialAd.showAd
-import com.donews.middle.adutils.InterstitialFullAd
 import com.donews.middle.adutils.InterstitialFullAd.showAd
 import com.donews.middle.adutils.RewardVideoAd
-import com.donews.middle.adutils.adcontrol.AdControlManager
 import com.donews.middle.adutils.adcontrol.AdControlManager.adControlBean
 import com.donews.middle.bean.LotteryEventUnlockBean
 import com.donews.middle.mainShare.bean.BubbleBean
@@ -61,11 +58,8 @@ import com.donews.middle.events.TaskReportEvent
 import com.donews.middle.viewmodel.BaseMiddleViewModel
 import com.donews.utilslibrary.utils.DensityUtils
 import com.donews.yfsdk.check.InterstitialAdCheck
-import com.donews.yfsdk.check.InterstitialAdCheck.isEnable
 import com.donews.yfsdk.moniter.PageMonitor
 import com.donews.yfsdk.monitor.InterstitialFullAdCheck
-import com.donews.yfsdk.monitor.InterstitialFullAdCheck.isEnable
-import com.donews.yfsdk.monitor.PageMoniterCheck
 import com.donews.yfsdk.monitor.PageMoniterCheck.showAdSuccess
 import com.orhanobut.logger.Logger
 
@@ -143,7 +137,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
 
             override fun showAd() {
                 val activity: Activity = requireActivity()
-                if (activity == null || activity.isFinishing) {
+                if (activity.isFinishing) {
                     return
                 }
                 if (activity is IMainParams &&
