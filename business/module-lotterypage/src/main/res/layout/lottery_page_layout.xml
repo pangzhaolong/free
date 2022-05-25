@@ -166,10 +166,10 @@
                         android:layout_marginEnd="13dp"
                         android:background="#FF939EAF" />
 
-                    <com.donews.middle.views.BarrageView
-                        android:id="@+id/reveal"
+                    <com.donews.middle.views.ScrollVerticallyView
+                        android:id="@+id/reveal_view"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight="1" />
                 </LinearLayout>
             </RelativeLayout>
@@ -189,11 +189,11 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_marginTop="20dp"
             android:id="@+id/spike_content_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="13dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="13dp"
             android:clipToPadding="false"
             android:orientation="vertical"
