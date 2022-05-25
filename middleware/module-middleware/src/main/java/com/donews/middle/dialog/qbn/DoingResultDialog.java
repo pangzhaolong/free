@@ -50,7 +50,7 @@ public class DoingResultDialog extends BaseDialog<TurntableDoingDialogLayoutBind
         weakDoingResult.sendMessageDelayed(message, 1000);
         setOnDismissListener(this);
         if (mPrize != null) {
-            mDataBinding.award.setText(mPrize.getTitle());
+            mDataBinding.award.setText(mPrize.getDesc());
         } else {
             mDataBinding.award.setText("" + count);
         }
