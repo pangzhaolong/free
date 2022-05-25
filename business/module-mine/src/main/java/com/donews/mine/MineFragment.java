@@ -23,8 +23,7 @@ import com.dn.events.events.LotteryStatusEvent;
 import com.dn.events.events.UserTelBindEvent;
 import com.dn.events.events.WalletRefreshEvent;
 import com.dn.sdk.AdCustomError;
-import com.dn.sdk.listener.interstitial.SimpleInterstitialFullListener;
-import com.dn.sdk.listener.interstitial.SimpleInterstitialListener;
+import com.dn.sdk.listener.interstitialfull.SimpleInterstitialFullListener;
 import com.donews.base.utils.GsonUtils;
 import com.donews.base.utils.ToastUtil;
 import com.donews.base.utils.glide.GlideUtils;
@@ -33,7 +32,6 @@ import com.donews.common.contract.LoginHelp;
 import com.donews.common.contract.UserInfoBean;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
-import com.donews.middle.adutils.InterstitialAd;
 import com.donews.middle.adutils.InterstitialFullAd;
 import com.donews.middle.adutils.adcontrol.AdControlManager;
 import com.donews.middle.views.TaskView;
@@ -48,11 +46,8 @@ import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
 import com.donews.network.exception.ApiException;
-import com.donews.utilslibrary.analysis.AnalysisUtils;
-import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.JsonUtils;
-import com.donews.yfsdk.check.InterstitialAdCheck;
 import com.donews.yfsdk.moniter.PageMonitor;
 import com.donews.yfsdk.monitor.InterstitialFullAdCheck;
 import com.donews.yfsdk.monitor.PageMoniterCheck;
@@ -95,7 +90,7 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
                 if (AdControlManager.INSTANCE.getAdControlBean().getUseInstlFullWhenSwitch()) {
                     return InterstitialFullAdCheck.INSTANCE.isEnable();
                 } else {
-                    return InterstitialAdCheck.INSTANCE.isEnable();
+                    return InterstitialFullAdCheck.INSTANCE.isEnable();
                 }
             }
 
@@ -111,7 +106,7 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
                     return;
                 }
                 if (!AdControlManager.INSTANCE.getAdControlBean().getUseInstlFullWhenSwitch()) {
-                    InterstitialAd.INSTANCE.showAd(activity, new SimpleInterstitialListener() {
+                    InterstitialFullAd.INSTANCE.showAd(activity, new SimpleInterstitialFullListener() {
                         @Override
                         public void onAdError(int code, String errorMsg) {
                             super.onAdError(code, errorMsg);
@@ -119,8 +114,8 @@ public class MineFragment extends MvvmLazyLiveDataFragment<MineFragmentBinding, 
                         }
 
                         @Override
-                        public void onAdClosed() {
-                            super.onAdClosed();
+                        public void onAdClose() {
+                            super.onAdClose();
                             PageMoniterCheck.INSTANCE.showAdSuccess("mine_fragment");
                         }
                     });

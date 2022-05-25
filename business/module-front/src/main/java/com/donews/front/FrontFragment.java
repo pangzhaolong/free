@@ -22,26 +22,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.BarUtils;
 import com.dn.events.events.DoubleRpEvent;
 import com.dn.events.events.FrontScrollEvent;
 import com.dn.events.events.LoginLodingStartStatus;
 import com.dn.events.events.RedPackageStatus;
 import com.dn.events.events.WalletRefreshEvent;
-import com.dn.sdk.AdCustomError;
-import com.dn.sdk.listener.interstitial.SimpleInterstitialFullListener;
-import com.dn.sdk.listener.interstitial.SimpleInterstitialListener;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
-import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.front.adapter.FragmentAdapter;
 import com.donews.front.databinding.FrontFragmentBinding;
 import com.donews.front.dialog.LotteryMore4RpDialog;
 import com.donews.front.viewModel.FrontViewModel;
-import com.donews.middle.adutils.InterstitialAd;
-import com.donews.middle.adutils.InterstitialFullAd;
-import com.donews.middle.adutils.adcontrol.AdControlManager;
 import com.donews.middle.bean.WalletBean;
 import com.donews.middle.bean.front.LotteryCategoryBean;
 import com.donews.middle.bean.home.ServerTimeBean;
@@ -51,20 +43,13 @@ import com.donews.middle.front.FrontConfigManager;
 import com.donews.middle.views.TabItem;
 import com.donews.middle.views.TaskView;
 import com.donews.middle.views.YywView;
-import com.donews.utilslibrary.analysis.AnalysisUtils;
-import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.DensityUtils;
 import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.SPUtils;
-import com.donews.yfsdk.check.InterstitialAdCheck;
-import com.donews.yfsdk.moniter.PageMonitor;
-import com.donews.yfsdk.monitor.InterstitialFullAdCheck;
-import com.donews.yfsdk.monitor.PageMoniterCheck;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -207,14 +192,14 @@ public class FrontFragment extends MvvmLazyLiveDataFragment<FrontFragmentBinding
         }
         initSrl();
 
-        mDataBinding.frontLotteryRuleBtnLl.setOnClickListener(v -> ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY)
+/*        mDataBinding.frontLotteryRuleBtnLl.setOnClickListener(v -> ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY)
                 .withString("title", "中奖攻略")
                 .withString("url", BuildConfig.WEB_BASE_URL)
                 .navigation());
         mDataBinding.frontLotteryGotoLl.setOnClickListener(v -> ARouter.getInstance().build(RouterActivityPath.Web.PAGER_WEB_ACTIVITY)
                 .withString("title", "中奖攻略")
                 .withString("url", BuildConfig.WEB_BASE_URL)
-                .navigation());
+                .navigation());*/
         mDataBinding.frontLotteryRuleRl.setVisibility(View.GONE);
 
         startTimer();

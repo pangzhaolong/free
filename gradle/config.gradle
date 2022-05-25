@@ -61,7 +61,7 @@ ext {
 
             "multidex"                     : "com.android.support:multidex:1.0.3",
 
-            "gson"                         : "com.google.code.gson:gson:2.8.6",
+            "gson"                         : "com.google.code.gson:gson:2.8.5",
             "mmkv"                         : "com.tencent:mmkv-static:1.2.7",
             "BaseRecyclerViewAdapterHelper": "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.7",
             "immersionbar"                 : "com.gyf.immersionbar:immersionbar:3.0.0",

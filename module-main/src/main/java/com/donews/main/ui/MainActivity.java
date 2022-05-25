@@ -81,7 +81,6 @@ import com.donews.middle.bean.mine2.resp.DailyTaskResp;
 import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.middle.adutils.BannerAd;
 import com.donews.middle.adutils.DnSdkInit;
-import com.donews.middle.adutils.InterstitialAd;
 import com.donews.middle.adutils.InterstitialFullAd;
 import com.donews.middle.adutils.RewardVideoAd;
 import com.donews.middle.bean.HighValueGoodsBean;
@@ -242,8 +241,6 @@ public class MainActivity
         new Handler().postDelayed(() -> {
             //预加载一个激励视频
             RewardVideoAd.INSTANCE.preloadAd(this, false);
-            //预加载一个插屏广告
-            InterstitialAd.INSTANCE.cacheAd(this);
         }, 3000);
 
         //上报一个测试友盟多参数事件
