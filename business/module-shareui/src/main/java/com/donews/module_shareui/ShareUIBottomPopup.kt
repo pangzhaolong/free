@@ -1,6 +1,8 @@
 package com.donews.module_shareui
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.fragment.app.FragmentActivity
 import com.blankj.utilcode.util.ScreenUtils
@@ -18,10 +20,15 @@ class ShareUIBottomPopup(context:Context): PositionPopupView(context) {
 
     override fun getImplLayoutId() = R.layout.shareui_bottom_popup
 
+    private val mHandler = Handler(Looper.getMainLooper())
+
     override fun onCreate() {
         super.onCreate()
         findViewById<View>(R.id.tv_wechat).setOnClickListener { v: View? ->
-            EventBus.getDefault().post(ShareClickNotifyEvent())
+            mHandler.removeCallbacksAndMessages(null)
+            mHandler.postDelayed({
+                EventBus.getDefault().post(ShareClickNotifyEvent())
+            },3000L)
             val shareManager = ShareManager()
             val shareItem = ShareItem()
             shareItem.title = "送你88元新人红包，立即领取>>"
@@ -36,7 +43,10 @@ class ShareUIBottomPopup(context:Context): PositionPopupView(context) {
             dismiss()
         }
         findViewById<View>(R.id.tv_moment).setOnClickListener { v: View? ->
-            EventBus.getDefault().post(ShareClickNotifyEvent())
+            mHandler.removeCallbacksAndMessages(null)
+            mHandler.postDelayed({
+                EventBus.getDefault().post(ShareClickNotifyEvent())
+            },3000L)
             val shareManager = ShareManager()
             val shareItem = ShareItem()
             shareItem.title = "送你88元新人红包，立即领取>>"
@@ -54,5 +64,10 @@ class ShareUIBottomPopup(context:Context): PositionPopupView(context) {
     }
 
     override fun getPopupWidth() =  ScreenUtils.getScreenWidth()
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mHandler.removeCallbacksAndMessages(null)
+    }
 
 }
