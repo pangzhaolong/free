@@ -5,6 +5,7 @@ import com.donews.network.cache.model.CacheMode
 import com.donews.network.callback.SimpleCallBack
 import com.donews.network.exception.ApiException
 import com.donews.task.BuildConfig
+import com.donews.task.bean.TaskCenterInfo
 import com.donews.task.bean.TaskConfigInfo
 import com.google.gson.Gson
 import com.orhanobut.logger.Logger
@@ -15,8 +16,8 @@ import com.orhanobut.logger.Logger
  */
 object TaskControlUtil {
 
-    //https://monetization.dev.tagtic.cn/rule/v1/calculate/free-taskConfig-dev
-    private const val TASK_CONFIG = "-taskConfig"
+    //https://monetization.dev.tagtic.cn/rule/v1/calculate/free-activityConfig-dev
+    private const val TASK_CONFIG = "-activityConfig"
     private const val TASK_CONFIG_URL =
         BuildConfig.BASE_CONFIG_URL + BuildConfig.APP_IDENTIFICATION + TASK_CONFIG + BuildConfig.BASE_RULE_URL
 
@@ -24,21 +25,21 @@ object TaskControlUtil {
         getCenterConfig()
     }
 
-    private const val taskJson = "{\"ad\":{\"mMaxCountTime\":180,\"todaySeeAdMaxNum\":3},\"box\":{\"boxMaxOpenNum\":5,\"boxMaxTime\":120},\"exchange\":{\"exchangeActiveNum\":15},\"img\":{\"luckCollectImg\":\"https://img0.baidu.com/it/u=3529581707,981182388\\u0026fm=253\\u0026fmt=auto\\u0026app=138\\u0026f=JPEG?w=500\\u0026h=202\",\"luckPanImg\":\"https://img0.baidu.com/it/u=3529581707,981182388\\u0026fm=253\\u0026fmt=auto\\u0026app=138\\u0026f=JPEG?w=500\\u0026h=202\"}}"
+    private const val taskJson = "{\"activeExchange\":{\"active\":1,\"coin\":1000},\"items\":[{\"desc\":null,\"id\":0,\"open\":true,\"repeat\":10,\"task_type\":\"turntable\",\"times\":1,\"title\":\"转盘\"},{\"desc\":null,\"id\":1,\"open\":true,\"repeat\":100,\"task_type\":\"sign\",\"times\":1,\"title\":\"签到\"},{\"desc\":null,\"id\":2,\"open\":true,\"repeat\":10,\"task_type\":\"lottery\",\"times\":1,\"title\":\"抽奖\"},{\"desc\":null,\"id\":3,\"open\":true,\"repeat\":10,\"task_type\":\"share\",\"times\":1,\"title\":\"分享\"},{\"desc\":null,\"id\":4,\"open\":true,\"repeat\":10,\"task_type\":\"collect\",\"times\":1,\"title\":\"集卡\"},{\"cd\":30,\"desc\":null,\"id\":5,\"open\":true,\"repeat\":30,\"task_type\":\"video\",\"times\":1,\"title\":\"视频\"},{\"cd\":90,\"desc\":null,\"id\":6,\"open\":true,\"repeat\":20,\"task_type\":\"giftbox\",\"times\":1,\"title\":\"宝箱\"}]}"
     /**
      * 连对奖励配置
      */
-    private var taskControlConfig: TaskConfigInfo? = Gson().fromJson(taskJson,TaskConfigInfo::class.java)
+    private var taskControlConfig: TaskCenterInfo? = Gson().fromJson(taskJson,TaskCenterInfo::class.java)
 
     private fun getCenterConfig(){
         EasyHttp.get(TASK_CONFIG_URL)
             .cacheMode(CacheMode.NO_CACHE)
-            .execute(object : SimpleCallBack<TaskConfigInfo>() {
+            .execute(object : SimpleCallBack<TaskCenterInfo>() {
                 override fun onError(e: ApiException?) {
                     Logger.e(e, "")
                 }
 
-                override fun onSuccess(t: TaskConfigInfo?) {
+                override fun onSuccess(t: TaskCenterInfo?) {
                     t?.let {
                         taskControlConfig = it
                     }

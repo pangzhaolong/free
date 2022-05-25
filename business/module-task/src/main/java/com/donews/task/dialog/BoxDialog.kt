@@ -1,11 +1,13 @@
 package com.donews.task.dialog
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.os.Bundle
 import android.view.View
 import com.donews.base.fragmentdialog.AbstractFragmentDialog
 import com.donews.task.R
 import com.donews.task.databinding.TaskDialogBoxBinding
+import com.donews.task.util.AnimationUtil
 
 /**
  *  make in st
@@ -38,8 +40,11 @@ class BoxDialog : AbstractFragmentDialog<TaskDialogBoxBinding>(false, false) {
 
     override fun getLayoutId() = R.layout.task_dialog_box
 
+    private var rotate: ObjectAnimator? = null
+
     override fun initView() {
         dataBinding.eventListener = EventListener()
+        rotate = AnimationUtil.rotate(dataBinding?.rotateView)
         if (mIsActive) dataBinding.tvEnd.text = "1点活跃度" else dataBinding.tvEnd.text = "1点幸运值"
     }
 
@@ -51,6 +56,14 @@ class BoxDialog : AbstractFragmentDialog<TaskDialogBoxBinding>(false, false) {
         fun receiveBtn(view: View) {
             clickDialogBtn.invoke()
             disMissDialog()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (rotate != null && rotate!!.isRunning) {
+            rotate?.cancel()
+            rotate = null
         }
     }
 
