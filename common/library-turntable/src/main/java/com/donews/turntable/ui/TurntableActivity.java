@@ -82,6 +82,7 @@ public class TurntableActivity extends TurntableBaseActivity<TurntableActivityLa
         });
         mDataBing.turntableLotteryButton.setOnClickListener(this);
         mDataBing.turntableDrawAgain.setOnClickListener(this);
+        mDataBing.exitIcon.setOnClickListener(this);
     }
 
     private void startLottery() {
@@ -99,7 +100,7 @@ public class TurntableActivity extends TurntableBaseActivity<TurntableActivityLa
                         @Override
                         public void onSuccess(RewardedBean recommendBean) {
                             if (recommendBean != null) {
-                                loadAdAndStatusCallback(recommendBean );
+                                loadAdAndStatusCallback(recommendBean);
                             }
                         }
                     });
@@ -111,7 +112,7 @@ public class TurntableActivity extends TurntableBaseActivity<TurntableActivityLa
      * 用来加载并显示广告和接收广告状态的回调
      */
 
-    private void loadAdAndStatusCallback(RewardedBean recommendBean  ) {
+    private void loadAdAndStatusCallback(RewardedBean recommendBean) {
         if (mPlayAdUtilsTool != null) {
             mPlayAdUtilsTool.showRewardVideo(this);
             mPlayAdUtilsTool.setIStateListener(new PlayAdUtilsTool.IStateListener() {
@@ -121,10 +122,12 @@ public class TurntableActivity extends TurntableBaseActivity<TurntableActivityLa
                     //根据规则生成度数
                     mDataBing.turntableView.startAnimator(recommendBean);
                 }
+
                 @Override
                 public void onFinish() {
 
                 }
+
                 @Override
                 public void onError(int code, @Nullable String errorMsg) {
 
@@ -132,7 +135,6 @@ public class TurntableActivity extends TurntableBaseActivity<TurntableActivityLa
             });
         }
     }
-
 
 
     //点击tips
@@ -162,6 +164,9 @@ public class TurntableActivity extends TurntableBaseActivity<TurntableActivityLa
         }
         if (v.getId() == R.id.turntable_lottery_button) {
             startLottery();
+        }
+        if (v.getId() == R.id.exit_icon) {
+            finish();
         }
     }
 }
