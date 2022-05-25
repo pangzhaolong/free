@@ -5,7 +5,6 @@ import com.donews.utilslibrary.utils.DeviceUtils
 import com.donews.yfsdk.bean.AdConfigBean
 import com.donews.yfsdk.loader.AdManager
 import com.donews.yfsdk.manager.AdConfigManager
-import com.donews.yfsdk.check.InterstitialAdCheck
 import com.donews.yfsdk.monitor.InterstitialFullAdCheck
 import com.donews.yfsdk.utils.AppUtil
 
@@ -15,7 +14,6 @@ object YfAdSdk {
             AdManager.initSDK(it, DeviceUtils.getChannelName(), BuildConfig.DEBUG)
             AdConfigManager.init(adConfigBean)
             AppUtil.saveAppInstallTime()
-            InterstitialAdCheck.reset()
             InterstitialFullAdCheck.reset()
         }
     }

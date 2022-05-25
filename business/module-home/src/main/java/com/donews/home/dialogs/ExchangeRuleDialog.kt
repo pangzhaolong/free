@@ -4,13 +4,13 @@ import android.text.Html
 import android.view.View
 import com.donews.base.fragmentdialog.AbstractFragmentDialog
 import com.donews.home.R
-import com.donews.home.databinding.MineTaskDialogRuleBinding
+import com.donews.home.databinding.MainTaskDialogRuleBinding
 
 /**
  *  make in st
  *  on 2022/5/9 11:35
  */
-class ExchangeRuleDialog : AbstractFragmentDialog<MineTaskDialogRuleBinding>(false, false) {
+class ExchangeRuleDialog : AbstractFragmentDialog<MainTaskDialogRuleBinding>(false, false) {
 
     companion object {
         fun newInstance(): ExchangeRuleDialog {
@@ -18,10 +18,10 @@ class ExchangeRuleDialog : AbstractFragmentDialog<MineTaskDialogRuleBinding>(fal
         }
     }
 
-    override fun getLayoutId() = R.layout.mine_task_dialog_rule
+    override fun getLayoutId() = R.layout.main_task_dialog_rule
 
     override fun getThemeStyle(): Int {
-        return R.style.MineTaskDialogStyle
+        return R.style.MainTaskDialogStyle
     }
 
     override fun initView() {

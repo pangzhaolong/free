@@ -64,6 +64,9 @@ public class TextViewNumberUtil {
         TextViewEvaluator(double initValue, double value) {
             this.value = value;
             this.initValue = initValue;
+            if(this.initValue < this.value){
+                this.value = this.value - this.initValue;
+            }
         }
 
         @Override

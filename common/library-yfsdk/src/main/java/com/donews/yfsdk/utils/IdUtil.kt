@@ -69,66 +69,6 @@ object IdUtil {
         }
     }
 
-    /** 获取GroMore广告Id */
-    fun getInstlGmId(): String {
-        if (AdConfigManager.mNormalAdBean.interstitial.GmIdNew.isBlank()
-                && AdConfigManager.mNormalAdBean.interstitial.GmIdOld.isBlank()
-                && AdConfigManager.mNormalAdBean.interstitial.GmIdInvalid.isBlank()) {
-            return ""
-        }
-
-        if (AdConfigManager.mRewardVideoId.layer_id == AdConfigManager.mNormalAdBean.invalidLayer) {
-            return AdConfigManager.mNormalAdBean.interstitial.GmIdInvalid
-        }
-
-        return if (System.currentTimeMillis() - AppUtil.getAppInstallTime() > AdConfigManager.mNormalAdBean.interstitial.switchAfter * 60 * 1000) {
-            if (AdConfigManager.mNormalAdBean.interstitial.GmIdOld.isBlank()) {
-                AdConfigManager.mNormalAdBean.interstitial.GmIdNew
-            } else {
-                AdConfigManager.mNormalAdBean.interstitial.GmIdOld
-            }
-        } else {
-            if (AdConfigManager.mNormalAdBean.interstitial.GmIdNew.isBlank()) {
-                AdConfigManager.mNormalAdBean.interstitial.GmIdOld
-            } else {
-                AdConfigManager.mNormalAdBean.interstitial.GmIdNew
-            }
-        }
-    }
-
-    fun getInstlDnId(): String {
-        if (AdConfigManager.mNormalAdBean.interstitial.DnIdNew.isBlank()
-                && AdConfigManager.mNormalAdBean.interstitial.DnIdOld.isBlank()
-                && AdConfigManager.mNormalAdBean.interstitial.DnIdInvalid.isBlank()) {
-            return ""
-        }
-
-        if (AdConfigManager.mRewardVideoId.layer_id == AdConfigManager.mNormalAdBean.invalidLayer) {
-            if (AdConfigManager.mNormalAdBean.interstitial.DnIdInvalid.isBlank()) {
-                if (AdConfigManager.mNormalAdBean.interstitial.DnIdNew.isNotBlank()) {
-                    return AdConfigManager.mNormalAdBean.interstitial.DnIdNew
-                } else if (AdConfigManager.mNormalAdBean.interstitial.DnIdOld.isNotBlank()) {
-                    return AdConfigManager.mNormalAdBean.interstitial.DnIdOld
-                }
-            }
-            return AdConfigManager.mNormalAdBean.interstitial.DnIdInvalid
-        }
-
-        return if (System.currentTimeMillis() - AppUtil.getAppInstallTime() > AdConfigManager.mNormalAdBean.interstitial.switchAfter * 60 * 1000) {
-            if (AdConfigManager.mNormalAdBean.interstitial.DnIdOld.isBlank()) {
-                AdConfigManager.mNormalAdBean.interstitial.DnIdNew
-            } else {
-                AdConfigManager.mNormalAdBean.interstitial.DnIdOld
-            }
-        } else {
-            if (AdConfigManager.mNormalAdBean.interstitial.DnIdNew.isBlank()) {
-                AdConfigManager.mNormalAdBean.interstitial.DnIdOld
-            } else {
-                AdConfigManager.mNormalAdBean.interstitial.DnIdNew
-            }
-        }
-    }
-
     fun getInstlFullDnId(): String {
         if (AdConfigManager.mNormalAdBean.interstitialFull.DnIdNew.isBlank()
                 && AdConfigManager.mNormalAdBean.interstitialFull.DnIdOld.isBlank()
@@ -195,38 +135,6 @@ object IdUtil {
         }
     }
 
-    fun getFullScreenDmId(): String {
-        if (AdConfigManager.mNormalAdBean.fullScreen.GmIdNew.isBlank()
-                && AdConfigManager.mNormalAdBean.fullScreen.GmIdOld.isBlank()
-                && AdConfigManager.mNormalAdBean.fullScreen.GmIdInvalid.isBlank()) {
-            return ""
-        }
-
-        if (AdConfigManager.mRewardVideoId.layer_id == AdConfigManager.mNormalAdBean.invalidLayer) {
-            if (AdConfigManager.mNormalAdBean.fullScreen.GmIdInvalid.isBlank()) {
-                if (AdConfigManager.mNormalAdBean.fullScreen.GmIdNew.isNotBlank()) {
-                    return AdConfigManager.mNormalAdBean.fullScreen.GmIdNew
-                } else if (AdConfigManager.mNormalAdBean.fullScreen.GmIdOld.isNotBlank()) {
-                    return AdConfigManager.mNormalAdBean.fullScreen.GmIdOld
-                }
-            }
-            return AdConfigManager.mNormalAdBean.fullScreen.GmIdInvalid
-        }
-
-        return if (System.currentTimeMillis() - AppUtil.getAppInstallTime() > AdConfigManager.mNormalAdBean.fullScreen.switchAfter * 60 * 1000) {
-            if (AdConfigManager.mNormalAdBean.fullScreen.GmIdOld.isBlank()) {
-                AdConfigManager.mNormalAdBean.fullScreen.GmIdNew
-            } else {
-                AdConfigManager.mNormalAdBean.fullScreen.GmIdOld
-            }
-        } else {
-            if (AdConfigManager.mNormalAdBean.fullScreen.GmIdNew.isBlank()) {
-                AdConfigManager.mNormalAdBean.fullScreen.GmIdOld
-            } else {
-                AdConfigManager.mNormalAdBean.fullScreen.GmIdNew
-            }
-        }
-    }
 
     /** draw 模板*/
     fun getDrawTemplateId(): String {

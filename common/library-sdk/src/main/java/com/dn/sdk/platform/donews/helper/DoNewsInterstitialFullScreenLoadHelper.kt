@@ -2,16 +2,10 @@ package com.dn.sdk.platform.donews.helper
 
 import android.app.Activity
 import com.dn.sdk.AdCustomError
-import com.dn.sdk.DelayExecutor
 import com.dn.sdk.bean.AdRequest
 import com.dn.sdk.bean.AdStatus
-import com.dn.sdk.bean.PreloadAdState
-import com.dn.sdk.bean.preload.PreloadInterstitialAd
-import com.dn.sdk.listener.interstitial.IAdInterstitialFullScreenListener
-import com.dn.sdk.listener.interstitial.IAdInterstitialListener
+import com.dn.sdk.listener.interstitialfull.IAdInterstitialFullScreenListener
 import com.dn.sdk.platform.BaseHelper
-import com.dn.sdk.platform.donews.preloadad.DoNewsPreloadInterstitialAd
-import com.dn.sdk.platform.gromore.preloadad.GroMorePreloadInterstitialAd
 import com.donews.ads.mediation.v2.api.DoNewsAdManagerHolder
 import com.donews.ads.mediation.v2.api.DoNewsAdNative
 import com.donews.ads.mediation.v2.framework.bean.DnUnionBean

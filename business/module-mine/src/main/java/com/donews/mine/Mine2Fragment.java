@@ -298,6 +298,9 @@ public class Mine2Fragment extends MvvmLazyLiveDataFragment<MineFragmentNewBindi
         });
         //金币
         mViewModel.getMine2JBCount().observe(this, jb -> {
+            if (isExietisJBAnimTask) {
+                return;
+            }
             isExietisJBAnimTask = true;
             isFragmentDialogShow(() -> {
                 try {
@@ -315,13 +318,16 @@ public class Mine2Fragment extends MvvmLazyLiveDataFragment<MineFragmentNewBindi
         });
         //积分
         mViewModel.getMine2JFCount().observe(this, jf -> {
+            if (isExietisJFAnimTask) {
+                return;
+            }
             isExietisJFAnimTask = true;
             isFragmentDialogShow(() -> {
                 try {
-                    isExietisJFAnimTask = true;
+                    isExietisJFAnimTask = false;
                     double startDouble = Double.parseDouble(mDataBinding.mine2JfCount.getText().toString());
                     if (startDouble >= jf) {
-                        TextViewNumberUtil.addTextViewAddAnim(mDataBinding.mine2JbCount, 0, jf);
+                        TextViewNumberUtil.addTextViewAddAnim(mDataBinding.mine2JfCount, 0, jf);
                         return;
                     }
                     TextViewNumberUtil.addTextViewAddAnim(mDataBinding.mine2JfCount, startDouble, jf);

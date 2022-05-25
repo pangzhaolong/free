@@ -18,9 +18,7 @@ import com.dn.sdk.listener.feed.natives.LoggerFeedLoadListenerProxy
 import com.dn.sdk.listener.feed.template.IAdFeedTemplateListener
 import com.dn.sdk.listener.feed.template.LoggerFeedTemplateListenerProxy
 import com.dn.sdk.listener.feed.template.TrackFeedTemplateListenerProxy
-import com.dn.sdk.listener.fullscreenvideo.IAdFullScreenVideoLoadListener
-import com.dn.sdk.listener.fullscreenvideo.LoggerFullScreenVideoLoadListenerProxy
-import com.dn.sdk.listener.interstitial.*
+import com.dn.sdk.listener.interstitialfull.*
 import com.dn.sdk.listener.rewardvideo.IAdRewardVideoListener
 import com.dn.sdk.listener.rewardvideo.LoggerRewardVideoListenerProxy
 import com.dn.sdk.listener.rewardvideo.TrackRewardVideoListenerProxy
@@ -33,8 +31,7 @@ import com.dn.sdk.platform.csj.helper.CsjDrawNativeLoadHelper
 import com.dn.sdk.platform.csj.helper.CsjDrawTemplateLoadHelper
 import com.dn.sdk.platform.csj.helper.CsjSplashLoadHelper
 import com.dn.sdk.platform.donews.helper.*
-import com.dn.sdk.platform.gromore.helper.GroMoreFullScreenVideoLoadHelper
-import com.dn.sdk.platform.gromore.helper.GroMoreInterstitialLoadHelper
+import com.dn.sdk.platform.gromore.helper.GroMoreRewardedAdHelper
 import com.dn.sdk.platform.gromore.helper.GroMoreSplashLoadHelper
 
 /**
@@ -65,12 +62,20 @@ class DoNewsAdLoader : IAdLoader {
             activity: Activity,
             adRequest: AdRequest,
             listener: IAdSplashListener?
-    ): PreloadSplashAd {
-        return DoNewsSplashLoadHelper.preloadAd(
+    ) {
+        DoNewsSplashLoadHelper.preloadAd(
                 activity,
                 adRequest,
                 LoggerSplashListenerProxy(adRequest, TrackSplashListenerProxy(adRequest, listener))
         )
+    }
+
+    override fun isDnSplashAdReady(): Boolean {
+        return DoNewsSplashLoadHelper.isAdReady()
+    }
+
+    override fun showDnSplashAd() {
+        DoNewsSplashLoadHelper.showSplash()
     }
 
     override fun loadAdShowSplashAdV2(
@@ -109,49 +114,6 @@ class DoNewsAdLoader : IAdLoader {
         )
     }
 
-    override fun loadAndShowInterstitialAd(
-            activity: Activity,
-            adRequest: AdRequest,
-            listener: IAdInterstitialListener?
-    ) {
-        DoNewsInterstitialLoadHelper.loadAndShowAd(
-                activity,
-                adRequest,
-                LoggerInterstitialListenerProxy(
-                        adRequest,
-                        TrackInterstitialListenerProxy(adRequest, listener)
-                )
-        )
-    }
-
-    /**
-     * 新增人：lcl
-     * 新增方法,预加载插屏广告
-     * @param activity Activity
-     * @param adRequest AdRequest
-     * @param listener IAdInterstitialListener?
-     * @return PreloadInterstitialAd
-     */
-    override fun preloadInterstitialAd(
-            activity: Activity,
-            adRequest: AdRequest,
-            listener: IAdInterstitialListener?
-    ): PreloadInterstitialAd {
-        //走GroMre插屏预加载
-        return GroMoreInterstitialLoadHelper.preloadInterstitialAd(
-                activity, adRequest, LoggerInterstitialListenerProxy(
-                adRequest,
-                TrackInterstitialListenerProxy(adRequest, listener)
-        )
-        )
-        //走GroMre插屏预加载
-//        return DoNewsInterstitialLoadHelper.preloadInterstitialAd(
-//            activity, adRequest, LoggerInterstitialListenerProxy(
-//                adRequest,
-//                TrackInterstitialListenerProxy(adRequest, listener)
-//            )
-//        )
-    }
 
     /**
      * 新增人：lcl
@@ -193,7 +155,7 @@ class DoNewsAdLoader : IAdLoader {
             activity: Activity,
             adRequest: AdRequest,
             listener: IAdRewardVideoListener?
-    ): PreloadRewardVideoAd {
+    ): PreloadRewardVideoAd? {
         return DoNewsRewardVideoLoadHelper.preloadAd(
                 activity,
                 adRequest,
@@ -254,28 +216,31 @@ class DoNewsAdLoader : IAdLoader {
         )
     }
 
-    override fun loadFullScreenVideoAd(
-            activity: Activity,
-            adRequest: AdRequest,
-            listener: IAdFullScreenVideoLoadListener?
-    ) {
-        //新增：2022.3.7
-        //走新的GroMore的全屏视频广告
-        GroMoreFullScreenVideoLoadHelper.loadFullScreenVideoAd(
-                activity,
-                adRequest,
-                LoggerFullScreenVideoLoadListenerProxy(adRequest, listener)
-        )
-        //失效：2022.3.7
-        //走的原始穿山甲的全屏广告
-//        CsjFullScreenVideoLoadHelper.loadFullScreenAd(
-//            activity,
-//            adRequest,
-//            LoggerFullScreenVideoLoadListenerProxy(adRequest, listener)
-//        )
-    }
-
     override fun loadCsjSplashAd(activity: Activity, adRequest: AdRequest, listener: IAdSplashListener?) {
         CsjSplashLoadHelper.loadSplashAd(activity, adRequest, listener)
+    }
+
+    override fun preLoadCsjSplashAd(activity: Activity, adRequest: AdRequest, listener: IAdSplashListener?) {
+        CsjSplashLoadHelper.preLoadSplashAd(activity, adRequest, listener)
+    }
+
+    override fun isCsjSplashAdReady(): Boolean {
+        return CsjSplashLoadHelper.isAdReady()
+    }
+
+    override fun showCsjPreloadSplashAd() {
+        CsjSplashLoadHelper.showSplash()
+    }
+
+    override fun loadGroMoreRewardedAd(activity: Activity, adRequest: AdRequest, listener: IAdRewardVideoListener?) {
+        GroMoreRewardedAdHelper.loadRewardedAd(activity, adRequest, listener)
+    }
+
+    override fun isGroMoreRewardAdReady(): Boolean {
+        return GroMoreRewardedAdHelper.isAdReady()
+    }
+
+    override fun showGroMoreRewardedAd(activity: Activity, listener: IAdRewardVideoListener?) {
+        GroMoreRewardedAdHelper.showRewardedAd(activity, listener)
     }
 }

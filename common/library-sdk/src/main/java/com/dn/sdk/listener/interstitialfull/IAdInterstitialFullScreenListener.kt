@@ -1,4 +1,4 @@
-package com.dn.sdk.listener.interstitial
+package com.dn.sdk.listener.interstitialfull
 
 import com.dn.sdk.listener.IAdStartLoadListener
 

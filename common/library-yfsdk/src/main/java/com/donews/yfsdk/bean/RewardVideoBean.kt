@@ -9,6 +9,8 @@ import kotlinx.parcelize.Parcelize
 class RewardVideoBean(
         @SerializedName("enable")
         var enable: Boolean = true,
+        @SerializedName("protectedId")
+        var protectedId : String = "",
         @SerializedName("limit")
         var limit: RVLimitBean,
         @SerializedName("fail")

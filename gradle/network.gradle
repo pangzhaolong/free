@@ -35,15 +35,6 @@ ext {
     //积分下载查询接口
     API_INTEGRAL_URL = API_BASE_URL + "wall/"
 
-
-    WEB_BASE_URL = "https://recharge-web.xg.tagtic.cn/jdd/index.html#/"
-
-    // 正式环境base Url
-    API2_URL = "https://www.qusobook.com/"
-    // 测试环境的base2 url
-    API_TEST2_URL = "http://120.31.70.243:8181/"
-
-
     // 登录的地址
     LOGIN_TEST_URL = "https://monetization.dev.tagtic.cn/"
     LOGIN_ON_LINE_URL = "https://monetization.tagtic.cn/"

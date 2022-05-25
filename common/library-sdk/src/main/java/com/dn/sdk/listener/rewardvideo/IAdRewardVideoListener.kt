@@ -37,6 +37,8 @@ interface IAdRewardVideoListener : IAdStartLoadListener, IAdEcpmReportListener {
     /** 广告被点击 */
     fun onAdVideoClick()
 
+    /** 跳过广告 */
+    fun onAdSkipped()
     /** 广告可以被激励,true为可以发奖励，false不能发奖励，奖励已这个为准 */
     fun onRewardVerify(result: Boolean)
 

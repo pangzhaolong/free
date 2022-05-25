@@ -37,12 +37,12 @@ class MainBottomTanItem : BaseTabItem {
     private val mMessage: RoundMessageView
     private val mLabel: TextView
     private val mIcon: ImageView
-    private val mLottie: LottieAnimationView
-
 
     private var mDefaultDrawable: Drawable? = null
     private var mDefaultColor: Int = 0
     private var mCheckColor: Int = 0
+
+    private var mSrcDrawable: Drawable? = null
 
     /** tab 是否被选中 */
     private var mChecked: Boolean = false
@@ -61,7 +61,6 @@ class MainBottomTanItem : BaseTabItem {
         mMessage = view.findViewById(R.id.messages)
         mLabel = view.findViewById(R.id.label)
         mIcon = view.findViewById(R.id.icon)
-        mLottie = view.findViewById(R.id.lottie)
     }
 
     fun initialization(
@@ -69,17 +68,15 @@ class MainBottomTanItem : BaseTabItem {
         @DrawableRes drawableRes: Int,
         defaultColor: Int,
         checkColor: Int,
-        lottieJson: String
+        @DrawableRes srcRes: Int,
     ) {
-
         mDefaultColor = defaultColor
         mCheckColor = checkColor
 
         val drawable = ContextCompat.getDrawable(context, drawableRes)
         mDefaultDrawable = Utils.tinting(drawable, defaultColor)
-
-        mLottie.setAnimation(lottieJson)
-
+        val drawableSelect = ContextCompat.getDrawable(context, drawableRes)
+        mSrcDrawable = Utils.tinting(drawableSelect, srcRes)
         mLabel.text = title
         mLabel.setTextColor(defaultColor)
         mIcon.setImageDrawable(mDefaultDrawable)
@@ -105,17 +102,9 @@ class MainBottomTanItem : BaseTabItem {
         }
 
         if (mChecked) {
-            mIcon.visibility = INVISIBLE
-            mLottie.visibility = VISIBLE
-            if (mMeasured) {
-                mLottie.playAnimation()
-            } else {
-                mLottie.progress = 1f
-            }
+            mIcon.setImageDrawable(mSrcDrawable)
         } else {
-            mIcon.visibility = VISIBLE
-            mLottie.visibility = INVISIBLE
-            mLottie.cancelAnimation()
+            mIcon.setImageDrawable(mDefaultDrawable)
         }
     }
 

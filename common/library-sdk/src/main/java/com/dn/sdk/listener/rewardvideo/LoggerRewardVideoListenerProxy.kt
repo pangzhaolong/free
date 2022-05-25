@@ -14,8 +14,8 @@ import com.dn.sdk.utils.AdLoggerUtils
  * @date 2021/12/7 17:45
  */
 class LoggerRewardVideoListenerProxy(
-    private val adRequest: AdRequest,
-    private val listener: IAdRewardVideoListener?
+    var adRequest: AdRequest,
+    var listener: IAdRewardVideoListener?
 ) : IAdRewardVideoListener {
 
 
@@ -42,6 +42,11 @@ class LoggerRewardVideoListenerProxy(
     override fun onAdVideoClick() {
         AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "RewardVideo onAdVideoClick()"))
         listener?.onAdVideoClick()
+    }
+
+    override fun onAdSkipped() {
+        AdLoggerUtils.d(AdLoggerUtils.createMsg(adRequest, "RewardVideo onAdSkipped()"))
+        listener?.onAdSkipped()
     }
 
     override fun onRewardVerify(result: Boolean) {

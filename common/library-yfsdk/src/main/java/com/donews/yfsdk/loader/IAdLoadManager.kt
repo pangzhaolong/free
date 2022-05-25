@@ -2,14 +2,13 @@ package com.donews.yfsdk.loader
 
 import android.app.Activity
 import android.view.ViewGroup
+import com.dn.sdk.listener.IPreloadAdListener
 import com.dn.sdk.listener.banner.IAdBannerListener
 import com.dn.sdk.listener.draw.natives.IAdDrawNativeLoadListener
 import com.dn.sdk.listener.draw.template.IAdDrawTemplateLoadListener
 import com.dn.sdk.listener.feed.natives.IAdFeedLoadListener
 import com.dn.sdk.listener.feed.template.IAdFeedTemplateListener
-import com.dn.sdk.listener.fullscreenvideo.IAdFullScreenVideoLoadListener
-import com.dn.sdk.listener.interstitial.IAdInterstitialFullScreenListener
-import com.dn.sdk.listener.interstitial.IAdInterstitialListener
+import com.dn.sdk.listener.interstitialfull.IAdInterstitialFullScreenListener
 import com.dn.sdk.listener.rewardvideo.IAdRewardVideoListener
 import com.dn.sdk.listener.splash.IAdSplashListener
 
@@ -27,9 +26,6 @@ interface IAdLoadManager {
 
     /**开屏*/
     fun loadSplashAd(activity: Activity, hotStart: Boolean, container: ViewGroup, listener: IAdSplashListener?, isHalfScreen: Boolean)
-
-    /**插屏*/
-    fun loadInterstitialAd(activity: Activity, listener: IAdInterstitialListener?)
 
     /**激励视频*/
     fun loadRewardVideoAd(activity: Activity, listener: IAdRewardVideoListener?)
@@ -52,14 +48,31 @@ interface IAdLoadManager {
     /**Draw信息流*/
     fun loadDrawNativeAd(activity: Activity, listenerNative: IAdDrawNativeLoadListener?)
 
-    /**全屏视频*/
-    fun loadFullScreenVideoAd(activity: Activity, listener: IAdFullScreenVideoLoadListener?)
-
     /** 穿山甲开屏广告*/
     fun loadCsjSplashAd(activity: Activity,
-                     hotStart: Boolean,
-                     container: ViewGroup,
-                     isHalfScreen: Boolean,
-                     listener: IAdSplashListener?)
+                        hotStart: Boolean,
+                        container: ViewGroup,
+                        isHalfScreen: Boolean,
+                        listener: IAdSplashListener?)
 
+
+    /** 预加载开屏广告 */
+    fun preloadSplashAd(activity: Activity, adContainer: ViewGroup, listener: IAdSplashListener?)
+    fun isDnSplashAdReady(): Boolean
+    fun showDnSplashAd()
+    /** 预加载穿山甲开屏广告*/
+    fun preLoadCsjSplashAd(activity: Activity,
+                        container: ViewGroup,
+                        listener: IAdSplashListener?)
+    fun isCsjSplashAdReady(): Boolean
+    fun showCsjSplashAd()
+
+    /** GroMore 保底激励视频加载 */
+    fun loadGroMoreRewardedAd(activity: Activity, listener: IAdRewardVideoListener?)
+
+    /** GroMore 保底激励视频是否准备好 */
+    fun isGroMoreRewardAdReady(): Boolean
+
+    /** GroMore 保底激励视频展示 */
+    fun showGroMoreRewardedAd(activity: Activity, listener: IAdRewardVideoListener?)
 }

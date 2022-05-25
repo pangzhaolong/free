@@ -1,4 +1,4 @@
-package com.dn.sdk.listener.interstitial
+package com.dn.sdk.listener.interstitialfull
 
 /**
  * IAdInterstitialListener 空实现
