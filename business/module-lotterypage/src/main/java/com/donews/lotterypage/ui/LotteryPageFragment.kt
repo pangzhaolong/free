@@ -189,23 +189,14 @@ class LotteryPageFragment :
     override fun onResume() {
         super.onResume()
         initContent()
-        if (mDataBinding.reveal != null) {
-            mDataBinding.reveal.resumeScroll()
-        }
     }
 
     override fun onPause() {
         super.onPause()
-        if (mDataBinding.reveal != null) {
-            mDataBinding.reveal.pauseScroll()
-        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        if (mDataBinding.reveal != null) {
-            mDataBinding.reveal.stopScroll()
-        }
     }
 
     //观察请求回来的数据
@@ -221,7 +212,9 @@ class LotteryPageFragment :
         //往期人员
         mViewModel.livePastData.observe(viewLifecycleOwner, object : Observer<AwardBean?> {
             override fun onChanged(t: AwardBean?) {
-                mDataBinding.reveal.refreshData(t?.list)
+                mDataBinding.revealView.setData(t?.list)
+                mDataBinding.revealView.startAnimation()
+//                mDataBinding.reveal.refreshData(t?.list)
             }
         })
     }
