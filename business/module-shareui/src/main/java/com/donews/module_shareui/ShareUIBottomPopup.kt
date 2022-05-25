@@ -34,7 +34,7 @@ class ShareUIBottomPopup(context:Context): PositionPopupView(context) {
             shareItem.title = "送你88元新人红包，立即领取>>"
             shareItem.content = "上快乐派边看视频边赚钱，看得多赚得多，动动手指轻松赚取零花钱！"
             shareItem.type = ShareItem.TYPE_H5
-            shareItem.webUrl = "www.baidu.com"
+            shareItem.webUrl = "https://recharge-web.xg.tagtic.cn/qbn/index.html#/download"
             shareManager.share(
                 ShareManager.SHARE_COMMAND_WX,
                 shareItem,
@@ -52,7 +52,7 @@ class ShareUIBottomPopup(context:Context): PositionPopupView(context) {
             shareItem.title = "送你88元新人红包，立即领取>>"
             shareItem.content = "上快乐派边看视频边赚钱，看得多赚得多，动动手指轻松赚取零花钱！"
             shareItem.type = ShareItem.TYPE_H5
-            shareItem.webUrl = "www.baidu.com"
+            shareItem.webUrl = "https://recharge-web.xg.tagtic.cn/qbn/index.html#/download"
             shareManager.share(
                 ShareManager.SHARE_COMMAND_WX_FRIEND,
                 shareItem,
