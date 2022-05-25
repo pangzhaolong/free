@@ -20,7 +20,7 @@ ext {
             "room"           : "2.3.0",
             "lifecycle"      : "2.3.1",
             "androidXCore"   : "1.6.0",
-            "kolinCoroutines": "1.6.0-RC",
+            "kolinCoroutines": "1.5.1",
             "refreshLayout"  : "2.0.3",
     ]
 

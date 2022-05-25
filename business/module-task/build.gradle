@@ -13,6 +13,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     kapt rootProject.ext.dependencies["arouter-compiler"]
+    implementation project(':common:library-common')
     implementation project(':middleware:module-middleware')
     implementation project(path: ':business:module-shareui')
     implementation rootProject.ext.dependencies["android-gif-drawable"]

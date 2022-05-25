@@ -15,8 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.dn.sdk.AdCustomError
-import com.dn.sdk.listener.interstitial.SimpleInterstitialFullListener
-import com.dn.sdk.listener.interstitial.SimpleInterstitialListener
+import com.dn.sdk.listener.interstitialfull.SimpleInterstitialFullListener
 import com.dn.sdk.listener.rewardvideo.SimpleRewardVideoListener
 import com.donews.base.utils.ToastUtil
 import com.donews.base.utils.glide.GlideUtils
@@ -25,7 +24,6 @@ import com.donews.common.base.MvvmLazyLiveDataFragment
 import com.donews.common.router.RouterActivityPath
 import com.donews.common.router.RouterFragmentPath
 import com.donews.middle.IMainParams
-import com.donews.middle.adutils.InterstitialAd.showAd
 import com.donews.middle.adutils.InterstitialFullAd.showAd
 import com.donews.middle.adutils.RewardVideoAd
 import com.donews.middle.adutils.adcontrol.AdControlManager.adControlBean
@@ -57,7 +55,6 @@ import com.donews.middle.centralDeploy.OutherSwitchConfig
 import com.donews.middle.events.TaskReportEvent
 import com.donews.middle.viewmodel.BaseMiddleViewModel
 import com.donews.utilslibrary.utils.DensityUtils
-import com.donews.yfsdk.check.InterstitialAdCheck
 import com.donews.yfsdk.moniter.PageMonitor
 import com.donews.yfsdk.monitor.InterstitialFullAdCheck
 import com.donews.yfsdk.monitor.PageMoniterCheck.showAdSuccess
@@ -127,7 +124,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                 return if (adControlBean.useInstlFullWhenSwitch) {
                     InterstitialFullAdCheck.isEnable()
                 } else {
-                    InterstitialAdCheck.isEnable()
+                    InterstitialFullAdCheck.isEnable()
                 }
             }
 
@@ -149,14 +146,14 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                     return
                 }
                 if (!adControlBean.useInstlFullWhenSwitch) {
-                    showAd(activity, object : SimpleInterstitialListener() {
-                        override fun onAdError(code: Int, errorMsg: String?) {
-                            super.onAdError(code, errorMsg)
-                            Logger.d("晒单页插屏加载广告错误---- code = \$code ,msg =  \$errorMsg ")
+                    showAd(activity, object : SimpleInterstitialFullListener() {
+                        override fun onAdError(code: Int, errprMsg: String) {
+                            super.onAdError(code, errprMsg)
+                            Logger.d("晒单页插屏加载广告错误---- code = \$code ,msg =  \$errprMsg ")
                         }
 
-                        override fun onAdClosed() {
-                            super.onAdClosed()
+                        override fun onAdClose() {
+                            super.onAdClose()
                             showAdSuccess("mine_fragment")
                         }
                     })
