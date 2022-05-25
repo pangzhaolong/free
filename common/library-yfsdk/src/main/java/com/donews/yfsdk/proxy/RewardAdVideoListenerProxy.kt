@@ -15,9 +15,9 @@ import com.donews.yfsdk.check.RewardVideoCheck
  * @date 2021/11/1 15:21
  */
 class RewardAdVideoListenerProxy(
-        private var activity: Activity?,
-        private var listener: IAdRewardVideoListener? = null,
-        private var needReportEcpmWhenReward: Boolean = false
+        var activity: Activity?,
+        var listener: IAdRewardVideoListener? = null,
+        var needReportEcpmWhenReward: Boolean = false
 ) : IAdRewardVideoListener {
 
     private var mAdStatus: AdStatus? = null
@@ -49,6 +49,10 @@ class RewardAdVideoListenerProxy(
     override fun onAdVideoClick() {
         listener?.onAdVideoClick()
         RewardVideoCheck.onAdVideoClick(mAdStatus)
+    }
+
+    override fun onAdSkipped() {
+        listener?.onAdSkipped()
     }
 
     override fun onRewardVerify(result: Boolean) {

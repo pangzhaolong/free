@@ -6,7 +6,6 @@ import com.dn.sdk.AdCustomError
 import com.dn.sdk.DelayExecutor
 import com.dn.sdk.bean.AdRequest
 import com.dn.sdk.bean.PreloadAdState
-import com.dn.sdk.bean.preload.PreloadInterstitialAd
 import com.dn.sdk.bean.preload.PreloadRewardVideoAd
 import com.dn.sdk.bean.preload.PreloadSplashAd
 import com.dn.sdk.listener.banner.IAdBannerListener
@@ -19,19 +18,14 @@ import com.dn.sdk.listener.feed.natives.IAdFeedLoadListener
 import com.dn.sdk.listener.feed.natives.LoggerFeedLoadListenerProxy
 import com.dn.sdk.listener.feed.template.IAdFeedTemplateListener
 import com.dn.sdk.listener.feed.template.LoggerFeedTemplateListenerProxy
-import com.dn.sdk.listener.fullscreenvideo.IAdFullScreenVideoLoadListener
-import com.dn.sdk.listener.fullscreenvideo.LoggerFullScreenVideoLoadListenerProxy
-import com.dn.sdk.listener.interstitial.IAdInterstitialFullScreenListener
-import com.dn.sdk.listener.interstitial.IAdInterstitialListener
-import com.dn.sdk.listener.interstitial.LoggerInterstitialFullScreenVideoListenerProxy
-import com.dn.sdk.listener.interstitial.LoggerInterstitialListenerProxy
+import com.dn.sdk.listener.interstitialfull.IAdInterstitialFullScreenListener
+import com.dn.sdk.listener.interstitialfull.LoggerInterstitialFullScreenVideoListenerProxy
 import com.dn.sdk.listener.rewardvideo.IAdRewardVideoListener
 import com.dn.sdk.listener.rewardvideo.LoggerRewardVideoListenerProxy
 import com.dn.sdk.listener.splash.IAdSplashListener
 import com.dn.sdk.listener.splash.LoggerSplashListenerProxy
 import com.dn.sdk.loader.IAdLoader
 import com.dn.sdk.loader.SdkType
-import com.dn.sdk.platform.closead.preload.NoAdPreloadInterstitialAd
 import com.dn.sdk.platform.closead.preload.NoAdPreloadRewardVideo
 import com.dn.sdk.platform.closead.preload.NoAdPreloadSplashAd
 
@@ -61,10 +55,10 @@ class NoAdLoader : IAdLoader {
     }
 
     override fun preloadSplashAd(
-        activity: Activity,
-        adRequest: AdRequest,
-        listener: IAdSplashListener?
-    ): PreloadSplashAd {
+            activity: Activity,
+            adRequest: AdRequest,
+            listener: IAdSplashListener?
+    ) {
 
         val loggerProxy = LoggerSplashListenerProxy(adRequest, listener)
         loggerProxy.onAdStartLoad()
@@ -74,7 +68,14 @@ class NoAdLoader : IAdLoader {
         DelayExecutor.delayExec(500) {
             loggerProxy.onAdError(AdCustomError.CloseAd.code, AdCustomError.CloseAd.errorMsg)
         }
-        return preloadSplashAd
+    }
+
+    override fun isDnSplashAdReady(): Boolean {
+        return false
+    }
+
+    override fun showDnSplashAd() {
+
     }
 
     override fun loadAndShowBannerAd(
@@ -85,6 +86,16 @@ class NoAdLoader : IAdLoader {
         val loggerBannerListener = LoggerBannerListenerProxy(adRequest, listener)
         loggerBannerListener.onAdStartLoad()
         loggerBannerListener.onAdError(AdCustomError.CloseAd.code, AdCustomError.CloseAd.errorMsg)
+    }
+
+    override fun loadAndShowInterstitiaScreenFulllAd(
+            activity: Activity,
+            adRequest: AdRequest,
+            listener: IAdInterstitialFullScreenListener?
+    ) {
+        val loggerInterProxy = LoggerInterstitialFullScreenVideoListenerProxy(adRequest, listener)
+        loggerInterProxy.onAdStartLoad()
+        loggerInterProxy.onAdError(AdCustomError.CloseAd.code, AdCustomError.CloseAd.errorMsg)
     }
 
     override fun loadAdShowSplashAdV2(
@@ -113,39 +124,6 @@ class NoAdLoader : IAdLoader {
         return preloadSplashAd
     }
 
-    override fun loadAndShowInterstitialAd(
-        activity: Activity,
-        adRequest: AdRequest,
-        listener: IAdInterstitialListener?
-    ) {
-
-        val loggerInterProxy = LoggerInterstitialListenerProxy(adRequest, listener)
-        loggerInterProxy.onAdStartLoad()
-        loggerInterProxy.onAdError(AdCustomError.CloseAd.code, AdCustomError.CloseAd.errorMsg)
-    }
-
-    override fun preloadInterstitialAd(
-        activity: Activity,
-        adRequest: AdRequest,
-        listener: IAdInterstitialListener?
-    ): PreloadInterstitialAd {
-        listener?.onAdStartLoad()
-        val preloadAd = NoAdPreloadInterstitialAd()
-        DelayExecutor.delayExec(500) {
-            listener?.onAdError(AdCustomError.CloseAd.code, AdCustomError.CloseAd.errorMsg)
-        }
-        return preloadAd
-    }
-
-    override fun loadAndShowInterstitiaScreenFulllAd(
-        activity: Activity,
-        adRequest: AdRequest,
-        listener: IAdInterstitialFullScreenListener?
-    ) {
-        val loggerInterProxy = LoggerInterstitialFullScreenVideoListenerProxy(adRequest, listener)
-        loggerInterProxy.onAdStartLoad()
-        loggerInterProxy.onAdError(AdCustomError.CloseAd.code, AdCustomError.CloseAd.errorMsg)
-    }
 
     override fun loadAndShowRewardVideoAd(
         activity: Activity,
@@ -225,26 +203,36 @@ class NoAdLoader : IAdLoader {
         loggerDrawLoadListener.onAdError(AdCustomError.CloseAd.code, AdCustomError.CloseAd.errorMsg)
     }
 
-    override fun loadFullScreenVideoAd(
-        activity: Activity,
-        adRequest: AdRequest,
-        listener: IAdFullScreenVideoLoadListener?
-    ) {
-        val loggerFullScreenVideoLoadListener =
-            LoggerFullScreenVideoLoadListenerProxy(adRequest, listener)
-        loggerFullScreenVideoLoadListener.onAdStartLoad()
-        loggerFullScreenVideoLoadListener.onAdError(
-            AdCustomError.CloseAd.code,
-            AdCustomError.CloseAd.errorMsg
-        )
-    }
-
     override fun loadCsjSplashAd(activity: Activity, adRequest: AdRequest, listener: IAdSplashListener?) {
         val loggerSplashLoaderListener = LoggerSplashListenerProxy(adRequest, listener)
         loggerSplashLoaderListener.onAdStartLoad()
         loggerSplashLoaderListener.onAdError(
                 AdCustomError.CloseAd.code,
                 AdCustomError.CloseAd.errorMsg)
+    }
 
+    override fun preLoadCsjSplashAd(activity: Activity, adRequest: AdRequest, listener: IAdSplashListener?) {
+        val loggerSplashLoaderListener = LoggerSplashListenerProxy(adRequest, listener)
+        loggerSplashLoaderListener.onAdStartLoad()
+        loggerSplashLoaderListener.onAdError(
+                AdCustomError.CloseAd.code,
+                AdCustomError.CloseAd.errorMsg)
+    }
+
+    override fun isCsjSplashAdReady(): Boolean {
+        return false
+    }
+
+    override fun showCsjPreloadSplashAd() {
+    }
+
+    override fun loadGroMoreRewardedAd(activity: Activity, adRequest: AdRequest, listener: IAdRewardVideoListener?) {
+    }
+
+    override fun isGroMoreRewardAdReady(): Boolean {
+        return false
+    }
+
+    override fun showGroMoreRewardedAd(activity: Activity, listener: IAdRewardVideoListener?) {
     }
 }

@@ -23,12 +23,12 @@ class MailPageackFragmentVPAdapter(
         return super.createBaseViewHolder(view)
     }
 
-    override fun convert(helper: BaseViewHolder, item: MailPackageTabItem?) {
-        when (helper.itemView) {
+    override fun convert(holder: BaseViewHolder, item: MailPackageTabItem) {
+        when (holder.itemView) {
             is MailPackFragmentVpLayout -> {
                 //绑定数据
-                (helper.itemView as MailPackFragmentVpLayout).bindDataList(
-                    targetVp.currentItem == helper.adapterPosition,
+                (holder.itemView as MailPackFragmentVpLayout).bindDataList(
+                    targetVp.currentItem == holder.adapterPosition,
                     item!!
                 )
             }

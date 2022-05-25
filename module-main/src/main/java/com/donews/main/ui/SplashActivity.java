@@ -25,7 +25,7 @@ import androidx.annotation.Nullable;
 import com.blankj.utilcode.util.LogUtils;
 import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.NetworkChanageEvnet;
-import com.dn.sdk.listener.interstitial.SimpleInterstitialFullListener;
+import com.dn.sdk.listener.interstitialfull.SimpleInterstitialFullListener;
 import com.dn.sdk.listener.rewardvideo.SimpleRewardVideoListener;
 import com.dn.sdk.listener.splash.IAdSplashListener;
 import com.dn.sdk.listener.splash.SimpleSplashListener;

@@ -5,6 +5,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.module.BaseLoadMoreModule;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.donews.base.utils.ToastUtil;
 import com.donews.mine.R;
@@ -41,5 +43,11 @@ public class MineWithdrawalRecordAdapter extends BaesLoadMoreAdapter<WithdrawRec
             tv.setTextColor(getContext().getResources().getColor(R.color.colorAccent));
             baseViewHolder.setText(R.id.mine_withdraw_item_num, "" + item.score + item.unit);
         }
+    }
+
+    @NonNull
+    @Override
+    public BaseLoadMoreModule addLoadMoreModule(@NonNull BaseQuickAdapter<?, ?> baseQuickAdapter) {
+        return new BaseLoadMoreModule(baseQuickAdapter);
     }
 }

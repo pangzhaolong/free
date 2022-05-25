@@ -2,7 +2,6 @@ package com.dn.sdk.loader
 
 import android.app.Activity
 import com.dn.sdk.bean.AdRequest
-import com.dn.sdk.bean.preload.PreloadInterstitialAd
 import com.dn.sdk.bean.preload.PreloadRewardVideoAd
 import com.dn.sdk.bean.preload.PreloadSplashAd
 import com.dn.sdk.listener.banner.IAdBannerListener
@@ -10,9 +9,7 @@ import com.dn.sdk.listener.draw.natives.IAdDrawNativeLoadListener
 import com.dn.sdk.listener.draw.template.IAdDrawTemplateLoadListener
 import com.dn.sdk.listener.feed.natives.IAdFeedLoadListener
 import com.dn.sdk.listener.feed.template.IAdFeedTemplateListener
-import com.dn.sdk.listener.fullscreenvideo.IAdFullScreenVideoLoadListener
-import com.dn.sdk.listener.interstitial.IAdInterstitialFullScreenListener
-import com.dn.sdk.listener.interstitial.IAdInterstitialListener
+import com.dn.sdk.listener.interstitialfull.IAdInterstitialFullScreenListener
 import com.dn.sdk.listener.rewardvideo.IAdRewardVideoListener
 import com.dn.sdk.listener.splash.IAdSplashListener
 
@@ -41,18 +38,6 @@ interface IAdLoader {
      */
     fun loadAndShowSplashAd(activity: Activity, adRequest: AdRequest, listener: IAdSplashListener?)
 
-    /**
-     * 预加载 开屏广告对象
-     * @param activity Activity 上下文对象
-     * @param adRequest AdRequest 广告请求参数
-     * @param listener IAdSplashListener? 广告请求回调
-     * @return PreloadSplashAd 预加载广告对象,在合适的时候调用show()方法显示广告
-     */
-    fun preloadSplashAd(
-            activity: Activity,
-            adRequest: AdRequest,
-            listener: IAdSplashListener?
-    ): PreloadSplashAd
 
     /**
      * 加载和现实开屏广告。但是走Gromore渠道
@@ -83,37 +68,6 @@ interface IAdLoader {
      */
     fun loadAndShowBannerAd(activity: Activity, adRequest: AdRequest, listener: IAdBannerListener?)
 
-    /**
-     * 加载和显示插屏广告
-     * @param activity Activity 上下文对象
-     * @param adRequest AdRequest 广告请求参数
-     * @param listener IAdInterstitialListener? 广告回调
-     */
-    fun loadAndShowInterstitialAd(
-            activity: Activity,
-            adRequest: AdRequest,
-            listener: IAdInterstitialListener?
-    )
-
-    /**
-     * 预加载插屏广告
-     * @param activity Activity 上下文对象
-     * @param adRequest AdRequest 广告请求参数
-     * @param listener IAdInterstitialListener? 广告回调
-     * @return PreloadInterstitialAd 预加载对象
-     */
-    fun preloadInterstitialAd(
-            activity: Activity,
-            adRequest: AdRequest,
-            listener: IAdInterstitialListener?
-    ): PreloadInterstitialAd
-
-    /**
-     * 架子啊显示插全屏广告
-     * @param activity Activity
-     * @param adRequest AdRequest
-     * @param listener IAdInterstitialFullScreenListener?
-     */
     fun loadAndShowInterstitiaScreenFulllAd(
             activity: Activity,
             adRequest: AdRequest,
@@ -143,7 +97,7 @@ interface IAdLoader {
             activity: Activity,
             adRequest: AdRequest,
             listener: IAdRewardVideoListener?
-    ): PreloadRewardVideoAd
+    ): PreloadRewardVideoAd?
 
 
     /**
@@ -186,17 +140,6 @@ interface IAdLoader {
      */
     fun loadDrawAd(activity: Activity, adRequest: AdRequest, listener: IAdDrawNativeLoadListener?)
 
-    /**
-     * 请求全屏广告
-     * @param activity Activity 上下文对象
-     * @param adRequest AdRequest 广告请求参数
-     * @param listener IAdFullScreenLoadListener? 广告回调
-     */
-    fun loadFullScreenVideoAd(
-            activity: Activity,
-            adRequest: AdRequest,
-            listener: IAdFullScreenVideoLoadListener?
-    )
 
     /**
      * 请求穿山甲开屏广告
@@ -208,4 +151,44 @@ interface IAdLoader {
             activity: Activity,
             adRequest: AdRequest,
             listener: IAdSplashListener?)
+
+
+    /**
+     * 预加载 开屏广告对象
+     * @param activity Activity 上下文对象
+     * @param adRequest AdRequest 广告请求参数
+     * @param listener IAdSplashListener? 广告请求回调
+     * @return PreloadSplashAd 预加载广告对象,在合适的时候调用show()方法显示广告
+     */
+    fun preloadSplashAd(
+            activity: Activity,
+            adRequest: AdRequest,
+            listener: IAdSplashListener?
+    )
+
+    fun isDnSplashAdReady(): Boolean
+    fun showDnSplashAd()
+    /**
+     * 请求预加载穿山甲开屏广告
+     * @param activity Activity 上下文对象
+     * @param adRequest AdRequest 广告请求参数
+     * @param listener IAdSplashListener? 广告回调
+     */
+    fun preLoadCsjSplashAd(
+            activity: Activity,
+            adRequest: AdRequest,
+            listener: IAdSplashListener?)
+    /** 判断穿山甲开屏广告是否预加载成功 */
+    fun isCsjSplashAdReady(): Boolean
+    /** 展示预加载的穿山甲开屏广告*/
+    fun showCsjPreloadSplashAd()
+
+    /** GroMore 保底激励视频加载 */
+    fun loadGroMoreRewardedAd(activity: Activity, adRequest: AdRequest, listener: IAdRewardVideoListener?)
+
+    /** GroMore 保底激励视频是否准备好 */
+    fun isGroMoreRewardAdReady(): Boolean
+
+    /** GroMore 保底激励视频展示 */
+    fun showGroMoreRewardedAd(activity: Activity, listener: IAdRewardVideoListener?)
 }

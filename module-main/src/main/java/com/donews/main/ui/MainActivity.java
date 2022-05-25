@@ -81,7 +81,6 @@ import com.donews.middle.bean.mine2.resp.DailyTaskResp;
 import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.middle.adutils.BannerAd;
 import com.donews.middle.adutils.DnSdkInit;
-import com.donews.middle.adutils.InterstitialAd;
 import com.donews.middle.adutils.InterstitialFullAd;
 import com.donews.middle.adutils.RewardVideoAd;
 import com.donews.middle.bean.HighValueGoodsBean;
@@ -131,6 +130,9 @@ public class MainActivity
         extends MvvmBaseLiveDataActivity<MainActivityMainBinding, MainViewModel> implements
         RetentionTaskListener, IMainParams {
 
+    //是否显示过签到弹窗了
+    private static boolean s_IsShowSigninDialog = false;
+
     private boolean isShowSigninDialog = false;
 
     private List<Fragment> fragments;
@@ -144,6 +146,7 @@ public class MainActivity
     private final long CruelDuration = 5 * 60 * 1000;
     //下载应用的积分墙弹窗
     DialogFragment appDownDialog;
+    private Handler mHandler = new Handler();
 
     private EnterShowDialog mEnterShowDialog = null;
 
@@ -206,12 +209,15 @@ public class MainActivity
                     }
                 }
             }
-            if(isShowSingDialog) {
+            if (isShowSingDialog && !s_IsShowSigninDialog) {
                 //显示签到弹窗
-                RouterFragmentPath.User.getSingDialog()
-                        .show(getSupportFragmentManager(), "alksdjfklj");
-            }else{
-                //已经完成或者其他状态。不显示。走原始逻辑即可
+                s_IsShowSigninDialog = true;
+                mHandler.postDelayed(() -> {
+                    RouterFragmentPath.User.getSingDialog()
+                            .show(getSupportFragmentManager(), "alksdjfklj");
+                }, 500);
+            } else {
+                //已经完成或者其他状态,或者不满足签到弹窗。不显示。走原始逻辑即可
                 isShowSigninDialog = true;
                 showDrawDialog();
             }
@@ -235,8 +241,6 @@ public class MainActivity
         new Handler().postDelayed(() -> {
             //预加载一个激励视频
             RewardVideoAd.INSTANCE.preloadAd(this, false);
-            //预加载一个插屏广告
-            InterstitialAd.INSTANCE.cacheAd(this);
         }, 3000);
 
         //上报一个测试友盟多参数事件
@@ -334,7 +338,7 @@ public class MainActivity
     @Override
     public int getThisFragmentCurrentPos(@NonNull Fragment f) {
         for (int i = 0; i < fragments.size(); i++) {
-            if(f == fragments.get(i)){
+            if (f == fragments.get(i)) {
                 return i;
             }
         }
@@ -685,15 +689,15 @@ public class MainActivity
         if (!ABSwitch.Ins().isOpenAB()) {
             MainBottomTanItem homeItem = new MainBottomTanItem(this);
             homeItem.initialization("首页", R.drawable.main_home_checked, defaultColor, checkColor,
-                    "main_bottom_tab_home.json");
+                    R.drawable.main_home_checked_secect);
 
             MainBottomTanItem lotteryItem = new MainBottomTanItem(this);
-            lotteryItem.initialization("抽奖", R.drawable.main_mine, defaultColor, checkColor, "main_bottom_tab_me.json");
+            lotteryItem.initialization("抽奖", R.drawable.main_lottery_icon, defaultColor, checkColor, R.drawable.main_lottery_icon_seclect);
 
             MainBottomTanItem taskItem = new MainBottomTanItem(this);
-            taskItem.initialization("活动", R.drawable.main_mine, defaultColor, checkColor, "main_bottom_tab_me.json");
+            taskItem.initialization("活动", R.drawable.main_action, defaultColor, checkColor, R.drawable.main_action_select);
             MainBottomTanItem mineItem = new MainBottomTanItem(this);
-            mineItem.initialization("我的", R.drawable.main_mine, defaultColor, checkColor, "main_bottom_tab_me.json");
+            mineItem.initialization("我的", R.drawable.main_mine, defaultColor, checkColor, R.drawable.main_mine_select);
             mNavigationController = mDataBinding.bottomView.custom()
                     .addItem(homeItem)
                     .addItem(lotteryItem)
@@ -704,13 +708,13 @@ public class MainActivity
         } else {
             MainBottomTanItem homeItem = new MainBottomTanItem(this);
             homeItem.initialization("首页", R.drawable.main_home_checked, defaultColor, checkColor,
-                    "main_bottom_tab_home.json");
+                    R.drawable.main_home_checked_secect);
             MainBottomTanItem lotteryItem = new MainBottomTanItem(this);
             lotteryItem.initialization("特惠购", R.drawable.main_lottery, defaultColor, checkColor,
-                    "main_bottom_tab_kaijiang.json");
+                    R.drawable.main_lottery_icon_seclect);
 
             MainBottomTanItem mineItem = new MainBottomTanItem(this);
-            mineItem.initialization("设置", R.drawable.main_mine, defaultColor, checkColor, "main_bottom_tab_me.json");
+            mineItem.initialization("设置", R.drawable.main_mine, defaultColor, checkColor,  R.drawable.main_mine_select);
 
             mNavigationController = mDataBinding.bottomView.custom()
                     .addItem(homeItem)
@@ -1252,8 +1256,7 @@ public class MainActivity
             mRetryCount = 0;
             checkRetentionTask();           //检查次留任务
             if (!isFromNotify()) {
-//                InterstitialAd.INSTANCE.showAd(this, null);
-                InterstitialFullAd.INSTANCE.showAd(MainActivity.this, null);
+//                InterstitialFullAd.INSTANCE.showAd(MainActivity.this, null);
             }
         }
     }

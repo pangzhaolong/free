@@ -14,7 +14,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.dn.events.events.WalletRefreshEvent;
 import com.dn.integral.jdd.IntegralComponent;
 import com.dn.integral.jdd.integral.ProxyIntegral;
-import com.dn.sdk.listener.interstitial.SimpleInterstitialFullListener;
+import com.dn.sdk.listener.interstitialfull.SimpleInterstitialFullListener;
 import com.donews.base.utils.ToastUtil;
 import com.donews.base.utils.glide.GlideUtils;
 import com.donews.common.base.MvvmBaseLiveDataActivity;

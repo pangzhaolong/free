@@ -162,11 +162,13 @@ object DoNewsRewardVideoLoadHelper : BaseHelper() {
                 runOnUiThread(activity) {
                     if (code == 10 && any is DnUnionBean) {
                         listener?.onAdStatus(code, AdStatus(any))
+                    } else if (code == 100) {
+                        listener?.onAdStatus(code, any)
+                        onVideoCached()
                     } else {
                         listener?.onAdStatus(code, any)
                     }
                 }
-//                reportEcpm(code, any)
             }
 
             override fun onAdLoad() {

@@ -29,6 +29,7 @@ import com.donews.middle.bean.home.HomeCoinCritConfigBean;
 import com.donews.middle.bean.home.HomeEarnCoinReq;
 import com.donews.middle.bean.mine2.reqs.DailyTasksReportReq;
 import com.donews.middle.dialog.BaseBindingFragmentDialog;
+import com.donews.middle.dialog.qbn.DoingResultDialog;
 import com.donews.middle.viewmodel.BaseMiddleViewModel;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.yfsdk.loader.AdManager;
@@ -226,7 +227,8 @@ public class ExchangeGoodJbFragmentDialog extends BaseBindingFragmentDialog<Home
                                     } else {
                                         BaseMiddleViewModel.getBaseViewModel().mine2JBCount.postValue(item.coin);
                                     }
-                                    ToastUtil.showShort(activity, "奖励发放。请弹窗 ~~~~~~~~~~~~~~~~");
+                                    //显示金币弹窗
+                                    showDoingResultDialog(item.coin);
                                 } else {
                                     ToastUtil.showShort(activity, "奖励发放失败,请稍后重试!");
                                 }
@@ -241,6 +243,14 @@ public class ExchangeGoodJbFragmentDialog extends BaseBindingFragmentDialog<Home
                 }
             }
         });
+    }
+
+    // 显示活动奖励弹窗
+    private void showDoingResultDialog(int count) {
+        DoingResultDialog dialog = new DoingResultDialog(getActivity(), count, R.drawable.sign_reward_mine_dialog_djb);
+        dialog.setStateListener(() -> {
+        });
+        dialog.show(getActivity());
     }
 
 

@@ -1,6 +1,6 @@
 package com.donews.yfsdk.proxy
 
-import com.dn.sdk.listener.interstitial.IAdInterstitialFullScreenListener
+import com.dn.sdk.listener.interstitialfull.IAdInterstitialFullScreenListener
 import com.donews.yfsdk.monitor.InterstitialFullAdCheck
 
 /**

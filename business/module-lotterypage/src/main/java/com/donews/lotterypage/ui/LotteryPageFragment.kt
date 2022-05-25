@@ -13,8 +13,7 @@ import cn.cd.dn.sdk.models.utils.DNServiceTimeManager.Companion.getIns
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.dn.sdk.AdCustomError
-import com.dn.sdk.listener.interstitial.SimpleInterstitialFullListener
-import com.dn.sdk.listener.interstitial.SimpleInterstitialListener
+import com.dn.sdk.listener.interstitialfull.SimpleInterstitialFullListener
 import com.doing.spike.adapter.SpikeContextAdapter
 import com.doing.spike.bean.CombinationSpikeBean
 import com.doing.spike.bean.SpikeBean
@@ -30,7 +29,6 @@ import com.donews.lotterypage.base.LotteryPastBean
 import com.donews.lotterypage.databinding.LotteryPageLayoutBinding
 import com.donews.lotterypage.viewmodel.LotteryPageViewModel
 import com.donews.middle.IMainParams
-import com.donews.middle.adutils.InterstitialAd
 import com.donews.middle.adutils.InterstitialFullAd
 import com.donews.middle.adutils.adcontrol.AdControlManager
 import com.donews.middle.bean.front.AwardBean
@@ -38,7 +36,6 @@ import com.donews.middle.centralDeploy.OutherSwitchConfig
 import com.donews.middle.front.FrontConfigManager
 import com.donews.middle.front.LotteryConfigManager
 import com.donews.middle.views.TaskView
-import com.donews.yfsdk.check.InterstitialAdCheck
 import com.donews.yfsdk.moniter.PageMonitor
 import com.donews.yfsdk.monitor.InterstitialFullAdCheck
 import com.donews.yfsdk.monitor.PageMoniterCheck
@@ -62,7 +59,7 @@ class LotteryPageFragment :
                 return if (AdControlManager.adControlBean.useInstlFullWhenSwitch) {
                     InterstitialFullAdCheck.isEnable()
                 } else {
-                    InterstitialAdCheck.isEnable()
+                    InterstitialFullAdCheck.isEnable()
                 }
             }
 
@@ -84,14 +81,14 @@ class LotteryPageFragment :
                     return
                 }
                 if (!AdControlManager.adControlBean.useInstlFullWhenSwitch) {
-                    InterstitialAd.showAd(activity, object : SimpleInterstitialListener() {
-                        override fun onAdError(code: Int, errorMsg: String?) {
-                            super.onAdError(code, errorMsg)
+                    InterstitialFullAd.showAd(activity, object : SimpleInterstitialFullListener() {
+                        override fun onAdError(code: Int, errprMsg: String) {
+                            super.onAdError(code, errprMsg)
                             Logger.d("晒单页插屏加载广告错误---- code = \$code ,msg =  \$errorMsg ")
                         }
 
-                        override fun onAdClosed() {
-                            super.onAdClosed()
+                        override fun onAdClose() {
+                            super.onAdClose()
                             PageMoniterCheck.showAdSuccess("mine_fragment")
                         }
                     })

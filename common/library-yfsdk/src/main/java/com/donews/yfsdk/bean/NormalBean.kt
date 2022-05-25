@@ -23,14 +23,10 @@ class NormalBean(
         var rewardVideo: RewardVideoBean,
         @SerializedName("splash")
         var splash: SplashBean,
-        @SerializedName("interstitial")
-        var interstitial: InstlBean,
         @SerializedName("interstitialFull")
         var interstitialFull: InstlFullBean,
         @SerializedName("information")
         var information: InfoBean,
-        @SerializedName("fullScreen")
-        var fullScreen: FullScreenBean,
         @SerializedName("banner")
         var banner: BannerBean,
         @SerializedName("drawInformation")

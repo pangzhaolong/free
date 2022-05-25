@@ -19,8 +19,8 @@ class UnboxingPicAdapter(layoutResId: Int) : BaseQuickAdapter<String, BaseViewHo
         DataBindingUtil.bind<UnboxingItemPicBinding>(viewHolder.itemView)
     }
 
-    override fun convert(helper: BaseViewHolder, item: String?) {
-        val dataBinding = helper.getBinding<UnboxingItemPicBinding>()
+    override fun convert(holder: BaseViewHolder, item: String) {
+        val dataBinding = holder.getBinding<UnboxingItemPicBinding>()
         dataBinding?.url = item
     }
 

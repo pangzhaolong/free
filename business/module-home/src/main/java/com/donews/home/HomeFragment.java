@@ -18,8 +18,7 @@ import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.ConvertUtils;
 import com.bumptech.glide.Glide;
 import com.dn.sdk.AdCustomError;
-import com.dn.sdk.listener.interstitial.SimpleInterstitialFullListener;
-import com.dn.sdk.listener.interstitial.SimpleInterstitialListener;
+import com.dn.sdk.listener.interstitialfull.SimpleInterstitialFullListener;
 import com.donews.base.utils.glide.GlideUtils;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
 import com.donews.common.router.RouterActivityPath;
@@ -27,7 +26,6 @@ import com.donews.common.router.RouterFragmentPath;
 import com.donews.home.adapter.FragmentAdapter;
 import com.donews.home.databinding.HomeFragmentBinding;
 import com.donews.home.viewModel.HomeViewModel;
-import com.donews.middle.adutils.InterstitialAd;
 import com.donews.middle.adutils.InterstitialFullAd;
 import com.donews.middle.adutils.adcontrol.AdControlManager;
 import com.donews.middle.bean.home.FactorySaleBean;
@@ -40,7 +38,6 @@ import com.donews.middle.cache.GoodsCache;
 import com.donews.middle.go.GotoUtil;
 import com.donews.middle.views.TabItem;
 import com.donews.utilslibrary.utils.UrlUtils;
-import com.donews.yfsdk.check.InterstitialAdCheck;
 import com.donews.yfsdk.moniter.PageMonitor;
 import com.donews.yfsdk.monitor.InterstitialFullAdCheck;
 import com.donews.yfsdk.monitor.PageMoniterCheck;
@@ -98,7 +95,7 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
                 if (AdControlManager.INSTANCE.getAdControlBean().getUseInstlFullWhenSwitch()) {
                     return InterstitialFullAdCheck.INSTANCE.isEnable();
                 } else {
-                    return InterstitialAdCheck.INSTANCE.isEnable();
+                    return InterstitialFullAdCheck.INSTANCE.isEnable();
                 }
             }
 
@@ -114,7 +111,7 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
                     return;
                 }
                 if (!AdControlManager.INSTANCE.getAdControlBean().getUseInstlFullWhenSwitch()) {
-                    InterstitialAd.INSTANCE.showAd(activity, new SimpleInterstitialListener() {
+                    InterstitialFullAd.INSTANCE.showAd(activity, new SimpleInterstitialFullListener() {
                         @Override
                         public void onAdError(int code, String errorMsg) {
                             super.onAdError(code, errorMsg);
@@ -122,8 +119,8 @@ public class HomeFragment extends MvvmLazyLiveDataFragment<HomeFragmentBinding, 
                         }
 
                         @Override
-                        public void onAdClosed() {
-                            super.onAdClosed();
+                        public void onAdClose() {
+                            super.onAdClose();
                             PageMoniterCheck.INSTANCE.showAdSuccess("home_fragment");
                         }
                     });
