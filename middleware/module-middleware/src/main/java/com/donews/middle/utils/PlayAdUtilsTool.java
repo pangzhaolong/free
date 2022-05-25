@@ -15,7 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.dn.sdk.AdCustomError;
-import com.dn.sdk.listener.interstitial.SimpleInterstitialFullListener;
+import com.dn.sdk.listener.interstitialfull.SimpleInterstitialFullListener;
 import com.dn.sdk.listener.rewardvideo.IAdRewardVideoListener;
 import com.dn.sdk.listener.rewardvideo.SimpleRewardVideoListener;
 import com.donews.base.base.AppManager;

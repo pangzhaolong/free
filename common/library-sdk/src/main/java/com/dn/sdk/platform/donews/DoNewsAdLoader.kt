@@ -2,7 +2,6 @@ package com.dn.sdk.platform.donews;
 
 import android.app.Activity
 import com.dn.sdk.bean.AdRequest
-import com.dn.sdk.bean.preload.PreloadInterstitialAd
 import com.dn.sdk.bean.preload.PreloadRewardVideoAd
 import com.dn.sdk.bean.preload.PreloadSplashAd
 import com.dn.sdk.listener.banner.IAdBannerListener

@@ -15,14 +15,12 @@ object DnSdkInit {
             YfAdSdk.init(
                 application,
                 AdConfigBean("158535", "158592", "1484", "1478", "1477", "1476", "1478", ""))
-            )
         } else {
             // 正式
             YfAdSdk.init(
                 application,
                 AdConfigBean("1827", "1828", "158536", "1832", "", "", "", ""));
-            )
-        }    
+        }
     }
 
     fun initBeforeLoadAd(application: Application) {

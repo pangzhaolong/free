@@ -59,7 +59,7 @@ data class AdControlBean(
 
         /** 页面切换是否使用插全屏 */
         @SerializedName("useInstlFullWhenSwitch")
-        var useInstlFullWhenSwitch: Boolean = false
+        var useInstlFullWhenSwitch: Boolean = false,
 
         /** 开屏广告是否使用预加载方式 */
         @SerializedName("splashAdUsePreload")

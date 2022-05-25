@@ -4,9 +4,9 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.dn.sdk.bean.integral.IntegralBean;
-import com.dn.sdk.bean.integral.IntegralStateListener;
-import com.dn.sdk.bean.integral.ProxyIntegral;
+import com.dn.integral.jdd.integral.IntegralBean;
+import com.dn.integral.jdd.integral.IntegralStateListener;
+import com.dn.integral.jdd.integral.ProxyIntegral;
 import com.donews.ads.mediation.v2.integral.DnIntegralAdListener;
 import com.donews.ads.mediation.v2.integral.DnIntegralNativeAd;
 import com.donews.ads.mediation.v2.integral.DoNewsIntegralHolder;
