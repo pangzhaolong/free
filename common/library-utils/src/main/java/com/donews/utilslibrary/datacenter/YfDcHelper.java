@@ -26,8 +26,12 @@ public class YfDcHelper {
         return YFDot.isInit();
     }
 
-    public static void refreshSuuid(String suuid) {
-        YFDot.refreshSuuid(suuid);
+    public static void setSuuid(String suuid) {
+        YFDot.setSuuid(suuid);
+    }
+
+    public static void setUserId(String userId) {
+        YFDot.setDnUserId(userId);
     }
 
     public static void onDeviceEvent() {

@@ -54,6 +54,8 @@ import com.donews.middle.viewmodel.BaseMiddleViewModel;
 import com.donews.utilslibrary.analysis.AnalysisHelp;
 import com.donews.utilslibrary.base.SmSdkConfig;
 import com.donews.utilslibrary.base.UtilsConfig;
+import com.donews.utilslibrary.datacenter.YfDcHelper;
+import com.donews.utilslibrary.utils.DeviceUtils;
 import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.NetworkUtils;
@@ -635,6 +637,9 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
             deviceLogin();
             loadClodStartAd();
         }
+
+        YfDcHelper.setSuuid(DeviceUtils.getMyUUID());
+        YfDcHelper.onDeviceEvent();
     }
 
     private boolean hasAllPermissionsGranted(int[] grantResults) {
