@@ -54,6 +54,7 @@ import com.donews.middle.bean.globle.TurntableBean.ItemsDTO
 import com.donews.middle.centralDeploy.OutherSwitchConfig
 import com.donews.middle.events.TaskReportEvent
 import com.donews.middle.viewmodel.BaseMiddleViewModel
+import com.donews.task.bean.TaskCenterInfo
 import com.donews.utilslibrary.utils.DensityUtils
 import com.donews.yfsdk.moniter.PageMonitor
 import com.donews.yfsdk.monitor.InterstitialFullAdCheck
@@ -541,9 +542,6 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
     //endregion
 
     //region 每日看广告气泡相关
-    //今日看广告最大数, 中台配
-    private var todaySeeAdMaxNum = 3
-
     //冷却倒计时最大值10s中台配
     private var mMaxCountTime = 180
 
@@ -683,7 +681,13 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
      * 气泡点击统一处理
      */
     //宝箱气泡点击处理
+    private var isBoxSortClick = false//控制宝箱连续点击
     private fun clickBox() {
+        if (isBoxSortClick) return
+        isBoxSortClick = true
+        mHandler.postDelayed({
+            isBoxSortClick = false
+        },5000L)
         when (taskBubbleBoxBean?.status) {
             BUBBLE_NO_FINISH -> {
                 ToastUtil.show(mContext, "倒计时结束才可领取")
@@ -698,7 +702,10 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                                 Log.i("adSee-->", "-onAdError->code:${code},errorMsg:${errorMsg}")
                                 ToastUtil.show(mContext, "视频加载失败请稍后再试")
                             }
-
+                            override fun onAdShow() {
+                                super.onAdShow()
+                                isBoxSortClick = false
+                            }
                             override fun onAdClose() {
                                 super.onAdClose()
                                 Log.i("adSee-->", "-onAdClose->")
@@ -720,9 +727,15 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
         }
     }
 
+    private var isAdVideoSortClick = false//控制看广告视频气泡连续点击
     //看广告视频气泡点击处理
     private fun clickAdVideo() {
         Log.i("adSee-->", "--status->${taskBubbleVideoBean?.status}")
+        if (isAdVideoSortClick) return
+        isAdVideoSortClick = true
+        mHandler.postDelayed({
+            isAdVideoSortClick = false
+        },5000L)
         when (taskBubbleVideoBean?.status) {
             BUBBLE_NO_FINISH -> {
                 Log.i("adSee-->", "--cd->${taskBubbleVideoBean?.cd}")
@@ -743,7 +756,10 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                                     )
                                     ToastUtil.show(mContext, "视频加载失败请稍后再试")
                                 }
-
+                                override fun onAdShow() {
+                                    super.onAdShow()
+                                    isAdVideoSortClick = false
+                                }
                                 override fun onAdClose() {
                                     super.onAdClose()
                                     Log.i("adSee-->", "-onAdClose->")
@@ -891,7 +907,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
     private var boxMaxTime = 120
     private var boxCurTime = boxMaxTime
 
-    //宝箱最大开启数, 中台配
+    //宝箱最大开启数
     private var boxMaxOpenNum = 5
 
     private val boxTimer = object : Runnable {
@@ -983,19 +999,28 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
     }
     //endregion
 
-    //region 获取中台配置数据(部分收据后台气泡任务列表接口给)
+    //region 获取中台配置数据(luckPanImg,luckCollectImg)
     private var taskControlConfig: TaskConfigInfo? = null
+    private var taskCenterConfig: TaskCenterInfo? = null
 
-    //活跃度兑换金币数, 中台配
+    //活跃度兑换金币数
     private var exchangeActiveNum = 15
 
     private fun initTaskControl() {
-        taskControlConfig = TaskControlUtil.getTaskControlConfig()
-        todaySeeAdMaxNum = taskControlConfig?.ad?.todaySeeAdMaxNum ?: 3
-        mMaxCountTime = taskControlConfig?.ad?.mMaxCountTime ?: 180
-        boxMaxTime = taskControlConfig?.box?.boxMaxTime ?: 120
-        boxMaxOpenNum = taskControlConfig?.box?.boxMaxOpenNum ?: 5
-        exchangeActiveNum = taskControlConfig?.exchange?.exchangeActiveNum ?: 15
+        taskControlConfig = TaskImgControlUtil.getTaskControlConfig()
+        taskCenterConfig = TaskControlUtil.getTaskControlConfig()
+        if (taskCenterConfig != null){
+            for (index in taskCenterConfig!!.items.indices){
+                if (taskCenterConfig!!.items[index].taskType == VIDEO){
+                    mMaxCountTime = taskCenterConfig!!.items[index].cd//主要是拿这个
+                }
+                if (taskCenterConfig!!.items[index].taskType == GIFT_BOX){
+                    boxMaxTime = taskCenterConfig!!.items[index].cd
+                    boxMaxOpenNum = taskCenterConfig!!.items[index].repeat
+                }
+            }
+            exchangeActiveNum = taskCenterConfig!!.activeExchange.active
+        }
     }
     //endregion
 

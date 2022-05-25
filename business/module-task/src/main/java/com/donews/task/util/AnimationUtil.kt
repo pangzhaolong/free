@@ -213,4 +213,14 @@ object AnimationUtil {
         return animator
     }
 
+    fun rotate(view: View?) : ObjectAnimator{
+        return ObjectAnimator.ofFloat(view, "rotation", 0f, 360f).apply {
+            duration = 8000
+            interpolator = LinearInterpolator()
+            repeatMode = ObjectAnimator.RESTART
+            repeatCount = ValueAnimator.INFINITE
+            start()
+        }
+    }
+
 }

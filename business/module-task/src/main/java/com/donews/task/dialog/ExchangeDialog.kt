@@ -1,10 +1,12 @@
 package com.donews.task.dialog
 
+import android.animation.ObjectAnimator
 import android.view.View
 import com.donews.base.fragmentdialog.AbstractFragmentDialog
 import com.donews.task.R
 import com.donews.task.databinding.TaskDialogExchangeBinding
 import com.donews.task.databinding.TaskDialogRuleBinding
+import com.donews.task.util.AnimationUtil
 
 /**
  *  make in st
@@ -26,9 +28,12 @@ class ExchangeDialog : AbstractFragmentDialog<TaskDialogExchangeBinding>(false, 
 
     override fun initView() {
         dataBinding.eventListener = EventListener()
+        rotate = AnimationUtil.rotate(dataBinding?.rotateView)
     }
 
     override fun isUseDataBinding() = true
+
+    private var rotate: ObjectAnimator? = null
 
     var clickDialogBtn: () -> Unit = {}
 
@@ -39,6 +44,14 @@ class ExchangeDialog : AbstractFragmentDialog<TaskDialogExchangeBinding>(false, 
         fun exchangeBtn(view: View) {
             clickDialogBtn.invoke()
             disMissDialog()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (rotate != null && rotate!!.isRunning) {
+            rotate?.cancel()
+            rotate = null
         }
     }
 

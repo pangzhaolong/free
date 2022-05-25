@@ -28,7 +28,7 @@
             tools:ignore="MissingConstraints" />
 
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="130dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -42,15 +42,13 @@
                 android:layout_centerHorizontal="true"
                 android:src="@mipmap/turntable_top_bg" />
 
-            <RelativeLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/top_bg"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="15dp"
-                android:layout_marginBottom="130dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="MissingConstraints">
+                android:layout_marginBottom="130dp">
 
                 <com.donews.turntable.view.TurntableView
                     android:id="@+id/turntable_view"
@@ -63,11 +61,16 @@
 
                 <ImageView
                     android:id="@+id/turntable_lottery_button"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_centerInParent="true"
-                    android:src="@mipmap/turntable_pointer" />
-            </RelativeLayout>
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="20dp"
+                    android:src="@mipmap/turntable_pointer"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </RelativeLayout>
 

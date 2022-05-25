@@ -199,8 +199,10 @@ public class TurntableView extends View {
         float endAngle = unitAngle * recommendBean.getId();
         //起始角度
         float startAngle = endAngle - unitAngle;
-        Random rand = new Random();
-        int angle = rand.nextInt(((int) (endAngle - (int) startAngle)) - 5) + ((int) startAngle + 5);
+//        Random rand = new Random();
+//        int angle = rand.nextInt(((int) (endAngle - (int) startAngle)) - 5) + ((int) startAngle + 5);
+        int angle = (int) (endAngle - (unitAngle / 2));
+
         mClickable = false;
         objectAnimator = AnimatorUtils.singleton().getRotateValueAnimator(this, new IturntableAnimator() {
             @Override

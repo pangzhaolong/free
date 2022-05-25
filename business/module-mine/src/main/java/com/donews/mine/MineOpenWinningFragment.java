@@ -28,7 +28,6 @@ import com.donews.common.router.RouterActivityPath;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.middle.adutils.InterstitialFullAd;
 import com.donews.middle.adutils.adcontrol.AdControlManager;
-import com.donews.middle.views.BarrageView;
 import com.donews.middle.views.TaskView;
 import com.donews.mine.adapters.MineWinningCodeAdapter;
 import com.donews.mine.bean.resps.RecommendGoodsResp;
@@ -87,8 +86,6 @@ public class MineOpenWinningFragment extends
     private TextView timeMM1;
     private TextView timeSS;
     private TextView timeSS1;
-    private BarrageView barrageView;
-    private BarrageView barrageView2;
     private boolean isLoadStart = false;
     private boolean isRefesh = false;
     private int scrollTop0Count = 0; //是否初始加载数据
@@ -266,35 +263,17 @@ public class MineOpenWinningFragment extends
     @Override
     public void onResume() {
         super.onResume();
-        if (barrageView != null) {
-            barrageView.resumeScroll();
-        }
-        if (barrageView2 != null) {
-            barrageView2.resumeScroll();
-        }
         onRefresh();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if (barrageView != null) {
-            barrageView.pauseScroll();
-        }
-        if (barrageView2 != null) {
-            barrageView2.pauseScroll();
-        }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (barrageView != null) {
-            barrageView.stopScroll();
-        }
-        if (barrageView2 != null) {
-            barrageView2.stopScroll();
-        }
     }
 
     private void onRefresh() {
@@ -319,7 +298,6 @@ public class MineOpenWinningFragment extends
         adapterOpenWinHead = (ViewGroup) View.inflate(getBaseActivity(), headRes, null);
         adapterNotOpenMyAddRecordHead = (ViewGroup) View.inflate(getBaseActivity(), notOpenRecordHeadRes, null);
         adapterNotOpenWinHead = (ViewGroup) View.inflate(getBaseActivity(), headNotOpenWinRes, null);
-        barrageView = adapterOpenWinHead.findViewById(R.id.mine_win_code_scan_scroll_v);
         adapterOpenWinHead.findViewById(R.id.mine_win_code_sele_rules).setOnClickListener((v) -> {
             Bundle bundle = new Bundle();
             bundle.putString("url",
@@ -333,7 +311,6 @@ public class MineOpenWinningFragment extends
                     .withInt("position", 1)
                     .navigation();
         });
-        barrageView2 = adapterNotOpenMyAddRecordHead.findViewById(R.id.mine_win_code_scan_scroll_v);
         adapterNotOpenMyAddRecordHead.findViewById(R.id.mine_win_code_scan_all).setOnClickListener((v) -> {
             //去往晒单页
             adapterOpenWinHead.findViewById(R.id.mine_win_code_scan_all).performClick();
@@ -474,8 +451,6 @@ public class MineOpenWinningFragment extends
         });
         mViewModel.awardLiveData.observe(this, data -> {
             if (data != null) {
-                barrageView.refreshData(data.getList());
-                barrageView2.refreshData(data.getList());
             }
         });
         if (mViewModel.isAutoPeriod) {
