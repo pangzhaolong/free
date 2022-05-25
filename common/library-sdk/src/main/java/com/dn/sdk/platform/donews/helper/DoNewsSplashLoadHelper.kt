@@ -5,10 +5,10 @@ import com.dn.sdk.AdCustomError
 import com.dn.sdk.DelayExecutor
 import com.dn.sdk.bean.AdRequest
 import com.dn.sdk.bean.PreloadAdState
-import com.dn.sdk.platform.donews.preloadad.DoNewsPreloadSplashAd
-import com.dn.sdk.listener.splash.IAdSplashListener
 import com.dn.sdk.bean.preload.PreloadSplashAd
+import com.dn.sdk.listener.splash.IAdSplashListener
 import com.dn.sdk.platform.BaseHelper
+import com.dn.sdk.platform.donews.preloadad.DoNewsPreloadSplashAd
 import com.donews.ads.mediation.v2.api.DoNewsAdManagerHolder
 import com.donews.ads.mediation.v2.api.DoNewsAdNative
 import com.donews.ads.mediation.v2.framework.bean.DoNewsAD
@@ -133,83 +133,89 @@ object DoNewsSplashLoadHelper : BaseHelper() {
     }
 
     /** 预加载广告 */
-    fun preloadAd(activity: Activity, adRequest: AdRequest, listener: IAdSplashListener?): PreloadSplashAd {
+    var doNewsPreloadSplashAd: DoNewsAdNative? = null
+    var doNewsPreloadSplashAdStats: PreloadAdState = PreloadAdState.Init
+    fun preloadAd(activity: Activity, adRequest: AdRequest, listener: IAdSplashListener?) {
         runOnUiThread(activity) {
             listener?.onAdStartLoad()
         }
-        val doNewsAdNative = DoNewsAdManagerHolder.get().createDoNewsAdNative()
-        //封装的预加载对象
-        val doNewsPreloadSplashAd = DoNewsPreloadSplashAd(doNewsAdNative)
-        doNewsPreloadSplashAd.setLoadState(PreloadAdState.Loading)
-
-        bindLifecycle(activity, doNewsAdNative) {
-            doNewsPreloadSplashAd.destroy()
+        if (doNewsPreloadSplashAd == null) {
+            doNewsPreloadSplashAd = DoNewsAdManagerHolder.get().createDoNewsAdNative()
         }
 
+        doNewsPreloadSplashAdStats = PreloadAdState.Loading
+
+        bindLifecycle(activity, doNewsPreloadSplashAd) {
+            doNewsPreloadSplashAd?.destroy()
+            doNewsPreloadSplashAd = null
+        }
 
         if (adRequest.mAdId.isBlank()) {
             runOnUiThread(activity) {
                 DelayExecutor.delayExec {
-                    doNewsPreloadSplashAd.setLoadState(PreloadAdState.Error)
+                    doNewsPreloadSplashAdStats = PreloadAdState.Error
                     listener?.onAdError(
-                        AdCustomError.ParamsAdIdNullOrBlank.code,
-                        AdCustomError.ParamsAdIdNullOrBlank.errorMsg
+                            AdCustomError.ParamsAdIdNullOrBlank.code,
+                            AdCustomError.ParamsAdIdNullOrBlank.errorMsg
                     )
                 }
             }
-            return doNewsPreloadSplashAd
+            doNewsPreloadSplashAd?.destroy()
+            doNewsPreloadSplashAd = null
+            return
         }
 
         if (adRequest.mAdContainer == null) {
             runOnUiThread(activity) {
                 DelayExecutor.delayExec {
-                    doNewsPreloadSplashAd.setLoadState(PreloadAdState.Error)
+                    doNewsPreloadSplashAdStats = PreloadAdState.Error
                     listener?.onAdError(
-                        AdCustomError.ParamsAdContainerNull.code,
-                        AdCustomError.ParamsAdContainerNull.errorMsg
+                            AdCustomError.ParamsAdContainerNull.code,
+                            AdCustomError.ParamsAdContainerNull.errorMsg
                     )
                 }
             }
-            return doNewsPreloadSplashAd
+            doNewsPreloadSplashAd?.destroy()
+            doNewsPreloadSplashAd = null
+            return
         }
 
         if (adRequest.mWidthDp == 0f) {
             runOnUiThread(activity) {
                 DelayExecutor.delayExec {
-                    doNewsPreloadSplashAd.setLoadState(PreloadAdState.Error)
+                    doNewsPreloadSplashAdStats = PreloadAdState.Error
                     listener?.onAdError(
-                        AdCustomError.ParamsAdWidthDpError.code,
-                        AdCustomError.ParamsAdWidthDpError.errorMsg
+                            AdCustomError.ParamsAdWidthDpError.code,
+                            AdCustomError.ParamsAdWidthDpError.errorMsg
                     )
                 }
             }
-            return doNewsPreloadSplashAd
+            doNewsPreloadSplashAd?.destroy()
+            doNewsPreloadSplashAd = null
+            return
         }
 
         if (adRequest.mHeightDp == 0f) {
             runOnUiThread(activity) {
                 DelayExecutor.delayExec {
-                    doNewsPreloadSplashAd.setLoadState(PreloadAdState.Error)
+                    doNewsPreloadSplashAdStats = PreloadAdState.Error
                     listener?.onAdError(
-                        AdCustomError.ParamsAdHeightDpError.code,
-                        AdCustomError.ParamsAdHeightDpError.errorMsg
+                            AdCustomError.ParamsAdHeightDpError.code,
+                            AdCustomError.ParamsAdHeightDpError.errorMsg
                     )
                 }
             }
-            return doNewsPreloadSplashAd
+            doNewsPreloadSplashAd?.destroy()
+            doNewsPreloadSplashAd = null
+            return
         }
-
 
         val doNewsSplashListener = object : DoNewsAdNative.SplashListener {
 
             override fun onAdLoad() {
                 runOnUiThread(activity) {
                     listener?.onAdLoad()
-                    doNewsPreloadSplashAd.setLoadState(PreloadAdState.Success)
-                    //加载成功后，判断是否需要立即调用展示
-                    if (doNewsPreloadSplashAd.isNeedShow()) {
-                        doNewsPreloadSplashAd.showAd()
-                    }
+                    doNewsPreloadSplashAdStats = PreloadAdState.Success
                 }
             }
 
@@ -240,32 +246,42 @@ object DoNewsSplashLoadHelper : BaseHelper() {
             override fun onAdDismissed() {
                 runOnUiThread(activity) {
                     listener?.onAdDismiss()
+                    doNewsPreloadSplashAdStats = PreloadAdState.Shown
                 }
+                doNewsPreloadSplashAd?.destroy()
+                doNewsPreloadSplashAd = null
             }
 
             override fun onAdError(code: Int, errorMsg: String?) {
                 runOnUiThread(activity) {
                     activity.runOnUiThread {
-                        doNewsPreloadSplashAd.setLoadState(PreloadAdState.Error)
+                        doNewsPreloadSplashAdStats = PreloadAdState.Error
                         listener?.onAdError(code, errorMsg)
                     }
                 }
+                doNewsPreloadSplashAd?.destroy()
+                doNewsPreloadSplashAd = null
             }
         }
 
         val doNewsAd = DoNewsAD.Builder()
-            //广告位id
-            .setPositionId(adRequest.mAdId)
-            //传入的用来展示广告的容器，此布局建议用FrameLayout或者 Relativelayout
-            .setView(adRequest.mAdContainer)
-            //设置超时时间5000代表5秒，时间建议大于等于5秒以上，如果GroMore广告，请按照gromore后台合理配置
-            .setTimeOut(adRequest.mAdRequestTimeOut)
-            .setExpressViewWidth(DensityUtils.dp2px(adRequest.mWidthDp).toFloat())
-            .setExpressViewHeight(DensityUtils.dp2px(adRequest.mHeightDp).toFloat())
-            .build()
-        DelayExecutor.delayExec(100) {
-            doNewsAdNative.loadSplashAd(activity, doNewsAd, doNewsSplashListener)
-        }
-        return doNewsPreloadSplashAd
+                //广告位id
+                .setPositionId(adRequest.mAdId)
+                //传入的用来展示广告的容器，此布局建议用FrameLayout或者 Relativelayout
+                .setView(adRequest.mAdContainer)
+                //设置超时时间5000代表5秒，时间建议大于等于5秒以上，如果GroMore广告，请按照gromore后台合理配置
+                .setTimeOut(adRequest.mAdRequestTimeOut)
+                .setExpressViewWidth(DensityUtils.dp2px(adRequest.mWidthDp).toFloat())
+                .setExpressViewHeight(DensityUtils.dp2px(adRequest.mHeightDp).toFloat())
+                .build()
+            doNewsPreloadSplashAd?.loadSplashAd(activity, doNewsAd, doNewsSplashListener)
+    }
+
+    fun isAdReady():Boolean {
+        return doNewsPreloadSplashAd != null && doNewsPreloadSplashAdStats == PreloadAdState.Success
+    }
+
+    fun showSplash() {
+        doNewsPreloadSplashAd?.showSplash()
     }
 }

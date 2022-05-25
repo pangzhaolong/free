@@ -1,4 +1,4 @@
-package com.dn.sdk.listener.interstitial
+package com.dn.sdk.listener.interstitialfull
 
 import com.dn.sdk.bean.AdRequest
 import com.dn.sdk.count.CountTrackImpl

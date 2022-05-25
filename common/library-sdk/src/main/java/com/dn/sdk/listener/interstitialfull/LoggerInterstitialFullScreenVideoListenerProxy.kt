@@ -1,7 +1,6 @@
-package com.dn.sdk.listener.interstitial
+package com.dn.sdk.listener.interstitialfull
 
 import com.dn.sdk.bean.AdRequest
-import com.dn.sdk.listener.interstitial.IAdInterstitialListener
 import com.dn.sdk.utils.AdLoggerUtils
 
 /**

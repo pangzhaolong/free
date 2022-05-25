@@ -8,6 +8,7 @@ import com.dn.sdk.BuildConfig
 import com.dn.sdk.utils.AdLoggerUtils
 import com.donews.ads.mediation.v2.api.DoNewsAdManagerHolder
 import com.donews.ads.mediation.v2.integral.DoNewsIntegralHolder
+import com.donews.utilslibrary.utils.AppInfo
 
 /**
  * 广告SDK 管理类
@@ -44,10 +45,14 @@ object AdSdkManager : ISdkManager {
     private fun initDnSdk(context: Context, channelName: String) {
         DoNewsAdManagerHolder.setChannel(channelName)
         //gromore初始化
-//        GMAdManagerHolder.init(context,BuildConfig.APP_ID_GROMORE)
+        setUserInfo(AppInfo.getUserId(), AppInfo.getUserRegisterTime())
         DoNewsAdManagerHolder.init(context, BuildConfig.APP_ID_GROMORE)
         //积分墙SDK 初始化
         val uuid = DoNewsAdManagerHolder.getSuuid()
         DoNewsIntegralHolder.getInstance().init(context, channelName, uuid, BuildConfig.DEBUG)
+    }
+
+    fun setUserInfo(userId: String, registerTime: String) {
+        DoNewsAdManagerHolder.setUserInfo(userId, registerTime)
     }
 }

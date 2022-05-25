@@ -28,6 +28,9 @@ open class SimpleRewardVideoListener : IAdRewardVideoListener {
 
     }
 
+    override fun onAdSkipped() {
+    }
+
     override fun onRewardVerify(result: Boolean) {
 
     }

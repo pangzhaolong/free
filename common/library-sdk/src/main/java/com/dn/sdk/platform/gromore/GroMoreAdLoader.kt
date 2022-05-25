@@ -1,8 +1,7 @@
-package com.dn.sdk.platform.donews;
+package com.dn.sdk.platform.gromore;
 
 import android.app.Activity
 import com.dn.sdk.bean.AdRequest
-import com.dn.sdk.bean.preload.PreloadInterstitialAd
 import com.dn.sdk.bean.preload.PreloadRewardVideoAd
 import com.dn.sdk.bean.preload.PreloadSplashAd
 import com.dn.sdk.listener.banner.IAdBannerListener
@@ -18,7 +17,9 @@ import com.dn.sdk.listener.feed.natives.LoggerFeedLoadListenerProxy
 import com.dn.sdk.listener.feed.template.IAdFeedTemplateListener
 import com.dn.sdk.listener.feed.template.LoggerFeedTemplateListenerProxy
 import com.dn.sdk.listener.feed.template.TrackFeedTemplateListenerProxy
-import com.dn.sdk.listener.interstitialfull.*
+import com.dn.sdk.listener.interstitialfull.IAdInterstitialFullScreenListener
+import com.dn.sdk.listener.interstitialfull.LoggerInterstitialFullScreenVideoListenerProxy
+import com.dn.sdk.listener.interstitialfull.TrackInterstitialFullScreenVideoListenerProxy
 import com.dn.sdk.listener.rewardvideo.IAdRewardVideoListener
 import com.dn.sdk.listener.rewardvideo.LoggerRewardVideoListenerProxy
 import com.dn.sdk.listener.rewardvideo.TrackRewardVideoListenerProxy
@@ -41,9 +42,9 @@ import com.dn.sdk.platform.gromore.helper.GroMoreSplashLoadHelper
  * @version v1.0
  * @date 2021/9/27 15:24
  */
-class DoNewsAdLoader : IAdLoader {
+class GroMoreAdLoader : IAdLoader {
     override fun getSdkType(): SdkType {
-        return SdkType.DO_NEWS
+        return SdkType.GRO_MORE
     }
 
     override fun loadAndShowSplashAd(
@@ -51,11 +52,6 @@ class DoNewsAdLoader : IAdLoader {
             adRequest: AdRequest,
             listener: IAdSplashListener?
     ) {
-        DoNewsSplashLoadHelper.loadAndShowAd(
-                activity,
-                adRequest,
-                LoggerSplashListenerProxy(adRequest, TrackSplashListenerProxy(adRequest, listener))
-        )
     }
 
     override fun preloadSplashAd(
@@ -63,19 +59,13 @@ class DoNewsAdLoader : IAdLoader {
             adRequest: AdRequest,
             listener: IAdSplashListener?
     ) {
-        DoNewsSplashLoadHelper.preloadAd(
-                activity,
-                adRequest,
-                LoggerSplashListenerProxy(adRequest, TrackSplashListenerProxy(adRequest, listener))
-        )
     }
 
     override fun isDnSplashAdReady(): Boolean {
-        return DoNewsSplashLoadHelper.isAdReady()
+        return false
     }
 
     override fun showDnSplashAd() {
-        DoNewsSplashLoadHelper.showSplash()
     }
 
     override fun loadAdShowSplashAdV2(
@@ -107,13 +97,7 @@ class DoNewsAdLoader : IAdLoader {
             adRequest: AdRequest,
             listener: IAdBannerListener?
     ) {
-        DoNewsBannerLoadHelper.loadAndShowAd(
-                activity,
-                adRequest,
-                LoggerBannerListenerProxy(adRequest, TrackBannerListenerProxy(adRequest, listener))
-        )
     }
-
 
     /**
      * 新增人：lcl
@@ -128,12 +112,6 @@ class DoNewsAdLoader : IAdLoader {
             adRequest: AdRequest,
             listener: IAdInterstitialFullScreenListener?
     ) {
-        DoNewsInterstitialFullScreenLoadHelper.loadAndShowAd(
-                activity, adRequest, LoggerInterstitialFullScreenVideoListenerProxy(
-                adRequest,
-                TrackInterstitialFullScreenVideoListenerProxy(adRequest, listener)
-        )
-        )
     }
 
     override fun loadAndShowRewardVideoAd(
@@ -141,14 +119,6 @@ class DoNewsAdLoader : IAdLoader {
             adRequest: AdRequest,
             listener: IAdRewardVideoListener?
     ) {
-        DoNewsRewardVideoLoadHelper.loadAndShowAd(
-                activity,
-                adRequest,
-                LoggerRewardVideoListenerProxy(
-                        adRequest,
-                        TrackRewardVideoListenerProxy(adRequest, listener)
-                )
-        )
     }
 
     override fun preloadRewardVideoAd(
@@ -156,14 +126,7 @@ class DoNewsAdLoader : IAdLoader {
             adRequest: AdRequest,
             listener: IAdRewardVideoListener?
     ): PreloadRewardVideoAd? {
-        return DoNewsRewardVideoLoadHelper.preloadAd(
-                activity,
-                adRequest,
-                LoggerRewardVideoListenerProxy(
-                        adRequest,
-                        TrackRewardVideoListenerProxy(adRequest, listener)
-                )
-        )
+        return null
     }
 
     override fun loadFeedTemplateAd(
@@ -171,13 +134,6 @@ class DoNewsAdLoader : IAdLoader {
             adRequest: AdRequest,
             listener: IAdFeedTemplateListener?
     ) {
-        DoNewsFeedTemplateLoadHelper.loadFeedTemplateAd(
-                activity, adRequest,
-                LoggerFeedTemplateListenerProxy(
-                        adRequest,
-                        TrackFeedTemplateListenerProxy(adRequest, listener)
-                )
-        )
     }
 
     override fun loadFeedAd(
@@ -185,11 +141,6 @@ class DoNewsAdLoader : IAdLoader {
             adRequest: AdRequest,
             listener: IAdFeedLoadListener?
     ) {
-        DoNewsFeedLoadHelper.loadFeedAd(
-                activity,
-                adRequest,
-                LoggerFeedLoadListenerProxy(adRequest, listener)
-        )
     }
 
     override fun loadDrawTemplateAd(
