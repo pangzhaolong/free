@@ -24,7 +24,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.OnLifecycleEvent;
 
+import com.donews.base.utils.ToastUtil;
 import com.donews.middle.R;
 import com.donews.middle.bean.front.AwardBean;
 
@@ -33,15 +37,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class ScrollVerticallyView extends FrameLayout {
+public class ScrollVerticallyView extends FrameLayout implements LifecycleObserver {
 
     List<AwardBean.AwardInfo> mListTitle = new ArrayList<>();
     LinearLayout mLayoutView;
     AnimatorSet animatorSet;
     TextView user_name;
     TextView middle_text;
-     ScrollHandler scrollHandler=new ScrollHandler(ScrollVerticallyView.this);
-     public ScrollVerticallyView(@NonNull Context context) {
+    ScrollHandler scrollHandler = new ScrollHandler(ScrollVerticallyView.this);
+
+    public ScrollVerticallyView(@NonNull Context context) {
         this(context, null);
     }
 
@@ -58,6 +63,21 @@ public class ScrollVerticallyView extends FrameLayout {
         initAnimationSet();
     }
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        animatorSet.cancel();
+        animatorSet.removeAllListeners();
+        scrollHandler.removeMessages(1);
+        scrollHandler.sendEmptyMessage(1);
+        scrollHandler.removeCallbacksAndMessages(null);
+    }
+
+    //依付的对象已经结束，可以处理收尾工作，需要，实现   getLifecycle().addObserver(mDataBinding.revealView);
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    public void onDestroy() {
+
+    }
 
     public void setData(List<AwardBean.AwardInfo> listTitle) {
         if (listTitle != null) {
