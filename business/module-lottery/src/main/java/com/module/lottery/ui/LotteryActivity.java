@@ -40,6 +40,7 @@ import com.donews.base.utils.ToastUtil;
 import com.donews.middle.bean.LotteryEventUnlockBean;
 import com.donews.middle.utils.JsonValueListUtils;
 import com.donews.middle.utils.PlayAdUtilsTool;
+import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.yfsdk.manager.AdConfigManager;
 import com.donews.yfsdk.monitor.LotteryAdCheck;
 import com.donews.common.bean.CritMessengerBean;
@@ -163,6 +164,11 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             public void onClick(View v) {
                 returnIntercept();
             }
+        });
+        mDataBinding.maskingLayout.setOnClickListener(v -> {
+            mDataBinding.maskingLayout.setVisibility(View.GONE);
+            SPUtils.getInformain(FIRST_SHOW, false);
+            SPUtils.setInformain(KeySharePreferences.KEY_NEW_USER_MODEL_DIALOG_SHOW_LOTTERY_OPEN, true);
         });
         initViewData();
         setHeaderView(mDataBinding.lotteryGridview);
@@ -398,6 +404,18 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             setLottieAnimation(true);
         }
         mSharedPreferences.edit().putBoolean(FIRST_SHOW, false).apply();
+
+        boolean first_show = SPUtils.getInformain(FIRST_SHOW, true);
+        if (first_show && !privilege) {
+            SPUtils.setInformain(FIRST_SHOW, false);
+            mDataBinding.maskingLayout.setVisibility(View.VISIBLE);
+            //圆 新手引导遮罩层
+            initLottie(mDataBinding.maskingButton, "lottery_round.json");
+            //小手 新手引导遮罩层
+            initLottie(mDataBinding.maskingHand, JsonValueListUtils.LOTTERY_FINGER);
+        } else {
+            mDataBinding.maskingLayout.setVisibility(View.GONE);
+        }
     }
 
     private void setLottieAnimation(boolean play) {

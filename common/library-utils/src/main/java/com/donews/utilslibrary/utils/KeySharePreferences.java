@@ -92,5 +92,6 @@ public class KeySharePreferences {
 
 
     public final static String KEY_SERVER_QQ_NUMBER = "key_server_qq_number";
-
+    /** 新人福利模式下，抽奖页开启弹窗 */
+    public final static String KEY_NEW_USER_MODEL_DIALOG_SHOW_LOTTERY_OPEN = "key_new_user_model_dialog_show_lottery_open";
 }
