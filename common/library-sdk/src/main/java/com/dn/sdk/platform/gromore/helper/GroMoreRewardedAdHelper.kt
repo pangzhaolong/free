@@ -32,6 +32,7 @@ object GroMoreRewardedAdHelper : BaseHelper() {
     var gmRewardAd: GMRewardAd? = null
     var loggerListener: LoggerRewardVideoListenerProxy? = null
     var trackListener: TrackRewardVideoListenerProxy? = null
+    var sCurPositionId: String = "";
     fun loadRewardedAd(activity: Activity, adRequest: AdRequest, listener: IAdRewardVideoListener?) {
         if (trackListener == null) {
             trackListener = TrackRewardVideoListenerProxy(adRequest, listener)
@@ -44,6 +45,8 @@ object GroMoreRewardedAdHelper : BaseHelper() {
         trackListener?.listener = listener
         loggerListener?.adRequest = adRequest
         loggerListener?.listener = trackListener
+
+        sCurPositionId = adRequest.mAdId
 
         loggerListener?.onAdStartLoad()
         if (adRequest.mAdId.isBlank()) {
@@ -98,7 +101,7 @@ object GroMoreRewardedAdHelper : BaseHelper() {
                     dub.reqId =it.showEcpm.requestId
                     dub.currentEcpm = it.showEcpm.preEcpm
                     dub.platFormType = "2"
-                    dub.positionId = ""
+                    dub.positionId = sCurPositionId
 
                     loggerListener?.onAdStatus(10, AdStatus(dub))
                 }

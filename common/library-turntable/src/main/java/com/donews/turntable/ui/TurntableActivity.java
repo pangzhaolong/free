@@ -1,26 +1,22 @@
 package com.donews.turntable.ui;
 
-import android.app.Dialog;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.dn.events.events.LotteryBackEvent;
-import com.dn.integral.jdd.integral.ProxyIntegral;
 import com.donews.base.BuildConfig;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.router.RouterActivityPath;
 import com.donews.middle.bean.globle.TurntableBean;
-import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.middle.centralDeploy.TurntableSwitch;
 import com.donews.middle.dialog.qbn.DoingResultDialog;
 import com.donews.middle.utils.PlayAdUtilsTool;
+import com.donews.middle.utils.JsonValueListUtils;
 import com.donews.middle.viewmodel.BaseMiddleViewModel;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
@@ -36,7 +32,6 @@ import com.donews.turntable.view.TurntableView;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
@@ -47,13 +42,16 @@ public class TurntableActivity extends TurntableBaseActivity<TurntableActivityLa
     private static String TURNTABLE_BASE = BuildConfig.BASE_QBN_API;
     //获取抽奖中奖人员列表
     public static String TURNTABLE_COMMODITY = TURNTABLE_BASE + "activity/v1/turntable";
+    List<TurntableBean.ItemsDTO> list;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        list = TurntableSwitch.Ins().getTurntableBean().getItems();
         mPlayAdUtilsTool = PlayAdUtilsTool.getInstance();
         ARouter.getInstance().inject(this);
         initTurntableView();
+        initLottie(mDataBing.jsonAnimation, JsonValueListUtils.LOTTERY_FINGER);
     }
 
     @Override
@@ -64,13 +62,30 @@ public class TurntableActivity extends TurntableBaseActivity<TurntableActivityLa
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        //刷新大转盘的配置
+        TurntableSwitch.Ins().init();
         BaseMiddleViewModel.getBaseViewModel()
                 .getDailyTasks(null);
     }
 
+    private void initLottie(LottieAnimationView view, String json) {
+        if ((view != null && !view.isAnimating())) {
+            view.setImageAssetsFolder("images");
+            view.clearAnimation();
+            view.setAnimation(json);
+            view.loop(true);
+            view.playAnimation();
+        }
+    }
+
 
     private void initTurntableView() {
-        List<TurntableBean.ItemsDTO> list = TurntableSwitch.Ins().getTurntableBean().getItems();
+        if (list == null) {
+            ToastUtil.showShort(getApplicationContext(), "网络异常,请检查网络");
+        }
+        if (list != null && list.size() == 0) {
+            ToastUtil.showShort(getApplicationContext(), "转盘数据获取异常");
+        }
         mDataBing.turntableView.setInitBitmap(list);
         mDataBing.turntableView.setTurntableResultListener(new TurntableView.ITurntableResultListener() {
             @Override
@@ -85,8 +100,21 @@ public class TurntableActivity extends TurntableBaseActivity<TurntableActivityLa
         mDataBing.exitIcon.setOnClickListener(this);
     }
 
+    //条件检查
+    private boolean conditionCheck() {
+        if (list == null) {
+            ToastUtil.showShort(getApplicationContext(), "网络异常,请检查网络");
+            return false;
+        }
+        if (list != null && list.size() == 0) {
+            ToastUtil.showShort(getApplicationContext(), "转盘数据获取异常");
+            return false;
+        }
+        return true;
+    }
+
     private void startLottery() {
-        if (ClickDoubleUtil.isFastClick()) {
+        if (ClickDoubleUtil.isFastClick(2000) && conditionCheck()) {
             //先获取配置奖励
             this.unDisposable();
             Disposable disposable = EasyHttp.post(TURNTABLE_COMMODITY)

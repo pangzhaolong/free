@@ -32,6 +32,7 @@ import com.dn.integral.jdd.integral.IntegralStateListener;
 import com.dn.integral.jdd.integral.ProxyIntegral;
 import com.donews.base.base.BaseApplication;
 import com.donews.middle.dialog.BaseDialog;
+import com.donews.middle.utils.JsonValueListUtils;
 import com.donews.yfsdk.monitor.LotteryAdCheck;
 import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.middle.utils.CriticalModelTool;
@@ -256,7 +257,7 @@ public class ExhibitCodeStartsDialog extends BaseDialog<ExhibitCodeDialogLayoutB
 
             //手
             mDataBinding.jsonAnimationHand.setImageAssetsFolder("images");
-            mDataBinding.jsonAnimationHand.setAnimation("lottery_finger.json");
+            mDataBinding.jsonAnimationHand.setAnimation(JsonValueListUtils.LOTTERY_FINGER);
             mDataBinding.jsonAnimationHand.loop(true);
             mDataBinding.jsonAnimationHand.playAnimation();
 

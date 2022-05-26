@@ -30,6 +30,7 @@ import com.donews.base.BuildConfig;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.middle.adutils.InterstitialFullAd;
 import com.donews.middle.centralDeploy.ABSwitch;
+import com.donews.middle.utils.JsonValueListUtils;
 import com.donews.mine.R;
 import com.donews.mine.databinding.MineCongratulationsDialogLayoutBinding;
 import com.donews.mine.dialogs.bean.RecommendBean;
@@ -99,7 +100,7 @@ public class MineCongratulationsDialog extends BaseDialog<MineCongratulationsDia
             dismiss();
         });
         mDataBinding.jsonHand.setImageAssetsFolder("images");
-        mDataBinding.jsonHand.setAnimation("lottery_finger.json");
+        mDataBinding.jsonHand.setAnimation(JsonValueListUtils.LOTTERY_FINGER);
         mDataBinding.jsonHand.loop(true);
         mDataBinding.jsonHand.playAnimation();
         startAnimation();
