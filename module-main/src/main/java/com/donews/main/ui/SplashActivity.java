@@ -666,7 +666,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
                 int progress = (int) animation.getAnimatedValue();
                 if (mDataBinding != null) {
                     if (mDataBinding.groupProgress.getVisibility() != View.VISIBLE) {
-                        mDataBinding.groupProgress.setVisibility(View.VISIBLE);
+//                        mDataBinding.groupProgress.setVisibility(View.VISIBLE);
                     }
                     mDataBinding.pbProgress.setProgress(progress);
                 }

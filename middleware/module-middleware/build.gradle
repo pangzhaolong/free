@@ -15,6 +15,12 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     api project(':common:library-common')
     api project(':common:library-yfsdk')
+//    // 新人引导库  参考:https://github.com/hongyangAndroid/Highlight
+//    api 'com.isanwenyu.highlight:highlight:1.8.0'
+    // 新人引导库  参考:https://github.com/huburt-Hu/NewbieGuide
+    api 'com.github.huburt-Hu:NewbieGuide:v2.4.0'
+    //新人引导库所需要
+//    api 'com.android.support:appcompat-v7:25.3.1'
 /*
     kapt rootProject.ext.dependencies["arouter-compiler"]
 */

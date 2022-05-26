@@ -481,8 +481,8 @@ public class UserInfoManage {
         EventBus.getDefault().post(eventLoadIngStatus);
         MutableLiveData<UserInfoBean> mutableLiveData = new MutableLiveData<UserInfoBean>();
         //判断是否登录
-        if(!LoginHelp.getInstance().isLogin()){
-            EventBus.getDefault().post(new LoginUserStatus(-1));
+        if (LoginHelp.getInstance().isLogin()) {
+            EventBus.getDefault().post(new LoginUserStatus(-3));
             return mutableLiveData;
         }
         EasyHttp.post(LoginApi.BIND)

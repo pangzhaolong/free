@@ -251,13 +251,15 @@ public class Mine2Fragment extends MvvmLazyLiveDataFragment<MineFragmentNewBindi
     //去往登录页面
     public void gotoLogin() {
         //去往登录页面
+        if(AppInfo.checkIsWXLogin()){
+            ARouter.getInstance()
+                    .build(RouterActivityPath.Mine.PAGER_MINE_USER_INFO_ACTIVITY)
+                    .navigation();
+            return;
+        }
         ARouter.getInstance()
                 .build(RouterActivityPath.User.PAGER_LOGIN)
                 .navigation();
-        //go to
-//        ARouter.getInstance()
-//                .build(RouterActivityPath.Mine.PAGER_MINE_WINNING_CODE_ACTIVITY)
-//                .navigation();
     }
 
     //是否存在金币播放任务了已经
@@ -306,7 +308,11 @@ public class Mine2Fragment extends MvvmLazyLiveDataFragment<MineFragmentNewBindi
                 try {
                     isExietisJBAnimTask = false;
                     double startDouble = Double.parseDouble(mDataBinding.mine2JbCount.getText().toString());
-                    if (startDouble >= jb) {
+                    if (startDouble == jb) {
+                        mDataBinding.mine2JbCount.setText("" + jb);
+                        return;
+                    }
+                    if (startDouble > jb) {
                         TextViewNumberUtil.addTextViewAddAnim(mDataBinding.mine2JbCount, 0, jb);
                         return;
                     }
@@ -326,7 +332,11 @@ public class Mine2Fragment extends MvvmLazyLiveDataFragment<MineFragmentNewBindi
                 try {
                     isExietisJFAnimTask = false;
                     double startDouble = Double.parseDouble(mDataBinding.mine2JfCount.getText().toString());
-                    if (startDouble >= jf) {
+                    if (startDouble == jf) {
+                        mDataBinding.mine2JfCount.setText("" + jf);
+                        return;
+                    }
+                    if (startDouble > jf) {
                         TextViewNumberUtil.addTextViewAddAnim(mDataBinding.mine2JfCount, 0, jf);
                         return;
                     }

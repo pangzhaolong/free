@@ -68,6 +68,9 @@ public class UserInfoActivity extends MvvmBaseLiveDataActivity<MineActivityUserI
             AppInfo.exitWXLogin();
             finish();
         });
+        mDataBinding.mainAboutBack.setOnClickListener((v) -> {
+            finish();
+        });
         mDataBinding.userinfoZx.setOnClickListener((v) -> {
             UserInfoBean uf = LoginHelp.getInstance().getUserInfoBean();
             if (uf == null ||

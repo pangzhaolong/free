@@ -445,7 +445,9 @@ public class MineOpenWinningViewModel extends BaseLiveDataViewModel<MineModel> {
             });
             //首页的开奖页面，登录按钮是否显示怎么显示(等待产品确认)
             if (!isAutoPeriod) {
-                loginBut.setVisibility(View.VISIBLE);
+                //不显示登录按钮
+                loginBut.setVisibility(View.GONE);
+//                loginBut.setVisibility(View.VISIBLE);
             }
             winningView.setVisibility(View.VISIBLE);
             openWinView.setVisibility(View.GONE);

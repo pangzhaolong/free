@@ -1,13 +1,12 @@
 package com.donews.home.dialogs;
 
-
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,9 +24,9 @@ import com.donews.home.R;
 import com.donews.home.databinding.HomeExchangeGoodNotDialogBinding;
 import com.donews.home.viewModel.ExchangeViewModel;
 import com.donews.home.viewModel.HomeViewModel;
+import com.donews.middle.adutils.FeedNativeAndTemplateAd;
 import com.donews.middle.bean.home.HomeCoinCritConfigBean;
 import com.donews.middle.bean.home.HomeEarnCoinReq;
-import com.donews.middle.bean.mine2.reqs.DailyTasksReportReq;
 import com.donews.middle.dialog.BaseBindingFragmentDialog;
 import com.donews.middle.dialog.qbn.DoingResultDialog;
 import com.donews.middle.viewmodel.BaseMiddleViewModel;
@@ -95,6 +94,8 @@ public class ExchangeGoodJbFragmentDialog extends BaseBindingFragmentDialog<Home
         }
         initDatabinding();
         showClose();
+        //加载信息流广告
+        showFeed();
     }
 
     //显示关闭弹窗
@@ -115,6 +116,7 @@ public class ExchangeGoodJbFragmentDialog extends BaseBindingFragmentDialog<Home
     public void onResume() {
         super.onResume();
         initDatabinding();
+        checkNewUserGuide(0);
     }
 
     //获取各种状态的Text
@@ -228,7 +230,7 @@ public class ExchangeGoodJbFragmentDialog extends BaseBindingFragmentDialog<Home
                                         BaseMiddleViewModel.getBaseViewModel().mine2JBCount.postValue(item.coin);
                                     }
                                     //显示金币弹窗
-                                    showDoingResultDialog(item.coin);
+                                    showDoingResultDialog(activity, item.coin);
                                 } else {
                                     ToastUtil.showShort(activity, "奖励发放失败,请稍后重试!");
                                 }
@@ -246,12 +248,28 @@ public class ExchangeGoodJbFragmentDialog extends BaseBindingFragmentDialog<Home
     }
 
     // 显示活动奖励弹窗
-    private void showDoingResultDialog(int count) {
-        DoingResultDialog dialog = new DoingResultDialog(getActivity(), count, R.drawable.sign_reward_mine_dialog_djb);
+    private void showDoingResultDialog(FragmentActivity activity, int count) {
+        DoingResultDialog dialog = new DoingResultDialog(activity, count, R.drawable.sign_reward_mine_dialog_djb);
         dialog.setStateListener(() -> {
         });
-        dialog.show(getActivity());
+        dialog.show(activity);
     }
 
+    //显示信息流
+    private void showFeed() {
+        Activity act = getActivity();
+        FeedNativeAndTemplateAd.INSTANCE.loadFeedTemplateAdNew(act, dataBinding.adLayout, null);
+    }
+
+    /**
+     * 检查新用户引导
+     *
+     * @param type 0:兑换弹窗的确定按钮引导
+     *             1: 兑换页弹窗取消按钮对抽奖Tab的引导
+     *             1: 兑换页弹窗取消按钮对活动Tab的引导
+     */
+    private void checkNewUserGuide(int type) {
+//        showGuideType0();
+    }
 
 }

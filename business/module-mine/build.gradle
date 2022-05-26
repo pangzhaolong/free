@@ -1,8 +1,8 @@
-apply from:  rootProject.file('gradle/module.build.gradle')
+apply from: rootProject.file('gradle/module.build.gradle')
 
 android {
     defaultConfig {
-        if (isBuildModule.toBoolean()){
+        if (isBuildModule.toBoolean()) {
             applicationId "com.donews.mine"
         }
     }
@@ -12,7 +12,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version" 
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     api project(':common:library-common')
     implementation project(':common:library-yfsdk')
     kapt rootProject.ext.dependencies["arouter-compiler"]
@@ -21,4 +21,6 @@ dependencies {
     implementation project(path: ':common:library-share')
     implementation project(':common:library-sdk')
     implementation project(':middleware:module-middleware')
+    implementation rootProject.ext.dependencies["xpopup"]
+    implementation project(path: ':business:module-shareui')
 }

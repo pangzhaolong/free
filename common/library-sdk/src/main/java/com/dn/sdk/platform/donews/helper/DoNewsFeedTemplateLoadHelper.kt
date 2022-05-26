@@ -46,15 +46,15 @@ object DoNewsFeedTemplateLoadHelper : BaseHelper() {
             return
         }
 
-        if (adRequest.mHeightDp == 0f) {
-            runOnUiThread(activity) {
-                listener?.onAdError(
-                    AdCustomError.ParamsAdHeightDpError.code,
-                    AdCustomError.ParamsAdHeightDpError.errorMsg
-                )
-            }
-            return
-        }
+//        if (adRequest.mHeightDp == 0f) {
+//            runOnUiThread(activity) {
+//                listener?.onAdError(
+//                    AdCustomError.ParamsAdHeightDpError.code,
+//                    AdCustomError.ParamsAdHeightDpError.errorMsg
+//                )
+//            }
+//            return
+//        }
 
         val doNewsAdNative = DoNewsAdManagerHolder.get().createDoNewsAdNative()
         //生命周期监听

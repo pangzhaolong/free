@@ -1,5 +1,7 @@
 package com.donews.mine.adapters;
 
+import android.graphics.Color;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
@@ -26,7 +28,10 @@ import com.donews.mine.databinding.Mine2FragmentTaskItemBinding;
 import com.donews.mine.dialogs.news.SignInRewardMineDialog;
 import com.donews.mine.viewModel.MineViewModel;
 import com.donews.middle.base.BaseBindingAdapter;
+import com.donews.module_shareui.ShareUIBottomPopup;
 import com.donews.yfsdk.loader.AdManager;
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.enums.PopupAnimation;
 
 /**
  * @author lcl
@@ -109,7 +114,9 @@ public class Mine2FragmentTaskAdapter extends
                 }
                 break;
             case collect: // 集卡
-                ToastUtil.showShort(fragmentActivity, "去往集卡任务");
+                ARouter.getInstance()
+                        .build(RouterFragmentPath.Collect.PAGER_COLLECT)
+                        .navigation();
                 break;
             case lottery: // 抽奖
                 if (item.status == 0) {
@@ -126,7 +133,12 @@ public class Mine2FragmentTaskAdapter extends
                 }
                 break;
             case share: // 分享
-                ToastUtil.showShort(fragmentActivity, "和活动分享保持一致");
+                new XPopup.Builder(fragmentActivity)
+                        .isDestroyOnDismiss(true) //对于只使用一次的弹窗，推荐设置这个
+                        .popupAnimation(PopupAnimation.TranslateFromBottom)
+                        .navigationBarColor(Color.BLACK)
+                        .asCustom(new ShareUIBottomPopup(fragmentActivity))
+                        .show();
                 break;
             case sign: // 签到
                 if (item.status == 0) {

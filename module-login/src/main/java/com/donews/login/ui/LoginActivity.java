@@ -13,6 +13,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.VibrateUtils;
 import com.dn.drouter.ARouteHelper;
 import com.dn.events.events.LoginLodingStartStatus;
+import com.dn.events.events.LoginUserStatus;
 import com.donews.base.BuildConfig;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
@@ -112,6 +113,19 @@ public class LoginActivity extends MvvmBaseLiveDataActivity<LoginActivityBinding
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
         super.onDestroy();
+    }
+
+    @Subscribe //用户登录状态变化
+    public void loginStatusEvent(LoginUserStatus event) {
+        if (event.getStatus() == -3) {
+            //已经登录了。不需要继续操作
+            hideLoading();
+            if (com.donews.login.BuildConfig.DEBUG) {
+                ToastUtil.showShort(this, "需要先登录之后才能进行绑定!");
+            } else {
+                ToastUtil.showShort(this, "登录异常,请稍后重试");
+            }
+        }
     }
 
     @Subscribe //用户登录状态变化

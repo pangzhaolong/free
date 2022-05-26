@@ -5,6 +5,8 @@ import android.text.TextUtils;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 
+import com.donews.base.base.BaseApplication;
+import com.donews.base.utils.ToastUtil;
 import com.donews.base.viewmodel.BaseLiveDataViewModel;
 import com.donews.common.contract.UserInfoBean;
 import com.donews.login.model.LoginModel;
@@ -75,7 +77,7 @@ public class LoginViewModel extends BaseLiveDataViewModel<LoginModel> {
         if (state == WXHolderHelp.STATE_LOGIN) { //微信登录
             mModel.onWXLogin(code);
         } else if (state == WXHolderHelp.STATE_BINDING) { // 微信绑定
-
+            ToastUtil.showShort(BaseApplication.getInstance(),"未实现微信绑定逻辑。请实现...");
         }
     }
 

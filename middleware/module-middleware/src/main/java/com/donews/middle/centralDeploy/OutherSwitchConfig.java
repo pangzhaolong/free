@@ -78,7 +78,7 @@ public class OutherSwitchConfig {
     /**
      * 检查首页Tab切换的插屏开关是否打开。决定切换时候是否允许加载插屏广告
      *
-     * @param tabPos 需要检查的tab下标
+     * @param tabPos 需要检查的tab下标(从0开始)
      * @return T:允许加载广告，F:中台关闭的插屏广告
      */
     public boolean checkMainTabInterstitial(int tabPos) {
@@ -87,7 +87,7 @@ public class OutherSwitchConfig {
         }
         OutherSwitchConfigBean item = getBean();
         List<Boolean> switchItems = item.getMainInterstitialSwitch();
-        if (tabPos > switchItems.size()) {
+        if (tabPos > switchItems.size() - 1) {
             return true;
         }
         return switchItems.get(tabPos);

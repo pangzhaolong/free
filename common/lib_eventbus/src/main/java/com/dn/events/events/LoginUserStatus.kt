@@ -9,6 +9,7 @@ package com.dn.events.events
 class LoginUserStatus(
     /**
      * 登录状态:
+     *  -3:刷新token接口报错
      *  -2:刷新token接口报错
      *  -1:登录接口报错
      *   0:登录失败(接口成功,但是未能正确获得数据)

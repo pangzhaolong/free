@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.blankj.utilcode.util.SPUtils;
 import com.dn.sdk.AdCustomError;
 import com.dn.sdk.listener.interstitial.SimpleInterstitialFullListener;
 import com.dn.sdk.listener.interstitial.SimpleInterstitialListener;
@@ -44,6 +45,11 @@ import com.donews.yfsdk.monitor.PageMoniterCheck;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.orhanobut.logger.Logger;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import cn.cd.dn.sdk.models.utils.DNServiceTimeManager;
 
 /**
  * @author lcl
@@ -281,11 +287,22 @@ public class ExchangeFragment extends MvvmLazyLiveDataFragment<ExchanageFragment
         startActivity(intent);
     }
 
+    private long fastClickTime = 0;
+
     //搜索框右侧按钮点击
     public void getSearchRightClick() {
-
+        if (System.currentTimeMillis() - fastClickTime < 1000) {
+            ToastUtil.showShort(getActivity(), "你点太快了,让手指休息下吧~");
+            return;
+        }
+        fastClickTime = System.currentTimeMillis();
         if (downcountCountTime > 0) {
             ToastUtil.showShort(getActivity(), "距离下次领取还剩 " + mDataBinding.tvTime.getText());
+            return;//还在倒计时中
+        }
+
+        if (getGiftCurrDayCount() >= 5) {
+            ToastUtil.showShort(getActivity(), "今日领取已达上限,请明日再来!");
             return;//还在倒计时中
         }
 
@@ -324,18 +341,57 @@ public class ExchangeFragment extends MvvmLazyLiveDataFragment<ExchanageFragment
         });
     }
 
-    //执行宝箱奖励领取
+    //执行宝箱奖励领取(只有宝箱打开。视频看完了才会调用)
     private void invokGiftGet() {
         HomeReceiveGiftReq req = new HomeReceiveGiftReq();
         req.user_id = AppInfo.getUserId();
         mViewModel.getReceiveGift(req)
                 .observe(this, (resp) -> {
                     if (resp != null) {
+                        saveGiftCurrDayCount();
                         showDoingResultDialog(resp.coin);
                     } else {
                         ToastUtil.showShort(getActivity(), "奖励领取失败,请稍后重试!");
                     }
                 });
+    }
+
+    /**
+     * 保存当日保存数量，将当日已观看的数量+1
+     */
+    private void saveGiftCurrDayCount() {
+        try {
+            String file = "giftCurrDayCountFile";
+            String key = new SimpleDateFormat("yyyyMMdd").format(
+                    new Date(DNServiceTimeManager.Companion.getIns().getServiceTime()));
+            int count = SPUtils.getInstance(file).getInt(key, -1);
+            if (count < 0) {
+                SPUtils.getInstance(file).clear();
+                SPUtils.getInstance(file).put(key, 1);
+            } else {
+                SPUtils.getInstance(file).put(key, count + 1);
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    /**
+     * 获取当日宝箱已打开的次数
+     */
+    private int getGiftCurrDayCount() {
+        try {
+            String file = "giftCurrDayCountFile";
+            String key = new SimpleDateFormat("yyyyMMdd").format(
+                    new Date(DNServiceTimeManager.Companion.getIns().getServiceTime()));
+            int count = SPUtils.getInstance(file).getInt(key, -1);
+            if (count < 0) {
+                return 0;
+            } else {
+                return count;
+            }
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
     //初始化DataBinding
