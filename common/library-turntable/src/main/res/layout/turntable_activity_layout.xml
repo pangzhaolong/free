@@ -92,6 +92,21 @@
             app:layout_constraintRight_toRightOf="parent"
             tools:ignore="MissingConstraints" />
 
+
+        <!--小手-->
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/jsonAnimation"
+            android:layout_width="85dp"
+            android:layout_height="86dp"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="60dp"
+            android:layout_marginBottom="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:ignore="MissingConstraints" />
+
         <LinearLayout
             android:id="@+id/tips"
             android:layout_width="wrap_content"

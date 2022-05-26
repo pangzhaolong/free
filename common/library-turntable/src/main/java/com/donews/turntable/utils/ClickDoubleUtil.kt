@@ -2,11 +2,11 @@ package com.donews.turntable.utils
 
 class ClickDoubleUtil {
 
-    companion object{
+    companion object {
         /**
          * 两次点击按钮之间的点击间隔不能少于1000毫秒
          */
-        private val MIN_CLICK_DELAY_TIME = 500
+        private var MIN_CLICK_DELAY_TIME: Int = 500
 
         /**
          * 最后一次点击的时间
@@ -26,9 +26,18 @@ class ClickDoubleUtil {
             mLastClickTime = curClickTime
             return flag
         }
+
+
+        @JvmStatic
+        fun isFastClick(value: Int): Boolean {
+            MIN_CLICK_DELAY_TIME = value;
+            val flag: Boolean
+            val curClickTime = System.currentTimeMillis()
+            flag = curClickTime - mLastClickTime >= MIN_CLICK_DELAY_TIME
+            mLastClickTime = curClickTime
+            return flag
+        }
     }
-
-
 
 
 }

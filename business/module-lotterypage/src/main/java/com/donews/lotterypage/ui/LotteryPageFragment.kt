@@ -35,6 +35,7 @@ import com.donews.middle.bean.front.AwardBean
 import com.donews.middle.centralDeploy.OutherSwitchConfig
 import com.donews.middle.front.FrontConfigManager
 import com.donews.middle.front.LotteryConfigManager
+import com.donews.middle.utils.ActivityGuideMaskUtil
 import com.donews.middle.views.TaskView
 import com.donews.yfsdk.moniter.PageMonitor
 import com.donews.yfsdk.monitor.InterstitialFullAdCheck
@@ -107,6 +108,21 @@ class LotteryPageFragment :
                 }
             }
         })
+    }
+
+    override fun onFragmentFirstVisible() {
+        super.onFragmentFirstVisible()
+        activity?.apply {
+            if (!ActivityGuideMaskUtil.getGuideShowRecord(
+                    this, R.id.accessibility_custom_action_0
+                )
+            ) {
+                //如果被显示过。那么设置为已经引导过了
+                ActivityGuideMaskUtil.saveGuideShowRecord(
+                    this, R.id.accessibility_custom_action_0, true
+                )
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -212,8 +228,8 @@ class LotteryPageFragment :
         //往期人员
         mViewModel.livePastData.observe(viewLifecycleOwner, object : Observer<AwardBean?> {
             override fun onChanged(t: AwardBean?) {
-                mDataBinding.revealView.setData(t?.list)
-                mDataBinding.revealView.startAnimation()
+//                mDataBinding.revealView.setData(t?.list)
+//                mDataBinding.revealView.startAnimation()
 //                mDataBinding.reveal.refreshData(t?.list)
             }
         })

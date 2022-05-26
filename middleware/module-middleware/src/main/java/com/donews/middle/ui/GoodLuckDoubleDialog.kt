@@ -16,6 +16,7 @@ import com.donews.middle.R
 import com.donews.middle.databinding.GoodLuckDoubleDialogLayoutBinding
 import com.donews.middle.model.MiddleModel
 import com.donews.middle.utils.CommonUtils
+import com.donews.middle.utils.JsonValueListUtils
 import com.donews.middle.viewmodel.MiddleViewModel
 import com.vmadalin.easypermissions.EasyPermissions
 
@@ -63,7 +64,7 @@ class GoodLuckDoubleDialog() :
         }
         //手
         mDataBinding.maskingHand.imageAssetsFolder = "images"
-        mDataBinding.maskingHand.setAnimation("lottery_finger.json")
+        mDataBinding.maskingHand.setAnimation(JsonValueListUtils.LOTTERY_FINGER)
         mDataBinding.maskingHand.loop(true)
         mDataBinding.maskingHand.playAnimation()
     }

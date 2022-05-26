@@ -10,6 +10,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import com.donews.middle.dialog.BaseDialog;
+import com.donews.middle.utils.JsonValueListUtils;
 import com.module.lottery.bean.GenerateCodeBean;
 import com.module_lottery.R;
 import com.module_lottery.databinding.LotteryCritDialogLayoutBinding;
@@ -61,7 +62,7 @@ public class LotteryCritCodeDialog extends BaseDialog<LotteryCritDialogLayoutBin
             }
         });
         mDataBinding.jsonHand.setImageAssetsFolder("images");
-        mDataBinding.jsonHand.setAnimation("lottery_finger.json");
+        mDataBinding.jsonHand.setAnimation(JsonValueListUtils.LOTTERY_FINGER);
         mDataBinding.jsonHand.loop(true);
         mDataBinding.jsonHand.playAnimation();
     }

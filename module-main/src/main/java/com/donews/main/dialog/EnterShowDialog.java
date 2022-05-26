@@ -33,6 +33,7 @@ import com.donews.main.entitys.resps.ExitDialogRecommendGoods;
 import com.donews.main.entitys.resps.ExitDialogRecommendGoodsResp;
 import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.middle.dialog.BaseDialog;
+import com.donews.middle.utils.JsonValueListUtils;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.callback.SimpleCallBack;
@@ -147,7 +148,7 @@ public class EnterShowDialog extends BaseDialog<MainEnterDialogLotteryBinding> {
             }
         });
 
-        initLottie(mDataBinding.mainEnterDialogLottie, "lottery_finger.json");
+        initLottie(mDataBinding.mainEnterDialogLottie, JsonValueListUtils.LOTTERY_FINGER);
         setOnDismissListener(dialog -> {
             if (isSendCloseEvent) {
                 if (AppInfo.checkIsWXLogin()) {

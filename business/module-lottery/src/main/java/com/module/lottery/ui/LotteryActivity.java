@@ -38,7 +38,9 @@ import com.dn.events.events.LotteryStatusEvent;
 import com.dn.integral.jdd.integral.ProxyIntegral;
 import com.donews.base.utils.ToastUtil;
 import com.donews.middle.bean.LotteryEventUnlockBean;
+import com.donews.middle.utils.JsonValueListUtils;
 import com.donews.middle.utils.PlayAdUtilsTool;
+import com.donews.utilslibrary.utils.KeySharePreferences;
 import com.donews.yfsdk.manager.AdConfigManager;
 import com.donews.yfsdk.monitor.LotteryAdCheck;
 import com.donews.common.bean.CritMessengerBean;
@@ -97,7 +99,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     private static final String TAG = "LotteryActivity";
     private static final String LOTTERY_ACTIVITY = "LOTTERY_ACTIVITY";
     private static final String FIRST_SHOW = "first_show";
-    private static final String LOTTERY_FINGER = "lottery_finger.json";
     private static final String LOTTERY_ROUND = "lottery_round.json";
     private static final String CRIT_ROUND = "cruel_time.json";
     private static final String CRITICAL_BT_TITLE_0 = "暴击";
@@ -163,6 +164,11 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             public void onClick(View v) {
                 returnIntercept();
             }
+        });
+        mDataBinding.maskingLayout.setOnClickListener(v -> {
+            mDataBinding.maskingLayout.setVisibility(View.GONE);
+            SPUtils.getInformain(FIRST_SHOW, false);
+            SPUtils.setInformain(KeySharePreferences.KEY_NEW_USER_MODEL_DIALOG_SHOW_LOTTERY_OPEN, true);
         });
         initViewData();
         setHeaderView(mDataBinding.lotteryGridview);
@@ -398,13 +404,25 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
             setLottieAnimation(true);
         }
         mSharedPreferences.edit().putBoolean(FIRST_SHOW, false).apply();
+
+        boolean first_show = SPUtils.getInformain(FIRST_SHOW, true);
+        if (first_show && !privilege) {
+            SPUtils.setInformain(FIRST_SHOW, false);
+            mDataBinding.maskingLayout.setVisibility(View.VISIBLE);
+            //圆 新手引导遮罩层
+            initLottie(mDataBinding.maskingButton, "lottery_round.json");
+            //小手 新手引导遮罩层
+            initLottie(mDataBinding.maskingHand, JsonValueListUtils.LOTTERY_FINGER);
+        } else {
+            mDataBinding.maskingLayout.setVisibility(View.GONE);
+        }
     }
 
     private void setLottieAnimation(boolean play) {
         if (play) {
             //设置动画
             //小手
-            initLottie(mDataBinding.jsonAnimation, LOTTERY_FINGER);
+            initLottie(mDataBinding.jsonAnimation, JsonValueListUtils.LOTTERY_FINGER);
             mDataBinding.jsonAnimation.setVisibility(View.VISIBLE);
             //圆
             if (CriticalModelTool.ifCriticalStrike()) {

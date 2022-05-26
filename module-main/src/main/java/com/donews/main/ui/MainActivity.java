@@ -3,15 +3,9 @@ package com.donews.main.ui;
 import static com.donews.common.config.CritParameterConfig.CRIT_STATE;
 import static com.donews.utilslibrary.utils.KeySharePreferences.NOTIFY_RANDOM_RED_AMOUNT;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.DashPathEffect;
-import android.graphics.Paint;
-import android.graphics.RectF;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -37,12 +31,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.app.hubert.guide.NewbieGuide;
 import com.app.hubert.guide.core.Controller;
-import com.app.hubert.guide.listener.OnHighlightDrewListener;
-import com.app.hubert.guide.model.GuidePage;
-import com.app.hubert.guide.model.HighLight;
-import com.app.hubert.guide.model.HighlightOptions;
 import com.dn.events.ad.HotStartEvent;
 import com.dn.events.events.DoubleRpEvent;
 import com.dn.events.events.EnterShowDialogEvent;
@@ -75,7 +64,6 @@ import com.donews.main.databinding.MainPopWindowProgressBarBinding;
 import com.donews.main.dialog.AnAdditionalDialog;
 import com.donews.main.dialog.DrawDialog;
 import com.donews.main.dialog.EnterShowDialog;
-import com.donews.main.dialog.FreePanicBuyingDialog;
 import com.donews.main.dialog.MainRpDialog;
 import com.donews.main.dialog.MoreAwardDialog;
 import com.donews.main.dialog.RemindDialogExt;
@@ -87,7 +75,6 @@ import com.donews.main.viewModel.MainViewModel;
 import com.donews.main.views.CornerMarkUtils;
 import com.donews.main.views.MainBottomTanItem;
 import com.donews.middle.IMainParams;
-import com.donews.middle.bean.globle.TurntableBean;
 import com.donews.middle.bean.mine2.emuns.Mine2TaskType;
 import com.donews.middle.bean.mine2.resp.DailyTaskResp;
 import com.donews.middle.centralDeploy.ABSwitch;
@@ -101,6 +88,7 @@ import com.donews.middle.bean.TaskActionBean;
 import com.donews.middle.cache.GoodsCache;
 import com.donews.middle.events.SigninCloseEvent;
 import com.donews.middle.request.RequestUtil;
+import com.donews.middle.utils.ActivityGuideMaskUtil;
 import com.donews.middle.utils.CriticalModelTool;
 import com.donews.middle.utils.HotStartCacheUtils;
 import com.donews.middle.viewmodel.BaseMiddleViewModel;
@@ -129,6 +117,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 import me.majiajie.pagerbottomtabstrip.NavigationController;
 
 /**
@@ -536,7 +526,6 @@ public class MainActivity
     @Override
     protected void onResume() {
         super.onResume();
-//        showGuideType0();
 //        loadBannerAd();
 
         if (SPUtils.getInformain(KeySharePreferences.FIRST_RP_IS_OPEN, false)) {
@@ -704,10 +693,13 @@ public class MainActivity
                     R.drawable.main_home_checked_secect);
 
             MainBottomTanItem lotteryItem = new MainBottomTanItem(this);
-            lotteryItem.initialization("抽奖", R.drawable.main_lottery_icon, defaultColor, checkColor, R.drawable.main_lottery_icon_seclect);
+            //随便找了一个id给指定View设置上。只要跟当前的页面视图不重复即可
             lotteryItem.setId(R.id.accessibility_custom_action_0);
+            lotteryItem.initialization("抽奖", R.drawable.main_lottery_icon, defaultColor, checkColor, R.drawable.main_lottery_icon_seclect);
 
             MainBottomTanItem taskItem = new MainBottomTanItem(this);
+            //随便找了一个id给指定View设置上。只要跟当前的页面视图不重复即可
+            taskItem.setId(R.id.accessibility_custom_action_1);
             taskItem.initialization("活动", R.drawable.main_action, defaultColor, checkColor, R.drawable.main_action_select);
             MainBottomTanItem mineItem = new MainBottomTanItem(this);
             mineItem.initialization("我的", R.drawable.main_mine, defaultColor, checkColor, R.drawable.main_mine_select);
@@ -1310,41 +1302,5 @@ public class MainActivity
         }
 
         return false;
-    }
-
-    Controller controller = null;
-
-    //显示类型0的新人引导
-    private void showGuideType0() {
-        Activity act = this;
-        HighlightOptions options = new HighlightOptions.Builder()
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(act, "highlight click", Toast.LENGTH_SHORT).show();
-                        controller.remove();
-                    }
-                })
-                .setOnHighlightDrewListener((canvas, rectF) -> {
-                    //给高亮的地方绘制虚线
-                    Paint paint = new Paint();
-                    paint.setColor(Color.WHITE);
-                    paint.setStyle(Paint.Style.STROKE);
-                    paint.setStrokeWidth(3);
-                    paint.setPathEffect(new DashPathEffect(new float[]{20, 20}, 0));
-                    canvas.drawCircle(rectF.centerX(), rectF.centerY(), rectF.width() / 2 + 10, paint);
-                })
-                .build();
-        View tagView = findViewById(R.id.accessibility_custom_action_0);
-        GuidePage page = GuidePage.newInstance()
-                .setEverywhereCancelable(false) //是否点击任意位置消失引导页，默认true
-                .addHighLightWithOptions(tagView, options) //矩形高亮区域
-//                .addHighLightWithOptions(tagView, HighLight.Shape.CIRCLE, options) //圆形高亮区域
-                .setLayoutRes(R.layout.base_layout_loading);
-        controller = NewbieGuide.with(act)
-                .setLabel("relative")
-                .alwaysShow(true)//总是显示，调试时可以打开
-                .addGuidePage(page)
-                .show();
     }
 }

@@ -1,5 +1,6 @@
 package com.dn.sdk.listener.rewardvideo
 
+import android.text.TextUtils
 import com.cdyfnts.datacenter.constant.AdEventType
 import com.cdyfnts.datacenter.constant.AdPlaceAttribute
 import com.cdyfnts.datacenter.entity.AdActionBean
@@ -23,7 +24,7 @@ class TrackRewardVideoListenerProxy(
 ) : IAdRewardVideoListener {
 
     private val countTrack = CountTrackImpl(adRequest)
-    private var mAdActionBean: AdActionBean = AdActionBean()
+    private var mAdActionBean: AdActionBean? = null
 
     override fun onAdStartLoad() {
         countTrack.onAdStartLoad()
@@ -32,17 +33,34 @@ class TrackRewardVideoListenerProxy(
 
     override fun onAdStatus(code: Int, any: Any?) {
         if (code == 10 && any is AdStatus) {
-            mAdActionBean.ad_req_id = any.reqId
-            mAdActionBean.platform = any.platFormType?.let { it.toInt() }
-            mAdActionBean.event_type = AdEventType.AdEventVideoStart
-            mAdActionBean.ecpm = any.currentEcpm.toDouble().toInt()
-            mAdActionBean.platform = any.platFormType.toInt()
-            mAdActionBean.union_app_id = any.appId
-            mAdActionBean.position_id = any.currentPositionId
-            mAdActionBean.union_position_id = any.positionId
-            mAdActionBean.place_attribute = AdPlaceAttribute.AdPlaceAttributeRewardedVideo
-            mAdActionBean.event_type = AdEventType.AdEventVideoStart
-            YfDcHelper.onAdActionEvent(mAdActionBean)
+            if (mAdActionBean == null) {
+                mAdActionBean = AdActionBean()
+            }
+            mAdActionBean?.let {
+                if (TextUtils.isEmpty(it.ad_req_id)) {
+                    it.ad_req_id = any.reqId
+                }
+                if (it.platform <= 0) {
+                    it.platform = any.platFormType?.let { it.toInt() }
+                }
+                it.event_type = AdEventType.AdEventVideoStart
+                if (it.ecpm <= 0) {
+                    it.ecpm = any.currentEcpm.toDouble().toInt()
+                }
+                it.platform = any.platFormType.toInt()
+                if (TextUtils.isEmpty(it.union_app_id)) {
+                    it.union_app_id = any.appId
+                }
+                if (TextUtils.isEmpty(it.position_id)) {
+                    it.position_id = any.currentPositionId
+                }
+                if (TextUtils.isEmpty(it.union_position_id)) {
+                    it.union_position_id = any.positionId
+                }
+                it.place_attribute = AdPlaceAttribute.AdPlaceAttributeRewardedVideo
+                it.event_type = AdEventType.AdEventVideoStart
+                YfDcHelper.onAdActionEvent(mAdActionBean)
+            }
         }
 
         listener?.onAdStatus(code, any)
@@ -53,14 +71,14 @@ class TrackRewardVideoListenerProxy(
     }
 
     override fun onAdShow() {
-        mAdActionBean.event_type = AdEventType.AdEventImpress
+        mAdActionBean?.event_type = AdEventType.AdEventImpress
         YfDcHelper.onAdActionEvent(mAdActionBean)
         countTrack.onAdShow()
         listener?.onAdShow()
     }
 
     override fun onAdVideoClick() {
-        mAdActionBean.event_type = AdEventType.AdEventClick
+        mAdActionBean?.event_type = AdEventType.AdEventClick
         YfDcHelper.onAdActionEvent(mAdActionBean)
         countTrack.onAdClick()
         listener?.onAdVideoClick()
@@ -72,7 +90,7 @@ class TrackRewardVideoListenerProxy(
 
     override fun onRewardVerify(result: Boolean) {
         if (result) {
-            mAdActionBean.event_type = AdEventType.AdEventVideoConduct
+            mAdActionBean?.event_type = AdEventType.AdEventVideoConduct
             YfDcHelper.onAdActionEvent(mAdActionBean)
         }
         countTrack.onRewardVerify(result)
@@ -80,10 +98,11 @@ class TrackRewardVideoListenerProxy(
     }
 
     override fun onAdClose() {
-        mAdActionBean.event_type = AdEventType.AdEventVideoEnd
+        mAdActionBean?.event_type = AdEventType.AdEventVideoEnd
         YfDcHelper.onAdActionEvent(mAdActionBean)
         countTrack.onAdClose()
         listener?.onAdClose()
+        mAdActionBean = null
     }
 
     override fun onVideoCached() {

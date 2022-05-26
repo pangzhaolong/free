@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.donews.turntable">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <application>
         <activity
-            android:launchMode="singleTask"
             android:name=".ui.TurntableActivity"
-            android:screenOrientation="portrait"
-            android:exported="true"/>
-
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

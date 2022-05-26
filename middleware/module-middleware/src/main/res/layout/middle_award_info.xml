@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
-        android:text="C***"
+        android:text=""
         android:textColor="#A3A9B7"
         android:textSize="14sp"
         android:textStyle="bold" />
@@ -34,7 +34,7 @@
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="1"
-        android:text="获得苹果13…"
+        android:text=""
         android:textColor="#A3A9B7"
         android:textSize="14sp"
         android:textStyle="bold" />
