@@ -8,6 +8,7 @@ import com.dn.drouter.ARouteHelper;
 import com.dn.events.events.LoginLodingStartStatus;
 import com.dn.events.events.LoginUserStatus;
 import com.dn.events.events.UserTelBindEvent;
+import com.dn.sdk.manager.sdk.AdSdkManager;
 import com.donews.base.base.BaseApplication;
 import com.donews.base.utils.GsonUtils;
 import com.donews.base.utils.ToastUtil;
@@ -383,9 +384,10 @@ public class UserInfoManage {
                         }
 
                         eventLoadIngStatus.getLoginLoadingLiveData().postValue(2);
-                        YfDcHelper.setUserId(bean.getUserId());
                         AppInfo.setUserId(bean.getUserId());
                         AppInfo.setUserRegisterTime(bean.getRegisterTime());
+                        YfDcHelper.setUserId(bean.getUserId());
+                        AdSdkManager.INSTANCE.setUserInfo(bean.getUserId(), bean.getRegisterTime());
                         LoginHelp.getInstance().getUserInfoBean().setCreatedAt(bean.getRegisterTime());
                         AnalysisHelp.registerUserId();
                         mutableLiveData.postValue(bean);

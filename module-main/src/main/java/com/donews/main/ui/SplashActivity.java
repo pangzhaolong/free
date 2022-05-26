@@ -40,13 +40,13 @@ import com.donews.main.R;
 import com.donews.main.databinding.MainActivitySplashBinding;
 import com.donews.main.dialog.PersonGuideDialog;
 import com.donews.main.utils.SplashUtils;
-import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.middle.adutils.DnSdkInit;
 import com.donews.middle.adutils.InterstitialFullAd;
 import com.donews.middle.adutils.RewardVideoAd;
 import com.donews.middle.adutils.SplashAd;
 import com.donews.middle.adutils.adcontrol.AdControlBean;
 import com.donews.middle.adutils.adcontrol.AdControlManager;
+import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.middle.centralDeploy.TurntableSwitch;
 import com.donews.middle.front.FrontConfigManager;
 import com.donews.middle.front.LotteryConfigManager;
@@ -154,11 +154,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         }
         showPersonGuideDialog();
         if (mIsBackgroundToFore) {
-            if (NetworkUtils.isAvailableByPing()) {
-                loadHotStartAd();
-            } else {
-                goToMain();
-            }
+            goToMain();
         } else {
             //冷启动,做app启动初始化相关
             SmSdkConfig.initData(UtilsConfig.getApplication());
@@ -321,21 +317,6 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
     }
 
     /**
-     * 加载热启动广告
-     */
-    private void loadHotStartAd() {
-        startProgressAnim();
-        if (!AdConfigManager.INSTANCE.getMNormalAdBean().getEnable()) {
-            goToMain();
-            return;
-        }
-
-        setFullScreen();
-
-        loadSplash(false, true, false);
-    }
-
-    /**
      * 加载冷启动广告
      */
     private void loadClodStartAd() {
@@ -347,13 +328,13 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
 
         setHalfScreen();
 
-        loadSplash(true, true, false);
+        loadSplash();
     }
 
     /**
      * 加载广告
      */
-    private void loadSplash(boolean halfScreen, boolean hotStart, boolean doubleSplash) {
+    private void loadSplash() {
         IAdSplashListener listener = new SimpleSplashListener() {
             @Override
             public void onAdShow() {
@@ -365,25 +346,21 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
             public void onAdError(int code, @Nullable String errorMsg) {
                 super.onAdError(code, errorMsg);
                 Logger.d("code = " + code + "  msg = " + errorMsg);
-                goToMain();
-//                loadCsjSplash(halfScreen, hotStart, doubleSplash);
+//                goToMain();
+                loadCsjSplash(true, false);
             }
 
             @Override
             public void onAdDismiss() {
                 super.onAdDismiss();
-                if (doubleSplash) {
-                    loadSplash(halfScreen, hotStart, false);
-                } else {
-                    goToMain();
-                }
+                goToMain();
             }
         };
 
-        SplashAd.INSTANCE.loadSplashAd(this, hotStart, mDataBinding.adHalfScreenContainer, listener, halfScreen);
+        SplashAd.INSTANCE.loadSplashAd(this, false, mDataBinding.adHalfScreenContainer, listener, true);
     }
 
-    private void loadCsjSplash(boolean halfScreen, boolean hotStart, boolean doubleSplash) {
+    private void loadCsjSplash(boolean halfScreen, boolean hotStart) {
         IAdSplashListener listener = new SimpleSplashListener() {
             @Override
             public void onAdShow() {
@@ -401,11 +378,7 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
             @Override
             public void onAdDismiss() {
                 super.onAdDismiss();
-/*                if (doubleSplash) {
-                    loadSplash(halfScreen, hotStart, false);
-                } else {*/
                 goToMain();
-//                }
             }
         };
 
@@ -416,12 +389,6 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
     private void setHalfScreen() {
         mDataBinding.adHalfScreenContainer.setVisibility(View.VISIBLE);
         mDataBinding.adFullScreenContainer.setVisibility(View.GONE);
-    }
-
-    //全屏显示广告
-    private void setFullScreen() {
-        mDataBinding.adFullScreenContainer.setVisibility(View.VISIBLE);
-        mDataBinding.adHalfScreenContainer.setVisibility(View.GONE);
     }
 
     private long mPreClickTime = 0;
@@ -436,7 +403,6 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         mPreClickTime = curClickTime;
 
         startProgressAnim();
-//        AdControlManager.INSTANCE.addListener(() -> {
         AdControlBean configBean = AdControlManager.INSTANCE.getAdControlBean();
         if (configBean.getDisagreePrivacyPolicyAdEnable()) {
             if (configBean.getDisagreePrivacyPolicyAdType() == 1) {
@@ -447,8 +413,6 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         } else {
             finish();
         }
-//            return null;
-//        });
     }
 
     private void loadDisagreePrivacyPolicyInters() {
@@ -471,25 +435,6 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
                 finish();
             }
         });
-        /*InterstitialAd.INSTANCE.showAd(this, new SimpleInterstitialListener() {
-            @Override
-            public void onAdError(int code, @Nullable String errorMsg) {
-                super.onAdError(code, errorMsg);
-                finish();
-            }
-
-            @Override
-            public void onAdShow() {
-                super.onAdShow();
-                stopProgressAnim();
-            }
-
-            @Override
-            public void onAdClosed() {
-                super.onAdClosed();
-                finish();
-            }
-        });*/
     }
 
     private void loadDisagreePrivacyPolicyRewardVideo() {
@@ -624,11 +569,9 @@ public class SplashActivity extends MvvmBaseLiveDataActivity<MainActivitySplashB
         //抽奖页运营位
         LotteryConfigManager.Ins().init();
         //拉去首页相关签到配置
-        BaseMiddleViewModel.getBaseViewModel()
-                .getDailyTasks(null);
+        BaseMiddleViewModel.getBaseViewModel().getDailyTasks(null);
         mHadPermissions = true;
-        if ((SPUtils.getInformain(KeySharePreferences.IS_FIRST_IN_APP,
-                0) <= 0 && ABSwitch.Ins().isSkipSplashAd4NewUser())
+        if ((SPUtils.getInformain(KeySharePreferences.IS_FIRST_IN_APP, 0) <= 0 && ABSwitch.Ins().isSkipSplashAd4NewUser())
                 || !NetworkUtils.isAvailableByPing()) {
             LogUtil.e("hadPermissions()： gomain");
             goToMain();
