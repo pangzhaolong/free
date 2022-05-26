@@ -38,11 +38,11 @@ public class FrontConfigBean extends BaseCustomViewModel {
     @SerializedName("taskItems")
     private List<YywItem> taskItems = new ArrayList<>();
     @SerializedName("floatingItems")
-    private SingleItem floatingItems;
+    private SingleItem floatingItems = new FrontConfigBean.SingleItem();
     @SerializedName("withDrawalItems")
-    private SingleItem withDrawalItems;
+    private SingleItem withDrawalItems = new SingleItem();
     @SerializedName("frontTask")
-    private TaskItem frontTask;
+    private TaskItem frontTask = new TaskItem();
     @SerializedName("showTask")
     private TaskItem showTask;
     @SerializedName("showMsgTask")

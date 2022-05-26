@@ -14,6 +14,7 @@ import com.blankj.utilcode.util.SPUtils;
 import com.dn.sdk.AdCustomError;
 import com.dn.sdk.listener.interstitialfull.SimpleInterstitialFullListener;
 import com.dn.sdk.listener.rewardvideo.SimpleRewardVideoListener;
+import com.donews.base.base.BaseApplication;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
 import com.donews.common.base.MvvmLazyLiveDataFragment;
@@ -26,14 +27,16 @@ import com.donews.middle.IMainParams;
 import com.donews.middle.adutils.InterstitialFullAd;
 import com.donews.middle.adutils.adcontrol.AdControlManager;
 import com.donews.middle.bean.home.HomeCategory2Bean;
+import com.donews.middle.bean.home.HomeEarnCoinReq;
 import com.donews.middle.bean.home.HomeReceiveGiftReq;
 import com.donews.middle.cache.GoodsCache;
 import com.donews.middle.centralDeploy.OutherSwitchConfig;
 import com.donews.middle.dialog.qbn.DoingResultDialog;
+import com.donews.middle.events.HomeGoodGetJbSuccessEvent;
 import com.donews.middle.front.FrontConfigManager;
+import com.donews.middle.viewmodel.BaseMiddleViewModel;
 import com.donews.middle.views.ExchanageTabItem;
 import com.donews.middle.views.TaskView;
-import com.donews.network.EasyHttp;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.yfsdk.loader.AdManager;
 import com.donews.yfsdk.moniter.PageMonitor;
@@ -42,6 +45,9 @@ import com.donews.yfsdk.monitor.PageMoniterCheck;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.orhanobut.logger.Logger;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -75,6 +81,7 @@ public class ExchangeFragment extends MvvmLazyLiveDataFragment<ExchanageFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         new PageMonitor().attach(this, new PageMonitor.PageListener() {
             @NonNull
             @Override
@@ -259,8 +266,42 @@ public class ExchangeFragment extends MvvmLazyLiveDataFragment<ExchanageFragment
         mDataBinding.homeSrl.autoRefresh();
     }
 
+    private long fastNotifyTime = 0;
+
+    @Subscribe //赚金币
+    public void onEventGoodGetJb(HomeGoodGetJbSuccessEvent event) {
+        if (System.currentTimeMillis() - fastNotifyTime < 2000) {
+            return;
+        }
+        if (getBaseActivity() instanceof MvvmBaseLiveDataActivity) {
+            ((MvvmBaseLiveDataActivity<?, ?>) getBaseActivity()).showLoading("奖励发放中");
+        }
+        fastNotifyTime = System.currentTimeMillis();
+        HomeEarnCoinReq req = new HomeEarnCoinReq();
+        req.user_id = AppInfo.getUserId();
+        mViewModel.getEarnCoin(req)
+                .observe(this, (item) -> {
+                    if (getBaseActivity() instanceof MvvmBaseLiveDataActivity) {
+                        ((MvvmBaseLiveDataActivity<?, ?>) getBaseActivity()).hideLoading();
+                    }
+                    if (item != null) {
+                        if (BaseMiddleViewModel.getBaseViewModel().mine2JBCount.getValue() != null) {
+                            BaseMiddleViewModel.getBaseViewModel().mine2JBCount.postValue(
+                                    BaseMiddleViewModel.getBaseViewModel().mine2JBCount.getValue() + item.coin);
+                        } else {
+                            BaseMiddleViewModel.getBaseViewModel().mine2JBCount.postValue(item.coin);
+                        }
+                        //显示金币弹窗
+                        showDoingResultDialog(item.coin);
+                    } else {
+                        ToastUtil.showShort(BaseApplication.getInstance(), "奖励发放失败,请稍后重试!");
+                    }
+                });
+    }
+
     @Override
     public void onDestroy() {
+        EventBus.getDefault().unregister(this);
         mHand.removeCallbacks(downcountTimeTask);
         super.onDestroy();
     }
@@ -345,7 +386,7 @@ public class ExchangeFragment extends MvvmLazyLiveDataFragment<ExchanageFragment
         mViewModel.getReceiveGift(req)
                 .observe(this, (resp) -> {
                     if (resp != null) {
-                        saveGiftCurrDayCount();
+                        saveGiftCurrDayCount(-1);
                         showDoingResultDialog(resp.coin);
                     } else {
                         ToastUtil.showShort(getActivity(), "奖励领取失败,请稍后重试!");
@@ -355,8 +396,10 @@ public class ExchangeFragment extends MvvmLazyLiveDataFragment<ExchanageFragment
 
     /**
      * 保存当日保存数量，将当日已观看的数量+1
+     *
+     * @param syCount 剩余次数(暂时未同步)
      */
-    private void saveGiftCurrDayCount() {
+    private void saveGiftCurrDayCount(int syCount) {
         try {
             String file = "giftCurrDayCountFile";
             String key = new SimpleDateFormat("yyyyMMdd").format(

@@ -331,9 +331,9 @@ public class ExchangeGoodJbFragmentDialog extends BaseBindingFragmentDialog<Home
                     .show();
             ActivityGuideMaskUtil.INSTANCE.saveGuideShowRecord(this, R.id.but_next, true);
         } else if (1 == type) {
-//            if (ActivityGuideMaskUtil.INSTANCE.getGuideShowRecord(act, R.id.accessibility_custom_action_0)) {
-//                return; //已显示过。那么取消显示
-//            }
+            if (ActivityGuideMaskUtil.INSTANCE.getGuideShowRecord(act, R.id.accessibility_custom_action_0)) {
+                return; //已显示过。那么取消显示
+            }
             ActivityGuideMaskUtil.INSTANCE.showGuide(act,
                     R.layout.home_guide_exchanage_main_tab1,
                     R.id.accessibility_custom_action_0,

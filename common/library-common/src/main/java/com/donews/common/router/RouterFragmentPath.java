@@ -50,7 +50,6 @@ public class RouterFragmentPath {
          * 兑换金币不足的弹窗
          */
         public static final String PAGER_EXCHANGE_GOOD_JB_FRAGMENT_DIALOG = HOME + "/ExchangeGoodJbFragmentDialog";
-
     }
 
     /**
@@ -99,7 +98,6 @@ public class RouterFragmentPath {
     }
 
 
-
     /**
      * 首页抽奖页面组件
      */
@@ -111,7 +109,6 @@ public class RouterFragmentPath {
          */
         public static final String PAGER_LOTTERY = LOTTERY + "/lottery";
     }
-
 
 
     /**
