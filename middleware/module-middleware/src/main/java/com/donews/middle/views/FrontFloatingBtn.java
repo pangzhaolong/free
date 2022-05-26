@@ -144,10 +144,11 @@ public class FrontFloatingBtn extends LinearLayout {
             this.setVisibility(GONE);
             return;
         }
-
-        mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getFloatingItems().getSwitchInterval();
-
-        refreshYywItemEx();
+        try {
+            mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getFloatingItems().getSwitchInterval();
+            refreshYywItemEx();
+        } catch (Exception e) {
+        }
     }
 
     private void refreshYywItemEx() {
