@@ -53,6 +53,7 @@ import pl.droidsonroids.gif.GifDrawable
 import com.donews.middle.bean.globle.TurntableBean.ItemsDTO
 import com.donews.middle.centralDeploy.OutherSwitchConfig
 import com.donews.middle.events.TaskReportEvent
+import com.donews.middle.utils.ActivityGuideMaskUtil
 import com.donews.middle.viewmodel.BaseMiddleViewModel
 import com.donews.task.bean.TaskCenterInfo
 import com.donews.utilslibrary.utils.DensityUtils
@@ -81,6 +82,17 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
 
     override fun onFragmentFirstVisible() {
         super.onFragmentFirstVisible()
+        activity?.apply {
+            if (!ActivityGuideMaskUtil.getGuideShowRecord(
+                    this, R.id.accessibility_custom_action_1
+                )
+            ) {
+                //如果被显示过。那么设置为已经引导过了
+                ActivityGuideMaskUtil.saveGuideShowRecord(
+                    this, R.id.accessibility_custom_action_1, true
+                )
+            }
+        }
         loadUserAssets()
         loadTaskBubbles()
     }
@@ -176,13 +188,13 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
     }
 
     //订阅其他页面金币和活跃度发生的改变
-    private fun initOtherAssets(){
-        BaseMiddleViewModel.getBaseViewModel().mine2JBCount.observe(viewLifecycleOwner,{
+    private fun initOtherAssets() {
+        BaseMiddleViewModel.getBaseViewModel().mine2JBCount.observe(viewLifecycleOwner, {
             it?.let {
                 mViewModel?.goldCoinNum?.set(it.toString())
             }
         })
-        BaseMiddleViewModel.getBaseViewModel().mine2JFCount.observe(viewLifecycleOwner,{
+        BaseMiddleViewModel.getBaseViewModel().mine2JFCount.observe(viewLifecycleOwner, {
             it?.let {
                 mViewModel?.activityNum?.set(it.toString())
             }
@@ -287,7 +299,8 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
         for (index in taskBubbleBean.list.indices) {
             bubbleIsShow(index)
             if (taskBubbleBean.list[index].type != GIFT_BOX
-                && taskBubbleBean.list[index].status == BUBBLE_NO_RECEIVE) {
+                && taskBubbleBean.list[index].status == BUBBLE_NO_RECEIVE
+            ) {
                 canReceiveBubbleNum++
             }
         }
@@ -574,7 +587,8 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
     //region 运营位及底部抽奖、转盘图片中台拉取并展示
     private fun initTaskView() {
         mDataBinding?.taskBgRunning?.refreshYyw(TaskView.Place_Task)
-        GlideUtils.loadImageRoundCorner(context,taskControlConfig?.img?.luckPanImg,mDataBinding.taskBgLuckPan,
+        GlideUtils.loadImageRoundCorner(
+            context, taskControlConfig?.img?.luckPanImg, mDataBinding.taskBgLuckPan,
             RoundCornersTransform(
                 DensityUtils.dip2px(15f).toFloat(),
                 DensityUtils.dip2px(15f).toFloat(),
@@ -582,7 +596,8 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                 DensityUtils.dip2px(15f).toFloat()
             )
         )
-        GlideUtils.loadImageRoundCorner(context,taskControlConfig?.img?.luckCollectImg,mDataBinding.taskBgCollect,
+        GlideUtils.loadImageRoundCorner(
+            context, taskControlConfig?.img?.luckCollectImg, mDataBinding.taskBgCollect,
             RoundCornersTransform(
                 DensityUtils.dip2px(15f).toFloat(),
                 DensityUtils.dip2px(15f).toFloat(),
@@ -669,7 +684,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                     //处理抽奖逻辑
                     clickLottery()
                 }
-                mDataBinding?.iconBtn,mDataBinding?.fingerAnimation -> {
+                mDataBinding?.iconBtn, mDataBinding?.fingerAnimation -> {
                     //一键气泡处理
                     clickAllBubble()
                 }
@@ -687,7 +702,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
         isBoxSortClick = true
         mHandler.postDelayed({
             isBoxSortClick = false
-        },5000L)
+        }, 5000L)
         when (taskBubbleBoxBean?.status) {
             BUBBLE_NO_FINISH -> {
                 ToastUtil.show(mContext, "倒计时结束才可领取")
@@ -702,10 +717,12 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                                 Log.i("adSee-->", "-onAdError->code:${code},errorMsg:${errorMsg}")
                                 ToastUtil.show(mContext, "视频加载失败请稍后再试")
                             }
+
                             override fun onAdShow() {
                                 super.onAdShow()
                                 isBoxSortClick = false
                             }
+
                             override fun onAdClose() {
                                 super.onAdClose()
                                 Log.i("adSee-->", "-onAdClose->")
@@ -728,6 +745,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
     }
 
     private var isAdVideoSortClick = false//控制看广告视频气泡连续点击
+
     //看广告视频气泡点击处理
     private fun clickAdVideo() {
         Log.i("adSee-->", "--status->${taskBubbleVideoBean?.status}")
@@ -735,7 +753,7 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
         isAdVideoSortClick = true
         mHandler.postDelayed({
             isAdVideoSortClick = false
-        },5000L)
+        }, 5000L)
         when (taskBubbleVideoBean?.status) {
             BUBBLE_NO_FINISH -> {
                 Log.i("adSee-->", "--cd->${taskBubbleVideoBean?.cd}")
@@ -756,10 +774,12 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
                                     )
                                     ToastUtil.show(mContext, "视频加载失败请稍后再试")
                                 }
+
                                 override fun onAdShow() {
                                     super.onAdShow()
                                     isAdVideoSortClick = false
                                 }
+
                                 override fun onAdClose() {
                                     super.onAdClose()
                                     Log.i("adSee-->", "-onAdClose->")
@@ -890,7 +910,8 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
         var isHaveCanReceiveBubble = false
         for (index in taskBubbleBean.list.indices) {
             if (taskBubbleBean.list[index].type != GIFT_BOX
-                && taskBubbleBean.list[index].status == BUBBLE_NO_RECEIVE) {
+                && taskBubbleBean.list[index].status == BUBBLE_NO_RECEIVE
+            ) {
                 isHaveCanReceiveBubble = true
                 break
             }
@@ -970,8 +991,8 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
 
     private fun startCoinGif() {
         if (bubbleIsLeftOrRight) {
-            AnimationUtil.coinGifStart(this,mDataBinding?.leftCoinGif)
-        } else AnimationUtil.coinGifStart(this,mDataBinding?.rightCoinGif)
+            AnimationUtil.coinGifStart(this, mDataBinding?.leftCoinGif)
+        } else AnimationUtil.coinGifStart(this, mDataBinding?.rightCoinGif)
     }
     //endregion
 
@@ -1009,12 +1030,12 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
     private fun initTaskControl() {
         taskControlConfig = TaskImgControlUtil.getTaskControlConfig()
         taskCenterConfig = TaskControlUtil.getTaskControlConfig()
-        if (taskCenterConfig != null){
-            for (index in taskCenterConfig!!.items.indices){
-                if (taskCenterConfig!!.items[index].taskType == VIDEO){
+        if (taskCenterConfig != null) {
+            for (index in taskCenterConfig!!.items.indices) {
+                if (taskCenterConfig!!.items[index].taskType == VIDEO) {
                     mMaxCountTime = taskCenterConfig!!.items[index].cd//主要是拿这个
                 }
-                if (taskCenterConfig!!.items[index].taskType == GIFT_BOX){
+                if (taskCenterConfig!!.items[index].taskType == GIFT_BOX) {
                     boxMaxTime = taskCenterConfig!!.items[index].cd
                     boxMaxOpenNum = taskCenterConfig!!.items[index].repeat
                 }
@@ -1078,25 +1099,34 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
     //集卡抽卡通知
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun startNewCardNotify(event: CollectStartNewCardEvent?) {
-        mShareVideModel.requestAdReport(MainShareViewModel.ID_COLLECT, MainShareViewModel.TYPE_COLLECT)
+        mShareVideModel.requestAdReport(
+            MainShareViewModel.ID_COLLECT,
+            MainShareViewModel.TYPE_COLLECT
+        )
     }
 
     //转盘操作过后,我这边上报
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onTurntableBeanEvent(event: ItemsDTO?) {
-        mShareVideModel.requestAdReport(MainShareViewModel.ID_TURNTABLE, MainShareViewModel.TYPE_TURNTABLE)
+        mShareVideModel.requestAdReport(
+            MainShareViewModel.ID_TURNTABLE,
+            MainShareViewModel.TYPE_TURNTABLE
+        )
     }
 
     //抽奖操作过后,我这边上报
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onLotteryEvent(event: LotteryEventUnlockBean?) {
-        mShareVideModel.requestAdReport(MainShareViewModel.ID_LOTTERY, MainShareViewModel.TYPE_LOTTERY)
+        mShareVideModel.requestAdReport(
+            MainShareViewModel.ID_LOTTERY,
+            MainShareViewModel.TYPE_LOTTERY
+        )
     }
 
     //签到自己上报,我这边只需要刷新列表
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSignEvent(event: TaskReportEvent?) {
-        if (event?.eventType == SIGN){
+        if (event?.eventType == SIGN) {
             mShareVideModel.requestTaskBubbles()
         }
     }
@@ -1115,85 +1145,98 @@ class TaskFragment : MvvmLazyLiveDataFragment<TaskFragmentBinding, TaskViewModel
     private var bubbleFloatShareTvAnimation: ObjectAnimator? = null
     private var bubbleFloatLuckDrawAnimation: ObjectAnimator? = null
     private var bubbleFloatLuckDrawTvAnimation: ObjectAnimator? = null
-    private fun startBubbleAnimation(){
-        bubbleFloatSignAnimation = AnimationUtil.bubbleFloat(mDataBinding?.iconSignBubble,4000,10f,-1)
+    private fun startBubbleAnimation() {
+        bubbleFloatSignAnimation =
+            AnimationUtil.bubbleFloat(mDataBinding?.iconSignBubble, 4000, 10f, -1)
         bubbleFloatSignAnimation?.start()
-        bubbleFloatSignTvAnimation = AnimationUtil.bubbleFloat(mDataBinding?.iconSignTv,4000,10f,-1)
+        bubbleFloatSignTvAnimation =
+            AnimationUtil.bubbleFloat(mDataBinding?.iconSignTv, 4000, 10f, -1)
         bubbleFloatSignTvAnimation?.start()
-        bubbleFloatTimerAdTvAnimation = AnimationUtil.bubbleFloat(mDataBinding?.coldDownTimer,2000,10f,-1)
+        bubbleFloatTimerAdTvAnimation =
+            AnimationUtil.bubbleFloat(mDataBinding?.coldDownTimer, 2000, 10f, -1)
         bubbleFloatTimerAdTvAnimation?.start()
-        bubbleFloatAdTimerTvAnimation = AnimationUtil.bubbleFloat(mDataBinding?.countDownTimeTv,2000,10f,-1)
+        bubbleFloatAdTimerTvAnimation =
+            AnimationUtil.bubbleFloat(mDataBinding?.countDownTimeTv, 2000, 10f, -1)
         bubbleFloatAdTimerTvAnimation?.start()
-        bubbleFloatAdTimerTvTvAnimation = AnimationUtil.bubbleFloat(mDataBinding?.seeAdTv,2000,10f,-1)
+        bubbleFloatAdTimerTvTvAnimation =
+            AnimationUtil.bubbleFloat(mDataBinding?.seeAdTv, 2000, 10f, -1)
         bubbleFloatAdTimerTvTvAnimation?.start()
-        bubbleFloatLuckPanAnimation = AnimationUtil.bubbleFloat(mDataBinding?.iconLuckPanBubble,3000,10f,-1)
+        bubbleFloatLuckPanAnimation =
+            AnimationUtil.bubbleFloat(mDataBinding?.iconLuckPanBubble, 3000, 10f, -1)
         bubbleFloatLuckPanAnimation?.start()
-        bubbleFloatLuckPanTvAnimation = AnimationUtil.bubbleFloat(mDataBinding?.iconLuckPanTv,3000,10f,-1)
+        bubbleFloatLuckPanTvAnimation =
+            AnimationUtil.bubbleFloat(mDataBinding?.iconLuckPanTv, 3000, 10f, -1)
         bubbleFloatLuckPanTvAnimation?.start()
-        bubbleFloatCollectAnimation = AnimationUtil.bubbleFloat(mDataBinding?.iconCollectBubble,3500,10f,-1)
+        bubbleFloatCollectAnimation =
+            AnimationUtil.bubbleFloat(mDataBinding?.iconCollectBubble, 3500, 10f, -1)
         bubbleFloatCollectAnimation?.start()
-        bubbleFloatCollectTvAnimation = AnimationUtil.bubbleFloat(mDataBinding?.iconCollectTv,3500,10f,-1)
+        bubbleFloatCollectTvAnimation =
+            AnimationUtil.bubbleFloat(mDataBinding?.iconCollectTv, 3500, 10f, -1)
         bubbleFloatCollectTvAnimation?.start()
-        bubbleFloatShareAnimation = AnimationUtil.bubbleFloat(mDataBinding?.iconShareBubble,2500,10f,-1)
+        bubbleFloatShareAnimation =
+            AnimationUtil.bubbleFloat(mDataBinding?.iconShareBubble, 2500, 10f, -1)
         bubbleFloatShareAnimation?.start()
-        bubbleFloatShareTvAnimation = AnimationUtil.bubbleFloat(mDataBinding?.shareTv,2500,10f,-1)
+        bubbleFloatShareTvAnimation =
+            AnimationUtil.bubbleFloat(mDataBinding?.shareTv, 2500, 10f, -1)
         bubbleFloatShareTvAnimation?.start()
-        bubbleFloatLuckDrawAnimation = AnimationUtil.bubbleFloat(mDataBinding?.iconLuckDrawBubble,1500,10f,-1)
+        bubbleFloatLuckDrawAnimation =
+            AnimationUtil.bubbleFloat(mDataBinding?.iconLuckDrawBubble, 1500, 10f, -1)
         bubbleFloatLuckDrawAnimation?.start()
-        bubbleFloatLuckDrawTvAnimation = AnimationUtil.bubbleFloat(mDataBinding?.iconLuckDrawTv,1500,10f,-1)
+        bubbleFloatLuckDrawTvAnimation =
+            AnimationUtil.bubbleFloat(mDataBinding?.iconLuckDrawTv, 1500, 10f, -1)
         bubbleFloatLuckDrawTvAnimation?.start()
     }
 
-    private fun cancelBubbleAnimation(){
-        if (bubbleFloatSignAnimation != null && bubbleFloatSignAnimation!!.isRunning){
+    private fun cancelBubbleAnimation() {
+        if (bubbleFloatSignAnimation != null && bubbleFloatSignAnimation!!.isRunning) {
             bubbleFloatSignAnimation?.cancel()
             bubbleFloatSignAnimation = null
         }
-        if (bubbleFloatSignTvAnimation != null && bubbleFloatSignTvAnimation!!.isRunning){
+        if (bubbleFloatSignTvAnimation != null && bubbleFloatSignTvAnimation!!.isRunning) {
             bubbleFloatSignTvAnimation?.cancel()
             bubbleFloatSignTvAnimation = null
         }
-        if (bubbleFloatTimerAdTvAnimation != null && bubbleFloatTimerAdTvAnimation!!.isRunning){
+        if (bubbleFloatTimerAdTvAnimation != null && bubbleFloatTimerAdTvAnimation!!.isRunning) {
             bubbleFloatTimerAdTvAnimation?.cancel()
             bubbleFloatTimerAdTvAnimation = null
         }
-        if (bubbleFloatAdTimerTvAnimation != null && bubbleFloatAdTimerTvAnimation!!.isRunning){
+        if (bubbleFloatAdTimerTvAnimation != null && bubbleFloatAdTimerTvAnimation!!.isRunning) {
             bubbleFloatAdTimerTvAnimation?.cancel()
             bubbleFloatAdTimerTvAnimation = null
         }
-        if (bubbleFloatAdTimerTvTvAnimation != null && bubbleFloatAdTimerTvTvAnimation!!.isRunning){
+        if (bubbleFloatAdTimerTvTvAnimation != null && bubbleFloatAdTimerTvTvAnimation!!.isRunning) {
             bubbleFloatAdTimerTvTvAnimation?.cancel()
             bubbleFloatAdTimerTvTvAnimation = null
         }
-        if (bubbleFloatLuckPanAnimation != null && bubbleFloatLuckPanAnimation!!.isRunning){
+        if (bubbleFloatLuckPanAnimation != null && bubbleFloatLuckPanAnimation!!.isRunning) {
             bubbleFloatLuckPanAnimation?.cancel()
             bubbleFloatLuckPanAnimation = null
         }
-        if (bubbleFloatLuckPanTvAnimation != null && bubbleFloatLuckPanTvAnimation!!.isRunning){
+        if (bubbleFloatLuckPanTvAnimation != null && bubbleFloatLuckPanTvAnimation!!.isRunning) {
             bubbleFloatLuckPanTvAnimation?.cancel()
             bubbleFloatLuckPanTvAnimation = null
         }
-        if (bubbleFloatCollectAnimation != null && bubbleFloatCollectAnimation!!.isRunning){
+        if (bubbleFloatCollectAnimation != null && bubbleFloatCollectAnimation!!.isRunning) {
             bubbleFloatCollectAnimation?.cancel()
             bubbleFloatCollectAnimation = null
         }
-        if (bubbleFloatCollectTvAnimation != null && bubbleFloatCollectTvAnimation!!.isRunning){
+        if (bubbleFloatCollectTvAnimation != null && bubbleFloatCollectTvAnimation!!.isRunning) {
             bubbleFloatCollectTvAnimation?.cancel()
             bubbleFloatCollectTvAnimation = null
         }
-        if (bubbleFloatShareAnimation != null && bubbleFloatShareAnimation!!.isRunning){
+        if (bubbleFloatShareAnimation != null && bubbleFloatShareAnimation!!.isRunning) {
             bubbleFloatShareAnimation?.cancel()
             bubbleFloatShareAnimation = null
         }
-        if (bubbleFloatShareTvAnimation != null && bubbleFloatShareTvAnimation!!.isRunning){
+        if (bubbleFloatShareTvAnimation != null && bubbleFloatShareTvAnimation!!.isRunning) {
             bubbleFloatShareTvAnimation?.cancel()
             bubbleFloatShareTvAnimation = null
         }
-        if (bubbleFloatLuckDrawAnimation != null && bubbleFloatLuckDrawAnimation!!.isRunning){
+        if (bubbleFloatLuckDrawAnimation != null && bubbleFloatLuckDrawAnimation!!.isRunning) {
             bubbleFloatLuckDrawAnimation?.cancel()
             bubbleFloatLuckDrawAnimation = null
         }
-        if (bubbleFloatLuckDrawTvAnimation != null && bubbleFloatLuckDrawTvAnimation!!.isRunning){
+        if (bubbleFloatLuckDrawTvAnimation != null && bubbleFloatLuckDrawTvAnimation!!.isRunning) {
             bubbleFloatLuckDrawTvAnimation?.cancel()
             bubbleFloatLuckDrawTvAnimation = null
         }

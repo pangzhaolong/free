@@ -2,10 +2,17 @@ package com.donews.home.dialogs;
 
 import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Html;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewParent;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,6 +22,15 @@ import androidx.fragment.app.FragmentActivity;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.app.hubert.guide.NewbieGuide;
+import com.app.hubert.guide.core.Controller;
+import com.app.hubert.guide.listener.OnLayoutInflatedListener;
+import com.app.hubert.guide.model.GuidePage;
+import com.app.hubert.guide.model.HighLight;
+import com.app.hubert.guide.model.HighlightOptions;
+import com.app.hubert.guide.model.RelativeGuide;
+import com.blankj.utilcode.util.ScreenUtils;
+import com.blankj.utilcode.util.ViewUtils;
 import com.dn.sdk.listener.rewardvideo.SimpleRewardVideoListener;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
@@ -29,6 +45,7 @@ import com.donews.middle.bean.home.HomeCoinCritConfigBean;
 import com.donews.middle.bean.home.HomeEarnCoinReq;
 import com.donews.middle.dialog.BaseBindingFragmentDialog;
 import com.donews.middle.dialog.qbn.DoingResultDialog;
+import com.donews.middle.utils.ActivityGuideMaskUtil;
 import com.donews.middle.viewmodel.BaseMiddleViewModel;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.yfsdk.loader.AdManager;
@@ -62,6 +79,9 @@ public class ExchangeGoodJbFragmentDialog extends BaseBindingFragmentDialog<Home
     private ExchangeViewModel exchanViewMovdel;
 
     public HomeCoinCritConfigBean config;
+
+    private Activity act;
+    private Handler handler = new Handler();
 
     // 模式 0:缺少金币模式，1:缺少活跃模式
     @Autowired(name = "uiType")
@@ -113,10 +133,19 @@ public class ExchangeGoodJbFragmentDialog extends BaseBindingFragmentDialog<Home
     }
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        act = (Activity) context;
+        super.onAttach(context);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         initDatabinding();
-        checkNewUserGuide(0);
+
+        handler.post(() -> {
+            checkNewUserGuide(0);
+        });
     }
 
     //获取各种状态的Text
@@ -168,6 +197,13 @@ public class ExchangeGoodJbFragmentDialog extends BaseBindingFragmentDialog<Home
             return;
         }
         dismiss();
+        if (!ActivityGuideMaskUtil.INSTANCE.getGuideShowRecord(act, R.id.accessibility_custom_action_0)) {
+            //未显示第一个抽奖引导
+            checkNewUserGuide(1);
+        } else if (!ActivityGuideMaskUtil.INSTANCE.getGuideShowRecord(act, R.id.accessibility_custom_action_1)) {
+            //未显示第二个活动引导
+            checkNewUserGuide(2);
+        }
     }
 
     //初始化dataBinding数据绑定
@@ -266,10 +302,72 @@ public class ExchangeGoodJbFragmentDialog extends BaseBindingFragmentDialog<Home
      *
      * @param type 0:兑换弹窗的确定按钮引导
      *             1: 兑换页弹窗取消按钮对抽奖Tab的引导
-     *             1: 兑换页弹窗取消按钮对活动Tab的引导
+     *             2: 兑换页弹窗取消按钮对活动Tab的引导
      */
     private void checkNewUserGuide(int type) {
-//        showGuideType0();
+        if (0 == type) {
+            if (ActivityGuideMaskUtil.INSTANCE.getGuideShowRecord(this, R.id.but_next)) {
+                return; //已显示过。那么取消显示
+            }
+            RectF rectF = new RectF();
+            ActivityGuideMaskUtil.INSTANCE.getRectInScreen(dataBinding.butNext, rectF);
+            HighlightOptions options = new HighlightOptions.Builder()
+                    .setOnClickListener(this::rightGoTo)
+                    .build();
+            NewbieGuide.with(this)
+                    .setLabel("relative1")
+                    .anchor(getDialog().getWindow().getDecorView())
+                    .alwaysShow(true) //总是显示，调试时可以打开
+                    .addGuidePage(new GuidePage()
+                            .setLayoutRes(R.layout.home_guide_exchanage_zjb_dialog) //设置蒙版显示内容资源
+                            .addHighLightWithOptions(
+                                    rectF, HighLight.Shape.ROUND_RECTANGLE, 100, options)
+                            .setOnLayoutInflatedListener((view, controller1) -> {
+                                TextView tv = view.findViewById(R.id.guide_dialog_text);
+                                String str = "点击赚金币，观看创意视频<br></br><font color='#F5562A'>可得海量金币</font>";
+                                tv.setText(Html.fromHtml(str));
+                            })
+                    )
+                    .show();
+            ActivityGuideMaskUtil.INSTANCE.saveGuideShowRecord(this, R.id.but_next, true);
+        } else if (1 == type) {
+//            if (ActivityGuideMaskUtil.INSTANCE.getGuideShowRecord(act, R.id.accessibility_custom_action_0)) {
+//                return; //已显示过。那么取消显示
+//            }
+            ActivityGuideMaskUtil.INSTANCE.showGuide(act,
+                    R.layout.home_guide_exchanage_main_tab1,
+                    R.id.accessibility_custom_action_0,
+                    controller -> {
+                        controller.remove();
+                        //跳抽奖
+                        ARouter.getInstance().build(RouterActivityPath.Main.PAGER_MAIN)
+                                .withInt("position", 1)
+                                .navigation();
+                        return null;
+                    }, (view, controller) -> {
+                        TextView tv = view.findViewById(R.id.guide_dialog_text);
+                        String str = "更多福利<font color='#F5562A'>“免费抽奖”</font><br></br>包邮到家";
+                        tv.setText(Html.fromHtml(str));
+                    });
+        } else if (type == 2) {
+            if (ActivityGuideMaskUtil.INSTANCE.getGuideShowRecord(act, R.id.accessibility_custom_action_1)) {
+                return; //已显示过。那么取消显示
+            }
+            ActivityGuideMaskUtil.INSTANCE.showGuide(act,
+                    R.layout.home_guide_exchanage_main_tab2,
+                    R.id.accessibility_custom_action_1,
+                    controller -> {
+                        controller.remove();
+                        //跳活动
+                        ARouter.getInstance().build(RouterActivityPath.Main.PAGER_MAIN)
+                                .withInt("position", 2)
+                                .navigation();
+                        return null;
+                    }, (view, controller) -> {
+                        TextView tv = view.findViewById(R.id.guide_dialog_text);
+                        String str = "活动+福利<br></br><font color='#F5562A'>赚金币更容易！</font>";
+                        tv.setText(Html.fromHtml(str));
+                    });
+        }
     }
-
 }
