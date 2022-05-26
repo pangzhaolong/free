@@ -13,5 +13,8 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     kapt rootProject.ext.dependencies["arouter-compiler"]
+    api rootProject.ext.dependencies["gson"]
     implementation project(':middleware:module-middleware')
+    implementation project(':common:library-base')
+    implementation project(':common:library-common')
 }

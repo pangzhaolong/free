@@ -3,6 +3,7 @@ package com.donews.task.app
 import com.donews.base.base.BaseApplication
 import com.donews.common.IModuleInit
 import com.donews.task.util.TaskControlUtil
+import com.donews.task.util.TaskImgControlUtil
 
 /**
  *  make in st
@@ -11,6 +12,7 @@ import com.donews.task.util.TaskControlUtil
 class TaskModuleInit:IModuleInit {
 
     override fun onInitAhead(application: BaseApplication?): Boolean {
+        TaskImgControlUtil.init()
         TaskControlUtil.init()
         return false
     }

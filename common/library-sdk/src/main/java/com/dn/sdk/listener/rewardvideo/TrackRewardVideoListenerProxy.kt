@@ -1,10 +1,14 @@
 package com.dn.sdk.listener.rewardvideo
 
+import com.cdyfnts.datacenter.constant.AdEventType
+import com.cdyfnts.datacenter.constant.AdPlaceAttribute
+import com.cdyfnts.datacenter.entity.AdActionBean
 import com.dn.sdk.bean.AdRequest
+import com.dn.sdk.bean.AdStatus
 import com.dn.sdk.bean.EcpmParam
 import com.dn.sdk.bean.EcpmResponse
 import com.dn.sdk.count.CountTrackImpl
-import com.dn.sdk.listener.rewardvideo.IAdRewardVideoListener
+import com.donews.utilslibrary.datacenter.YfDcHelper
 
 /**
  * 激励视频埋点事件
@@ -14,11 +18,12 @@ import com.dn.sdk.listener.rewardvideo.IAdRewardVideoListener
  * @date 2022/2/18 16:52
  */
 class TrackRewardVideoListenerProxy(
-    private val adRequest: AdRequest,
-    private val listener: IAdRewardVideoListener?
+        var adRequest: AdRequest,
+        var listener: IAdRewardVideoListener?
 ) : IAdRewardVideoListener {
 
     private val countTrack = CountTrackImpl(adRequest)
+    private var mAdActionBean: AdActionBean = AdActionBean()
 
     override fun onAdStartLoad() {
         countTrack.onAdStartLoad()
@@ -26,6 +31,20 @@ class TrackRewardVideoListenerProxy(
     }
 
     override fun onAdStatus(code: Int, any: Any?) {
+        if (code == 10 && any is AdStatus) {
+            mAdActionBean.ad_req_id = any.reqId
+            mAdActionBean.platform = any.platFormType?.let { it.toInt() }
+            mAdActionBean.event_type = AdEventType.AdEventVideoStart
+            mAdActionBean.ecpm = any.currentEcpm.toDouble().toInt()
+            mAdActionBean.platform = any.platFormType.toInt()
+            mAdActionBean.union_app_id = any.appId
+            mAdActionBean.position_id = any.currentPositionId
+            mAdActionBean.union_position_id = any.positionId
+            mAdActionBean.place_attribute = AdPlaceAttribute.AdPlaceAttributeRewardedVideo
+            mAdActionBean.event_type = AdEventType.AdEventVideoStart
+            YfDcHelper.onAdActionEvent(mAdActionBean)
+        }
+
         listener?.onAdStatus(code, any)
     }
 
@@ -34,21 +53,35 @@ class TrackRewardVideoListenerProxy(
     }
 
     override fun onAdShow() {
+        mAdActionBean.event_type = AdEventType.AdEventImpress
+        YfDcHelper.onAdActionEvent(mAdActionBean)
         countTrack.onAdShow()
         listener?.onAdShow()
     }
 
     override fun onAdVideoClick() {
+        mAdActionBean.event_type = AdEventType.AdEventClick
+        YfDcHelper.onAdActionEvent(mAdActionBean)
         countTrack.onAdClick()
         listener?.onAdVideoClick()
     }
 
+    override fun onAdSkipped() {
+        listener?.onAdSkipped()
+    }
+
     override fun onRewardVerify(result: Boolean) {
+        if (result) {
+            mAdActionBean.event_type = AdEventType.AdEventVideoConduct
+            YfDcHelper.onAdActionEvent(mAdActionBean)
+        }
         countTrack.onRewardVerify(result)
         listener?.onRewardVerify(result)
     }
 
     override fun onAdClose() {
+        mAdActionBean.event_type = AdEventType.AdEventVideoEnd
+        YfDcHelper.onAdActionEvent(mAdActionBean)
         countTrack.onAdClose()
         listener?.onAdClose()
     }

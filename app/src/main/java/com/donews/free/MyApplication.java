@@ -23,6 +23,8 @@ import com.donews.notify.launcher.NotificationCreate;
 import com.donews.notify.launcher.configs.Notify2ConfigManager;
 import com.donews.utilslibrary.analysis.AnalysisParam;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.datacenter.YfDcHelper;
+import com.donews.utilslibrary.utils.DeviceUtils;
 import com.donews.utilslibrary.utils.KeyConstant;
 import com.donews.utilslibrary.utils.LogUtil;
 import com.donews.utilslibrary.utils.Utils;
@@ -65,6 +67,10 @@ public class MyApplication extends BaseApplication {
                 ARouter.openDebug();   // 开启调试模式(如果在InstantRun模式下运行，必须开启调试模式！线上版本需要关闭,否则有安全风险)
             }
             ARouter.init(this); // 尽可能早，推荐在Application中初始化
+
+            if (!YfDcHelper.isInit()) {
+                YfDcHelper.init(mApplication, DeviceUtils.getChannelName(), com.donews.middle.BuildConfig.DEBUG);
+            }
 
             // 初始化需要初始化的组件
             ModuleLifecycleConfig.getInstance().initModuleAhead(this);

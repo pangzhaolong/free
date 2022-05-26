@@ -143,7 +143,6 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
                 handleDanMu(it)
             }
         })
-        startDanMuPlay()
     }
 
     private fun loadDanMu() {
@@ -190,7 +189,6 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
                 //抽选卡后及时赋值(中途不能刷新),保证cardId正确
                 mStatusInfo = it
                 handleNewCard()
-                EventBus.getDefault().post(CollectStartNewCardEvent())
             }
         })
     }
@@ -219,6 +217,7 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
     private fun initDrawCard(){
         mViewModel?.drawCard?.observe(this, {
             it?.let {
+                EventBus.getDefault().post(CollectStartNewCardEvent())
                 if (it.cardTimes > 0){
                     SPUtils.setInformain("oneTimeLimitTime",System.currentTimeMillis() + MAX_FRAGMENT_TIME * 1000)
                     mHandler.removeCallbacks(fragmentTimer)
@@ -297,7 +296,7 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
         private const val STATUS_TWO = 2
         private const val STATUS_THREE = 3
         //抽碎片可抽情况下的倒计时最大值
-        private const val MAX_FRAGMENT_TIME = 300
+        private const val MAX_FRAGMENT_TIME = 6//300
         //冲能可冲情况下的倒计时最大值
         private const val MAX_ADD_TIME = 60
     }
@@ -671,6 +670,16 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
     }
 
     val mHandler = Handler(Looper.getMainLooper())
+
+    override fun onResume() {
+        super.onResume()
+        startDanMuPlay()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mHandler.removeCallbacks(danMuTimer)
+    }
 
     override fun onDestroy() {
         super.onDestroy()

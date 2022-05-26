@@ -44,9 +44,7 @@ object AdConfigManager {
             mRewardVideoId.reward_video_id = adConfigBean.reward
             mNormalAdBean.splash.DnIdNew = adConfigBean.splash
             mNormalAdBean.banner.DnIdNew = adConfigBean.banner
-            mNormalAdBean.interstitial.DnIdNew = adConfigBean.interstitial
             mNormalAdBean.information.DnIdNew = adConfigBean.information
-            mNormalAdBean.fullScreen.GmIdNew = adConfigBean.full
             mNormalAdBean.drawInformation.CsjIdNew = adConfigBean.drawInformation
             mmkv.encode(KEY_AD_REWARD_ID_CONFIG, mRewardVideoId)
         }
@@ -120,9 +118,6 @@ object AdConfigManager {
         if (t?.information == null) {
             t?.information = InfoBean()
         }
-        if (t?.fullScreen == null) {
-            t?.fullScreen = FullScreenBean()
-        }
         if (t?.drawInformation == null) {
             t?.drawInformation = DrawInfoBean()
         }
@@ -147,7 +142,7 @@ object AdConfigManager {
 
     private fun getDefaultNormalBean(): NormalBean {
         val last = mmkv.decodeParcelable(KEY_AD_NORMAL_CONFIG, NormalBean::class.java)
-        return last ?: NormalBean(true, "", 20, RewardVideoBean(true, RVLimitBean(), RVFailBean()),
-                SplashBean(), InstlBean(), InstlFullBean(), InfoBean(), FullScreenBean(), BannerBean(), DrawInfoBean())
+        return last ?: NormalBean(true, "", 20, RewardVideoBean(true, "", RVLimitBean(), RVFailBean()),
+                SplashBean(), InstlFullBean(), InfoBean(), BannerBean(), DrawInfoBean())
     }
 }

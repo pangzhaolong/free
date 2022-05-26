@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.ConvertUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.module.BaseLoadMoreModule;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.dn.drouter.ARouteHelper;
 import com.donews.base.utils.ToastUtil;
@@ -86,4 +88,9 @@ public class MineWinningRecordAdapter extends BaesLoadMoreAdapter<WinRecordResp.
                 });
     }
 
+    @NonNull
+    @Override
+    public BaseLoadMoreModule addLoadMoreModule(@NonNull BaseQuickAdapter<?, ?> baseQuickAdapter) {
+        return new BaseLoadMoreModule(baseQuickAdapter);
+    }
 }

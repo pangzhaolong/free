@@ -33,6 +33,7 @@ import com.donews.share.WXHolderHelp;
 import com.donews.utilslibrary.analysis.AnalysisHelp;
 import com.donews.utilslibrary.analysis.AnalysisParam;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
+import com.donews.utilslibrary.datacenter.YfDcHelper;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
 import com.donews.utilslibrary.utils.DateManager;
@@ -382,6 +383,7 @@ public class UserInfoManage {
                         }
 
                         eventLoadIngStatus.getLoginLoadingLiveData().postValue(2);
+                        YfDcHelper.setUserId(bean.getUserId());
                         AppInfo.setUserId(bean.getUserId());
                         AppInfo.setUserRegisterTime(bean.getRegisterTime());
                         LoginHelp.getInstance().getUserInfoBean().setCreatedAt(bean.getRegisterTime());
@@ -587,6 +589,7 @@ public class UserInfoManage {
         SPUtils.setInformain(KeySharePreferences.USER_INFO, GsonUtils.toJson(userInfoBean));
         SPUtils.setInformain(KeySharePreferences.TOKEN, userInfoBean.getToken());
         SPUtils.setInformain(KeySharePreferences.USER_ID, userInfoBean.getId());
+        YfDcHelper.setUserId(userInfoBean.getId());
         AnalysisHelp.registerUserId();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.put(HttpHeaders.HEAD_PACKAGENMAE, DeviceUtils.getPackage());

@@ -12,8 +12,7 @@ import androidx.annotation.Nullable;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.SPUtils;
 import com.dn.sdk.AdCustomError;
-import com.dn.sdk.listener.interstitial.SimpleInterstitialFullListener;
-import com.dn.sdk.listener.interstitial.SimpleInterstitialListener;
+import com.dn.sdk.listener.interstitialfull.SimpleInterstitialFullListener;
 import com.dn.sdk.listener.rewardvideo.SimpleRewardVideoListener;
 import com.donews.base.utils.ToastUtil;
 import com.donews.common.base.MvvmBaseLiveDataActivity;
@@ -24,7 +23,6 @@ import com.donews.home.databinding.ExchanageFragmentBinding;
 import com.donews.home.dialogs.ExchangeRuleDialog;
 import com.donews.home.viewModel.ExchangeViewModel;
 import com.donews.middle.IMainParams;
-import com.donews.middle.adutils.InterstitialAd;
 import com.donews.middle.adutils.InterstitialFullAd;
 import com.donews.middle.adutils.adcontrol.AdControlManager;
 import com.donews.middle.bean.home.HomeCategory2Bean;
@@ -37,7 +35,6 @@ import com.donews.middle.views.ExchanageTabItem;
 import com.donews.middle.views.TaskView;
 import com.donews.network.EasyHttp;
 import com.donews.utilslibrary.utils.AppInfo;
-import com.donews.yfsdk.check.InterstitialAdCheck;
 import com.donews.yfsdk.loader.AdManager;
 import com.donews.yfsdk.moniter.PageMonitor;
 import com.donews.yfsdk.monitor.InterstitialFullAdCheck;
@@ -85,7 +82,7 @@ public class ExchangeFragment extends MvvmLazyLiveDataFragment<ExchanageFragment
                 if (AdControlManager.INSTANCE.getAdControlBean().getUseInstlFullWhenSwitch()) {
                     return InterstitialFullAdCheck.INSTANCE.isEnable();
                 } else {
-                    return InterstitialAdCheck.INSTANCE.isEnable();
+                    return InterstitialFullAdCheck.INSTANCE.isEnable();
                 }
             }
 
@@ -107,7 +104,7 @@ public class ExchangeFragment extends MvvmLazyLiveDataFragment<ExchanageFragment
                     return;
                 }
                 if (!AdControlManager.INSTANCE.getAdControlBean().getUseInstlFullWhenSwitch()) {
-                    InterstitialAd.INSTANCE.showAd(activity, new SimpleInterstitialListener() {
+                    InterstitialFullAd.INSTANCE.showAd(activity, new SimpleInterstitialFullListener() {
                         @Override
                         public void onAdError(int code, String errorMsg) {
                             super.onAdError(code, errorMsg);
@@ -115,8 +112,8 @@ public class ExchangeFragment extends MvvmLazyLiveDataFragment<ExchanageFragment
                         }
 
                         @Override
-                        public void onAdClosed() {
-                            super.onAdClosed();
+                        public void onAdClose() {
+                            super.onAdClose();
                             PageMoniterCheck.INSTANCE.showAdSuccess("mine_fragment");
                         }
                     });

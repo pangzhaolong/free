@@ -43,12 +43,12 @@ class UnboxingRVAdapter(layoutResId: Int) : BaseQuickAdapter<UnboxingBean, BaseV
         DataBindingUtil.bind<UnboxingItemUnboxingBinding>(viewHolder.itemView)
     }
 
-    override fun convert(helper: BaseViewHolder, item: UnboxingBean?) {
+    override fun convert(holder: BaseViewHolder, item: UnboxingBean) {
         item?.let { bean ->
-            val dataBinding: UnboxingItemUnboxingBinding = helper.getBinding()!!
+            val dataBinding: UnboxingItemUnboxingBinding = holder.getBinding()!!
             dataBinding.unboxingBean = bean
 
-            if (helper.layoutPosition == 0) {
+            if (holder.layoutPosition == 0) {
                 dataBinding.yywTaskView.visibility = View.VISIBLE;
                 dataBinding.yywTaskView.refreshYyw(TaskView.Place_Show_Msg)
             }

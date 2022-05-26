@@ -2,9 +2,10 @@ package com.donews.middle.adutils
 
 import android.app.Activity
 import com.dn.sdk.AdCustomError
-import com.dn.sdk.listener.interstitial.SimpleInterstitialFullListener
+import com.dn.sdk.listener.interstitialfull.SimpleInterstitialFullListener
+import com.donews.middle.abswitch.ABSwitch
 import com.donews.yfsdk.loader.AdManager
-import com.donews.yfsdk.monitor.InterstitialFullAdCheck
+import java.lang.Exception
 
 /**
  *
@@ -16,6 +17,22 @@ import com.donews.yfsdk.monitor.InterstitialFullAdCheck
 object InterstitialFullAd {
 
     fun showAd(activity: Activity?, listener: SimpleInterstitialFullListener?) {
+        //ab包打开的话。关闭广告
+        try {
+            if (ABSwitch.Ins().isOpenAB) {
+                listener?.onAdError(
+                    AdCustomError.CloseAdAll.code,
+                    AdCustomError.CloseAdAll.errorMsg
+                )
+                return
+            }
+        } catch (e: Exception) {
+            listener?.onAdError(
+                AdCustomError.CloseAdAll.code,
+                AdCustomError.CloseAdAll.errorMsg
+            )
+            return
+        }
         if (activity == null || activity.isFinishing) {
             listener?.onAdError(AdCustomError.ContextError.code, AdCustomError.ContextError.errorMsg)
             return

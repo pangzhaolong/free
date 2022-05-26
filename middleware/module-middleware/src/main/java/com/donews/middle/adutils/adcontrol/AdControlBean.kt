@@ -59,5 +59,17 @@ data class AdControlBean(
 
         /** 页面切换是否使用插全屏 */
         @SerializedName("useInstlFullWhenSwitch")
-        var useInstlFullWhenSwitch: Boolean = false
+        var useInstlFullWhenSwitch: Boolean = false,
+
+        /** 开屏广告是否使用预加载方式 */
+        @SerializedName("splashAdUsePreload")
+        var splashAdUsePreload: Boolean = true,
+
+        /** 是否展示抽奖页激励视频加载失败重试弹窗 */
+        @SerializedName("showRewardVideoRetryDialog")
+        var showRewardVideoRetryDialog: Boolean = true,
+
+        /** 开屏页广告增加跳过按钮透明浮窗，单位：毫秒 */
+        @SerializedName("splashAdUseMask")
+        var splashAdUseMask: Long = 2000
 ) : BaseCustomViewModel(), Parcelable

@@ -19,10 +19,11 @@ import com.donews.utilslibrary.utils.UrlUtils
 class MailPageackFragmentListAdapter : BaseListAdAdapter<MailPackHomeListItemResp, BaseViewHolder>(
     R.layout.mail_package_vp_list_item
 ), LoadMoreModule {
-    override fun convert(helper: BaseViewHolder, item: MailPackHomeListItemResp?) {
+
+    override fun convert(holder: BaseViewHolder, item: MailPackHomeListItemResp) {
         item?.apply {
             //绑定文字数据
-            helper.setText(R.id.vp_list_title, item.title)
+            holder.setText(R.id.vp_list_title, item.title)
                 .setText(R.id.vp_list_price, "${item.originalPrice ?: 0 - item.couponPrice!!}")
                 .setText(
                     R.id.vp_list_flg_price, "${
@@ -41,11 +42,11 @@ class MailPageackFragmentListAdapter : BaseListAdAdapter<MailPackHomeListItemRes
                 )
             //图标
             GlideUtils.loadImageView(
-                helper.itemView.context,
+                    holder.itemView.context,
                 UrlUtils.formatUrlPrefix(item.mainPic),
-                helper.getView(R.id.vp_list_icon)
+                    holder.getView(R.id.vp_list_icon)
             )
-            helper.itemView.setOnClickListener {
+            holder.itemView.setOnClickListener {
                 //点击
                 ARouter.getInstance().build(RouterActivityPath.GoodsDetail.GOODS_DETAIL)
                     .withString("params_id", id)
@@ -77,4 +78,5 @@ class MailPageackFragmentListAdapter : BaseListAdAdapter<MailPackHomeListItemRes
         } ?: 0
         return "销量${monthSales}$mothSalesDw | 日销${dailySales}$daySalesDw"
     }
+
 }

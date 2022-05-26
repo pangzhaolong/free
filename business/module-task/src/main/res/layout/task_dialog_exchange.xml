@@ -31,7 +31,7 @@
                     android:layout_width="match_parent"
                     android:layout_marginEnd="28.41dp"
                     android:layout_marginStart="29.21dp"
-                    android:layout_height="450dp"
+                    android:layout_height="460dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -46,14 +46,26 @@
                     android:layout_height="wrap_content"/>
 
                 <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/rotateView"
+                    android:layout_width="303.33dp"
+                    android:layout_height="305.67dp"
+                    android:scaleType="fitXY"
+                    app:layout_constraintEnd_toEndOf="@+id/basicBgView"
+                    app:layout_constraintStart_toStartOf="@+id/basicBgView"
+                    app:layout_constraintTop_toTopOf="@+id/basicBgView"
+                    android:layout_marginTop="110dp"
+                    android:layout_marginBottom="100dp"
+                    app:srcCompat="@drawable/task_icon_rotate" />
+
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/bottomView"
                     app:srcCompat="@drawable/task_icon_exchange_package"
-                    android:layout_width="match_parent"
-                    android:layout_height="317.37dp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginEnd="28.41dp"
-                    android:layout_marginStart="29.21dp"/>
+                    android:layout_width="283.33dp"
+                    android:layout_height="285.67dp"
+                    app:layout_constraintEnd_toEndOf="@+id/rotateView"
+                    app:layout_constraintStart_toStartOf="@+id/rotateView"
+                    app:layout_constraintBottom_toBottomOf="@+id/rotateView"
+                    app:layout_constraintTop_toTopOf="@+id/rotateView" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     app:layout_constraintTop_toBottomOf="@+id/cancelBtn"
@@ -66,7 +78,7 @@
                     app:layout_constraintStart_toStartOf="@+id/bottomView"
                     app:layout_constraintEnd_toEndOf="@+id/bottomView"
                     app:layout_constraintTop_toTopOf="@+id/bottomView"
-                    android:layout_marginTop="180dp"
+                    android:layout_marginTop="150dp"
                     app:srcCompat="@drawable/task_icon_exchange_activity"
                     android:layout_width="118.56dp"
                     android:layout_height="19.16dp"/>
@@ -77,7 +89,7 @@
                     android:layout_height="28dp"
                     app:layout_constraintStart_toStartOf="@+id/bottomView"
                     app:layout_constraintEnd_toEndOf="@+id/bottomView"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="15dp"
                     app:layout_constraintBottom_toBottomOf="@+id/bottomView"/>
 
                 <TextView
@@ -87,14 +99,14 @@
                     android:textStyle="bold"
                     android:gravity="center"
                     android:textSize="18sp"
+                    android:layout_marginTop="11dp"
                     android:background="@drawable/task_icon_exchange_btn"
                     android:layout_width="240dp"
                     android:layout_height="46.67dp"
-                    android:layout_marginBottom="20dp"
                     android:onClick="@{eventListener::exchangeBtn}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintTop_toBottomOf="@+id/rotateView"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

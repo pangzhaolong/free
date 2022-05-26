@@ -97,13 +97,27 @@
 #内部的封装hook核心代码模块
 -keep class com.swift.sandhook.** { *; }
 -dontwarn com.swift.sandhook.**
-#---------[多牛model]其他第三方排除结束--------------------
+#内部的封装hook核心代码模块(新版本)
+-keep class sun.misc.** { *; }
+-dontwarn sun.misc.**
+-keep class top.canyie.pine.** { *; }
+-dontwarn top.canyie.pine.**
+-keep class com.android.internal.util.** { *; }
+-dontwarn com.android.internal.util.**
+-keep class de.robv.android.xposed.** { *; }
+-dontwarn de.robv.android.xposed.**
+-keep class external.org.apache.commons.lang3.** { *; }
+-dontwarn external.org.apache.commons.lang3.**
+
 #EventBus 过滤
 -keep class org.greenrobot.** { *; }
 -dontwarn org.greenrobot.**
 #EventBus的Lib过滤
 -keep class com.dn.events.** { *; }
 -dontwarn com.dn.events.**
+
+#---------[多牛model]其他第三方排除结束--------------------
+
 
 #webview
 -keep class com.donews.web.javascript.** { *; }
@@ -722,3 +736,10 @@ public static ** valueOf(java.lang.String);
 
 -dontwarn cn.jiguang.**
 -keep class cn.jiguang.** { *; }
+
+#----------------------yf dot start -----------------------------
+-keep class com.cdyfnts.datacenter.api.**{*;}
+-keep class com.cdyfnts.datacenter.constant.**{*;}
+-keep class com.cdyfnts.datacenter.entity.**{*;}
+-keep class com.cdyfnts.datacenter.callback.**{*;}
+#----------------------yf dot end -----------------------------

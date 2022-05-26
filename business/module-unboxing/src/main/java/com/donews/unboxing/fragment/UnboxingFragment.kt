@@ -8,12 +8,10 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.blankj.utilcode.util.BarUtils
 import com.dn.sdk.AdCustomError
-import com.dn.sdk.listener.interstitial.SimpleInterstitialFullListener
-import com.dn.sdk.listener.interstitial.SimpleInterstitialListener
+import com.dn.sdk.listener.interstitialfull.SimpleInterstitialFullListener
 import com.donews.base.utils.ToastUtil
 import com.donews.common.base.MvvmLazyLiveDataFragment
 import com.donews.common.router.RouterFragmentPath
-import com.donews.middle.adutils.InterstitialAd
 import com.donews.middle.adutils.InterstitialFullAd
 import com.donews.middle.adutils.adcontrol.AdControlManager
 import com.donews.middle.views.TaskView
@@ -23,10 +21,6 @@ import com.donews.unboxing.bean.UnboxingBean
 import com.donews.unboxing.databinding.UnboxingFragUnboxingBinding
 import com.donews.unboxing.smartrefreshlayout.SmartRefreshState
 import com.donews.unboxing.viewmodel.UnboxingViewModel
-import com.donews.utilslibrary.analysis.AnalysisUtils
-import com.donews.utilslibrary.dot.Dot
-import com.donews.utilslibrary.utilktx.getAndroidId
-import com.donews.yfsdk.check.InterstitialAdCheck
 import com.donews.yfsdk.moniter.PageMonitor
 import com.donews.yfsdk.monitor.InterstitialFullAdCheck
 import com.donews.yfsdk.monitor.PageMoniterCheck
@@ -55,14 +49,14 @@ class UnboxingFragment :
             override fun showAd() {
                 activity?.let {
                     if (!AdControlManager.adControlBean.useInstlFullWhenSwitch) {
-                        InterstitialAd.showAd(it, object : SimpleInterstitialListener() {
-                            override fun onAdError(code: Int, errorMsg: String?) {
-                                super.onAdError(code, errorMsg)
-                                Logger.d("晒单页插屏加载广告错误---- code = $code ,msg =  $errorMsg ");
+                        InterstitialFullAd.showAd(it, object : SimpleInterstitialFullListener() {
+                            override fun onAdError(code: Int, errprMsg: String) {
+                                super.onAdError(code, errprMsg)
+                                Logger.d("晒单页插屏加载广告错误---- code = $code ,msg =  $errprMsg ");
                             }
 
-                            override fun onAdClosed() {
-                                super.onAdClosed()
+                            override fun onAdClose() {
+                                super.onAdClose()
                                 PageMoniterCheck.showAdSuccess("unbox_fragment")
                             }
                         })
@@ -86,7 +80,7 @@ class UnboxingFragment :
                 return if (AdControlManager.adControlBean.useInstlFullWhenSwitch) {
                     InterstitialFullAdCheck.isEnable()
                 } else {
-                    InterstitialAdCheck.isEnable()
+                    InterstitialFullAdCheck.isEnable()
                 }
             }
         })
