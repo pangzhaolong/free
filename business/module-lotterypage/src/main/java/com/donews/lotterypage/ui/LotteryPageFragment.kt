@@ -34,8 +34,8 @@ import com.donews.middle.adutils.adcontrol.AdControlManager
 import com.donews.middle.bean.front.AwardBean
 import com.donews.middle.centralDeploy.OutherSwitchConfig
 import com.donews.middle.front.FrontConfigManager
-import com.donews.middle.front.LotteryConfigManager
 import com.donews.middle.utils.ActivityGuideMaskUtil
+import com.donews.middle.views.ExchanageTaskView
 import com.donews.middle.views.TaskView
 import com.donews.yfsdk.moniter.PageMonitor
 import com.donews.yfsdk.monitor.InterstitialFullAdCheck
@@ -129,9 +129,9 @@ class LotteryPageFragment :
         super.onViewCreated(view, savedInstanceState)
 
         //运营位
-        if (LotteryConfigManager.Ins().getConfigBean().getTask()) {
+        if (FrontConfigManager.Ins().getConfigBean().lottery) {
             mDataBinding.advertise.setVisibility(View.VISIBLE);
-            mDataBinding.advertise.refreshYyw(TaskView.Place_Front);
+            mDataBinding.advertise.refreshYyw(ExchanageTaskView.Lottery_Task);
         } else {
             mDataBinding.advertise.setVisibility(View.GONE);
         }
@@ -228,9 +228,8 @@ class LotteryPageFragment :
         //往期人员
         mViewModel.livePastData.observe(viewLifecycleOwner, object : Observer<AwardBean?> {
             override fun onChanged(t: AwardBean?) {
-//                mDataBinding.revealView.setData(t?.list)
-//                mDataBinding.revealView.startAnimation()
-//                mDataBinding.reveal.refreshData(t?.list)
+                mDataBinding.revealView.setData(t?.list)
+                mDataBinding.revealView.startAnimation()
             }
         })
     }

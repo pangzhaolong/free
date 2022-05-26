@@ -93,24 +93,24 @@ public class FrontFloatingBtn extends LinearLayout {
     }
 
     private void refreshModel() {
-        if (mCriticalHitIv.getAnimation() != null) {
-            mCriticalHitIv.cancelAnimation();
-            mCriticalHitIv.clearAnimation();
-        }
-        if (mCurrModel == RP_MODEL) {
-            mCriticalHitIv.setVisibility(GONE);
-            mYywImageView.setVisibility(GONE);
-            mRpLl.setVisibility(VISIBLE);
-        } else if (mCurrModel == CRITICAL_MODEL) {
-            mCriticalHitIv.setVisibility(VISIBLE);
-            mRpLl.setVisibility(GONE);
-            mYywImageView.setVisibility(GONE);
-            initLottie(mCriticalHitIv);
-        } else if (mCurrModel == YYW_MODEL) {
-            mCriticalHitIv.setVisibility(GONE);
-            mRpLl.setVisibility(GONE);
-            mYywImageView.setVisibility(VISIBLE);
-        }
+//        if (mCriticalHitIv.getAnimation() != null) {
+//            mCriticalHitIv.cancelAnimation();
+//            mCriticalHitIv.clearAnimation();
+//        }
+//        if (mCurrModel == RP_MODEL) {
+//            mCriticalHitIv.setVisibility(GONE);
+//            mYywImageView.setVisibility(GONE);
+//            mRpLl.setVisibility(VISIBLE);
+//        } else if (mCurrModel == CRITICAL_MODEL) {
+////            mCriticalHitIv.setVisibility(VISIBLE);
+//            mRpLl.setVisibility(GONE);
+//            mYywImageView.setVisibility(GONE);
+//            initLottie(mCriticalHitIv);
+//        } else if (mCurrModel == YYW_MODEL) {
+//            mCriticalHitIv.setVisibility(GONE);
+//            mRpLl.setVisibility(GONE);
+////            mYywImageView.setVisibility(VISIBLE);
+//        }
     }
 
     private void initLottie(LottieAnimationView view) {
@@ -144,10 +144,11 @@ public class FrontFloatingBtn extends LinearLayout {
             this.setVisibility(GONE);
             return;
         }
-
-        mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getFloatingItems().getSwitchInterval();
-
-        refreshYywItemEx();
+        try {
+            mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getFloatingItems().getSwitchInterval();
+            refreshYywItemEx();
+        } catch (Exception e) {
+        }
     }
 
     private void refreshYywItemEx() {

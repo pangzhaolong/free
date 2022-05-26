@@ -142,7 +142,6 @@ public class TurntableActivity extends TurntableBaseActivity<TurntableActivityLa
 
     private void loadAdAndStatusCallback(RewardedBean recommendBean) {
         if (mPlayAdUtilsTool != null) {
-            mPlayAdUtilsTool.showRewardVideo(this);
             mPlayAdUtilsTool.setIStateListener(new PlayAdUtilsTool.IStateListener() {
                 @Override
                 public void onComplete() {
@@ -161,6 +160,7 @@ public class TurntableActivity extends TurntableBaseActivity<TurntableActivityLa
 
                 }
             });
+            mPlayAdUtilsTool.showRewardVideo(this);
         }
     }
 
