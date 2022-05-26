@@ -21,7 +21,5 @@ public class MiddleApi {
 
     public final static String frontConfigUrl = BuildConfig.BASE_CONFIG_URL  + com.donews.common.BuildConfig.APP_IDENTIFICATION+"-"+"frontEx" + BuildConfig.BASE_RULE_URL;
 
-    public final static String lotteryConfigUrl = BuildConfig.BASE_CONFIG_URL  + com.donews.common.BuildConfig.APP_IDENTIFICATION+"-"+"lotteryEx" + BuildConfig.BASE_RULE_URL;
-
     public final static String privilegeLinkUrl = BuildConfig.BASE_URL + "v2/get-privilege-link?goods_id=%s&material_id=%s&search_id=%s&src=%d";
 }

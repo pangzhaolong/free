@@ -33,6 +33,9 @@ public class FrontConfigBean extends BaseCustomViewModel {
     private Boolean winCode = false;
     @SerializedName("taskYyw")
     private Boolean taskYyw = false;
+    @SerializedName("lottery")
+    private Boolean lottery = false;
+
     @SerializedName("bannerItems")
     private SingleItem bannerItems;
     @SerializedName("taskItems")
@@ -53,6 +56,8 @@ public class FrontConfigBean extends BaseCustomViewModel {
     private TaskItem mineTask;
     @SerializedName("taskItem")
     private TaskItem taskItem;
+    @SerializedName("lotteryItem")
+    private TaskItem lotteryItem;
 
     public Boolean getTaskYyw() {
         return taskYyw;
@@ -82,11 +87,25 @@ public class FrontConfigBean extends BaseCustomViewModel {
         return task;
     }
 
-    public Boolean getShowTimeMsg() { return showTimeMsg; }
+    public Boolean getLottery() {
+        return lottery;
+    }
 
-    public Boolean getShowTime() { return showTime; }
+    public void setLottery(Boolean lottery) {
+        this.lottery = lottery;
+    }
 
-    public Boolean getFloating() { return floating; }
+    public Boolean getShowTimeMsg() {
+        return showTimeMsg;
+    }
+
+    public Boolean getShowTime() {
+        return showTime;
+    }
+
+    public Boolean getFloating() {
+        return floating;
+    }
 
     public Boolean getWithDrawal() {
         return withDrawal;
@@ -134,6 +153,14 @@ public class FrontConfigBean extends BaseCustomViewModel {
 
     public TaskItem getMineTask() {
         return mineTask;
+    }
+
+    public TaskItem getLotteryItem() {
+        return lotteryItem;
+    }
+
+    public void setLotteryItem(TaskItem lotteryItem) {
+        this.lotteryItem = lotteryItem;
     }
 
     public static class YywItem extends BaseCustomViewModel {
