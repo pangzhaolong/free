@@ -228,9 +228,8 @@ class LotteryPageFragment :
         //往期人员
         mViewModel.livePastData.observe(viewLifecycleOwner, object : Observer<AwardBean?> {
             override fun onChanged(t: AwardBean?) {
-//                mDataBinding.revealView.setData(t?.list)
-//                mDataBinding.revealView.startAnimation()
-//                mDataBinding.reveal.refreshData(t?.list)
+                mDataBinding.revealView.setData(t?.list)
+                mDataBinding.revealView.startAnimation()
             }
         })
     }
