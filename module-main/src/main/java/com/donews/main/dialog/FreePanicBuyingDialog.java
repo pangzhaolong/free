@@ -25,6 +25,7 @@ import com.donews.main.databinding.FreePanicDialogLayoutBinding;
 import com.donews.main.utils.ExitInterceptUtils;
 import com.donews.middle.centralDeploy.ABSwitch;
 import com.donews.middle.dialog.BaseDialog;
+import com.donews.middle.utils.JsonValueListUtils;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
@@ -173,7 +174,7 @@ public class FreePanicBuyingDialog extends BaseDialog<FreePanicDialogLayoutBindi
 
         //手
         mDataBinding.maskingHand.setImageAssetsFolder("images");
-        mDataBinding.maskingHand.setAnimation("lottery_finger.json");
+        mDataBinding.maskingHand.setAnimation(JsonValueListUtils.LOTTERY_FINGER);
         mDataBinding.maskingHand.loop(true);
         mDataBinding.maskingHand.playAnimation();
 

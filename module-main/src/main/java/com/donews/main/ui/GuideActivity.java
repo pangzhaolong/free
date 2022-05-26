@@ -24,6 +24,7 @@ import com.donews.main.BuildConfig;
 import com.donews.main.R;
 import com.donews.main.databinding.MainActivityGuideBinding;
 import com.donews.middle.centralDeploy.ABSwitch;
+import com.donews.middle.utils.JsonValueListUtils;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.AppInfo;
@@ -166,7 +167,7 @@ public class GuideActivity
         mDataBinding.guideCententAnim.playAnimation();
         //手指动画
         mDataBinding.guideFingerAnim.setImageAssetsFolder("images");
-        mDataBinding.guideFingerAnim.setAnimation("lottery_finger.json");
+        mDataBinding.guideFingerAnim.setAnimation(JsonValueListUtils.LOTTERY_FINGER);
         mDataBinding.guideFingerAnim.loop(true);
         mDataBinding.guideFingerAnim.playAnimation();
     }

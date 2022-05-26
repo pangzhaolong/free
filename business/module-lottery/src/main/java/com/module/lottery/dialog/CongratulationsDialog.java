@@ -25,6 +25,7 @@ import androidx.annotation.NonNull;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.donews.common.router.RouterFragmentPath;
 import com.donews.middle.dialog.BaseDialog;
+import com.donews.middle.utils.JsonValueListUtils;
 import com.donews.network.EasyHttp;
 import com.donews.network.cache.model.CacheMode;
 import com.donews.network.exception.ApiException;
@@ -103,7 +104,7 @@ public class CongratulationsDialog extends BaseDialog<CongratulationsDialogLayou
             }
         });
         mDataBinding.jsonHand.setImageAssetsFolder("images");
-        mDataBinding.jsonHand.setAnimation("lottery_finger.json");
+        mDataBinding.jsonHand.setAnimation(JsonValueListUtils.LOTTERY_FINGER);
         mDataBinding.jsonHand.loop(true);
         mDataBinding.jsonHand.playAnimation();
         setOnDismissListener(this);

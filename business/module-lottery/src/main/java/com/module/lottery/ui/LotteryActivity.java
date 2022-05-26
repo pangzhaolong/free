@@ -38,6 +38,7 @@ import com.dn.events.events.LotteryStatusEvent;
 import com.dn.integral.jdd.integral.ProxyIntegral;
 import com.donews.base.utils.ToastUtil;
 import com.donews.middle.bean.LotteryEventUnlockBean;
+import com.donews.middle.utils.JsonValueListUtils;
 import com.donews.middle.utils.PlayAdUtilsTool;
 import com.donews.yfsdk.manager.AdConfigManager;
 import com.donews.yfsdk.monitor.LotteryAdCheck;
@@ -97,7 +98,6 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
     private static final String TAG = "LotteryActivity";
     private static final String LOTTERY_ACTIVITY = "LOTTERY_ACTIVITY";
     private static final String FIRST_SHOW = "first_show";
-    private static final String LOTTERY_FINGER = "lottery_finger.json";
     private static final String LOTTERY_ROUND = "lottery_round.json";
     private static final String CRIT_ROUND = "cruel_time.json";
     private static final String CRITICAL_BT_TITLE_0 = "暴击";
@@ -404,7 +404,7 @@ public class LotteryActivity extends BaseActivity<LotteryMainLayoutBinding, Lott
         if (play) {
             //设置动画
             //小手
-            initLottie(mDataBinding.jsonAnimation, LOTTERY_FINGER);
+            initLottie(mDataBinding.jsonAnimation, JsonValueListUtils.LOTTERY_FINGER);
             mDataBinding.jsonAnimation.setVisibility(View.VISIBLE);
             //圆
             if (CriticalModelTool.ifCriticalStrike()) {

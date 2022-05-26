@@ -20,6 +20,7 @@ import com.donews.main.entitys.resps.ContinueLotteryConfig
 import com.donews.main.entitys.resps.ExitDialogRecommendGoods
 import com.donews.main.entitys.resps.ExitDialogRecommendGoodsResp
 import com.donews.main.utils.ExitInterceptUtils
+import com.donews.middle.utils.JsonValueListUtils
 import com.donews.network.EasyHttp
 import com.donews.network.cache.model.CacheMode
 import com.donews.network.callback.SimpleCallBack
@@ -103,7 +104,7 @@ class ContinueLotteryDialog : AbstractFragmentDialog<MainExitDialogContinueLotte
         showCloseBtn()
         //手
         dataBinding.maskingHand.imageAssetsFolder = "images"
-        dataBinding.maskingHand.setAnimation("lottery_finger.json")
+        dataBinding.maskingHand.setAnimation(JsonValueListUtils.LOTTERY_FINGER)
         dataBinding.maskingHand.loop(true)
         dataBinding.maskingHand.playAnimation()
 

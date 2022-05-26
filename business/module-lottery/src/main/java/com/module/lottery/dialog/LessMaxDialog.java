@@ -33,6 +33,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.donews.middle.dialog.BaseDialog;
+import com.donews.middle.utils.JsonValueListUtils;
 import com.donews.utilslibrary.analysis.AnalysisUtils;
 import com.donews.utilslibrary.dot.Dot;
 import com.donews.utilslibrary.utils.UrlUtils;
@@ -100,7 +101,7 @@ public class LessMaxDialog extends BaseDialog<LessMaxDialogLayoutBinding> {
         if (mLotteryCodeBean != null) {
             mDataBinding.number.setText((6 - mLotteryCodeBean.getCodes().size()) + "");
             mDataBinding.jsonHand.setImageAssetsFolder("images");
-            mDataBinding.jsonHand.setAnimation("lottery_finger.json");
+            mDataBinding.jsonHand.setAnimation(JsonValueListUtils.LOTTERY_FINGER);
             mDataBinding.jsonHand.loop(true);
             mDataBinding.jsonHand.playAnimation();
         }
