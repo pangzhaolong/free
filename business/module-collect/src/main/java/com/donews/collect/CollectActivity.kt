@@ -116,6 +116,7 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
         bubbleFloatOneAnimation?.start()
         bubbleFloatTwoAnimation = AnimationUtil.bubbleFloat(mDataBinding?.bubbleTwo,2000,10f,-1)
         bubbleFloatTwoAnimation?.start()
+
     }
     private fun cancelBubbleAnimation(){
         if (bubbleFloatOneAnimation != null && bubbleFloatOneAnimation!!.isRunning){
@@ -297,7 +298,7 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
         private const val STATUS_THREE = 3
         //抽碎片可抽情况下的倒计时最大值
         private const val MAX_FRAGMENT_TIME = 6//300
-        //冲能可冲情况下的倒计时最大值
+        //充能可冲情况下的倒计时最大值
         private const val MAX_ADD_TIME = 60
     }
 
@@ -608,7 +609,7 @@ class CollectActivity : MvvmBaseLiveDataActivity<CollectFragmentBinding, Collect
             mStatusInfo?.let {
             if (mStatusInfo?.uniTimes!! > 0){
                 if (isTwoTimeLimit()){
-                    ToastUtils.showShort("${addTime}后即可冲能")
+                    ToastUtils.showShort("${addTime}秒后即可充能")
                 } else {
                     RewardVideoAd.loadRewardVideoAd(
                         this@CollectActivity,
