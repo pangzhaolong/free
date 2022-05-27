@@ -31,8 +31,8 @@ class ShareUIBottomPopup(context:Context): PositionPopupView(context) {
             },3000L)
             val shareManager = ShareManager()
             val shareItem = ShareItem()
-            shareItem.title = "送你88元新人红包，立即领取>>"
-            shareItem.content = "上快乐派边看视频边赚钱，看得多赚得多，动动手指轻松赚取零花钱！"
+            shareItem.title = "0元领五菱宏光~猛戳>>"
+            shareItem.content = "不花一分钱，商品抱回家，超多手机等大牌好物等你来领"
             shareItem.type = ShareItem.TYPE_H5
             shareItem.webUrl = "https://recharge-web.xg.tagtic.cn/qbn/index.html#/download"
             shareManager.share(
@@ -49,8 +49,8 @@ class ShareUIBottomPopup(context:Context): PositionPopupView(context) {
             },3000L)
             val shareManager = ShareManager()
             val shareItem = ShareItem()
-            shareItem.title = "送你88元新人红包，立即领取>>"
-            shareItem.content = "上快乐派边看视频边赚钱，看得多赚得多，动动手指轻松赚取零花钱！"
+            shareItem.title = "0元领五菱宏光~猛戳>>"
+            shareItem.content = "不花一分钱，商品抱回家，超多手机等大牌好物等你来领"
             shareItem.type = ShareItem.TYPE_H5
             shareItem.webUrl = "https://recharge-web.xg.tagtic.cn/qbn/index.html#/download"
             shareManager.share(
