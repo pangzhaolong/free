@@ -30,5 +30,7 @@ android {
         buildConfigField("String", "USER_PROCOTOL", "\"${rootProject.USER_PROCOTOL}\"")
         buildConfigField("String", "AD_REWARD_CONFIG_URL", "\"${rootProject.AD_REWARD_CONFIG_URL}\"")
         buildConfigField("String", "AD_NORMAL_CONFIG_URL", "\"${rootProject.AD_NORMAL_CONFIG_URL}\"")
+        buildConfigField("String", "WEB_BASE_URL", "\"${rootProject.WEB_BASE_URL}\"")
+
     }
 }

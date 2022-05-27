@@ -1,7 +1,5 @@
 package com.donews.middle.dialog;
 
-import android.app.Activity;
-
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModel;

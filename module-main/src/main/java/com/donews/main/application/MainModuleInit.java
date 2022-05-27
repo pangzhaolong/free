@@ -8,7 +8,6 @@ import android.os.Looper;
 
 import com.donews.base.base.BaseApplication;
 import com.donews.common.IModuleInit;
-import com.donews.middle.front.LotteryConfigManager;
 import com.donews.middle.utils.HotStartCacheUtils;
 import com.donews.yfsdk.manager.AdConfigManager;
 import com.donews.common.adapter.ScreenAutoAdapter;
@@ -155,7 +154,6 @@ public class MainModuleInit implements IModuleInit {
         ExitInterceptUtils.INSTANCE.init();
 
         FrontConfigManager.Ins().init();
-        LotteryConfigManager.Ins().init();
         return false;
     }
 

@@ -78,7 +78,9 @@ public class PlayAdUtilsTool {
 
             @Override
             public void onAdShow() {
-                mIStateListener.onFinish();
+                if(mIStateListener!=null){
+                    mIStateListener.onFinish();
+                }
                 //广告显示成功  延时出现页面提示Toast
                 showToast();
             }
@@ -250,7 +252,9 @@ public class PlayAdUtilsTool {
     private void loadError(Activity activity, boolean needShowRetryDialog) {
         Activity act = AppManager.getInstance().getTopActivity();
         if (act != null && !act.getClass().getName().equalsIgnoreCase("com.module.lottery.ui.LotteryActivity")) {
-            mIStateListener.onFinish();
+            if (mIStateListener != null) {
+                mIStateListener.onFinish();
+            }
             return;
         }
         if (mNeedShowRetryDialog <= 1 && needShowRetryDialog) {
@@ -258,7 +262,7 @@ public class PlayAdUtilsTool {
                 mLoadAdErrDialog = new LoadAdErrorDialog(activity, new LoadAdErrorDialog.RetryListener() {
                     @Override
                     public void onRetry() {
-                        if (!activity.isFinishing()) {
+                        if (!activity.isFinishing() && mIStateListener != null) {
                             mIStateListener.onFinish();
                         } else {
                             if (activity != null) {
@@ -271,7 +275,9 @@ public class PlayAdUtilsTool {
                     @Override
                     public void onClose() {
                         mLoadAdErrDialog.dismiss();
-                        mIStateListener.onFinish();
+                        if (mIStateListener != null) {
+                            mIStateListener.onFinish();
+                        }
                         if (activity != null) {
                             ToastUtil.showShort(activity, CLOSURE_HINT);
                         }
@@ -284,7 +290,9 @@ public class PlayAdUtilsTool {
             mLoadAdErrDialog.setOwnerActivity(activity);
             mLoadAdErrDialog.show();
         } else {
-            mIStateListener.onFinish();
+            if (mIStateListener != null) {
+                mIStateListener.onFinish();
+            }
             if (activity != null) {
                 ToastUtil.showShort(activity, CLOSURE_HINT);
             }

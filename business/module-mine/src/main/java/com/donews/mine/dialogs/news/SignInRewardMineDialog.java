@@ -35,7 +35,7 @@ public class SignInRewardMineDialog extends BaseBindingFragmentDialog<Mine2Signi
     /**
      * 单利构建对象
      *
-     * @param type 模式 0:激励模式，1:领取模式(带自带倒计时关闭)，2：任务奖励模式
+     * @param type 模式 0:激励模式，1:领取模式(带自带倒计时关闭)，2：任务奖励模式(领取任务奖励),3:任务上报奖励模式
      * @return
      */
     public static SignInRewardMineDialog getInstance(int type) {
@@ -111,7 +111,7 @@ public class SignInRewardMineDialog extends BaseBindingFragmentDialog<Mine2Signi
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(modeType == 0){
+        if (modeType == 0) {
             //激励模式。通知签到流程完毕
             EventBus.getDefault().post(new SigninCloseEvent());
         }
@@ -209,6 +209,18 @@ public class SignInRewardMineDialog extends BaseBindingFragmentDialog<Mine2Signi
                             .show(getActivity().getSupportFragmentManager(), "ssss");
                 }
             });
+        } else if (modeType == 3) {
+            //特殊处理下
+            if (mineViewModel.mineDailyTaskReportResult.getValue() == null) {
+                return;
+            }
+            if (mineViewModel.mineDailyTaskReportResult.getValue().coin > 1000) {
+                dataBinding.mine2JbJlIcon.setImageResource(R.drawable.sign_reward_mine_dialog_ydjb_2);
+            } else {
+                dataBinding.mine2JbJlIcon.setImageResource(R.drawable.sign_reward_mine_dialog_ydjb);
+            }
+            dataBinding.mine2JbJlCount.setText("" + mineViewModel.mineDailyTaskReportResult.getValue().coin);
+
         }
     }
 

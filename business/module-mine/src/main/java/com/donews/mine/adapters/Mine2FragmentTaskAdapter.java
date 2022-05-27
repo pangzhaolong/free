@@ -89,8 +89,8 @@ public class Mine2FragmentTaskAdapter extends
                 ToastUtil.showShort(fragmentActivity, "获取奖励失败.请稍后再试");
                 return;
             }
-            //任务奖励模式
-            SignInRewardMineDialog.getInstance(2)
+            //任务上报奖励模式
+            SignInRewardMineDialog.getInstance(3)
                     .show(fragmentActivity.getSupportFragmentManager(), "aaaa4");
         }
     };

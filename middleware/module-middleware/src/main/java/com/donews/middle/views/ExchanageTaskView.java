@@ -40,6 +40,7 @@ public class ExchanageTaskView extends LinearLayout {
     public final static int Place_Mine = 2;
     public final static int Place_Show_Msg = 3;
     public final static int Place_Win_Code = 4;
+    public final static int Lottery_Task = 6;
     private int mCurrentModel = Place_Front;
 
     private TaskHandler mTaskHandler;
@@ -77,7 +78,6 @@ public class ExchanageTaskView extends LinearLayout {
 
     public void refreshYyw(int model) {
         mCurrentModel = model;
-
         mYywItemList.clear();
         if (mCurrentModel == Place_Front) {
             mDotFrom = "place_front";
@@ -134,6 +134,18 @@ public class ExchanageTaskView extends LinearLayout {
                 this.setVisibility(GONE);
                 return;
             }
+        }else if(mCurrentModel == Lottery_Task){
+            mDotFrom = "place_lottery_code";
+            try {
+                mYywItemList.addAll(FrontConfigManager.Ins().getConfigBean().getLotteryItem().getItems());
+                mTaskGroup = FrontConfigManager.Ins().getConfigBean().getLotteryItem().getTaskGroup();
+                mEnableYyw = FrontConfigManager.Ins().getConfigBean().getLottery();
+                mSwitchInterval = FrontConfigManager.Ins().getConfigBean().getLotteryItem().getSwitchInterval();
+            } catch (Exception e) {
+                this.setVisibility(GONE);
+                return;
+            }
+
         }
 
 

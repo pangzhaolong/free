@@ -14,6 +14,7 @@ import com.donews.common.router.RouterActivityPath
 import com.donews.common.router.RouterFragmentPath
 import com.donews.main.BuildConfig
 import com.donews.main.dialog.*
+import com.donews.main.dialog.news.ExchangeExitDialog
 import com.donews.main.entitys.resps.ExitInterceptConfig
 import com.donews.main.ui.RpActivity
 import com.donews.middle.centralDeploy.ABSwitch
@@ -129,6 +130,9 @@ object ExitInterceptUtils {
                 return
             }
             isFinishBack = true //设置为本次已经触发退出拦截
+            ExchangeExitDialog.getInstance()
+                .show(activity.supportFragmentManager, "jaklsdjflkasjdfkl")
+            return; //废弃原有拦截逻辑。直接走新的弹窗
             if (!checkUserIsLogin()) {
                 //用户未登录
                 showNotLoginDialog(activity)
@@ -681,7 +685,7 @@ object ExitInterceptUtils {
      */
     @JvmStatic
     fun closeExitDialog(act: Activity) {
-        if(RpActivity.isShowInnerAd){
+        if (RpActivity.isShowInnerAd) {
             RpActivity.isShowInnerAd = false
         }
 //        InterstitialAd.showAd(act, null)

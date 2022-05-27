@@ -33,6 +33,11 @@ public class RouterActivityPath {
          * 引导页
          */
         public static final String PAGER_GUIDE_ACTIVITY = MAIN + "/GuideActivity";
+
+        /**
+         * 退出超级福利弹窗
+         */
+        public static final String PAGER_EXCHANGE_EXIT_DIALOG = MAIN + "/ExchangeExitDialog";
     }
 
     public static class User {

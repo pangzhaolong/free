@@ -68,7 +68,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_marginEnd="15dp"
-            android:layout_marginBottom="240dp" />
+            android:layout_marginBottom="240dp"
+            android:visibility="gone" />
 
         <com.donews.main.views.MainFloatingBtn
             android:id="@+id/main_floating_rp"

@@ -99,7 +99,6 @@ public class ScrollVerticallyView extends FrameLayout implements LifecycleObserv
                 @SuppressLint("LongLogTag")
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    Log.d("=wdadawdad===================", "515");
                     scrollHandler.removeMessages(1);
                     scrollHandler.sendEmptyMessage(1);
                     animatorSet.cancel();

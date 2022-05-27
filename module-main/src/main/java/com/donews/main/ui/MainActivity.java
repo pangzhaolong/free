@@ -117,8 +117,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
 import me.majiajie.pagerbottomtabstrip.NavigationController;
 
 /**
